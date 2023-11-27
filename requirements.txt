@@ -1,0 +1,12 @@
+asgiref==3.7.2
+Django~=4.2.7
+sqlparse==0.4.4
+channels==4.0.0
+daphne==4.0.0
+channels_redis==4.1.0
+redis-cli==0.1.2
+django_redis==5.3.0
+daphne==4.0.0
+django-environ==0.11.2
+mysqlclient==2.2.0
+environ
