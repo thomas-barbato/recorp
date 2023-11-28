@@ -1,0 +1,13 @@
+{% extends "generic_template.html" %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+    <div class="container-full h-screen" style="background-color:red;">
+        <h1 class="text-3xl font-bold underline text-clifford">
+            Hello world!
+        </h1>
+        <p>France time: {{france}}</p>
+        <p>Server time: {{ now }}</p>
+    </div>
+{% endblock %}

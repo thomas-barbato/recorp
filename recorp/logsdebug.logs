@@ -1,0 +1,108 @@
+2023-11-28 11:05:53.316879+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:57185][0m
+[mHTTP GET /static/js/var.js 200 [0.09, 127.0.0.1:57187][0m
+[mHTTP GET /static/css/style.css 200 [0.09, 127.0.0.1:57185][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.09, 127.0.0.1:57186][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:57186][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+2023-11-28 11:37:23.349675+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.02, 127.0.0.1:58417][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.08, 127.0.0.1:58418][0m
+[mHTTP GET /static/css/style.css 200 [0.08, 127.0.0.1:58417][0m
+[mHTTP GET /static/js/var.js 200 [0.08, 127.0.0.1:58419][0m
+2023-11-28 11:37:32.494232+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58418][0m
+2023-11-28 11:38:01.719922+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58418][0m
+2023-11-28 12:45:16.201522+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:61269][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61269][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:61270][0m
+[mHTTP GET /static/js/var.js 200 [0.01, 127.0.0.1:61271][0m
+[mHTTP GET /static/img/test-image.jpg 200 [0.02, 127.0.0.1:61270][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61270][0m
+2023-11-28 12:54:18.895093+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:61599][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:61601][0m
+Not Found: /favicon.ico
+2023-11-28 12:54:30.501818+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:61607][0m
+2023-11-28 12:54:32.165307+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:61607][0m
+2023-11-28 12:54:32.958767+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:61607][0m
+2023-11-28 12:55:25.093743+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:61607][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:61607][0m
+2023-11-28 12:55:27.078913+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:61637][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:61637][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:61638][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:61639][0m
+[mHTTP GET /static/img/test-image.jpg 200 [0.01, 127.0.0.1:61638][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:61638][0m
+2023-11-28 12:57:59.758096+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:61737][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:61737][0m
+2023-11-28 12:58:00.457278+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:61737][0m
+2023-11-28 13:07:17.717705+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62232][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:62234][0m
+Not Found: /favicon.ico
+2023-11-28 13:07:50.694171+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62264][0m
+2023-11-28 13:08:01.963180+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62264][0m
+2023-11-28 13:08:02.896754+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62264][0m
+2023-11-28 13:08:19.441066+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62264][0m
+Not Found: /favicon.ico
+2023-11-28 13:08:52.844080+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62306][0m
+2023-11-28 13:09:03.147689+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62306][0m
+2023-11-28 13:09:11.848012+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62306][0m
+2023-11-28 13:09:22.848931+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62306][0m
+2023-11-28 13:10:28.119345+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62371][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:62371][0m
+2023-11-28 13:13:38.316000+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62482][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:62484][0m
+2023-11-28 13:13:43.777321+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62484][0m
+2023-11-28 13:13:50.577507+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62484][0m
+Not Found: /favicon.ico
+2023-11-28 13:14:12.243819+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62515][0m
+2023-11-28 13:14:25.829032+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62515][0m
+2023-11-28 13:15:11.796760+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:62515][0m
+Not Found: /favicon.ico
+2023-11-28 13:15:33.502081+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62573][0m
+Not Found: /favicon.ico
+2023-11-28 13:17:09.817883+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62658][0m
+[36mHTTP GET /static/img/test-image.jpg 304 [0.00, 127.0.0.1:62659][0m
+Not Found: /favicon.ico
+2023-11-28 13:17:16.591938+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62671][0m
+Not Found: /favicon.ico
+2023-11-28 13:19:07.817929+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62756][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:62756][0m
+[36mHTTP GET /static/js/fontawesome/fontawesome.js 304 [0.00, 127.0.0.1:62758][0m
+Watching for file changes with StatReloader

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" SameSite=Lax Secure>
+    {% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" SameSite=Lax Secure >
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link type="text/css" rel="stylesheet"  href="{% static 'css/style.css'%}">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="{% static 'js/fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
+        <script src="{% static 'js/var.js'%}"></script>
+        <script>
+            tailwind.config = {
+              theme: {
+                extend: {
+                  colors: {
+                    clifford: 'blue',
+                  }
+                }
+              }
+            }
+        </script>
+        <style type="text/tailwindcss">
+            @layer utilities {
+              .exemple-card {
+                content-visibility: auto;
+              }
+            }
+      </style>
+    </head>
+    <body>
+    {% block content %}
+    {% endblock %}
+    </body>
+    {% block js %}
+    {% endblock %}
+</html>

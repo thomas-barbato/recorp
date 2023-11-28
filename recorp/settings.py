@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import environ
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
 env = environ.Env(
@@ -32,7 +32,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',
+    "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -46,14 +46,16 @@ MIDDLEWARE = [
 ROOT_URLCONF = "recorp.urls"
 
 INTERNAL_IPS = [
-    '127.0.0.1',
+    "127.0.0.1",
 ]
+
+TAILWIND_APP_NAME = 'theme'
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(f"{BASE_DIR}", "core", "../core/templates", "core"),
+            os.path.join(f"{BASE_DIR}", "core", "templates", "core"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -63,14 +65,14 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
-            'libraries':{
-                'customtags': 'core.templatetags.customtags',
+            "libraries": {
+                "customtags": "core.templatetags.customtags",
             },
         },
     },
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://www.recorp.com']
+CSRF_TRUSTED_ORIGINS = ["https://www.recorp.com"]
 
 WSGI_APPLICATION = "recorp.routing.application"
 ASGI_APPLICATION = "recorp.routing.application"
@@ -88,32 +90,27 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "recorp_game"
+        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+        "KEY_PREFIX": "recorp_game",
     }
 }
 
-CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = (60 * 60)
-CACHE_MIDDLEWARE_KEY_PREFIX = ''
+CACHE_MIDDLEWARE_ALIAS = "default"
+CACHE_MIDDLEWARE_SECONDS = 60 * 60
+CACHE_MIDDLEWARE_KEY_PREFIX = ""
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PSQL_NAME'),
-        'USER': os.getenv('PSQL_USER'),
-        'PASSWORD': os.getenv('PSQL_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': os.getenv('PSQL_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("PSQL_NAME"),
+        "USER": os.getenv("PSQL_USER"),
+        "PASSWORD": os.getenv("PSQL_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": os.getenv("PSQL_PORT"),
     }
 }
 
 # AUTH_USER_MODEL = "core.Users"
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -130,13 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGE_CODE = "fr"
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -149,24 +142,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime}: {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        }
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': f'{os.path.join(BASE_DIR, "recorp", "logs") + "debug.logs"}',
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['file'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
-        }
-    }
+            'propagate': True,
+        },
+    },
 }
