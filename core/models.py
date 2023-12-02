@@ -23,15 +23,17 @@ class UserPurchase(models.Model):
 
 class Resource(models.Model):
     RARITY_CHOICES = (
-        ('COMMON', 'commune'),
-        ('UNUSUAL', 'peu commune'),
-        ('RARE', 'rare'),
-        ('VERY_RARE', 'tres rare')
+        ("COMMON", "commune"),
+        ("UNUSUAL", "peu commune"),
+        ("RARE", "rare"),
+        ("VERY_RARE", "tres rare"),
     )
     name = models.CharField(max_length=30, null=False, blank=False, default="Resource")
     image = models.ImageField(upload_to="resource/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
-    rarity = models.CharField(max_length=10, choices=RARITY_CHOICES, default=RARITY_CHOICES[0])
+    rarity = models.CharField(
+        max_length=10, choices=RARITY_CHOICES, default=RARITY_CHOICES[0]
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -94,7 +96,7 @@ class Player(models.Model):
     description = models.TextField(max_length=2500, blank=True)
     image = models.ImageField(upload_to="player_and_npc/", null=True, blank=True)
     faction_xp = models.PositiveIntegerField(null=False, default=0)
-    time_to_play = models.PositiveIntegerField(default=(60*60)*24)
+    time_to_play = models.PositiveIntegerField(default=(60 * 60) * 24)
     coordinates = models.JSONField()
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -104,16 +106,19 @@ class Player(models.Model):
 
 
 class Skill(models.Model):
-
     SKILL_CATEGORIES_CHOICES = (
-        ('COMBAT', 'combat'),
-        ('EXPLOITATION', 'exploitation'),
-        ('RESEARCH', 'recherche'),
-        ('CRAFTING', 'fabrication')
+        ("COMBAT", "combat"),
+        ("EXPLOITATION", "exploitation"),
+        ("RESEARCH", "recherche"),
+        ("CRAFTING", "fabrication"),
     )
     name = models.CharField(max_length=30, null=False, blank=False, default="Skill1")
     description = models.TextField(max_length=2500, blank=True)
-    category = models.CharField(max_length=20, choices=SKILL_CATEGORIES_CHOICES, default=SKILL_CATEGORIES_CHOICES[0])
+    category = models.CharField(
+        max_length=20,
+        choices=SKILL_CATEGORIES_CHOICES,
+        default=SKILL_CATEGORIES_CHOICES[0],
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -122,7 +127,6 @@ class Skill(models.Model):
 
 
 class Recipe(models.Model):
-
     name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
@@ -135,7 +139,6 @@ class Recipe(models.Model):
 
 
 class Research(models.Model):
-
     name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
@@ -150,17 +153,19 @@ class Research(models.Model):
 
 class Log(models.Model):
     LOG_TYPE_CHOICES = (
-        ('ATTACK', 'attaque'),
-        ('DEFENSE', 'defense'),
-        ('ZONE_CHANGE', 'zone'),
-        ('DEATH', 'mort'),
-        ('KILL', 'tue'),
-        ('CRAFT_END', 'fabrication'),
-        ('RESEARCH_END', 'recherche'),
-        ('LEVEL_UP', 'gain de niveau')
+        ("ATTACK", "attaque"),
+        ("DEFENSE", "defense"),
+        ("ZONE_CHANGE", "zone"),
+        ("DEATH", "mort"),
+        ("KILL", "tue"),
+        ("CRAFT_END", "fabrication"),
+        ("RESEARCH_END", "recherche"),
+        ("LEVEL_UP", "gain de niveau"),
     )
     content = models.TextField(max_length=2500, blank=True)
-    log_type = models.CharField(max_length=20, choices=LOG_TYPE_CHOICES, default=LOG_TYPE_CHOICES[0])
+    log_type = models.CharField(
+        max_length=20, choices=LOG_TYPE_CHOICES, default=LOG_TYPE_CHOICES[0]
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -169,7 +174,9 @@ class Log(models.Model):
 
 
 class ShipCategory(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Light Cruiser")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Light Cruiser"
+    )
     description = models.TextField(max_length=2500, blank=True)
     max_speed = models.FloatField(default=1.0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -203,7 +210,9 @@ class ModuleEffect(models.Model):
 
 
 class Module(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Light Cruiser")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Light Cruiser"
+    )
     description = models.TextField(max_length=2500, blank=True)
     module_effect = models.ForeignKey(ModuleEffect, on_delete=models.CASCADE)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -265,29 +274,30 @@ class PlayerResearch(models.Model):
 
 
 class PlayerPrivateMessage(models.Model):
-    player_sender = models.ForeignKey(Player, related_name='sender', on_delete=models.CASCADE)
-    player_receiver = models.ForeignKey(Player, related_name='receiver', on_delete=models.CASCADE)
+    player_sender = models.ForeignKey(
+        Player, related_name="sender", on_delete=models.CASCADE
+    )
+    player_receiver = models.ForeignKey(
+        Player, related_name="receiver", on_delete=models.CASCADE
+    )
     message = models.TextField(max_length=2500, blank=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player_sender.username} to {self.player_receiver.username} : {self.message}"
+        return f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
 
 
 class PlayerShip(models.Model):
-
-    STATUS_CHOICES = (
-        ('FULL', 'pleine forme'),
-        ('WOUNDED', 'blesse'),
-        ('DEAD', 'mort')
-    )
+    STATUS_CHOICES = (("FULL", "pleine forme"), ("WOUNDED", "blesse"), ("DEAD", "mort"))
 
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     current_hp = models.IntegerField()
     max_hp = models.PositiveIntegerField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0])
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -377,19 +387,20 @@ class StationResource(models.Model):
 
 
 class Sector(models.Model):
-
     SECURITY_LEVEL_CHOICES = (
-        ('NULL', 'aucune'),
-        ('LOW', 'faible securite'),
-        ('MEDIUM', 'securite moyenne'),
-        ('HIGHT', 'haute securite')
+        ("NULL", "aucune"),
+        ("LOW", "faible securite"),
+        ("MEDIUM", "securite moyenne"),
+        ("HIGHT", "haute securite"),
     )
 
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
     image = models.ImageField(upload_to="sector/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
-    security_level = models.CharField(max_length=20, choices=SECURITY_LEVEL_CHOICES, default=SECURITY_LEVEL_CHOICES[0])
+    security_level = models.CharField(
+        max_length=20, choices=SECURITY_LEVEL_CHOICES, default=SECURITY_LEVEL_CHOICES[0]
+    )
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -400,22 +411,21 @@ class Sector(models.Model):
 
 class SectorContent(models.Model):
     CONTENT_TYPE_CHOICES = (
-        ('PLANET', 'planet'),
-        ('ASTEROID', 'asteroid'),
-        ('FACTION', 'faction'),
-        ('STATION', 'station'),
-        ('PLAYER', 'player'),
-        ('NPC', 'npc')
+        ("PLANET", "planet"),
+        ("ASTEROID", "asteroid"),
+        ("FACTION", "faction"),
+        ("STATION", "station"),
+        ("PLAYER", "player"),
+        ("NPC", "npc"),
     )
 
     sector = models.ForeignKey(Faction, on_delete=models.CASCADE)
     content = models.PositiveIntegerField(default=1, null=False, blank=False)
-    content_type = models.CharField(max_length=20, choices=CONTENT_TYPE_CHOICES, default=CONTENT_TYPE_CHOICES[0])
+    content_type = models.CharField(
+        max_length=20, choices=CONTENT_TYPE_CHOICES, default=CONTENT_TYPE_CHOICES[0]
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.sector.name} : {self.content_type}"
-
-
-
