@@ -106,3 +106,1262 @@ Not Found: /favicon.ico
 [mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:62756][0m
 [36mHTTP GET /static/js/fontawesome/fontawesome.js 304 [0.00, 127.0.0.1:62758][0m
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /
+[33mHTTP GET / 404 [0.20, 127.0.0.1:54452][0m
+[32mHTTP GET /play 301 [0.01, 127.0.0.1:54452][0m
+2023-12-01 22:14:27.033598+01:00 - AnonymousUser connected.
+Internal Server Error: /play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+KeyError: 'media'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'media' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+customtags
+i18n
+l10n
+log
+static
+tz
+[35;1mHTTP GET /play/ 500 [0.20, 127.0.0.1:54452][0m
+2023-12-01 22:19:57.979517+01:00 - AnonymousUser connected.
+Internal Server Error: /play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+KeyError: 'MEDIA_URL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'MEDIA_URL' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+customtags
+i18n
+l10n
+log
+static
+tz
+[35;1mHTTP GET /play/ 500 [0.03, 127.0.0.1:54703][0m
+Not Found: /favicon.ico
+2023-12-01 22:19:58.810961+01:00 - AnonymousUser connected.
+Internal Server Error: /play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+KeyError: 'MEDIA_URL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'MEDIA_URL' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+customtags
+i18n
+l10n
+log
+static
+tz
+[35;1mHTTP GET /play/ 500 [0.04, 127.0.0.1:54704][0m
+2023-12-01 22:20:08.188807+01:00 - AnonymousUser connected.
+Internal Server Error: /play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+KeyError: 'media'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'media' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+customtags
+i18n
+l10n
+log
+static
+tz
+[35;1mHTTP GET /play/ 500 [0.04, 127.0.0.1:54704][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:30:31.750976+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.09, 127.0.0.1:55216][0m
+[36mHTTP GET /static/js/fontawesome/fontawesome.js 304 [0.00, 127.0.0.1:55219][0m
+[mHTTP GET /static/css/style.css 200 [0.11, 127.0.0.1:55216][0m
+[mHTTP GET /static/js/var.js 200 [0.11, 127.0.0.1:55217][0m
+Not Found: /favicon.ico
+2023-12-01 22:31:45.131285+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55289][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55289][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55289][0m
+2023-12-01 22:32:00.412803+01:00 - AnonymousUser connected.
+Internal Server Error: /play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'media'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 13: 'media', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /play/ 500 [0.05, 127.0.0.1:55289][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55289][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:34:55.746040+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55501][0m
+[mHTTP GET /static/js/var.js 200 [0.11, 127.0.0.1:55503][0m
+[mHTTP GET /static/css/style.css 200 [0.11, 127.0.0.1:55501][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.19, 127.0.0.1:55502][0m
+Not Found: /play/media/
+[33mHTTP GET /play/media/ 404 [0.01, 127.0.0.1:55501][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55502][0m
+2023-12-01 22:35:13.035794+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55502][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55502][0m
+[mHTTP GET /static/js/var.js 200 [0.01, 127.0.0.1:55503][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55501][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55502][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55501][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55502][0m
+2023-12-01 22:35:13.868795+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55501][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55502][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55501][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55502][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55501][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55502][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55501][0m
+2023-12-01 22:35:14.885820+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55517][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55517][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55519][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55518][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55518][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55518][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55518][0m
+2023-12-01 22:35:31.300928+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55518][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55518][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55519][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55517][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55518][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55517][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55518][0m
+[32mHTTP GET /media 301 [0.01, 127.0.0.1:55517][0m
+Not Found: /media/
+[33mHTTP GET /media/ 404 [0.01, 127.0.0.1:55518][0m
+Not Found: /media/
+[33mHTTP GET /media/ 404 [0.01, 127.0.0.1:55517][0m
+2023-12-01 22:38:02.727172+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55671][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55671][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55673][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55672][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55672][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55672][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55672][0m
+2023-12-01 22:38:16.373069+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55672][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55672][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55671][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55673][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55672][0m
+Not Found: /play/media/uml.png
+[33mHTTP GET /play/media/uml.png 404 [0.01, 127.0.0.1:55671][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55672][0m
+2023-12-01 22:38:40.985447+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55671][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55672][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55673][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55671][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55672][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55671][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55672][0m
+2023-12-01 22:38:41.688835+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55671][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55672][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55673][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55671][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55672][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55671][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55672][0m
+2023-12-01 22:38:42.656805+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55707][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55707][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55708][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55709][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55708][0m
+Not Found: /play/media/uml.PNG
+[33mHTTP GET /play/media/uml.PNG 404 [0.01, 127.0.0.1:55708][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55708][0m
+2023-12-01 22:39:02.930168+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55708][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55709][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55708][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55707][0m
+Not Found: /play/media//uml.PNG
+[33mHTTP GET /play/media//uml.PNG 404 [0.01, 127.0.0.1:55708][0m
+Not Found: /play/media//uml.PNG
+[33mHTTP GET /play/media//uml.PNG 404 [0.01, 127.0.0.1:55707][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55708][0m
+D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:42:02.608846+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.02, 127.0.0.1:55908][0m
+[mHTTP GET /static/css/style.css 200 [0.11, 127.0.0.1:55908][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.11, 127.0.0.1:55913][0m
+[mHTTP GET /static/js/var.js 200 [0.11, 127.0.0.1:55914][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55913][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55913][0m
+2023-12-01 22:42:03.411837+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55913][0m
+[mHTTP GET /static/css/style.css 200 [0.06, 127.0.0.1:55913][0m
+[mHTTP GET /static/js/var.js 200 [0.05, 127.0.0.1:55914][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.06, 127.0.0.1:55908][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55913][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55908][0m
+2023-12-01 22:42:04.475423+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55918][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55918][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55919][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55919][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55919][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55919][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55919][0m
+2023-12-01 22:42:26.838355+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55919][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55919][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55918][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55952][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55919][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55918][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55919][0m
+2023-12-01 22:42:27.473825+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55918][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55919][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55952][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55918][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55918][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55919][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55918][0m
+2023-12-01 22:42:28.286235+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55953][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55953][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55955][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55954][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55954][0m
+[33mHTTP GET /static/uml.PNG 404 [0.01, 127.0.0.1:55954][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55954][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:42:43.455924+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55980][0m
+2023-12-01 22:42:43.679217+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55988][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55988][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55995][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55994][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55994][0m
+2023-12-01 22:42:43.819218+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55994][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55994][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55988][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55995][0m
+[33mHTTP GET /static/uml.png 404 [0.00, 127.0.0.1:55994][0m
+2023-12-01 22:42:43.968216+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55988][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55994][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55995][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55988][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55994][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55988][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55994][0m
+2023-12-01 22:43:27.599080+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:55988][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55994][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55988][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55995][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55994][0m
+[33mHTTP GET /static/uml.png 404 [0.00, 127.0.0.1:55988][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55994][0m
+2023-12-01 22:43:28.430874+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55988][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55994][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55995][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55988][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55994][0m
+2023-12-01 22:43:28.670873+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55988][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55994][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55995][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55988][0m
+[33mHTTP GET /static/uml.png 404 [0.00, 127.0.0.1:55994][0m
+[33mHTTP GET /static/uml.png 404 [0.00, 127.0.0.1:55988][0m
+2023-12-01 22:43:28.959988+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55994][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55988][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:55994][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:55988][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55994][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:55988][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55994][0m
+D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:44:43.833877+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56118][0m
+[mHTTP GET /static/js/var.js 200 [0.09, 127.0.0.1:56120][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.09, 127.0.0.1:56119][0m
+[mHTTP GET /static/css/style.css 200 [0.10, 127.0.0.1:56118][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56119][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:56119][0m
+2023-12-01 22:44:44.476368+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56119][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56119][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56118][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:56120][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56119][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56118][0m
+2023-12-01 22:44:44.749370+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56119][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56118][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:56120][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:56119][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56118][0m
+2023-12-01 22:44:44.880370+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56119][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56118][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:56120][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56119][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56118][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56119][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56118][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:44:58.513490+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56145][0m
+[mHTTP GET /static/css/style.css 200 [0.08, 127.0.0.1:56145][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.08, 127.0.0.1:56146][0m
+[mHTTP GET /static/js/var.js 200 [0.07, 127.0.0.1:56147][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56146][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:56146][0m
+2023-12-01 22:44:59.179535+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56146][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:56147][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56146][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:56145][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56146][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56145][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56146][0m
+2023-12-01 22:44:59.792581+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56145][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56146][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56145][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:56147][0m
+[33mHTTP GET /static/uml.png 404 [0.00, 127.0.0.1:56146][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56145][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56146][0m
+2023-12-01 22:45:04.292836+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56152][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56152][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:56153][0m
+[mHTTP GET /static/js/var.js 200 [0.00, 127.0.0.1:56154][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56153][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56153][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56153][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:45:21.598011+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.02, 127.0.0.1:56186][0m
+[mHTTP GET /recorp/static/js/var.js 200 [0.09, 127.0.0.1:56188][0m
+[mHTTP GET /recorp/static/css/style.css 200 [0.10, 127.0.0.1:56186][0m
+[mHTTP GET /recorp/static/js/fontawesome/fontawesome.js 200 [0.10, 127.0.0.1:56187][0m
+[33mHTTP GET /recorp/static/uml.png 404 [0.01, 127.0.0.1:56186][0m
+[33mHTTP GET /recorp/static/uml.png 404 [0.01, 127.0.0.1:56187][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56187][0m
+2023-12-01 22:45:22.334001+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56187][0m
+[mHTTP GET /recorp/static/css/style.css 200 [0.01, 127.0.0.1:56187][0m
+[mHTTP GET /recorp/static/js/var.js 200 [0.00, 127.0.0.1:56188][0m
+[mHTTP GET /recorp/static/js/fontawesome/fontawesome.js 200 [0.00, 127.0.0.1:56186][0m
+[33mHTTP GET /recorp/static/uml.png 404 [0.01, 127.0.0.1:56187][0m
+[33mHTTP GET /recorp/static/uml.png 404 [0.00, 127.0.0.1:56186][0m
+2023-12-01 22:45:22.613946+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56187][0m
+[mHTTP GET /recorp/static/css/style.css 200 [0.00, 127.0.0.1:56186][0m
+[mHTTP GET /recorp/static/js/var.js 200 [0.01, 127.0.0.1:56188][0m
+[mHTTP GET /recorp/static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56187][0m
+[33mHTTP GET /recorp/static/uml.png 404 [0.01, 127.0.0.1:56186][0m
+[33mHTTP GET /recorp/static/uml.png 404 [0.01, 127.0.0.1:56187][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56186][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:46:01.053209+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56235][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.10, 127.0.0.1:56236][0m
+[mHTTP GET /static/css/style.css 200 [0.11, 127.0.0.1:56235][0m
+[mHTTP GET /static/js/var.js 200 [0.11, 127.0.0.1:56237][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56236][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56236][0m
+2023-12-01 22:46:01.701421+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56236][0m
+[mHTTP GET /static/css/style.css 200 [0.05, 127.0.0.1:56236][0m
+[mHTTP GET /static/js/var.js 200 [0.05, 127.0.0.1:56237][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.05, 127.0.0.1:56235][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56236][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56235][0m
+2023-12-01 22:46:01.969237+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56236][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56235][0m
+[mHTTP GET /static/js/var.js 200 [0.01, 127.0.0.1:56237][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56236][0m
+[33mHTTP GET /static/uml.png 404 [0.01, 127.0.0.1:56235][0m
+[33mHTTP GET /static/uml.png 404 [0.00, 127.0.0.1:56236][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56235][0m
+2023-12-01 22:48:55.517754+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56389][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56389][0m
+[mHTTP GET /static/js/var.js 200 [0.01, 127.0.0.1:56391][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56390][0m
+[mHTTP GET /static/img/uml.png 200 [0.01, 127.0.0.1:56390][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56390][0m
+D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:56:37.735499+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56701][0m
+[mHTTP GET /static/css/style.css 200 [0.10, 127.0.0.1:56701][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.10, 127.0.0.1:56702][0m
+[mHTTP GET /static/js/var.js 200 [0.09, 127.0.0.1:56703][0m
+[mHTTP GET /static/img/uml.png 200 [0.00, 127.0.0.1:56702][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56702][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+2023-12-01 22:56:53.196875+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/css/style.css
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56731][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56731][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56722][0m
+2023-12-01 22:57:30.305853+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+Not Found: /static/css/style.css
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.06, 127.0.0.1:56731][0m
+[33mHTTP GET /static/css/style.css 404 [0.06, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.06, 127.0.0.1:56772][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56722][0m
+2023-12-01 22:57:30.967338+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/css/style.css
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56731][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56772][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.00, 127.0.0.1:56722][0m
+2023-12-01 22:57:42.414501+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/css/style.css
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56772][0m
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56731][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.00, 127.0.0.1:56722][0m
+2023-12-01 22:57:43.075167+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/css/style.css
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56772][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56731][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56722][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.00, 127.0.0.1:56722][0m
+2023-12-01 22:57:43.628360+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56722][0m
+Not Found: /static/css/style.css
+Not Found: /static/js/fontawesome/fontawesome.js
+Not Found: /static/js/var.js
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56722][0m
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56772][0m
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56731][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56722][0m
+2023-12-01 22:57:43.913357+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+Not Found: /static/css/style.css
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56772][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56722][0m
+Not Found: /static/img/uml.png
+2023-12-01 22:57:44.098360+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+Not Found: /static/css/style.css
+[33mHTTP GET /static/css/style.css 404 [0.01, 127.0.0.1:56789][0m
+Not Found: /static/js/var.js
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56791][0m
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56790][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.00, 127.0.0.1:56789][0m
+Not Found: /static/js/fontawesome/fontawesome.js
+[33mHTTP GET /static/js/fontawesome/fontawesome.js 404 [0.01, 127.0.0.1:56789][0m
+Not Found: /static/js/var.js
+[33mHTTP GET /static/js/var.js 404 [0.01, 127.0.0.1:56789][0m
+Not Found: /static/img/uml.png
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:56789][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56789][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /
+[33mHTTP GET / 404 [0.07, 127.0.0.1:49271][0m
+Not Found: /favicon.ico
+2023-12-02 01:16:28.213177+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49273][0m
+[mHTTP GET /static/css/style.css 200 [0.08, 127.0.0.1:49273][0m
+[mHTTP GET /static/js/var.js 200 [0.08, 127.0.0.1:49275][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.09, 127.0.0.1:49274][0m
+[33mHTTP GET /static/img/uml.png 404 [0.01, 127.0.0.1:49273][0m

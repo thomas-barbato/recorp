@@ -11,3 +11,4 @@ django-environ==0.11.2
 psycopg2-binary==2.9.9
 environ
 django-request==1.6.3
+Pillow==10.1.0

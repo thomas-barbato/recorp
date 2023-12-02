@@ -7,8 +7,10 @@ from django.contrib.auth import login
 from django.http import JsonResponse
 import request
 from django.views.generic import RedirectView, TemplateView
+from recorp.settings import MEDIA_URL
 
 logger = logging.getLogger("django")
+
 
 class DisplayGameView(TemplateView):
     template_name = "play.html"
