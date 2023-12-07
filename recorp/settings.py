@@ -56,6 +56,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(f"{BASE_DIR}", "core", "templates", "core"),
+            os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -142,6 +143,15 @@ USE_TZ = True
 # The Django admin ships with some javascript and CSS,
 # for example, that are stored in Django’s Github repository.
 STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
+    ("img", os.path.join(BASE_DIR, "recorp", "static", "img")),
+    ("world_builder", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder")),
+    ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
+    ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
+    ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations")),
+]
 
 # public
 # Media files are usually for files

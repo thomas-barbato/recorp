@@ -170,7 +170,7 @@ class Log(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.content}"
+        return f"{self.log_type}: {self.content}"
 
 
 class ShipCategory(models.Model):

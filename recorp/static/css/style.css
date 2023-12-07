@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #0f0e0e;
+}
+
+#player-container{
+    background-image: url("/static/fonts/space_2.jpg");
+    background-size: cover;
+}
+
+#settings-button{
+    color: #F5F5F5;
+    border:none;
+}
+
+.font-shadow{
+    text-shadow: 1px 1px 2px black;
+}
+
