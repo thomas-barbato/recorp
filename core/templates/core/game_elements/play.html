@@ -3,13 +3,17 @@
 {% load customtags %}
 
 {% block content %}
-    <div class="container-full h-screen" style="background-color:red;">
+    <div class="container-full h-screen">
         <h1 class="text-3xl font-bold underline text-clifford">
             Hello world!
         </h1>
         <p>France time: {{france}}</p>
         <p>Server time: {{ now }}</p>
 
-        <img src="{% static '/img/uml.png' %}"></img>
+        <img src="{% static 'ships/ship01-32px.png' %}">
     </div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'world_builder/game.js' %}"></script>
 {% endblock %}
