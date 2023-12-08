@@ -1,49 +1,98 @@
 {% load static %}
-<nav class="bg-gray-800/0 md:bg-gray-800/40 w-full">
-  <div class="max-w-screen flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="#" class="flex items-start justify-start rtl:space-x">
-        <img src="{% static 'img/recorp.png' %}" class="h-10" alt="Recorp_logo" />
-        <span class="self-start text-1xl font-semibold whitespace-nowrap dark:text-white"></span>
-    </a>
-    <button data-collapse-toggle="navbar-default" alt="Recorp_logo" type="button" class="flex inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-        </svg>
+<nav class="relative bg-gray-800/40 w-full flex justify-betweens">
+  <a href="#">
+    <img src="{% static 'img/recorp.png' %}" class="h-10 pt-0.5 pl-2" alt="Recorp_logo" />
+  </a>
+  <ul class="hidden md:flex md:mx-auto md:items-center md:w-auto md:space-x-auto">
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-user fa-xl"></i> Personnage</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-people-group fa-xl"></i> Faction</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-brain fa-xl"></i> Recherches</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-map fa-xl"></i> Carte</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-list-check fa-xl"></i> Tâches</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-mobile-screen-button fa-xl"></i> Logs</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-envelope fa-xl"></i> Messages</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-comments fa-xl"></i> Forums</a>
+    </li>
+    <li>
+      <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-sm lg:text-base font-bold font-shadow"><i class="fa-solid fa-gear fa-xl"></i> Options</a>
+    </li>
+  </ul>
+  <div class="md:hidden w-full flex justify-end">
+    <button class="navbar-burger p-3 text-emerald-400 hover:text-white">
+      <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <title>Mobile menu</title>
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+      </svg>
     </button>
-    <div class="hidden w-full flex justify-center xl:block md:w-auto" id="navbar-default">
-      <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-gray-800/0">
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white  text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-user fa-xl"></i> Personnage</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-people-group fa-xl"></i> Faction</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-brain fa-xl"></i> Recherches</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-map fa-xl"></i> Carte</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-list-check fa-xl"></i> Tâches</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-mobile-screen-button fa-xl"></i> Logs</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-envelope fa-xl"></i> Messages</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-comments fa-xl"></i> Forums</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow md:p-0"><i class="fa-solid fa-gear fa-xl"></i> Options</a>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>
 
-<script>
+<!-- MOBILE MENU -->
+<div class="navbar-menu relative z-50 hidden">
+  <div class="navbar-backdrop fixed inset-x-0 top-10 bg-gray-800"></div>
+  <nav class="fixed top-10 left-0 bottom-0 flex flex-col w-full py-3 px-6 bg-gray-800/40 overflow-y-auto">
+    <div>
+      <ul>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-user fa-xl"></i> Personnage</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-people-group fa-xl"></i> Faction</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-brain fa-xl"></i> Recherches</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-map fa-xl"></i> Carte</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-list-check fa-xl"></i> Tâches</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-mobile-screen-button fa-xl"></i> Logs</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-envelope fa-xl"></i> Messages</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-comments fa-xl"></i> Forums</a>
+        </li>
+        <li>
+          <a href="#" class="block p-3 text-emerald-400 hover:bg-gray-700 hover:text-white text-left text-md font-bold font-shadow"><i class="fa-solid fa-gear fa-xl"></i> Options</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    const burger = document.querySelectorAll('.navbar-burger');
+    const menu = document.querySelectorAll('.navbar-menu');
+
+    if (burger.length && menu.length) {
+        for (var i = 0; i < burger.length; i++) {
+            burger[i].addEventListener('click', function() {
+                for (var j = 0; j < menu.length; j++) {
+                    menu[j].classList.toggle('hidden');
+                }
+            });
+        }
+    }
+});
 </script>
