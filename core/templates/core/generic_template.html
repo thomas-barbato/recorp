@@ -7,14 +7,13 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
         <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
+        <link rel="shortcut icon" type="image/png" href="{% static 'img/recorp.png' %}" >
         <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
         <script src="{% static 'js/fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
         <script src="{% static 'world_builder/var.js'%}"></script>
     </head>
-
     {% block content %}
     {% endblock %}
-    </body>
     {% block js %}
     {% endblock %}
 </html>

@@ -15827,3 +15827,1971 @@ Not Found: /favicon.ico
 2023-12-08 16:21:26.240458+01:00 - AnonymousUser connected.
 [mHTTP GET /play/ 200 [0.00, 127.0.0.1:65038][0m
 [mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65039][0m
+Watching for file changes with StatReloader
+Not Found: /
+[33mHTTP GET / 404 [0.37, 127.0.0.1:59150][0m
+Not Found: /favicon.ico
+[32mHTTP GET /play 301 [0.01, 127.0.0.1:59158][0m
+2023-12-11 08:11:48.601789+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.55, 127.0.0.1:59158][0m
+[mHTTP GET /static/css/output.css 200 [0.05, 127.0.0.1:59158][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:59159][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59158][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.02, 127.0.0.1:59160][0m
+[mHTTP GET /static/img/recorp.png 200 [0.03, 127.0.0.1:59159][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js 304 [0.00, 127.0.0.1:59159][0m
+[36mHTTP GET /static/js/fontawesome/fontawesome.js 304 [0.00, 127.0.0.1:59159][0m
+[36mHTTP GET /static/fonts/space_2.jpg 304 [0.00, 127.0.0.1:59159][0m
+2023-12-11 08:22:59.307064+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59553][0m
+2023-12-11 08:23:00.117931+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59553][0m
+2023-12-11 09:25:25.715897+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.03, 127.0.0.1:61983][0m
+2023-12-11 09:34:52.176050+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62328][0m
+2023-12-11 09:38:04.710253+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62450][0m
+2023-12-11 09:38:41.937595+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62472][0m
+2023-12-11 09:38:42.557108+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62472][0m
+2023-12-11 09:41:10.327054+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62557][0m
+2023-12-11 09:41:10.855260+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62558][0m
+2023-12-11 09:41:11.002260+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62558][0m
+2023-12-11 09:41:11.879307+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62559][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:62563][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62559][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.00, 127.0.0.1:62564][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62560][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.04, 127.0.0.1:62562][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.07, 127.0.0.1:62561][0m
+[mHTTP GET /static/img/recorp.png 200 [0.02, 127.0.0.1:62560][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.02, 127.0.0.1:62560][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:62560][0m
+2023-12-11 09:41:21.511296+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62560][0m
+2023-12-11 09:41:21.998921+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62560][0m
+2023-12-11 09:43:51.640400+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62667][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:62667][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:62686][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:62695][0m
+2023-12-11 09:44:20.367452+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62702][0m
+Not Found: /favicon.ico
+2023-12-11 09:44:21.149321+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62703][0m
+2023-12-11 09:44:22.540795+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62704][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62704][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62705][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:62708][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62706][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:62707][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:62709][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:62706][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62706][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:62706][0m
+2023-12-11 09:44:30.846449+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62706][0m
+2023-12-11 09:44:31.484129+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62709][0m
+2023-12-11 09:44:37.743972+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62709][0m
+2023-12-11 09:44:38.171414+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62709][0m
+2023-12-11 09:44:38.997701+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62727][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62727][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62728][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62729][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:62730][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:62731][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:62732][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:62729][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62729][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62729][0m
+2023-12-11 09:44:58.069240+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62729][0m
+Not Found: /favicon.ico
+2023-12-11 09:44:58.514017+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62728][0m
+2023-12-11 09:44:59.471390+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62745][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62745][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62746][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62747][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:62748][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:62749][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:62750][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:62747][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62747][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62747][0m
+2023-12-11 09:45:03.728682+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62747][0m
+Not Found: /favicon.ico
+2023-12-11 09:45:04.206653+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:04.558341+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:04.719993+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:04.862264+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62746][0m
+2023-12-11 09:45:05.018264+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:05.678375+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:05.853520+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62746][0m
+2023-12-11 09:45:25.085998+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:25.664857+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62746][0m
+2023-12-11 09:45:26.627359+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62762][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62762][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62763][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62764][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:62766][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:62765][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:62767][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:62764][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62764][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:62764][0m
+2023-12-11 09:45:29.472602+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62764][0m
+2023-12-11 09:50:52.065587+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62976][0m
+2023-12-11 09:50:52.596964+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62977][0m
+2023-12-11 09:50:52.788138+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62977][0m
+2023-12-11 09:50:53.917027+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62980][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:62980][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62982][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62981][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:62984][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:62983][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:62985][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:62982][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62982][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:62982][0m
+2023-12-11 09:50:57.605584+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62982][0m
+2023-12-11 09:50:58.100672+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62982][0m
+2023-12-11 09:50:58.255798+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62982][0m
+2023-12-11 09:50:58.400797+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62982][0m
+2023-12-11 09:51:22.455964+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62982][0m
+2023-12-11 09:51:22.903108+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62982][0m
+2023-12-11 09:51:23.783539+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63021][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:63021][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63022][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:63023][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:63024][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:63025][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:63026][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:63023][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:63023][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:63023][0m
+2023-12-11 09:51:24.302965+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:63028][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:63028][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63029][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:63030][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:63031][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:63032][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:63033][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:63030][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:63030][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63030][0m
+2023-12-11 09:54:51.191195+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63187][0m
+2023-12-11 09:54:51.796862+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:63188][0m
+2023-12-11 09:54:52.269231+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63188][0m
+2023-12-11 09:54:53.632296+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63189][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:63189][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63190][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:63191][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:63192][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:63193][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:63194][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:63191][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:63191][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63191][0m
+2023-12-11 10:35:29.911538+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64613][0m
+2023-12-11 10:35:37.417888+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64615][0m
+Not Found: /favicon.ico
+2023-12-11 10:35:37.987515+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64616][0m
+2023-12-11 10:35:38.234053+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64616][0m
+2023-12-11 10:37:11.302476+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64669][0m
+2023-12-11 10:37:59.250248+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64669][0m
+Not Found: /favicon.ico
+2023-12-11 10:37:59.745109+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64710][0m
+2023-12-11 10:38:00.121139+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64710][0m
+2023-12-11 10:38:00.377078+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64710][0m
+2023-12-11 10:38:20.027988+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64710][0m
+2023-12-11 10:38:20.501956+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64710][0m
+2023-12-11 10:38:20.746307+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64710][0m
+2023-12-11 10:38:21.612337+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64722][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:64722][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:64723][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:64724][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:64726][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:64725][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:64727][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:64724][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:64724][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:64724][0m
+2023-12-11 10:38:31.423111+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64724][0m
+Not Found: /favicon.ico
+2023-12-11 10:38:31.908532+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64723][0m
+2023-12-11 10:38:32.275407+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64723][0m
+2023-12-11 10:38:45.794965+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64723][0m
+Not Found: /favicon.ico
+2023-12-11 10:38:46.289992+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64725][0m
+2023-12-11 10:38:46.445994+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64725][0m
+2023-12-11 10:38:46.601991+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64725][0m
+2023-12-11 10:38:46.731993+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64725][0m
+Not Found: /favicon.ico
+2023-12-11 10:38:46.885994+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64722][0m
+2023-12-11 10:38:47.019993+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64722][0m
+2023-12-11 10:38:47.170140+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64722][0m
+2023-12-11 10:38:47.301137+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64722][0m
+2023-12-11 10:40:21.290948+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64801][0m
+Not Found: /favicon.ico
+2023-12-11 10:41:59.620080+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64858][0m
+Not Found: /favicon.ico
+2023-12-11 10:42:00.089951+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64859][0m
+2023-12-11 10:42:00.959752+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64861][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:64861][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:64862][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:64864][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:64863][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:64865][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:64866][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:64863][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:64863][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:64863][0m
+2023-12-11 10:42:01.687701+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64868][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:64868][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:64869][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:64870][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:64871][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:64872][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:64873][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:64870][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:64870][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:64870][0m
+2023-12-11 10:42:27.337876+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64899][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:64899][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:64900][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:64901][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:64903][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:64902][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:64904][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:64901][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:64901][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:64901][0m
+2023-12-11 10:53:45.540231+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65323][0m
+2023-12-11 10:53:55.368730+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65333][0m
+Not Found: /favicon.ico
+2023-12-11 10:54:01.973004+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65342][0m
+2023-12-11 10:54:02.587639+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65342][0m
+2023-12-11 10:54:02.738638+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65342][0m
+2023-12-11 10:54:03.802055+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65343][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65343][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65344][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65345][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:65347][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:65346][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:65348][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:65345][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65345][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:65345][0m
+2023-12-11 10:54:09.521105+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65345][0m
+Not Found: /favicon.ico
+2023-12-11 10:54:09.952000+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:10.106095+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:10.237095+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:10.390097+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:10.578098+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:10.757361+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:10.902020+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:11.041019+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:18.575543+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:24.516886+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:24.890909+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:25.128943+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:34.586896+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:34.726915+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:34.885190+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65344][0m
+2023-12-11 10:54:35.029189+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65344][0m
+2023-12-11 10:54:35.819387+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65365][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65365][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65366][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65367][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:65368][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:65369][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:65370][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:65367][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65367][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:65367][0m
+2023-12-11 10:55:18.459638+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65367][0m
+2023-12-11 10:55:19.001843+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65367][0m
+2023-12-11 10:55:32.043715+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65367][0m
+2023-12-11 10:55:32.850851+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65401][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65401][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65402][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65403][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:65404][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:65405][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:65406][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:65403][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65403][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65403][0m
+2023-12-11 10:56:16.361217+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65403][0m
+Not Found: /favicon.ico
+2023-12-11 10:56:16.854410+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65402][0m
+2023-12-11 10:56:17.842487+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65443][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65443][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65445][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65446][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:65447][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:65448][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:65449][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:65446][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65446][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65446][0m
+2023-12-11 10:56:36.608569+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65446][0m
+2023-12-11 10:56:37.128223+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:65446][0m
+2023-12-11 10:56:43.048010+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65466][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:65466][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65468][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:65469][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:65470][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:65471][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:65467][0m
+[mHTTP GET /static/img/recorp.png 200 [0.01, 127.0.0.1:65468][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65468][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65468][0m
+2023-12-11 10:57:44.098751+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:65522][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65522][0m
+Not Found: /favicon.ico
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:49157][0m
+2023-12-11 10:58:44.747334+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49172][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49172][0m
+2023-12-11 10:58:45.650238+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49175][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:49175][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49175][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49176][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49177][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49178][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49179][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49177][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49177][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:49177][0m
+2023-12-11 10:58:56.582826+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49177][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49177][0m
+2023-12-11 10:58:57.051916+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49177][0m
+2023-12-11 10:58:57.271494+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49177][0m
+2023-12-11 10:59:13.076307+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49177][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49177][0m
+2023-12-11 10:59:13.633273+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49177][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49177][0m
+2023-12-11 10:59:14.946372+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49197][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49197][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49198][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49199][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49200][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49202][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49201][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49199][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49199][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:49199][0m
+2023-12-11 11:01:29.646880+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49285][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:49285][0m
+2023-12-11 11:01:30.190727+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49285][0m
+2023-12-11 11:01:32.192937+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49288][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49288][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49289][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49290][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49292][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49291][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49293][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49290][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49290][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:49290][0m
+2023-12-11 11:01:35.260418+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49290][0m
+2023-12-11 11:01:35.526505+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49290][0m
+2023-12-11 11:01:51.879276+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49290][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49290][0m
+2023-12-11 11:01:52.490984+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49290][0m
+2023-12-11 11:02:00.661960+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49290][0m
+2023-12-11 11:02:01.405748+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49315][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49315][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49317][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49320][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49318][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49319][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49316][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49317][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49317][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:49317][0m
+2023-12-11 11:02:44.639475+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49317][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:49317][0m
+Not Found: /favicon.ico
+2023-12-11 11:02:45.078677+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49316][0m
+2023-12-11 11:02:45.599732+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49357][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49357][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49358][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49359][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49360][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49361][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49362][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49359][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49359][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:49359][0m
+2023-12-11 11:03:45.008934+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49359][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49359][0m
+Not Found: /favicon.ico
+2023-12-11 11:03:45.462089+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49358][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49358][0m
+2023-12-11 11:03:45.748977+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49358][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49358][0m
+2023-12-11 11:03:46.124791+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49358][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49358][0m
+2023-12-11 11:03:56.651660+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49358][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49358][0m
+2023-12-11 11:03:57.125394+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49358][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49358][0m
+2023-12-11 11:05:07.163343+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49474][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49474][0m
+Not Found: /favicon.ico
+2023-12-11 11:06:12.209569+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49505][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49505][0m
+2023-12-11 11:07:00.789824+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49505][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:49505][0m
+Not Found: /favicon.ico
+2023-12-11 11:12:08.479794+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49706][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:49706][0m
+Not Found: /favicon.ico
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:49722][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:49868][0m
+2023-12-11 11:15:53.234985+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49877][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49877][0m
+2023-12-11 11:15:53.949782+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49879][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49880][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49881][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49882][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49883][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49884][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49881][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49881][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:49881][0m
+2023-12-11 11:15:57.278505+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49881][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49881][0m
+Not Found: /favicon.ico
+2023-12-11 11:15:57.788970+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49880][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49880][0m
+2023-12-11 11:15:57.953635+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:49880][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:49880][0m
+2023-12-11 11:15:58.524396+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49887][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49887][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49889][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49891][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49888][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49890][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49892][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49889][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49889][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:49889][0m
+2023-12-11 11:15:59.048106+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49894][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49894][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49895][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49896][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:49897][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:49898][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:49899][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:49896][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49896][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:49896][0m
+2023-12-11 11:18:17.262928+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50063][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50063][0m
+Not Found: /favicon.ico
+2023-12-11 11:18:24.915985+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50070][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50070][0m
+2023-12-11 11:18:25.394837+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50070][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50070][0m
+2023-12-11 11:18:25.747687+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50070][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50070][0m
+2023-12-11 11:18:36.951733+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50070][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50070][0m
+2023-12-11 11:18:37.470852+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50070][0m
+2023-12-11 11:18:37.803580+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50070][0m
+2023-12-11 11:18:37.970988+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50070][0m
+2023-12-11 11:18:38.115002+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50070][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50070][0m
+2023-12-11 11:20:25.126261+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:20:25.625098+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:25.984187+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:26.171233+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:27.769652+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:28.025741+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:28.188474+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:28.343474+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:28.519389+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:28.669388+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:38.514690+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:20:38.976836+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:20:43.922178+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:20:50.200909+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:21:14.719245+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50127][0m
+2023-12-11 11:21:15.231127+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:21:48.123179+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:21:48.761246+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:21:49.065278+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50127][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:21:49.304990+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:21:58.202510+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50127][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50127][0m
+2023-12-11 11:23:18.199288+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50221][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50221][0m
+2023-12-11 11:23:45.486704+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50221][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50221][0m
+2023-12-11 11:24:05.867804+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50221][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50221][0m
+2023-12-11 11:24:06.479803+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50221][0m
+2023-12-11 11:24:06.659981+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50221][0m
+2023-12-11 11:28:08.357548+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50373][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50373][0m
+2023-12-11 11:28:08.873037+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50373][0m
+2023-12-11 11:28:09.964887+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50382][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50382][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50383][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50384][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:50386][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:50385][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:50387][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:50384][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50384][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:50384][0m
+2023-12-11 11:28:10.516778+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50389][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50389][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50390][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50391][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:50392][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:50393][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:50394][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:50391][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50391][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:50391][0m
+2023-12-11 11:28:22.099535+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50391][0m
+Not Found: /favicon.ico
+2023-12-11 11:28:22.794937+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50400][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50400][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50402][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:50404][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:50403][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:50405][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50401][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:50402][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50402][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:50402][0m
+2023-12-11 11:28:23.323139+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50407][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50407][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50408][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50409][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:50410][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:50411][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:50412][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:50409][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50409][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:50409][0m
+2023-12-11 11:28:33.887885+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50409][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50409][0m
+Not Found: /favicon.ico
+2023-12-11 11:29:27.755977+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50465][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50465][0m
+2023-12-11 11:29:28.409045+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50467][0m
+2023-12-11 11:29:28.706381+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50467][0m
+Not Found: /favicon.ico
+2023-12-11 11:29:28.939413+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50468][0m
+2023-12-11 11:31:41.920818+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50526][0m
+Not Found: /favicon.ico
+2023-12-11 11:32:02.837669+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50546][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50546][0m
+2023-12-11 11:32:12.391092+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50546][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50546][0m
+2023-12-11 11:32:13.323114+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50546][0m
+2023-12-11 11:32:17.720388+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50546][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50546][0m
+2023-12-11 11:32:18.550105+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50546][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50546][0m
+2023-12-11 11:33:03.842930+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50546][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50546][0m
+2023-12-11 11:33:24.392937+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50546][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50546][0m
+2023-12-11 11:33:25.454791+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50597][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50597][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50598][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50599][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:50601][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:50600][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:50602][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:50599][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50599][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:50599][0m
+2023-12-11 11:33:53.939856+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50599][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50599][0m
+Not Found: /favicon.ico
+2023-12-11 11:34:12.386947+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50598][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50598][0m
+2023-12-11 11:34:13.008258+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50598][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:50905][0m
+2023-12-11 11:43:30.151398+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50966][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50966][0m
+2023-12-11 11:43:59.961548+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50966][0m
+Not Found: /favicon.ico
+2023-12-11 11:44:15.916871+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50999][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50999][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51000][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51001][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:51003][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:51002][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:51004][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:51001][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:51001][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:51001][0m
+2023-12-11 11:44:39.897752+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51001][0m
+2023-12-11 11:47:18.632279+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:51110][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51110][0m
+2023-12-11 11:47:30.540203+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51110][0m
+2023-12-11 11:47:33.647295+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51125][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51125][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51126][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51127][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:51129][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:51128][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:51130][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:51127][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:51127][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:51127][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:51219][0m
+2023-12-11 11:50:25.977051+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51232][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51232][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51233][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51234][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:51236][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:51235][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:51237][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:51234][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:51234][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:51234][0m
+2023-12-11 11:50:56.254476+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51234][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51234][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51233][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:51232][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:51237][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51235][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:51236][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:51234][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:51234][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:51234][0m
+2023-12-11 11:51:01.458698+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51234][0m
+2023-12-11 11:51:33.446242+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51234][0m
+2023-12-11 11:51:34.791804+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51234][0m
+2023-12-11 11:51:59.960532+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51234][0m
+2023-12-11 11:53:49.752413+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51353][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:51353][0m
+2023-12-11 11:53:51.664064+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51353][0m
+2023-12-11 11:55:29.507479+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51404][0m
+2023-12-11 11:56:38.606722+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51442][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:51442][0m
+2023-12-11 11:56:45.536867+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:51442][0m
+2023-12-11 11:56:46.408616+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51442][0m
+2023-12-11 12:01:11.145075+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51606][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:51607][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51606][0m
+2023-12-11 12:04:18.473752+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51717][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:51717][0m
+2023-12-11 12:04:24.070438+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:51717][0m
+2023-12-11 12:04:27.501413+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51717][0m
+2023-12-11 12:05:01.615548+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51717][0m
+2023-12-11 12:18:22.263903+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52229][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:52229][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.00, 127.0.0.1:52231][0m
+2023-12-11 12:19:01.342443+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52258][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52258][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52259][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52260][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52261][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52262][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52263][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52260][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52260][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52260][0m
+2023-12-11 12:19:09.780824+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52269][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52269][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52270][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52271][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52273][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52272][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52274][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52271][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52271][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52271][0m
+2023-12-11 12:19:18.727147+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52271][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52271][0m
+2023-12-11 12:22:04.222687+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52393][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52393][0m
+2023-12-11 12:23:13.289141+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52449][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52449][0m
+2023-12-11 12:23:30.765126+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52449][0m
+2023-12-11 12:23:43.815812+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52449][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52449][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:52462][0m
+2023-12-11 12:24:43.291216+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52462][0m
+[36mHTTP GET /static/css/style.css 304 [0.00, 127.0.0.1:52462][0m
+2023-12-11 12:24:50.668348+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:52462][0m
+2023-12-11 12:26:44.267060+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52554][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52554][0m
+2023-12-11 12:26:45.242917+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52554][0m
+2023-12-11 12:29:37.736421+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52661][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52661][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:52662][0m
+Not Found: /favicon.ico
+2023-12-11 12:29:47.398249+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52661][0m
+2023-12-11 12:29:48.268335+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52669][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52669][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52671][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52672][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52673][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52674][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52670][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52671][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52671][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:52671][0m
+2023-12-11 12:29:55.646577+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52683][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52683][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52686][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52685][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52687][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52688][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52684][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52685][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52685][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52685][0m
+2023-12-11 12:30:01.816032+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52691][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52691][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52693][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52694][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52695][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52696][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52692][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52693][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52693][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52693][0m
+2023-12-11 12:38:32.310660+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52994][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52994][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:52995][0m
+Not Found: /favicon.ico
+2023-12-11 12:38:32.860355+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52994][0m
+2023-12-11 12:38:33.731395+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52996][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52996][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52997][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52998][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52999][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53001][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53000][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52998][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52998][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52998][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:53066][0m
+2023-12-11 12:41:09.822984+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53097][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53097][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53098][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53099][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53100][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53101][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53102][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53099][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53099][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53099][0m
+2023-12-11 12:41:10.433386+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53099][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53098][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53100][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53099][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53097][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53102][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53101][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53099][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53099][0m
+2023-12-11 12:41:10.698406+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:53099][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:53099][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53097][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53102][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53098][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53099][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53100][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53100][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53099][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53099][0m
+2023-12-11 12:41:11.576938+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:53114][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53114][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53115][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53116][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53117][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53118][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53119][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53116][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53116][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53116][0m
+2023-12-11 12:41:20.702140+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53116][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53116][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53115][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53117][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53119][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53114][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.00, 127.0.0.1:53117][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53116][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53116][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53116][0m
+2023-12-11 12:41:21.467369+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:53127][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:02.984878+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:53128][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:03.646881+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:07.603173+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:13.443915+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:14.039200+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:19.282713+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:19.860881+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:20.269214+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:28.227024+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:38.610494+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+2023-12-11 12:42:39.130632+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53129][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53130][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53128][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:53127][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:53131][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:53132][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53129][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53129][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53129][0m
+Watching for file changes with StatReloader
+2023-12-11 12:51:57.566539+01:00 - AnonymousUser connected.
+[mHTTP GET /play/ 200 [0.02, 127.0.0.1:53924][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:53924][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:53925][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:53926][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.19, 127.0.0.1:53927][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.19, 127.0.0.1:53928][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.19, 127.0.0.1:53929][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:53926][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53926][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.08, 127.0.0.1:53926][0m
+D:\wamp64\www\recorp\recorp\routing.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /play/ 200 [0.02, 127.0.0.1:54645][0m
+[mHTTP GET /static/css/style.css 200 [0.16, 127.0.0.1:54645][0m
+[mHTTP GET /static/css/output.css 200 [0.17, 127.0.0.1:54646][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.17, 127.0.0.1:54649][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.17, 127.0.0.1:54647][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.17, 127.0.0.1:54650][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.17, 127.0.0.1:54648][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:54647][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54647][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54647][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:54652][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54652][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54653][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:54656][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54654][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:54655][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:54657][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:54654][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54654][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54654][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54691][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54691][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54693][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:54695][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:54694][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:54696][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54692][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:54693][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54693][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54693][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54698][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54698][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54699][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54700][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:54701][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:54702][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:54703][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:54700][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54700][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54700][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54700][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:54700][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54699][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54700][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:54701][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:54698][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:54703][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:54700][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54700][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54700][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55427][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55427][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55428][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55429][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55430][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:55431][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:55432][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:55429][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55429][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55429][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55756][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55756][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55757][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55807][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55807][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55808][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55808][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55810][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55811][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:55812][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:55813][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55809][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:55810][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55810][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55810][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:55821][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55821][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55823][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55824][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:55825][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:55826][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55822][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:55823][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55823][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55823][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55828][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55828][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55829][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55830][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:55832][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55831][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:55833][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:55830][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55830][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55830][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56265][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56265][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:56266][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56266][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56266][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56266][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56266][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56266][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56266][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56266][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56266][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56266][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56266][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56267][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56267][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56268][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56269][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56270][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:56271][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:56272][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:56269][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56269][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56269][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56269][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56269][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56269][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56269][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56279][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56279][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56280][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56281][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56282][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:56283][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:56284][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:56281][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56281][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56281][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56725][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56725][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:56726][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56725][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56725][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56725][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56725][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56725][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56725][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56790][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:56792][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56789][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56789][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56855][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56855][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56855][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56856][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56857][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:56859][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:56858][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:56856][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56856][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56856][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56899][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56899][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56899][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56899][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56900][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56900][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56901][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:56904][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56902][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56903][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:56905][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56901][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56901][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56901][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56901][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56901][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:56954][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56954][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56956][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:56958][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:56957][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:56959][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:56955][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:56956][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56956][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:56956][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56956][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56956][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56956][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56956][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:56956][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56956][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57505][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57505][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57506][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57507][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:57508][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:57509][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:57510][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:57507][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57507][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57507][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57507][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57507][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57507][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:57507][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57507][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57622][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57622][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:57622][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:57623][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57623][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57624][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57625][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:57627][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:57626][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:57628][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:57625][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57625][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:57625][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58147][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:58147][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58162][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58162][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58163][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58164][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:58165][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:58167][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:58166][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:58164][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58164][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:58164][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58392][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:58392][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58662][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:58662][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58662][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:58686][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58686][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58687][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58688][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:58691][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:58689][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:58690][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:58688][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58688][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:58688][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58688][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58688][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58688][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:58742][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58742][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58743][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58744][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:58745][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:58746][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:58747][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:58744][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58744][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:58744][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58744][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58744][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58744][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:58744][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:58807][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58807][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58809][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:58810][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:58811][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:58812][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58808][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:58809][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58809][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:58809][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59789][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59789][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:59789][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:59789][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:59789][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59793][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59793][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:59793][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:59793][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59793][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59793][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59793][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:59793][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:59931][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59931][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59932][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59933][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:59935][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:59934][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:59936][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:59933][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59933][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:59933][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:59933][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59933][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:59932][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:59932][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60018][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60018][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60019][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60020][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:60022][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:60021][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:60018][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:60020][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60020][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:60020][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60020][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:60020][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60019][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60138][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60138][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60139][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60140][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:60141][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:60142][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:60143][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:60140][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60140][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60140][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:60140][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60140][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60140][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60140][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60140][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60157][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60157][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60159][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60160][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:60161][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:60162][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:60163][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:60160][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60160][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:60160][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60438][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60438][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60439][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60440][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:60441][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:60442][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:60443][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:60440][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60440][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60440][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60645][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60645][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60645][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60645][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60698][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60698][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60698][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60698][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60698][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60698][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60958][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:60958][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60958][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60958][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60958][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60973][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60973][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60974][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:60978][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:60976][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:60977][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60975][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:60975][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60975][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:61984][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:61984][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:61984][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62012][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62012][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62014][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:62015][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:62016][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:62017][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62013][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:62014][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62014][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62014][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62237][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:62237][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62237][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:62237][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:62312][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:63209][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:63209][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64432][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:64432][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64433][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:64433][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64433][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:64433][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:64802][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64922][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64922][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64922][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64922][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:64922][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64922][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49804][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:49804][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49804][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49804][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49965][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:49965][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49965][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:50480][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50480][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50649][0m
+[36mHTTP GET /static/css/style.css 304 [0.00, 127.0.0.1:50649][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50650][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50649][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:50684][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50684][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50685][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50686][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:50688][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:50689][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:50687][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:50686][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50686][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:50686][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51002][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51002][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51863][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51863][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:51863][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:51863][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.00, 127.0.0.1:51997][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52085][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52085][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52086][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52087][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52088][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52089][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52090][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52087][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52087][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52087][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.00, 127.0.0.1:51997][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:52570][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52570][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52572][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52573][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:52575][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:52574][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:52576][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:52573][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52573][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52573][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:52577][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:52573][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:52577][0m
+[mHTTP GET /play/ 200 [0.00, 127.0.0.1:52573][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:52577][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.00, 127.0.0.1:52577][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /play/ 200 [0.06, 127.0.0.1:52947][0m
+[mHTTP GET /static/css/output.css 200 [0.05, 127.0.0.1:52947][0m
+Not Found: /favicon.ico
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:52954][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54147][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:54147][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54390][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:54390][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54390][0m
+Not Found: /favicon.ico
+[mHTTP GET /static/world_builder/var.js 200 [0.00, 127.0.0.1:54492][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:54492][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54583][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:54492][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54828][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54828][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54829][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54830][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:54831][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:54832][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:54833][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:54830][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54830][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:54836][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54830][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:54836][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:54830][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:54836][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:54836][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55478][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55478][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55479][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55480][0m
+[mHTTP GET /static/js/fontawesome/fontawesome.js 200 [0.01, 127.0.0.1:55481][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.01, 127.0.0.1:55482][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.01, 127.0.0.1:55483][0m
+[mHTTP GET /static/img/recorp.png 200 [0.00, 127.0.0.1:55480][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55480][0m
+[33mHTTP GET /static/tailwind/flowbite.min.js.map 404 [0.01, 127.0.0.1:55484][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55480][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55707][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55707][0m
+[mHTTP GET /play/ 200 [0.01, 127.0.0.1:55707][0m

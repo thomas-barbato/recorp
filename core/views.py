@@ -19,5 +19,5 @@ class DisplayGameView(TemplateView):
         context = super().get_context_data()
         context['france'] = timezone.localtime(timezone.now())
         context['now'] = datetime.datetime.now()
-        logger.info(f'{timezone.localtime(timezone.now())} - {self.request.user} connected.')
+        #logger.info(f'{timezone.localtime(timezone.now())} - {self.request.user} connected.')
         return context
