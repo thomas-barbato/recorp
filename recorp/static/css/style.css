@@ -19,3 +19,8 @@ body{
 .font-shadow{
     text-shadow: 1px 1px 2px black;
 }
+
+.ck-editor__editable {
+    min-height: 30vh;
+    max-height: 50vh;
+}

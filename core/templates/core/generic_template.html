@@ -9,11 +9,25 @@
         <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
         <link rel="shortcut icon" type="image/png" href="{% static 'img/recorp.png' %}" >
         <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
-        <script src="{% static 'js/fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
+        <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
+        <script src="{% static 'ckeditor/ckeditor.js' %}" crossorigin="anonymous"></script>
         <script src="{% static 'world_builder/var.js'%}"></script>
+        <style>
+            .modal {
+                transition: opacity 0.25s ease;
+            }
+            body.modal-active {
+                overflow-x: hidden;
+                overflow-y: visible !important;
+            }
+            .opacity-95 {opacity: .95;}
+        </style>
     </head>
+
     {% block content %}
     {% endblock %}
+
     {% block js %}
     {% endblock %}
+
 </html>

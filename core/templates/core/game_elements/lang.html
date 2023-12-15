@@ -1,0 +1,15 @@
+{% load i18n %}
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>{% translate "Translations" %} :</h1>
+    <p>{% blocktranslate %}This is a paragraph to translate with a variable : {{ static_string_1 }}{% endblocktranslate %}</p>
+    <p>{{ second_paragraph }}</p>
+    <ul>
+      <li>{% translate static_string_1 %}</li>
+      <li>{% translate "second static string to translate" %}</li>
+    </ul>
+  </body>
+</html>

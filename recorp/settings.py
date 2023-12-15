@@ -40,7 +40,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # 'django.middleware.cache.FetchFromCacheMiddleware',
+    #"django.middleware.cache.FetchFromCacheMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "recorp.urls"
@@ -130,12 +131,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "fr"
-
-TIME_ZONE = 'Europe/Paris'
-
+LANGUAGE_CODE = 'en-US'
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+LANGUAGES = [
+    ('es', 'Spanish'),
+    ('fr', 'French'),
+    ('en', 'English'),
+]
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
 # private
 # Static files are usually either part of your code,
@@ -153,6 +158,9 @@ STATICFILES_DIRS = [
     ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
     ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
     ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations")),
+    ("default_img", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "default_img")),
+    ("fontawesome", os.path.join(BASE_DIR, "recorp", "static", "js", "fontawesome")),
+    ("ckeditor", os.path.join(BASE_DIR, "recorp", "static", "js", "ckeditor5"))
 ]
 
 # public
