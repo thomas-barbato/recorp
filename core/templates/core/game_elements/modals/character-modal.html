@@ -1,18 +1,15 @@
 {% load static %}
 {% load i18n %}
-<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm ">
-    <div class="relative md:p-3 p-1 w-full h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-full h-full">
-            <!-- Modal header -->
-            <div class="items-center md:p-5 p-1 border-b rounded-t bg-red-800 dark:border-gray-600">
-                <h3 class="text-xl text-center font-shadow font-bold text-gray-900 dark:text-white">
+<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm bg-gray-800/20">
+    <div class="relative md:p-3 p-1 w-full h-full ">
+        <div class="relative bg-white rounded-lg shadow w-full h-full bg-gray-800/50">
+            <div class="items-center md:p-5 p-1 rounded-t bg-gray-800/50">
+                <h3 class="text-xl text-center font-shadow font-bold text-emerald-400">
                     {% translate "Character Sheet" %}
                 </h3>
             </div>
-            <!-- Modal body -->
             <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col">
-                <div class="lg:w-1/4 w-4/4 lg:order-1 order-2 p-1 lg:flex-row flex-col bg-blue-500">
+                <div class="lg:w-1/4 w-4/4 lg:order-1 order-2 p-1 lg:flex-row flex-col">
                     <div class="w-2/2 mt-1 flex items-center justify-center gap-2">
                         <div title="{% translate 'Change your picture' %}" class="lg:w-full w-1/2 mt-1 flex items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
                             <img class="md:w-48 w-24 box-content" id="user-avatar" src="{% static 'default_img/default-user.svg' %}">
@@ -27,21 +24,44 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="w-full mt-2">
-                        <span id="usr-background" class="block p-2.5 w-full md:text-base text-sm col-span-12 text-justify text-center dark:text-white cursor-pointer h-[25vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">Sed ut perspiciatis <b>unde omnis iste natus error</b> sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</span>
+                        <span id="usr-background" class="block p-2.5 w-full md:text-base text-sm col-span-12 text-justify text-center dark:text-white cursor-pointer h-[40vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">Sed ut perspiciatis <b>unde omnis iste natus error</b> sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</span>
                     </div>
-                    <div class="w-full flex items-center justify-center cursor-pointer" id="edit-mod-btn">
+                    <div class="w-full flex items-center justify-center cursor-pointer md:mt-2 mt-1" id="edit-mod-btn">
                         <i title="{% translate 'Change your description' %}" class="fa-solid fa-file-pen fa-2xl p-5 text-white hover:animate-pulse"></i>
                     </div>
-                    <div class="w-full flex items-center justify-center cursor-pointer hidden" id="cancel-edit-mod-btn">
+                    <div class="w-full flex items-center justify-center cursor-pointer hidden md:mt-2 mt-1" id="cancel-edit-mod-btn">
                         <i title="{% translate 'Return to read mode to save' %" class="fa-solid fa-floppy-disk fa-2xl p-5 text-white hover:animate-pulse"></i>
                     </div>
                 </div>
-                <div class="lg:w-3/4 w-3/3 lg:order-2 order-1 bg-green-500">SKILLS</div>
+                <div class="lg:w-3/4 w-3/3 lg:order-2 order-1 flex-wrap">
+                    {% for category in skills.categories %}
+                    <fieldset class="flex flex-row gap-1 p-1 flex-wrap w-full justify-center item-center">
+                        <legend class="text-xl md:text-start text-center font-shadow font-bold text-gray-900 dark:text-white p-1 ">
+                        {{ category }}
+                        </legend>
+                        {% for skill in skills.list %}
+                            {% if category == skill.cat %}
+                            <div class="w-full mb-1 md:w-1/5 md:w-5/5">
+                                <p class="text-center font-bold dark:text-white font-shadow">{{ skill.skill_name }}</p>
+                                <div class="flex justify-center item-center w-full flex-row mb-2 p-1">
+                                    <div class="basis-1/12 p-1 rounded-full justify-center item-center bg-blue-400 text-center">
+                                        <span class="text-bold text-black font-shadow ">
+                                            {{ skill.level }}
+                                        </span>
+                                    </div>
+                                    <div class="basis-10/12 flex justify-start item-end bg-zinc-300">
+                                        <div class="text-xs font-medium progress-bar-color text-center leading-none font-shadow" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </fieldset>
+                    {% endfor %}
+                </div>
             </div>
-            <!-- Modal footer -->
-            <div class="flex justify-center items-center md:p-4 border-t border-gray-200 rounded-b bg-red-800 dark:border-gray-600">
+            <div class="flex justify-center items-center md:p-4 bg-gray-800/50">
                 <button data-modal-hide="character-modal" type="button" class="text-white font-shadow bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg md:text-base text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{% translate "Save" %}</button>
                 <button data-modal-hide="character-modal" type="button" class="ms-3 font-shadow text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 md:text-base text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">{% translate "Cancel" %}</button>
             </div>
@@ -49,6 +69,4 @@
     </div>
 </div>
 
-<script src="{% static 'world_builder/character-modal.js' %}">
-
-</script>
+<script src="{% static 'world_builder/character-modal.js' %}"></script>

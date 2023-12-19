@@ -24,3 +24,11 @@ body{
     min-height: 30vh;
     max-height: 50vh;
 }
+
+fieldset {
+    border: 1px solid whitesmoke;
+}
+
+.progress-bar-color{
+    background-color: #01ff66;
+}
