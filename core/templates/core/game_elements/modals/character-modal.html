@@ -2,13 +2,13 @@
 {% load i18n %}
 <div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm bg-gray-800/20">
     <div class="relative md:p-3 p-1 w-full h-full ">
-        <div class="relative bg-white rounded-lg shadow w-full h-full bg-gray-800/60">
-            <div class="items-center md:p-5 p-1 rounded-t bg-gray-800/60">
+        <div class="relative rounded-lg shadow w-full h-full bg-black/30">
+            <div class="items-center md:p-5 p-1 rounded-t bg-gray-800/50">
                 <h3 class="text-xl text-center font-shadow font-bold text-emerald-400">
                     {% translate "Character Sheet" %}
                 </h3>
             </div>
-            <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col bg-gray-800/60">
+            <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col">
                 <div class="lg:w-1/4 w-4/4 lg:order-1 order-2 p-1 lg:flex-row flex-col">
                     <div class="w-2/2 mt-1 flex items-center justify-center gap-2">
                         <div title="{% translate 'Change your picture' %}" class="lg:w-full w-1/2 mt-1 flex items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
@@ -42,16 +42,16 @@
                         </legend>
                         {% for skill in skills.list %}
                             {% if category == skill.cat %}
-                            <div class="w-full mb-1 md:w-1/5 md:w-5/5">
+                            <div class="w-full mb-1 md:w-1/5">
                                 <p class="text-center font-bold dark:text-white font-shadow">{{ skill.skill_name }}</p>
-                                <div class="flex justify-center item-center w-full flex-row mb-2 p-1">
-                                    <div class="basis-1/12 p-1 rounded-full justify-center item-center bg-blue-400 text-center">
-                                        <span class="text-bold text-black font-shadow ">
+                                <div class="flex w-full mb-2">
+                                    <div class="relative w-5 h-5 rounded-full bg-blue-400 text-center mr-1">
+                                        <span class="text-bold text-xs text-black font-shadow absolute top-0.5 left-1 px-0.5">
                                             {{ skill.level }}
                                         </span>
                                     </div>
-                                    <div class="basis-10/12 flex justify-start item-end bg-zinc-300">
-                                        <div class="text-xs font-medium progress-bar-color text-center leading-none font-shadow" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
+                                    <div class="w-full md:w-3/4 h-5 bg-zinc-300">
+                                        <div class="h-5 text-xs font-medium progress-bar-color text-center leading-none font-shadow pt-1" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
                                     </div>
                                 </div>
                             </div>
