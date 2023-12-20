@@ -1,9 +1,9 @@
 {% load static %}
 {% load i18n %}
-<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm bg-gray-800/20">
+<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm bg-black/20 border-1">
     <div class="relative md:p-3 p-1 w-full h-full ">
-        <div class="relative rounded-lg shadow w-full h-full bg-black/30">
-            <div class="items-center md:p-5 p-1 rounded-t bg-gray-800/50">
+        <div class="relative rounded-lg shadow w-full h-full bg-black/50">
+            <div class="items-center md:p-5 p-1 rounded-t bg-black/0">
                 <h3 class="text-xl text-center font-shadow font-bold text-emerald-400">
                     {% translate "Character Sheet" %}
                 </h3>
@@ -12,7 +12,7 @@
                 <div class="lg:w-1/4 w-4/4 lg:order-1 order-2 p-1 lg:flex-row flex-col">
                     <div class="w-2/2 mt-1 flex items-center justify-center gap-2">
                         <div title="{% translate 'Change your picture' %}" class="lg:w-full w-1/2 mt-1 flex items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
-                            <img class="md:w-48 w-24 box-content" id="user-avatar" src="{% static 'default_img/default-user.svg' %}">
+                            <img class="md:w-48 w-24 box-content rounded-full ring-2 ring-gray-300 dark:ring-gray-500" id="user-avatar" src="{% static 'default_img/default-user.svg' %}">
                             <input type="file" id="id_image" class="hidden-input-file hidden" name="image" accept=".jpg, .png" />
                         </div>
                         <div class="lg:w-full w-1/2 mt-1 flex lg:items-start items-center lg:justify-center justify-start ">
@@ -25,13 +25,18 @@
                         </div>
                     </div>
                     <div class="w-full mt-2">
-                        <span id="usr-background" class="block p-2.5 w-full md:text-base text-sm col-span-12 text-justify text-center dark:text-white cursor-pointer h-[40vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">Sed ut perspiciatis <b>unde omnis iste natus error</b> sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odititecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</span>
+                        <span id="usr-background" class="block p-2.5 w-full md:text-base text-sm col-span-12 text-justify text-center dark:text-white cursor-pointer max-h-[40vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">{{ description }}</span>
                     </div>
                     <div class="w-full flex items-center justify-center cursor-pointer md:mt-2 mt-1" id="edit-mod-btn">
                         <i title="{% translate 'Change your description' %}" class="fa-solid fa-file-pen fa-2xl p-5 text-white hover:animate-pulse"></i>
                     </div>
-                    <div class="w-full flex items-center justify-center cursor-pointer hidden md:mt-2 mt-1" id="cancel-edit-mod-btn">
-                        <i title="{% translate 'Return to read mode to save' %" class="fa-solid fa-floppy-disk fa-2xl p-5 text-white hover:animate-pulse"></i>
+                    <div class="w-full flex flex-row items-center justify-center hidden mt-2 mt-1" id="btn-group">
+                        <div class="md:w-1/2 flex items-start justify-center cursor-pointer md:mt-2 mt-1" id="save-edition-btn">
+                            <i title="{% translate 'Return to read mode to save' %}" class="fa-solid fa-floppy-disk fa-2xl p-5 text-emerald-400 hover:text-[#B1F1CB] hover:cursor-pointer hover:animate-pulse"></i>
+                        </div>
+                        <div class="md:w-1/2 flex items-end justify-center cursor-pointer md:mt-2 mt-1" id="cancel-edition-btn">
+                            <i title="{% translate 'Discard changes' %}" class="fa-solid fa-xmark fa-2xl p-5 text-red-700 hover:text-red-500 hover:cursor-pointer hover:animate-pulse"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="lg:w-3/4 w-3/3 lg:order-2 order-1 flex-wrap">
@@ -42,16 +47,31 @@
                         </legend>
                         {% for skill in skills.list %}
                             {% if category == skill.cat %}
-                            <div class="w-full mb-1 md:w-1/5">
-                                <p class="text-center font-bold dark:text-white font-shadow">{{ skill.skill_name }}</p>
+                            <div class="w-full mb-1 md:w-1/5 skills" id="skill-{{ skill.id }}">
+                                <p data-popover-target="popover-{{ skill.id }}" class="text-start font-bold dark:text-white font-shadow mb-1 md:cursor-pointer">{{ skill.skill_name }} <i class="fa-regular fa-circle-question text-white md:invisible"></i>
+                                <div data-popover id="popover-{{ skill.id }}" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+                                    <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">{{ skill.skill_name }}</h3>
+                                    </div>
+                                    <div class="px-3 py-2">
+                                        <p>{{ skill.description }}</p>
+                                    </div>
+                                    <div data-popper-arrow></div>
+                                </div>
                                 <div class="flex w-full mb-2">
-                                    <div class="relative w-5 h-5 rounded-full bg-blue-400 text-center mr-1">
+                                    <div class="relative w-5 h-5 rounded-full bg-zinc-300 text-start mr-1">
                                         <span class="text-bold text-xs text-black font-shadow absolute top-0.5 left-1 px-0.5">
                                             {{ skill.level }}
                                         </span>
                                     </div>
                                     <div class="w-full md:w-3/4 h-5 bg-zinc-300">
                                         <div class="h-5 text-xs font-medium progress-bar-color text-center leading-none font-shadow pt-1" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
+                                    </div>
+                                </div>
+                                <div class="w-full text-sm text-white bg-white border border-gray-200 rounded-lg hidden md:hidden" id="skill-descr-{{ skill.id }}">
+                                    <h3 class="font-semibold text-black">{{ skill.skill_name }}</h3>
+                                    <div class="px-3 py-2  text-black">
+                                        <p>{{ skill.description }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -61,9 +81,8 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="flex justify-center items-center md:p-4 bg-gray-800/50">
-                <button data-modal-hide="character-modal" type="button" class="text-white font-shadow bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg md:text-base text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{% translate "Save" %}</button>
-                <button data-modal-hide="character-modal" type="button" class="ms-3 font-shadow text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 md:text-base text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">{% translate "Cancel" %}</button>
+            <div class="flex justify-center items-center md:p-4 bg-black/0">
+                <button data-modal-hide="character-modal" type="button" class="font-shadow text-emerald-400 hover:bg-[#25482D] rounded-md hover:text-[#B1F1CB] border-emerald-400 hover:border-[#B1F1CB]  hover:cursor-pointer font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border md:text-base text-sm px-5 py-2.5 focus:z-10">{% translate "Close" %}</button>
             </div>
         </div>
     </div>

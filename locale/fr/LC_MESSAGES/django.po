@@ -53,6 +53,9 @@ msgstr "Options"
 msgid "Cancel"
 msgstr "Annuler"
 
+msgid "Close"
+msgstr "Fermer"
+
 msgid "Save"
 msgstr "Sauvegarder"
 

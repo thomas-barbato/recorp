@@ -4,6 +4,7 @@
 {% load i18n %}
 
 {% block content %}
+{{ description|json_script:"description" }}
 <body class="relative min-h-screen w-full flex flex-col" id="player-container">
     {% include "top-panel.html" %}
     {% include "character-modal.html" %}
