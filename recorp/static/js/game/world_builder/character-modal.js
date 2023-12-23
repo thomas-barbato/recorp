@@ -7,6 +7,7 @@ let discard_change_btn = document.querySelector('#cancel-edition-btn');
 const reader = new FileReader();
 const img_user = document.querySelector('#user-avatar');
 const img_input = document.querySelector('.hidden-input-file');
+let elem_popover = document.querySelectorAll('.popover-element')
 
 // CHARACTER BACKGROUND EDITOR
 
@@ -92,3 +93,15 @@ for(let i = 0; i < skill.length ; i++){
 }
 
 // END OF SKILL DESCRIPTION ON PHONE ZONE
+
+// DISABLE POPOVER ON MOBILE
+
+const isMobileDevice = /Mobi/i.test(window.navigator.userAgent)
+
+if(isMobileDevice){
+    for(let i = 0; i < elem_popover.length; i++){
+        elem_popover[i].removeAttribute('data-popover-target');
+    }
+}
+
+// END OF DISABLE POPOVER ON MOBILE ZONE

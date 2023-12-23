@@ -107,15 +107,16 @@ class Player(models.Model):
 
 class Skill(models.Model):
     SKILL_CATEGORIES_CHOICES = (
-        ("COMBAT", "combat"),
-        ("EXPLOITATION", "exploitation"),
-        ("RESEARCH", "recherche"),
-        ("CRAFTING", "fabrication"),
+        ("STEERING", "steering"),
+        ("OFFENSIVE", "offensive"),
+        ("DEFENSIVE", "defensive"),
+        ("UTILITY", "utility"),
+        ("INDUSTRY", "industry"),
     )
     name = models.CharField(max_length=30, null=False, blank=False, default="Skill1")
     description = models.TextField(max_length=2500, blank=True)
     category = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=SKILL_CATEGORIES_CHOICES,
         default=SKILL_CATEGORIES_CHOICES[0],
     )
@@ -124,6 +125,30 @@ class Skill(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class SkillEffect(models.Model):
+
+    EXPERTISE_CHOICE = (
+        ('ROOKIE', 'Rookie'),
+        ('QUALIFIED', 'Qualified'),
+        ('PROFESSIONAL', 'Professional'),
+        ('EXPERT', 'Expert'),
+        ('GREAT_EXPERT', 'Great expert'),
+        ('MASTER', 'Master'),
+        ('GRAND_MASTER', 'Grand master')
+    )
+
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    min_level_range = models.PositiveIntegerField(default=0)
+    max_level_range = models.PositiveIntegerField(default=1)
+    effect = models.JSONField()
+    expertise = models.CharField(choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0])
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.skill.name} [{self.min_level_range} - {self.max_level_range}] expertise = {self.expertise}"
 
 
 class Recipe(models.Model):
@@ -153,14 +178,14 @@ class Research(models.Model):
 
 class Log(models.Model):
     LOG_TYPE_CHOICES = (
-        ("ATTACK", "attaque"),
+        ("ATTACK", "attack"),
         ("DEFENSE", "defense"),
-        ("ZONE_CHANGE", "zone"),
-        ("DEATH", "mort"),
-        ("KILL", "tue"),
-        ("CRAFT_END", "fabrication"),
-        ("RESEARCH_END", "recherche"),
-        ("LEVEL_UP", "gain de niveau"),
+        ("ZONE_CHANGE", "zone_change"),
+        ("DEATH", "death"),
+        ("KILL", "kill"),
+        ("CRAFT_END", "craft_end"),
+        ("RESEARCH_END", "research_end"),
+        ("LEVEL_UP", "level_up"),
     )
     content = models.TextField(max_length=2500, blank=True)
     log_type = models.CharField(
@@ -206,7 +231,7 @@ class ModuleEffect(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} - {self.effect}"
 
 
 class Module(models.Model):
@@ -253,14 +278,16 @@ class PlayerRecipe(models.Model):
         return f"{self.player.name} : {self.recipe.name}"
 
 
-class PlayerSkill(models.Model):
+class PlayerSkillEffect(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    skill_effect = models.ForeignKey(SkillEffect, on_delete=models.CASCADE)
+    level = models.PositiveIntegerField(default=0)
+    progress = models.FloatField(default=1.0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player.name} : {self.skill.name}"
+        return f"{self.player.name} : {self.skill_effect.skill.name}, level = {self.level}"
 
 
 class PlayerResearch(models.Model):

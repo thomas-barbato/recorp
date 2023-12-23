@@ -83,6 +83,33 @@ msgstr "Cambia su descripción"
 msgid "Return to read mode to save"
 msgstr "Volver al modo de lectura para guardar"
 
+msgid "Expertise"
+msgstr "Experiencia"
+
+msgid "Effects"
+msgstr "Efectos"
+
+msgid "Rookie"
+msgstr "Novato"
+
+msgid "Qualified"
+msgstr "Cualificado"
+
+msgid "Professional"
+msgstr "Profesional"
+
+msgid "Expert"
+msgstr "Experto"
+
+msgid "Grand expert"
+msgstr "Gran experto"
+
+msgid "Master"
+msgstr "Maestre"
+
+msgid "Grand Master"
+msgstr "Gran Maestre"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""
