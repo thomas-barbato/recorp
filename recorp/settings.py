@@ -15,7 +15,7 @@ SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "e97b-90-127-107-214.ngrok-free.app"]
+ALLOWED_HOSTS = ["127.0.0.1", "4837-90-127-107-214.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "daphne",
@@ -60,6 +60,7 @@ TEMPLATES = [
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements"),
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "panels"),
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "modals"),
+            os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "game"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
