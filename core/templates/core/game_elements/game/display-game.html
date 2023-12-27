@@ -1,7 +1,7 @@
 {% load static %}
 {% load i18n %}
-<div class="lg:w-8/12 lg:h-[80vh] md:h-[50vh] h-[90vh] w-full order-2 flex md:item-center item-top justify-center md:flex-row flex-col md:bg-[url('/static/fonts/border-container-withbg.svg')] bg-no-repeat md:bg-cover">
-    <div class="2xl:my-36 lg:my-28 md:my-20 my-4 bg-black 2xl:h-[60vh] xl:h-[50vh] lg:h-[55vh] md:h-[35vh] h-[60vh] lg:w-[55vw] md:w-[80vw] w-[100vw] border-2 border-white md:game-container">
+<div id="gameMapBackground" class="relative -mt-28 order-2 m-auto md:bg-[url('/static/fonts/border-container-withbg.svg')] bg-no-repeat md:bg-contain bg-center">
+    <div id="gameMap" class="absolute top-1/4 left-1/4 bg-black border-2 border-white md:game-container">
     </div>
     <div class="md:hidden my-6 mt-4 w-1/2 flex self-center" dir="ltr">
         <div class="w-[100px] h-[20vh] flex flex-col">
@@ -21,3 +21,43 @@
         </div>
     </div>
 </div>
+
+<script>
+    let map = {
+        name : 'gameMap',
+        backgroundContainer : 'gameMapBackground',
+        tile_w : 32,
+        tile_h : 32,
+        cols : 10,
+        rows : 10
+    };
+
+    const background = document.querySelector('#' + map.backgroundContainer);
+    const gameMap = document.querySelector('#' + map.name);
+    updateSize()
+
+    window.addEventListener('resize', updateSize)
+
+    function updateSize(){
+        let ratio = 1
+        if(window.innerWidth > 320){
+            ratio = 1
+        }
+        if(window.innerWidth >= 760){
+            ratio = 1.5
+        }
+        if(window.innerWidth >= 1024){
+            ratio = 2
+        }
+
+        if(window.innerWidth >= 1280){
+            ratio = 2.5
+        }
+        let newWidth = map.tile_w * map.cols * ratio;
+        let newHeight = map.tile_w * map.rows * ratio;
+        background.style.width = newWidth + 'px'
+        background.style.height = newHeight + 'px'
+        gameMap.style.width = newWidth/2 + 'px'
+        gameMap.style.height = newHeight/2 + 'px'
+    }
+</script>
