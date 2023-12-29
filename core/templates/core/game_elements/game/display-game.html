@@ -1,35 +1,36 @@
 {% load static %}
 {% load i18n %}
-<div id="gameMapBackground" class="relative -mt-28 order-2 m-auto md:bg-[url('/static/fonts/border-container-withbg.svg')] bg-no-repeat md:bg-contain bg-center">
-    <div id="gameMap" class="absolute top-1/4 left-1/4 bg-black border-2 border-white md:game-container">
+<div id="gameMapBackground" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col md:bg-[url('/static/fonts/border-container-withbg.svg')] bg-no-repeat md:bg-contain 2xl:bg-top xl:bg-top lg:bg-top md:bg-center">
+    <div id="gameMap" class="flex 2xl:my-28 xl:my-20 md:my-16 md:self-stretch my-4 bg-black w-[320px] border-2 border-white self-center">
     </div>
     <div class="md:hidden my-6 mt-4 w-1/2 flex self-center" dir="ltr">
-        <div class="w-[100px] h-[20vh] flex flex-col">
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-[#B1F1CB] absolute top-0 start-0"></i></div>
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-[#B1F1CB] inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x -rotate-45 text-[#B1F1CB] absolute bottom-0 start-0"></i></div>
+        <div class="w-[100px] h-[200px] flex flex-col">
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x -rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
         </div>
-        <div class="w-[100px] h-[20vh] flex flex-col" dir="ltr">
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40  border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-up-long fa-3x text-[#B1F1CB] inset-center"></i></div>
+        <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40  border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center"></i></div>
             <div class="flex-1 w-full pb-5 self-center invisible relative"><i class="fa-solid fa-location-crosshairs inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 self-bottom relative  bg-gray-800/40 border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-down-long fa-3x text-[#B1F1CB] inset-center"></i></div>
+            <div class="flex-1 w-full pb-5 self-bottom relative  bg-gray-800/40 border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center"></i></div>
         </div>
-        <div class="w-[100px] h-[20vh] flex flex-col" dir="rtl">
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x -rotate-45 text-[#B1F1CB] absolute top-0 start-0"></i></div>
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x text-[#B1F1CB] inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 relative  bg-gray-800/40 border-b border-l border-r border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x rotate-45 text-[#B1F1CB] absolute bottom-0 start-0"></i></div>
+        <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x -rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center"></i></div>
+            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-b border-l border-r border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
         </div>
     </div>
 </div>
 
 <script>
+    console.log(window.innerWidth + " " + window.innerHeight)
     let map = {
         name : 'gameMap',
         backgroundContainer : 'gameMapBackground',
         tile_w : 32,
         tile_h : 32,
-        cols : 10,
-        rows : 10
+        cols : 20,
+        rows : 15
     };
 
     const background = document.querySelector('#' + map.backgroundContainer);
@@ -40,24 +41,36 @@
 
     function updateSize(){
         let ratio = 1
+        if(window.innerWidth <= 320){
+            ratio = 1
+        }
         if(window.innerWidth > 320){
             ratio = 1
         }
         if(window.innerWidth >= 760){
             ratio = 1.5
+            background.style.width = '100vw';
         }
         if(window.innerWidth >= 1024){
+            ratio = 1.5
+            background.style.width = '70vw';
+        }
+        if(window.innerWidth >= 1280){
             ratio = 2
+            background.style.width = '90vw';
         }
 
-        if(window.innerWidth >= 1280){
-            ratio = 2.5
+        if(window.innerWidth >= 1920){
+            ratio = 2
+            background.style.width = '60vw';
         }
+
+
+        background.style.height = 'auto';
         let newWidth = map.tile_w * map.cols * ratio;
         let newHeight = map.tile_w * map.rows * ratio;
-        background.style.width = newWidth + 'px'
-        background.style.height = newHeight + 'px'
         gameMap.style.width = newWidth/2 + 'px'
         gameMap.style.height = newHeight/2 + 'px'
     }
+
 </script>
