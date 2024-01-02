@@ -1,8 +1,8 @@
 {% load static %}
 {% load i18n %}
-<div id="gameMapBackground" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col md:bg-[url('/static/fonts/border-container-withbg.svg')] bg-no-repeat md:bg-contain 2xl:bg-top xl:bg-top lg:bg-top md:bg-center">
-    <div id="gameMap" class="flex 2xl:my-28 xl:my-20 md:my-16 md:self-stretch my-4 bg-black w-[320px] border-2 border-white self-center">
-    </div>
+    <div id="gameMapBackground" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col md:bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat md:bg-contain 2xl:bg-top xl:bg-top lg:bg-top md:bg-center">
+        <canvas id="gameMap" class="flex flex-wrap 2xl:my-28 xl:my-20 md:my-16 md:self-stretch my-4 bg-black w-[320px] border-2 border-white self-center">
+        </canvas>
     <div class="md:hidden my-6 mt-4 w-1/2 flex self-center" dir="ltr">
         <div class="w-[100px] h-[200px] flex flex-col">
             <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
@@ -23,29 +23,56 @@
 </div>
 
 <script>
-    console.log(window.innerWidth + " " + window.innerHeight)
+
     let map = {
         name : 'gameMap',
         backgroundContainer : 'gameMapBackground',
-        tile_w : 32,
-        tile_h : 32,
         cols : 20,
         rows : 15
     };
 
     const background = document.querySelector('#' + map.backgroundContainer);
-    const gameMap = document.querySelector('#' + map.name);
-    updateSize()
+    let canvas = document.querySelector('#' + map.name);
+    const ctx = canvas.getContext('2d');
+
+    let atlas_settings = {
+        cols : 20,
+        rows : 15,
+        tile_size : 32,
+        tiles : [
+            14, 15, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 903, 1040,
+            142, 143, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 1031, 1168,
+            526, 527, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 1159, 1296,
+            526, 527, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 528, 1287, 1424,
+            654, 655, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 656, 1415, 1552,
+            781, 782, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 1679, 1680,
+            909, 910, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 1807, 1808,
+            1037, 1038, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039, 1040, 1935, 1936,
+            1166, 1167, 1153, 1154, 1155, 1156, 1157, 1158, 1159, 1160, 1161, 1162, 1163, 1164, 1165, 1166, 1167, 1168, 1039, 1040,
+            1294, 1295, 1281, 1282, 1283, 1284, 1285, 1286, 1287, 1288, 1289, 1290, 1291, 1292, 1293, 1294, 1295, 1296, 1167, 1168,
+            1422, 1423, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1295, 1296,
+            1550, 1551, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1423, 1424,
+            1678, 1679, 1665, 1666, 1667, 1668, 1669, 1670, 1671, 1672, 1673, 1674, 1675, 1676, 1677, 1678, 1679, 1680, 1551, 1552,
+            1806, 1807, 1793, 1794, 1795, 1796, 1797, 1798, 1799, 1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1679, 1680,
+            1934, 1935, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1807, 1808
+        ],
+    }
+
+    updateSize();
 
     window.addEventListener('resize', updateSize)
 
+
+    const bg_atlas = new Image();
+    bg_atlas.src = '/static/img/atlas/space.png';
+    bg_atlas.addEventListener('load', function(){
+        draw(1, bg_atlas, atlas_settings);
+    });
+
     function updateSize(){
         let ratio = 1
-        if(window.innerWidth <= 320){
-            ratio = 1
-        }
-        if(window.innerWidth > 320){
-            ratio = 1
+        if(window.innerWidth <= 320 || window.innerWidth > 320){
+            ratio = 1.2
         }
         if(window.innerWidth >= 760){
             ratio = 1.5
@@ -65,12 +92,46 @@
             background.style.width = '60vw';
         }
 
+        let newWidth = atlas_settings.tile_size * map.cols * ratio;
+        let newHeight = atlas_settings.tile_size * map.rows * ratio;
 
         background.style.height = 'auto';
-        let newWidth = map.tile_w * map.cols * ratio;
-        let newHeight = map.tile_w * map.rows * ratio;
-        gameMap.style.width = newWidth/2 + 'px'
-        gameMap.style.height = newHeight/2 + 'px'
+
+        canvas.style.width = newWidth/2 + 'px'
+        canvas.style.height = newHeight/2 + 'px'
+
+    }
+
+    function draw(ratio, atlas, settings) {
+        let mapIndex = 0;
+        let sourceX = 0;
+        let sourceY = 0;
+        let updatedTileSize = settings.tile_size * ratio;
+        for (let col = 0; col < settings.cols ; col++) {
+            for (let row = 0; row < settings.rows ; row++) {
+                let tile = settings.tiles[mapIndex];
+                console.log(settings.tiles)
+                console.log(tile)
+                if(tile != 0) {
+                    tile -= 1;
+                    sourceY = Math.floor(tile/settings.cols) * settings.tile_size;
+                    sourceX = (tile % settings.cols) * settings.tile_size;
+                    ctx.drawImage(
+                        atlas,
+                        sourceX,
+                        sourceY,
+                        settings.tile_size,
+                        settings.tile_size,
+                        row * ratio,
+                        col * ratio,
+                        updatedTileSize,
+                        updatedTileSize
+                    );
+                }
+                mapIndex++;
+            }
+            mapIndex = 0;
+       }
     }
 
 </script>

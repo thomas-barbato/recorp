@@ -3402,8 +3402,8 @@ fieldset {
     align-self: stretch;
   }
 
-  .md\:bg-\[url\(\'\/static\/fonts\/border-container-withbg\.svg\'\)\] {
-    background-image: url('/static/fonts/border-container-withbg.svg');
+  .md\:bg-\[url\(\'\/static\/img\/ux\/border-container-withbg\.svg\'\)\] {
+    background-image: url('/static/img/ux/border-container-withbg.svg');
   }
 
   .md\:bg-contain {
