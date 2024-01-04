@@ -1,8 +1,7 @@
 {% load static %}
 {% load i18n %}
     <div id="gameMapBackground" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col md:bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat md:bg-contain 2xl:bg-top xl:bg-top lg:bg-top md:bg-center">
-        <canvas id="gameMap" class="flex flex-wrap 2xl:my-28 xl:my-20 md:my-16 md:self-stretch my-4 bg-black w-[320px] border-2 border-white self-center">
-        </canvas>
+        <canvas id="gameMap" class="2xl:my-28 xl:my-20 md:my-16 my-4 bg-black border-2 border-white"></canvas>
     <div class="md:hidden my-6 mt-4 w-1/2 flex self-center" dir="ltr">
         <div class="w-[100px] h-[200px] flex flex-col">
             <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
@@ -23,21 +22,24 @@
 </div>
 
 <script>
-
     let map = {
         name : 'gameMap',
         backgroundContainer : 'gameMapBackground',
         cols : 20,
-        rows : 15
+        rows : 15,
+        ratio : 1
     };
 
     const background = document.querySelector('#' + map.backgroundContainer);
     let canvas = document.querySelector('#' + map.name);
     const ctx = canvas.getContext('2d');
 
-    let atlas_settings = {
-        cols : 20,
-        rows : 15,
+    // 128 because space.png is w 4096px / tile_size
+    // 48 because space.png is h 1536px / tile_size
+    let bg_atlas = {
+        src : '/static/img/atlas/space.png',
+        cols : 128,
+        rows : 48,
         tile_size : 32,
         tiles : [
             14, 15, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 903, 1040,
@@ -55,22 +57,35 @@
             1678, 1679, 1665, 1666, 1667, 1668, 1669, 1670, 1671, 1672, 1673, 1674, 1675, 1676, 1677, 1678, 1679, 1680, 1551, 1552,
             1806, 1807, 1793, 1794, 1795, 1796, 1797, 1798, 1799, 1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1679, 1680,
             1934, 1935, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1807, 1808
-        ],
+        ]
     }
 
-    updateSize();
-
-    window.addEventListener('resize', updateSize)
-
-
-    const bg_atlas = new Image();
-    bg_atlas.src = '/static/img/atlas/space.png';
-    bg_atlas.addEventListener('load', function(){
-        draw(1, bg_atlas, atlas_settings);
-    });
+    let fg_atlas = {
+        src : '/static/img/atlas/planetes.png',
+        cols : 32,
+        rows : 52,
+        tile_size : 32,
+        tiles : [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7553, 7554, 7555, 7556, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7585, 7586, 7587, 7588, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7617, 7618, 7619, 7620, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7649, 7650, 7651, 7652, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+    }
 
     function updateSize(){
-        let ratio = 1
+        let ratio = map.ratio
         if(window.innerWidth <= 320 || window.innerWidth > 320){
             ratio = 1.2
         }
@@ -92,46 +107,86 @@
             background.style.width = '60vw';
         }
 
-        let newWidth = atlas_settings.tile_size * map.cols * ratio;
-        let newHeight = atlas_settings.tile_size * map.rows * ratio;
+        let newWidth = bg_atlas.tile_size * map.cols * ratio;
+        let newHeight = bg_atlas.tile_size * map.rows * ratio;
 
         background.style.height = 'auto';
 
-        canvas.style.width = newWidth/2 + 'px'
-        canvas.style.height = newHeight/2 + 'px'
+        canvas.width = newWidth/2;
+        canvas.height = newHeight/2;
+        map.ratio = ratio;
 
+        draw();
     }
 
-    function draw(ratio, atlas, settings) {
+    function draw() {
         let mapIndex = 0;
         let sourceX = 0;
         let sourceY = 0;
-        let updatedTileSize = settings.tile_size * ratio;
-        for (let col = 0; col < settings.cols ; col++) {
-            for (let row = 0; row < settings.rows ; row++) {
-                let tile = settings.tiles[mapIndex];
-                console.log(settings.tiles)
-                console.log(tile)
+        let updatedTileSize = bg_atlas.tile_size * map.ratio;
+
+        for (let col = 0; col < map.rows * updatedTileSize; col += updatedTileSize) {
+            for (let row = 0; row < map.cols * updatedTileSize; row += updatedTileSize) {
+                let tile = bg_atlas.tiles[mapIndex];
                 if(tile != 0) {
                     tile -= 1;
-                    sourceY = Math.floor(tile/settings.cols) * settings.tile_size;
-                    sourceX = (tile % settings.cols) * settings.tile_size;
+                    sourceY = Math.floor(tile/bg_atlas.cols) * bg_atlas.tile_size;
+                    sourceX = (tile % bg_atlas.cols) * bg_atlas.tile_size;
                     ctx.drawImage(
-                        atlas,
+                        background_atlas,
                         sourceX,
                         sourceY,
-                        settings.tile_size,
-                        settings.tile_size,
-                        row * ratio,
-                        col * ratio,
+                        bg_atlas.tile_size,
+                        bg_atlas.tile_size,
+                        row,
+                        col,
+                        updatedTileSize,
+                        updatedTileSize
+                    );
+                }
+                // grid
+                ctx.strokeStyle = "#000000";
+                ctx.strokeRect(row, col, updatedTileSize, updatedTileSize);
+
+                // tile info
+                // ctx.fillStyle = "#ffffff"
+                // ctx.font = "8px verdana, sans-serif";
+                // ctx.fillText(tile, row * map.ratio, col * map.ratio, updatedTileSize);
+                mapIndex++;
+            }
+       }
+       mapIndex = 0;
+       for (let col = 0; col < map.rows * updatedTileSize; col += updatedTileSize) {
+            for (let row = 0; row < map.cols * updatedTileSize; row += updatedTileSize) {
+                let tile = fg_atlas.tiles[mapIndex];
+                if(tile != 0) {
+                    tile -= 1;
+                    sourceY = Math.floor(tile/fg_atlas.cols) * fg_atlas.tile_size;
+                    sourceX = (tile % fg_atlas.cols) * fg_atlas.tile_size;
+                    ctx.drawImage(
+                        foreground_atlas,
+                        sourceX,
+                        sourceY,
+                        fg_atlas.tile_size,
+                        fg_atlas.tile_size,
+                        row,
+                        col,
                         updatedTileSize,
                         updatedTileSize
                     );
                 }
                 mapIndex++;
             }
-            mapIndex = 0;
        }
     }
 
+    let background_atlas = new Image();
+    background_atlas.src = bg_atlas.src;
+    background_atlas.onload = updateSize;
+
+    let foreground_atlas = new Image();
+    background_atlas.src = fg_atlas.src;
+    background_atlas.onload = updateSize;
+
+    window.addEventListener('resize', updateSize)
 </script>
