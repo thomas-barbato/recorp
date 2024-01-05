@@ -1,41 +1,54 @@
 {% load static %}
 {% load i18n %}
-    <div id="gameMapBackground" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col md:bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat md:bg-contain 2xl:bg-top xl:bg-top lg:bg-top md:bg-center">
-        <canvas id="gameMap" class="2xl:my-28 xl:my-20 md:my-16 my-4 bg-black border-2 border-white"></canvas>
-    <div class="md:hidden my-6 mt-4 w-1/2 flex self-center" dir="ltr">
-        <div class="w-[100px] h-[200px] flex flex-col">
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x -rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
-        </div>
-        <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40  border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 self-center invisible relative"><i class="fa-solid fa-location-crosshairs inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 self-bottom relative  bg-gray-800/40 border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center"></i></div>
-        </div>
-        <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x -rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center"></i></div>
-            <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-b border-l border-r border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
+    <div id="map-background" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat bg-contain xl:bg-top lg:bg-top md:bg-center bg-center lg:mb-0 md:mb-[40vh] mb-72 ">
+        <canvas id="background-map" class="absolute 2xl:top-[55vh] xl:top-[50vh] lg:top-[35vh] md:top-[32vh]  md:right-50 inset-center-32"></canvas>
+        <canvas id="objects-map" class="absolute 2xl:top-[55vh] xl:top-[50vh] lg:top-[35vh] md:top-[32vh]  md:right-50 inset-center-32 border-2 border-[#B1F1CB]/60"></canvas>
+        <canvas id="players-map" class="absolute 2xl:top-[55vh] xl:top-[50vh] lg:top-[35vh] md:top-[32vh]  md:right-50 inset-center-32"></canvas>
+    <div class="md:hidden w-2/2 inset-center ">
+        <div class="mt-4 w-2/2 flex self-center" dir="ltr">
+            <div class="w-[100px] h-[200px] flex flex-col">
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x -rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
+            </div>
+            <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40  border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center"></i></div>
+                <div class="flex-1 w-full pb-5 self-center relative"><i class="fa-solid fa-location-crosshairs fa-3x text-emerald-400 inset-center"></i></div>
+                <div class="flex-1 w-full pb-5 self-bottom relative  bg-gray-800/40 border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center"></i></div>
+            </div>
+            <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x -rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center"></i></div>
+                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-b border-l border-r border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     let map = {
-        name : 'gameMap',
-        backgroundContainer : 'gameMapBackground',
+        bg_map_name : 'background-map',
+        fg_map_name : 'objects-map',
+        player_map_name: 'players-map',
+        backgroundContainer : 'map-background',
         cols : 20,
         rows : 15,
         ratio : 1
     };
 
     const background = document.querySelector('#' + map.backgroundContainer);
-    let canvas = document.querySelector('#' + map.name);
-    const ctx = canvas.getContext('2d');
+
+    let background_canvas = document.querySelector('#' + map.bg_map_name);
+    let objects_canvas = document.querySelector('#' + map.fg_map_name);
+    let players_canvas = document.querySelector('#' + map.player_map_name);
+
+    const background_ctx = background_canvas.getContext('2d');
+    const objects_ctx = objects_canvas.getContext('2d');
+    const players_ctx = players_canvas.getContext('2d');
 
     // 128 because space.png is w 4096px / tile_size
     // 48 because space.png is h 1536px / tile_size
+
     let bg_atlas = {
         src : '/static/img/atlas/space.png',
         cols : 128,
@@ -87,23 +100,28 @@
     function updateSize(){
         let ratio = map.ratio
         if(window.innerWidth <= 320 || window.innerWidth > 320){
-            ratio = 1.2
+            ratio = 1;
         }
         if(window.innerWidth >= 760){
-            ratio = 1.5
+            ratio = 1.5;
             background.style.width = '100vw';
         }
         if(window.innerWidth >= 1024){
-            ratio = 1.5
-            background.style.width = '70vw';
+            ratio = 1.5;
+            background.style.width = '90vw';
         }
         if(window.innerWidth >= 1280){
-            ratio = 2
+            ratio = 1.5;
             background.style.width = '90vw';
         }
 
         if(window.innerWidth >= 1920){
-            ratio = 2
+            ratio = 2;
+            background.style.width = '60vw';
+        }
+
+        if(window.innerWidth >= 2550){
+            ratio = 4;
             background.style.width = '60vw';
         }
 
@@ -112,8 +130,15 @@
 
         background.style.height = 'auto';
 
-        canvas.width = newWidth/2;
-        canvas.height = newHeight/2;
+        background_canvas.width = newWidth/2;
+        background_canvas.height = newHeight/2;
+
+        objects_canvas.width = newWidth/2;
+        objects_canvas.height = newHeight/2;
+
+        //players_canvas.width = newWidth/2;
+        //players_canvas.height = newHeight/2;
+
         map.ratio = ratio;
 
         draw();
@@ -132,7 +157,7 @@
                     tile -= 1;
                     sourceY = Math.floor(tile/bg_atlas.cols) * bg_atlas.tile_size;
                     sourceX = (tile % bg_atlas.cols) * bg_atlas.tile_size;
-                    ctx.drawImage(
+                    background_ctx.drawImage(
                         background_atlas,
                         sourceX,
                         sourceY,
@@ -143,10 +168,12 @@
                         updatedTileSize,
                         updatedTileSize
                     );
+
                 }
                 // grid
-                ctx.strokeStyle = "#000000";
-                ctx.strokeRect(row, col, updatedTileSize, updatedTileSize);
+                /* TODO: need to be moved to players_ctx later. */
+                background_ctx.strokeStyle = "#000000";
+                background_ctx.strokeRect(row, col, updatedTileSize, updatedTileSize);
 
                 // tile info
                 // ctx.fillStyle = "#ffffff"
@@ -155,38 +182,17 @@
                 mapIndex++;
             }
        }
-       mapIndex = 0;
-       for (let col = 0; col < map.rows * updatedTileSize; col += updatedTileSize) {
-            for (let row = 0; row < map.cols * updatedTileSize; row += updatedTileSize) {
-                let tile = fg_atlas.tiles[mapIndex];
-                if(tile != 0) {
-                    tile -= 1;
-                    sourceY = Math.floor(tile/fg_atlas.cols) * fg_atlas.tile_size;
-                    sourceX = (tile % fg_atlas.cols) * fg_atlas.tile_size;
-                    ctx.drawImage(
-                        foreground_atlas,
-                        sourceX,
-                        sourceY,
-                        fg_atlas.tile_size,
-                        fg_atlas.tile_size,
-                        row,
-                        col,
-                        updatedTileSize,
-                        updatedTileSize
-                    );
-                }
-                mapIndex++;
-            }
-       }
     }
 
     let background_atlas = new Image();
+    let objects_atlas = new Image();
+    let players_atlas = new Image();
+
     background_atlas.src = bg_atlas.src;
     background_atlas.onload = updateSize;
 
-    let foreground_atlas = new Image();
-    background_atlas.src = fg_atlas.src;
-    background_atlas.onload = updateSize;
+    objects_atlas.src = fg_atlas.src;
+    objects_atlas.onload = updateSize;
 
     window.addEventListener('resize', updateSize)
 </script>

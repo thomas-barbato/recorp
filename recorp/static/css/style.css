@@ -61,3 +61,38 @@ fieldset {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.inset-center-32 {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inset-center-40 {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inset-center-52 {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inset-center-58 {
+  position: absolute;
+  top: 58vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+}
+
+.inset-center-60 {
+  position: absolute;
+  top: 60vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+}
