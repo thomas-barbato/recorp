@@ -1,11 +1,11 @@
 {% load static %}
 {% load i18n %}
-    <div id="map-background" class="lg:w-8/12 w-full order-2 flex item-center justify-center md:flex-row flex-col bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat bg-contain xl:bg-top lg:bg-top md:bg-center bg-center lg:mb-0 md:mb-[40vh] mb-72 ">
-        <canvas id="background-map" class="absolute 2xl:top-[55vh] xl:top-[50vh] lg:top-[35vh] md:top-[32vh]  md:right-50 inset-center-32"></canvas>
-        <canvas id="objects-map" class="absolute 2xl:top-[55vh] xl:top-[50vh] lg:top-[35vh] md:top-[32vh]  md:right-50 inset-center-32 border-2 border-[#B1F1CB]/60"></canvas>
-        <canvas id="players-map" class="absolute 2xl:top-[55vh] xl:top-[50vh] lg:top-[35vh] md:top-[32vh]  md:right-50 inset-center-32"></canvas>
-    <div class="md:hidden w-2/2 inset-center ">
-        <div class="mt-4 w-2/2 flex self-center" dir="ltr">
+    <div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center md:flex-row flex-col bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat bg-contain xl:bg-center lg:bg-top bg-center lg:mb-0 md:mb-[40vh] mb-[30vh] ">
+        <canvas id="background-map" class="absolute 2xl:top-[55vh] xl:top-[58vh] lg:top-[50vh] md:top-[36vh] md:right-50 max-[400px]:top-[52vh]  inset-center-28"></canvas>
+        <canvas id="objects-map" class="absolute 2xl:top-[55vh] xl:top-[58vh] lg:top-[50vh] md:top-[36vh] md:right-50 max-[400px]:top-[52vh] inset-center-28 border-2 border-[#B1F1CB]/60"></canvas>
+        <canvas id="players-map" class="absolute 2xl:top-[55vh] xl:top-[58vh] lg:top-[50vh] md:top-[36vh] md:right-50 max-[400px]:top-[52vh]  inset-center-28"></canvas>
+    <div class="md:hidden w-2/2 min-[700px]:top-[70vh]  max-[400px]:top-[85vh] inset-center-45">
+        <div class="w-2/2 flex self-center" dir="ltr">
             <div class="w-[100px] h-[200px] flex flex-col">
                 <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
                 <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>
