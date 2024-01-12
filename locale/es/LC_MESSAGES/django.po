@@ -110,6 +110,12 @@ msgstr "Maestre"
 msgid "Grand Master"
 msgstr "Gran Maestre"
 
+msgid "Send a message"
+msgstr "Enviar un mensaje"
+
+msgid "Inventory"
+msgstr "inventario"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""
