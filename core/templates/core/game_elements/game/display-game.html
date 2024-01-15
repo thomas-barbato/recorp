@@ -1,258 +1,45 @@
 {% load static %}
 {% load i18n %}
-    <div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center md:flex-row flex-col bg-[url('/static/img/ux/border-container-withbg.svg')] bg-no-repeat bg-contain xl:bg-center lg:bg-top bg-center lg:mb-0 md:mb-[40vh] mb-[30vh] ">
-        <canvas id="background-map" class="absolute 2xl:top-[55vh] xl:top-[58vh] lg:top-[50vh] md:top-[36vh] md:right-50 max-[400px]:top-[52vh]  inset-center-28"></canvas>
-        <canvas id="objects-map" class="absolute 2xl:top-[55vh] xl:top-[58vh] lg:top-[50vh] md:top-[36vh] md:right-50 max-[400px]:top-[52vh] inset-center-28 border-2 border-[#B1F1CB]/60"></canvas>
-        <!--<canvas id="players-map" class="absolute 2xl:top-[55vh] xl:top-[58vh] lg:top-[50vh] md:top-[36vh] md:right-50 max-[400px]:top-[52vh] bg-black inset-center-28"></canvas>-->
-    <div class="md:hidden w-2/2 min-[700px]:top-[70vh]  max-[400px]:top-[85vh] inset-center-45">
-        <div class="w-2/2 flex self-center" dir="ltr">
-            <div class="w-[100px] h-[200px] flex flex-col">
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x -rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
-            </div>
-            <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40  border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center"></i></div>
-                <div class="flex-1 w-full pb-5 self-center relative"><i class="fa-solid fa-location-crosshairs fa-3x text-emerald-400 inset-center"></i></div>
-                <div class="flex-1 w-full pb-5 self-bottom relative  bg-gray-800/40 border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center"></i></div>
-            </div>
-            <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x -rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center"></i></div>
-                <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-b border-l border-r border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
-            </div>
+<div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
+    <div class="2xl:w-8/12 w-full flex self-center item-center">
+        <div class="grid 2xl:col-start-3 2xl:col-end-12 w-full">
+            <table class="tabletop-view border-[#B1F1CB] border-collapse">
+                <tbody>
+                    {% for row in map_size.rows %}
+                        {% if forloop.first %}
+                            <td class="tabletop-coord text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted">0:0</td>
+                            {% for col in map_size.cols %}
+                                <td class="horizontal-coord text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted" style="">{{ col }}</td>
+                            {% endfor %}
+                        {% endif %}
+                        <tr>
+                            <td class="tabletop-coord text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted">{{ row }}</td>
+                        {% for col in map_size.cols %}
+                            <td class="tabletop-col border border-dotted" id="{{row}}_{{col}}" style="">{{ col }}</td>
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+<div class="w-full flex items-center justify-center md:hidden lg:order-99 order-3 mb-2" dir="ltr">
+    <div class="w-[100px] h-[200px] flex flex-col">
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x -rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
+    </div>
+    <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40  border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center"></i></div>
+        <div class="flex-1 w-full pb-5 self-center relative"><i class="fa-solid fa-location-crosshairs fa-3x text-emerald-400 inset-center"></i></div>
+        <div class="flex-1 w-full pb-5 self-bottom relative  bg-gray-800/40 border-t border-b border-[#B1F1CB]"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center"></i></div>
+    </div>
+    <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x -rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-b border-l border-r border-[#B1F1CB]"><i class="fa-solid fa-right-long fa-3x rotate-45 text-emerald-400 absolute bottom-0 start-0"></i></div>
+    </div>
+</div>
 
-<script>
-
-
-    let map = {
-        bg_map_name : 'background-map',
-        fg_map_name : 'objects-map',
-        player_map_name: 'players-map',
-        backgroundContainer : 'map-background',
-        cols : 20,
-        rows : 15,
-        ratio : 1
-    };
-
-    const background = document.querySelector('#' + map.backgroundContainer);
-
-    let background_canvas = document.querySelector('#' + map.bg_map_name);
-    let objects_canvas = document.querySelector('#' + map.fg_map_name);
-    //let players_canvas = document.querySelector('#' + map.player_map_name);
-
-    const background_ctx = background_canvas.getContext('2d');
-    const objects_ctx = objects_canvas.getContext('2d');
-    //const players_ctx = players_canvas.getContext('2d');
-
-    // 128 because space.png is w 4096px / tile_size
-    // 48 because space.png is h 1536px / tile_size
-
-    let bg_atlas = {
-        src : '/static/img/atlas/space.png',
-        cols : 128,
-        rows : 48,
-        tile_size : 32,
-        tiles : [
-            14, 15, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 903, 1040,
-            142, 143, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 1031, 1168,
-            526, 527, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 1159, 1296,
-            526, 527, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 528, 1287, 1424,
-            654, 655, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 656, 1415, 1552,
-            781, 782, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 1679, 1680,
-            909, 910, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 1807, 1808,
-            1037, 1038, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039, 1040, 1935, 1936,
-            1166, 1167, 1153, 1154, 1155, 1156, 1157, 1158, 1159, 1160, 1161, 1162, 1163, 1164, 1165, 1166, 1167, 1168, 1039, 1040,
-            1294, 1295, 1281, 1282, 1283, 1284, 1285, 1286, 1287, 1288, 1289, 1290, 1291, 1292, 1293, 1294, 1295, 1296, 1167, 1168,
-            1422, 1423, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1295, 1296,
-            1550, 1551, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1423, 1424,
-            1678, 1679, 1665, 1666, 1667, 1668, 1669, 1670, 1671, 1672, 1673, 1674, 1675, 1676, 1677, 1678, 1679, 1680, 1551, 1552,
-            1806, 1807, 1793, 1794, 1795, 1796, 1797, 1798, 1799, 1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1679, 1680,
-            1934, 1935, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1807, 1808
-        ]
-    }
-
-    let fg_atlas = {
-        src : '/static/img/atlas/planetes.png',
-        cols : 32,
-        rows : 52,
-        tile_size : 32,
-        tiles : [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7553, 7554, 7555, 7556, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7585, 7586, 7587, 7588, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7617, 7618, 7619, 7620, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7649, 7650, 7651, 7652, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ]
-    }
-
-    function updateSize(){
-        let ratio = map.ratio
-        if(window.innerWidth <= 320 || window.innerWidth > 320){
-            ratio = 1;
-        }
-        if(window.innerWidth >= 760){
-            ratio = 1.5;
-            background.style.width = '100vw';
-        }
-        if(window.innerWidth >= 1024){
-            ratio = 1.5;
-            background.style.width = '90vw';
-        }
-        if(window.innerWidth >= 1280){
-            ratio = 1.5;
-            background.style.width = '90vw';
-        }
-
-        if(window.innerWidth >= 1920){
-            ratio = 2;
-            background.style.width = '60vw';
-        }
-
-        if(window.innerWidth >= 2550){
-            ratio = 4;
-            background.style.width = '60vw';
-        }
-
-        let newWidth = bg_atlas.tile_size * map.cols * ratio;
-        let newHeight = bg_atlas.tile_size * map.rows * ratio;
-
-        background.style.height = 'auto';
-
-        background_canvas.width = newWidth/2;
-        background_canvas.height = newHeight/2;
-
-        objects_canvas.width = newWidth/2;
-        objects_canvas.height = newHeight/2;
-
-        //players_canvas.width = newWidth/2;
-        //players_canvas.height = newHeight/2;
-
-        map.ratio = ratio;
-
-        draw();
-    }
-
-    function  getMousePos(canvas, evt) {
-      var rect = canvas.getBoundingClientRect(), // abs. size of element
-        scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for x
-        scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for y
-
-      return {
-        x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
-        y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
-      }
-    }
-
-    function draw() {
-        let mapIndex = 0;
-        let bg_sourceX = 0;
-        let bg_sourceY = 0;
-        let fg_sourceX = 0;
-        let fg_sourceY = 0;
-        let updatedTileSize = bg_atlas.tile_size * map.ratio;
-        for (let col = 0; col < map.rows * updatedTileSize; col += updatedTileSize) {
-            for (let row = 0; row < map.cols * updatedTileSize; row += updatedTileSize) {
-                let bg_tile = bg_atlas.tiles[mapIndex];
-                let fg_tile = fg_atlas.tiles[mapIndex];
-                if(bg_tile != 0) {
-                    bg_tile -= 1;
-                    bg_sourceY = Math.floor(bg_tile/bg_atlas.cols) * bg_atlas.tile_size;
-                    bg_sourceX = (bg_tile % bg_atlas.cols) * bg_atlas.tile_size;
-                    background_ctx.drawImage(
-                        background_atlas,
-                        bg_sourceX,
-                        bg_sourceY,
-                        bg_atlas.tile_size,
-                        bg_atlas.tile_size,
-                        row,
-                        col,
-                        updatedTileSize,
-                        updatedTileSize
-                    );
-
-                }
-                if(fg_tile != 0){
-                    fg_tile -= 1;
-                    fg_sourceY = Math.floor(fg_tile/fg_atlas.cols) * fg_atlas.tile_size;
-                    fg_sourceX = (fg_tile % fg_atlas.cols) * fg_atlas.tile_size;
-                    objects_ctx.drawImage(
-                        objects_atlas,
-                        fg_sourceX,
-                        fg_sourceY,
-                        fg_atlas.tile_size,
-                        fg_atlas.tile_size,
-                        row,
-                        col,
-                        updatedTileSize,
-                        updatedTileSize
-                    );
-                }
-                // grid
-                /* TODO: need to be moved to players_ctx later. */
-                objects_ctx.strokeStyle = "#000000";
-                objects_ctx.strokeRect(row, col, updatedTileSize, updatedTileSize);
-
-
-                // tile info
-                // ctx.fillStyle = "#ffffff"
-                // ctx.font = "8px verdana, sans-serif";
-                //background_ctx.fillText(tile, row * map.ratio, col * map.ratio, updatedTileSize);
-                mapIndex++;
-            }
-       }
-    }
-
-    let background_atlas = new Image();
-    let objects_atlas = new Image();
-    let players_atlas = new Image();
-
-    background_atlas.src = bg_atlas.src;
-    background_atlas.onload = updateSize;
-
-    objects_atlas.src = fg_atlas.src;
-    objects_atlas.onload = updateSize;
-
-    window.addEventListener('resize', updateSize)
-
-    var canvasOffset = objects_canvas.getBoundingClientRect();
-
-    objects_canvas.addEventListener('mousemove', function(event) {
-        console.log("dedans");
-        const rect = background_canvas.getBoundingClientRect();
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-
-        const relativeX = mouseX - rect.left;
-        const relativeY = mouseY - rect.top;
-
-        // Calcul de l'indice de la case sur la carte à une dimension
-        const tileIndex = Math.floor((relativeY / rect.height) * 15) * 20 +
-                        Math.floor((relativeX / rect.width) * 20);
-
-        console.log(tileIndex);
-
-        // Vérifiez si l'indice de la case est valide
-        if (tileIndex >= 0 && tileIndex < fg_atlas.tiles.length) {
-            // Obtenez l'ID du tile à partir de l'indice de la case
-            const tileId = fg_atlas.tiles[tileIndex];
-
-            // Utilisez l'ID du tile comme nécessaire
-            console.log("ID du tile :", tileId);
-        }
-    });
-
-</script>
+<script src="{% static 'world_builder/game.js'%}"></script>

@@ -22,7 +22,8 @@ class DisplayGameView(TemplateView):
         context = super().get_context_data()
         context['france'] = timezone.localtime(timezone.now())
         context['now'] = datetime.datetime.now()
-        context['loop'] = range(0, 300)
+        context['loop'] = range(300)
+        context['map_size'] = {'cols': range(20), 'rows': range(15)}
         context['description'] = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
         context['skills'] = {
             'categories': ['Steering', 'Offensive', 'Defensive', 'Utility', 'Industry'],
