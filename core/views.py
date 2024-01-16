@@ -2,17 +2,24 @@ import json
 import logging
 import random
 import datetime
-
+from django.template import RequestContext, loader
 from django.shortcuts import render
 from django.utils import timezone
 from django.contrib.auth import login
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import request
 from django.views.generic import RedirectView, TemplateView
 from recorp.settings import MEDIA_URL
 from django.utils.translation import gettext as _
+from django.contrib import admin
 
 logger = logging.getLogger("django")
+
+
+def admin_index(request):
+    template = loader.get_template('admin/base_site.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))
 
 
 class DisplayGameView(TemplateView):
@@ -22,7 +29,7 @@ class DisplayGameView(TemplateView):
         context = super().get_context_data()
         context['france'] = timezone.localtime(timezone.now())
         context['now'] = datetime.datetime.now()
-        context['loop'] = range(300)
+        context['loop'] = range(10)
         context['map_size'] = {'cols': range(20), 'rows': range(15)}
         context['description'] = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
         context['skills'] = {

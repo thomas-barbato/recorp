@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "25ac-90-127-107-214.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "daphne",
-    "django.contrib.admin",
+    "core.apps.CustomAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     "channels",
     "django_redis",
     "recorp",
-    "core",
+    "core.apps.CoreConfig",
 ]
 
 MIDDLEWARE = [

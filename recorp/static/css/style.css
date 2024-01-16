@@ -123,18 +123,3 @@ fieldset {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
-td.tabletop-col {
-    padding: 0;
-    background-color:red;
-    height: 32px;
-    width: 32px;
-    z-index: 5;
-}
-
-td.horizontal-coord, td.tabletop-coord {
-    padding: 0;
-    height: 32px;
-    width: 32px;
-    z-index: 5;
-}

@@ -1,21 +1,26 @@
 {% load static %}
 {% load i18n %}
 <div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
-    <div class="2xl:w-8/12 w-full flex self-center item-center">
-        <div class="grid 2xl:col-start-3 2xl:col-end-12 w-full">
+    <div class="2xl:w-8/12 w-full flex xl:self-center self-start item-center">
+        <div class="grid w-full">
             <table class="tabletop-view border-[#B1F1CB] border-collapse">
                 <tbody>
                     {% for row in map_size.rows %}
                         {% if forloop.first %}
-                            <td class="tabletop-coord text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted">0:0</td>
+                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">0:0</td>
                             {% for col in map_size.cols %}
-                                <td class="horizontal-coord text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted" style="">{{ col }}</td>
+                                <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5" style="">{{ col }}</td>
                             {% endfor %}
                         {% endif %}
                         <tr>
-                            <td class="tabletop-coord text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted">{{ row }}</td>
+                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted  w-[32px] h-[32px] p-0 z-5 ">{{ row }}</td>
                         {% for col in map_size.cols %}
-                            <td class="tabletop-col border border-dotted" id="{{row}}_{{col}}" style="">{{ col }}</td>
+                            <td class="w-[32px] h-[32px] p-0 z-5 bg-[url('/static/img/atlas/space.png')]" id="{{row}}_{{col}}" style="">
+                                <a href="" class="relative block  border border-emerald-500/0 hover:border-emerald-500  hover:bg-slate-300/10">
+                                    <img src="{% static 'ships/ship01-32px.png' %}" alt class="ship z-2 w-[30px] h-[30px] absolute block m-auto left-0 right-0">
+                                    <div class="z-1 w-[32px] h-[32px] m-auto left-0 right-0"></div>
+                                </a>
+                            </td>
                         {% endfor %}
                         </tr>
                     {% endfor %}
@@ -24,7 +29,7 @@
         </div>
     </div>
 </div>
-<div class="w-full flex items-center justify-center md:hidden lg:order-99 order-3 mb-2" dir="ltr">
+<div class="w-full flex items-center justify-center md:hidden lg:order-99 order-3 mb-2 mt-2" dir="ltr">
     <div class="w-[100px] h-[200px] flex flex-col">
         <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-l border-t border-r border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x rotate-45 text-emerald-400 absolute top-0 start-0"></i></div>
         <div class="flex-1 w-full pb-5 relative bg-gray-800/40 border-r border-l border-b border-[#B1F1CB]"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center"></i></div>

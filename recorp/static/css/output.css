@@ -774,26 +774,6 @@ video {
   grid-column: span 12 / span 12;
 }
 
-.col-start-3 {
-  grid-column-start: 3;
-}
-
-.col-start-2 {
-  grid-column-start: 2;
-}
-
-.col-start-1 {
-  grid-column-start: 1;
-}
-
-.col-end-9 {
-  grid-column-end: 9;
-}
-
-.col-end-12 {
-  grid-column-end: 12;
-}
-
 .float-right {
   float: right;
 }
@@ -824,6 +804,10 @@ video {
 
 .m-0 {
   margin: 0px;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .mx-auto {
@@ -1002,12 +986,16 @@ video {
   height: 200px;
 }
 
+.h-\[30px\] {
+  height: 30px;
+}
+
 .h-\[30vh\] {
   height: 30vh;
 }
 
-.h-\[50vh\] {
-  height: 50vh;
+.h-\[32px\] {
+  height: 32px;
 }
 
 .h-full {
@@ -1064,6 +1052,14 @@ video {
 
 .w-\[100px\] {
   width: 100px;
+}
+
+.w-\[30px\] {
+  width: 30px;
+}
+
+.w-\[32px\] {
+  width: 32px;
 }
 
 .w-\[this-is\\\\\] {
@@ -1456,14 +1452,6 @@ video {
 
 .grid-flow-col-dense {
   grid-auto-flow: column dense;
-}
-
-.grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.grid-cols-12 {
-  grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -2124,6 +2112,10 @@ video {
   border-color: rgb(52 211 153 / var(--tw-border-opacity));
 }
 
+.border-emerald-500\/0 {
+  border-color: rgb(16 185 129 / 0);
+}
+
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
@@ -2231,9 +2223,8 @@ video {
   background-color: rgb(9 9 11 / 0.7);
 }
 
-.bg-green-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(74 222 128 / var(--tw-bg-opacity));
+.bg-\[url\(\'\/static\/img\/atlas\/space\.png\'\)\] {
+  background-image: url('/static/img/atlas/space.png');
 }
 
 .decoration-slice {
@@ -3200,21 +3191,6 @@ fieldset {
   display: none;
 }
 
-td.tabletop-col {
-  padding: 0;
-  background-color:red;
-  height: 32px;
-  width: 32px;
-  z-index: 5;
-}
-
-td.horizontal-coord, td.tabletop-coord {
-  padding: 0;
-  height: 32px;
-  width: 32px;
-  z-index: 5;
-}
-
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -3274,6 +3250,11 @@ td.horizontal-coord, td.tabletop-coord {
   border-color: rgb(177 241 203 / var(--tw-border-opacity));
 }
 
+.hover\:border-emerald-500:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
+}
+
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -3297,6 +3278,10 @@ td.horizontal-coord, td.tabletop-coord {
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-slate-300\/10:hover {
+  background-color: rgb(203 213 225 / 0.1);
 }
 
 .hover\:bg-white:hover {
@@ -3508,10 +3493,6 @@ td.horizontal-coord, td.tabletop-coord {
     inset: 0px;
   }
 
-  .md\:col-start-1 {
-    grid-column-start: 1;
-  }
-
   .md\:mb-0 {
     margin-bottom: 0px;
   }
@@ -3566,10 +3547,6 @@ td.horizontal-coord, td.tabletop-coord {
 
   .md\:gap-1 {
     gap: 0.25rem;
-  }
-
-  .md\:bg-\[url\(\'\/static\/img\/ux\/border-container-withbg\.svg\'\)\] {
-    background-image: url('/static/img/ux/border-container-withbg.svg');
   }
 
   .md\:bg-contain {
@@ -3700,10 +3677,6 @@ td.horizontal-coord, td.tabletop-coord {
     background-color: rgb(31 41 55 / 0);
   }
 
-  .lg\:bg-\[url\(\'\/static\/img\/ux\/border-container-withbg\.svg\'\)\] {
-    background-image: url('/static/img/ux/border-container-withbg.svg');
-  }
-
   .lg\:pl-1 {
     padding-left: 0.25rem;
   }
@@ -3738,16 +3711,16 @@ td.horizontal-coord, td.tabletop-coord {
     height: 50vh;
   }
 
+  .xl\:self-center {
+    align-self: center;
+  }
+
   .xl\:bg-neutral-500\/0 {
     background-color: rgb(115 115 115 / 0);
   }
 
   .xl\:bg-\[url\(\'\/static\/img\/ux\/small-container\.svg\'\)\] {
     background-image: url('/static/img/ux/small-container.svg');
-  }
-
-  .xl\:bg-\[url\(\'\/static\/img\/ux\/border-container-withbg\.svg\'\)\] {
-    background-image: url('/static/img/ux/border-container-withbg.svg');
   }
 
   .xl\:bg-center {
@@ -3761,14 +3734,6 @@ td.horizontal-coord, td.tabletop-coord {
 }
 
 @media (min-width: 1536px) {
-  .\32xl\:col-start-3 {
-    grid-column-start: 3;
-  }
-
-  .\32xl\:col-end-12 {
-    grid-column-end: 12;
-  }
-
   .\32xl\:mt-\[20vh\] {
     margin-top: 20vh;
   }
