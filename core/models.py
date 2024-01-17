@@ -8,9 +8,10 @@ localtime = timezone.now
 
 class User(AbstractBaseUser):
     date_joined = models.DateTimeField(default=localtime)
+    username = models.CharField(default="user_default", unique=True, blank=False)
 
     def __str__(self):
-        return f"{self.username} - email: { self.email }, date_joined: { self.date_joined }"
+        return f"{ self.username } - email: { self.email }, date_joined: { self.date_joined }"
 
 
 class CashShop(models.Model):

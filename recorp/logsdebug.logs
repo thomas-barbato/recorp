@@ -55154,3 +55154,2555 @@ Watching for file changes with StatReloader
 [mHTTP GET /fr/play/ 200 [0.08, 127.0.0.1:50996][0m
 D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.24, 127.0.0.1:62908][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:62908][0m
+[mHTTP GET /static/world_builder/game.js 200 [0.00, 127.0.0.1:62908][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:62910][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:62911][0m
+[mHTTP GET /static/world_builder/var.js 200 [0.19, 127.0.0.1:62913][0m
+[mHTTP GET /static/fontawesome/fontawesome.js 200 [0.19, 127.0.0.1:62912][0m
+[mHTTP GET /static/world_builder/character-modal.js 200 [0.19, 127.0.0.1:62914][0m
+[mHTTP GET /static/default_img/default-user.svg 200 [0.00, 127.0.0.1:62908][0m
+[mHTTP GET /static/ships/ship01-32px.png 200 [0.02, 127.0.0.1:62911][0m
+[mHTTP GET /static/img/ux/recorp.png 200 [0.02, 127.0.0.1:62910][0m
+[mHTTP GET /static/img/ux/small-container.svg 200 [0.00, 127.0.0.1:62908][0m
+[mHTTP GET /static/img/ux/border-container-withbg.svg 200 [0.00, 127.0.0.1:62910][0m
+[mHTTP GET /fr/play/ 200 [0.08, 127.0.0.1:62908][0m
+[mHTTP GET /fr/play/ 200 [0.08, 127.0.0.1:62908][0m
+[mHTTP GET /fr/play/ 200 [0.08, 127.0.0.1:63163][0m
+[mHTTP GET /fr/play/ 200 [0.07, 127.0.0.1:63163][0m
+[mHTTP GET /fr/play/ 200 [0.08, 127.0.0.1:63163][0m
+[mHTTP GET /fr/play/ 200 [0.07, 127.0.0.1:63163][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP GET /admin/ 302 [0.02, 127.0.0.1:63319][0m
+[mHTTP GET /fr/admin/ 200 [0.24, 127.0.0.1:63319][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.15, 127.0.0.1:63319][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.15, 127.0.0.1:63322][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.16, 127.0.0.1:63321][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.15, 127.0.0.1:63323][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.15, 127.0.0.1:63324][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.00, 127.0.0.1:63319][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.00, 127.0.0.1:63321][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.00, 127.0.0.1:63324][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63319][0m
+[32mHTTP GET /admin/test_view 302 [0.01, 127.0.0.1:63319][0m
+Not Found: /fr/admin/test_view
+[33mHTTP GET /fr/admin/test_view 404 [0.06, 127.0.0.1:63319][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/ 200 [0.07, 127.0.0.1:63324][0m
+[mHTTP GET /fr/admin/core/playerresource/add/ 200 [0.21, 127.0.0.1:63404][0m
+[mHTTP GET /static/admin/css/forms.css 200 [0.01, 127.0.0.1:63404][0m
+[mHTTP GET /static/admin/js/calendar.js 200 [0.01, 127.0.0.1:63408][0m
+[mHTTP GET /static/admin/js/jquery.init.js 200 [0.01, 127.0.0.1:63409][0m
+[mHTTP GET /static/admin/js/admin/DateTimeShortcuts.js 200 [0.01, 127.0.0.1:63410][0m
+[mHTTP GET /static/admin/js/core.js 200 [0.01, 127.0.0.1:63411][0m
+[mHTTP GET /static/admin/js/admin/RelatedObjectLookups.js 200 [0.01, 127.0.0.1:63404][0m
+[mHTTP GET /static/admin/js/actions.js 200 [0.01, 127.0.0.1:63409][0m
+[mHTTP GET /static/admin/js/urlify.js 200 [0.01, 127.0.0.1:63408][0m
+[mHTTP GET /static/admin/js/prepopulate.js 200 [0.01, 127.0.0.1:63410][0m
+[mHTTP GET /static/admin/js/change_form.js 200 [0.01, 127.0.0.1:63404][0m
+[mHTTP GET /static/admin/js/vendor/xregexp/xregexp.js 200 [0.01, 127.0.0.1:63411][0m
+[mHTTP GET /static/admin/js/prepopulate_init.js 200 [0.01, 127.0.0.1:63409][0m
+[mHTTP GET /static/admin/css/widgets.css 200 [0.01, 127.0.0.1:63408][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.07, 127.0.0.1:63407][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63411][0m
+[mHTTP GET /static/admin/img/icon-calendar.svg 200 [0.00, 127.0.0.1:63411][0m
+[mHTTP GET /static/admin/img/icon-clock.svg 200 [0.00, 127.0.0.1:63404][0m
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.07, 127.0.0.1:63411][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.05, 127.0.0.1:63411][0m
+Not Found: /favicon.ico
+Internal Server Error: /fr/admin/core/user/add/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\options.py", line 688, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\options.py", line 1886, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\options.py", line 1747, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\options.py", line 1792, in _changeform_view
+    form_validated = form.is_valid()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\forms\forms.py", line 201, in is_valid
+    return self.is_bound and not self.errors
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\forms\forms.py", line 196, in errors
+    self.full_clean()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\forms\forms.py", line 435, in full_clean
+    self._post_clean()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\forms\models.py", line 486, in _post_clean
+    self.instance.full_clean(exclude=exclude, validate_unique=False)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\base.py", line 1477, in full_clean
+    self.clean()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\base_user.py", line 86, in clean
+    setattr(self, self.USERNAME_FIELD, self.normalize_username(self.get_username()))
+AttributeError: 'User' object has no attribute 'USERNAME_FIELD'
+[35;1mHTTP POST /fr/admin/core/user/add/ 500 [0.14, 127.0.0.1:63404][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.05, 127.0.0.1:63410][0m
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /es/admin/core/user/add/ 200 [0.15, 127.0.0.1:64798][0m
+[mHTTP GET /es/admin/jsi18n/ 200 [0.05, 127.0.0.1:64798][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.10, 127.0.0.1:64801][0m
+[32mHTTP GET /admin/test_view 302 [0.01, 127.0.0.1:64808][0m
+Not Found: /fr/admin/test_view
+[33mHTTP GET /fr/admin/test_view 404 [0.05, 127.0.0.1:64808][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/ 200 [0.15, 127.0.0.1:50417][0m
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.08, 127.0.0.1:50420][0m
+[mHTTP GET /static/admin/js/change_form.js 200 [0.00, 127.0.0.1:50422][0m
+[mHTTP GET /static/admin/js/prepopulate_init.js 200 [0.00, 127.0.0.1:50423][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.06, 127.0.0.1:50420][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.29, 127.0.0.1:51179][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.08, 127.0.0.1:51179][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.16, 127.0.0.1:51209][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.05, 127.0.0.1:51209][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/core/user/add/ 200 [0.06, 127.0.0.1:51218][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.05, 127.0.0.1:51218][0m
+Not Found: /favicon.ico
+Not Found: /fr/admin/core/xxxx/
+[33mHTTP GET /fr/admin/core/xxxx/ 404 [0.05, 127.0.0.1:51224][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/xxxx/ 200 [0.07, 127.0.0.1:51236][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/ 200 [0.13, 127.0.0.1:51527][0m
+Not Found: /favicon.ico
+[32mHTTP GET /admin/xxxx 302 [0.01, 127.0.0.1:51529][0m
+[32mHTTP GET /fr/admin/xxxx 301 [0.05, 127.0.0.1:51529][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51529][0m
+D:\wamp64\www\recorp\recorp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/ 200 [0.14, 127.0.0.1:51769][0m
+Not Found: /favicon.ico
+Internal Server Error: /fr/admin/xxxx/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+TypeError: CustomAdminSite.my_custom_view() takes 1 positional argument but 2 were given
+[35;1mHTTP GET /fr/admin/xxxx/ 500 [0.09, 127.0.0.1:51775][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/xxxx/ 200 [0.12, 127.0.0.1:51791][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51791][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/xxxx/ 200 [0.12, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51807][0m
+Internal Server Error: /fr/admin/xxxx/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 79, in my_custom_view
+    return render(request, 'test.html')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 12: 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/admin/xxxx/ 500 [0.12, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.06, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.04, 127.0.0.1:51807][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.06, 127.0.0.1:51995][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51995][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51995][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:51995][0m
+[mHTTP GET /fr/admin/ 200 [0.08, 127.0.0.1:52962][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.22, 127.0.0.1:52964][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.22, 127.0.0.1:52962][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.23, 127.0.0.1:52966][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:52964][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.22, 127.0.0.1:52968][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.24, 127.0.0.1:52965][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.23, 127.0.0.1:52967][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.01, 127.0.0.1:52964][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:52962][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.01, 127.0.0.1:52967][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52962][0m
+[32mHTTP GET /admin/xxxx 302 [0.01, 127.0.0.1:52962][0m
+[32mHTTP GET /fr/admin/xxxx 301 [0.04, 127.0.0.1:52962][0m
+[mHTTP GET /fr/admin/xxxx/ 200 [0.05, 127.0.0.1:52962][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:52962][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:52966][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:52967][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:52964][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:52965][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:52962][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /fr/admin/xxxx/
+[33mHTTP GET /fr/admin/xxxx/ 404 [0.07, 127.0.0.1:53018][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53018][0m
+[mHTTP GET /fr/admin/ 200 [0.13, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.19, 127.0.0.1:53023][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.19, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.00, 127.0.0.1:53023][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.19, 127.0.0.1:53026][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.20, 127.0.0.1:53024][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.19, 127.0.0.1:53027][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.20, 127.0.0.1:53025][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.00, 127.0.0.1:53023][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.00, 127.0.0.1:53026][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53018][0m
+Not Found: /fr/admin/xxxx/
+[33mHTTP GET /fr/admin/xxxx/ 404 [0.06, 127.0.0.1:53018][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53018][0m
+[mHTTP GET /fr/admin/ 200 [0.06, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:53023][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:53026][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.01, 127.0.0.1:53025][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53027][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.01, 127.0.0.1:53024][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.00, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.00, 127.0.0.1:53023][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.01, 127.0.0.1:53026][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53018][0m
+[32mHTTP GET /admin/crop_image 302 [0.01, 127.0.0.1:53018][0m
+[32mHTTP GET /fr/admin/crop_image 301 [0.05, 127.0.0.1:53018][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53018][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:53024][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:53023][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:53025][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53026][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53018][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/ 200 [0.13, 127.0.0.1:53271][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.19, 127.0.0.1:53273][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.00, 127.0.0.1:53273][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.19, 127.0.0.1:53271][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.20, 127.0.0.1:53277][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.20, 127.0.0.1:53276][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.20, 127.0.0.1:53275][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.20, 127.0.0.1:53274][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:53271][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.01, 127.0.0.1:53273][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.01, 127.0.0.1:53276][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:53271][0m
+[32mHTTP GET /admin/crop_image 302 [0.01, 127.0.0.1:53271][0m
+[32mHTTP GET /fr/admin/crop_image 301 [0.05, 127.0.0.1:53271][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+TypeError: View.__init__() takes 1 positional argument but 2 were given
+[35;1mHTTP GET /fr/admin/crop_image/ 500 [0.07, 127.0.0.1:53271][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53271][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+TypeError: 'crop_image_view' object is not callable
+[35;1mHTTP GET /fr/admin/crop_image/ 500 [0.10, 127.0.0.1:53287][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53287][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.14, 127.0.0.1:53318][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.17, 127.0.0.1:53318][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.16, 127.0.0.1:53320][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.16, 127.0.0.1:53321][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.16, 127.0.0.1:53322][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.16, 127.0.0.1:53323][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53318][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:53697][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.15, 127.0.0.1:53699][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.15, 127.0.0.1:53697][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.15, 127.0.0.1:53700][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.15, 127.0.0.1:53702][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.16, 127.0.0.1:53701][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53697][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.16, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.16, 127.0.0.1:53734][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.17, 127.0.0.1:53735][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.16, 127.0.0.1:53737][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.17, 127.0.0.1:53736][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:53732][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:53734][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53735][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:53736][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:53737][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53732][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:53737][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53734][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:53736][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:53735][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53732][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.00, 127.0.0.1:53737][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53732][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:53735][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53736][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:53734][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53732][0m
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.09, 127.0.0.1:53862][0m
+[mHTTP GET /static/django_admin_tailwind/0.0.31/css/base.css 200 [0.04, 127.0.0.1:53862][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53862][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:53862][0m
+[mHTTP GET /static/django_admin_tailwind/0.0.31/css/base.css 200 [0.00, 127.0.0.1:53862][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53862][0m
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.12, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.15, 127.0.0.1:53951][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.16, 127.0.0.1:53950][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.16, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.16, 127.0.0.1:53952][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.15, 127.0.0.1:53953][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.00, 127.0.0.1:53953][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.00, 127.0.0.1:53950][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.00, 127.0.0.1:53951][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.00, 127.0.0.1:53953][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:53953][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53951][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:53950][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54000][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54000][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:53953][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:53951][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:53950][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54106][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.00, 127.0.0.1:54106][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54111][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54108][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54110][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54109][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54106][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:54106][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54106][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54111][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54109][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54108][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54110][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54106][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 4: 'static', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/admin/crop_image/ 500 [0.09, 127.0.0.1:54179][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54179][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54219][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54220][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54222][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54221][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:54179][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54222][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54221][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54220][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54219][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:54179][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54219][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54220][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54222][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54221][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54179][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54232][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54232][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54234][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54235][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54236][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54237][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54232][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54287][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54288][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54289][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54290][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:54285][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54291][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54287][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54290][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54288][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54291][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54289][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54285][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54288][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54291][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54287][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54290][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54289][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54285][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54291][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54290][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54287][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54288][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54289][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:54291][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:54291][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54287][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54288][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54291][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54290][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54289][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:54285][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54291][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54291][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54288][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54290][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54287][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54289][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:54291][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54285][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:54425][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:54425][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:54427][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:54429][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:54428][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:54430][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54431][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54425][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54425][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.12, 127.0.0.1:55235][0m
+[mHTTP GET /static/css/output.css 200 [0.07, 127.0.0.1:55237][0m
+Not Found: /favicon.ico
+Forbidden (CSRF token missing.): /fr/admin/crop_image/
+[31;1mHTTP POST /fr/admin/crop_image/ 403 [0.01, 127.0.0.1:55240][0m
+Forbidden (CSRF token missing.): /fr/admin/crop_image/
+[31;1mHTTP POST /fr/admin/crop_image/ 403 [0.01, 127.0.0.1:55240][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55240][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:55240][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:55240][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+TypeError: CropImageView.post() takes 1 positional argument but 2 were given
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.07, 127.0.0.1:55240][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.12, 127.0.0.1:55313][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 89, in post
+    print(self.request.get('POST'))
+AttributeError: 'ASGIRequest' object has no attribute 'get'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.08, 127.0.0.1:55313][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:55345][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:55489][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.07, 127.0.0.1:55494][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.14, 127.0.0.1:55634][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55665][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55664][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55666][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55667][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55668][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55662][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55667][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55664][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55665][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55666][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55668][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55662][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.00, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.00, 127.0.0.1:55667][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55667][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55664][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55665][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55666][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55666][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55665][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55666][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55667][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55664][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55714][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55662][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55666][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55666][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55665][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55667][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55664][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55714][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55666][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55662][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55811][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55811][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55814][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55813][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55816][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55815][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55817][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55811][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55811][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55843][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55844][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55845][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55846][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55840][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55845][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55846][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55843][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55844][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55842][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55843][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55845][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55846][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55844][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55840][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55846][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55845][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55843][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55844][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55842][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55846][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55845][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55844][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55843][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55840][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:55840][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55842][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55844][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55846][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55843][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55845][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55842][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55840][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55876][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55876][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55876][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55876][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55882][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55882][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55882][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:55876][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55882][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55878][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55881][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55879][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55880][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55882][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55876][0m
+[mHTTP GET /fr/admin/ 200 [0.17, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55963][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55964][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.01, 127.0.0.1:55965][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.01, 127.0.0.1:55966][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:55967][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.00, 127.0.0.1:55963][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.00, 127.0.0.1:55966][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55961][0m
+[mHTTP GET /fr/admin/core/asteroidresource/ 200 [0.11, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.01, 127.0.0.1:55965][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.01, 127.0.0.1:55964][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.01, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.01, 127.0.0.1:55963][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.01, 127.0.0.1:55966][0m
+[mHTTP GET /static/admin/css/changelists.css 200 [0.02, 127.0.0.1:55967][0m
+[mHTTP GET /static/admin/js/jquery.init.js 200 [0.01, 127.0.0.1:55966][0m
+[mHTTP GET /static/admin/js/admin/RelatedObjectLookups.js 200 [0.02, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/js/actions.js 200 [0.02, 127.0.0.1:55967][0m
+[mHTTP GET /static/admin/js/core.js 200 [0.03, 127.0.0.1:55963][0m
+[mHTTP GET /static/admin/js/urlify.js 200 [0.02, 127.0.0.1:55966][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.01, 127.0.0.1:55966][0m
+[mHTTP GET /static/admin/js/filters.js 200 [0.02, 127.0.0.1:55967][0m
+[mHTTP GET /static/admin/js/prepopulate.js 200 [0.02, 127.0.0.1:55961][0m
+[mHTTP GET /static/admin/js/vendor/jquery/jquery.js 200 [0.06, 127.0.0.1:55965][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.07, 127.0.0.1:55964][0m
+[mHTTP GET /static/admin/js/vendor/xregexp/xregexp.js 200 [0.06, 127.0.0.1:55963][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55965][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:55963][0m
+[mHTTP GET /static/admin/img/tooltag-add.svg 200 [0.01, 127.0.0.1:55961][0m
+[mHTTP GET /fr/admin/ 200 [0.09, 127.0.0.1:55965][0m
+[32mHTTP GET /admin/crop_image 302 [0.01, 127.0.0.1:55965][0m
+[32mHTTP GET /fr/admin/crop_image 301 [0.04, 127.0.0.1:55965][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:55965][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:55965][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.16, 127.0.0.1:55965][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:55965][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:55965][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'trans'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 6: 'trans', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/admin/crop_image/ 500 [0.09, 127.0.0.1:56321][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56321][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56321][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56321][0m
+[mHTTP GET /fr/admin/ 200 [0.07, 127.0.0.1:56321][0m
+[32mHTTP GET /admin/crop_image 302 [0.01, 127.0.0.1:56321][0m
+[32mHTTP GET /fr/admin/crop_image 301 [0.06, 127.0.0.1:56321][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56321][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56398][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.12, 127.0.0.1:56398][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56398][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:56398][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.14, 127.0.0.1:56465][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56467][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.16, 127.0.0.1:56482][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56484][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 853, in do_for
+    nodelist_loop = parser.parse(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\defaulttags.py", line 952, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\smartif.py", line 194, in parse
+    retval = self.expression()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\smartif.py", line 209, in expression
+    left = t.led(left, self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\smartif.py", line 29, in led
+    raise parser.error_class(
+django.template.exceptions.TemplateSyntaxError: Not expecting 'not' as infix operator in if tag.
+[35;1mHTTP GET /fr/admin/crop_image/ 500 [0.11, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56484][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:56484][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:56505][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.17, 127.0.0.1:56505][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:56505][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.17, 127.0.0.1:56508][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.18, 127.0.0.1:56507][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.18, 127.0.0.1:56509][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:56511][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.18, 127.0.0.1:56510][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56505][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56505][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:56505][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56505][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56505][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56619][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56619][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56619][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.13, 127.0.0.1:56720][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:56720][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56720][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.08, 127.0.0.1:56720][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.12, 127.0.0.1:57049][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57049][0m
+[mHTTP GET /fr/play/ 200 [0.16, 127.0.0.1:57427][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57429][0m
+[36mHTTP GET /static/world_builder/game.js 304 [0.00, 127.0.0.1:57429][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:58233][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:58233][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.13, 127.0.0.1:59099][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:59099][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 91, in post
+    img_name = form.cleaned_data("name")
+TypeError: 'dict' object is not callable
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.36, 127.0.0.1:59099][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.13, 127.0.0.1:59131][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:59330][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.13, 127.0.0.1:59357][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:59383][0m
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'NoneType' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [5.02, 127.0.0.1:59842][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/play/ 200 [0.08, 127.0.0.1:60627][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60627][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 63, in _wrapper_view_func
+    add_never_cache_headers(response)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 292, in add_never_cache_headers
+    patch_response_headers(response, cache_timeout=-1)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\cache.py", line 283, in patch_response_headers
+    if not response.has_header("Expires"):
+AttributeError: 'CropImageForm' object has no attribute 'has_header'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:62014][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.09, 127.0.0.1:62118][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:62118][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.12, 127.0.0.1:62164][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 97, in post
+    return render(request, self.template_name, form)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than CropImageForm.
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:62164][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.16, 127.0.0.1:62217][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:62217][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:62217][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:62437][0m
+Not Found: /favicon.ico
+[mHTTP POST /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:62443][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.18, 127.0.0.1:62490][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.25, 127.0.0.1:63226][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63226][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:63399][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:63488][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.18, 127.0.0.1:63488][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:63488][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.18, 127.0.0.1:63490][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.18, 127.0.0.1:63493][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.19, 127.0.0.1:63492][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:63494][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.19, 127.0.0.1:63491][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63488][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:63488][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 93, in post
+    print(form.category)
+AttributeError: 'CropImageForm' object has no attribute 'category'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:63578][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:63603][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.13, 127.0.0.1:65513][0m
+[mHTTP GET /static/css/output.css 200 [0.04, 127.0.0.1:65513][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 14, in __init__
+    print(len((os.listdir(self.parent_path))))
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:49389][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/admin/crop_image/ 200 [0.11, 127.0.0.1:49462][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 18, in __init__
+    f"{len(os.listdir(self.parent_path))}"
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:49465][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 18, in __init__
+    f"{len(os.listdir(self.parent_path))}"
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:49500][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 17, in __init__
+    f"{len(os.listdir(self.parent_path))}"
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.11, 127.0.0.1:49586][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 15, in __init__
+    print(len(os.listdir(self.parent_path)))
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:49604][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 17, in __init__
+    f"{len(os.listdir(self.parent_path))}"
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:49799][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.24, 127.0.0.1:49806][0m
+[mHTTP GET /static/css/output.css 200 [0.04, 127.0.0.1:49806][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:49806][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.16, 127.0.0.1:49993][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:49993][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:50111][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.05, 127.0.0.1:50111][0m
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 25, in crop_and_save
+    self.__get_or_create_dir()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 17, in __get_or_create_dir
+    os.mkdir(os.path.join(self.parent_path))
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.11, 127.0.0.1:50137][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.10, 127.0.0.1:50137][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 25, in crop_and_save
+    self.__get_or_create_dir()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 17, in __get_or_create_dir
+    os.mkdir(os.path.join(self.parent_path))
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.06, 127.0.0.1:50137][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 26, in crop_and_save
+    self.__get_or_create_dir()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 18, in __get_or_create_dir
+    os.mkdir(os.path.join(self.parent_path))
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:50238][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 26, in crop_and_save
+    self.__get_or_create_dir()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 18, in __get_or_create_dir
+    os.mkdir(os.path.join(self.parent_path))
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static/img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.11, 127.0.0.1:50254][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.30, 127.0.0.1:50284][0m
+[mHTTP GET /static/css/output.css 200 [0.06, 127.0.0.1:50284][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.16, 127.0.0.1:50284][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 27, in crop_and_save
+    self.__get_or_create_dir()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 19, in __get_or_create_dir
+    os.mkdir(self.parent_path, parents=True, exist_ok=True)
+TypeError: 'parents' is an invalid keyword argument for mkdir()
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:50524][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 27, in crop_and_save
+    self.__get_or_create_dir()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 19, in __get_or_create_dir
+    os.mkdir(self.parent_path)
+FileNotFoundError: [WinError 3] Le chemin d’accès spécifié est introuvable: 'D:\\wamp64\\www\\recorp\\static\\img\\atlas\\PLANET'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.12, 127.0.0.1:50539][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.17, 127.0.0.1:50747][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:50747][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:50747][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.14, 127.0.0.1:50747][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.16, 127.0.0.1:50798][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.22, 127.0.0.1:50844][0m
+[36mHTTP GET /static/world_builder/game.js 304 [0.00, 127.0.0.1:50846][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 36, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.15, 127.0.0.1:50850][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.10, 127.0.0.1:50850][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.04, 127.0.0.1:50850][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 36, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.08, 127.0.0.1:50850][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 37, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.14, 127.0.0.1:50927][0m
+Not Found: /favicon.ico
+[mHTTP GET /fr/admin/crop_image/ 200 [0.11, 127.0.0.1:50929][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 37, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.07, 127.0.0.1:50929][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 37, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.14, 127.0.0.1:50944][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 37, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.14, 127.0.0.1:50985][0m
+[mHTTP GET /fr/admin/crop_image/ 200 [0.10, 127.0.0.1:50985][0m
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 37, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.09, 127.0.0.1:50985][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 37, in crop_and_save
+    crop.save()
+TypeError: Image.save() missing 1 required positional argument: 'fp'
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.13, 127.0.0.1:51091][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/admin/crop_image/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 647, in _save
+    rawmode = RAWMODE[im.mode]
+KeyError: 'RGBA'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\admin.py", line 94, in post
+    CropThisImage(img, category).crop_and_save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 38, in crop_and_save
+    crop.save(save_to.format(frame_number))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 2438, in save
+    save_handler(self, fp, filename)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\JpegImagePlugin.py", line 650, in _save
+    raise OSError(msg) from e
+OSError: cannot write mode RGBA as JPEG
+[35;1mHTTP POST /fr/admin/crop_image/ 500 [0.14, 127.0.0.1:51201][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.17, 127.0.0.1:51237][0m
+[mHTTP GET /static/css/output.css 200 [0.05, 127.0.0.1:51237][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.17, 127.0.0.1:51262][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.18, 127.0.0.1:51344][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.17, 127.0.0.1:51393][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.06, 127.0.0.1:51393][0m
+Not Found: /favicon.ico
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.09, 127.0.0.1:51521][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.15, 127.0.0.1:51524][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:51524][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP POST /fr/admin/crop_image/ 200 [0.19, 127.0.0.1:51579][0m
+[mHTTP POST /fr/admin/crop_image/ 200 [0.07, 127.0.0.1:51579][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader

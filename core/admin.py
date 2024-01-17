@@ -1,4 +1,8 @@
 from django.contrib import admin
+from django.shortcuts import render
+from core.backend.tiles import CropThisImage
+from django.views.generic import TemplateView
+from core.forms import CropImageForm
 from core.views import admin_index
 from core.models import (
     User,
@@ -43,18 +47,58 @@ class CustomAdminSite(admin.AdminSite):
     site_header = "recorp-admin"
     site_title = "recorp-admin"
 
+    def get_app_list(self, request):
+        app_list = super().get_app_list(request)
+        app_list += [
+            {
+                "name": "My Custom App",
+                "app_label": "my_test_app",
+                # "app_url": "/admin/test_view",
+                "models": [
+                    {
+                        "name": "crop image and upload",
+                        "object_name": "crop image and upload",
+                        "admin_url": "/admin/crop_image",
+                        "view_only": True,
+                    }
+                ],
+            }
+        ]
+        return app_list
+
     def get_urls(self):
         from django.urls import re_path
         urls = super(CustomAdminSite, self).get_urls()
         # Note that custom urls get pushed to the list (not appended)
         # This doesn't work with urls += ...
         urls = [
-                   re_path(r'^my_view/$', self.admin_view(admin_index))
+                   re_path(r'^my_view/$', self.admin_view(admin_index)),
+                   re_path(r'^crop_image/$', self.admin_view(CropImageView.as_view()))
                ] + urls
         return urls
 
 
+class CropImageView(TemplateView):
+    template_name = "crop_image.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["form"] = CropImageForm
+        return context
+
+    def post(self, request):
+        form = CropImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = form.cleaned_data.get('category')
+            img = request.FILES["img_input"]
+            CropThisImage(img, category).crop_and_save()
+        return render(request, self.template_name, {"form": form})
+
+
 admin_site = CustomAdminSite()
+
+
+
 
 
 @admin.register(User, site=admin_site)

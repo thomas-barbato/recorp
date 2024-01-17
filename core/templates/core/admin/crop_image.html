@@ -1,0 +1,44 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
+
+<div class="flex w-full item-center" style="">
+   <form class="flex flex-col items-center w-full" method="POST" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <img id="img-preview" src="">
+      {% for item in form %}
+         {% if not "image_url" in item.label%}
+            <div class="mt-2 w-full font-bold">
+               {{ item.label }}
+            </div>
+         {% endif %}
+         <div class="mt-2 w-full self-center">
+            {{ item }}
+         </div>
+      {% endfor %}
+      <input class="mt-2 self-center" type="submit" value="crop-it">
+   </form>
+</div>
+
+<script type="text/javascript">
+   let img_preview = document.querySelector('#img-preview');
+   let img_input = document.querySelector('#id_img_input');
+   const reader = new FileReader();
+
+   reader.onload = e => {
+       img_preview.src = e.target.result;
+   }
+
+   img_input.addEventListener('change', e => {
+       const f = e.target.files[0];
+       reader.readAsDataURL(f);
+   })
+</script>
+{% endblock %}
+
+<!-- hide sidebar -->
+{% block sidebar  %}
+{% endblock %}

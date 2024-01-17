@@ -61,6 +61,7 @@ TEMPLATES = [
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "panels"),
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "modals"),
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "game"),
+            os.path.join(f"{BASE_DIR}", "core", "templates", "core", "admin"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
