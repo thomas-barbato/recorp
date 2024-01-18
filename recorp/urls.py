@@ -7,9 +7,7 @@ admin.autodiscover()
 
 from core.admin import admin_site
 
-
 admin_site._registry.update(admin.site._registry)
-
 
 urlpatterns = i18n_patterns(
     path("admin/", admin_site.urls),

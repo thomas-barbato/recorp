@@ -1,5 +1,9 @@
 from django.contrib import admin
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormMixin
+
 from core.backend.tiles import CropThisImage
 from django.views.generic import TemplateView
 from core.forms import CropImageForm
@@ -73,7 +77,7 @@ class CustomAdminSite(admin.AdminSite):
         # This doesn't work with urls += ...
         urls = [
                    re_path(r'^my_view/$', self.admin_view(admin_index)),
-                   re_path(r'^crop_image/$', self.admin_view(CropImageView.as_view()))
+                   re_path(r'^crop_image/$', self.admin_view(CropImageView.as_view()), name="crop-image")
                ] + urls
         return urls
 
@@ -92,8 +96,7 @@ class CropImageView(TemplateView):
             category = form.cleaned_data.get('category')
             img = request.FILES["img_input"]
             CropThisImage(img, category).crop_and_save()
-        return render(request, self.template_name, {"form": form})
-
+        return HttpResponseRedirect(request.path)
 
 admin_site = CustomAdminSite()
 
