@@ -123,3 +123,8 @@ fieldset {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+table.no-spacing {
+  border-spacing:0; /* Removes the cell spacing via CSS */
+  border-collapse: collapse;  /* Optional - if you don't want to have double border where cells touch */
+}

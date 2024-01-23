@@ -5,32 +5,37 @@ import os
 
 
 class CropThisImage:
-    def __init__(self, file, category: str, size=32):
+    def __init__(self, file, category: str, directory_name: str, size=32):
         self.file = Image.open(file)
         self.size = size
-        self.category = category
-        self.parent_path = Path(os.path.join(BASE_DIR, 'recorp', 'static', 'img', 'atlas', self.category))
+        self.category = category.lower()
+        self.directory_name = directory_name
+        self.parent_path = Path(
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", self.category)
+        )
         self.save_path = ""
 
     def __get_and_create_dir(self):
-        # check if path exists
-        # get parent_path + subdirectory named by len of parent directory (1, 2 , 3...)
-        # to isolate all croped image in it own directory
-        self.save_path = Path(os.path.join(self.parent_path, "0"))
+        self.save_path = Path(os.path.join(self.parent_path, self.directory_name))
 
         if os.path.exists(self.parent_path):
-            self.save_path = Path(os.path.join(self.parent_path,  f"{len(os.listdir(self.parent_path))}"))
+            self.save_path = Path(
+                os.path.join(self.parent_path, self.directory_name)
+            )
 
         self.save_path.mkdir(parents=True, exist_ok=True)
 
     def crop_and_save(self):
         self.__get_and_create_dir()
         width, height = self.file.size
-        frame_number = 1
-        for col in range(0, width, self.size):
-            for row in range(0, height, self.size):
-                crop = self.file.crop((col, row, col + self.size, row + self.size))
+        frame_number = 0
+        for col in range(0, height, self.size):
+            for row in range(0, width, self.size):
+                crop = self.file.crop((row, col, row + self.size, col + self.size))
+                print(f"col: {col}, row: {row}")
                 save_to = os.path.join(self.save_path, f"{frame_number}.png")
                 crop.save(save_to)
                 frame_number += 1
 
+    def get_save_path(self):
+        return self.save_path

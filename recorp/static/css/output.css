@@ -994,6 +994,10 @@ video {
   height: 30vh;
 }
 
+.h-\[31px\] {
+  height: 31px;
+}
+
 .h-\[32px\] {
   height: 32px;
 }
@@ -1004,6 +1008,10 @@ video {
 
 .max-h-\[40vh\] {
   max-height: 40vh;
+}
+
+.max-h-\[32px\] {
+  max-height: 32px;
 }
 
 .min-h-screen {
@@ -1058,8 +1066,16 @@ video {
   width: 30px;
 }
 
+.w-\[31px\] {
+  width: 31px;
+}
+
 .w-\[32px\] {
   width: 32px;
+}
+
+.w-\[80vw\] {
+  width: 80vw;
 }
 
 .w-\[this-is\\\\\] {
@@ -1076,6 +1092,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.max-w-\[32px\] {
+  max-width: 32px;
 }
 
 .flex-1 {
@@ -2112,10 +2132,6 @@ video {
   border-color: rgb(52 211 153 / var(--tw-border-opacity));
 }
 
-.border-emerald-500\/0 {
-  border-color: rgb(16 185 129 / 0);
-}
-
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
@@ -2124,6 +2140,11 @@ video {
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
+
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
 .border-gray-800 {
@@ -2221,10 +2242,6 @@ video {
 
 .bg-zinc-950\/70 {
   background-color: rgb(9 9 11 / 0.7);
-}
-
-.bg-\[url\(\'\/static\/img\/atlas\/space\.png\'\)\] {
-  background-image: url('/static/img/atlas/space.png');
 }
 
 .decoration-slice {
@@ -3191,6 +3208,13 @@ fieldset {
   display: none;
 }
 
+table.no-spacing {
+  border-spacing:0;
+  /* Removes the cell spacing via CSS */
+  border-collapse: collapse;
+  /* Optional - if you don't want to have double border where cells touch */
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -3245,9 +3269,18 @@ fieldset {
   overflow-y: scroll;
 }
 
+.hover\:border:hover {
+  border-width: 1px;
+}
+
 .hover\:border-\[\#B1F1CB\]:hover {
   --tw-border-opacity: 1;
   border-color: rgb(177 241 203 / var(--tw-border-opacity));
+}
+
+.hover\:border-amber-400:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(251 191 36 / var(--tw-border-opacity));
 }
 
 .hover\:border-emerald-500:hover {
@@ -3332,6 +3365,11 @@ fieldset {
   z-index: 10;
 }
 
+.focus\:border-blue-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -3346,6 +3384,11 @@ fieldset {
 .focus\:ring-blue-300:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(147 197 253 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
 }
 
 .focus\:hover\:text-center:hover:focus {
@@ -3424,6 +3467,16 @@ fieldset {
     color: rgb(255 255 255 / var(--tw-text-opacity));
   }
 
+  .dark\:placeholder-gray-400::-moz-placeholder {
+    --tw-placeholder-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-placeholder-opacity));
+  }
+
+  .dark\:placeholder-gray-400::placeholder {
+    --tw-placeholder-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-placeholder-opacity));
+  }
+
   .dark\:ring-gray-500 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(107 114 128 / var(--tw-ring-opacity));
@@ -3457,6 +3510,16 @@ fieldset {
   .dark\:hover\:text-white:hover {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+
+  .dark\:focus\:border-blue-500:focus {
+    --tw-border-opacity: 1;
+    border-color: rgb(59 130 246 / var(--tw-border-opacity));
+  }
+
+  .dark\:focus\:ring-blue-500:focus {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
   }
 
   .dark\:focus\:ring-blue-800:focus {

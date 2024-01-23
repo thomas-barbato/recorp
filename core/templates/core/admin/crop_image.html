@@ -5,6 +5,7 @@
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 
+
 <div class="flex w-full item-center" style="">
    <form class="flex flex-col items-center w-full" method="POST" action="" enctype="multipart/form-data">
       {% csrf_token %}
@@ -36,6 +37,22 @@
        const f = e.target.files[0];
        reader.readAsDataURL(f);
    })
+
+   var element = document.querySelector('.messagelist');
+
+   function fadeOut(el) {
+      var opacity = 1; // Initial opacity
+      var interval = setInterval(function() {
+         if (opacity > 0) {
+            opacity -= 0.1;
+            el.style.opacity = opacity;
+         } else {
+            clearInterval(interval); // Stop the interval when opacity reaches 0
+            el.style.display = 'none'; // Hide the element
+         }
+      }, 50);
+   }
+
 </script>
 {% endblock %}
 

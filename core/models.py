@@ -22,6 +22,17 @@ class UserPurchase(models.Model):
     pass
 
 
+class Map(models.Model):
+
+    name = models.CharField(max_length=30, null=False, blank=False, default="Default map")
+    map = models.JSONField()
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Resource(models.Model):
     RARITY_CHOICES = (
         ("COMMON", "commune"),
@@ -424,6 +435,7 @@ class Sector(models.Model):
 
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
+    map = models.ForeignKey(Map, on_delete=models.CASCADE, default="")
     image = models.ImageField(upload_to="sector/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
     security_level = models.CharField(

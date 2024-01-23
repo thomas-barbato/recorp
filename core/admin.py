@@ -1,9 +1,12 @@
+import os
+
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormMixin
-
+from django.contrib import messages
+from recorp.settings import BASE_DIR
 from core.backend.tiles import CropThisImage
 from django.views.generic import TemplateView
 from core.forms import CropImageForm
@@ -43,7 +46,7 @@ from core.models import (
     AsteroidResource,
     StationResource,
     Sector,
-    SectorContent
+    SectorContent,
 )
 
 
@@ -64,6 +67,12 @@ class CustomAdminSite(admin.AdminSite):
                         "object_name": "crop image and upload",
                         "admin_url": "/admin/crop_image",
                         "view_only": True,
+                    },
+                    {
+                        "name": "create map",
+                        "object_name": "create map",
+                        "admin_url": "/admin/create_map",
+                        "view_only": True,
                     }
                 ],
             }
@@ -72,13 +81,23 @@ class CustomAdminSite(admin.AdminSite):
 
     def get_urls(self):
         from django.urls import re_path
+
         urls = super(CustomAdminSite, self).get_urls()
         # Note that custom urls get pushed to the list (not appended)
         # This doesn't work with urls += ...
         urls = [
-                   re_path(r'^my_view/$', self.admin_view(admin_index)),
-                   re_path(r'^crop_image/$', self.admin_view(CropImageView.as_view()), name="crop-image")
-               ] + urls
+            re_path(r"^my_view/$", self.admin_view(admin_index)),
+            re_path(
+                r"^crop_image/$",
+                self.admin_view(CropImageView.as_view()),
+                name="crop-image",
+            ),
+            re_path(
+                r"^create_map/$",
+                self.admin_view(CreateMapView.as_view()),
+                name="create-map",
+            )
+        ] + urls
         return urls
 
 
@@ -93,15 +112,27 @@ class CropImageView(TemplateView):
     def post(self, request):
         form = CropImageForm(request.POST, request.FILES)
         if form.is_valid():
-            category = form.cleaned_data.get('category')
+            category = form.cleaned_data.get("category")
             img = request.FILES["img_input"]
-            CropThisImage(img, category).crop_and_save()
+            file_directory_name = form.cleaned_data.get('file_directory_name')
+            CropThisImage(img, category, file_directory_name).crop_and_save()
+            messages.success(self.request, "Success")
         return HttpResponseRedirect(request.path)
 
+
+class CreateMapView(TemplateView):
+    template_name = "create_map.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["map_size_range"] = {"cols": range(20), "rows": range(15)}
+        context["map_size"] = {"cols": 20, "rows": 15}
+        context["background"] = os.listdir(os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "background"))
+        context["foreground"] = os.listdir(os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground"))
+        return context
+
+
 admin_site = CustomAdminSite()
-
-
-
 
 
 @admin.register(User, site=admin_site)
@@ -277,4 +308,3 @@ class SectorAdmin(admin.ModelAdmin):
 @admin.register(SectorContent, site=admin_site)
 class SectorContentAdmin(admin.ModelAdmin):
     model = SectorContent
-
