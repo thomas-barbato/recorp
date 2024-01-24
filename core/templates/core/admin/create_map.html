@@ -2,33 +2,70 @@
 {% load static %}
 
 {% block content %}
+{{ foreground|json_script:"script_foreground" }}
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
+<script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
 
-<div class="flex w-[80vw] flex-col" style="">
-    <div class="flex flex-col w-full/2 self-start">
-        <label for="background" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select background</label>
-        <select id="background" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            {% for bg in background %}
-                <option value="{{ bg }}">{{ bg }}</option>
-            {% endfor %}
-        </select>
-        <label for="foreground" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select background</label>
-        <select id="foreground" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="none" selected>None Selected</option>
-            {% for fg in foreground %}
-                <option value="{{ fg }}">{{ fg }}</option>
-            {% endfor %}
-        </select>
-        <label for="in_col" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">col</label>
-        <input type="text" id="in_col">
-        <label for="in_row" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">row</label>
-        <input type="text" id="in_row">
-        <input class="mt-2" id="preview" type="button" value="Preview">
+<div class="flex w-[90vw] xl:flex-row flex-col gap-20 justify-center">
+    <div class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start">
+        <section id="background-menu" class="lg:w-1/2 w-full">
+            <label for="background" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><b>Select Background</b></label>
+            <select id="background" class="w-1/8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                {% for bg in background %}
+                    <option value="{{ bg }}">{{ bg }}</option>
+                {% endfor %}
+            </select>
+        </section>
+
+        <section id="foreground-button" class="mt-2 lg:w-1/2 w-full">
+            <label for="add-foreground-item" class="block mb-2 text-sm text-center font-medium text-gray-900 dark:text-white"><b>Add Foreground Item</b></label>
+            <div class="mb-4 flex w-2/2 h-[50px] w-[50px] items-center mx-auto border rounded-full border-emerald-400 bg-emerald-500 cursor-pointer" id="add-foreground-item">
+                <i class="fa-solid fa-plus fa-2xl mx-auto bg-blue-500"></i>
+            </div>
+        </section>
+
+        <section id="foreground-menu" class="mt-2 h-[60vh] overflow-y-scroll no-scrollbar lg:w-1/2 w-full">
+
+            <div class="flex flex-col bg-gray-600 mb-1 p-2 foreground-menu-item border border-white" id="foreground-menu-1">
+                <label for="foreground" class="block mb-2"><b>Chose Foreground Item</b></label>
+                <select id="foreground" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                    <option value="none" selected>None Selected</option>
+                    {% for fg in foreground %}
+                    <option value="{{ fg }}">{{ fg }}</option>
+                    {% endfor %}
+                </select>
+                <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-1/2 w-full">
+                    <section class="flex w-2/2 gap-1 size">
+                        <div class="flex flex-col size_x">
+                            <label for="coord_x" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Size X :</b></label>
+                            <input type="number" id="size_x" min="0" value="0" class="cursor-pointer">
+                        </div>
+                        <div class="flex flex-col size_y">
+                            <label for="coord_y" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Size Y :</b></label>
+                            <input type="number" id="size_y" min="0" value="0" class="cursor-pointer">
+                        </div>
+                    </section>
+                    <section class="flex w-2/2 gap-1 coord">
+                        <div class="flex flex-col coord_x">
+                            <label for="coord_x" class="block mb-2 font-medium font-medium text-gray-900 dark:text-white"><b>Coord X :</b></label>
+                            <input type="number" id="coord_x" min="0" value="0" class="cursor-pointer">
+                        </div>
+                        <div class="flex flex-col coord_y">
+                            <label for="coord_y" class="block mb-2 font-medium font-medium text-gray-900 dark:text-white font-bold"><b>Coord Y :</b></label>
+                            <input type="number" id="coord_y" min="0" value="0" class="cursor-pointer">
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+        <section id="preview-button" class="mt-2 lg:w-1/2 w-full">
+            <input class="mt-2 flex mx-auto" id="preview" type="button" value="Preview">
+        </section>
     </div>
-    <div class="flex w-full/2 m-0 p-0 self-center items-center">
-        <div id="map-background2" class=" flex item-center justify-center flex-row ">
+    <div class="flex flex-col w-1/2 m-0 p-0 self-start">
+        <div id="map-background" class=" flex flex-row self-start">
             <div class="flex xl:self-center self-start item-center">
                 <div class="grid">
                     <table class="tabletop-view no-spacing" cellspacing="0" border="0">
@@ -43,7 +80,7 @@
                                 <tr class="rows">
                                     <td class="bg-gray-800/40 text-emerald-300 w-[32px] h-[32px] p-0 z-5 align-middle text-center no-spacing">{{ row }}</td>
                                 {% for col in map_size_range.cols %}
-                                    <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile " title="y: {{row}}, x: {{col}}" id="{{row}}_{{col}}" style="">
+                                    <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile " title="x: {{col}}, y: {{row}}" id="{{col}}_{{row}}" style="">
                                         <div class="relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10">
                                         </div>
                                     </td>
@@ -57,76 +94,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-
-   var element = document.querySelector('.messagelist');
-
-   function fadeOut(el) {
-      var opacity = 1; // Initial opacity
-      var interval = setInterval(function() {
-         if (opacity > 0) {
-            opacity -= 0.1;
-            el.style.opacity = opacity;
-         } else {
-            clearInterval(interval); // Stop the interval when opacity reaches 0
-            el.style.display = 'none'; // Hide the element
-         }
-      }, 50);
-   }
-
-   function add_background(folder_name){
-        let cell = 0;
-        let game_rows = document.querySelectorAll('.rows');
-        for(let i = 0; i < game_rows.length ; i++){
-            let cols = game_rows[i].querySelectorAll('.tile');
-            for(let y = 0; y < cols.length ; y++){
-                let bg_url = '/static/img/atlas/background/' + folder_name + '/' + cell + '.png';
-                cols[y].style.backgroundImage = "url('" + bg_url + "')";
-                cell++;
-            }
-        }
-   }
-
-   function add_foreground(coord_y, coord_x, folder_name, size_y=4, size_x=4){
-        let cell = 0;
-        for(let c_r = coord_y; c_r < coord_y + size_y; c_r++){
-            for(let c_c = coord_x; c_c < coord_x + size_x; c_c++){
-                let fg_image = document.createElement('img')
-                let fg_url = '/static/img/atlas/foreground/' + folder_name + '/' + cell + '.png';
-                fg_image.classList.add('planete', 'z-2', 'absolute', 'block', 'm-auto', 'left-0', 'right-0');
-                fg_image.src = fg_url;
-                document.querySelector('.tabletop-view').rows[c_r].cells[c_c].querySelector('div').append(fg_image);
-                cell++;
-            }
-        }
-   }
-
-
-
-    var background = document.querySelector("#background");
-
-    function onChange(e) {
-        var value = e.value;
-    }
-
-
-    background.addEventListener('change', function(){
-        onChange(background);
-    });
-    onChange(background);
-
-    let preview = document.querySelector("#preview");
-
-    preview.addEventListener('click', function() {
-        var bg_folder = document.getElementById("background").value;
-        let fg_folder = document.querySelector("#foreground").value
-        let coord_y = parseInt(document.querySelector("#in_row").value) + 1;
-        let coord_x = parseInt(document.querySelector("#in_col").value) + 1;
-        add_background(bg_folder)
-        add_foreground(coord_y, coord_x, fg_folder, size_y=4, size_x=4)
-    })
-
-
+<script src="{% static 'world_builder/map_builder.js' %}">
 </script>
 {% endblock %}
 

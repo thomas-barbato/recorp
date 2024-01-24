@@ -73,7 +73,7 @@ class CustomAdminSite(admin.AdminSite):
                         "object_name": "create map",
                         "admin_url": "/admin/create_map",
                         "view_only": True,
-                    }
+                    },
                 ],
             }
         ]
@@ -96,7 +96,7 @@ class CustomAdminSite(admin.AdminSite):
                 r"^create_map/$",
                 self.admin_view(CreateMapView.as_view()),
                 name="create-map",
-            )
+            ),
         ] + urls
         return urls
 
@@ -114,7 +114,7 @@ class CropImageView(TemplateView):
         if form.is_valid():
             category = form.cleaned_data.get("category")
             img = request.FILES["img_input"]
-            file_directory_name = form.cleaned_data.get('file_directory_name')
+            file_directory_name = form.cleaned_data.get("file_directory_name")
             CropThisImage(img, category, file_directory_name).crop_and_save()
             messages.success(self.request, "Success")
         return HttpResponseRedirect(request.path)
@@ -127,8 +127,12 @@ class CreateMapView(TemplateView):
         context = super().get_context_data()
         context["map_size_range"] = {"cols": range(20), "rows": range(15)}
         context["map_size"] = {"cols": 20, "rows": 15}
-        context["background"] = os.listdir(os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "background"))
-        context["foreground"] = os.listdir(os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground"))
+        context["background"] = os.listdir(
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "background")
+        )
+        context["foreground"] = os.listdir(
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground")
+        )
         return context
 
 
