@@ -5,7 +5,27 @@
         clone.id = "foreground-menu-" + len_element;
         let last_element = Array.from(document.querySelectorAll('.foreground-menu-item')).pop();
         last_element.after(clone);
+
     }
+
+    let tile = document.querySelectorAll('.tile')
+    for(let i = 0; i < tile.length; i++){
+        tile[i].addEventListener('click', function(){
+            let value = tile[i].id.split('_')
+            let radio_btn = document.querySelectorAll(".coord-radio-button");
+            radio_btn[radio_btn.length-1].id = "coord-radio-button-" + radio_btn.length;
+            let id = "";
+            for(let i = 0 ; i < radio_btn.length ; i++){
+                if (radio_btn[i].checked) {
+                    id = radio_btn[i].id.split('-')[3];
+                    break;
+                }
+            }
+            document.querySelector('#foreground-menu-'+id+' > div > section.coord > div.coord_x > input').value = parseInt(value[0]);
+            document.querySelector('#foreground-menu-'+id+' > div > section.coord > div.coord_y > input').value = parseInt(value[1]);
+        })
+    }
+
 
     let button_add_foreground = document.querySelector('#add-foreground-item')
     button_add_foreground.addEventListener('click', function(){

@@ -29,6 +29,10 @@
         <section id="foreground-menu" class="mt-2 h-[60vh] overflow-y-scroll no-scrollbar lg:w-1/2 w-full">
 
             <div class="flex flex-col bg-gray-600 mb-1 p-2 foreground-menu-item border border-white" id="foreground-menu-1">
+                <span class="foreground-menu-title text-center text-sm flex flex-col" id="foreground-menu-title-1"><b>New Foreground item</b>
+                    <label for="coord-radio-button">Activate</label>
+                    <input class="mt-2 coord-radio-button" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
+                </span>
                 <label for="foreground" class="block mb-2"><b>Chose Foreground Item</b></label>
                 <select id="foreground" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                     <option value="none" selected>None Selected</option>
@@ -74,7 +78,7 @@
                                 {% if forloop.first %}
                                 <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 text-center align-middle no-spacing">0:0</td>
                                     {% for col in map_size_range.cols %}
-                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle text-center no-spacing" style="">{{ col }}</td>
+                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle text-center no-spacing">{{ col }}</td>
                                     {% endfor %}
                                 {% endif %}
                                 <tr class="rows">
