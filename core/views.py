@@ -30,9 +30,7 @@ class DisplayGameView(TemplateView):
         context["france"] = timezone.localtime(timezone.now())
         context["now"] = datetime.datetime.now()
         context["loop"] = range(10)
-        context["map_size"] = {"cols": range(20), "rows": range(15)}
-        context["map_background"] = ""
-        context["map_foreground"] = ""
+        context["map_size_range"] = {"cols": range(20), "rows": range(15)}
         context[
             "description"
         ] = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
