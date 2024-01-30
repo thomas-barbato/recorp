@@ -1,11 +1,14 @@
-    let element = document.querySelector('#foreground-menu-0');
+    let element = document.querySelector('#foreground-menu-1');
+    let tiles = "";
+    let animation_tile_len = "";
     let dict = new Object();
 
     function append_foreground_menu(element){
         if(document.querySelectorAll('.foreground-menu-item').length){
-            len_element = parseInt(document.querySelectorAll('#foreground-menu').length)
-            let clone = element.cloneNode(true)
-            clone.id = "foreground-menu-" + len_element;
+            len_element = document.querySelectorAll('.foreground-menu-item').length;
+            let clone = element.cloneNode(true);
+            clone.id = "foreground-menu-" + parseInt(len_element + 1);
+            clone.querySelector('input[type=radio]').id = "coord-radio-button-" + parseInt(len_element + 1);
             let last_element = Array.from(document.querySelectorAll('.foreground-menu-item')).pop();
             last_element.after(clone);
         }else{
@@ -13,20 +16,15 @@
         }
     }
 
-    let tile = document.querySelectorAll('.tile')
+    let tile = document.querySelectorAll('.tile');
     for(let i = 0; i < tile.length; i++){
         tile[i].addEventListener('click', function(){
             let value = tile[i].id.split('_')
-            console.log(value)
             let radio_btn = document.querySelectorAll(".coord-radio-button");
-            radio_btn[radio_btn.length-1].id = "coord-radio-button-" + radio_btn.length;
-            console.log(radio_btn.id);
             let id = "";
             for(let i = 0 ; i < radio_btn.length ; i++){
                 if (radio_btn[i].checked) {
-                    id = parseInt(radio_btn[i].id.split('-')[3]) - 1;
-                    console.log(id)
-                    console.log(value[0] + " " + value[1]);
+                    id = parseInt(radio_btn[i].id.split('-')[3]);
                     document.querySelector('#foreground-menu-'+id+' > div.coord_size > section.coord > div.coord_x > input').value = parseInt(value[0]);
                     document.querySelector('#foreground-menu-'+id+' > div.coord_size > section.coord > div.coord_y > input').value = parseInt(value[1]);
                     break;
@@ -35,8 +33,8 @@
         })
     }
 
-    let button_add_foreground = document.querySelector('#add-foreground-item')
-    button_add_foreground.addEventListener('click', function(){
+    let button_set_foreground = document.querySelector('#set-foreground-item')
+    button_set_foreground.addEventListener('click', function(){
         append_foreground_menu(element);
         let trash = document.querySelectorAll('.trash-it');
 
@@ -61,7 +59,7 @@
         }
     }
 
-    function add_foreground(dict){
+    function set_foreground(dict){
         for(let data in dict){
             let animation_data = [
                 dict[data]["animation_1"],
@@ -73,15 +71,10 @@
             if(dict[data]['item_select'] !== "none"){
                 for(let row = dict[data]['coord_y']; row < dict[data]['coord_y'] + dict[data]['size_y']; row++){
                     for(let col = dict[data]['coord_x']; col < dict[data]['coord_x'] + dict[data]['size_x']; col++){
-
                         let fg_image = document.createElement('img');
-                        let fg_url = '/static/img/atlas/foreground/' + dict[data]['item_select'] + '/' + cell + '.png';
-                        fg_image.src = fg_url;
-                        fg_image.classList.add('planete', 'z-2', 'absolute', 'block', 'm-auto', 'left-0', 'right-0');
                         document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container')
-                        document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_image);
 
-                        add_animation(animation_data, cell, row, col);
+                        add_foreground_tiles(animation_data, cell, row, col);
                         cell++;
                     }
                 }
@@ -90,35 +83,41 @@
         }
     }
 
-    function add_animation(animation_array, cell, row, col){
+    function add_foreground_tiles(animation_array, cell, row, col){
         for(animation in animation_array){
             if(animation_array[animation] !== "none"){
                 let fg_animation = document.createElement('img');
                 let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation] + '/' + cell + '.png';
                 fg_animation.src = fg_animation_url;
                 fg_animation.style.display = "none";
-                fg_animation.classList.add('planete', 'animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0');
+                fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0');
                 document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
             }
         }
     }
 
-    function animate_foreground() {
-      let tiles = document.querySelectorAll('.foreground-container');
-      let image_max_range = tiles[0].querySelectorAll('img.animation').length;
-      let counter = 0;
-      for(let i = 0; i < image_max_range; i++){
-        for(let t = 0; t < tiles.length; t++){
-            let current_tile = tiles[t].querySelectorAll('img.animation');
-            console.log(current_tile);
-            if(i == counter){
-                current_tile[i].style.display= "block";
-            }else{
-                current_tile[i].style.display= "none";
+    function animate_foreground_tiles(animation_tile_index){
+        /* reflexion :
+            je pourrais faire un dictionnaire qui contient ...
+            dict["animation_1"] = { "case_1": [id_1, id_2, i_d3.... ] , "case_2": ["id_4", id_5...], ... "case_15" : [ ... ] }
+            dict["animation_2"] = {"case_1":[...] ..}
+            mais là, je vais avoir besoin des conseils du roux doudou
+            parce que , ca me semble extremement lourd....
+            mais bon, je préfère demander à mon sensei de JS 😄 que de sortir une solution de mon cul qui risque de pas être folle
+        */
+        console.log(animation_tile_index)
+        tiles = document.querySelectorAll('.foreground-container');
+        for(let i = 0; i < tiles.length; i++){
+            let animation_tile_len = tiles[i].querySelectorAll('img.animation').length;
+            for(let y = 0; y < animation_tile_len; y++){
+                if(y == 0){
+                    tiles[i].querySelectorAll('img.animation')[y].style.display = "block";
+                }else{
+                    tiles[i].querySelectorAll('img.animation')[y-1].style.display = "none";
+                    tiles[i].querySelectorAll('img.animation')[y].style.display = "block";
+                }
             }
         }
-        counter++;
-      }
     }
 
     let trash = document.querySelector('.trash-it');
@@ -136,7 +135,6 @@
         add_background(bg_folder);
         for(let i = 0; i < fg_data.length ; i++){
             dict[i] = {
-                item_select: fg_data[i].querySelector(':scope > select#foreground').value,
                 size_x: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.size > div.size_x > input').value),
                 size_y: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.size > div.size_y > input').value),
                 coord_x: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.coord > div.coord_x > input').value) + 1,
@@ -148,8 +146,18 @@
                 time_duration: parseInt(fg_data[i].querySelector(':scope > div.animations > section.time-section > div > input#animation-duration').value),
             }
         }
-        console.log(dict)
-        add_foreground(dict);
-        setInterval( animate_foreground, "1000");
+        set_foreground(dict);
+        let img_animation_index = 0;
+        let img_animation_len = document.querySelectorAll('img.animation').length;
+        console.log(document.querySelectorAll('img.animation'));
+        setInterval( function(){
+            if(img_animation_index <= document.querySelectorAll('img.animation').length){
+                img_animation_index++;
+            }else{
+                img_animation_index = 0;
+            }
+            animate_foreground_tiles(img_animation_index);
+        }, "500");
+
     })
 
