@@ -107,22 +107,20 @@
                 console.log("children_i_length: " + children_i_length);
                 for(let children_i = 0; children_i < children_i_length; children_i++){
                     for(let container_i = 0; container_i < container_i_length ; container_i++){
-                        console.log("children_i: "+ children_i)
-                        console.log("children: " + container_element[container_i].children[children_i].src)
+                        console.log("container nb: "+ container_i + " child nb: " + children_i);
                         if(children_i > 0){
-                            container_element[container_i].children[(children_i - 1)].style.display = "none";
+                            /* REGARDER DU COTE DE LA DECREMENTATION DE CONTAINER
+                            PLUTOT QUE DE CHILDREN
+                            */
+                            container_element[parseInt(container_i - 1)].children[children_i].style.display = "none";
                             container_element[container_i].children[children_i].style.display = "block";
-                            console.log("1: container_element[container_i].children[children_i].style.display = " + container_element[container_i].children[children_i].style.display)
 
                         }else{
-                            if(container_element[container_i].children[(children_i_length-1)].style.display == "block"){
-                                container_element[container_i].children[(children_i_length-1)].style.display = "none";
+                            if(container_element[(container_i_length - 1)].children[(children_i_length-1)].style.display == "block"){
+                                container_element[(container_i_length - 1)].children[(children_i_length-1)].style.display = "none";
                                 container_element[container_i].children[children_i].style.display = "block";
-                                console.log("container_element[container_i].children[(children_i_length-1)].style.display = " + container_element[container_i].children[(children_i_length-1)].style.display)
-                                console.log("container_element[container_i].children[children_i].style.display = " + container_element[container_i].children[children_i].style.display)
                             }else{
-                                container_element[container_i].children[children_i].style.display = "block";
-                                console.log("2: container_element[container_i].children[children_i].style.display = " + container_element[container_i].children[children_i].style.display)
+                                container_element[(container_i_length - 1)].children[children_i].style.display = "block";
                             }
                         }
                     }
