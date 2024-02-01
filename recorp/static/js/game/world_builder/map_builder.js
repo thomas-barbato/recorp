@@ -1,7 +1,10 @@
     let element = document.querySelector('#foreground-menu-1');
     let tiles = "";
     let animation_tile_len = "";
+    let temporary_class_set = new Set();
     let dict = new Object();
+
+    Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
     function append_foreground_menu(element){
         if(document.querySelectorAll('.foreground-menu-item').length){
@@ -60,62 +63,73 @@
     }
 
     function set_foreground(dict){
-        for(let data in dict){
-            let animation_data = [
-                dict[data]["animation_1"],
-                dict[data]["animation_2"],
-                dict[data]["animation_3"],
-                dict[data]["animation_4"],
-            ]
-            let cell = 0;
-            if(dict[data]['item_select'] !== "none"){
-                for(let row = dict[data]['coord_y']; row < dict[data]['coord_y'] + dict[data]['size_y']; row++){
-                    for(let col = dict[data]['coord_x']; col < dict[data]['coord_x'] + dict[data]['size_x']; col++){
-                        let fg_image = document.createElement('img');
-                        document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container')
-
+        for(let data_i in dict){
+            let animation_data = [];
+            // get animations
+            for(let anim in dict[data_i]["animations"]){
+                if(dict[data_i]["animations"][anim] !== "none"){
+                    animation_data.push(dict[data_i]["animations"][anim]);
+                }
+            }
+            // if there is at least one animation...
+            if(animation_data.length > 0){
+                let cell = 0;
+                for(let row = dict[data_i]['coord_y']; row < dict[data_i]['coord_y'] + dict[data_i]['size_y']; row++){
+                    for(let col = dict[data_i]['coord_x']; col < dict[data_i]['coord_x'] + dict[data_i]['size_x']; col++){
+                        document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container', 'animation-container-'+data_i);
+                        temporary_class_set.add('.animation-container-'+data_i);
                         add_foreground_tiles(animation_data, cell, row, col);
                         cell++;
                     }
                 }
+                cell = 0;
             }
-            cell = 0;
         }
     }
 
     function add_foreground_tiles(animation_array, cell, row, col){
-        for(animation in animation_array){
-            if(animation_array[animation] !== "none"){
-                let fg_animation = document.createElement('img');
-                let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation] + '/' + cell + '.png';
-                fg_animation.src = fg_animation_url;
-                fg_animation.style.display = "none";
-                fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0');
-                document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
-            }
+        for(let animation in animation_array){
+            let fg_animation = document.createElement('img');
+            let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation] + '/' + cell + '.png';
+            fg_animation.src = fg_animation_url;
+            fg_animation.style.display = "none";
+            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0');
+            document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
         }
     }
 
-    function animate_foreground_tiles(animation_tile_index){
-        /* reflexion :
-            je pourrais faire un dictionnaire qui contient ...
-            dict["animation_1"] = { "case_1": [id_1, id_2, i_d3.... ] , "case_2": ["id_4", id_5...], ... "case_15" : [ ... ] }
-            dict["animation_2"] = {"case_1":[...] ..}
-            mais là, je vais avoir besoin des conseils du roux doudou
-            parce que , ca me semble extremement lourd....
-            mais bon, je préfère demander à mon sensei de JS 😄 que de sortir une solution de mon cul qui risque de pas être folle
-        */
-        console.log(animation_tile_index)
-        tiles = document.querySelectorAll('.foreground-container');
-        for(let i = 0; i < tiles.length; i++){
-            let animation_tile_len = tiles[i].querySelectorAll('img.animation').length;
-            for(let y = 0; y < animation_tile_len; y++){
-                if(y == 0){
-                    tiles[i].querySelectorAll('img.animation')[y].style.display = "block";
-                }else{
-                    tiles[i].querySelectorAll('img.animation')[y-1].style.display = "none";
-                    tiles[i].querySelectorAll('img.animation')[y].style.display = "block";
+    function animate_foreground_tiles(){
+        for(let i = 0; i < temporary_class_set.size; i++){
+            let container_element = document.querySelectorAll(temporary_class_set.getByIndex(i));
+            if(container_element.length > 1){
+                let container_i_length = parseInt(container_element.length);
+                let children_i_length = parseInt(container_element[0].childElementCount);
+                console.log("children_i_length: " + children_i_length);
+                for(let children_i = 0; children_i < children_i_length; children_i++){
+                    for(let container_i = 0; container_i < container_i_length ; container_i++){
+                        console.log("children_i: "+ children_i)
+                        console.log("children: " + container_element[container_i].children[children_i].src)
+                        if(children_i > 0){
+                            container_element[container_i].children[(children_i - 1)].style.display = "none";
+                            container_element[container_i].children[children_i].style.display = "block";
+                            console.log("1: container_element[container_i].children[children_i].style.display = " + container_element[container_i].children[children_i].style.display)
+
+                        }else{
+                            if(container_element[container_i].children[(children_i_length-1)].style.display == "block"){
+                                container_element[container_i].children[(children_i_length-1)].style.display = "none";
+                                container_element[container_i].children[children_i].style.display = "block";
+                                console.log("container_element[container_i].children[(children_i_length-1)].style.display = " + container_element[container_i].children[(children_i_length-1)].style.display)
+                                console.log("container_element[container_i].children[children_i].style.display = " + container_element[container_i].children[children_i].style.display)
+                            }else{
+                                container_element[container_i].children[children_i].style.display = "block";
+                                console.log("2: container_element[container_i].children[children_i].style.display = " + container_element[container_i].children[children_i].style.display)
+                            }
+                        }
+                    }
+                    console.log("===============================")
                 }
+            }else{
+                container_element[0].children[0].style.display = "block";
             }
         }
     }
@@ -139,25 +153,22 @@
                 size_y: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.size > div.size_y > input').value),
                 coord_x: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.coord > div.coord_x > input').value) + 1,
                 coord_y: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.coord > div.coord_y > input').value) + 1,
-                animation_1: fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-1').value,
-                animation_2: fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-2').value,
-                animation_3: fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-3').value,
-                animation_4: fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-4').value,
+                animations: [
+                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-1').value,
+                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-2').value,
+                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-3').value,
+                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-4').value,
+                ],
                 time_duration: parseInt(fg_data[i].querySelector(':scope > div.animations > section.time-section > div > input#animation-duration').value),
             }
         }
+
         set_foreground(dict);
         let img_animation_index = 0;
         let img_animation_len = document.querySelectorAll('img.animation').length;
-        console.log(document.querySelectorAll('img.animation'));
+        let animation_container_len = temporary_class_set.size;
         setInterval( function(){
-            if(img_animation_index <= document.querySelectorAll('img.animation').length){
-                img_animation_index++;
-            }else{
-                img_animation_index = 0;
-            }
-            animate_foreground_tiles(img_animation_index);
+            animate_foreground_tiles();
         }, "500");
 
     })
-
