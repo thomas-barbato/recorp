@@ -82,13 +82,18 @@
         }
     }
 
+    let size_x_input = document.querySelector("#size-x-1");
+    let size_y_input = document.querySelector("#size-y-1");
+    size_x_input.addEventListener('change', display_animation_parameter);
+    size_y_input.addEventListener('change', display_animation_parameter);
+
     let display_animation_preview = function(e){
         let element = this.parentNode.parentNode.parentNode.parentNode;
         let id_i = e.target.id.split('-')[1];
-        let animation_value = e.target.value;
+        let directory = e.target.value;
         element.querySelector("#preview-"+id_i).innerHTML = "";
 
-        if(animation_value !== "none"){
+        if(directory !== "none"){
             let animation_i = 0;
             let tr = "";
             let td = "";
@@ -101,7 +106,7 @@
                 tr.classList.add('rows');
 
                 for(let col_i = 0; col_i < size_x; col_i++){
-                    let bg_url = '/static/img/atlas/foreground/' + animation_value + '/' + animation_i + '.png';
+                    let bg_url = '/static/img/atlas/foreground/' + directory + '/' + animation_i + '.png';
                     td = document.createElement('td');
                     div = document.createElement('div');
 

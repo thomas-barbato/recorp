@@ -8,10 +8,10 @@
 <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
 
-<div class="flex w-[90vw] xl:flex-row flex-col gap-20 justify-center">
+<div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
     <div class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start">
         <section id="background-menu" class="lg:w-1/2 w-full">
-            <label for="background" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><b>Select Background</b></label>
+            <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>
             <select id="background" class="w-1/8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                 {% for bg in background %}
                     <option value="{{ bg }}">{{ bg }}</option>
@@ -20,7 +20,7 @@
         </section>
 
         <section id="foreground-button" class="mt-2 lg:w-1/2 w-full">
-            <label for="set-foreground-item" class="block mb-2 text-sm text-center font-medium text-gray-900 dark:text-white"><b>Add Foreground Item</b></label>
+            <label for="set-foreground-item" class="block mb-2 text-sm text-center font-bold text-gray-900 dark:text-white"><b>Add Foreground Item</b></label>
             <div class="mb-4 flex w-2/2 h-[50px] w-[50px] items-center mx-auto border rounded-full border-emerald-400 bg-emerald-500 cursor-pointer" id="set-foreground-item">
                 <i class="fa-solid fa-plus fa-2xl mx-auto bg-blue-500"></i>
             </div>
@@ -30,17 +30,17 @@
 
             <div class="flex flex-col bg-gray-600 mb-1 p-2 foreground-menu-item border border-white" id="foreground-menu-1">
                 <span class="foreground-menu-title text-center text-sm flex flex-col" id="foreground-menu-title-1"><b>New Foreground item <i class="fa-solid fa-trash fa-xl cursor-pointer trash-it"></i></b>
-                    <label for="coord-radio-button">Activate</label>
+                    <label for="coord-radio-button">Get coordinate</label>
                     <input class="mt-2 coord-radio-button" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
                 </span>
                 <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-1/2 w-full coord_size">
                     <section class="flex w-2/2 gap-1 size">
                         <div class="flex flex-col size-x">
-                            <label for="size-x" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Size X :</b></label>
+                            <label for="size-x" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Size X :</b></label>
                             <input type="number" id="size-x-1" min="0" max="6" value="0"  class="cursor-pointer">
                         </div>
                         <div class="flex flex-col size-y">
-                            <label for="size-y" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Size Y :</b></label>
+                            <label for="size-y" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Size Y :</b></label>
                             <input type="number" id="size-y-1" min="0" max="6" value="0" class="cursor-pointer">
                         </div>
                     </section>
@@ -53,7 +53,7 @@
                             <input type="number" id="coord-x-1" min="0" value="0" class="cursor-pointer">
                         </div>
                         <div class="flex flex-col coord-y">
-                            <label for="coord-y" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Coord Y :</b></label>
+                            <label for="coord-y" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Coord Y :</b></label>
                             <input type="number" id="coord-y-1" min="0" value="0" class="cursor-pointer">
                         </div>
                     </section>
@@ -61,7 +61,7 @@
                 <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations" style="display:none">
                     <section class="flex w-full flex-row animations-section gap-1">
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-1" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Animation 1:</b></label>
+                            <label for="animation-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 1:</b></label>
                             <select id="animation-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
@@ -80,7 +80,7 @@
                              </div>
                         </div>
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-2" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Animation 2:</b></label>
+                            <label for="animation-2" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 2:</b></label>
                             <select id="animation-2" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
@@ -101,7 +101,7 @@
                     </section>
                     <section class="flex w-full flex-row gap-1 animations-section gap-1">
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-3" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Animation 3:</b></label>
+                            <label for="animation-3" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 3:</b></label>
                             <select id="animation-3" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
@@ -120,7 +120,7 @@
                              </div>
                         </div>
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-4" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Animation 4:</b></label>
+                            <label for="animation-4" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 4:</b></label>
                             <select id="animation-4" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
@@ -141,7 +141,7 @@
                     </section>
                     <section class="flex w-full flex-row gap-1 time-section gap-1">
                         <div class="flex flex-col w-full text-center">
-                            <label for="animation-duration" class="block mb-2 font-medium text-gray-900 dark:text-white font-bold"><b>Animation duration time (in ms):</b></label>
+                            <label for="animation-duration" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation duration time (in ms):</b></label>
                             <input type="number" id="animation-duration" min=50 class="">
                         </div>
                     </section>
