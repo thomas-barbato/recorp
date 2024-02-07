@@ -61,18 +61,18 @@
                 <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations" style="display:none">
                     <section class="flex w-full flex-row animations-section gap-1">
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 1:</b></label>
-                            <select id="animation-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                            <label for="animation-1-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 1:</b></label>
+                            <select id="animation-1-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
                                 <option value="{{ fg }}">{{ fg }}</option>
                                 {% endfor %}
                             </select>
-                             <div id="preview-animation-1" class=" flex flex-row self-start" style="display: none;">
+                             <div id="preview-animation-1-1" class=" flex flex-row self-start" style="display: none;">
                                 <div class="flex self-start item-center">
                                     <div class="grid">
                                         <table class="no-spacing" cellspacing="0" border="0">
-                                            <tbody id="preview-1">
+                                            <tbody id="preview-1-1">
                                             </tbody>
                                         </table>
                                     </div>
@@ -80,18 +80,18 @@
                              </div>
                         </div>
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-2" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 2:</b></label>
-                            <select id="animation-2" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                            <label for="animation-2-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 2:</b></label>
+                            <select id="animation-2-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
                                 <option value="{{ fg }}">{{ fg }}</option>
                                 {% endfor %}
                             </select>
-                             <div id="preview-animation-2" class=" flex flex-row self-start" style="display: none;">
+                             <div id="preview-animation-2-1" class=" flex flex-row self-start" style="display: none;">
                                 <div class="flex self-start item-center">
                                     <div class="grid">
                                         <table class="no-spacing" cellspacing="0" border="0">
-                                            <tbody id="preview-2">
+                                            <tbody id="preview-2-1">
                                             </tbody>
                                         </table>
                                     </div>
@@ -101,18 +101,18 @@
                     </section>
                     <section class="flex w-full flex-row gap-1 animations-section gap-1">
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-3" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 3:</b></label>
-                            <select id="animation-3" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                            <label for="animation-3-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 3:</b></label>
+                            <select id="animation-3-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
                                 <option value="{{ fg }}">{{ fg }}</option>
                                 {% endfor %}
                             </select>
-                             <div id="preview-animation-3" class=" flex flex-row self-start" style="display: none;">
+                             <div id="preview-animation-3-1" class=" flex flex-row self-start" style="display: none;">
                                 <div class="flex self-start item-center mx-auto">
                                     <div class="grid">
                                         <table class="no-spacing" cellspacing="0" border="0">
-                                            <tbody id="preview-3">
+                                            <tbody id="preview-3-1">
                                             </tbody>
                                         </table>
                                     </div>
@@ -120,29 +120,23 @@
                              </div>
                         </div>
                         <div class="flex flex-col w-1/2 animation-items">
-                            <label for="animation-4" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 4:</b></label>
-                            <select id="animation-4" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                            <label for="animation-4-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 4:</b></label>
+                            <select id="animation-4-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                                 <option value="none" selected>None Selected</option>
                                 {% for fg in foreground %}
                                 <option value="{{ fg }}">{{ fg }}</option>
                                 {% endfor %}
                             </select>
-                             <div id="preview-animation-4" class=" flex flex-row self-start" style="display: none;">
+                             <div id="preview-animation-4-1" class=" flex flex-row self-start" style="display: none;">
                                 <div class="flex self-start item-center">
                                     <div class="grid">
                                         <table class="no-spacing" cellspacing="0" border="0">
-                                            <tbody id="preview-4">
+                                            <tbody id="preview-4-1">
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                              </div>
-                        </div>
-                    </section>
-                    <section class="flex w-full flex-row gap-1 time-section gap-1">
-                        <div class="flex flex-col w-full text-center">
-                            <label for="animation-duration" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation duration time (in ms):</b></label>
-                            <input type="number" id="animation-duration" min=50 class="">
                         </div>
                     </section>
                 </div>

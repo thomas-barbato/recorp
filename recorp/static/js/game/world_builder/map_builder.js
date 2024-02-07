@@ -15,26 +15,35 @@
             clone.id = "foreground-menu-" + parseInt(len_element + 1);
             clone.querySelector('input[type=radio]').id = "coord-radio-button-" + parseInt(len_element + 1);
             clone.querySelector('.size-x > input').id = "size-x-" + parseInt(len_element + 1);
+            clone.querySelector('#size-x-' + parseInt(len_element + 1)).value = 0;
             clone.querySelector('.size-y > input').id = "size-y-" + parseInt(len_element + 1);
+            clone.querySelector('#size-y-' + parseInt(len_element + 1)).value = 0;
             clone.querySelector('.coord-x > input').id = "coord-x-" + parseInt(len_element + 1);
+            clone.querySelector('#coord-x-' + parseInt(len_element + 1)).value = 0;
             clone.querySelector('.coord-y > input').id = "coord-y-" + parseInt(len_element + 1);
+            clone.querySelector('#coord-y-' + parseInt(len_element + 1)).value = 0;
+            clone.querySelector("#size-help-text").style.display = "block";
+            clone.querySelector(".animations").style.display = "none";
+            for(let i = 1; i <= 4 ; i++){
+                clone.querySelector("#animation-" + i + "-1").id = "animation-" + i + "-" + parseInt(len_element + 1);
+                clone.querySelector("#preview-" + i + "-1").id = "preview-" + i + "-" + parseInt(len_element + 1);
+                clone.querySelector("#preview-animation-" + i + "-1").id = "preview-animation-" + i + "-" + parseInt(len_element + 1);
+                clone.querySelector("#preview-" + i + "-" + parseInt(len_element + 1)).innerHTML = "";
+            }
             let last_element = Array.from(document.querySelectorAll('.foreground-menu-item')).pop();
             last_element.after(clone);
+
+            document.querySelector('#size-x-' + parseInt(len_element + 1)).addEventListener('change', display_animation_parameter);
+            document.querySelector('#size-y-' + parseInt(len_element + 1)).addEventListener('change', display_animation_parameter);
+
+            let animation_selection = document.querySelectorAll('.animation-selection')
+            for(let i = 0; i < animation_selection.length; i++){
+                animation_selection[i].addEventListener('change', display_animation_preview);
+            }
+
+
         }else{
             document.querySelector('#foreground-menu').appendChild(element)
-        }
-
-        let size_x_input = document.querySelectorAll(".size-x");
-        let size_y_input = document.querySelectorAll(".size-y");
-        let animation_selection = document.querySelectorAll(".animation-selection");
-
-        for(let i = 0; i < size_x_input.length; i++){
-            size_x_input[i].querySelector('input[type=number]').addEventListener('change', display_animation_parameter)
-            size_y_input[i].querySelector('input[type=number]').addEventListener('change', display_animation_parameter)
-        }
-
-        for(let i = 0; i < animation_selection.length; i++){
-            animation_selection[i].addEventListener('change', display_animation_preview);
         }
     }
 
@@ -47,8 +56,9 @@
             for(let i = 0 ; i < radio_btn.length ; i++){
                 if (radio_btn[i].checked) {
                     id = parseInt(radio_btn[i].id.split('-')[3]);
-                    document.querySelector('#foreground-menu-'+id+' > div.coord_size > section.coord > div.coord-x > input').value = parseInt(value[0]);
-                    document.querySelector('#foreground-menu-'+id+' > div.coord_size > section.coord > div.coord-y > input').value = parseInt(value[1]);
+                    let foreground_menu = document.querySelector('#foreground-menu-'+id);
+                    foreground_menu.querySelector('div.coord-x > input').value = parseInt(value[0]);
+                    foreground_menu.querySelector('div.coord-y > input').value = parseInt(value[1]);
                     break;
                 }
             }
@@ -82,16 +92,14 @@
         }
     }
 
-    let size_x_input = document.querySelector("#size-x-1");
-    let size_y_input = document.querySelector("#size-y-1");
-    size_x_input.addEventListener('change', display_animation_parameter);
-    size_y_input.addEventListener('change', display_animation_parameter);
-
     let display_animation_preview = function(e){
-        let element = this.parentNode.parentNode.parentNode.parentNode;
-        let id_i = e.target.id.split('-')[1];
+        let element = this.parentNode.parentNode.parentNode;
+        let id_i = e.target.id.split('-')[2];
+        let animation_number = e.target.id.split('-')[1];
+        let row = document.querySelector("#size-y-" + id_i).value;
+        let col = document.querySelector("#size-x-" + id_i).value;
         let directory = e.target.value;
-        element.querySelector("#preview-"+id_i).innerHTML = "";
+        document.querySelector('#preview-'+animation_number+'-'+id_i).innerHTML = "";
 
         if(directory !== "none"){
             let animation_i = 0;
@@ -99,16 +107,15 @@
             let td = "";
             let table = "";
 
-            for(let row_i = 0; row_i < size_y; row_i++){
+            for(let row_i = 0; row_i < row; row_i++){
 
-                table = element.querySelector('#preview-'+id_i)
+                table = element.querySelector('#preview-'+animation_number+'-'+id_i)
                 tr = document.createElement('tr');
                 tr.classList.add('rows');
 
-                for(let col_i = 0; col_i < size_x; col_i++){
+                for(let col_i = 0; col_i < col; col_i++){
                     let bg_url = '/static/img/atlas/foreground/' + directory + '/' + animation_i + '.png';
                     td = document.createElement('td');
-                    div = document.createElement('div');
 
                     td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5");
                     td.style.backgroundImage = "url('" + bg_url + "')";
@@ -119,12 +126,19 @@
                 }
 
             }
-            element.querySelector('#preview-animation-'+id_i).style.display = "block";
+            element.querySelector('#preview-animation-'+animation_number+'-'+id_i).style.display = "block";
         }else{
-            element.querySelector('#preview-animation-'+id_i).style.display = "none";
+            element.querySelector('#preview-animation-'+animation_number+'-'+id_i).style.display = "none";
         }
     }
 
+
+    let animation_selection = document.querySelectorAll('.animation-selection')
+    for(let i = 0; i < animation_selection.length; i++){
+        animation_selection[i].addEventListener('change', display_animation_preview);
+    }
+    document.querySelector("#size-x-1").addEventListener('change', display_animation_parameter);
+    document.querySelector("#size-y-1").addEventListener('change', display_animation_parameter);
 
     function add_background(folder_name){
         let cell = 0;
@@ -175,7 +189,6 @@
 
     function add_foreground_tiles(animation_array, cell, row, col){
         for(let animation in animation_array){
-            console.log("ok");
             let fg_animation = document.createElement('img');
             let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation] + '/' + cell + '.png';
             fg_animation.src = fg_animation_url;
@@ -191,20 +204,18 @@
             if(container_element.length > 1){
                 let container_i_length = parseInt(container_element.length);
                 let children_i_length = parseInt(container_element[0].childElementCount);
-                console.log("children_i_length: " + children_i_length);
                 for(let children_i = 0; children_i < children_i_length; children_i++){
                     for(let container_i = 0; container_i < container_i_length ; container_i++){
-                        console.log("container nb: "+ container_i + " child nb: " + children_i);
                         if(children_i > 0){
-                            container_element[parseInt(container_i - 1)].children[children_i].style.display = "none";
+                            container_element[container_i].children[(children_i-1)].style.display = "none";
                             container_element[container_i].children[children_i].style.display = "block";
 
                         }else{
-                            if(container_element[(container_i_length - 1)].children[(children_i_length-1)].style.display == "block"){
-                                container_element[(container_i_length - 1)].children[(children_i_length-1)].style.display = "none";
+                            if(container_element[container_i].children[(children_i_length-1)].style.display == "block"){
+                                container_element[container_i].children[(children_i_length-1)].style.display = "none";
                                 container_element[container_i].children[children_i].style.display = "block";
                             }else{
-                                container_element[(container_i_length - 1)].children[children_i].style.display = "block";
+                                container_element[container_i_length].children[children_i].style.display = "block";
                             }
                         }
                     }
@@ -219,6 +230,7 @@
     let trash = document.querySelector('.trash-it');
     trash.addEventListener('click', function(){
         let parent = trash.parentNode.parentNode.parentNode;
+        console.log(parent);
         parent.remove();
     })
 
@@ -232,27 +244,33 @@
         add_background(bg_folder);
         for(let i = 0; i < fg_data.length ; i++){
             let id = fg_data[i].id.split('-')[2];
+            console.log(fg_data[i].id.split('-'));
             dict[i] = {
-                size_x: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.size > div.size-x > input#size-x-' + id).value),
-                size_y: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.size > div.size-y > input#size-y-' + id).value),
-                coord_x: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.coord > div.coord-x > input#coord-x-' + id).value) + 1,
-                coord_y: parseInt(fg_data[i].querySelector(':scope > div.coord_size > section.coord > div.coord-y > input#coord-y-' + id).value) + 1,
+                size_x: parseInt(fg_data[i].querySelector('input#size-x-' + id).value),
+                size_y: parseInt(fg_data[i].querySelector('input#size-y-' + id).value),
+                coord_x: parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1,
+                coord_y: parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1,
                 animations: [
-                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-1').value,
-                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-2').value,
-                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-3').value,
-                    fg_data[i].querySelector(':scope > div.animations > section.animations-section > div.animation-items > select#animation-4').value,
+                    fg_data[i].querySelector('select#animation-1-'+ id).value,
+                    fg_data[i].querySelector('select#animation-2-'+ id).value,
+                    fg_data[i].querySelector('select#animation-3-'+ id).value,
+                    fg_data[i].querySelector('select#animation-4-'+ id).value,
                 ],
-                time_duration: parseInt(fg_data[i].querySelector(':scope > div.animations > section.time-section > div > input#animation-duration').value),
             }
         }
-        console.log(dict);
         set_foreground(dict);
-        let img_animation_index = 0;
-        let img_animation_len = document.querySelectorAll('img.animation').length;
+        let animation_container_index = 0;
         let animation_container_len = temporary_class_set.size;
         setInterval( function(){
-            animate_foreground_tiles();
+            if(animation_container_index < animation_container_len){
+                animation_container_index++;
+            }else{
+                animation_container_index = 0;
+            }
+            let container_element = document.querySelectorAll(temporary_class_set.getByIndex(animation_container_index));
+            for(let i = 0; i < container_element.length; i++){
+                console.log(container_element[i].length)
+            }
         }, "500");
 
     })
