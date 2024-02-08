@@ -1102,18 +1102,6 @@ video {
   width: 100%;
 }
 
-.w-\[100vw\] {
-  width: 100vw;
-}
-
-.w-\[80vw\] {
-  width: 80vw;
-}
-
-.w-\[vw\] {
-  width: vw;
-}
-
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -3821,10 +3809,6 @@ table.no-spacing {
 
   .xl\:h-\[50vh\] {
     height: 50vh;
-  }
-
-  .xl\:flex-row {
-    flex-direction: row;
   }
 
   .xl\:self-center {

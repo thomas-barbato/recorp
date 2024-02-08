@@ -4,45 +4,80 @@
     let size_y = "";
     let animation_tile_len = "";
     let temporary_class_set = new Set();
-    let dict = new Object();
+    let dict = [];
 
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
     function append_foreground_menu(element){
-        if(document.querySelectorAll('.foreground-menu-item').length){
-            len_element = document.querySelectorAll('.foreground-menu-item').length;
+        if(document.querySelectorAll('.foreground-menu-item').length > 0){
+            let fg_menu = document.querySelectorAll('.foreground-menu-item')
+            let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[2])+1;
             let clone = element.cloneNode(true);
-            clone.id = "foreground-menu-" + parseInt(len_element + 1);
-            clone.querySelector('input[type=radio]').id = "coord-radio-button-" + parseInt(len_element + 1);
-            clone.querySelector('.size-x > input').id = "size-x-" + parseInt(len_element + 1);
-            clone.querySelector('#size-x-' + parseInt(len_element + 1)).value = 0;
-            clone.querySelector('.size-y > input').id = "size-y-" + parseInt(len_element + 1);
-            clone.querySelector('#size-y-' + parseInt(len_element + 1)).value = 0;
-            clone.querySelector('.coord-x > input').id = "coord-x-" + parseInt(len_element + 1);
-            clone.querySelector('#coord-x-' + parseInt(len_element + 1)).value = 0;
-            clone.querySelector('.coord-y > input').id = "coord-y-" + parseInt(len_element + 1);
-            clone.querySelector('#coord-y-' + parseInt(len_element + 1)).value = 0;
+            clone.id = "foreground-menu-" + next_id_value;
+
+            let clone_radio = clone.querySelector('input[type=radio]')
+            clone_radio.id = "coord-radio-button-" + next_id_value;
+
+            let clone_size_x = clone.querySelector('.size-x > input');
+            clone_size_x.id = "size-x-" + next_id_value;
+            clone_size_x.value = 0;
+
+            let clone_size_y = clone.querySelector('.size-y > input');
+            clone_size_y.id = "size-y-" + next_id_value;
+            clone_size_y.value = 0;
+
+            let clone_coord_x = clone.querySelector('.coord-x > input');
+            clone_coord_x.id = "coord-x-" + next_id_value;
+            clone_coord_x.value = 0;
+
+            let clone_coord_y = clone.querySelector('.coord-y > input')
+            clone_coord_y.id = "coord-y-" + next_id_value;
+            clone_coord_y.value = 0;
+
             clone.querySelector("#size-help-text").style.display = "block";
             clone.querySelector(".animations").style.display = "none";
+            clone.querySelector(".trash-it").id = "trash-" + next_id_value;
+
             for(let i = 1; i <= 4 ; i++){
-                clone.querySelector("#animation-" + i + "-1").id = "animation-" + i + "-" + parseInt(len_element + 1);
-                clone.querySelector("#preview-" + i + "-1").id = "preview-" + i + "-" + parseInt(len_element + 1);
-                clone.querySelector("#preview-animation-" + i + "-1").id = "preview-animation-" + i + "-" + parseInt(len_element + 1);
-                clone.querySelector("#preview-" + i + "-" + parseInt(len_element + 1)).innerHTML = "";
+                let animation_selector = clone.querySelector("#animation-" + i + "-1");
+                animation_selector.id = "animation-" + i + "-" + next_id_value;
+                animation_selector.value = "none";
+
+                let preview_selector = clone.querySelector("#preview-" + i + "-1");
+                preview_selector.id = "preview-" + i + "-" + next_id_value;
+                preview_selector.innerHTML = "";
+
+                let preview_animation_selector = clone.querySelector("#preview-animation-" + i + "-1")
+                preview_animation_selector.id = "preview-animation-" + i + "-" + next_id_value;
             }
             let last_element = Array.from(document.querySelectorAll('.foreground-menu-item')).pop();
             last_element.after(clone);
 
-            document.querySelector('#size-x-' + parseInt(len_element + 1)).addEventListener('change', display_animation_parameter);
-            document.querySelector('#size-y-' + parseInt(len_element + 1)).addEventListener('change', display_animation_parameter);
+            document.querySelector('#size-x-' + next_id_value).addEventListener('change', display_animation_parameter);
+            document.querySelector('#size-y-' + next_id_value).addEventListener('change', display_animation_parameter);
+            document.querySelector('i#trash-'+ next_id_value).addEventListener('click', function(){
+                let parent = this.parentNode.parentNode.parentNode;
+                remove_animation(next_id_value);
+                parent.remove();
+            });
 
-            let animation_selection = document.querySelectorAll('.animation-selection')
+            let animation_selection = document.querySelectorAll('.animation-selection');
+
             for(let i = 0; i < animation_selection.length; i++){
                 animation_selection[i].addEventListener('change', display_animation_preview);
             }
-
-
         }else{
+            dict = [];
+            element.querySelector('#size-x-1').value = 0;
+            element.querySelector('#size-y-1').value = 0;
+            element.querySelector('#coord-x-1').value = 0;
+            element.querySelector('#coord-y-1').value = 0;
+            element.querySelector("#size-help-text").style.display = "block";
+            element.querySelector(".animations").style.display = "none";
+            for(let i = 1; i <= 4 ; i++){
+                element.querySelector("#preview-"+ i +"-1").innerHTML = "";
+                element.querySelector("#animation-" + i + "-1").value = "none";
+            }
             document.querySelector('#foreground-menu').appendChild(element)
         }
     }
@@ -73,6 +108,7 @@
         for(let i = 0; i < trash.length ; i++){
             trash[i].addEventListener('click', function(){
                 let parent = trash[i].parentNode.parentNode.parentNode;
+                remove_animation(parent.id.split('-')[2]);
                 parent.remove();
             })
         }
@@ -167,8 +203,8 @@
                 let cell = 0;
                 for(let row = dict[data_i]['coord_y']; row < dict[data_i]['coord_y'] + dict[data_i]['size_y']; row++){
                     for(let col = dict[data_i]['coord_x']; col < dict[data_i]['coord_x'] + dict[data_i]['size_x']; col++){
-                        document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container', 'animation-container-'+data_i);
-                        temporary_class_set.add('.animation-container-'+data_i);
+                        document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container', 'animation-container-'+(parseInt(data_i)+1));
+                        temporary_class_set.add('.animation-container-'+data_i+1);
                         add_foreground_tiles(animation_data, cell, row, col);
                         cell++;
                     }
@@ -185,6 +221,14 @@
                 tile[i].remove();
             }
         }
+    }
+
+    function remove_animation(id){
+        let element = document.querySelectorAll('.animation-container-'+id)
+        for(let i = 0; i < element.length; i++){
+            element[i].innerHTML = "";
+        }
+        dict = dict.slice(parseInt(id-1))
     }
 
     function add_foreground_tiles(animation_array, cell, row, col){
@@ -227,10 +271,10 @@
         }
     }
 
-    let trash = document.querySelector('.trash-it');
-    trash.addEventListener('click', function(){
-        let parent = trash.parentNode.parentNode.parentNode;
-        console.log(parent);
+    let trash = document.querySelectorAll('.trash-it');
+    trash[0].addEventListener('click', function(){
+        let parent = this.parentNode.parentNode.parentNode;
+        remove_animation(parent.id.split('-')[2]);
         parent.remove();
     })
 
@@ -244,7 +288,6 @@
         add_background(bg_folder);
         for(let i = 0; i < fg_data.length ; i++){
             let id = fg_data[i].id.split('-')[2];
-            console.log(fg_data[i].id.split('-'));
             dict[i] = {
                 size_x: parseInt(fg_data[i].querySelector('input#size-x-' + id).value),
                 size_y: parseInt(fg_data[i].querySelector('input#size-y-' + id).value),
