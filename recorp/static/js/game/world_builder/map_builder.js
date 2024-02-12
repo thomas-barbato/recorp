@@ -3,7 +3,8 @@
     let size_x = "";
     let size_y = "";
     let animation_tile_len = "";
-    let temporary_class_set = new Set();
+    let animation_container_set = new Set();
+    let animation_set = new Set();
     let dict = [];
 
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
@@ -204,8 +205,8 @@
                 for(let row = dict[data_i]['coord_y']; row < dict[data_i]['coord_y'] + dict[data_i]['size_y']; row++){
                     for(let col = dict[data_i]['coord_x']; col < dict[data_i]['coord_x'] + dict[data_i]['size_x']; col++){
                         document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container', 'animation-container-'+(parseInt(data_i)+1));
-                        temporary_class_set.add('.animation-container-'+data_i+1);
-                        add_foreground_tiles(animation_data, cell, row, col);
+                        animation_container_set.add('.animation-container-'+(parseInt(data_i)+1));
+                        add_foreground_tiles(animation_data, cell, row, col, dict[data_i]['size_x'], dict[data_i]['size_y']);
                         cell++;
                     }
                 }
@@ -231,44 +232,51 @@
         dict = dict.slice(parseInt(id-1))
     }
 
-    function add_foreground_tiles(animation_array, cell, row, col){
-        for(let animation in animation_array){
+    function add_foreground_tiles(animation_array, cell, row, col, size_x, size_y){
+        for(let animation_i = 0; animation_i < animation_array.length; animation_i++){
             let fg_animation = document.createElement('img');
-            let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation] + '/' + cell + '.png';
+            let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation_i] + '/' + cell + '.png';
             fg_animation.src = fg_animation_url;
-            fg_animation.style.display = "block";
             fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0');
+            if(size_y > 1 && size_y > 1){
+                fg_animation.style.display = "none";
+                fg_animation.classList.add('animation-'+animation_i);
+            }else{
+                fg_animation.style.display = "block";
+            }
+            animation_set.add('.animation-'+animation_i)
             document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
         }
     }
 
-    function animate_foreground_tiles(){
-        for(let i = 0; i < temporary_class_set.size; i++){
-            let container_element = document.querySelectorAll(temporary_class_set.getByIndex(i));
-            if(container_element.length > 1){
-                let container_i_length = parseInt(container_element.length);
-                let children_i_length = parseInt(container_element[0].childElementCount);
-                for(let children_i = 0; children_i < children_i_length; children_i++){
-                    for(let container_i = 0; container_i < container_i_length ; container_i++){
-                        if(children_i > 0){
-                            container_element[container_i].children[(children_i-1)].style.display = "none";
-                            container_element[container_i].children[children_i].style.display = "block";
-
-                        }else{
-                            if(container_element[container_i].children[(children_i_length-1)].style.display == "block"){
-                                container_element[container_i].children[(children_i_length-1)].style.display = "none";
-                                container_element[container_i].children[children_i].style.display = "block";
-                            }else{
-                                container_element[container_i_length].children[children_i].style.display = "block";
-                            }
-                        }
-                    }
-                    console.log("===============================")
+    function display_animation(timer="500"){
+        let temporary_class_len = animation_set.size;
+        let current_elements = "";
+        let previous_elements = "";
+        let index = 0;
+        setInterval( function(){
+            if(index === 0){
+                current_elements = document.querySelectorAll('.animation-'+index);
+                previous_elements = document.querySelectorAll('.animation-'+parseInt(temporary_class_len-1));
+                for(let i = 0; i < current_elements.length; i++){
+                    previous_elements[i].style.display = "none";
+                    current_elements[i].style.display = "block";
                 }
             }else{
-                container_element[0].children[0].style.display = "block";
+                current_elements = document.querySelectorAll('.animation-'+index);
+                previous_elements = document.querySelectorAll('.animation-'+parseInt(index-1));
+                for(let i = 0; i < current_elements.length; i++){
+                    previous_elements[i].style.display = "none";
+                    current_elements[i].style.display = "block";
+                }
             }
-        }
+            if(index < animation_set.size){
+                index++;
+            }else{
+                index = 0;
+            }
+        }, timer);
+
     }
 
     let trash = document.querySelectorAll('.trash-it');
@@ -302,18 +310,6 @@
             }
         }
         set_foreground(dict);
-        let animation_container_index = 0;
-        let animation_container_len = temporary_class_set.size;
-        setInterval( function(){
-            if(animation_container_index < animation_container_len){
-                animation_container_index++;
-            }else{
-                animation_container_index = 0;
-            }
-            let container_element = document.querySelectorAll(temporary_class_set.getByIndex(animation_container_index));
-            for(let i = 0; i < container_element.length; i++){
-                console.log(container_element[i].length)
-            }
-        }, "500");
+        display_animation("1000");
 
     })
