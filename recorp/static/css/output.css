@@ -3248,6 +3248,11 @@ table.no-spacing {
   /* Optional - if you don't want to have double border where cells touch */
 }
 
+.no-borders{
+  border:0;
+  border-spacing:0;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

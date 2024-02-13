@@ -154,7 +154,7 @@
                     let bg_url = '/static/img/atlas/foreground/' + directory + '/' + animation_i + '.png';
                     td = document.createElement('td');
 
-                    td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5");
+                    td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
                     td.style.backgroundImage = "url('" + bg_url + "')";
 
                     tr.appendChild(td)
@@ -237,7 +237,7 @@
             let fg_animation = document.createElement('img');
             let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation_i] + '/' + cell + '.png';
             fg_animation.src = fg_animation_url;
-            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0');
+            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'no-borders');
             if(size_y > 1 && size_y > 1){
                 fg_animation.style.display = "none";
                 fg_animation.classList.add('animation-'+animation_i);
@@ -255,24 +255,19 @@
         let previous_elements = "";
         let index = 0;
         setInterval( function(){
+            current_elements = document.querySelectorAll('.animation-'+index);
+            previous_elements = document.querySelectorAll('.animation-'+parseInt(index-1));
             if(index === 0){
                 current_elements = document.querySelectorAll('.animation-'+index);
                 previous_elements = document.querySelectorAll('.animation-'+parseInt(temporary_class_len-1));
-                for(let i = 0; i < current_elements.length; i++){
-                    previous_elements[i].style.display = "none";
-                    current_elements[i].style.display = "block";
-                }
-            }else{
-                current_elements = document.querySelectorAll('.animation-'+index);
-                previous_elements = document.querySelectorAll('.animation-'+parseInt(index-1));
-                for(let i = 0; i < current_elements.length; i++){
-                    previous_elements[i].style.display = "none";
-                    current_elements[i].style.display = "block";
-                }
             }
-            if(index < animation_set.size){
-                index++;
-            }else{
+
+            for(let i = 0; i < current_elements.length; i++){
+                previous_elements[i].style.display = "none";
+                current_elements[i].style.display = "block";
+            }
+            index++;
+            if(index >= animation_set.size){
                 index = 0;
             }
         }, timer);
@@ -310,6 +305,6 @@
             }
         }
         set_foreground(dict);
-        display_animation("1000");
+        display_animation("250");
 
     })

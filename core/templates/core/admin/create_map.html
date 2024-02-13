@@ -71,7 +71,7 @@
                              <div id="preview-animation-1-1" class=" flex flex-row self-start" style="display: none;">
                                 <div class="flex self-start item-center">
                                     <div class="grid">
-                                        <table class="no-spacing" cellspacing="0" border="0">
+                                        <table class="no-borders" cellspacing="0" border="0">
                                             <tbody id="preview-1-1">
                                             </tbody>
                                         </table>
@@ -154,15 +154,15 @@
                         <tbody>
                             {% for row in map_size_range.rows %}
                                 {% if forloop.first %}
-                                <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 text-center align-middle no-spacing">0:0</td>
+                                <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 text-center align-middle no-borders">0:0</td>
                                     {% for col in map_size_range.cols %}
-                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle no-spacing">{{ col }}</td>
+                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle no-borders">{{ col }}</td>
                                     {% endfor %}
                                 {% endif %}
                                 <tr class="rows">
-                                    <td class="bg-gray-800/40 text-emerald-300 w-[32px] h-[32px] p-0 z-5 align-middle text-center no-spacing">{{ row }}</td>
+                                    <td class="bg-gray-800/40 text-emerald-300 w-[32px] h-[32px] p-0 z-5 align-middle text-center no-borders">{{ row }}</td>
                                 {% for col in map_size_range.cols %}
-                                    <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile" title="x: {{col}}, y: {{row}}" id="{{col}}_{{row}}" style="">
+                                    <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="x: {{col}}, y: {{row}}" id="{{col}}_{{row}}" style="">
                                         <div class="relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10">
                                         </div>
                                     </td>
@@ -176,7 +176,9 @@
         </div>
     </div>
 </div>
-<script src="{% static 'world_builder/map_builder.js' %}">
+
+
+<script src="{% static 'world_builder/map_builder.js' %}" type="text/javascript">
 </script>
 {% endblock %}
 
