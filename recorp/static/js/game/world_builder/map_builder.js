@@ -1,4 +1,4 @@
-    let element = document.querySelector('#foreground-menu-1');
+    let element = document.querySelector('#foreground-menu-container-1');
     let tiles = "";
     let size_x = "";
     let size_y = "";
@@ -10,11 +10,14 @@
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
     function append_foreground_menu(element){
-        if(document.querySelectorAll('.foreground-menu-item').length > 0){
-            let fg_menu = document.querySelectorAll('.foreground-menu-item')
-            let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[2])+1;
+        if(document.querySelectorAll('.foreground-menu-container').length > 0){
+            let fg_menu = document.querySelectorAll('.foreground-menu-container')
+            let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
             let clone = element.cloneNode(true);
-            clone.id = "foreground-menu-" + next_id_value;
+            clone.id = "foreground-menu-container-" + next_id_value;
+
+            let clone_foreground_menu = clone.querySelector('.foreground-menu-item')
+            clone_foreground_menu.id = "foreground-menu-item-" + next_id_value;
 
             let clone_radio = clone.querySelector('input[type=radio]')
             clone_radio.id = "coord-radio-button-" + next_id_value;
@@ -51,7 +54,7 @@
                 let preview_animation_selector = clone.querySelector("#preview-animation-" + i + "-1")
                 preview_animation_selector.id = "preview-animation-" + i + "-" + next_id_value;
             }
-            let last_element = Array.from(document.querySelectorAll('.foreground-menu-item')).pop();
+            let last_element = Array.from(document.querySelectorAll('.foreground-menu-container')).pop();
             last_element.after(clone);
 
             document.querySelector('#size-x-' + next_id_value).addEventListener('change', display_animation_parameter);
@@ -92,7 +95,7 @@
             for(let i = 0 ; i < radio_btn.length ; i++){
                 if (radio_btn[i].checked) {
                     id = parseInt(radio_btn[i].id.split('-')[3]);
-                    let foreground_menu = document.querySelector('#foreground-menu-'+id);
+                    let foreground_menu = document.querySelector('#foreground-menu-container-'+id);
                     foreground_menu.querySelector('div.coord-x > input').value = parseInt(value[0]);
                     foreground_menu.querySelector('div.coord-y > input').value = parseInt(value[1]);
                     break;
@@ -108,16 +111,16 @@
 
         for(let i = 0; i < trash.length ; i++){
             trash[i].addEventListener('click', function(){
-                let parent = trash[i].parentNode.parentNode.parentNode;
-                remove_animation(parent.id.split('-')[2]);
-                parent.remove();
+                let parent = trash[i].id.split('-')[1]
+                document.querySelector('#foreground-menu-container-'+parent).remove();
+                remove_animation(parent);
             })
         }
     })
 
     let display_animation_parameter = function(){
         let id = this.id.split('-')[2];
-        let foreground_menu = document.querySelector('#foreground-menu-' + id)
+        let foreground_menu = document.querySelector('#foreground-menu-container-' + id)
         size_x = document.querySelector("#size-x-" + id).value;
         size_y = document.querySelector("#size-y-" + id).value;
         if(size_x > 0 && size_y > 0){
@@ -250,18 +253,14 @@
     }
 
     function display_animation(timer="500"){
-        let temporary_class_len = animation_set.size;
+        let animation_set_len = animation_set.size;
         let current_elements = "";
         let previous_elements = "";
         let index = 0;
         setInterval( function(){
-            current_elements = document.querySelectorAll('.animation-'+index);
-            previous_elements = document.querySelectorAll('.animation-'+parseInt(index-1));
-            if(index === 0){
-                current_elements = document.querySelectorAll('.animation-'+index);
-                previous_elements = document.querySelectorAll('.animation-'+parseInt(temporary_class_len-1));
-            }
-
+            const previousIndex = index === 0 ? animation_set_len - 1 : index - 1
+            current_elements = document.querySelectorAll('.animation-'+ index);
+            previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
             for(let i = 0; i < current_elements.length; i++){
                 previous_elements[i].style.display = "none";
                 current_elements[i].style.display = "block";
@@ -276,9 +275,9 @@
 
     let trash = document.querySelectorAll('.trash-it');
     trash[0].addEventListener('click', function(){
-        let parent = this.parentNode.parentNode.parentNode;
-        remove_animation(parent.id.split('-')[2]);
-        parent.remove();
+        let parent = this.id.split('-')[1]
+        document.querySelector('#foreground-menu-container-'+parent).remove();
+        remove_animation(parent);
     })
 
 
@@ -286,11 +285,11 @@
 
     preview.addEventListener('click', function() {
         clear_foreground();
-        let fg_data = document.querySelectorAll('.foreground-menu-item');
+        let fg_data = document.querySelectorAll('.foreground-menu-container');
         let bg_folder = document.getElementById("background").value;
         add_background(bg_folder);
         for(let i = 0; i < fg_data.length ; i++){
-            let id = fg_data[i].id.split('-')[2];
+            let id = fg_data[i].id.split('-')[3];
             dict[i] = {
                 size_x: parseInt(fg_data[i].querySelector('input#size-x-' + id).value),
                 size_y: parseInt(fg_data[i].querySelector('input#size-y-' + id).value),

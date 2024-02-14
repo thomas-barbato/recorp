@@ -157,7 +157,6 @@ STATICFILES_DIRS = [
     ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
     ("img", os.path.join(BASE_DIR, "recorp", "static", "img")),
     ("world_builder", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder")),
-    ("animations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder", "animations")),
     ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
     ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
     ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations")),
