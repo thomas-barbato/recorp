@@ -69,6 +69,12 @@ class CustomAdminSite(admin.AdminSite):
                         "view_only": True,
                     },
                     {
+                        "name": "create foreground item",
+                        "object_name": "create foreground item",
+                        "admin_url": "/admin/create_foreground_item/",
+                        "view_only": True,
+                    },
+                    {
                         "name": "create map",
                         "object_name": "create map",
                         "admin_url": "/admin/create_map",
@@ -93,6 +99,11 @@ class CustomAdminSite(admin.AdminSite):
                 name="crop-image",
             ),
             re_path(
+                r"^create_foreground_item/$",
+                self.admin_view(CreateForegroundItemView.as_view()),
+                name="create-foreground-item",
+            ),
+            re_path(
                 r"^create_map/$",
                 self.admin_view(CreateMapView.as_view()),
                 name="create-map",
@@ -113,11 +124,35 @@ class CropImageView(TemplateView):
         form = CropImageForm(request.POST, request.FILES)
         if form.is_valid():
             category = form.cleaned_data.get("category")
+            type = form.cleaned_data.get("type")
             img = request.FILES["img_input"]
             file_directory_name = form.cleaned_data.get("file_directory_name")
-            CropThisImage(img, category, file_directory_name).crop_and_save()
+            CropThisImage(img, category, type, file_directory_name).crop_and_save()
             messages.success(self.request, "Success")
         return HttpResponseRedirect(request.path)
+
+
+class CreateForegroundItemView(TemplateView):
+    template_name = "create_foreground_item.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["item_choice"] = ["planet", "asteroid", "station"]
+        context["planet_dir"] = os.listdir(
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", "planet")
+        )
+        context["asteroid_dir"] = os.listdir(
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", "asteroid")
+        )
+        context["station_dir"] = os.listdir(
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", "station")
+        )
+        context["size"] = [
+            {"planet": {"size_x": 4, "size_y": 4}},
+            {"station": {"size_x": 3, "size_y": 3}},
+            {"asteroid": {"size_x": 1, "size_y": 1}},
+        ]
+        return context
 
 
 class CreateMapView(TemplateView):

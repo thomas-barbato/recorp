@@ -1,0 +1,120 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
+<script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'tailwind/flowbite.min.js' %}"></script>
+{{ size|json_script:"script_size" }}
+{{ planet_dir|json_script:"script_planet" }}
+{{ station_dir|json_script:"script_station" }}
+{{ asteroid_dir|json_script:"script_asteroid" }}
+
+<div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center w-[100vh]">
+    <form class="flex flex-col items-center w-2/3" method="POST" action="">
+        <div class="flex flex-col w-full m-0 p-0">
+            <div class="foreground-item-type-choice">
+                <h2 class="font-bold mb-2">Chose what you want to create</h2>
+                {% for item in item_choice %}
+                <div class="flex item-start">
+                    <input id="default-radio-1" type="radio" value="{{item}}" name="item-type-choice-section" class="m-0 p-0 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{item}}</label>
+                </div>
+                {% endfor %}
+            </div>
+             <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations" style="display:none">
+                <section class="flex w-full flex-row animations-section gap-1">
+                    <div class="flex flex-col w-1/2 animation-items">
+                        <label for="animation-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 1:</b></label>
+                        <select id="animation-1" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                        </select>
+                         <div id="preview-animation-1" class=" flex flex-row self-start" style="display: none;">
+                            <div class="flex self-start item-center">
+                                <div class="grid">
+                                    <table class="no-borders" cellspacing="0" border="0">
+                                        <tbody id="preview-1">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="flex flex-col w-1/2 animation-items">
+                        <label for="animation-2" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 2:</b></label>
+                        <select id="animation-2" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                        </select>
+                         <div id="preview-animation-2" class=" flex flex-row self-start" style="display: none;">
+                            <div class="flex self-start item-center">
+                                <div class="grid">
+                                    <table class="no-spacing" cellspacing="0" border="0">
+                                        <tbody id="preview-2">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </section>
+                <section class="flex w-full flex-row gap-1 animations-section gap-1">
+                    <div class="flex flex-col w-1/2 animation-items">
+                        <label for="animation-3" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 3:</b></label>
+                        <select id="animation-3" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                        </select>
+                         <div id="preview-animation-3" class=" flex flex-row self-start" style="display: none;">
+                            <div class="flex self-start item-center mx-auto">
+                                <div class="grid">
+                                    <table class="no-spacing" cellspacing="0" border="0">
+                                        <tbody id="preview-3">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="flex flex-col w-1/2 animation-items">
+                        <label for="animation-4" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 4:</b></label>
+                        <select id="animation-4" class="mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                        </select>
+                         <div id="preview-animation-4" class=" flex flex-row self-start" style="display: none;">
+                            <div class="flex self-start item-center">
+                                <div class="grid">
+                                    <table class="no-spacing" cellspacing="0" border="0">
+                                        <tbody id="preview-4">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <section class=" mt-3">
+            <div class="flex justify-center items-center gap-1">
+                <input type="button" id="preview-btn" value="preview">
+                <input type="submit" value="submit" class="text-red-400">
+            </div>
+        </section>
+    </form>
+    <div class="flex flex-col items-center">
+        <div id="display-preview" class=" flex flex-row self-start">
+            <div class="flex self-start item-center">
+                <div class="grid">
+                    <table class="tabletop-view no-spacing" cellspacing="0" border="0">
+                        <tbody id="preview">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'world_builder/create_foreground_item.js' %}" type="text/javascript">
+</script>
+{% endblock %}
+
+<!-- hide sidebar -->
+{% block sidebar  %}
+{% endblock %}

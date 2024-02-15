@@ -23,81 +23,57 @@ class UserPurchase(models.Model):
 
 
 class Map(models.Model):
-
-    name = models.CharField(max_length=30, null=False, blank=False, default="Default map")
-    map = models.JSONField()
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.data.name}"
 
 
 class Resource(models.Model):
-    RARITY_CHOICES = (
-        ("COMMON", "commune"),
-        ("UNUSUAL", "peu commune"),
-        ("RARE", "rare"),
-        ("VERY_RARE", "tres rare"),
-    )
-    name = models.CharField(max_length=30, null=False, blank=False, default="Resource")
-    image = models.ImageField(upload_to="resource/", null=True, blank=True)
-    description = models.TextField(max_length=2500, blank=True)
-    rarity = models.CharField(
-        max_length=10, choices=RARITY_CHOICES, default=RARITY_CHOICES[0]
-    )
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.data}"
 
 
 class Planet(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Planet")
-    image = models.ImageField(upload_to="planet/", null=True, blank=True)
-    description = models.TextField(max_length=2500, blank=True)
-    coordinates = models.JSONField()
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField(default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.data.name}"
 
 
 class Station(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Station")
-    image = models.ImageField(upload_to="station/", null=True, blank=True)
-    description = models.TextField(max_length=2500, blank=True)
-    coordinates = models.JSONField()
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.data.name}"
 
 
 class Asteroid(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Asteroid")
-    image = models.ImageField(upload_to="asteroid/", null=True, blank=True)
-    description = models.TextField(max_length=2500, blank=True)
-    coordinates = models.JSONField()
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.data.name}"
 
 
 class Faction(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
-    image = models.ImageField(upload_to="faction/", null=True, blank=True)
-    description = models.TextField(max_length=2500, blank=True)
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.data.name}"
 
 
 class Player(models.Model):

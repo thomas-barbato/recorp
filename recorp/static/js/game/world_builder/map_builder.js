@@ -289,10 +289,8 @@
         let bg_folder = document.getElementById("background").value;
         add_background(bg_folder);
         for(let i = 0; i < fg_data.length ; i++){
-            let id = fg_data[i].id.split('-')[3];
+            let id = fg_data[i].id.split('-')[2];
             dict[i] = {
-                size_x: parseInt(fg_data[i].querySelector('input#size-x-' + id).value),
-                size_y: parseInt(fg_data[i].querySelector('input#size-y-' + id).value),
                 coord_x: parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1,
                 coord_y: parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1,
                 animations: [

@@ -5,14 +5,21 @@ import os
 
 
 class CropThisImage:
-    def __init__(self, file, category: str, directory_name: str, size=32):
+    def __init__(self, file, category: str, type: str, directory_name: str, size=32):
         self.file = Image.open(file)
         self.size = size
+        self.type = type
         self.category = category.lower()
         self.directory_name = directory_name
-        self.parent_path = Path(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", self.category)
-        )
+        if self.category == "foreground":
+            self.parent_path = Path(
+                os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", self.category, self.type)
+            )
+        else:
+            self.parent_path = Path(
+                os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", self.category)
+            )
+
         self.save_path = ""
 
     def __get_and_create_dir(self):
