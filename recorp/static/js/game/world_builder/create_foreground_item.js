@@ -10,6 +10,7 @@ let col = 0;
 let row = 0;
 
 let display_animation_file_choice = function(){
+    reset_field();
     fg_item = this.value;
     switch(fg_item){
         case "planet":
@@ -35,7 +36,6 @@ let display_animation_file_choice = function(){
 let display_animation_preview = function(e){
     let element = this.parentNode.parentNode.parentNode;
     let animation_number = e.target.id.split('-')[1];
-    console.log(animation_number)
     let directory = e.target.value;
     document.querySelector('#preview-'+animation_number).innerHTML = "";
 
@@ -71,11 +71,16 @@ let display_animation_preview = function(e){
 }
 
 function append_select_field(array){
-    array.unshift("none");
     for(let a = 0; a < animation_selection.length; a++){
         if(animation_selection[a].length > 0){
             animation_selection[a].innerHTML = "";
         }
+
+        let opt_none = document.createElement('option');
+        opt_none.value = "none";
+        opt_none.innerHTML = "none";
+        animation_selection[a].appendChild(opt_none);
+
         for(let i = 0; i < array.length; i++){
             let opt = document.createElement('option');
             opt.value = array[i];
@@ -86,9 +91,20 @@ function append_select_field(array){
     }
 }
 
+function reset_field(){
+    let select = document.querySelectorAll('select');
+    let table = document.querySelectorAll('tbody');
+    console.log(table.length)
+    for(let i = 0; i < select.length; i++){
+        select[i].innerHTML = "";
+        table[i].innerHTML = "";
+    }
+}
+
 for(let i = 0; i < fg_item_choice.length; i++){
     fg_item_choice[i].addEventListener('click', display_animation_file_choice);
 }
+
 function create_table(){
     for(let row_i = 0 ; row_i < row ; row_i++){
         let table = document.querySelector('#preview')
@@ -100,7 +116,16 @@ function create_table(){
             td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
 
             let div = document.createElement('div');
-            div.classList.add('relative', 'w-[32px]', 'h-[32px]', 'hover:border', 'hover:border-amber-400', 'border-dashed', 'block', 'hover:bg-slate-300/10');
+            div.classList.add(
+                'relative',
+                'w-[32px]',
+                'h-[32px]',
+                'hover:border',
+                'hover:border-amber-400',
+                'border-dashed',
+                'block',
+                'hover:bg-slate-300/10'
+            );
             td.appendChild(div)
 
             tr.appendChild(td)
@@ -122,7 +147,16 @@ function add_image_to_preview(){
                 let img = document.createElement('img');
                 let img_url = '/static/img/atlas/foreground/' + fg_item + '/' + animation_array[animation] + '/' + animation_i + '.png';
                 img.src = img_url;
-                img.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'no-borders', 'animation-'+animation);
+                img.classList.add(
+                    'animation',
+                    'z-2',
+                    'absolute',
+                    'm-auto',
+                    'left-0',
+                    'right-0',
+                    'no-borders',
+                    'animation-'+animation
+                );
                 document.querySelector('.tabletop-view').rows[row_i].cells[col_i].querySelector('div').append(img);
                 animation_i++;
             }
@@ -133,24 +167,23 @@ function add_image_to_preview(){
 }
 
 function display_animation(timer="500"){
-        let animation_array_len = animation_array.length;
-        let current_elements = "";
-        let previous_elements = "";
-        let index = 0;
-        setInterval( function(){
-            const previousIndex = index === 0 ? animation_array_len - 1 : index - 1
-            current_elements = document.querySelectorAll('.animation-'+ index);
-            previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
-            for(let i = 0; i < current_elements.length; i++){
-                previous_elements[i].style.display = "none";
-                current_elements[i].style.display = "block";
-            }
-            index++;
-            if(index >= animation_array_len){
-                index = 0;
-            }
-        }, timer);
-
+    let animation_array_len = animation_array.length;
+    let current_elements = "";
+    let previous_elements = "";
+    let index = 0;
+    setInterval( function(){
+        const previousIndex = index === 0 ? animation_array_len - 1 : index - 1
+        current_elements = document.querySelectorAll('.animation-'+ index);
+        previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
+        for(let i = 0; i < current_elements.length; i++){
+            previous_elements[i].style.display = "none";
+            current_elements[i].style.display = "block";
+        }
+        index++;
+        if(index >= animation_array_len){
+            index = 0;
+        }
+    }, timer);
 }
 
 let preview_btn = document.querySelector('#preview-btn');

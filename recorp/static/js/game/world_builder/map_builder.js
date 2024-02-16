@@ -253,6 +253,9 @@
     }
 
     function display_animation(timer="500"){
+        for(let i = 0 ; i <= 4 ; i++){
+            document.querySelector('#preview-'+i).innerHTML = "";
+        }
         let animation_set_len = animation_set.size;
         let current_elements = "";
         let previous_elements = "";
