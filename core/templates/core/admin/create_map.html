@@ -7,6 +7,13 @@
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
+{{ size|json_script:"script_size" }}
+{{ planet_url|json_script:"script_planet_url" }}
+{{ station_url|json_script:"script_station_url" }}
+{{ asteroid_url|json_script:"script_asteroid_url"|safe }}
+{{ planets|json_script:"script_planets"|safe }}
+{{ stations|json_script:"script_stations"|safe }}
+{{ asteroids|json_script:"script_asteroids"|safe }}
 
 <div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
     <div class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start">

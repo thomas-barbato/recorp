@@ -1,4 +1,12 @@
     let element = document.querySelector('#foreground-menu-container-1');
+    const size = JSON.parse(document.getElementById('script_size').textContent);
+    const planet_url = JSON.parse(document.getElementById('script_planet_url').textContent);
+    const station_url = JSON.parse(document.getElementById('script_station_url').textContent);
+    const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').textContent);
+    const planets = JSON.parse(document.getElementById('script_planets').textContent);
+    const stations = JSON.parse(document.getElementById('script_stations').textContent);
+    const asteroids = JSON.parse(document.getElementById('script_asteroids').textContent);
+    let fg_item_choice = document.querySelectorAll('input[name=item-type-choice-section]');
     let tiles = "";
     let size_x = "";
     let size_y = "";
@@ -7,6 +15,8 @@
     let animation_set = new Set();
     let dict = [];
 
+    let xyz = JSON.parse(planets)[0]["fields"]["data"]
+    console.log(xyz)
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
     function append_foreground_menu(element){

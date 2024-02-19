@@ -1,7 +1,7 @@
 const size = JSON.parse(document.getElementById('script_size').textContent);
-const planet_dir = JSON.parse(document.getElementById('script_planet').textContent);
-const station_dir = JSON.parse(document.getElementById('script_station').textContent);
-const asteroid_dir = JSON.parse(document.getElementById('script_asteroid').textContent);
+const planet_url = JSON.parse(document.getElementById('script_planet_url').textContent);
+const station_url = JSON.parse(document.getElementById('script_station_url').textContent);
+const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').textContent);
 let fg_item_choice = document.querySelectorAll('input[name=item-type-choice-section]');
 let animation_selection = document.querySelectorAll('.animation-selection');
 let animation_array = []
@@ -9,21 +9,39 @@ let fg_item = "";
 let col = 0;
 let row = 0;
 
+
+var msg_element = document.querySelector('.messagelist');
+
+function fadeOut(el) {
+  var opacity = 1; // Initial opacity
+  var interval = setInterval(function() {
+     if (opacity > 0) {
+        opacity -= 0.1;
+        el.style.opacity = opacity;
+     } else {
+        clearInterval(interval); // Stop the interval when opacity reaches 0
+        el.style.display = 'none'; // Hide the element
+     }
+  }, 50);
+}
+
+fadeOut(msg_element);
+
 let display_animation_file_choice = function(){
     reset_field();
     fg_item = this.value;
     switch(fg_item){
         case "planet":
             col = row = size[0]["planet"]["size_x"];
-            append_select_field(planet_dir);
+            append_select_field(planet_url);
             break;
         case "station":
             col = row = size[1]["station"]["size_x"];
-            append_select_field(station_dir);
+            append_select_field(station_url);
             break;
         case "asteroid":
             col = row = size[2]["asteroid"]["size_x"];
-            append_select_field(asteroid_dir);
+            append_select_field(asteroid_url);
             break;
         default:
             break;

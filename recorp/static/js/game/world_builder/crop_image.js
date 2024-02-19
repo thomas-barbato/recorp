@@ -35,3 +35,5 @@ function fadeOut(el) {
      }
   }, 50);
 }
+
+fadeOut(element);

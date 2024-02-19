@@ -1,6 +1,9 @@
 import os
-
+import re
+import json
 from django.contrib import admin
+from django.core import serializers
+from django.core.serializers import serialize
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -8,6 +11,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 from recorp.settings import BASE_DIR
 from core.backend.tiles import CropThisImage
+from core.backend.get_data import GetMapDataFromDB
 from django.views.generic import TemplateView
 from core.forms import CropImageForm
 from core.views import admin_index
@@ -46,7 +50,6 @@ from core.models import (
     AsteroidResource,
     StationResource,
     Sector,
-    SectorContent,
 )
 
 
@@ -138,21 +141,36 @@ class CreateForegroundItemView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["item_choice"] = ["planet", "asteroid", "station"]
-        context["planet_dir"] = os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", "planet")
-        )
-        context["asteroid_dir"] = os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", "asteroid")
-        )
-        context["station_dir"] = os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", "station")
-        )
-        context["size"] = [
-            {"planet": {"size_x": 4, "size_y": 4}},
-            {"station": {"size_x": 3, "size_y": 3}},
-            {"asteroid": {"size_x": 1, "size_y": 1}},
-        ]
+        context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
+        context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
+        context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
+        context["size"] = GetMapDataFromDB.get_size()
         return context
+
+    def post(self, request):
+        select_type = ["planet", "asteroid", "station"]
+        selected = request.POST.get('item-type-choice-section')
+        if selected in select_type:
+            fg_name = re.sub(r'\W', '', request.POST.get('foreground-item-name'))
+            if len(fg_name) == 0:
+                fg_name = "Default value name"
+            data = {
+                "animation_1": request.POST.get('animation-1'),
+                "animation_2": request.POST.get('animation-2'),
+                "animation_3": request.POST.get('animation-3'),
+                "animation_4": request.POST.get('animation-4'),
+            }
+            match selected:
+                case "planet":
+                    Planet.objects.create(name=fg_name, data=data)
+                case "asteroid":
+                    Asteroid.objects.create(name=fg_name, data=data)
+                case "station":
+                    Station.objects.create(name=fg_name, data=data)
+                case _:
+                    pass
+            messages.success(self.request, f"{fg_name}({selected}) created with success")
+        return HttpResponseRedirect(request.path)
 
 
 class CreateMapView(TemplateView):
@@ -160,14 +178,18 @@ class CreateMapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["map_size_range"] = {"cols": range(20), "rows": range(15)}
-        context["map_size"] = {"cols": 20, "rows": 15}
-        context["background"] = os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "background")
-        )
-        context["foreground"] = os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground")
-        )
+        context["map_size_range"] = GetMapDataFromDB.get_map_size_range()
+        context["map_size"] = GetMapDataFromDB.get_map_size()
+        context["background"] = GetMapDataFromDB.get_bg_fg_url("background")
+        context["foreground"] = GetMapDataFromDB.get_bg_fg_url("foreground")
+        context["planets"] = serializers.serialize("json", Planet.objects.only('data'))
+        print(context["planets"])
+        context["asteroids"] = serializers.serialize("json", Asteroid.objects.only('data'))
+        context["stations"] = serializers.serialize("json", Station.objects.only('data'))
+        context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
+        context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
+        context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
+        context["size"] = GetMapDataFromDB.get_size()
         return context
 
 
@@ -342,8 +364,3 @@ class StationResourceAdmin(admin.ModelAdmin):
 @admin.register(Sector, site=admin_site)
 class SectorAdmin(admin.ModelAdmin):
     model = Sector
-
-
-@admin.register(SectorContent, site=admin_site)
-class SectorContentAdmin(admin.ModelAdmin):
-    model = SectorContent
