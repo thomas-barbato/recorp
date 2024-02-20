@@ -1,5 +1,12 @@
+import json
 import os
+from django.core import serializers
 from recorp.settings import BASE_DIR
+from core.models import (
+    Planet,
+    Asteroid,
+    Station
+)
 
 
 class GetMapDataFromDB:
@@ -9,9 +16,9 @@ class GetMapDataFromDB:
     @staticmethod
     def get_size():
         return [
-            {"planet": {"size_x": 4, "size_y": 4}},
-            {"station": {"size_x": 3, "size_y": 3}},
-            {"asteroid": {"size_x": 1, "size_y": 1}}
+            {"planet_data": {"size_x": 4, "size_y": 4}},
+            {"station_data": {"size_x": 3, "size_y": 3}},
+            {"asteroid_data": {"size_x": 1, "size_y": 1}}
         ]
 
     @staticmethod
@@ -33,3 +40,15 @@ class GetMapDataFromDB:
     @staticmethod
     def get_map_size_range():
         return {"cols": range(20), "rows": range(15)}
+
+    @staticmethod
+    def get_fg_type():
+        return ["planet", "asteroid", "station"]
+
+    @staticmethod
+    def get_animation_queryset():
+        return {
+            "planet_data": json.loads(serializers.serialize("json", Planet.objects.all())),
+            "asteroid_data": json.loads(serializers.serialize("json", Asteroid.objects.all())),
+            "stations_data": json.loads(serializers.serialize("json", Station.objects.all()))
+        }
