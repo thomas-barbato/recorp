@@ -9,38 +9,21 @@ let fg_item = "";
 let col = 0;
 let row = 0;
 
-
-var msg_element = document.querySelector('.messagelist');
-
-function fadeOut(el) {
-  var opacity = 1; // Initial opacity
-  var interval = setInterval(function() {
-     if (opacity > 0) {
-        opacity -= 0.1;
-        el.style.opacity = opacity;
-     } else {
-        clearInterval(interval); // Stop the interval when opacity reaches 0
-        el.style.display = 'none'; // Hide the element
-     }
-  }, 50);
-}
-
-fadeOut(msg_element);
-
 let display_animation_file_choice = function(){
     reset_field();
     fg_item = this.value;
     switch(fg_item){
         case "planet":
-            col = row = size[0]["planet"]["size_x"];
+            console.log(size)
+            col = row = size[0]["planet_data"]["size_x"];
             append_select_field(planet_url);
             break;
         case "station":
-            col = row = size[1]["station"]["size_x"];
+            col = row = size[1]["station_data"]["size_x"];
             append_select_field(station_url);
             break;
         case "asteroid":
-            col = row = size[2]["asteroid"]["size_x"];
+            col = row = size[2]["asteroid_data"]["size_x"];
             append_select_field(asteroid_url);
             break;
         default:

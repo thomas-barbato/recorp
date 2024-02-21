@@ -4,10 +4,6 @@
     const station_url = JSON.parse(document.getElementById('script_station_url').textContent);
     const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').textContent);
     const animations_json = JSON.parse(document.getElementById('script_animation_data').textContent);
-    let tiles = "";
-    let size_x = "";
-    let size_y = "";
-    let animation_tile_len = "";
     let animation_container_set = new Set();
     let animation_set = new Set();
     let dict = [];
@@ -38,11 +34,10 @@
             let fg_item_selector = clone.querySelector(".fg-item-selector");
             fg_item_selector.id = "fg-item-selector-" + next_id_value;
             fg_item_selector.addEventListener("change", function(){
-                let text = this.options[this.selectedIndex].text
-                let value = this.options[this.selectedIndex].value
-                let id_value =  fg_item_selector.id.split('-')[3]
-                console.log("text, value, fg_item_selector.id = " + text, value, id_value)
-                display_select_animation_preview(text, value, fg_item_selector.id)
+                let text = this.options[this.selectedIndex].text;
+                let value = this.options[this.selectedIndex].value;
+                let id_value =  fg_item_selector.id.split('-')[3];
+                display_select_animation_preview(text, value, fg_item_selector.id);
             })
 
             clone.querySelector(".animations").style.display = "none";
@@ -68,6 +63,14 @@
             document.querySelector('#foreground-menu').appendChild(element)
         }
     }
+
+    let fg_item_selector = element.querySelector(".fg-item-selector");
+    fg_item_selector.addEventListener("change", function(){
+        let text = this.options[this.selectedIndex].text;
+        let value = this.options[this.selectedIndex].value;
+        let id_value =  fg_item_selector.id.split('-')[3];
+        display_select_animation_preview(text, value, fg_item_selector.id);
+    });
 
     let tile = document.querySelectorAll('.tile');
     for(let i = 0; i < tile.length; i++){
@@ -100,18 +103,13 @@
     })
 
     function display_select_animation_preview(select_text, select_value, element_id){
-        for (var [index_key, value] in size){
-            for(let category in size[index_key]){
-                console.log(category, select_value)
-                if(category == select_value){
-                    let col = size[index_key][category]["size_x"];
-                    let row = size[index_key][category]["size_y"];
-                    let id = element_id.split('-')[3]
-                    create_table(col, row, id)
-                    display_animation_preview(col, row, id, category, select_text)
-                    break;
-                }
-            }
+        for (var [index_key, value] in animations_json[select_value]){
+            let col = animations_json[select_value][index_key]['fields']['size']['size_x'];
+            let row = animations_json[select_value][index_key]['fields']['size']['size_y'];
+            let id = element_id.split('-')[3];
+            create_table(col, row, id);
+            display_animation_preview(col, row, id, select_value, select_text);
+            break;
         }
     }
 
@@ -138,10 +136,10 @@
                     'hover:border-amber-400',
                     'border-dashed',
                     'block',
-                    'hover:bg-slate-300/10'
+                    'hover:bg-slate-300/10',
+                    'preview-animation-container'
                 );
                 td.appendChild(div)
-
                 tr.appendChild(td)
                 table.appendChild(tr);
             }
@@ -150,42 +148,38 @@
 
     function display_animation_preview(col, row, id, category, directory){
         let foreground_menu = document.querySelector('#foreground-menu-container-' + id);
-        animation_i = 0;
+        let preview_animation_container = foreground_menu.querySelectorAll('.preview-animation-container');
         dir_category = category.split('_')[0]
-
-        console.log(animations_json)
         let animation_array = []
         for(let i = 0; i < animations_json[category].length; i++){
             if(animations_json[category][i]['fields']['name'] == directory){
-                animation_array.push(Object.values(animations_json[category][i]['fields']['data']))
+                animation_array = Object.entries(Object.values(animations_json[category][i]['fields']['data']))
             }
         }
-        for(let array_index = 0; array_index < animation_array[0].length; array_index++){
-            let animation_i = 0;
-            let tr = "";
-            let td = "";
-            let table = "";
 
-            for(let row_i = 0; row_i < row; row_i++){
-
-                table = foreground_menu.querySelector('#preview-animation');
-                tr = document.createElement('tr');
-                tr.classList.add('rows');
-
-                for(let col_i = 0; col_i < col; col_i++){
-                    let bg_url = '/static/img/atlas/foreground/' + '/' + dir_category + '/' + animation_array[0][array_index] + '/' + animation_i + '.png';
-                    td = document.createElement('td');
-
-                    td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
-                    td.style.backgroundImage = "url('" + bg_url + "')";
-
-                    tr.appendChild(td)
-                    table.appendChild(tr);
-                    animation_i++;
+        for(animation_i in animation_array){
+            if(animation_array[animation_i][1] !== "none"){
+                let picture_i = 0;
+                for(let row_i = 0; row_i < row ; row_i++){
+                    for(let col_i = 0; col_i < col; col_i++){
+                        let img = document.createElement('img');
+                        let img_url = '/static/img/atlas/foreground/' + dir_category + '/' + animation_array[animation_i][1] + '/' + picture_i + '.png';
+                        img.src = img_url;
+                        img.classList.add(
+                            'preview-animation',
+                            'z-2',
+                            'absolute',
+                            'm-auto',
+                            'left-0',
+                            'right-0',
+                            'no-borders',
+                            'preview-animation-'+animation_i
+                        );
+                        foreground_menu.querySelector('#preview-animation').rows[row_i].cells[col_i].querySelector('div').append(img);
+                        picture_i++;
+                    }
                 }
-
             }
-            foreground_menu.querySelector('#preview-animation').style.display = "block";
         }
     }
 
@@ -256,7 +250,7 @@
             }else{
                 fg_animation.style.display = "block";
             }
-            animation_set.add('.animation-'+animation_i)
+            animation_set.add('.animation-'+animation_i);
             document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
         }
     }
@@ -285,23 +279,47 @@
 
     }
 
+    function set_animation_data(){
+        let fg_data = document.querySelectorAll('.foreground-menu-container')
+        for(let i = 0; i < fg_data.length; i++){
+            let selector = fg_data[i].querySelector('.fg-item-selector');
+            if(selector.options[selector.selectedIndex].value !== "none"){
+                let s_x = "";
+                let s_y = "";
+                let animation_data = "";
+                let id = fg_data[i].id.split('-')[3];
+                let animation_name = selector.options[selector.selectedIndex].text;
+                let animation_data_dirname = selector.options[selector.selectedIndex].value;
+                coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1;
+                coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1;
+                for (var [index_key, value] in animations_json[animation_data_dirname]){
+                    animation_data = animations_json[animation_data_dirname][index_key]['fields']['data']
+                    s_x = animations_json[animation_data_dirname][index_key]['fields']['size']['size_x'];
+                    s_y = animations_json[animation_data_dirname][index_key]['fields']['size']['size_y'];
+                }
+                dict[i] = {
+                    coord_x: coord_x,
+                    coord_y: coord_y,
+                    size_x: s_x,
+                    size_y: s_y,
+                    animation_dirname: animation_data_dirname,
+                    animations: [
+                        animation_data,
+                    ],
+                }
+            }
+        }
+    }
+
     let preview = document.querySelector("#preview");
 
     preview.addEventListener('click', function() {
         clear_foreground();
         let fg_data = document.querySelectorAll('.foreground-menu-container');
         let bg_folder = document.getElementById("background").value;
+        set_animation_data()
+        console.log(dict)
         add_background(bg_folder);
-        for(let i = 0; i < fg_data.length ; i++){
-            let id = fg_data[i].id.split('-')[2];
-            dict[i] = {
-                coord_x: parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1,
-                coord_y: parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1,
-                animations: [
-                    fg_data[i].querySelector('select#animation-'+ id).value,
-                ],
-            }
-        }
         set_foreground(dict);
         display_animation("250");
 

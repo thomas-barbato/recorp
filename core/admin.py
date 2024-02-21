@@ -162,11 +162,14 @@ class CreateForegroundItemView(TemplateView):
             }
             match selected:
                 case "planet":
-                    Planet.objects.create(name=fg_name, data=data)
+                    size = {"size_x": 4, "size_y": 4}
+                    Planet.objects.create(name=fg_name, data=data, size=size)
                 case "asteroid":
-                    Asteroid.objects.create(name=fg_name, data=data)
+                    size = {"size_x": 1, "size_y": 1}
+                    Asteroid.objects.create(name=fg_name, data=data, size=size)
                 case "station":
-                    Station.objects.create(name=fg_name, data=data)
+                    size = {"size_x": 3, "size_y": 3}
+                    Station.objects.create(name=fg_name, data=data, size=size)
                 case _:
                     pass
             messages.success(self.request, f"{fg_name}({selected}) created with success")

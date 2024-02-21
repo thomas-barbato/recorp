@@ -6,6 +6,18 @@ from django.utils import timezone
 localtime = timezone.now
 
 
+def get_default_planet_size():
+    return {'size_x': 4, 'size_y': 4}
+
+
+def get_default_station_size():
+    return {'size_x': 3, 'size_y': 3}
+
+
+def get_default_asteroid_size():
+    return {'size_x': 1, 'size_y': 1}
+
+
 class User(AbstractBaseUser):
     date_joined = models.DateTimeField(default=localtime)
     username = models.CharField(default="user_default", unique=True, blank=False)
@@ -42,6 +54,7 @@ class Resource(models.Model):
 class Planet(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Planet-default")
     data = models.JSONField(null=True)
+    size = models.JSONField(default=get_default_planet_size)
     created_at = models.DateTimeField(default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -52,6 +65,7 @@ class Planet(models.Model):
 class Station(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Station-default")
     data = models.JSONField(null=True)
+    size = models.JSONField(default=get_default_station_size)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -62,6 +76,7 @@ class Station(models.Model):
 class Asteroid(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Asteroid-default")
     data = models.JSONField(null=True)
+    size = models.JSONField(default=get_default_asteroid_size)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
