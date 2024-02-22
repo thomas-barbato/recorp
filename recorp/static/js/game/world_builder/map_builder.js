@@ -197,28 +197,27 @@
     }
 
     function set_foreground(dict){
-        for(let data_i in dict){
-            let animation_data = [];
-            // get animations
-            for(let anim in dict[data_i]["animations"]){
-                if(dict[data_i]["animations"][anim] !== "none"){
-                    animation_data.push(dict[data_i]["animations"][anim]);
-                }
-            }
-            // if there is at least one animation...
-            if(animation_data.length > 0){
-                let cell = 0;
-                for(let row = dict[data_i]['coord_y']; row < dict[data_i]['coord_y'] + dict[data_i]['size_y']; row++){
-                    for(let col = dict[data_i]['coord_x']; col < dict[data_i]['coord_x'] + dict[data_i]['size_x']; col++){
-                        document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container', 'animation-container-'+(parseInt(data_i)+1));
-                        animation_container_set.add('.animation-container-'+(parseInt(data_i)+1));
-                        add_foreground_tiles(animation_data, cell, row, col, dict[data_i]['size_x'], dict[data_i]['size_y']);
-                        cell++;
-                    }
-                }
-                cell = 0;
-            }
+        data = [];
+        let animation_dir_data = [];
+        let animation_type = "";
+        let data_i = 1;
+        for(var [index_key, value] in dict){
+            animation_dir_data.push(Object.values(dict[index_key]["animations"][0]));
+            animation_type = dict[index_key]["animation_dirname"].split('_')[0];
         }
+        let cell = 0;
+        if(animation_dir_data.length > 0){
+            for(let row = dict[index_key]["coord_y"]; row < dict[index_key]["coord_y"] + dict[index_key]["size_y"]; row++){
+                for(let col = dict[index_key]['coord_x']; col < dict[index_key]['coord_x'] + dict[index_key]["size_x"]; col++){
+                    document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container','animation-container-'+parseInt(data_i));
+                    animation_container_set.add('.animation-container-'+parseInt(data_i));
+                    add_foreground_tiles(animation_type, animation_dir_data, cell, row, col, dict[index_key]['size_x'], dict[index_key]['size_y']);
+                    cell++;
+                }
+            }
+            cell = 0;
+        }
+        data_i++;
     }
 
     function clear_foreground(){
@@ -237,28 +236,41 @@
         }
         dict = dict.slice(parseInt(id-1))
     }
-
-    function add_foreground_tiles(animation_array, cell, row, col, size_x, size_y){
-        for(let animation_i = 0; animation_i < animation_array.length; animation_i++){
-            let fg_animation = document.createElement('img');
-            let fg_animation_url = '/static/img/atlas/foreground/' + animation_array[animation_i] + '/' + cell + '.png';
-            fg_animation.src = fg_animation_url;
-            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'no-borders');
-            if(size_y > 1 && size_y > 1){
-                fg_animation.style.display = "none";
-                fg_animation.classList.add('animation-'+animation_i);
-            }else{
-                fg_animation.style.display = "block";
+    function add_foreground_tiles(animation_type, animation_array, cell, row, col, size_x, size_y){
+        let array = [];
+        let filtered_animation_data = {};
+        for(var [array_key, array_value] in animation_array){
+            for(let i = 0; i < animation_array[array_key].length; i++){
+                if(animation_array[array_key][i] != "none"){
+                    array.push(animation_array[array_key][i]);
+                }
             }
-            animation_set.add('.animation-'+animation_i);
-            document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
+            filtered_animation_data['item-'+array_key] = array;
+            array = [];
         }
+        for(const property in filtered_animation_data){
+            let animation_i = 0;
+            for(const data in filtered_animation_data[property]){
+                let fg_animation = document.createElement('img');
+                let fg_animation_url = '/static/img/atlas/foreground/' + animation_type + '/' + filtered_animation_data[property][data] + '/' + cell + '.png';
+                fg_animation.src = fg_animation_url;
+                fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'no-borders');
+                if(size_y > 1 && size_y > 1){
+                    fg_animation.style.display = "none";
+                    fg_animation.classList.add('animation-'+animation_i);
+                }else{
+                    fg_animation.style.display = "block";
+                }
+                animation_set.add('.animation-'+animation_i);
+                document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').append(fg_animation);
+                animation_i++;
+            }
+            animation_i=0;
+        }
+
     }
 
     function display_animation(timer="500"){
-        for(let i = 0 ; i <= 4 ; i++){
-            document.querySelector('#preview-'+i).innerHTML = "";
-        }
         let animation_set_len = animation_set.size;
         let current_elements = "";
         let previous_elements = "";
@@ -318,10 +330,8 @@
         let fg_data = document.querySelectorAll('.foreground-menu-container');
         let bg_folder = document.getElementById("background").value;
         set_animation_data()
-        console.log(dict)
         add_background(bg_folder);
         set_foreground(dict);
         display_animation("250");
-
     })
 
