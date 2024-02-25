@@ -156,7 +156,6 @@
                 animation_array = Object.entries(Object.values(animations_json[category][i]['fields']['data']))
             }
         }
-
         for(animation_i in animation_array){
             if(animation_array[animation_i][1] !== "none"){
                 let picture_i = 0;
@@ -201,23 +200,29 @@
         let animation_dir_data = [];
         let animation_type = "";
         let data_i = 1;
+
+
         for(var [index_key, value] in dict){
             animation_dir_data.push(Object.values(dict[index_key]["animations"][0]));
             animation_type = dict[index_key]["animation_dirname"].split('_')[0];
-        }
-        let cell = 0;
-        if(animation_dir_data.length > 0){
+            let cell = 0;
             for(let row = dict[index_key]["coord_y"]; row < dict[index_key]["coord_y"] + dict[index_key]["size_y"]; row++){
                 for(let col = dict[index_key]['coord_x']; col < dict[index_key]['coord_x'] + dict[index_key]["size_x"]; col++){
-                    document.querySelector('.tabletop-view').rows[row].cells[col].querySelector('div').classList.add('foreground-container','animation-container-'+parseInt(data_i));
+                    let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
+                    let div = entry_point.querySelector('div');
+                    div.classList.add(
+                        'foreground-container',
+                        'animation-container-'+parseInt(data_i)
+                    );
                     animation_container_set.add('.animation-container-'+parseInt(data_i));
                     add_foreground_tiles(animation_type, animation_dir_data, cell, row, col, dict[index_key]['size_x'], dict[index_key]['size_y']);
                     cell++;
                 }
             }
+            animation_dir_data = [];
             cell = 0;
+            data_i++;
         }
-        data_i++;
     }
 
     function clear_foreground(){
@@ -236,6 +241,7 @@
         }
         dict = dict.slice(parseInt(id-1))
     }
+
     function add_foreground_tiles(animation_type, animation_array, cell, row, col, size_x, size_y){
         let array = [];
         let filtered_animation_data = {};
@@ -248,6 +254,7 @@
             filtered_animation_data['item-'+array_key] = array;
             array = [];
         }
+
         for(const property in filtered_animation_data){
             let animation_i = 0;
             for(const data in filtered_animation_data[property]){
@@ -267,7 +274,6 @@
             }
             animation_i=0;
         }
-
     }
 
     function display_animation(timer="500"){
@@ -275,6 +281,7 @@
         let current_elements = "";
         let previous_elements = "";
         let index = 0;
+        console.log(animation_set_len)
         setInterval( function(){
             const previousIndex = index === 0 ? animation_set_len - 1 : index - 1
             current_elements = document.querySelectorAll('.animation-'+ index);
@@ -305,7 +312,10 @@
                 coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1;
                 coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1;
                 for (var [index_key, value] in animations_json[animation_data_dirname]){
-                    animation_data = animations_json[animation_data_dirname][index_key]['fields']['data']
+                    let filtered_animation_data = Object.assign({}, ...
+                        Object.entries(animations_json[animation_data_dirname][index_key]['fields']['data']).filter(([k,v]) => v != "none").map(([k,v]) => ({[k]:v}))
+                    );
+                    animation_data = filtered_animation_data;
                     s_x = animations_json[animation_data_dirname][index_key]['fields']['size']['size_x'];
                     s_y = animations_json[animation_data_dirname][index_key]['fields']['size']['size_y'];
                 }
