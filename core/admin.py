@@ -187,11 +187,17 @@ class CreateMapView(TemplateView):
         context["foreground"] = GetMapDataFromDB.get_bg_fg_url("foreground")
         context["foreground_type"] = GetMapDataFromDB.get_fg_type()
         context["animations_data"] = GetMapDataFromDB.get_animation_queryset()
+        context["resources_data"] = GetMapDataFromDB.get_resource_queryset()
         context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
         context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
         context["size"] = GetMapDataFromDB.get_size()
         return context
+
+    def post(self, request):
+        print(request.POST)
+        return HttpResponseRedirect(request.path)
+
 
 
 admin_site = CustomAdminSite()

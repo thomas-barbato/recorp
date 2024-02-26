@@ -5,7 +5,8 @@ from recorp.settings import BASE_DIR
 from core.models import (
     Planet,
     Asteroid,
-    Station
+    Station,
+    Resource
 )
 
 
@@ -52,3 +53,9 @@ class GetMapDataFromDB:
             "asteroid_data": json.loads(serializers.serialize("json", Asteroid.objects.all())),
             "stations_data": json.loads(serializers.serialize("json", Station.objects.all()))
         }
+
+    @staticmethod
+    def get_resource_queryset():
+        return Resource.objects.all()
+
+

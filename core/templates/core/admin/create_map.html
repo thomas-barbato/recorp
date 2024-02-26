@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block content %}
-{{ foreground|json_script:"script_foreground" }}
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
+{{ foreground|json_script:"script_foreground" }}
 {{ size|json_script:"script_size" }}
 {{ planet_url|json_script:"script_planet_url" }}
 {{ station_url|json_script:"script_station_url" }}
@@ -14,46 +14,50 @@
 {{ asteroid_url|json_script:"script_asteroid_url" }}
 
 <div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
-    <div class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start">
-        <section id="background-menu" class="lg:w-1/2 w-full">
+    <form class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start" action="" method="POST">
+        {% csrf_token %}
+        <section id="background-menu" class="w-full">
             <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>
-            <select id="background" class="w-1/8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+            <select id="background" name="background" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                 {% for bg in background %}
-                    <option value="{{ bg }}">{{ bg }}</option>
+                    <option value="{{ bg }}" class="text-center">{{ bg }}</option>
                 {% endfor %}
             </select>
         </section>
+        <section id="map-name" class="w-full">
+            <label for="name-1" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Map name:</b></label>
+            <input type="text" class="w-full text-center" name="map_name" value="" required>
+        </section>
 
-        <section id="foreground-button" class="mt-2 lg:w-1/2 w-full">
+        <section id="foreground-button" class="mt-2 w-full">
             <label for="set-foreground-item" class="block mb-2 text-sm text-center font-bold text-gray-900 dark:text-white"><b>Add Foreground Item</b></label>
             <div class="mb-4 flex w-2/2 h-[50px] w-[50px] items-center mx-auto border rounded-full border-emerald-400 bg-emerald-500 cursor-pointer" id="set-foreground-item">
                 <i class="fa-solid fa-plus fa-2xl mx-auto bg-blue-500"></i>
             </div>
         </section>
 
-        <section id="foreground-menu" class="mt-2 h-[60vh] overflow-y-scroll no-scrollbar w-full">
+        <section id="foreground-menu" class="mt-2 w-full">
             <div id="foreground-menu-container-1" class="w-full flex lg:flex-row flex-col bg-gray-600 border border-white gap-1 mb-1 foreground-menu-container">
                 <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-1/2 w-full" id="foreground-menu-1">
                     <span class="foreground-menu-title text-center text-sm flex flex-col" id="foreground-menu-title-1"><b>New Foreground item <i id="trash-1" class="fa-solid fa-trash fa-xl cursor-pointer trash-it"></i></b>
                         <label for="coord-radio-button">Get coordinate</label>
-                        <input class="mt-2 coord-radio-button" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
+                        <input class="mt-2 coord-radio-button text-center" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
                     </span>
                     <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-1/2 w-full coord_size">
                         <section class="flex w-2/2 gap-1 coord">
                             <div class="flex flex-col coord-x">
                                 <label for="coord-x" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Coord X :</b></label>
-                                <input type="number" id="coord-x-1" min="0" value="0" class="cursor-pointer">
+                                <input type="number" id="coord-x-1" name="coord-x" min="0" value="0" class="cursor-pointer text-center">
                             </div>
                             <div class="flex flex-col coord-y">
                                 <label for="coord-y" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Coord Y :</b></label>
-                                <input type="number" id="coord-y-1" min="0" value="0" class="cursor-pointer">
+                                <input type="number" id="coord-y-1" name="coord-y" min="0" value="0" class="cursor-pointer text-center">
                             </div>
                         </section>
                     </div>
-
                     <div class="lex gap-2 flex-col items-center mx-auto p-2 mt-1 mb-1 w-full">
                         <label for="fg-item-selector-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Item to add on map :</b></label>
-                        <select id="fg-item-selector-1" class="fg-item-selector">
+                        <select id="fg-item-selector-1" class="fg-item-selector text-center" name="item_type" required>
                             <option class="text-white" selected>none</option>
                             {% for item in foreground_type %}
                                 <option class="text-white font-bold" disabled>{{item}}</option>
@@ -73,6 +77,7 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <input type="hidden" id="item-name-1" class="item-name" name="item_name" value="">
                     <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations">
                         <section class="flex w-full flex-row animations-section gap-1">
                             <div class="flex flex-col w-1/2 animation-items">
@@ -92,17 +97,22 @@
                 </div>
                 <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-1/2 w-full" id="foreground-menu-left-1">
                     <section>
-
-                        <label for="name-1" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Name:</b></label>
-                        <input type="text" name="name" id="name-1" value="">
+                        <label for="resources-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Resources associated:</b></label>
+                        <select name="resource-data" class="fg-resource-selector text-center w-full" multiple>
+                            <option class="text-white" selected>none</option>
+                            {% for resource in resources_data %}
+                                <option name="foreground-choice" value="{{resource.name}}">{{resource.name}}</option>
+                            {% endfor %}
+                        </select>
                     </section>
                 </div>
             </div>
         </section>
-        <section id="preview-button" class="mt-2 lg:w-1/2 w-full">
-            <input class="mt-2 flex mx-auto" id="preview" type="button" value="Preview">
+        <section id="preview-button" class="mt-1 flex w-full flex-row gap-1 items-center">
+            <input class="mt-2 flex mx-auto w-1/2" id="preview" type="button" value="Preview">
+            <input class="mt-2 flex mx-auto w-1/2" id="save" type="submit" value="save">
         </section>
-    </div>
+    </form>
     <div class="flex flex-col w-1/2 m-0 p-0 self-start">
         <div id="map-background" class=" flex flex-row self-start">
             <div class="flex xl:self-center self-start item-center">
