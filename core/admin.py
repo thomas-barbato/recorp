@@ -191,11 +191,30 @@ class CreateMapView(TemplateView):
         context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
         context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
+        context["security_data"] = GetMapDataFromDB.get_sector_security_choice()
         context["size"] = GetMapDataFromDB.get_size()
         return context
 
     def post(self, request):
-        print(request.POST)
+        data_from_post = json.load(request)
+        for i in data_from_post:
+            print(data_from_post[i])
+            table, table_resource = GetMapDataFromDB.get_table(data_from_post[i]['item_type'])
+            item_name = data_from_post[i]['item_img_name']
+            rsrc_data = data_from_post[i]['resource_data']
+            obj_list = []
+            for data_i in rsrc_data:
+                resource_pk = Resource.objects.filter(name=rsrc_data[data_i]).values('id')
+                obj_list.append(
+                    table_resource(
+
+                    )
+                )
+            resr = (table_resource)
+            pk = table.objects.filter(name=item_name).values('id')
+
+            print(pk, resource_pk)
+
         return HttpResponseRedirect(request.path)
 
 

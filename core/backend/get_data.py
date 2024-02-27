@@ -6,7 +6,7 @@ from core.models import (
     Planet,
     Asteroid,
     Station,
-    Resource
+    Resource, PlanetResource, AsteroidResource, StationResource
 )
 
 
@@ -55,7 +55,24 @@ class GetMapDataFromDB:
         }
 
     @staticmethod
+    def get_sector_security_choice():
+        return (
+            ("NULL", "aucune"),
+            ("LOW", "faible securite"),
+            ("MEDIUM", "securite moyenne"),
+            ("HIGHT", "haute securite"),
+        )
+
+    @staticmethod
     def get_resource_queryset():
         return Resource.objects.all()
+
+    @staticmethod
+    def get_table(table_name):
+        return {
+            "planet": [Planet, PlanetResource],
+            "asteroid": [Asteroid, AsteroidResource],
+            "station": [Station, StationResource],
+        }[table_name]
 
 

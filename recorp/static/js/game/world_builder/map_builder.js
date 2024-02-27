@@ -4,6 +4,7 @@
     const station_url = JSON.parse(document.getElementById('script_station_url').textContent);
     const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').textContent);
     const animations_json = JSON.parse(document.getElementById('script_animation_data').textContent);
+    const csrf_token = document.getElementById('csrf_token').value;
     let animation_container_set = new Set();
     let animation_set = new Set();
     let dict = [];
@@ -72,7 +73,6 @@
         let text = this.options[this.selectedIndex].text;
         let value = this.options[this.selectedIndex].value;
         let id_value =  fg_item_selector.id.split('-')[3];
-        document.querySelector('#item-name-'+id_value).value = text;
         display_select_animation_preview(text, value, fg_item_selector.id);
     });
 
@@ -360,3 +360,42 @@
         display_animation("1000");
     })
 
+
+
+    let save_data = function(){
+        let element = document.querySelectorAll('.foreground-menu-container');
+        let data_entry = {};
+        for(let i = 0; i < element.length; i++){
+            const resource_data = Array.from(element[i].querySelectorAll("select[name=resource-data] option:checked"),e=>e.value);
+            data_entry[i] = {
+                'sector_background': document.querySelector('select[name=sector-background]').querySelector(':checked').textContent,
+                'sector_name': document.querySelector('input[name=sector-name]').value,
+                'coord_x': element[i].querySelector('input[name=coord-x]').value,
+                'coord_y': element[i].querySelector('input[name=coord-y]').value,
+                'item_type': element[i].querySelector('select[name=item-type]').value.split('_')[0],
+                'item_img_name': element[i].querySelector('select[name=item-type]').querySelector(':checked').textContent,
+                'item_name': element[i].querySelector('input[name=item-name]').value,
+                'resource_data': resource_data,
+            }
+        }
+
+        console.log(data_entry)
+
+        let url = window.location.href;
+        const headers = new Headers({
+        'Content-Type': 'x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': csrf_token
+        });
+        fetch(url, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify(data_entry),
+        });
+
+    }
+
+    let save_btn = document.querySelector('#save')
+    save_btn.addEventListener('click', save_data)

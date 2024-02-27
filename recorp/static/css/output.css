@@ -1018,10 +1018,6 @@ video {
   height: 50px;
 }
 
-.h-\[60vh\] {
-  height: 60vh;
-}
-
 .h-full {
   height: 100%;
 }
@@ -2286,11 +2282,6 @@ video {
 
 .bg-zinc-950\/70 {
   background-color: rgb(9 9 11 / 0.7);
-}
-
-.bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .decoration-slice {

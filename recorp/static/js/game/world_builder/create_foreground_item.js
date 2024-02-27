@@ -192,4 +192,3 @@ preview_btn.addEventListener('click', function() {
     add_image_to_preview();
     display_animation("250");
 })
-

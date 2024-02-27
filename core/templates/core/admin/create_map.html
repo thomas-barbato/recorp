@@ -15,18 +15,30 @@
 
 <div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
     <form class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start" action="" method="POST">
-        {% csrf_token %}
+        <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
         <section id="background-menu" class="w-full">
             <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>
-            <select id="background" name="background" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+            <select id="background" name="sector-background" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                 {% for bg in background %}
                     <option value="{{ bg }}" class="text-center">{{ bg }}</option>
                 {% endfor %}
             </select>
         </section>
-        <section id="map-name" class="w-full">
+        <section class="w-full">
             <label for="name-1" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Map name:</b></label>
-            <input type="text" class="w-full text-center" name="map_name" value="" required>
+            <input type="text" class="w-full text-center" name="sector-name" value="" required>
+        </section>
+        <section class="w-full">
+            <label for="faction-starter" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is faction starter:</b></label>
+            <input type="checkbox" class="w-full text-center" name="faction-starter" value="" required>
+        </section>
+        <section class="w-full">
+            <label for="sector-security" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector security level:</b></label>
+            <select id="security-level" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer" name="security_level" required>
+                {% for sec in security_data %}
+                    <option value="{{ sec.1 }}" class="text-center">{{ sec.1 }}</option>
+                {% endfor %}
+            </select>
         </section>
 
         <section id="foreground-button" class="mt-2 w-full">
@@ -57,7 +69,7 @@
                     </div>
                     <div class="lex gap-2 flex-col items-center mx-auto p-2 mt-1 mb-1 w-full">
                         <label for="fg-item-selector-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Item to add on map :</b></label>
-                        <select id="fg-item-selector-1" class="fg-item-selector text-center" name="item_type" required>
+                        <select id="fg-item-selector-1" class="fg-item-selector text-center" name="item-type" required>
                             <option class="text-white" selected>none</option>
                             {% for item in foreground_type %}
                                 <option class="text-white font-bold" disabled>{{item}}</option>
@@ -77,7 +89,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <input type="hidden" id="item-name-1" class="item-name" name="item_name" value="">
                     <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations">
                         <section class="flex w-full flex-row animations-section gap-1">
                             <div class="flex flex-col w-1/2 animation-items">
@@ -97,6 +108,8 @@
                 </div>
                 <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-1/2 w-full" id="foreground-menu-left-1">
                     <section>
+                        <label for="resources-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Name it:</b></label>
+                        <input type="text" value="" id="item-name-1" class="item-name" name="item-name">
                         <label for="resources-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Resources associated:</b></label>
                         <select name="resource-data" class="fg-resource-selector text-center w-full" multiple>
                             <option class="text-white" selected>none</option>
@@ -110,7 +123,7 @@
         </section>
         <section id="preview-button" class="mt-1 flex w-full flex-row gap-1 items-center">
             <input class="mt-2 flex mx-auto w-1/2" id="preview" type="button" value="Preview">
-            <input class="mt-2 flex mx-auto w-1/2" id="save" type="submit" value="save">
+            <input class="mt-2 flex mx-auto w-1/2" id="save" type="button" value="save">
         </section>
     </form>
     <div class="flex flex-col w-1/2 m-0 p-0 self-start">
