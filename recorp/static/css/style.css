@@ -133,3 +133,7 @@ table.no-spacing {
     border:0;
     border-spacing:0;
 }
+
+select{
+    text-align:center;
+}

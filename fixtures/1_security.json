@@ -1,0 +1,53 @@
+[{
+  "model": "core.security",
+  "pk": null,
+  "fields": {
+    "name": "null security",
+    "description": "Beware, you are in an unsafe area. You could be attacked at any time, you're on your own.",
+    "attack_countdown": 0,
+    "chance_to_intervene": 0,
+    "ship_quantity": 0,
+    "created_at": "2020-02-28 12:38:15",
+    "updated_at": "2020-02-28 12:38:15"
+  }
+},
+  {
+    "model": "core.security",
+    "pk": null,
+    "fields": {
+      "name": "low security",
+      "description": "Be careful, security is poor in this area and the authorities will find it difficult to defend you.",
+      "attack_countdown": 3,
+      "chance_to_intervene": 33,
+      "ship_quantity": 1,
+      "created_at": "2020-02-28 12:38:15",
+      "updated_at": "2020-02-28 12:38:15"
+    }
+  },
+  {
+    "model": "core.security",
+    "pk": null,
+    "fields": {
+      "name": "intermediate security",
+      "description": "It's not a highly secure area, but it's not a lawless one either, so just be careful.",
+      "attack_countdown": 2,
+      "chance_to_intervene": 66,
+      "ship_quantity": 2,
+      "created_at": "2020-02-28 12:38:15",
+      "updated_at": "2020-02-28 12:38:15"
+    }
+  },
+  {
+    "model": "core.security",
+    "pk": null,
+    "fields": {
+      "name": "high security",
+      "description": "Here you are safe and secure, with security forces on call at all times and at very short notice.",
+      "attack_countdown": 1,
+      "chance_to_intervene": 100,
+      "ship_quantity": 3,
+      "created_at": "2020-02-28 12:38:15",
+      "updated_at": "2020-02-28 12:38:15"
+    }
+  }
+]

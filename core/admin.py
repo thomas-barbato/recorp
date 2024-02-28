@@ -191,7 +191,8 @@ class CreateMapView(TemplateView):
         context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
         context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
-        context["security_data"] = GetMapDataFromDB.get_sector_security_choice()
+        context["security_data"] = GetMapDataFromDB.get_table("security").objects.values('id', 'name')
+        context["faction_data"] = GetMapDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetMapDataFromDB.get_size()
         return context
 

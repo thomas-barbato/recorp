@@ -101,20 +101,23 @@ class Faction(models.Model):
         return f"{self.name}"
 
 
+class Security(models.Model):
+
+    name = models.CharField(max_length=30)
+    description = models.TextField()
+    attack_countdown = models.PositiveSmallIntegerField(default=3)
+    chance_to_intervene = models.PositiveSmallIntegerField(default=100)
+    ship_quantity = models.PositiveSmallIntegerField(default=3)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Sector(models.Model):
-    SECURITY_LEVEL_CHOICES = (
-        ("NULL", "aucune"),
-        ("LOW", "faible securite"),
-        ("MEDIUM", "securite moyenne"),
-        ("HIGHT", "haute securite"),
-    )
 
     name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
     image = models.ImageField(upload_to="sector/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
-    security_level = models.CharField(
-        max_length=20, choices=SECURITY_LEVEL_CHOICES, default=SECURITY_LEVEL_CHOICES[0]
-    )
+    security = models.ForeignKey(Security, on_delete=models.CASCADE, null=False, default=1)
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE, null=False, default=Faction.get_default_pk)
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)

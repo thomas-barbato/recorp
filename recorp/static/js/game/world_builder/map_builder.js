@@ -11,6 +11,20 @@
 
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
+    let display_faction_choice = function(){
+        let faction_starter = document.querySelector('#faction-starter');
+        let faction_owner = document.querySelector('#owned-by-faction');
+        document.querySelector('#faction-select').style.display = "none";
+        if(faction_starter.checked || faction_owner.checked){
+            document.querySelector('#faction-select').style.display = "block";
+        }
+    }
+
+    let faction_starter = document.querySelector('#faction-starter');
+    let owned_by_faction = document.querySelector('#owned-by-faction');
+    faction_starter.addEventListener('change', display_faction_choice);
+    owned_by_faction.addEventListener('change', display_faction_choice);
+
     function append_foreground_menu(element){
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
@@ -43,6 +57,11 @@
 
             let fg_item_name = clone.querySelector(".item-name");
             fg_item_name.id = "item-name-" + next_id_value;
+            fg_item_name.value = "";
+
+            let item_description = clone.querySelector('.item-description')
+            item_description.id = "item-description-"+ next_id_value;
+            item_description.value = "";
 
             clone.querySelector(".animations").style.display = "none";
             clone.querySelector(".trash-it").id = "trash-" + next_id_value;
@@ -365,21 +384,31 @@
     let save_data = function(){
         let element = document.querySelectorAll('.foreground-menu-container');
         let data_entry = {};
+        let is_faction_starter = document.querySelector('#faction-starter');
+        let is_owned_by_faction = document.querySelector('#owned-by-faction');
+        let faction_id = null;
+        if(document.querySelector('#faction-select').style.display === "block"){
+            faction_id = document.querySelector('#faction-choice').querySelector(':checked').value;
+        }
         for(let i = 0; i < element.length; i++){
             const resource_data = Array.from(element[i].querySelectorAll("select[name=resource-data] option:checked"),e=>e.value);
             data_entry[i] = {
-                'sector_background': document.querySelector('select[name=sector-background]').querySelector(':checked').textContent,
+                'sector_background': document.querySelector('#background').querySelector(':checked').textContent,
                 'sector_name': document.querySelector('input[name=sector-name]').value,
+                'sector_description': document.querySelector('#sector-description').value,
                 'coord_x': element[i].querySelector('input[name=coord-x]').value,
                 'coord_y': element[i].querySelector('input[name=coord-y]').value,
                 'item_type': element[i].querySelector('select[name=item-type]').value.split('_')[0],
                 'item_img_name': element[i].querySelector('select[name=item-type]').querySelector(':checked').textContent,
                 'item_name': element[i].querySelector('input[name=item-name]').value,
+                'item_description': element[i].querySelector('.item-description').value,
+                'security': document.querySelector('#security-level').querySelector(':checked').value,
+                'is_faction_starter': is_faction_starter.checked,
+                'is_owned_by_faction': is_owned_by_faction.checked,
+                'faction_id': faction_id,
                 'resource_data': resource_data,
             }
         }
-
-        console.log(data_entry)
 
         let url = window.location.href;
         const headers = new Headers({
