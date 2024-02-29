@@ -12,7 +12,6 @@
 {{ station_url|json_script:"script_station_url" }}
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
-
 <div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
     <form class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start" action="" method="POST">
         <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
@@ -41,7 +40,6 @@
         <section class="w-full mt-1" id="faction-select" style="display:none">
             <label for="faction-choice" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Assign faction:</b></label>
             <select id="faction-choice" name="faction-choice" class="text-center mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                    <option>none</option>
                 {% for faction in faction_data %}
                     <option value="{{ faction.id }}" class="text-center">{{ faction.name }}</option>
                 {% endfor %}
@@ -133,9 +131,12 @@
                         <input type="text" value="" id="item-name-1" class="item-name text-center" name="item-name">
                         <label for="resources-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Resources associated:</b></label>
                         <select name="resource-data" class="fg-resource-selector w-full" multiple>
-                            <option class="text-white" selected>none</option>
                             {% for resource in resources_data %}
-                                <option name="foreground-choice" value="{{resource.name}}">{{resource.name}}</option>
+                                {% if forloop.first %}
+                                    <option name="foreground-choice" value="{{resource.name}}" selected>{{resource.name}}</option>
+                                {% else %}
+                                    <option name="foreground-choice" value="{{resource.name}}">{{resource.name}}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                         <section class="w-full mt-1">

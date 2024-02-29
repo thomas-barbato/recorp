@@ -50,6 +50,8 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 TAILWIND_APP_NAME = 'theme'
 
 TEMPLATES = [

@@ -131,12 +131,12 @@ class Sector(models.Model):
         return sector.pk
 
     def __str__(self):
-        return f"{self.sector.name} : {self.faction.name}, is_faction_level_starter : {self.is_faction_level_starter}"
+        return f"{self.name} : {self.faction.name}, is_faction_level_starter : {self.is_faction_level_starter}"
 
 
 class Player(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    faction = models.ForeignKey(Faction, on_delete=models.SET_NULL, null=True)
+    faction = models.ForeignKey(Faction, on_delete=models.SET_DEFAULT, null=False, default=Sector.get_default_pk)
     sector = models.ForeignKey(Sector, on_delete=models.SET_DEFAULT, null=False, default=Sector.get_default_pk)
     is_npc = models.BooleanField(default=False)
     name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
@@ -305,14 +305,14 @@ class PlayerLog(models.Model):
 
 
 class PlayerResource(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    source = models.ForeignKey(Player, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player.name} : {self.resource.name}"
+        return f"{self.source.name} : {self.resource.name}"
 
 
 class PlayerRecipe(models.Model):
@@ -387,7 +387,7 @@ class PlayerShipModule(models.Model):
 
 
 class PlayerShipResource(models.Model):
-    player_ship = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
+    source = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
     quantity = models.PositiveIntegerField(default=0)
 
@@ -403,15 +403,15 @@ class FactionLeader(models.Model):
 
 
 class FactionResource(models.Model):
-    faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=False, default=Sector.get_default_pk)
+    source = models.ForeignKey(Faction, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.faction.name} : {self.resource.name}, quantity : {self.quantity}"
+        return f"{self.source.name} : {self.resource.name}, quantity : {self.quantity}"
 
 
 class FactionRank(models.Model):
@@ -428,37 +428,37 @@ class FactionRank(models.Model):
 
 
 class PlanetResource(models.Model):
-    planet = models.ForeignKey(Planet, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=False, default=Sector.get_default_pk)
-    max_quantity = models.PositiveIntegerField(default=1)
+    source = models.ForeignKey(Planet, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.planet.name} : {self.resource.name}, max_quantity: {self.max_quantity}"
+        return f"{self.source.name} : {self.resource.name}"
 
 
 class AsteroidResource(models.Model):
-    asteroid = models.ForeignKey(Asteroid, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=False, default=Sector.get_default_pk)
+    source = models.ForeignKey(Asteroid, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
-    max_quantity = models.PositiveIntegerField(default=0)
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.asteroid.name} : {self.resource.name}, quantity: {self.quantity} / {self.max_quantity}"
+        return f"{self.source.name} : {self.resource.name}"
 
 
 class StationResource(models.Model):
-    station = models.ForeignKey(Station, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=False, default=Sector.get_default_pk)
-    quantity = models.PositiveIntegerField(default=0)
+    source = models.ForeignKey(Station, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.station.name} : {self.resource.name}, quantity : {self.quantity}"
+        return f"{self.source.name} : {self.resource.name}, quantity : {self.quantity}"

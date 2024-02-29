@@ -12,7 +12,8 @@ from core.models import (
     StationResource,
     Faction,
     FactionResource,
-    Security
+    Security,
+    Sector
 )
 
 
@@ -72,6 +73,7 @@ class GetMapDataFromDB:
             "station": [Station, StationResource],
             "faction": [Faction, FactionResource],
             "security": Security,
+            "sector": Sector
         }[table_name]
 
 

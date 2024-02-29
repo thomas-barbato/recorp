@@ -1,15 +1,10 @@
-import os
 import re
 import json
 from django.contrib import admin
-from django.core import serializers
-from django.core.serializers import serialize
+from django.contrib.messages import get_messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic.edit import FormMixin
 from django.contrib import messages
-from recorp.settings import BASE_DIR
 from core.backend.tiles import CropThisImage
 from core.backend.get_data import GetMapDataFromDB
 from django.views.generic import TemplateView
@@ -176,7 +171,7 @@ class CreateForegroundItemView(TemplateView):
         return HttpResponseRedirect(request.path)
 
 
-class CreateMapView(TemplateView):
+class CreateMapView(SuccessMessageMixin, TemplateView):
     template_name = "create_map.html"
 
     def get_context_data(self, **kwargs):
@@ -198,26 +193,44 @@ class CreateMapView(TemplateView):
 
     def post(self, request):
         data_from_post = json.load(request)
+
+        if Sector.objects.filter(name=data_from_post['0']["sector_name"]).exists():
+            messages.error(
+                self.request,
+                f"Sector with name <b>{data_from_post['0']['sector_name']}</b> already exists"
+            )
+            return HttpResponseRedirect(request.path)
+
+        sector = Sector(
+            name=data_from_post['0']["sector_name"],
+            description=data_from_post['0']["sector_description"],
+            image=data_from_post['0']["sector_background"],
+            security_id=data_from_post['0']["security"],
+            faction_id=data_from_post['0']["faction_id"],
+            is_faction_level_starter=data_from_post['0']["is_faction_starter"],
+        )
+        sector.save()
         for i in data_from_post:
-            print(data_from_post[i])
             table, table_resource = GetMapDataFromDB.get_table(data_from_post[i]['item_type'])
-            item_name = data_from_post[i]['item_img_name']
+
             rsrc_data = data_from_post[i]['resource_data']
-            obj_list = []
-            for data_i in rsrc_data:
-                resource_pk = Resource.objects.filter(name=rsrc_data[data_i]).values('id')
-                obj_list.append(
-                    table_resource(
-
-                    )
+            item_type_id = table.objects.filter(name=data_from_post[i]['item_img_name']).values_list('id', flat=True)[0]
+            for data in rsrc_data:
+                resource_id = Resource.objects.filter(name=data).values_list('id', flat=True)[0]
+                table_resource.objects.create(
+                    sector_id=sector.pk,
+                    resource_id=resource_id,
+                    source_id=item_type_id,
+                    data={
+                        'coord_x': data_from_post[i]['coord_x'],
+                        'coord_y': data_from_post[i]['coord_y'],
+                    }
                 )
-            resr = (table_resource)
-            pk = table.objects.filter(name=item_name).values('id')
-
-            print(pk, resource_pk)
-
-        return HttpResponseRedirect(request.path)
-
+        messages.success(
+            self.request,
+            f"Sector with name <b>{data_from_post['0']['sector_name']}</b> created with success"
+        )
+        return HttpResponseRedirect(request.path, {'messages': get_messages(request)})
 
 
 admin_site = CustomAdminSite()
