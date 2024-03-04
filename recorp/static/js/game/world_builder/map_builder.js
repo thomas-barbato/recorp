@@ -25,6 +25,34 @@
     faction_starter.addEventListener('change', display_faction_choice);
     owned_by_faction.addEventListener('change', display_faction_choice);
 
+    let sector_selection = document.querySelector('#sector-select');
+    sector_selection.addEventListener('change', function(){
+        let map_id = this.value;
+        if(map_id !== "none"){
+            let url ='sector_data'
+            const headers = new Headers({
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
+            });
+            fetch(url, {
+                method: 'POST',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify({'map_id': map_id})
+            }).then(response => response.json())
+                .then(data => {
+                  const posts = data
+                  for(post in posts){
+                    console.log(post)
+                    console.log("")
+                  }
+                })
+                .catch(error => console.error(error));
+        }
+    })
+
     function append_foreground_menu(element){
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')

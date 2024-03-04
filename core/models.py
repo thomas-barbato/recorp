@@ -7,15 +7,15 @@ localtime = timezone.now
 
 
 def get_default_planet_size():
-    return {'size_x': 4, 'size_y': 4}
+    return {"size_x": 4, "size_y": 4}
 
 
 def get_default_station_size():
-    return {'size_x': 3, 'size_y': 3}
+    return {"size_x": 3, "size_y": 3}
 
 
 def get_default_asteroid_size():
-    return {'size_x': 1, 'size_y': 1}
+    return {"size_x": 1, "size_y": 1}
 
 
 class User(AbstractBaseUser):
@@ -35,7 +35,9 @@ class UserPurchase(models.Model):
 
 
 class Resource(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Resource-default")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Resource-default"
+    )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -43,7 +45,7 @@ class Resource(models.Model):
     @classmethod
     def get_default_pk(cls):
         resource, created = cls.objects.get_or_create(
-            name='none',
+            name="none",
         )
         return resource.pk
 
@@ -52,7 +54,9 @@ class Resource(models.Model):
 
 
 class Planet(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Planet-default")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Planet-default"
+    )
     data = models.JSONField(null=True)
     size = models.JSONField(default=get_default_planet_size)
     created_at = models.DateTimeField(default=localtime)
@@ -63,7 +67,9 @@ class Planet(models.Model):
 
 
 class Station(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Station-default")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Station-default"
+    )
     data = models.JSONField(null=True)
     size = models.JSONField(default=get_default_station_size)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -74,7 +80,9 @@ class Station(models.Model):
 
 
 class Asteroid(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Asteroid-default")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Asteroid-default"
+    )
     data = models.JSONField(null=True)
     size = models.JSONField(default=get_default_asteroid_size)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -85,7 +93,9 @@ class Asteroid(models.Model):
 
 
 class Faction(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Faction-default")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Faction-default"
+    )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -93,7 +103,7 @@ class Faction(models.Model):
     @classmethod
     def get_default_pk(cls):
         faction, created = cls.objects.get_or_create(
-            name='none',
+            name="none",
         )
         return faction.pk
 
@@ -102,7 +112,6 @@ class Faction(models.Model):
 
 
 class Security(models.Model):
-
     name = models.CharField(max_length=30)
     description = models.TextField()
     attack_countdown = models.PositiveSmallIntegerField(default=3)
@@ -113,12 +122,15 @@ class Security(models.Model):
 
 
 class Sector(models.Model):
-
     name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
     image = models.ImageField(upload_to="sector/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
-    security = models.ForeignKey(Security, on_delete=models.CASCADE, null=False, default=1)
-    faction = models.ForeignKey(Faction, on_delete=models.CASCADE, null=False, default=Faction.get_default_pk)
+    security = models.ForeignKey(
+        Security, on_delete=models.CASCADE, null=False, default=1
+    )
+    faction = models.ForeignKey(
+        Faction, on_delete=models.CASCADE, null=False, default=Faction.get_default_pk
+    )
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -126,7 +138,7 @@ class Sector(models.Model):
     @classmethod
     def get_default_pk(cls):
         sector, created = cls.objects.get_or_create(
-            name='none',
+            name="none",
         )
         return sector.pk
 
@@ -136,8 +148,20 @@ class Sector(models.Model):
 
 class Player(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    faction = models.ForeignKey(Faction, on_delete=models.SET_DEFAULT, null=False, default=Sector.get_default_pk)
-    sector = models.ForeignKey(Sector, on_delete=models.SET_DEFAULT, null=False, default=Sector.get_default_pk)
+    faction = models.ForeignKey(
+        Faction,
+        on_delete=models.SET_DEFAULT,
+        null=False,
+        default=Sector.get_default_pk,
+        related_name="player_faction",
+    )
+    sector = models.ForeignKey(
+        Sector,
+        on_delete=models.SET_DEFAULT,
+        null=False,
+        default=Sector.get_default_pk,
+        related_name="player_sector",
+    )
     is_npc = models.BooleanField(default=False)
     name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
     description = models.TextField(max_length=2500, blank=True)
@@ -175,15 +199,14 @@ class Skill(models.Model):
 
 
 class SkillEffect(models.Model):
-
     EXPERTISE_CHOICE = (
-        ('ROOKIE', 'Rookie'),
-        ('QUALIFIED', 'Qualified'),
-        ('PROFESSIONAL', 'Professional'),
-        ('EXPERT', 'Expert'),
-        ('GREAT_EXPERT', 'Great expert'),
-        ('MASTER', 'Master'),
-        ('GRAND_MASTER', 'Grand master')
+        ("ROOKIE", "Rookie"),
+        ("QUALIFIED", "Qualified"),
+        ("PROFESSIONAL", "Professional"),
+        ("EXPERT", "Expert"),
+        ("GREAT_EXPERT", "Great expert"),
+        ("MASTER", "Master"),
+        ("GRAND_MASTER", "Grand master"),
     )
 
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
@@ -306,7 +329,9 @@ class PlayerLog(models.Model):
 
 class PlayerResource(models.Model):
     source = models.ForeignKey(Player, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
+    resource = models.ForeignKey(
+        Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk
+    )
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -334,7 +359,9 @@ class PlayerSkillEffect(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player.name} : {self.skill_effect.skill.name}, level = {self.level}"
+        return (
+            f"{self.player.name} : {self.skill_effect.skill.name}, level = {self.level}"
+        )
 
 
 class PlayerResearch(models.Model):
@@ -359,7 +386,9 @@ class PlayerPrivateMessage(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
+        return (
+            f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
+        )
 
 
 class PlayerShip(models.Model):
@@ -388,7 +417,9 @@ class PlayerShipModule(models.Model):
 
 class PlayerShipResource(models.Model):
     source = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk)
+    resource = models.ForeignKey(
+        Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk
+    )
     quantity = models.PositiveIntegerField(default=0)
 
 
@@ -405,7 +436,9 @@ class FactionLeader(models.Model):
 class FactionResource(models.Model):
     source = models.ForeignKey(Faction, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(
+        Sector, on_delete=models.CASCADE, related_name="faction_sector"
+    )
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -430,7 +463,9 @@ class FactionRank(models.Model):
 class PlanetResource(models.Model):
     source = models.ForeignKey(Planet, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(
+        Sector, on_delete=models.CASCADE, related_name="planet_sector"
+    )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -442,7 +477,9 @@ class PlanetResource(models.Model):
 class AsteroidResource(models.Model):
     source = models.ForeignKey(Asteroid, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(
+        Sector, on_delete=models.CASCADE, related_name="asteroid_sector"
+    )
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -455,7 +492,9 @@ class AsteroidResource(models.Model):
 class StationResource(models.Model):
     source = models.ForeignKey(Station, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(
+        Sector, on_delete=models.CASCADE, related_name="station_sector"
+    )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)

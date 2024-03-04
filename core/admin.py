@@ -1,13 +1,14 @@
 import re
 import json
 from django.contrib import admin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import get_messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from core.backend.tiles import CropThisImage
 from core.backend.get_data import GetMapDataFromDB
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
 from core.forms import CropImageForm
 from core.views import admin_index
 from core.models import (
@@ -73,9 +74,9 @@ class CustomAdminSite(admin.AdminSite):
                         "view_only": True,
                     },
                     {
-                        "name": "create map",
-                        "object_name": "create map",
-                        "admin_url": "/admin/create_map",
+                        "name": "create / update / delete sector",
+                        "object_name": "create / update / delete sector",
+                        "admin_url": "/admin/sector_gestion",
                         "view_only": True,
                     },
                 ],
@@ -102,15 +103,20 @@ class CustomAdminSite(admin.AdminSite):
                 name="create-foreground-item",
             ),
             re_path(
-                r"^create_map/$",
-                self.admin_view(CreateMapView.as_view()),
-                name="create-map",
+                r"^sector_gestion/$",
+                self.admin_view(CreateSectorView.as_view()),
+                name="sector_gestion",
+            ),
+            re_path(
+                r"^sector_gestion/sector_data$",
+                self.admin_view(SectorDataView.as_view()),
+                name="sector_data",
             ),
         ] + urls
         return urls
 
 
-class CropImageView(TemplateView):
+class CropImageView(LoginRequiredMixin, TemplateView):
     template_name = "crop_image.html"
 
     def get_context_data(self, **kwargs):
@@ -130,7 +136,7 @@ class CropImageView(TemplateView):
         return HttpResponseRedirect(request.path)
 
 
-class CreateForegroundItemView(TemplateView):
+class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
     template_name = "create_foreground_item.html"
 
     def get_context_data(self, **kwargs):
@@ -171,8 +177,8 @@ class CreateForegroundItemView(TemplateView):
         return HttpResponseRedirect(request.path)
 
 
-class CreateMapView(SuccessMessageMixin, TemplateView):
-    template_name = "create_map.html"
+class CreateSectorView(LoginRequiredMixin, TemplateView):
+    template_name = "sector_gestion.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -187,6 +193,7 @@ class CreateMapView(SuccessMessageMixin, TemplateView):
         context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
         context["security_data"] = GetMapDataFromDB.get_table("security").objects.values('id', 'name')
+        context["sector_data"] = GetMapDataFromDB.get_table("sector").objects.values('id', 'name')
         context["faction_data"] = GetMapDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetMapDataFromDB.get_size()
         return context
@@ -231,6 +238,46 @@ class CreateMapView(SuccessMessageMixin, TemplateView):
             f"Sector with name <b>{data_from_post['0']['sector_name']}</b> created with success"
         )
         return HttpResponseRedirect(request.path, {'messages': get_messages(request)})
+
+
+class DeleteMapView(LoginRequiredMixin, DeleteView):
+    template_name = "sector_gestion.html"
+    
+    
+class UpdateMapView(LoginRequiredMixin, UpdateView):
+    model = Sector
+    template_name = "sector_gestion.html"
+
+
+class SectorDataView(LoginRequiredMixin, TemplateView):
+    template_name = "sector_gestion.html"
+
+    def post(self, request):
+        pk = json.load(request)['map_id']
+        queryset = {}
+        if Sector.objects.filter(id=pk).exists():
+            queryset = Sector.objects\
+                .filter(id=pk)\
+                .select_related(
+                    'faction_sector',
+                    'planet_sector',
+                    'asteroid_sector',
+                    'station_sector'
+                ).values(
+                    'planet_sector__source_id__name',
+                    'planet_sector__data',
+                    'planet_sector__id',
+                    'asteroid_sector__source_id__name',
+                    'asteroid_sector__data',
+                    'asteroid_sector__id',
+                    'station_sector__source_id__name',
+                    'station_sector__data',
+                    'station_sector__id',
+                    'faction_sector__source_id__name',
+                    'faction_sector__resource_id__name',
+                    'faction_sector__id',
+                )
+        return JsonResponse(json.dumps(list(queryset)), safe=False)
 
 
 admin_site = CustomAdminSite()

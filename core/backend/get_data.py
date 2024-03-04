@@ -62,6 +62,10 @@ class GetMapDataFromDB:
         }
 
     @staticmethod
+    def serialize_queryset(queryset):
+        return json.loads(serializers.serialize("json", queryset))
+
+    @staticmethod
     def get_resource_queryset():
         return Resource.objects.all()
 
