@@ -126,10 +126,10 @@ class Sector(models.Model):
     image = models.ImageField(upload_to="sector/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
     security = models.ForeignKey(
-        Security, on_delete=models.CASCADE, null=False, default=1
+        Security, on_delete=models.CASCADE, null=False, default=1, related_name="security_sector"
     )
     faction = models.ForeignKey(
-        Faction, on_delete=models.CASCADE, null=False, default=Faction.get_default_pk
+        Faction, on_delete=models.CASCADE, null=False, default=Faction.get_default_pk, related_name="faction_sector"
     )
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)

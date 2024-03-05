@@ -1,5 +1,6 @@
 import re
 import json
+import pprint
 from django.contrib import admin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import get_messages
@@ -231,6 +232,8 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                     data={
                         'coord_x': data_from_post[i]['coord_x'],
                         'coord_y': data_from_post[i]['coord_y'],
+                        'name': data_from_post[i]['item_name'],
+                        'description': data_from_post[i]['item_description'],
                     }
                 )
         messages.success(
@@ -259,25 +262,61 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
             queryset = Sector.objects\
                 .filter(id=pk)\
                 .select_related(
-                    'faction_sector',
                     'planet_sector',
                     'asteroid_sector',
-                    'station_sector'
+                    'station_sector',
+                    'security_sector',
+                    'faction_sector',
                 ).values(
+                    'id',
+                    'description',
+                    'name',
+                    'image',
+                    'security_id',
+                    'security_id__name',
+                    'is_faction_level_starter',
+                    'faction_id',
                     'planet_sector__source_id__name',
-                    'planet_sector__data',
                     'planet_sector__id',
+                    'planet_sector__data',
+                    'planet_sector__resource_id__name',
+                    'asteroid_sector__id',
                     'asteroid_sector__source_id__name',
                     'asteroid_sector__data',
-                    'asteroid_sector__id',
+                    'asteroid_sector__resource_id__name',
                     'station_sector__source_id__name',
-                    'station_sector__data',
                     'station_sector__id',
-                    'faction_sector__source_id__name',
-                    'faction_sector__resource_id__name',
+                    'station_sector__data',
+                    'station_sector__resource_id__name',
                     'faction_sector__id',
+                    'faction_sector__source_id__name',
                 )
-        return JsonResponse(json.dumps(list(queryset)), safe=False)
+        queryset_dict = queryset[0]
+        result_dict = dict()
+        result_dict["sector_element"] = []
+        result_dict['faction'] = {}
+        for key, value in queryset_dict.items():
+            if "faction_" in key:
+                result_dict['faction'].update({
+                    'id': queryset_dict['faction_id'],
+                    'name': queryset_dict['faction_sector__source_id__name']
+                })
+            elif "_sector__" in key:
+                split_str = key.split('_')[0]
+                if queryset_dict[f"{split_str}_sector__id"] is not None:
+                    temp_dict =  {
+                        "type": split_str,
+                        "id": queryset_dict[f"{split_str}_sector__id"],
+                        "name": queryset_dict[f"{split_str}_sector__source_id__name"],
+                        "data": queryset_dict[f"{split_str}_sector__data"],
+                        "resource": queryset_dict[f"{split_str}_sector__resource_id__name"],
+                    }
+                    if temp_dict not in result_dict["sector_element"]:
+                        result_dict["sector_element"].append(temp_dict)
+            else:
+                result_dict[key] = value
+        print(result_dict)
+        return JsonResponse(json.dumps(result_dict), safe=False)
 
 
 admin_site = CustomAdminSite()

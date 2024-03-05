@@ -43,11 +43,9 @@
                 body: JSON.stringify({'map_id': map_id})
             }).then(response => response.json())
                 .then(data => {
-                  const posts = data
-                  for(post in posts){
-                    console.log(post)
-                    console.log("")
-                  }
+                  const content = JSON.parse(data);
+                  console.log(content);
+                  console.log(typeof(content));
                 })
                 .catch(error => console.error(error));
         }
