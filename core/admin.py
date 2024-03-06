@@ -299,12 +299,13 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
             if "faction_" in key:
                 result_dict['faction'].update({
                     'id': queryset_dict['faction_id'],
-                    'name': queryset_dict['faction_sector__source_id__name']
+                    'name': queryset_dict['faction_sector__source_id__name'],
+                    'is_faction_level_starter': queryset_dict['is_faction_level_starter']
                 })
             elif "_sector__" in key:
                 split_str = key.split('_')[0]
                 if queryset_dict[f"{split_str}_sector__id"] is not None:
-                    temp_dict =  {
+                    temp_dict = {
                         "type": split_str,
                         "id": queryset_dict[f"{split_str}_sector__id"],
                         "name": queryset_dict[f"{split_str}_sector__source_id__name"],
@@ -315,7 +316,6 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                         result_dict["sector_element"].append(temp_dict)
             else:
                 result_dict[key] = value
-        print(result_dict)
         return JsonResponse(json.dumps(result_dict), safe=False)
 
 

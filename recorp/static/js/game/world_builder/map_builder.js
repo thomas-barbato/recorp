@@ -11,7 +11,7 @@
 
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
-    let display_faction_choice = function(){
+    function display_faction_choice(){
         let faction_starter = document.querySelector('#faction-starter');
         let faction_owner = document.querySelector('#owned-by-faction');
         document.querySelector('#faction-select').style.display = "none";
@@ -24,6 +24,78 @@
     let owned_by_faction = document.querySelector('#owned-by-faction');
     faction_starter.addEventListener('change', display_faction_choice);
     owned_by_faction.addEventListener('change', display_faction_choice);
+
+    function set_element_value(id, selected_value){
+        let e = document.querySelector('#'+id);
+        e.value = selected_value;
+    }
+
+    function check_uncheck(name, check_value){
+        let e = document.querySelector("input[name="+name+"]");
+        check_value === true ? e.checked = true : e.checked = false;
+    }
+
+    function clean_entire_map(){
+        let f_id_check = false;
+        let f_starter_check = false;
+
+        set_element_value("background", "1");
+        set_element_value("sector-description", "");
+        set_element_value('sector-name', "");
+        set_element_value('security-level', "1");
+        check_uncheck("owned-by-faction", f_id_check);
+        check_uncheck("faction-starter", f_starter_check);
+
+        document.querySelector('#faction-select').style.display = "none";
+
+
+        let fg_menu = document.querySelectorAll('.foreground-menu-container');
+        for(let i = 0; i < fg_menu.length; i++){
+            fg_menu[i].remove();
+        }
+
+        let tiles = document.querySelectorAll('.tile');
+        for(let i = 0 ; i < tiles.length; i++){
+            tiles[i].style.backgroundImage = "";
+        }
+
+        let fg_container = document.querySelectorAll('.foreground-container');
+        if(fg_container.length > 0){ clear_foreground() };
+
+
+    }
+
+    function load_map_data(object){
+        let f_id_check = false;
+        let f_starter_check = false;
+
+        set_element_value("background", object['image']);
+        set_element_value('sector-name', object['name']);
+
+        object['faction']['id'] !== null ? f_id_check = true : f_id_check = false;
+        object['faction']['is_faction_level_starter'] === true ? f_starter_check = true : f_starter_check = false;
+
+        check_uncheck("owned-by-faction", f_id_check);
+        check_uncheck("faction-starter", f_starter_check);
+        display_faction_choice();
+
+        set_element_value('faction-choice', object['faction']['id']);
+        set_element_value('security-level', object['security_id']);
+        set_element_value('sector-description', object['description']);
+
+        let fg_menu = document.querySelectorAll('.foreground-menu-container');
+        for(let i = 0; i < fg_menu.length; i++){
+            fg_menu[i].remove();
+        }
+
+        let fg_container = document.querySelectorAll('.foreground-container');
+        if(fg_container.length > 0){ clear_foreground() };
+
+        for(let obj_fg in object['sector_element']){
+            append_foreground_menu(element, pre_existing_data=object['sector_element'][obj_fg]);
+        }
+
+    }
 
     let sector_selection = document.querySelector('#sector-select');
     sector_selection.addEventListener('change', function(){
@@ -43,15 +115,15 @@
                 body: JSON.stringify({'map_id': map_id})
             }).then(response => response.json())
                 .then(data => {
-                  const content = JSON.parse(data);
-                  console.log(content);
-                  console.log(typeof(content));
+                  load_map_data(JSON.parse(data));
                 })
                 .catch(error => console.error(error));
+        }else{
+            clean_entire_map()
         }
     })
 
-    function append_foreground_menu(element){
+    function append_foreground_menu(element, pre_existing_data){
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
             let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
@@ -66,28 +138,27 @@
 
             let clone_coord_x = clone.querySelector('.coord-x > input');
             clone_coord_x.id = "coord-x-" + next_id_value;
-            clone_coord_x.value = 0;
+            clone_coord_x.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
 
             let clone_coord_y = clone.querySelector('.coord-y > input')
             clone_coord_y.id = "coord-y-" + next_id_value;
-            clone_coord_y.value = 0;
+            clone_coord_y.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
 
             let fg_item_selector = clone.querySelector(".fg-item-selector");
             fg_item_selector.id = "fg-item-selector-" + next_id_value;
             fg_item_selector.addEventListener("change", function(){
                 let text = this.options[this.selectedIndex].text;
                 let value = this.options[this.selectedIndex].value;
-                let id_value =  fg_item_selector.id.split('-')[3];
                 display_select_animation_preview(text, value, fg_item_selector.id);
             })
 
             let fg_item_name = clone.querySelector(".item-name");
             fg_item_name.id = "item-name-" + next_id_value;
-            fg_item_name.value = "";
+            fg_item_name.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['name'] : "";
 
             let item_description = clone.querySelector('.item-description')
             item_description.id = "item-description-"+ next_id_value;
-            item_description.value = "";
+            item_description.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['description'] : "";
 
             clone.querySelector(".animations").style.display = "none";
             clone.querySelector(".trash-it").id = "trash-" + next_id_value;
@@ -98,6 +169,13 @@
             let last_element = Array.from(document.querySelectorAll('.foreground-menu-container')).pop();
             last_element.after(clone);
 
+            if(typeof pre_existing_data !== "undefined"){
+                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['name']);
+                let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
+                let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
+                display_select_animation_preview(text, value, fg_item_selector.id);
+            }
+
             document.querySelector('i#trash-'+ next_id_value).addEventListener('click', function(){
                 document.querySelector('#foreground-menu-container-'+parseInt(next_id_value)).remove();
                 remove_animation(next_id_value);
@@ -105,11 +183,23 @@
 
         }else{
             dict = [];
-            element.querySelector('#coord-x-1').value = 0;
-            element.querySelector('#coord-y-1').value = 0;
-            element.querySelector(".animations").style.display = "none";
-            element.querySelector("#preview-animation").innerHTML = "";
+            element.querySelector('#item-name-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['name'] : "";
+            element.querySelector('#coord-x-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
+            element.querySelector('#coord-y-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
+            element.querySelector('#item-description-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['description'] : "";
+            let fg_item_selector = element.querySelector(".fg-item-selector");
             document.querySelector('#foreground-menu').appendChild(element)
+            if(typeof pre_existing_data !== "undefined"){
+                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['name']);
+                let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
+                let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
+                console.log(fg_item_selector.id);
+                display_select_animation_preview(text, value, fg_item_selector.id);
+            }else{
+                fg_item_selector.value = "none";
+                element.querySelector(".animations").style.display = "none";
+                element.querySelector("#preview-animation").innerHTML = "";
+            }
         }
     }
 
@@ -117,7 +207,6 @@
     fg_item_selector.addEventListener("change", function(){
         let text = this.options[this.selectedIndex].text;
         let value = this.options[this.selectedIndex].value;
-        let id_value =  fg_item_selector.id.split('-')[3];
         display_select_animation_preview(text, value, fg_item_selector.id);
     });
 
@@ -146,8 +235,8 @@
 
     let trash_1 = document.querySelector('#trash-1');
     trash_1.addEventListener('click', function(){
-        let parent = trash_1.id.split('-')[1];
-        document.querySelector('#foreground-menu-container-'+parent).remove();
+        let id = trash_1.id.split('-')[1];
+        document.querySelector('#foreground-menu-container-'+id).remove();
         remove_animation(parent);
     })
 
