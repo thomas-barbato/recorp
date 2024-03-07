@@ -80,4 +80,9 @@ class GetMapDataFromDB:
             "sector": Sector
         }[table_name]
 
+    @staticmethod
+    def count_foreground_item_in_map(map_pk):
+        print(Sector.objects.filter(planet_resource__id=map_pk, asteroid_resource__id=map_pk, station_resource__id=map_pk).count())
+        return Sector.objects.filter(planet_resource__id=map_pk, asteroid_resource__id=map_pk, station_resource__id=map_pk).count()
+
 

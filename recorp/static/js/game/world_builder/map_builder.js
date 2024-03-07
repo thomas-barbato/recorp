@@ -35,6 +35,14 @@
         check_value === true ? e.checked = true : e.checked = false;
     }
 
+    function create_hidden_element(element, obj, value){
+        hidden_id = document.createElement('input');
+        hidden_id.type = 'hidden';
+        hidden_id.name = "item-id";
+        hidden_id.value = value;
+        element.appendChild(hidden_id);
+    }
+
     function clean_entire_map(){
         let f_id_check = false;
         let f_starter_check = false;
@@ -88,9 +96,10 @@
             fg_menu[i].remove();
         }
 
+        create_hidden_element(element, object['sector_element'], object['sector_element'][0]['item_id']);
+
         let fg_container = document.querySelectorAll('.foreground-container');
         if(fg_container.length > 0){ clear_foreground() };
-
         for(let obj_fg in object['sector_element']){
             append_foreground_menu(element, pre_existing_data=object['sector_element'][obj_fg]);
         }
@@ -166,6 +175,10 @@
             let preview_selector = clone.querySelector("#preview-animation");
             preview_selector.innerHTML = "";
 
+            if(typeof pre_existing_data !== "undefined"){
+                clone.querySelector('input[name=item-id]').value = pre_existing_data['item_id'];
+            }
+
             let last_element = Array.from(document.querySelectorAll('.foreground-menu-container')).pop();
             last_element.after(clone);
 
@@ -193,7 +206,6 @@
                 fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
                 let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
-                console.log(fg_item_selector.id);
                 display_select_animation_preview(text, value, fg_item_selector.id);
             }else{
                 fg_item_selector.value = "none";
@@ -496,36 +508,50 @@
 
 
 
-    let save_data = function(){
+    let save_or_update_data = function(){
         let element = document.querySelectorAll('.foreground-menu-container');
         let data_entry = {};
+        let data = {};
         let is_faction_starter = document.querySelector('#faction-starter');
         let is_owned_by_faction = document.querySelector('#owned-by-faction');
-        let faction_id = null;
+        let faction_id = "none";
+        let item_id_element = null;
         if(document.querySelector('#faction-select').style.display === "block"){
             faction_id = document.querySelector('#faction-choice').querySelector(':checked').value;
         }
         for(let i = 0; i < element.length; i++){
             const resource_data = Array.from(element[i].querySelectorAll("select[name=resource-data] option:checked"),e=>e.value);
+            item_id_element = element[i].querySelector('input[name=item-id]');
+            let item_id = typeof item_id_element !== 'undefined' && item_id_element !== null ? item_id_element.value : null;
             data_entry[i] = {
-                'sector_background': document.querySelector('#background').querySelector(':checked').textContent,
-                'sector_name': document.querySelector('input[name=sector-name]').value,
-                'sector_description': document.querySelector('#sector-description').value,
                 'coord_x': element[i].querySelector('input[name=coord-x]').value,
                 'coord_y': element[i].querySelector('input[name=coord-y]').value,
                 'item_type': element[i].querySelector('select[name=item-type]').value.split('_')[0],
+                'item_id': item_id,
                 'item_img_name': element[i].querySelector('select[name=item-type]').querySelector(':checked').textContent,
                 'item_name': element[i].querySelector('input[name=item-name]').value,
                 'item_description': element[i].querySelector('.item-description').value,
-                'security': document.querySelector('#security-level').querySelector(':checked').value,
-                'is_faction_starter': is_faction_starter.checked,
-                'is_owned_by_faction': is_owned_by_faction.checked,
-                'faction_id': faction_id,
                 'resource_data': resource_data,
             }
         }
-
+        let sector_selection_id = document.querySelector('#sector-select');
         let url = window.location.href;
+        data = data_entry;
+        if(sector_selection_id.value !== "none"){
+            url = "sector_update_data";
+            data = {
+                'sector_id': sector_selection_id.value,
+                'sector_name': document.querySelector('input[name=sector-name]').value,
+                'sector_background': document.querySelector('#background').querySelector(':checked').textContent,
+                'sector_description': document.querySelector('#sector-description').value,
+                'security': document.querySelector('#security-level').querySelector(':checked').value,
+                'faction_id': faction_id,
+                'is_faction_starter': is_faction_starter.checked,
+                'is_owned_by_faction': is_owned_by_faction.checked,
+                 ...data_entry
+            };
+        }
+
         const headers = new Headers({
         'Content-Type': 'x-www-form-urlencoded',
         'Accept': 'application/json',
@@ -536,10 +562,9 @@
             method: 'POST',
             headers,
             credentials: 'include',
-            body: JSON.stringify(data_entry),
+            body: JSON.stringify(data),
         });
-
     }
 
-    let save_btn = document.querySelector('#save')
-    save_btn.addEventListener('click', save_data)
+    let save_or_update_btn = document.querySelector('#save-or-update');
+    save_or_update_btn.addEventListener('click', save_or_update_data);

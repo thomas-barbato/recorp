@@ -113,6 +113,11 @@ class CustomAdminSite(admin.AdminSite):
                 self.admin_view(SectorDataView.as_view()),
                 name="sector_data",
             ),
+            re_path(
+                r"^sector_gestion/sector_update_data$",
+                self.admin_view(SectorUpdateDataView.as_view()),
+                name="sector_update_data",
+            ),
         ] + urls
         return urls
 
@@ -201,7 +206,6 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
 
     def post(self, request):
         data_from_post = json.load(request)
-
         if Sector.objects.filter(name=data_from_post['0']["sector_name"]).exists():
             messages.error(
                 self.request,
@@ -209,12 +213,16 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
             )
             return HttpResponseRedirect(request.path)
 
+        faction_id = data_from_post['0']["faction_id"]
+        if data_from_post['0']["faction_id"] == "none":
+            faction_id = 1
+
         sector = Sector(
             name=data_from_post['0']["sector_name"],
             description=data_from_post['0']["sector_description"],
             image=data_from_post['0']["sector_background"],
             security_id=data_from_post['0']["security"],
-            faction_id=data_from_post['0']["faction_id"],
+            faction_id=faction_id,
             is_faction_level_starter=data_from_post['0']["is_faction_starter"],
         )
         sector.save()
@@ -244,11 +252,6 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteMapView(LoginRequiredMixin, DeleteView):
-    template_name = "sector_gestion.html"
-    
-    
-class UpdateMapView(LoginRequiredMixin, UpdateView):
-    model = Sector
     template_name = "sector_gestion.html"
 
 
@@ -307,7 +310,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                 if queryset_dict[f"{split_str}_sector__id"] is not None:
                     temp_dict = {
                         "type": split_str,
-                        "id": queryset_dict[f"{split_str}_sector__id"],
+                        "item_id": queryset_dict[f"{split_str}_sector__id"],
                         "name": queryset_dict[f"{split_str}_sector__source_id__name"],
                         "data": queryset_dict[f"{split_str}_sector__data"],
                         "resource": queryset_dict[f"{split_str}_sector__resource_id__name"],
@@ -317,6 +320,45 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
             else:
                 result_dict[key] = value
         return JsonResponse(json.dumps(result_dict), safe=False)
+
+
+class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
+    model = Sector
+
+    def post(self, request, *args, **kwargs):
+        data = json.load(request)
+        pk = data['sector_id']
+        if Sector.objects.filter(id=pk).exists():
+            Sector.objects.filter(id=pk).update(
+                description=data['sector_description'],
+                name=data['sector_name'],
+                image=data['sector_background'],
+                security_id=data['security'],
+                is_faction_level_starter=data['is_faction_starter'],
+                faction_id=data['faction_id']
+            ).save()
+        print(GetMapDataFromDB.count_foreground_item_in_map(int(pk)))
+        """
+        
+        for i in data:
+            table, table_resource = GetMapDataFromDB.get_table(data[i]['item_type'])
+
+            rsrc_data = data[i]['resource_data']
+            item_type_id = data[i]['item_id']
+            for data in rsrc_data:
+                resource_id = Resource.objects.filter(name=data).values_list('id', flat=True)[0]
+                table_resource.objects.create(
+                    sector_id=pk,
+                    resource_id=resource_id,
+                    source_id=item_type_id,
+                    data={
+                        'coord_x': data[i]['coord_x'],
+                        'coord_y': data[i]['coord_y'],
+                        'name': data[i]['item_name'],
+                        'description': data[i]['item_description'],
+                    }
+                )
+        """
 
 
 admin_site = CustomAdminSite()
