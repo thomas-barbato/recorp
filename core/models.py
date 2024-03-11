@@ -42,13 +42,6 @@ class Resource(models.Model):
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @classmethod
-    def get_default_pk(cls):
-        resource, created = cls.objects.get_or_create(
-            name="none",
-        )
-        return resource.pk
-
     def __str__(self):
         return f"{self.data}"
 
@@ -102,7 +95,7 @@ class Faction(models.Model):
 
     @classmethod
     def get_default_pk(cls):
-        faction, created = cls.objects.get_or_create(
+        faction = cls.objects.get_or_create(
             name="none",
         )
         return faction.pk
@@ -126,21 +119,14 @@ class Sector(models.Model):
     image = models.ImageField(upload_to="sector/", null=True, blank=True)
     description = models.TextField(max_length=2500, blank=True)
     security = models.ForeignKey(
-        Security, on_delete=models.CASCADE, null=False, default=1, related_name="security_sector"
+        Security, on_delete=models.SET_DEFAULT, null=False, default=1, related_name="security_sector"
     )
     faction = models.ForeignKey(
-        Faction, on_delete=models.CASCADE, null=False, default=Faction.get_default_pk, related_name="faction_sector"
+        Faction, on_delete=models.SET_DEFAULT, null=False, default=Faction.get_default_pk, related_name="faction_sector"
     )
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
-
-    @classmethod
-    def get_default_pk(cls):
-        sector, created = cls.objects.get_or_create(
-            name="none",
-        )
-        return sector.pk
 
     def __str__(self):
         return f"{self.name} : {self.faction.name}, is_faction_level_starter : {self.is_faction_level_starter}"
@@ -152,14 +138,13 @@ class Player(models.Model):
         Faction,
         on_delete=models.SET_DEFAULT,
         null=False,
-        default=Sector.get_default_pk,
+        default=Faction.get_default_pk,
         related_name="player_faction",
     )
     sector = models.ForeignKey(
         Sector,
-        on_delete=models.SET_DEFAULT,
-        null=False,
-        default=Sector.get_default_pk,
+        on_delete=models.SET_NULL,
+        null=True,
         related_name="player_sector",
     )
     is_npc = models.BooleanField(default=False)
@@ -224,7 +209,7 @@ class SkillEffect(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     value_needed = models.FloatField(default=1.0, null=False, blank=False)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -236,7 +221,7 @@ class Recipe(models.Model):
 class Research(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(upload_to="research/", null=True, blank=True)
     time_to_complete = models.PositiveIntegerField(default=(60 * 60) * 24)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -330,7 +315,7 @@ class PlayerLog(models.Model):
 class PlayerResource(models.Model):
     source = models.ForeignKey(Player, on_delete=models.CASCADE)
     resource = models.ForeignKey(
-        Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk
+        Resource, on_delete=models.SET_NULL, null=True
     )
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -418,7 +403,7 @@ class PlayerShipModule(models.Model):
 class PlayerShipResource(models.Model):
     source = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
     resource = models.ForeignKey(
-        Resource, on_delete=models.CASCADE, null=False, default=Resource.get_default_pk
+        Resource, on_delete=models.CASCADE, null=True
     )
     quantity = models.PositiveIntegerField(default=0)
 
@@ -437,7 +422,7 @@ class FactionResource(models.Model):
     source = models.ForeignKey(Faction, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, related_name="faction_sector"
+        Sector, on_delete=models.CASCADE, null=True, related_name="faction_sector"
     )
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -464,7 +449,7 @@ class PlanetResource(models.Model):
     source = models.ForeignKey(Planet, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, related_name="planet_sector"
+        Sector, on_delete=models.CASCADE, null=True, related_name="planet_sector"
     )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -478,7 +463,7 @@ class AsteroidResource(models.Model):
     source = models.ForeignKey(Asteroid, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, related_name="asteroid_sector"
+        Sector, on_delete=models.CASCADE, null=True, related_name="asteroid_sector"
     )
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
@@ -493,7 +478,7 @@ class StationResource(models.Model):
     source = models.ForeignKey(Station, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, related_name="station_sector"
+        Sector, on_delete=models.CASCADE, null=True, related_name="station_sector"
     )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)

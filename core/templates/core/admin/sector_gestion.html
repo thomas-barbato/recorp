@@ -27,11 +27,13 @@
                                 <option value="{{ sector.id }}" class="text-center">{{ sector.name }}</option>
                             {% endfor %}
                         </select>
-                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer"></i>
+                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
                     </div>
                 </div>
             </div><small class="text-red-500">chose a sector to update or delete it, if you select <b>none</b> you will create new one</small>
         </section>
+
+        {% include "delete_confirm_modal.html" %}
 
         <section id="background-menu" class="w-full">
             <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>

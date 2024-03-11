@@ -118,6 +118,11 @@ class CustomAdminSite(admin.AdminSite):
                 self.admin_view(SectorUpdateDataView.as_view()),
                 name="sector_update_data",
             ),
+            re_path(
+                r"^sector_gestion/sector_delete$",
+                self.admin_view(SectorDeleteView.as_view()),
+                name="sector_delete",
+            ),
         ] + urls
         return urls
 
@@ -206,53 +211,63 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
 
     def post(self, request):
         data_from_post = json.load(request)
-        if Sector.objects.filter(name=data_from_post['0']["sector_name"]).exists():
+        if Sector.objects.filter(name=data_from_post["map_data"]["sector_name"]).exists():
             messages.error(
                 self.request,
-                f"Sector with name <b>{data_from_post['0']['sector_name']}</b> already exists"
+                f"Sector with name <b>{data_from_post['map_data']['sector_name']}</b> already exists"
             )
             return HttpResponseRedirect(request.path)
 
-        faction_id = data_from_post['0']["faction_id"]
-        if data_from_post['0']["faction_id"] == "none":
+        faction_id = data_from_post["map_data"]["faction_id"]
+        if data_from_post["map_data"]["faction_id"] == "none":
             faction_id = 1
 
         sector = Sector(
-            name=data_from_post['0']["sector_name"],
-            description=data_from_post['0']["sector_description"],
-            image=data_from_post['0']["sector_background"],
-            security_id=data_from_post['0']["security"],
+            name=data_from_post["map_data"]["sector_name"],
+            description=data_from_post["map_data"]["sector_description"],
+            image=data_from_post["map_data"]["sector_background"],
+            security_id=data_from_post["map_data"]["security"],
             faction_id=faction_id,
-            is_faction_level_starter=data_from_post['0']["is_faction_starter"],
+            is_faction_level_starter=data_from_post["map_data"]["is_faction_starter"],
         )
         sector.save()
-        for i in data_from_post:
-            table, table_resource = GetMapDataFromDB.get_table(data_from_post[i]['item_type'])
 
-            rsrc_data = data_from_post[i]['resource_data']
-            item_type_id = table.objects.filter(name=data_from_post[i]['item_img_name']).values_list('id', flat=True)[0]
-            for data in rsrc_data:
-                resource_id = Resource.objects.filter(name=data).values_list('id', flat=True)[0]
+        for item, _ in data_from_post["data"].items():
+            table, table_resource = GetMapDataFromDB.get_table(data_from_post["data"][item]['item_type'])
+
+            rsrc_data = data_from_post["data"][item]['resource_data']
+            item_type_id = table.objects.filter(name=data_from_post["data"][item]['item_img_name']).values_list('id', flat=True)[0]
+            for rsrc in rsrc_data:
+                resource_id = Resource.objects.filter(name=rsrc).values_list('id', flat=True)[0]
                 table_resource.objects.create(
                     sector_id=sector.pk,
                     resource_id=resource_id,
                     source_id=item_type_id,
                     data={
-                        'coord_x': data_from_post[i]['coord_x'],
-                        'coord_y': data_from_post[i]['coord_y'],
-                        'name': data_from_post[i]['item_name'],
-                        'description': data_from_post[i]['item_description'],
+                        'coord_x': data_from_post["data"][item]['coord_x'],
+                        'coord_y': data_from_post["data"][item]['coord_y'],
+                        'name': data_from_post["data"][item]['item_name'],
+                        'description': data_from_post["data"][item]['item_description'],
                     }
                 )
         messages.success(
             self.request,
-            f"Sector with name <b>{data_from_post['0']['sector_name']}</b> created with success"
+            f'Sector with name <b>{data_from_post["map_data"]["sector_name"]}</b> created with success'
         )
         return HttpResponseRedirect(request.path, {'messages': get_messages(request)})
 
 
-class DeleteMapView(LoginRequiredMixin, DeleteView):
+class SectorDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "sector_gestion.html"
+    model = Sector
+
+    def post(self, request, *args, **kwargs):
+        response = {"success": False}
+        pk = json.load(request)['pk']
+        if GetMapDataFromDB.check_if_table_pk_exists('sector', pk):
+            Sector.objects.filter(id=pk).delete()
+            response = {"success": True}
+        return JsonResponse(json.dumps(response), safe=False)
 
 
 class SectorDataView(LoginRequiredMixin, TemplateView):
@@ -264,13 +279,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
         if Sector.objects.filter(id=pk).exists():
             queryset = Sector.objects\
                 .filter(id=pk)\
-                .select_related(
-                    'planet_sector',
-                    'asteroid_sector',
-                    'station_sector',
-                    'security_sector',
-                    'faction_sector',
-                ).values(
+                .values(
                     'id',
                     'description',
                     'name',
@@ -326,22 +335,26 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
     model = Sector
 
     def post(self, request, *args, **kwargs):
-        data = json.load(request)
-        pk = data['sector_id']
-        if Sector.objects.filter(id=pk).exists():
+        data_from_post = json.load(request)
+        pk = data_from_post["map_data"]["sector_id"]
+        response = {"success": False}
+        if GetMapDataFromDB.check_if_table_pk_exists("sector", pk):
             Sector.objects.filter(id=pk).update(
-                description=data['sector_description'],
-                name=data['sector_name'],
-                image=data['sector_background'],
-                security_id=data['security'],
-                is_faction_level_starter=data['is_faction_starter'],
-                faction_id=data['faction_id']
-            ).save()
-        print(GetMapDataFromDB.count_foreground_item_in_map(int(pk)))
-        """
-        
-        for i in data:
-            table, table_resource = GetMapDataFromDB.get_table(data[i]['item_type'])
+                name=data_from_post["map_data"]["sector_name"],
+                description=data_from_post["map_data"]["sector_description"],
+                image=data_from_post["map_data"]["sector_background"],
+                security_id=data_from_post["map_data"]["security"],
+                faction_id=data_from_post["map_data"]["faction_id"],
+                is_faction_level_starter=data_from_post["map_data"]["is_faction_starter"],
+            )
+            response = {"success": True}
+
+            GetMapDataFromDB.delete_items_from_sector(pk)
+
+            for i in data_from_post["data"]:
+                table, table_resource = GetMapDataFromDB.get_table(data_from_post["data"][i]['item_type'])
+                print(table, table_resource)
+            """
 
             rsrc_data = data[i]['resource_data']
             item_type_id = data[i]['item_id']
@@ -359,6 +372,7 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                     }
                 )
         """
+        return JsonResponse(json.dumps(response), safe=False)
 
 
 admin_site = CustomAdminSite()

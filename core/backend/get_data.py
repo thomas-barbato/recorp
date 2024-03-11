@@ -13,7 +13,7 @@ from core.models import (
     Faction,
     FactionResource,
     Security,
-    Sector
+    Sector,
 )
 
 
@@ -26,13 +26,15 @@ class GetMapDataFromDB:
         return [
             {"planet_data": {"size_x": 4, "size_y": 4}},
             {"station_data": {"size_x": 3, "size_y": 3}},
-            {"asteroid_data": {"size_x": 1, "size_y": 1}}
+            {"asteroid_data": {"size_x": 1, "size_y": 1}},
         ]
 
     @staticmethod
     def get_fg_element_url(element):
         return os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", "foreground", element)
+            os.path.join(
+                BASE_DIR, "recorp", "static", "img", "atlas", "foreground", element
+            )
         )
 
     @staticmethod
@@ -56,9 +58,15 @@ class GetMapDataFromDB:
     @staticmethod
     def get_animation_queryset():
         return {
-            "planet_data": json.loads(serializers.serialize("json", Planet.objects.all())),
-            "asteroid_data": json.loads(serializers.serialize("json", Asteroid.objects.all())),
-            "stations_data": json.loads(serializers.serialize("json", Station.objects.all()))
+            "planet_data": json.loads(
+                serializers.serialize("json", Planet.objects.all())
+            ),
+            "asteroid_data": json.loads(
+                serializers.serialize("json", Asteroid.objects.all())
+            ),
+            "stations_data": json.loads(
+                serializers.serialize("json", Station.objects.all())
+            ),
         }
 
     @staticmethod
@@ -77,12 +85,36 @@ class GetMapDataFromDB:
             "station": [Station, StationResource],
             "faction": [Faction, FactionResource],
             "security": Security,
-            "sector": Sector
+            "sector": Sector,
         }[table_name]
 
     @staticmethod
     def count_foreground_item_in_map(map_pk):
-        print(Sector.objects.filter(planet_resource__id=map_pk, asteroid_resource__id=map_pk, station_resource__id=map_pk).count())
-        return Sector.objects.filter(planet_resource__id=map_pk, asteroid_resource__id=map_pk, station_resource__id=map_pk).count()
+        return len(
+            [
+                v
+                for k, v in Sector.objects.filter(id=map_pk)
+                .values(
+                    "planet_sector__sector_id",
+                    "asteroid_sector__sector_id",
+                    "station_sector__sector_id",
+                )[0]
+                .items()
+                if v is not None
+            ]
+        )
 
+    @staticmethod
+    def check_if_table_pk_exists(table, pk):
+        this_table = GetMapDataFromDB.get_table(table)
+        return this_table.objects.filter(id=pk).exists()
 
+    @staticmethod
+    def remove_map(map_pk):
+        Sector.objects.filter(id=map_pk).delete()
+
+    @staticmethod
+    def delete_items_from_sector(pk):
+        PlanetResource.objects.filter(sector_id=pk).delete()
+        AsteroidResource.objects.filter(sector_id=pk).delete()
+        StationResource.objects.filter(sector_id=pk).delete()

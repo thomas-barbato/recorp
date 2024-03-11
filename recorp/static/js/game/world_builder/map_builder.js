@@ -109,6 +109,9 @@
     let sector_selection = document.querySelector('#sector-select');
     sector_selection.addEventListener('change', function(){
         let map_id = this.value;
+        let map_name = this.options[this.selectedIndex].text;
+        let modal_item_title = document.querySelector('#delete-item-title');
+        modal_item_title.textContent = map_name + " (" + map_id + ") ";
         if(map_id !== "none"){
             let url ='sector_data'
             const headers = new Headers({
@@ -504,14 +507,12 @@
         add_background(bg_folder);
         set_foreground(dict);
         display_animation("1000");
-    })
-
-
+    });
 
     let save_or_update_data = function(){
         let element = document.querySelectorAll('.foreground-menu-container');
         let data_entry = {};
-        let data = {};
+        let map_data = {};
         let is_faction_starter = document.querySelector('#faction-starter');
         let is_owned_by_faction = document.querySelector('#owned-by-faction');
         let faction_id = "none";
@@ -534,12 +535,13 @@
                 'resource_data': resource_data,
             }
         }
+
         let sector_selection_id = document.querySelector('#sector-select');
         let url = window.location.href;
-        data = data_entry;
+
         if(sector_selection_id.value !== "none"){
             url = "sector_update_data";
-            data = {
+            map_data = {
                 'sector_id': sector_selection_id.value,
                 'sector_name': document.querySelector('input[name=sector-name]').value,
                 'sector_background': document.querySelector('#background').querySelector(':checked').textContent,
@@ -548,7 +550,16 @@
                 'faction_id': faction_id,
                 'is_faction_starter': is_faction_starter.checked,
                 'is_owned_by_faction': is_owned_by_faction.checked,
-                 ...data_entry
+            };
+        }else{
+            map_data = {
+                'sector_name': document.querySelector('input[name=sector-name]').value,
+                'sector_background': document.querySelector('#background').querySelector(':checked').textContent,
+                'sector_description': document.querySelector('#sector-description').value,
+                'security': document.querySelector('#security-level').querySelector(':checked').value,
+                'faction_id': faction_id,
+                'is_faction_starter': is_faction_starter.checked,
+                'is_owned_by_faction': is_owned_by_faction.checked,
             };
         }
 
@@ -562,9 +573,39 @@
             method: 'POST',
             headers,
             credentials: 'include',
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                'data':data_entry,
+                'map_data':map_data,
+            }),
         });
     }
 
     let save_or_update_btn = document.querySelector('#save-or-update');
     save_or_update_btn.addEventListener('click', save_or_update_data);
+
+    let delete_btn = document.querySelector('#map-delete-btn');
+    delete_btn.addEventListener('click', function(){
+        let sector_selected = document.querySelector('#sector-select');
+        if(sector_selected.value !== "none"){
+            data = {"pk": sector_selected.value}
+            url = "sector_delete";
+            const headers = new Headers({
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
+            });
+            fetch(url, {
+                method: 'POST',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify(data),
+            }).then(response => response.json())
+                .then(data => {
+                  if( data['success'] === true){
+                    location.reload();
+                  }
+                })
+                .catch(error => console.error(error));
+        }
+    })
