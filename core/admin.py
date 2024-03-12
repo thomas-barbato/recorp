@@ -1,10 +1,9 @@
+import pprint
 import re
 import json
-import pprint
 from django.contrib import admin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import get_messages
-from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from core.backend.tiles import CropThisImage
@@ -233,12 +232,13 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         sector.save()
 
         for item, _ in data_from_post["data"].items():
-            table, table_resource = GetMapDataFromDB.get_table(data_from_post["data"][item]['item_type'])
-
-            rsrc_data = data_from_post["data"][item]['resource_data']
-            item_type_id = table.objects.filter(name=data_from_post["data"][item]['item_img_name']).values_list('id', flat=True)[0]
-            for rsrc in rsrc_data:
-                resource_id = Resource.objects.filter(name=rsrc).values_list('id', flat=True)[0]
+            item_type = data_from_post["data"][item]['item_type']
+            item_img_name = data_from_post["data"][item]['item_img_name']
+            table, table_resource = GetMapDataFromDB.get_table(item_type)
+            rsrc_data_list = data_from_post["data"][item]['resource_data']
+            for rsrc in rsrc_data_list:
+                item_type_id = table.objects.filter(name=item_img_name).values_list('id', flat=True)[0]
+                resource_id = 1 if rsrc == 'none' else rsrc
                 table_resource.objects.create(
                     sector_id=sector.pk,
                     resource_id=resource_id,
@@ -275,60 +275,46 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
 
     def post(self, request):
         pk = json.load(request)['map_id']
-        queryset = {}
         if Sector.objects.filter(id=pk).exists():
-            queryset = Sector.objects\
-                .filter(id=pk)\
-                .values(
-                    'id',
-                    'description',
-                    'name',
-                    'image',
-                    'security_id',
-                    'security_id__name',
-                    'is_faction_level_starter',
-                    'faction_id',
-                    'planet_sector__source_id__name',
-                    'planet_sector__id',
-                    'planet_sector__data',
-                    'planet_sector__resource_id__name',
-                    'asteroid_sector__id',
-                    'asteroid_sector__source_id__name',
-                    'asteroid_sector__data',
-                    'asteroid_sector__resource_id__name',
-                    'station_sector__source_id__name',
-                    'station_sector__id',
-                    'station_sector__data',
-                    'station_sector__resource_id__name',
-                    'faction_sector__id',
-                    'faction_sector__source_id__name',
-                )
-        queryset_dict = queryset[0]
-        result_dict = dict()
-        result_dict["sector_element"] = []
-        result_dict['faction'] = {}
-        for key, value in queryset_dict.items():
-            if "faction_" in key:
-                result_dict['faction'].update({
-                    'id': queryset_dict['faction_id'],
-                    'name': queryset_dict['faction_sector__source_id__name'],
-                    'is_faction_level_starter': queryset_dict['is_faction_level_starter']
-                })
-            elif "_sector__" in key:
-                split_str = key.split('_')[0]
-                if queryset_dict[f"{split_str}_sector__id"] is not None:
-                    temp_dict = {
-                        "type": split_str,
-                        "item_id": queryset_dict[f"{split_str}_sector__id"],
-                        "name": queryset_dict[f"{split_str}_sector__source_id__name"],
-                        "data": queryset_dict[f"{split_str}_sector__data"],
-                        "resource": queryset_dict[f"{split_str}_sector__resource_id__name"],
-                    }
-                    if temp_dict not in result_dict["sector_element"]:
-                        result_dict["sector_element"].append(temp_dict)
-            else:
-                result_dict[key] = value
-        return JsonResponse(json.dumps(result_dict), safe=False)
+            sector = Sector.objects.get(id=pk)
+            planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
+            table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+            result_dict = dict()
+            result_dict["sector_element"] = []
+            result_dict["faction"] = {
+                "name": sector.faction_sector.name,
+                "faction_id": sector.faction_id,
+                'is_faction_level_starter': sector.is_faction_level_starter,
+            }
+            result_dict["sector"] = {
+                "id": pk,
+                "name": sector.name,
+                "description": sector.description,
+                "image": sector.image,
+                "security_id": sector.security_id,
+            }
+
+            for table_key, table_value in table_set.items():
+                for table in table_value:
+                    item_name = ""
+                    match table_key:
+                        case "planet":
+                            item_name = Planet.objects.filter(id=table.source_id).values_list('name', flat=True)[0]
+                        case "asteroid":
+                            item_name = Asteroid.objects.filter(id=table.source_id).values_list('name', flat=True)[0]
+                        case "station":
+                            item_name = Station.objects.filter(id=table.source_id).values_list('name', flat=True)[0]
+                    result_dict["sector_element"].append({
+                        "type": table_key,
+                        "item_id": table.id,
+                        "item_name": item_name,
+                        "resource_id": table.resource_id,
+                        "source_id": table.source_id,
+                        "sector_id": table.sector_id,
+                        "data": table.data,
+                    })
+            return JsonResponse(json.dumps(result_dict), safe=False)
+        return JsonResponse({}, safe=False)
 
 
 class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
@@ -347,31 +333,26 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                 faction_id=data_from_post["map_data"]["faction_id"],
                 is_faction_level_starter=data_from_post["map_data"]["is_faction_starter"],
             )
-            response = {"success": True}
-
             GetMapDataFromDB.delete_items_from_sector(pk)
 
-            for i in data_from_post["data"]:
-                table, table_resource = GetMapDataFromDB.get_table(data_from_post["data"][i]['item_type'])
-                print(table, table_resource)
-            """
-
-            rsrc_data = data[i]['resource_data']
-            item_type_id = data[i]['item_id']
-            for data in rsrc_data:
-                resource_id = Resource.objects.filter(name=data).values_list('id', flat=True)[0]
+            for item, _ in data_from_post["data"].items():
+                table, table_resource = GetMapDataFromDB.get_table(data_from_post["data"][item]['item_type'])
+                rsrc_data = data_from_post["data"][item]['resource_data']
+                item_type_id = table.objects.filter(name__in=rsrc_data).values_list('id', flat=True)[0]
+                resource_id = Resource.objects.filter(id__in=item_type_id).values_list('id', flat=True)[0]
                 table_resource.objects.create(
                     sector_id=pk,
                     resource_id=resource_id,
                     source_id=item_type_id,
                     data={
-                        'coord_x': data[i]['coord_x'],
-                        'coord_y': data[i]['coord_y'],
-                        'name': data[i]['item_name'],
-                        'description': data[i]['item_description'],
+                        'coord_x': data_from_post["data"][item]['coord_x'],
+                        'coord_y': data_from_post["data"][item]['coord_y'],
+                        'name': data_from_post["data"][item]['item_name'],
+                        'description': data_from_post["data"][item]['item_description'],
                     }
                 )
-        """
+
+            response = {"success": True}
         return JsonResponse(json.dumps(response), safe=False)
 
 

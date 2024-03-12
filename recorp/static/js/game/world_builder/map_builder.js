@@ -76,9 +76,9 @@
     function load_map_data(object){
         let f_id_check = false;
         let f_starter_check = false;
-
-        set_element_value("background", object['image']);
-        set_element_value('sector-name', object['name']);
+        console.log(object)
+        set_element_value("background", object['sector']['image']);
+        set_element_value('sector-name', object['sector']['name']);
 
         object['faction']['id'] !== null ? f_id_check = true : f_id_check = false;
         object['faction']['is_faction_level_starter'] === true ? f_starter_check = true : f_starter_check = false;
@@ -87,9 +87,9 @@
         check_uncheck("faction-starter", f_starter_check);
         display_faction_choice();
 
-        set_element_value('faction-choice', object['faction']['id']);
-        set_element_value('security-level', object['security_id']);
-        set_element_value('sector-description', object['description']);
+        set_element_value('faction-choice', object['faction']['faction_id']);
+        set_element_value('security-level', object['sector']['security_id']);
+        set_element_value('sector-description', object['sector']['description']);
 
         let fg_menu = document.querySelectorAll('.foreground-menu-container');
         for(let i = 0; i < fg_menu.length; i++){
@@ -127,6 +127,7 @@
                 body: JSON.stringify({'map_id': map_id})
             }).then(response => response.json())
                 .then(data => {
+                    console.log(JSON.parse(data));
                   load_map_data(JSON.parse(data));
                 })
                 .catch(error => console.error(error));
@@ -136,6 +137,7 @@
     })
 
     function append_foreground_menu(element, pre_existing_data){
+        console.log(pre_existing_data);
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
             let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
@@ -186,7 +188,7 @@
             last_element.after(clone);
 
             if(typeof pre_existing_data !== "undefined"){
-                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['name']);
+                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['item_name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
                 let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
                 display_select_animation_preview(text, value, fg_item_selector.id);
@@ -206,7 +208,7 @@
             let fg_item_selector = element.querySelector(".fg-item-selector");
             document.querySelector('#foreground-menu').appendChild(element)
             if(typeof pre_existing_data !== "undefined"){
-                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['name']);
+                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['item_name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
                 let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
                 display_select_animation_preview(text, value, fg_item_selector.id);

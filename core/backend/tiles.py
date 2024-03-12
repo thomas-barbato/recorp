@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image
 from recorp.settings import BASE_DIR
 from pathlib import Path
 import os
@@ -39,7 +39,6 @@ class CropThisImage:
         for col in range(0, height, self.size):
             for row in range(0, width, self.size):
                 crop = self.file.crop((row, col, row + self.size, col + self.size))
-                print(f"col: {col}, row: {row}")
                 save_to = os.path.join(self.save_path, f"{frame_number}.png")
                 crop.save(save_to)
                 frame_number += 1

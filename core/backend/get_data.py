@@ -115,6 +115,13 @@ class GetMapDataFromDB:
 
     @staticmethod
     def delete_items_from_sector(pk):
-        PlanetResource.objects.filter(sector_id=pk).delete()
-        AsteroidResource.objects.filter(sector_id=pk).delete()
-        StationResource.objects.filter(sector_id=pk).delete()
+        sector = Sector.objects.get(id=pk)
+        sector.planet_sector.all().delete()
+        sector.asteroid_sector.all().delete()
+        sector.station_sector.all().delete()
+
+    @staticmethod
+    def get_items_from_sector(pk):
+        sector = Sector.objects.get(id=pk)
+        return sector.planet_sector.all(), sector.asteroid_sector.all(), sector.station_sector.all()
+

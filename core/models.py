@@ -116,7 +116,7 @@ class Security(models.Model):
 
 class Sector(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
-    image = models.ImageField(upload_to="sector/", null=True, blank=True)
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     description = models.TextField(max_length=2500, blank=True)
     security = models.ForeignKey(
         Security, on_delete=models.SET_DEFAULT, null=False, default=1, related_name="security_sector"
@@ -150,7 +150,7 @@ class Player(models.Model):
     is_npc = models.BooleanField(default=False)
     name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
     description = models.TextField(max_length=2500, blank=True)
-    image = models.ImageField(upload_to="player_and_npc/", null=True, blank=True)
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     faction_xp = models.PositiveIntegerField(null=False, default=0)
     time_to_play = models.PositiveIntegerField(default=(60 * 60) * 24)
     coordinates = models.JSONField()
@@ -222,7 +222,7 @@ class Research(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(upload_to="research/", null=True, blank=True)
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     time_to_complete = models.PositiveIntegerField(default=(60 * 60) * 24)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -269,7 +269,7 @@ class ShipCategory(models.Model):
 class Ship(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     description = models.TextField(max_length=2500, blank=True)
-    image = models.ImageField(upload_to="ship/", null=True, blank=True)
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     module_slot_available = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -420,9 +420,9 @@ class FactionLeader(models.Model):
 
 class FactionResource(models.Model):
     source = models.ForeignKey(Faction, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    resource = resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, null=True, related_name="faction_sector"
+        Sector, on_delete=models.CASCADE, related_name="faction_sector"
     )
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -447,9 +447,9 @@ class FactionRank(models.Model):
 
 class PlanetResource(models.Model):
     source = models.ForeignKey(Planet, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    resource = resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, null=True, related_name="planet_sector"
+        Sector, on_delete=models.CASCADE, related_name="planet_sector"
     )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -461,9 +461,9 @@ class PlanetResource(models.Model):
 
 class AsteroidResource(models.Model):
     source = models.ForeignKey(Asteroid, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, null=True, related_name="asteroid_sector"
+        Sector, on_delete=models.CASCADE, related_name="asteroid_sector"
     )
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
@@ -476,9 +476,9 @@ class AsteroidResource(models.Model):
 
 class StationResource(models.Model):
     source = models.ForeignKey(Station, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     sector = models.ForeignKey(
-        Sector, on_delete=models.CASCADE, null=True, related_name="station_sector"
+        Sector, on_delete=models.CASCADE, related_name="station_sector"
     )
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
