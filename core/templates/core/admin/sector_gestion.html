@@ -13,7 +13,8 @@
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
 <div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
-    <form class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start" action="" method="POST">
+    <div class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start">
+
         <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
 
         <section class="mb-2">
@@ -22,12 +23,12 @@
                     <label for="sector-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select sector</b></label>
                     <div class="flex flex-row gap-1">
                         <select id="sector-select" name="sector-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                            <option class="text-center">none</option>
+                            <option value="none" class="text-center" selected>None</option>
                             {% for sector in sector_data %}
                                 <option value="{{ sector.id }}" class="text-center">{{ sector.name }}</option>
                             {% endfor %}
                         </select>
-                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
+                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
                     </div>
                 </div>
             </div><small class="text-red-500">chose a sector to update or delete it, if you select <b>none</b> you will create new one</small>
@@ -42,7 +43,6 @@
                     <option value="{{ bg }}" class="text-center">{{ bg }}</option>
                 {% endfor %}
             </select>
-
         </section>
 
         <section class="w-full mt-1">
@@ -82,7 +82,7 @@
 
         <section id="foreground-button" class="mt-2 w-full">
             <label for="set-foreground-item" class="block mb-2 text-sm text-center font-bold text-gray-900 dark:text-white"><b>Add Foreground Item</b></label>
-            <div class="mb-4 flex w-2/2 h-[50px] w-[50px] items-center mx-auto border rounded-full border-emerald-400 bg-emerald-500 hover:bg-emerald-400 cursor-pointer" id="set-foreground-item">
+            <div class="mb-4 flex w-2/2 h-[30px] w-[30px] items-center mx-auto border rounded-full border-emerald-400 bg-emerald-500 hover:bg-emerald-400 cursor-pointer" id="set-foreground-item">
                 <i class="fa-solid fa-plus fa-2x mx-auto "></i>
             </div>
         </section>
@@ -90,6 +90,7 @@
         <section id="foreground-menu" class="mt-1 w-full">
             <div id="foreground-menu-container-1" class="w-full flex lg:flex-row flex-col bg-gray-600 border border-white gap-1 mb-1 foreground-menu-container">
                 <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-1/2 w-full" id="foreground-menu-1">
+                    <p class="flex w-[100%] justify-center text-center text-2xl font-bold text-[#B4B86E]" id="item-nb">ITEM #1</p>
                     <span class="foreground-menu-title text-center text-sm flex flex-col" id="foreground-menu-title-1"><b>New Foreground item <i id="trash-1" class="fa-solid fa-trash fa-xl cursor-pointer trash-it"></i></b>
                         <label for="coord-radio-button">Get coordinate</label>
                         <input class="mt-1 coord-radio-button text-center" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
@@ -128,6 +129,7 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <input type="hidden" name="item-id" value="">
                     <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations">
                         <section class="flex w-full flex-row animations-section gap-1">
                             <div class="flex flex-col w-1/2 animation-items">
@@ -173,7 +175,7 @@
             <input class="mt-1 flex mx-auto w-1/2" id="save-or-update" type="button" value="save">
         </section>
 
-    </form>
+    </div>
     <div class="flex flex-col w-1/2 m-0 p-0 self-start">
         <div id="map-background" class=" flex flex-row self-start">
             <div class="flex xl:self-center self-start item-center">

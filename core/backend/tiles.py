@@ -13,11 +13,21 @@ class CropThisImage:
         self.directory_name = directory_name
         if self.category == "foreground":
             self.parent_path = Path(
-                os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", self.category, self.type)
+                os.path.join(
+                    BASE_DIR,
+                    "recorp",
+                    "static",
+                    "img",
+                    "atlas",
+                    self.category,
+                    self.type,
+                )
             )
         else:
             self.parent_path = Path(
-                os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", self.category)
+                os.path.join(
+                    BASE_DIR, "recorp", "static", "img", "atlas", self.category
+                )
             )
 
         self.save_path = ""
@@ -26,9 +36,7 @@ class CropThisImage:
         self.save_path = Path(os.path.join(self.parent_path, self.directory_name))
 
         if os.path.exists(self.parent_path):
-            self.save_path = Path(
-                os.path.join(self.parent_path, self.directory_name)
-            )
+            self.save_path = Path(os.path.join(self.parent_path, self.directory_name))
 
         self.save_path.mkdir(parents=True, exist_ok=True)
 

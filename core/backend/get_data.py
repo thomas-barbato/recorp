@@ -123,5 +123,38 @@ class GetMapDataFromDB:
     @staticmethod
     def get_items_from_sector(pk):
         sector = Sector.objects.get(id=pk)
-        return sector.planet_sector.all(), sector.asteroid_sector.all(), sector.station_sector.all()
+        return (
+            sector.planet_sector.all(),
+            sector.asteroid_sector.all(),
+            sector.station_sector.all(),
+        )
 
+    @staticmethod
+    def check_if_no_missing_entry(data, data_item={}):
+        missing_data = []
+        print(data)
+        print(data_item)
+        for d_key, d_value in data.items():
+            if (
+                not d_value
+                and d_value is not False
+                or d_value == "none"
+                or d_value == ""
+            ):
+                missing_data.append(d_key)
+
+        if data_item:
+            for i in data_item:
+                for d_key, d_value in data_item[i].items():
+                    if (
+                        not d_value
+                        and d_value is not False
+                        or d_value == "none"
+                        or d_value == ""
+                    ):
+                        missing_data.append(f"{d_key} (ITEM #{int(i)+1})")
+        print(missing_data)
+        if len(missing_data) > 0:
+            return True, missing_data
+        else:
+            return False, []

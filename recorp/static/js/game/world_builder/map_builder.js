@@ -69,14 +69,11 @@
 
         let fg_container = document.querySelectorAll('.foreground-container');
         if(fg_container.length > 0){ clear_foreground() };
-
-
     }
 
     function load_map_data(object){
         let f_id_check = false;
         let f_starter_check = false;
-        console.log(object)
         set_element_value("background", object['sector']['image']);
         set_element_value('sector-name', object['sector']['name']);
 
@@ -112,7 +109,9 @@
         let map_name = this.options[this.selectedIndex].text;
         let modal_item_title = document.querySelector('#delete-item-title');
         modal_item_title.textContent = map_name + " (" + map_id + ") ";
+        let trash_element = document.querySelector('.fa-trash')
         if(map_id !== "none"){
+            trash_element.style.display = "block";
             let url ='sector_data'
             const headers = new Headers({
             'Content-Type': 'x-www-form-urlencoded',
@@ -127,34 +126,35 @@
                 body: JSON.stringify({'map_id': map_id})
             }).then(response => response.json())
                 .then(data => {
-                    console.log(JSON.parse(data));
                   load_map_data(JSON.parse(data));
                 })
                 .catch(error => console.error(error));
         }else{
             clean_entire_map()
+            trash_element.style.display = "none";
         }
     })
 
     function append_foreground_menu(element, pre_existing_data){
-        console.log(pre_existing_data);
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
             let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
             let clone = element.cloneNode(true);
             clone.id = "foreground-menu-container-" + next_id_value;
+            let clone_item_nb = clone.querySelector('#item-nb');
+            clone_item_nb.innerText = "ITEM #" + next_id_value.toString();
 
-            let clone_foreground_menu = clone.querySelector('.foreground-menu-item')
+            let clone_foreground_menu = clone.querySelector('.foreground-menu-item');
             clone_foreground_menu.id = "foreground-menu-item-" + next_id_value;
 
-            let clone_radio = clone.querySelector('input[type=radio]')
+            let clone_radio = clone.querySelector('input[type=radio]');
             clone_radio.id = "coord-radio-button-" + next_id_value;
 
             let clone_coord_x = clone.querySelector('.coord-x > input');
             clone_coord_x.id = "coord-x-" + next_id_value;
             clone_coord_x.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
 
-            let clone_coord_y = clone.querySelector('.coord-y > input')
+            let clone_coord_y = clone.querySelector('.coord-y > input');
             clone_coord_y.id = "coord-y-" + next_id_value;
             clone_coord_y.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
 
@@ -164,6 +164,8 @@
                 let text = this.options[this.selectedIndex].text;
                 let value = this.options[this.selectedIndex].value;
                 display_select_animation_preview(text, value, fg_item_selector.id);
+                let item_id = clone.querySelector('input[name=item-id]')
+                item_id.value = text;
             })
 
             let fg_item_name = clone.querySelector(".item-name");
@@ -179,7 +181,6 @@
 
             let preview_selector = clone.querySelector("#preview-animation");
             preview_selector.innerHTML = "";
-
             if(typeof pre_existing_data !== "undefined"){
                 clone.querySelector('input[name=item-id]').value = pre_existing_data['item_id'];
             }
@@ -224,6 +225,8 @@
     fg_item_selector.addEventListener("change", function(){
         let text = this.options[this.selectedIndex].text;
         let value = this.options[this.selectedIndex].value;
+        let item_id = element.querySelector('input[name=item-id]')
+        item_id.value = text;
         display_select_animation_preview(text, value, fg_item_selector.id);
     });
 
@@ -540,7 +543,7 @@
 
         let sector_selection_id = document.querySelector('#sector-select');
         let url = window.location.href;
-
+        console.log(sector_selection_id)
         if(sector_selection_id.value !== "none"){
             url = "sector_update_data";
             map_data = {
@@ -578,7 +581,9 @@
             body: JSON.stringify({
                 'data':data_entry,
                 'map_data':map_data,
-            }),
+            })
+        }).then(() => {
+                window.location.reload();
         });
     }
 
@@ -602,12 +607,8 @@
                 headers,
                 credentials: 'include',
                 body: JSON.stringify(data),
-            }).then(response => response.json())
-                .then(data => {
-                  if( data['success'] === true){
-                    location.reload();
-                  }
-                })
-                .catch(error => console.error(error));
+            }).then(() => {
+                window.location.reload();
+        });
         }
     })
