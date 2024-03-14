@@ -35,14 +35,6 @@
         check_value === true ? e.checked = true : e.checked = false;
     }
 
-    function create_hidden_element(element, obj, value){
-        hidden_id = document.createElement('input');
-        hidden_id.type = 'hidden';
-        hidden_id.name = "item-id";
-        hidden_id.value = value;
-        element.appendChild(hidden_id);
-    }
-
     function clean_entire_map(){
         let f_id_check = false;
         let f_starter_check = false;
@@ -92,8 +84,6 @@
         for(let i = 0; i < fg_menu.length; i++){
             fg_menu[i].remove();
         }
-
-        create_hidden_element(element, object['sector_element'], object['sector_element'][0]['item_id']);
 
         let fg_container = document.querySelectorAll('.foreground-container');
         if(fg_container.length > 0){ clear_foreground() };
@@ -149,6 +139,9 @@
 
             let clone_radio = clone.querySelector('input[type=radio]');
             clone_radio.id = "coord-radio-button-" + next_id_value;
+
+            let clone_item_id = clone.querySelector('input[type=hidden]');
+            clone_item_id.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['item_id'] : 0;
 
             let clone_coord_x = clone.querySelector('.coord-x > input');
             clone_coord_x.id = "coord-x-" + next_id_value;
@@ -206,6 +199,7 @@
             element.querySelector('#coord-x-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
             element.querySelector('#coord-y-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
             element.querySelector('#item-description-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['description'] : "";
+            element.querySelector('input[type=hidden]').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['item_id'] : 0;
             let fg_item_selector = element.querySelector(".fg-item-selector");
             document.querySelector('#foreground-menu').appendChild(element)
             if(typeof pre_existing_data !== "undefined"){
@@ -543,7 +537,6 @@
 
         let sector_selection_id = document.querySelector('#sector-select');
         let url = window.location.href;
-        console.log(sector_selection_id)
         if(sector_selection_id.value !== "none"){
             url = "sector_update_data";
             map_data = {

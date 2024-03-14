@@ -132,8 +132,6 @@ class GetMapDataFromDB:
     @staticmethod
     def check_if_no_missing_entry(data, data_item={}):
         missing_data = []
-        print(data)
-        print(data_item)
         for d_key, d_value in data.items():
             if (
                 not d_value

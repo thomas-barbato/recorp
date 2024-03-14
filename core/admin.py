@@ -255,7 +255,6 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                 table, table_resource = GetMapDataFromDB.get_table(item_type)
                 rsrc_data_list = data_from_post["data"][item]["resource_data"]
                 for rsrc in rsrc_data_list:
-                    print("dedans")
                     item_type_id = table.objects.filter(name=item_img_name).values_list(
                         "id", flat=True
                     )[0]
