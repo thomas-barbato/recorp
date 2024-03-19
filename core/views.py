@@ -9,9 +9,12 @@ from django.contrib.auth import login
 from django.http import JsonResponse, HttpResponse
 import request
 from django.views.generic import RedirectView, TemplateView
+
+from core.models import Sector, Station, Asteroid, Planet
 from recorp.settings import MEDIA_URL
 from django.utils.translation import gettext as _
 from django.contrib import admin
+from core.backend.get_data import GetMapDataFromDB
 
 logger = logging.getLogger("django")
 
@@ -31,9 +34,12 @@ class DisplayGameView(TemplateView):
         context["now"] = datetime.datetime.now()
         context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(20), "rows": range(15)}
-        context[
-            "description"
-        ] = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
+        context["map"] = (
+            GetMapDataFromDB.get_table("sector").objects.filter(id=15).all()
+        )
+        context["description"] = (
+            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
+        )
         context["skills"] = {
             "categories": ["Steering", "Offensive", "Defensive", "Utility", "Industry"],
             "list": [
@@ -259,7 +265,51 @@ class DisplayGameView(TemplateView):
                 },
             ],
         }
+        pk = 15
+        if Sector.objects.filter(id=pk).exists():
+            sector = Sector.objects.get(id=pk)
+            planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
+            table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+            result_dict = dict()
+            result_dict["sector"] = {
+                "id": pk,
+                "name": sector.name,
+                "description": sector.description,
+                "image": sector.image,
+                "security_id": sector.security_id,
+                "security_name": sector.security.name,
+                "faction_name": sector.faction.name,
+                "faction_id": sector.faction_id,
+                "is_faction_level_starter": sector.is_faction_level_starter,
+            }
+            result_dict["sector_element"] = []
 
+            for table_key, table_value in table_set.items():
+                for table in table_value:
+                    size = GetMapDataFromDB.get_specific_size(table_key)
+                    element, _ = GetMapDataFromDB.get_table(table_key)
+                    map_element = [
+                        v
+                        for k, v in element.objects.filter(name=table.source.name)
+                        .values_list("data", flat=True)[0]
+                        .items()
+                        if v != "none"
+                    ]
+
+                    result_dict["sector_element"].append(
+                        {
+                            "type": table_key,
+                            "item_id": table.id,
+                            "item_name": table.data["name"],
+                            "resource_id": table.resource_id,
+                            "source_id": table.source_id,
+                            "sector_id": table.sector_id,
+                            "animations": map_element,
+                            "data": table.data,
+                            "size": size,
+                        }
+                    )
+            context["map_informations"] = result_dict
         # logger.info(f'{timezone.localtime(timezone.now())} - {self.request.user} connected.')
         return context
 

@@ -15,7 +15,7 @@ SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "25ac-90-127-107-214.ngrok-free.app"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
     "daphne",

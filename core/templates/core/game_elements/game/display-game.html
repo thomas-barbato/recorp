@@ -1,28 +1,28 @@
 {% load static %}
 {% load i18n %}
+{{ map_informations|json_script:"script_map_informations" }}
 <div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
-    <div class="2xl:w-8/12 w-full flex xl:self-center self-start item-center">
+    <div class="flex self-center item-center">
         <div class="grid">
             <table class="tabletop-view">
                 <tbody>
-                    {% for row in map_size_range.rows %}
-                        {% if forloop.first %}
-                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">0:0</td>
-                            {% for col in map_size_range.cols %}
-                                <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5" style="">{{ col }}</td>
-                            {% endfor %}
-                        {% endif %}
-                        <tr class="rows">
-                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted  w-[32px] h-[32px] p-0 z-5 ">{{ row }}</td>
-                            {% for col in map_size_range.cols %}
-                                <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile " title="{{row}}_{{col}}" id="{{row}}_{{col}}" style="">
-                                    <div class="relative w-[30px] h-[30px] hover:border hover:border-emerald-500 block hover:bg-slate-300/10">
-                                        <img src="{% static 'ships/ship01-32px.png' %}" alt class="ship z-2 absolute block m-auto left-0 right-0">
-                                    </div>
-                                </td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
+                {% for row in map_size_range.rows %}
+                    {% if forloop.first %}
+                        <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">0:0</td>
+                        {% for col in map_size_range.cols %}
+                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5" style="">{{ col }}</td>
+                        {% endfor %}
+                    {% endif %}
+                    <tr class="rows">
+                        <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted no-borders w-[32px] h-[32px] p-0 z-5 ">{{ row }}</td>
+                        {% for col in map_size_range.cols %}
+                            <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="{{row}}_{{col}}" id="{{row}}_{{col}}">
+                                <div class="relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10">
+                                </div>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

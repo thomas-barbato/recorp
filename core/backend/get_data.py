@@ -30,6 +30,14 @@ class GetMapDataFromDB:
         ]
 
     @staticmethod
+    def get_specific_size(element):
+        return {
+            "planet": {"size_x": 4, "size_y": 4},
+            "station": {"size_x": 3, "size_y": 3},
+            "asteroid": {"size_x": 1, "size_y": 1},
+        }[element]
+
+    @staticmethod
     def get_fg_element_url(element):
         return os.listdir(
             os.path.join(
@@ -151,7 +159,6 @@ class GetMapDataFromDB:
                         or d_value == ""
                     ):
                         missing_data.append(f"{d_key} (ITEM #{int(i)+1})")
-        print(missing_data)
         if len(missing_data) > 0:
             return True, missing_data
         else:

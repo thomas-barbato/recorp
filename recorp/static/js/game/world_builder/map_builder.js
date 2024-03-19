@@ -1,8 +1,4 @@
     let element = document.querySelector('#foreground-menu-container-1');
-    const size = JSON.parse(document.getElementById('script_size').textContent);
-    const planet_url = JSON.parse(document.getElementById('script_planet_url').textContent);
-    const station_url = JSON.parse(document.getElementById('script_station_url').textContent);
-    const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').textContent);
     const animations_json = JSON.parse(document.getElementById('script_animation_data').textContent);
     const csrf_token = document.getElementById('csrf_token').value;
     let animation_container_set = new Set();
@@ -125,7 +121,7 @@
         }
     })
 
-    function append_foreground_menu(element, pre_existing_data){
+    function append_foreground_menu(element, pre_existing_data = []){
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
             let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
@@ -349,6 +345,7 @@
     }
 
     function set_foreground(dict){
+        console.log(dict)
         data = [];
         let animation_dir_data = [];
         let animation_type = "";
@@ -416,6 +413,7 @@
             temporary_array = [];
         }
 
+
         for(const property in filtered_data){
             let animation_i = 0;
             for(const data in filtered_data[property]){
@@ -476,7 +474,7 @@
                     let filtered_data = Object.assign({}, ...
                         Object.entries(
                             animations_json[animation_data_direname][i_key]['fields']['data']
-                        ).filter(([k,v]) => v != "none").map(([k,v]) => ({[k]:v}))
+                        ).filter(([key, value]) => value != "none").map(([key, value]) => ({[key]:value}))
                     );
                     animation_data = filtered_data;
                     s_x = animations_json[animation_data_direname][i_key]['fields']['size']['size_x'];
