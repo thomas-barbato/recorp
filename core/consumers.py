@@ -10,12 +10,34 @@ logger = logging.getLogger("django")
 class GameConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.room = None
+        self.room_group_name = None
+        self.user = None
+        self.game = None
+        self.game_cache = None
 
     def connect(self):
-        pass
+        self.room = self.scope["url_route"]["kwargs"]["room"]
+        self.room_group_name = f"room3_{self.room}"
+        self.user = self.scope["user"]
+        self.accept()
+
+        # join the room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name,
+        )
 
         if self.user.is_authenticated:
-            pass
+            store = StoreInCache(self.room_group_name, self.user.username)
+            store.add_user()
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "user_join",
+                    "user": store.get_user()[0],
+                },
+            )
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(

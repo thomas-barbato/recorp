@@ -10,7 +10,7 @@ from django.http import JsonResponse, HttpResponse
 import request
 from django.views.generic import RedirectView, TemplateView
 
-from core.models import Sector, Station, Asteroid, Planet
+from core.models import Sector, Station, Asteroid, Planet, Player
 from recorp.settings import MEDIA_URL
 from django.utils.translation import gettext as _
 from django.contrib import admin
@@ -271,6 +271,12 @@ class DisplayGameView(TemplateView):
             planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
             table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
             result_dict = dict()
+            result_dict["pc_npc"] = [
+                p
+                for p in Player.objects.filter(sector_id=pk).values(
+                    "id", "name", "coordinates", "image", "description", "is_npc"
+                )
+            ]
             result_dict["sector"] = {
                 "id": pk,
                 "name": sector.name,
@@ -282,6 +288,7 @@ class DisplayGameView(TemplateView):
                 "faction_id": sector.faction_id,
                 "is_faction_level_starter": sector.is_faction_level_starter,
             }
+
             result_dict["sector_element"] = []
 
             for table_key, table_value in table_set.items():

@@ -98,7 +98,7 @@ function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, siz
             let fg_animation = document.createElement('img');
             let fg_animation_url = '/static/img/atlas/foreground/' + anim_type + '/' + anim_array[i][k] + '/' + cell + '.png';
             fg_animation.src = fg_animation_url;
-            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'no-borders');
+            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'cursor-pointer');
             if(size_y > 1 && size_y > 1){
                 fg_animation.style.display = "none";
                 fg_animation.classList.add('animation-'+animation_i);
@@ -107,6 +107,8 @@ function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, siz
             }
             animation_set.add('.animation-'+animation_i);
             let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
+            entry_point.querySelector('div').classList.remove('hover:border-emerald-500');
+            entry_point.querySelector('div').classList.add('hover:border-amber-400');
             entry_point.querySelector('div').append(fg_animation);
             animation_i++;
         }
@@ -114,8 +116,39 @@ function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, siz
     }
 }
 
+function add_pc_npc(data){
+    for(let i = 0; i < data.length; i++){
+        let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
+        let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
+        let border_color = data[i]["is_npc"] === true ? "hover:border-rose-600" : "hover:border-blue-50"
+        let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
+        let div = entry_point.querySelector('div');
+
+        space_ship = document.createElement('img')
+        space_ship.src = "/static/js/game/assets/ships/ship01-32px.png"
+        space_ship.classList.add('w-[30px]', 'h-[30px]');
+
+        div.classList.remove('hover:border-emerald-500');
+        div.classList.add(border_color);
+        div.append(space_ship);
+    }
+}
+
 window.addEventListener('load', function(event) {
+
+    let room = map_informations.sector.id;
+    let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var chatSocket = new WebSocket(
+        ws_scheme
+        + '://'
+        + window.location.host
+        + "/ws/play_"
+        +room
+        + "/"
+    );
+
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
+    add_pc_npc(map_informations.pc_npc)
     display_animation(timer="1000");
 });

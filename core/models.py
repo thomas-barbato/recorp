@@ -21,6 +21,11 @@ def get_default_asteroid_size():
 class User(AbstractBaseUser):
     date_joined = models.DateTimeField(default=localtime)
     username = models.CharField(default="user_default", unique=True, blank=False)
+    email = models.EmailField(null=False, blank=False, default="blank@email.com")
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{ self.username } - email: { self.email }, date_joined: { self.date_joined }"
@@ -150,7 +155,7 @@ class Player(models.Model):
     is_npc = models.BooleanField(default=False)
     name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
+    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
     faction_xp = models.PositiveIntegerField(null=False, default=0)
     time_to_play = models.PositiveIntegerField(default=(60 * 60) * 24)
     coordinates = models.JSONField()

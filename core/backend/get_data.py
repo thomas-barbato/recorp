@@ -14,6 +14,8 @@ from core.models import (
     FactionResource,
     Security,
     Sector,
+    Player,
+    User
 )
 
 
@@ -92,6 +94,7 @@ class GetMapDataFromDB:
             "asteroid": [Asteroid, AsteroidResource],
             "station": [Station, StationResource],
             "faction": [Faction, FactionResource],
+            "player": [User, Player],
             "security": Security,
             "sector": Sector,
         }[table_name]
