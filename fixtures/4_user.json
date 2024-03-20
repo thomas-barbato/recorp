@@ -1,0 +1,38 @@
+[{
+  "model": "core.user",
+  "pk": 1,
+  "fields": {
+    "username": "npc",
+    "password": "V5YvdtRsb3SaHaU",
+    "email": "npc@npc.com",
+    "date_joined": "2020-03-20 10:38:15",
+    "created_at": "2020-02-28 12:38:15",
+    "updated_at": "2020-02-28 12:38:15"
+  }
+},
+{
+  "model": "core.user",
+  "pk": 2,
+  "fields": {
+    "username": "test1",
+    "password": "thomas404",
+    "email": "test1@email.com",
+    "date_joined": "2020-03-20 10:38:15",
+    "created_at": "2020-02-28 12:38:15",
+    "updated_at": "2020-02-28 12:38:15"
+  }
+},
+{
+  "model": "core.user",
+  "pk": 3,
+  "fields": {
+    "username": "test2",
+    "password": "thomas404",
+    "email": "test2@email.com",
+    "date_joined": "2020-03-20 10:38:15",
+    "created_at": "2020-02-28 12:38:15",
+    "updated_at": "2020-02-28 12:38:15"
+  }
+}
+
+]

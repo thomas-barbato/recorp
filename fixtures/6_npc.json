@@ -1,0 +1,39 @@
+[{
+  "model": "core.player",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "name": "npc-1",
+    "faction": 1,
+    "sector": 15,
+    "is_npc": true,
+    "description": "lorem ipsum bla bla bla",
+    "faction_xp": 10,
+    "coordinates": {
+      "coord_x": 1,
+      "coord_y": 15
+    },
+    "created_at": "2020-02-28 12:38:15",
+    "updated_at": "2020-02-28 12:38:15"
+  }
+},
+{
+  "model": "core.player",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "name": "npc-2",
+    "faction": 1,
+    "sector": 15,
+    "is_npc": true,
+    "description": "lorem ipsum bla bla bla",
+    "faction_xp": 25,
+    "coordinates": {
+      "coord_x": 7,
+      "coord_y": 10
+    },
+    "created_at": "2020-02-28 12:38:15",
+    "updated_at": "2020-02-28 12:38:15"
+  }
+}
+]
