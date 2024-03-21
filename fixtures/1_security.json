@@ -1,6 +1,6 @@
 [{
   "model": "core.security",
-  "pk": null,
+  "pk": 1,
   "fields": {
     "name": "null security",
     "description": "Beware, you are in an unsafe area. You could be attacked at any time, you're on your own.",
@@ -13,7 +13,7 @@
 },
   {
     "model": "core.security",
-    "pk": null,
+    "pk": 2,
     "fields": {
       "name": "low security",
       "description": "Be careful, security is poor in this area and the authorities will find it difficult to defend you.",
@@ -26,7 +26,7 @@
   },
   {
     "model": "core.security",
-    "pk": null,
+    "pk": 3,
     "fields": {
       "name": "intermediate security",
       "description": "It's not a highly secure area, but it's not a lawless one either, so just be careful.",
@@ -39,7 +39,7 @@
   },
   {
     "model": "core.security",
-    "pk": null,
+    "pk": 4,
     "fields": {
       "name": "high security",
       "description": "Here you are safe and secure, with security forces on call at all times and at very short notice.",

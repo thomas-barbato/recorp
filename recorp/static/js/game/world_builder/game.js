@@ -120,16 +120,16 @@ function add_pc_npc(data){
     for(let i = 0; i < data.length; i++){
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
-        let border_color = data[i]["is_npc"] === true ? "hover:border-rose-600" : "hover:border-blue-50"
+        let border_color = data[i]["is_npc"] === true ? "hover:border-rose-600" : "hover:border-blue-50";
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
         let div = entry_point.querySelector('div');
 
-        space_ship = document.createElement('img')
-        space_ship.src = "/static/js/game/assets/ships/ship01-32px.png"
+        space_ship = document.createElement('img');
+        space_ship.src = "/static/js/game/assets/ships/ship01-32px.png";
         space_ship.classList.add('w-[30px]', 'h-[30px]');
 
         div.classList.remove('hover:border-emerald-500');
-        div.classList.add(border_color);
+        div.classList.add(border_color, 'cursor-pointer');
         div.append(space_ship);
     }
 }
@@ -149,6 +149,6 @@ window.addEventListener('load', function(event) {
 
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
-    add_pc_npc(map_informations.pc_npc)
+    add_pc_npc(map_informations.pc_npc);
     display_animation(timer="1000");
 });
