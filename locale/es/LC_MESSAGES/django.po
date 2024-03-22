@@ -20,14 +20,41 @@ msgstr ""
 msgid "first static string to translate"
 msgstr "primera cadena estática a traducir"
 
-msgid "second static string to translate"
-msgstr "segunda cadena estática a traducir"
+msgid "Username already in use"
+msgstr "Nombre de usuario ya utilizado"
 
-msgid "Translate"
-msgstr "Traducir"
+msgid "Username must be unique"
+msgstr "El nombre de usuario debe ser único."
 
-msgid "translate"
-msgstr "traducir"
+msgid "Your password must contain at least"
+msgstr "Su contraseña debe contener como mínimo"
+
+msgid "letters"
+msgstr "letras"
+
+msgid "uppercase"
+msgstr "mayúsculas"
+
+msgid "lowercase"
+msgstr "minúsculas"
+
+msgid "symbol"
+msgstr "símbolo"
+
+msgid "number"
+msgstr "número"
+
+msgid "username"
+msgstr "nombre de usuario"
+
+msgid "password"
+msgstr "contraseña"
+
+msgid "Confirm password"
+msgstr "confirmar contraseña"
+
+msgid "You are now logged on"
+msgstr "Ya está conectado"
 
 msgid "Character"
 msgstr "Personaje"

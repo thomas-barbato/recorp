@@ -1,21 +1,24 @@
-import json
 import logging
-import random
 import datetime
+from urllib import request
+
+from django.urls import reverse_lazy, reverse
+
+from core.forms import LoginForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template import RequestContext, loader
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.contrib.auth import login
-from django.http import JsonResponse, HttpResponse
-import request
-from django.views.generic import RedirectView, TemplateView
-
-from core.models import Sector, Station, Asteroid, Planet, Player
-from recorp.settings import MEDIA_URL
+from django.contrib.auth import login, authenticate
 from django.utils.translation import gettext as _
-from django.contrib import admin
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.views.generic import TemplateView, RedirectView, FormView
 from core.backend.get_data import GetMapDataFromDB
-
+from core.models import (
+    Sector,
+    Player,
+    User
+)
 logger = logging.getLogger("django")
 
 
@@ -25,18 +28,58 @@ def admin_index(request):
     return HttpResponse(template.render(context))
 
 
-class DisplayGameView(TemplateView):
+class IndexView(FormView):
+    form_class = LoginForm
+    template_name = "index.html"
+    redirect_authenticated_user = True
+    success_message = (
+        '<div class="alert alert-success text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
+        "<p>"+_('You are now logged on')+".</p>"
+        "</div>"
+    )
+
+    def get_success_message(self, cleaned_data=""):
+        return self.success_message
+
+    def form_valid(self, form):
+        username = self.request.POST.get("username")
+        user = authenticate(
+            self.request,
+            username=username,
+            password=self.request.POST.get("password"),
+        )
+        if user is not None:
+            login(self.request, user)
+            if Player.objects.filter(id=self.request.user.id).exists():
+                return redirect('/play/')
+            return redirect('/play/tutorial/')
+
+    def form_invalid(self, form):
+        form = {"form": form}
+        return redirect(self.request.path, form)
+
+
+class DisplayTutorialView(LoginRequiredMixin, TemplateView):
+    login_url = "/"
+    redirect_field_name = "login_redirect"
+    template_name = "tutorial.html"
+
+
+class DisplayGameView(LoginRequiredMixin, TemplateView):
+    login_url = "/"
+    redirect_field_name = "login_redirect"
     template_name = "play.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        print(self.request.user)
+        if self.request.user.is_anonymous:
+            user = User.objects.get(id=1)
+            print(user)
         context["france"] = timezone.localtime(timezone.now())
         context["now"] = datetime.datetime.now()
         context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(20), "rows": range(15)}
-        context["map"] = (
-            GetMapDataFromDB.get_table("sector").objects.filter(id=15).all()
-        )
         context["description"] = (
             "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
         )
@@ -319,12 +362,3 @@ class DisplayGameView(TemplateView):
             context["map_informations"] = result_dict
         # logger.info(f'{timezone.localtime(timezone.now())} - {self.request.user} connected.')
         return context
-
-
-def lang_view(request):
-    context = {
-        "static_string_1": "first static string to translate",
-        "static_string_2": "second static string to translate",
-        "second_paragraph": "This is a second paragraph to translate",
-    }
-    return render(request, "lang.html", context)

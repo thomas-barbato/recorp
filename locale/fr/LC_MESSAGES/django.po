@@ -20,6 +20,45 @@ msgstr ""
 msgid "first static string to translate"
 msgstr "premiere chaîne statique à traduire"
 
+msgid "Username already in use"
+msgstr "Nom d'utilisateur déjà utilisé"
+
+msgid "Username must be unique"
+msgstr "Votre nom d'utilisateur doit être unique."
+
+msgid "Your password must contain at least"
+msgstr "Votre mot de passe doit contenir à minima"
+
+msgid "letters"
+msgstr "lettres"
+
+msgid "uppercase"
+msgstr "majuscule"
+
+msgid "lowercase"
+msgstr "minuscule"
+
+msgid "symbol"
+msgstr "symbole"
+
+msgid "number"
+msgstr "chiffre"
+
+msgid "username"
+msgstr "nom d'utilisateur"
+
+msgid "password"
+msgstr "mot de passe"
+
+msgid "Password"
+msgstr "mot de passe"
+
+msgid "Confirm password"
+msgstr "Confirmez votre mot de passe"
+
+msgid "You are now logged on"
+msgstr "Vous êtes maintenant connecté"
+
 msgid "second static string to translate"
 msgstr "seconde chaîne statique à traduire"
 
