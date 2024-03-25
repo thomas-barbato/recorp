@@ -56,6 +56,12 @@ msgstr "confirmar contraseña"
 msgid "You are now logged on"
 msgstr "Ya está conectado"
 
+msgid "Incorrect user name or password. Check your details or create an account"
+msgstr "Nombre de usuario o contraseña incorrectos. Compruebe sus datos o cree una cuenta"
+
+msgid "This account can't access to the game"
+msgstr "Esta cuenta no puede acceder al juego"
+
 msgid "Character"
 msgstr "Personaje"
 

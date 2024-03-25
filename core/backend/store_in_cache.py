@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 from django.core.cache import cache
+from django.contrib.auth.models import User
 
 
 class StoreInCache:

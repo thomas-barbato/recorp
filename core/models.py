@@ -1,8 +1,6 @@
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 localtime = timezone.now
 
 
@@ -16,19 +14,6 @@ def get_default_station_size():
 
 def get_default_asteroid_size():
     return {"size_x": 1, "size_y": 1}
-
-
-class User(AbstractBaseUser):
-    date_joined = models.DateTimeField(default=localtime)
-    username = models.CharField(default="user_default", unique=True, blank=False)
-    email = models.EmailField(null=False, blank=False, default="blank@email.com")
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{ self.username } - email: { self.email }, date_joined: { self.date_joined }"
 
 
 class CashShop(models.Model):

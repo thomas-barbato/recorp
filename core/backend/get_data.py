@@ -2,6 +2,7 @@ import json
 import os
 from django.core import serializers
 from recorp.settings import BASE_DIR
+from django.contrib.auth.models import User
 from core.models import (
     Planet,
     Asteroid,
@@ -15,7 +16,6 @@ from core.models import (
     Security,
     Sector,
     Player,
-    User
 )
 
 

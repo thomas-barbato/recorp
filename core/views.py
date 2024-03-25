@@ -1,8 +1,11 @@
 import logging
 import datetime
 from urllib import request
-
 from django.urls import reverse_lazy, reverse
+from django.contrib.messages import get_messages
+from django.contrib import messages
+from django.views import View
+from recorp.settings import LOGIN_REDIRECT_URL
 
 from core.forms import LoginForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,12 +15,12 @@ from django.utils import timezone
 from django.contrib.auth import login, authenticate
 from django.utils.translation import gettext as _
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.views.generic import TemplateView, RedirectView, FormView
+from django.views.generic import TemplateView, FormView
 from core.backend.get_data import GetMapDataFromDB
+from django.contrib.auth.models import User
 from core.models import (
     Sector,
     Player,
-    User
 )
 logger = logging.getLogger("django")
 
@@ -28,7 +31,7 @@ def admin_index(request):
     return HttpResponse(template.render(context))
 
 
-class IndexView(FormView):
+class IndexView(TemplateView):
     form_class = LoginForm
     template_name = "index.html"
     redirect_authenticated_user = True
@@ -38,51 +41,45 @@ class IndexView(FormView):
         "</div>"
     )
 
-    def get_success_message(self, cleaned_data=""):
-        return self.success_message
-
-    def form_valid(self, form):
-        username = self.request.POST.get("username")
-        user = authenticate(
-            self.request,
-            username=username,
-            password=self.request.POST.get("password"),
-        )
-        if user is not None:
-            login(self.request, user)
-            if Player.objects.filter(id=self.request.user.id).exists():
-                return redirect('/play/')
-            return redirect('/play/tutorial/')
-
-    def form_invalid(self, form):
-        form = {"form": form}
-        return redirect(self.request.path, form)
+    def post(self, request, *args, **kwargs):
+        try:
+            user = authenticate(
+                self.request,
+                username=request.POST.get('username'),
+                password=request.POST.get("password"),
+            )
+            if user is not None and user.is_active:
+                login(self.request, user)
+                if Player.objects.filter(user_id=self.request.user.id, is_npc=False).exists():
+                    return redirect('/play/')
+                elif Player.objects.filter(user_id=self.request.user.id, is_npc=True).exists():
+                    error_msg = _("This account can't access to the game")
+                    messages.error(self.request, error_msg)
+                    return redirect(self.request.path, {'form': self.form_class})
+            unknown_user_msg = _("Unknown user")
+            messages.error(self.request, unknown_user_msg)
+            return redirect(self.request.path, {'form': self.form_class})
+        except KeyError:
+            warning_msg = _("Fill all fields to login")
+            messages.warning(self.request, warning_msg)
+            return redirect(self.request.path, {'form': self.form_class})
 
 
 class DisplayTutorialView(LoginRequiredMixin, TemplateView):
-    login_url = "/"
+    login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "tutorial.html"
 
 
 class DisplayGameView(LoginRequiredMixin, TemplateView):
-    login_url = "/"
+    login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "play.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        print(self.request.user)
-        if self.request.user.is_anonymous:
-            user = User.objects.get(id=1)
-            print(user)
-        context["france"] = timezone.localtime(timezone.now())
-        context["now"] = datetime.datetime.now()
         context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(20), "rows": range(15)}
-        context["description"] = (
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
-        )
         context["skills"] = {
             "categories": ["Steering", "Offensive", "Defensive", "Utility", "Industry"],
             "list": [
@@ -308,7 +305,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 },
             ],
         }
-        pk = 15
+        pk = Player.objects.filter(user_id=self.request.user.id).values_list('sector_id', flat=True)[0]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
             planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
@@ -360,5 +357,4 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                         }
                     )
             context["map_informations"] = result_dict
-        # logger.info(f'{timezone.localtime(timezone.now())} - {self.request.user} connected.')
         return context

@@ -59,6 +59,12 @@ msgstr "Confirmez votre mot de passe"
 msgid "You are now logged on"
 msgstr "Vous êtes maintenant connecté"
 
+msgid "Incorrect user name or password. Check your details or create an account"
+msgstr "Nom d'utilisateur ou mot de passe incorrect. Vérifiez vos informations ou créez un compte"
+
+msgid "This account can't access to the game"
+msgstr "Ce compte ne peut pas accéder au jeu"
+
 msgid "second static string to translate"
 msgstr "seconde chaîne statique à traduire"
 

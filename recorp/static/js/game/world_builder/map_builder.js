@@ -121,7 +121,7 @@
         }
     })
 
-    function append_foreground_menu(element, pre_existing_data = []){
+    function append_foreground_menu(element, pre_existing_data = undefined){
         if(document.querySelectorAll('.foreground-menu-container').length > 0){
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
             let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
@@ -345,7 +345,6 @@
     }
 
     function set_foreground(dict){
-        console.log(dict)
         data = [];
         let animation_dir_data = [];
         let animation_type = "";

@@ -120,7 +120,7 @@ function add_pc_npc(data){
     for(let i = 0; i < data.length; i++){
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
-        let border_color = data[i]["is_npc"] === true ? "hover:border-rose-600" : "hover:border-blue-50";
+        let border_color = data[i]["is_npc"] === true ? "hover:border-rose-600" : "hover:border-blue-500";
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
         let div = entry_point.querySelector('div');
 

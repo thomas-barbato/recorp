@@ -14,6 +14,7 @@ environ.Env.read_env()
 
 SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@"
 
+LOGIN_REDIRECT_URL = "/"
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1"]
