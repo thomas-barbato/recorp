@@ -22,6 +22,7 @@ from core.models import (
     Sector,
     Player,
 )
+
 logger = logging.getLogger("django")
 
 
@@ -37,32 +38,43 @@ class IndexView(TemplateView):
     redirect_authenticated_user = True
     success_message = (
         '<div class="alert alert-success text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
-        "<p>"+_('You are now logged on')+".</p>"
+        "<p>" + _("You are now logged on") + ".</p>"
         "</div>"
     )
 
     def post(self, request, *args, **kwargs):
+        data_to_send = {}
+        url = self.request.path
         try:
             user = authenticate(
                 self.request,
-                username=request.POST.get('username'),
+                username=request.POST.get("username"),
                 password=request.POST.get("password"),
             )
-            if user is not None and user.is_active:
-                login(self.request, user)
+            if user is not None and user.is_active and user.username != "npc":
                 if Player.objects.filter(user_id=self.request.user.id, is_npc=False).exists():
-                    return redirect('/play/')
-                elif Player.objects.filter(user_id=self.request.user.id, is_npc=True).exists():
-                    error_msg = _("This account can't access to the game")
-                    messages.error(self.request, error_msg)
-                    return redirect(self.request.path, {'form': self.form_class})
+                    url = "/play/"
+
+                elif (
+                        User.objects.filter(id=self.request.user.id).exists()
+                        and Player.objects.filter(
+                        user_id=self.request.user.id, is_npc=False
+                        ).exists()
+                        is False
+                ):
+                    url = "/play/tutorial/"
+
+                login(self.request, user)
+                return redirect(url, data_to_send)
             unknown_user_msg = _("Unknown user")
             messages.error(self.request, unknown_user_msg)
-            return redirect(self.request.path, {'form': self.form_class})
+            data_to_send = {"form": self.form_class}
+            return redirect(url, data_to_send)
         except KeyError:
             warning_msg = _("Fill all fields to login")
             messages.warning(self.request, warning_msg)
-            return redirect(self.request.path, {'form': self.form_class})
+            data_to_send = {"form": self.form_class}
+            return redirect(url, data_to_send)
 
 
 class DisplayTutorialView(LoginRequiredMixin, TemplateView):
@@ -305,7 +317,9 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 },
             ],
         }
-        pk = Player.objects.filter(user_id=self.request.user.id).values_list('sector_id', flat=True)[0]
+        pk = Player.objects.filter(user_id=self.request.user.id).values_list(
+            "sector_id", flat=True
+        )[0]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
             planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
