@@ -36,11 +36,6 @@ class IndexView(TemplateView):
     form_class = LoginForm
     template_name = "index.html"
     redirect_authenticated_user = True
-    success_message = (
-        '<div class="alert alert-success text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
-        "<p>" + _("You are now logged on") + ".</p>"
-        "</div>"
-    )
 
     def post(self, request, *args, **kwargs):
         data_to_send = {}
@@ -52,21 +47,13 @@ class IndexView(TemplateView):
                 password=request.POST.get("password"),
             )
             if user is not None and user.is_active and user.username != "npc":
-                if Player.objects.filter(user_id=self.request.user.id, is_npc=False).exists():
-                    url = "/play/"
-
-                elif (
-                        User.objects.filter(id=self.request.user.id).exists()
-                        and Player.objects.filter(
-                        user_id=self.request.user.id, is_npc=False
-                        ).exists()
-                        is False
-                ):
-                    url = "/play/tutorial/"
-
                 login(self.request, user)
+                if Player.objects.filter(user_id=self.request.user.id).exists():
+                    url = "/play/"
+                else:
+                    url = "/play/tutorial/"
                 return redirect(url, data_to_send)
-            unknown_user_msg = _("Unknown user")
+            unknown_user_msg = _("Unable to login, username and or password are incorrects")
             messages.error(self.request, unknown_user_msg)
             data_to_send = {"form": self.form_class}
             return redirect(url, data_to_send)
@@ -328,7 +315,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["pc_npc"] = [
                 p
                 for p in Player.objects.filter(sector_id=pk).values(
-                    "id", "name", "coordinates", "image", "description", "is_npc"
+                    "id", "name", "coordinates", "image", "description", "is_npc", "user_id"
                 )
             ]
             result_dict["sector"] = {

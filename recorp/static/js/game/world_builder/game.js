@@ -1,4 +1,5 @@
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
+const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
 let animation_container_set = new Set();
 let animation_set = new Set();
 
@@ -27,8 +28,6 @@ function add_sector_background(background_name){
             }
         }
 }
-
-console.log(map_informations.sector_element);
 
 function add_sector_foreground(sector_element){
     data = [];
@@ -107,7 +106,6 @@ function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, siz
             }
             animation_set.add('.animation-'+animation_i);
             let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
-            entry_point.querySelector('div').classList.remove('hover:border-emerald-500');
             entry_point.querySelector('div').classList.add('hover:border-amber-400');
             entry_point.querySelector('div').append(fg_animation);
             animation_i++;
@@ -117,19 +115,24 @@ function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, siz
 }
 
 function add_pc_npc(data){
+    let border_color = "";
     for(let i = 0; i < data.length; i++){
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
-        let border_color = data[i]["is_npc"] === true ? "hover:border-rose-600" : "hover:border-blue-500";
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
         let div = entry_point.querySelector('div');
 
+        if(data[i]["user_id"] == current_user_id){
+            border_color = "hover:border-emerald-500";
+        }else{
+            border_color = data[i]["is_npc"] !== true ? "border-neutral-600" : "border-cyan-400";
+        }
+
+        div.classList.add(border_color);
+
         space_ship = document.createElement('img');
         space_ship.src = "/static/js/game/assets/ships/ship01-32px.png";
-        space_ship.classList.add('w-[30px]', 'h-[30px]');
-
-        div.classList.remove('hover:border-emerald-500');
-        div.classList.add(border_color, 'cursor-pointer');
+        space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
         div.append(space_ship);
     }
 }
@@ -138,7 +141,7 @@ window.addEventListener('load', function(event) {
 
     let room = map_informations.sector.id;
     let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var chatSocket = new WebSocket(
+    var gameSocket = new WebSocket(
         ws_scheme
         + '://'
         + window.location.host
@@ -146,6 +149,26 @@ window.addEventListener('load', function(event) {
         +room
         + "/"
     );
+
+    gameSocket.onopen = function(e){
+        console.log("socket opened")
+    };
+
+
+    gameSocket.onclose = function(e) {
+        console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 1s...");
+        setTimeout(function() {
+            console.log("Reconnecting...");
+            var chatSocket = new WebSocket(
+                ws_scheme
+                + '://'
+                + window.location.host
+                + "/ws/play_"
+                +room
+                + "/"
+            );
+        }, 1000);
+    };
 
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);

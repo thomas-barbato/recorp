@@ -18,7 +18,7 @@ class GameConsumer(WebsocketConsumer):
 
     def connect(self):
         self.room = self.scope["url_route"]["kwargs"]["room"]
-        self.room_group_name = f"room3_{self.room}"
+        self.room_group_name = f"play_{self.room}"
         self.user = self.scope["user"]
         self.accept()
 

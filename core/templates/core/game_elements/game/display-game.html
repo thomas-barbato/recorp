@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
+{{ request.user.id|json_script:"script_user_id" }}
 <div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
     <div class="flex self-center item-center">
         <div class="grid">
@@ -17,7 +18,7 @@
                         <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted no-borders w-[32px] h-[32px] p-0 z-5 ">{{ row }}</td>
                         {% for col in map_size_range.cols %}
                             <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="{{row}}_{{col}}" id="{{row}}_{{col}}">
-                                <div class="relative w-[32px] h-[32px] hover:border hover:border-emerald-500 border-dashed block hover:bg-slate-300/10">
+                                <div class="relative w-[32px] h-[32px] hover:border hover:bg-slate-300/10 hover:border-dashed block ">
                                 </div>
                             </td>
                         {% endfor %}
