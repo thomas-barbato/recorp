@@ -319,3 +319,8 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["sector_element"] = data["sector_element"]
             context["map_informations"] = result_dict
             return context
+        else:
+            error_msg = _("Sector unknown... Contact admin to get more informations")
+            messages.warning(self.request, error_msg)
+            data_to_send = {"form": LoginForm}
+            return redirect("/play/", data_to_send)
