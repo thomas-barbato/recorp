@@ -4,6 +4,8 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 
+from core.backend.store_in_cache import StoreInCache
+
 logger = logging.getLogger("django")
 
 
@@ -27,7 +29,7 @@ class GameConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name,
         )
-
+        """
         if self.user.is_authenticated:
             store = StoreInCache(self.room_group_name, self.user.username)
             store.add_user()
@@ -38,7 +40,7 @@ class GameConsumer(WebsocketConsumer):
                     "user": store.get_user()[0],
                 },
             )
-
+        """
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,

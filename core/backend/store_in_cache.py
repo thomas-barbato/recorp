@@ -4,24 +4,78 @@ import logging
 from django.core.cache import cache
 from django.contrib.auth.models import User
 
+from core.backend.get_data import GetMapDataFromDB
+from core.models import (
+    Sector
+)
+
 
 class StoreInCache:
     def __init__(self, room_name, value=[]):
         self.room = room_name
+        self.sector_pk = self.room.split('_')[1]
         self.value = value
 
-    def get_or_set_cache(self, current_language):
+    def get_or_set_cache(self):
         if cache.get(self.room):
             return cache.get(self.room)
+        data = self.set_sector_data(self.sector_pk)
         cache.set(
             self.room,
             {
-                "sector_id": self.room,
-                "users": [],
+                "sector": data["sector"],
+                "sector_element": data["sector_element"],
                 "messages": [],
             },
         )
         return cache.get(self.room)
+
+    def set_sector_data(self, pk):
+        planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(self.sector_pk)
+        table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+        sector = Sector.objects.get(id=pk)
+        sector_data = dict()
+        sector_data["sector_element"] = []
+        sector_data["users_online"] = []
+
+        sector_data["sector"] = {
+            "id": pk,
+            "name": sector.name,
+            "description": sector.description,
+            "image": sector.image,
+            "security_id": sector.security_id,
+            "security_name": sector.security.name,
+            "faction_name": sector.faction.name,
+            "faction_id": sector.faction_id,
+            "is_faction_level_starter": sector.is_faction_level_starter,
+        }
+
+        for table_key, table_value in table_set.items():
+            for table in table_value:
+                size = GetMapDataFromDB.get_specific_size(table_key)
+                element, _ = GetMapDataFromDB.get_table(table_key)
+                map_element = [
+                    v
+                    for k, v in element.objects.filter(name=table.source.name)
+                    .values_list("data", flat=True)[0]
+                    .items()
+                    if v != "none"
+                ]
+
+                sector_data["sector_element"].append(
+                    {
+                        "type": table_key,
+                        "item_id": table.id,
+                        "item_name": table.data["name"],
+                        "resource_id": table.resource_id,
+                        "source_id": table.source_id,
+                        "sector_id": table.sector_id,
+                        "animations": map_element,
+                        "data": table.data,
+                        "size": size,
+                    }
+                )
+        return sector_data
 
     def set_selected_card(self):
         in_cache = cache.get(self.room)

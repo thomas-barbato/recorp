@@ -4,20 +4,19 @@ from urllib import request
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages import get_messages
 from django.contrib import messages
-from django.views import View
 from recorp.settings import LOGIN_REDIRECT_URL
 
 from core.forms import LoginForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template import RequestContext, loader
-from django.shortcuts import render, redirect
-from django.utils import timezone
+from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate
 from django.utils.translation import gettext as _
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.views.generic import TemplateView, FormView
+from django.http import HttpResponse
+from django.views.generic import TemplateView
 from core.backend.get_data import GetMapDataFromDB
 from django.contrib.auth.models import User
+from core.backend.store_in_cache import StoreInCache
 from core.models import (
     Sector,
     Player,
@@ -308,9 +307,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             "sector_id", flat=True
         )[0]
         if Sector.objects.filter(id=pk).exists():
-            sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
-            table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+            data = StoreInCache(f"play_{pk}").get_or_set_cache()
             result_dict = dict()
             result_dict["pc_npc"] = [
                 p
@@ -318,44 +315,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                     "id", "name", "coordinates", "image", "description", "is_npc", "user_id"
                 )
             ]
-            result_dict["sector"] = {
-                "id": pk,
-                "name": sector.name,
-                "description": sector.description,
-                "image": sector.image,
-                "security_id": sector.security_id,
-                "security_name": sector.security.name,
-                "faction_name": sector.faction.name,
-                "faction_id": sector.faction_id,
-                "is_faction_level_starter": sector.is_faction_level_starter,
-            }
-
-            result_dict["sector_element"] = []
-
-            for table_key, table_value in table_set.items():
-                for table in table_value:
-                    size = GetMapDataFromDB.get_specific_size(table_key)
-                    element, _ = GetMapDataFromDB.get_table(table_key)
-                    map_element = [
-                        v
-                        for k, v in element.objects.filter(name=table.source.name)
-                        .values_list("data", flat=True)[0]
-                        .items()
-                        if v != "none"
-                    ]
-
-                    result_dict["sector_element"].append(
-                        {
-                            "type": table_key,
-                            "item_id": table.id,
-                            "item_name": table.data["name"],
-                            "resource_id": table.resource_id,
-                            "source_id": table.source_id,
-                            "sector_id": table.sector_id,
-                            "animations": map_element,
-                            "data": table.data,
-                            "size": size,
-                        }
-                    )
+            result_dict["sector"] = data["sector"]
+            result_dict["sector_element"] = data["sector_element"]
             context["map_informations"] = result_dict
-        return context
+            return context
