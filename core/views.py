@@ -52,7 +52,9 @@ class IndexView(TemplateView):
                 else:
                     url = "/play/tutorial/"
                 return redirect(url, data_to_send)
-            unknown_user_msg = _("Unable to login, username and or password are incorrects")
+            unknown_user_msg = _(
+                "Unable to login, username and or password are incorrects"
+            )
             messages.error(self.request, unknown_user_msg)
             data_to_send = {"form": self.form_class}
             return redirect(url, data_to_send)
@@ -312,7 +314,17 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["pc_npc"] = [
                 p
                 for p in Player.objects.filter(sector_id=pk).values(
-                    "id", "name", "coordinates", "image", "description", "is_npc", "user_id"
+                    "id",
+                    "name",
+                    "coordinates",
+                    "image",
+                    "description",
+                    "is_npc",
+                    "user_id",
+                    "faction_id__name",
+                    "archetype_id__name",
+                    "archetype_id__data",
+                    "sector_id__name",
                 )
             ]
             result_dict["sector"] = data["sector"]

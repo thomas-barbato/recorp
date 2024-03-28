@@ -107,6 +107,42 @@ msgstr "Sector"
 msgid "Name"
 msgstr "Nombre"
 
+msgid "Soldier"
+msgstr "Soldado"
+
+msgid "Fighter specialising in piloting heavy spaceships"
+msgstr "Caza especializado en pilotar naves espaciales pesadas"
+
+msgid "Harvester"
+msgstr "Cosechador"
+
+msgid "Harvester specialising in gathering resources"
+msgstr "Cosechadora especializada en la recolección de recursos"
+
+msgid "Engineer"
+msgstr "Ingeniero"
+
+msgid "Technician specialising in research and manufacturing"
+msgstr "Técnico especializado en investigación y fabricación"
+
+msgid "Jack-of-all-trades"
+msgstr "Polivalente"
+
+msgid "For those who like to explore, limited knowledge of piloting light spaceships and harvesting (more limited than those who become Harvester or Fighter)"
+msgstr "Para aquellos a los que les gusta explorar, conocimientos limitados de pilotaje de naves espaciales ligeras y recolección (más limitados que los que se convierten en Harvester o Fighter)"
+
+msgid "Spy"
+msgstr "Espía"
+
+msgid "Fighter specialising in piloting light spaceships and electronic warfare"
+msgstr "Caza especializado en el pilotaje de naves espaciales ligeras y la guerra electrónica"
+
+msgid "Technician"
+msgstr "Técnico"
+
+msgid "Technician specialising in keeping spaceship operational"
+msgstr "Técnico especializado en mantener operativa la nave espacial"
+
 msgid "Change your picture"
 msgstr "Cambia su foto"
 

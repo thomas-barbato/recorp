@@ -122,6 +122,17 @@ class Sector(models.Model):
         return f"{self.name} : {self.faction.name}, is_faction_level_starter : {self.is_faction_level_starter}"
 
 
+class Archetype(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.TextField(max_length=2500, blank=True)
+    data = models.JSONField()
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Player(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     faction = models.ForeignKey(
@@ -142,13 +153,14 @@ class Player(models.Model):
     description = models.TextField(max_length=2500, blank=True)
     image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
     faction_xp = models.PositiveIntegerField(null=False, default=0)
+    archetype = models.ForeignKey(Archetype, on_delete=models.CASCADE, default=1, related_name="player_archetype")
     time_to_play = models.PositiveIntegerField(default=(60 * 60) * 24)
     coordinates = models.JSONField()
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} - {self.user.username}"
+        return f"{self.name} - (user:{self.user.username}, {self.user}) : {self.archetype.name}"
 
 
 class Skill(models.Model):

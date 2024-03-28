@@ -2,14 +2,14 @@
 {% load i18n %}
 <div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm bg-black/20 border-1">
     <div class="relative md:p-3 p-1 w-full h-full ">
-        <div class="relative rounded-lg shadow w-full h-full bg-black/50">
+        <div class="relative rounded-lg shadow w-full bg-black/50">
             <div class="items-center md:p-5 p-1 rounded-t bg-black/0">
                 <h3 class="text-xl text-center font-shadow font-bold text-emerald-400">
                     {% translate "Character Sheet" %}
                 </h3>
             </div>
             <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col">
-                <div class="lg:w-1/4 w-4/4 lg:order-1 order-2 p-1 lg:flex-row flex-col">
+                <div class="lg:w-1/4 w-4/4 order-1 p-1 lg:flex-row flex-col">
                     <div class="w-2/2 mt-1 flex items-center justify-center gap-2">
                         <div title="{% translate 'Change your picture' %}" class="lg:w-full w-1/2 mt-1 flex items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
                             <img class="md:w-48 w-24 box-content rounded-full ring-2 ring-gray-300 dark:ring-gray-500" id="user-avatar" src="{% static 'default_img/default-user.svg' %}">
@@ -17,10 +17,14 @@
                         </div>
                         <div class="lg:w-full w-1/2 mt-1 flex lg:items-start items-center lg:justify-center justify-start ">
                             <ul>
-                                <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Name" %}:</b> {{ request.user }}</li>
-                                <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Archetype" %}:</b> Soldat</li>
-                                <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Faction" %}:</b> Faction1</li>
-                                <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Sector" %}:</b> Systeme1</li>
+                                {% for player in map_informations.pc_npc %}
+                                    {% if player.user_id == request.user.id %}
+                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Name" %}:</b> {{ player.name }}</li>
+                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Archetype" %}:</b> {% translate player.archetype_id__name %}</li>
+                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Faction" %}:</b> {{ player.faction_id__name }}</li>
+                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Sector" %}:</b> {{ player.sector_id__name }}</li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -39,16 +43,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="lg:w-3/4 w-3/3 lg:order-2 order-1 flex-wrap">
+                <div class="lg:w-3/4 w-3/3 order-2 flex-wrap">
                     {% for category in skills.categories %}
-                    <fieldset class="flex flex-row gap-1 p-1 flex-wrap w-full justify-center item-center">
+                    <fieldset class="flex lg:flex-row flex-col gap-1 p-1 flex-wrap w-full justify-center items-center">
                         <legend class="text-xl md:text-start text-center font-shadow font-bold text-gray-900 dark:text-white p-1 ">
                         {{ category }}
                         </legend>
                         {% for skill in skills.list %}
                             {% if category == skill.cat %}
-                            <div class="w-full mb-1 md:w-1/5 skills" id="skill-{{ skill.id }}">
-                                <p data-popover-target="popover-{{ skill.id }}" class=" popover-element text-start font-bold dark:text-white font-shadow mb-1 md:cursor-pointer">{{ skill.skill_name }} <i class="fa-regular fa-circle-question text-white md:invisible"></i>
+                            <div class="w-[100%] mb-1 lg:w-1/5 skills" id="skill-{{ skill.id }}">
+                                {% if request.user_agent.is_pc %}
+                                <p data-popover-target="popover-{{ skill.id }}" class="popover-element text-start font-bold dark:text-white font-shadow mb-1 md:cursor-pointer">{{ skill.skill_name }} <i class="fa-regular fa-circle-question text-white invisible"></i>
+                                <div class="flex w-full mb-2 self-center">
+                                    <div class="relative w-5 h-5 bg-zinc-300 text-start">
+                                        <span class="text-bold text-xs text-black font-shadow absolute top-0.5 left-1 px-0.5">
+                                            {{ skill.level }}
+                                        </span>
+                                    </div>
+                                    <div class="w-full md:w-3/4 h-5 bg-zinc-300">
+                                        <div class="h-5 text-xs font-medium progress-bar-color text-center leading-none font-shadow pt-1" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
+                                    </div>
+                                </div>
                                 <div data-popover id="popover-{{ skill.id }}" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-white font-shadow transition-opacity duration-300 border border-[#B1F1CB] rounded-lg shadow-sm bg-gray-800">
                                     <div class="px-3 py-2 bg-[#25482D] border-b border-[#B1F1CB] rounded-t-lg text-[#B1F1CB]">
                                         <h3 class="font-bold text-center">{{ skill.skill_name }}</h3>
@@ -72,8 +87,10 @@
                                         <p>{{ skill.expertise }}</p>
                                     </div>
                                 </div>
+                                {% else %}
+                                <p class="text-start font-bold text-sm dark:text-white font-shadow mb-1 lg:cursor-pointer">{{ skill.skill_name }} <i class="fa-regular fa-circle-question text-white"></i>
                                 <div class="flex w-full mb-2">
-                                    <div class="relative w-5 h-5 rounded-full bg-zinc-300 text-start mr-1">
+                                    <div class="relative w-5 h-5 bg-zinc-300 text-start mr-1">
                                         <span class="text-bold text-xs text-black font-shadow absolute top-0.5 left-1 px-0.5">
                                             {{ skill.level }}
                                         </span>
@@ -82,7 +99,7 @@
                                         <div class="h-5 text-xs font-medium progress-bar-color text-center leading-none font-shadow pt-1" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
                                     </div>
                                 </div>
-                                <div class="w-full text-sm text-white border font-shadow border border-[#B1F1CB] bg-gray-800 shadow-sm hidden md:hidden " id="skill-descr-{{ skill.id }}">
+                                <div class="w-full text-sm text-white border font-shadow border border-[#B1F1CB] bg-gray-800 shadow-sm hidden " id="skill-descr-{{ skill.id }}">
                                     <div class="px-3 py-2 bg-[#25482D] border-b border-[#B1F1CB] rounded-t-lg text-[#B1F1CB]">
                                         <h3 class="font-bold text-center">{{ skill.skill_name }}</h3>
                                     </div>
@@ -105,6 +122,7 @@
                                         <p>{{ skill.expertise }}</p>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                             {% endif %}
                         {% endfor %}

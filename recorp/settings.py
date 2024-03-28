@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django_redis",
     "recorp",
     "core.apps.CoreConfig",
+    'django_user_agents'
 ]
 
 MIDDLEWARE = [
@@ -44,6 +45,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     #"django.middleware.cache.FetchFromCacheMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    'django_user_agents.middleware.UserAgentMiddleware'
 ]
 
 ROOT_URLCONF = "recorp.urls"
