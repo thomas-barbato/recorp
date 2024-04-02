@@ -6,10 +6,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import get_messages
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
-from core.backend.tiles import CropThisImage
+from core.backend.tiles import UploadThisImage
 from core.backend.get_data import GetMapDataFromDB
 from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
-from core.forms import CropImageForm
+from core.forms import UploadImageForm
 from core.views import admin_index
 from core.models import (
     User,
@@ -62,9 +62,9 @@ class CustomAdminSite(admin.AdminSite):
                 # "app_url": "/admin/test_view",
                 "models": [
                     {
-                        "name": "crop image and upload",
-                        "object_name": "crop image and upload",
-                        "admin_url": "/admin/crop_image",
+                        "name": "upload new image element",
+                        "object_name": "upload new image element",
+                        "admin_url": "/admin/upload_image_element",
                         "view_only": True,
                     },
                     {
@@ -93,9 +93,9 @@ class CustomAdminSite(admin.AdminSite):
         urls = [
             re_path(r"^my_view/$", self.admin_view(admin_index)),
             re_path(
-                r"^crop_image/$",
-                self.admin_view(CropImageView.as_view()),
-                name="crop-image",
+                r"^upload_image_element/$",
+                self.admin_view(UploadImageView.as_view()),
+                name="upload-image-element",
             ),
             re_path(
                 r"^create_foreground_item/$",
@@ -126,22 +126,22 @@ class CustomAdminSite(admin.AdminSite):
         return urls
 
 
-class CropImageView(LoginRequiredMixin, TemplateView):
-    template_name = "crop_image.html"
+class UploadImageView(LoginRequiredMixin, TemplateView):
+    template_name = "add_map_element.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["form"] = CropImageForm
+        context["form"] = UploadImageForm
         return context
 
     def post(self, request):
-        form = CropImageForm(request.POST, request.FILES)
+        form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
             category = form.cleaned_data.get("category")
             type = form.cleaned_data.get("type")
             img = request.FILES["img_input"]
             file_directory_name = form.cleaned_data.get("file_directory_name")
-            CropThisImage(img, category, type, file_directory_name).crop_and_save()
+            UploadThisImage(img, category, type, file_directory_name).save()
             messages.success(self.request, "Success")
         return HttpResponseRedirect(request.path)
 

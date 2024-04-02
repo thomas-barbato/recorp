@@ -218,6 +218,15 @@ msgstr "seguridad elevada"
 msgid "Here you are safe and secure, with security forces on call at all times and at very short notice."
 msgstr "Aquí estará seguro y protegido, con fuerzas de seguridad de guardia en todo momento y con muy poca antelación."
 
+msgid "planet"
+msgstr "planeta"
+
+msgid "asteroid"
+msgstr "asteroide"
+
+msgid "station"
+msgstr "estación"
+
 
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"

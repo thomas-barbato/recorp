@@ -5,17 +5,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
 from django.forms.widgets import PasswordInput, TextInput
 from django.utils.translation import gettext as _
-
-
 from core.backend.validators import (
     CheckPasswordPolicy,
     CheckUsernameAlreadyUsed,
 )
-
-
 from core.models import User
 
-class CropImageForm(forms.Form):
+
+class UploadImageForm(forms.Form):
 
     CATEGORIES = (
         ("BACKGROUND", "background"),

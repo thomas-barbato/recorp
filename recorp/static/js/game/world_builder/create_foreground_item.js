@@ -6,29 +6,35 @@ let fg_item_choice = document.querySelectorAll('input[name=item-type-choice-sect
 let animation_selection = document.querySelectorAll('.animation-selection');
 let animation_array = []
 let fg_item = "";
-let col = 0;
-let row = 0;
+let atlas = {
+    'col': 0,
+    'row': 0,
+    'tile_size': 32,
+    'map_height_size': 0,
+    'map_width_size': 0,
+};
 
 let display_animation_file_choice = function(){
     reset_field();
     fg_item = this.value;
     switch(fg_item){
         case "planet":
-            console.log(size)
-            col = row = size[0]["planet_data"]["size_x"];
+            atlas.col = atlas.row = size[0]["planet_data"]["size_x"];
             append_select_field(planet_url);
             break;
         case "station":
-            col = row = size[1]["station_data"]["size_x"];
+            atlas.col = atlas.row = size[1]["station_data"]["size_x"];
             append_select_field(station_url);
             break;
         case "asteroid":
-            col = row = size[2]["asteroid_data"]["size_x"];
+            atlas.col = atlas.row = size[2]["asteroid_data"]["size_x"];
             append_select_field(asteroid_url);
             break;
         default:
             break;
     }
+    atlas.map_height_size = atlas.row * atlas.tile_size;
+    atlas.map_width_size = atlas.col * atlas.tile_size;
     document.querySelector(".animations").style.display = "block";
     document.querySelector('#preview').innerHTML = "";
     create_table();
@@ -41,30 +47,31 @@ let display_animation_preview = function(e){
     document.querySelector('#preview-'+animation_number).innerHTML = "";
 
     if(directory !== "none"){
-        let animation_i = 0;
+        let image_name = 0
         let tr = "";
         let td = "";
         let table = "";
+        let bg_url = '/static/img/atlas/foreground/' + fg_item + '/' + directory + '/' + '0.png';
+        let index = 0;
 
-        for(let row_i = 0; row_i < row; row_i++){
-
+        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tile_size){
             table = element.querySelector('#preview-'+animation_number)
             tr = document.createElement('tr');
             tr.classList.add('rows', "no-borders");
 
-            for(let col_i = 0; col_i < col; col_i++){
-                let bg_url = '/static/img/atlas/foreground/' + fg_item + '/' + directory + '/' + animation_i + '.png';
+            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tile_size){
                 td = document.createElement('td');
-
                 td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
+                td.id = index;
                 td.style.backgroundImage = "url('" + bg_url + "')";
-
-                tr.appendChild(td)
+                td.style.backgroundPositionX = `-${col_i}px`;
+                td.style.backgroundPositionY = `-${row_i}px`;
+                tr.appendChild(td);
                 table.appendChild(tr);
-                animation_i++;
+                index++;
             }
-
         }
+        console.log(table);
         element.querySelector('#preview-animation-'+animation_number).style.display = "block";
     }else{
         element.querySelector('#preview-animation-'+animation_number).style.display = "none";
@@ -95,7 +102,6 @@ function append_select_field(array){
 function reset_field(){
     let select = document.querySelectorAll('select');
     let table = document.querySelectorAll('tbody');
-    console.log(table.length)
     for(let i = 0; i < select.length; i++){
         select[i].innerHTML = "";
         table[i].innerHTML = "";
@@ -107,14 +113,21 @@ for(let i = 0; i < fg_item_choice.length; i++){
 }
 
 function create_table(){
-    for(let row_i = 0 ; row_i < row ; row_i++){
+    for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tile_size){
         let table = document.querySelector('#preview')
         let tr = document.createElement('tr');
         tr.classList.add('rows');
 
-        for(let col_i = 0; col_i < col; col_i++){
+        for(let col_i = 0;  col_i < atlas.map_width_size ; col_i += atlas.tile_size){
             let td = document.createElement('td');
-            td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
+            td.classList.add(
+                "w-[32px]",
+                "h-[32px]",
+                "m-0",
+                "p-0",
+                "z-5",
+                "no-borders"
+            );
 
             let div = document.createElement('div');
             div.classList.add(
@@ -128,67 +141,8 @@ function create_table(){
                 'hover:bg-slate-300/10'
             );
             td.appendChild(div)
-
             tr.appendChild(td)
             table.appendChild(tr);
         }
     }
 }
-
-function add_image_to_preview(){
-    for(let i = 0; i < animation_selection.length; i++){
-        if(animation_selection[i].value !== "none"){
-            animation_array.push(animation_selection[i].value)
-        }
-    }
-    for(animation in animation_array){
-        let animation_i = 0;
-        for(let row_i = 0; row_i < row ; row_i++){
-            for(let col_i = 0; col_i < col; col_i++){
-                let img = document.createElement('img');
-                let img_url = '/static/img/atlas/foreground/' + fg_item + '/' + animation_array[animation] + '/' + animation_i + '.png';
-                img.src = img_url;
-                img.classList.add(
-                    'animation',
-                    'z-2',
-                    'absolute',
-                    'm-auto',
-                    'left-0',
-                    'right-0',
-                    'no-borders',
-                    'animation-'+animation
-                );
-                document.querySelector('.tabletop-view').rows[row_i].cells[col_i].querySelector('div').append(img);
-                animation_i++;
-            }
-        }
-        animation_i = 0;
-
-    }
-}
-
-function display_animation(timer="500"){
-    let animation_array_len = animation_array.length;
-    let current_elements = "";
-    let previous_elements = "";
-    let index = 0;
-    setInterval( function(){
-        const previousIndex = index === 0 ? animation_array_len - 1 : index - 1
-        current_elements = document.querySelectorAll('.animation-'+ index);
-        previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
-        for(let i = 0; i < current_elements.length; i++){
-            previous_elements[i].style.display = "none";
-            current_elements[i].style.display = "block";
-        }
-        index++;
-        if(index >= animation_array_len){
-            index = 0;
-        }
-    }, timer);
-}
-
-let preview_btn = document.querySelector('#preview-btn');
-preview_btn.addEventListener('click', function() {
-    add_image_to_preview();
-    display_animation("250");
-})

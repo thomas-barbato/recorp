@@ -227,6 +227,15 @@ msgstr "sécurité élevée"
 msgid "Here you are safe and secure, with security forces on call at all times and at very short notice."
 msgstr "Ici, vous êtes en sécurité, avec des forces de sécurité disponibles à tout moment et dans les plus brefs délais."
 
+msgid "planet"
+msgstr "planète"
+
+msgid "asteroid"
+msgstr "astéroïde"
+
+msgid "station"
+msgstr "station"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""

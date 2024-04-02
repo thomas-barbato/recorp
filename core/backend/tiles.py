@@ -4,10 +4,9 @@ from pathlib import Path
 import os
 
 
-class CropThisImage:
-    def __init__(self, file, category: str, type: str, directory_name: str, size=32):
+class UploadThisImage:
+    def __init__(self, file, category: str, type: str, directory_name: str):
         self.file = Image.open(file)
-        self.size = size
         self.type = type
         self.category = category.lower()
         self.directory_name = directory_name
@@ -40,16 +39,10 @@ class CropThisImage:
 
         self.save_path.mkdir(parents=True, exist_ok=True)
 
-    def crop_and_save(self):
+    def save(self):
         self.__get_and_create_dir()
-        width, height = self.file.size
-        frame_number = 0
-        for col in range(0, height, self.size):
-            for row in range(0, width, self.size):
-                crop = self.file.crop((row, col, row + self.size, col + self.size))
-                save_to = os.path.join(self.save_path, f"{frame_number}.png")
-                crop.save(save_to)
-                frame_number += 1
+        save_to = os.path.join(self.save_path, "0.png")
+        self.file.save(save_to)
 
     def get_save_path(self):
         return self.save_path

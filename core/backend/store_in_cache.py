@@ -3,7 +3,6 @@ import json
 import logging
 from django.core.cache import cache
 from django.contrib.auth.models import User
-
 from core.backend.get_data import GetMapDataFromDB
 from core.models import (
     Sector
@@ -45,6 +44,7 @@ class StoreInCache:
             "image": sector.image,
             "security_id": sector.security_id,
             "security_name": sector.security.name,
+            "security_name_translated": sector.security.name,
             "faction_name": sector.faction.name,
             "faction_id": sector.faction_id,
             "is_faction_level_starter": sector.is_faction_level_starter,
@@ -65,13 +65,19 @@ class StoreInCache:
                 sector_data["sector_element"].append(
                     {
                         "type": table_key,
+                        "type_translated": table_key,
                         "item_id": table.id,
                         "item_name": table.data["name"],
                         "resource_id": table.resource_id,
                         "source_id": table.source_id,
                         "sector_id": table.sector_id,
                         "animations": map_element,
-                        "data": table.data,
+                        "data": {
+                            'name': table.data['name'],
+                            'coord_x': table.data['coord_x'],
+                            'coord_y': table.data['coord_y'],
+                            'description': table.data['description']
+                        },
                         "size": size,
                     }
                 )

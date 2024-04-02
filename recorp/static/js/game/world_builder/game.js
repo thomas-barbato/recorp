@@ -38,13 +38,17 @@ function add_sector_foreground(sector_element){
         console.log(sector_element)
         animation_dir_data.push(sector_element[key]["animations"]);
         animation_type = sector_element[key]["type"];
+        animation_type_translated = sector_element[key]["type_translated"];
         let cell = 0;
         let coord_x = parseInt(sector_element[key]["data"]["coord_x"]) ;
         let coord_y = parseInt(sector_element[key]["data"]["coord_y"]);
         let size_x = parseInt(sector_element[key]["size"]["size_x"]);
         let size_y = parseInt(sector_element[key]["size"]["size_y"]);
         let element_data = sector_element[key]["data"];
-        let modal = create_modal(element_data["name"]);
+        let modal = create_modal(
+            element_data["name"],
+            animation_type_translated
+        );
         document.querySelector('#modal-container').append(modal);
         for(let row = sector_element[key]["data"]["coord_y"]; row < coord_y + size_y; row++){
             for(let col = sector_element[key]["data"]['coord_x']; col < coord_x + size_x; col++){
@@ -75,7 +79,6 @@ function add_sector_foreground(sector_element){
 }
 
 function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, size_y, element_data){
-    console.log(element_data)
     let temporary_array = [];
     for(let i = 0; i < anim_array.length; i++){
         let animation_i = 0;
@@ -108,7 +111,6 @@ function add_pc_npc(data){
     for(let i = 0; i < data.length; i++){
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
-        console.log(coord_y, coord_x)
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
         let div = entry_point.querySelector('div');
         let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
@@ -128,7 +130,7 @@ function add_pc_npc(data){
     }
 }
 
-function create_modal(id){
+function create_modal(id, elem_type, title=undefined, description=undefined, img=undefined) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -151,7 +153,26 @@ function create_modal(id){
         'bg-black/20',
         'border-1'
     );
-    e.textContent = id;
+    let container_div = document.createElement('div');
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+    let content_div = document.createElement('div');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'w-full', 'rounded-t', 'bg-black/60', 'flex', 'justify-center', 'mx-auto', 'flex-col');
+    let header_container_div = document.createElement('div');
+    header_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+    let header_div = document.createElement('h3');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400');
+    header_div.textContent = elem_type.toUpperCase();
+    let body_container_div = document.createElement('div');
+    body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+    body_container_div.textContent = "blibliblibli"
+
+
+    header_container_div.append(header_div);
+    content_div.append(header_container_div);
+    content_div.append(body_container_div);
+    container_div.append(content_div);
+    e.append(container_div);
+
     return e;
 }
 
@@ -215,5 +236,5 @@ window.addEventListener('load', () => {
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
-    display_animation(timer="1000");
+    display_animation(timer="500");
 });

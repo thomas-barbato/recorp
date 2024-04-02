@@ -327,6 +327,15 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                     "sector_id__name",
                 )
             ]
+
+            for p in result_dict["pc_npc"]:
+                p["archetype__id__name"] = _(p["archetype_id__name"])
+
+            data["sector"]["security_name_translated"] = _(data["sector"]["security_name_translated"])
+            for d in data["sector_element"]:
+                d["type_translated"] = _(d['type_translated'])
+                d["data"]["description"] = _(d["data"]["description"])
+
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
             context["map_informations"] = result_dict
