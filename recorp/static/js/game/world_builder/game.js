@@ -1,7 +1,13 @@
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
 let animation_container_set = new Set();
-let animation_set = new Set();
+let atlas = {
+    "col": 20,
+    "row": 15,
+    "tilesize": 32,
+    "map_width_size": 20 * 32,
+    "map_height_size": 15 * 32,
+}
 
 function ship_stationary_animation() {
   let ship = document.querySelectorAll(".ship");
@@ -17,92 +23,85 @@ function ship_stationary_animation() {
 setInterval(ship_stationary_animation, "1000");
 
 function add_sector_background(background_name){
-        let cell = 0;
+        let index_row = 1;
+        let index_col = 1;
         let game_rows = document.querySelectorAll('.rows');
-        for(let i = 0; i < game_rows.length ; i++){
-            let cols = game_rows[i].querySelectorAll('.tile');
-            for(let y = 0; y < cols.length ; y++){
-                let bg_url = '/static/img/atlas/background/' + background_name + '/' + cell + '.png';
-                cols[y].style.backgroundImage = "url('" + bg_url + "')";
-                cell++;
+        let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.png';
+        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
+            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                entry_point.style.backgroundImage = "url('" + bg_url + "')";
+                entry_point.style.backgroundPositionX = `-${col_i}px`;
+                entry_point.style.backgroundPositionY = `-${row_i}px`;
+                index_col++;
             }
+            index_row++;
+            index_col = 1;
         }
 }
 
 function add_sector_foreground(sector_element){
-    data = [];
-    let animation_dir_data = [];
-    let animation_type = "";
-    let data_i = 1;
-    for(var [key, value] in sector_element){
-        console.log(sector_element)
-        animation_dir_data.push(sector_element[key]["animations"]);
-        animation_type = sector_element[key]["type"];
-        animation_type_translated = sector_element[key]["type_translated"];
-        let cell = 0;
-        let coord_x = parseInt(sector_element[key]["data"]["coord_x"]) ;
-        let coord_y = parseInt(sector_element[key]["data"]["coord_y"]);
-        let size_x = parseInt(sector_element[key]["size"]["size_x"]);
-        let size_y = parseInt(sector_element[key]["size"]["size_y"]);
-        let element_data = sector_element[key]["data"];
-        let modal = create_modal(
+    let element_data = "";
+    let element_type = "";
+    let modal = "";
+    let animation_container_i = 1;
+    for(let sector_i = 0; sector_i < sector_element.length; sector_i++){
+        let animation_dir_data = [];
+        animation_dir_data.push(sector_element[sector_i]["animations"]);
+        element_type = sector_element[sector_i]["type"];
+        element_type_translated = sector_element[sector_i]["type_translated"];
+        element_data = sector_element[sector_i]["data"];
+        let animation_i = 0;
+        modal = create_modal(
             element_data["name"],
-            animation_type_translated
+            element_type_translated
         );
         document.querySelector('#modal-container').append(modal);
-        for(let row = sector_element[key]["data"]["coord_y"]; row < coord_y + size_y; row++){
-            for(let col = sector_element[key]["data"]['coord_x']; col < coord_x + size_x; col++){
-                let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
-                let div = entry_point.querySelector('div');
-                div.classList.add(
-                    'foreground-container',
-                    'animation-container-'+parseInt(data_i)
-                );
-                animation_container_set.add('.animation-container-'+parseInt(data_i));
-                add_foreground_tiles(
-                    animation_type,
-                    animation_dir_data,
-                    cell,
-                    row,
-                    col,
-                    sector_element[key]["size"]['size_x'],
-                    sector_element[key]["size"]['size_y'],
-                    element_data
-                );
-                cell++;
+        for(anim_index in animation_dir_data[0]){
+            let index_row = sector_element[sector_i]['data']['coord_y'];
+            let index_col = sector_element[sector_i]['data']['coord_x'];
+            let size_x = sector_element[sector_i]['size']["size_x"]
+            let size_y = sector_element[sector_i]['size']["size_y"]
+            let bg_url = '/static/img/atlas/foreground/' + element_type + '/' + animation_dir_data[0][anim_index] + '/' + '0.png';
+            for(let row_i = 0; row_i < (atlas.tilesize * size_y) ; row_i += atlas.tilesize){
+                for(let col_i = 0; col_i < (atlas.tilesize * size_x) ; col_i += atlas.tilesize){
+                    let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
+                    let entry_point_div = entry_point.querySelector('div');
+                    entry_point_div.style.borderColor = "orange";
+                    entry_point_div.classList.add(
+                        'foreground-container',
+                        'animation-container-'+parseInt(animation_container_i)
+                    );
+                    let img_div = document.createElement('div');
+                    img_div.classList.add(
+                        'z-2',
+                        'absolute',
+                        'left-0',
+                        'right-0',
+                        'm-0',
+                        'no-borders',
+                        'w-[32px]',
+                        'h-[32px]',
+                    );
+                    img_div.style.backgroundImage = "url('" + bg_url + "')";
+                    img_div.style.backgroundPositionX = `-${col_i}px`;
+                    img_div.style.backgroundPositionY = `-${row_i}px`;
+                    img_div.setAttribute('data-modal-target', "modal-" + element_data["name"]);
+                    img_div.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
+                    img_div.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')")
+                    entry_point_div.append(img_div);
+                    if(size_x > 1 && size_y > 1){
+                        img_div.classList.add('animation-'+animation_i);
+                        animation_container_set.add('.animation-container-'+parseInt(animation_i));
+                    }
+                    index_col++;
+                }
+                index_row++;
+                index_col = sector_element[sector_i]['data']['coord_x'];
             }
-        }
-        animation_dir_data = [];
-        cell = 0;
-        data_i++;
-    }
-}
-
-function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, size_y, element_data){
-    let temporary_array = [];
-    for(let i = 0; i < anim_array.length; i++){
-        let animation_i = 0;
-        for(let [k, v] in anim_array[i]){
-            let fg_animation = document.createElement('img');
-            let fg_animation_url = '/static/img/atlas/foreground/' + anim_type + '/' + anim_array[i][k] + '/' + cell + '.png';
-            fg_animation.setAttribute('data-modal-target', "modal-" + element_data["name"]);
-            fg_animation.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-            fg_animation.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')")
-            fg_animation.src = fg_animation_url;
-            fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'cursor-pointer', 'clickable', 'no-cross', "element");
-            if(size_y > 1 && size_y > 1){
-                fg_animation.style.display = "none";
-                fg_animation.classList.add('animation-'+animation_i,"clickable");
-            }else{
-                fg_animation.style.display = "block";
-            }
-            animation_set.add('.animation-'+animation_i);
-            let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
-            entry_point.querySelector('div').style.borderColor = "orange";
-            entry_point.querySelector('div').append(fg_animation);
+            animation_container_i++;
             animation_i++;
         }
-        animation_i=0;
     }
 }
 
@@ -182,12 +181,13 @@ function open_close_modal(id){
 }
 
 function display_animation(timer="500"){
-    let animation_set_len = animation_set.size;
+    let animation_container_set_len = animation_container_set.size;
+    console.log(animation_container_set)
     let current_elements = "";
     let previous_elements = "";
     let index = 0;
     setInterval( function(){
-        const previousIndex = index === 0 ? animation_set_len - 1 : index - 1
+        const previousIndex = index === 0 ? animation_container_set_len - 1 : index - 1
         current_elements = document.querySelectorAll('.animation-'+ index);
         previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
         for(let i = 0; i < current_elements.length; i++){
@@ -195,7 +195,7 @@ function display_animation(timer="500"){
             current_elements[i].style.display = "block";
         }
         index++;
-        if(index >= animation_set.size){
+        if(index >= animation_container_set.size){
             index = 0;
         }
     }, timer);

@@ -2,7 +2,6 @@
     const animations_json = JSON.parse(document.getElementById('script_animation_data').textContent);
     const csrf_token = document.getElementById('csrf_token').value;
     let animation_container_set = new Set();
-    let animation_set = new Set();
     let dict = [];
 
     let atlas = {
@@ -338,6 +337,7 @@
                             'no-borders',
                             'preview-animation-'+animation_i
                         );
+                        animation_container_set.add('.animation-container-'+parseInt(animation_i));
                         let entry_point = fg_menu.querySelector('#preview-animation').rows[index_row].cells[index_col];
                         entry_point.querySelector('div').append(img_div);
                         index_col++;
@@ -347,158 +347,6 @@
                 }
             }
         }
-    }
-
-    function add_background(folder_name){
-        let game_rows = document.querySelectorAll('.rows');
-        let index_row = 1;
-        let index_col = 1;
-        let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.png';
-        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
-            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
-                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                entry_point.style.backgroundImage = "url('" + bg_url + "')";
-                entry_point.style.backgroundPositionX = `-${col_i}px`;
-                entry_point.style.backgroundPositionY = `-${row_i}px`;
-                index_col++;
-            }
-            index_row++;
-            index_col = 1;
-        }
-    }
-
-    function set_foreground(dict){
-        data = [];
-        let animation_dir_data = [];
-        let animation_type = "";
-        let data_i = 1;
-        let animation_i = 0;
-        for(var [i_key, value] in dict){
-            animation_dir_data  = dict[i_key]["animations"].map(i => Object.values(i));
-            animation_type = dict[i_key]["animation_direname"].split('_')[0];
-            for(anim_index in animation_dir_data[0]){
-                console.log(animation_dir_data[0][anim_index])
-                let index_row = dict[i_key]['coord_y'];
-                let index_col = dict[i_key]['coord_x'];
-                let bg_url = '/static/img/atlas/foreground/' + animation_type + '/' + animation_dir_data[0][anim_index] + '/' + '0.png';
-                for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
-                    for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
-                        let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                        let entry_point_div = entry_point.querySelector('div');
-                        entry_point_div.classList.add(
-                            'foreground-container',
-                            'animation-container-'+parseInt(data_i)
-                        );
-                        let img_div = document.createElement('div');
-                        img_div.classList.add(
-                            'preview-animation',
-                            'z-2',
-                            'absolute',
-                            'm-auto',
-                            'left-0',
-                            'right-0',
-                            'w-[32px]',
-                            'h-[32px]',
-                            'no-borders',
-                            'animation-'+animation_i
-                        );
-                        img_div.style.backgroundImage = "url('" + bg_url + "')";
-                        img_div.style.backgroundPositionX = `-${col_i}px`;
-                        img_div.style.backgroundPositionY = `-${row_i}px`;
-                        entry_point_div.append(img_div);
-                        index_col++;
-                        /*
-                        animation_container_set.add('.animation-container-'+parseInt(data_i));
-                        add_foreground_tiles(
-                            animation_type,
-                            animation_dir_data,
-                            cell,
-                            row_i,
-                            col_i,
-                            dict[i_key]['size_x'],
-                            dict[i_key]['size_y']
-                        );*/
-                    }
-                    index_row++;
-                    index_col = dict[i_key]['coord_x'];
-                }
-                data_i++;
-                animation_i++;
-            }
-        }
-    }
-
-    function clear_foreground(){
-        let fg_container = document.querySelectorAll('.foreground-container');
-        if(fg_container.length > 0){
-            for(let i = 0; i < fg_container.length; i++){
-                let div = fg_container[i].closest('div');
-                div.innerHTML = "";
-            }
-        }
-    }
-
-    function remove_animation(id){
-        let element = document.querySelectorAll('.animation-container-'+id)
-        for(let i = 0; i < element.length; i++){
-            element[i].innerHTML = "";
-        }
-        dict = dict.slice(parseInt(id-1))
-    }
-
-    function add_foreground_tiles(anim_type, anim_array, cell, row, col, size_x, size_y){
-        let temporary_array = [];
-        let filtered_data = {};
-        for(var [array_key, array_value] in anim_array){
-            for(let i = 0; i < anim_array[array_key].length; i++){
-                if(anim_array[array_key][i] != "none"){
-                    temporary_array.push(anim_array[array_key][i]);
-                }
-            }
-            filtered_data['item-'+array_key] = temporary_array;
-            temporary_array = [];
-        }
-
-        for(const property in filtered_data){
-            let animation_i = 0;
-            for(const data in filtered_data[property]){
-                let fg_animation = document.createElement('img');
-                let fg_animation_url = '/static/img/atlas/foreground/' + anim_type + '/' + filtered_data[property][data] + '/' + '0.png';
-                fg_animation.src = fg_animation_url;
-                fg_animation.classList.add('animation', 'z-2', 'absolute', 'm-auto', 'left-0', 'right-0', 'no-borders');
-                if(size_y > 1 && size_y > 1){
-                    fg_animation.style.display = "none";
-                    fg_animation.classList.add('animation-'+animation_i);
-                }else{
-                    fg_animation.style.display = "block";
-                }
-                animation_set.add('.animation-'+animation_i);
-                let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
-                entry_point.querySelector('div').append(fg_animation);
-                animation_i++;
-            }
-            animation_i=0;
-        }
-    }
-
-    function display_animation(timer="500"){
-        let animation_set_len = animation_set.size;
-        let current_elements = "";
-        let previous_elements = "";
-        let index = 0;
-        setInterval( function(){
-            const previousIndex = index === 0 ? animation_set_len - 1 : index - 1
-            current_elements = document.querySelectorAll('.animation-'+ index);
-            previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
-            for(let i = 0; i < current_elements.length; i++){
-                previous_elements[i].style.display = "none";
-                current_elements[i].style.display = "block";
-            }
-            index++;
-            if(index >= animation_set.size){
-                index = 0;
-            }
-        }, timer);
     }
 
     function set_animation_data(){
@@ -536,6 +384,114 @@
                 }
             }
         }
+    }
+
+    function add_background(folder_name){
+        let game_rows = document.querySelectorAll('.rows');
+        let index_row = 1;
+        let index_col = 1;
+        let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.png';
+        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
+            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                entry_point.style.backgroundImage = "url('" + bg_url + "')";
+                entry_point.style.backgroundPositionX = `-${col_i}px`;
+                entry_point.style.backgroundPositionY = `-${row_i}px`;
+                index_col++;
+            }
+            index_row++;
+            index_col = 1;
+        }
+    }
+
+    function set_foreground(dict){
+        data = [];
+        let animation_dir_data = [];
+        let animation_type = "";
+        let animation_container_i = 1;
+        for(let dict_i = 0; dict_i < dict.length; dict_i++){
+            animation_dir_data  = dict[dict_i]["animations"].map(i => Object.values(i));
+            animation_type = dict[dict_i]["animation_direname"].split('_')[0];
+            let animation_i = 0;
+            for(anim_index in animation_dir_data[0]){
+                let index_row = dict[dict_i]['coord_y'];
+                let index_col = dict[dict_i]['coord_x'];
+                let bg_url = '/static/img/atlas/foreground/' + animation_type + '/' + animation_dir_data[0][anim_index] + '/' + '0.png';
+                for(let row_i = 0; row_i < (atlas.tilesize*dict[dict_i]["size_y"]) ; row_i += atlas.tilesize){
+                    for(let col_i = 0; col_i < (atlas.tilesize*dict[dict_i]["size_x"]) ; col_i += atlas.tilesize){
+                        let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                        let entry_point_div = entry_point.querySelector('div');
+                        entry_point_div.classList.add(
+                            'foreground-container',
+                            'animation-container-'+parseInt(animation_container_i )
+                        );
+                        let img_div = document.createElement('div');
+                        img_div.classList.add(
+                            'z-2',
+                            'absolute',
+                            'm-auto',
+                            'left-0',
+                            'right-0',
+                            'w-[32px]',
+                            'h-[32px]',
+                            'no-borders',
+                        );
+                        img_div.style.backgroundImage = "url('" + bg_url + "')";
+                        img_div.style.backgroundPositionX = `-${col_i}px`;
+                        img_div.style.backgroundPositionY = `-${row_i}px`;
+                        if(dict[dict_i]["size_y"] > 1 && dict[dict_i]["size_x"] > 1){
+                            img_div.classList.add('animation-'+animation_i);
+                            animation_container_set.add('.animation-container-'+parseInt(animation_i));
+                        }
+                        entry_point_div.append(img_div);
+                        index_col++;
+                    }
+                    index_row++;
+                    index_col = dict[dict_i]['coord_x'];
+                }
+                animation_container_i++;
+                animation_i++;
+            }
+        }
+    }
+
+    function display_animation(timer="500"){
+        let animation_container_set_len = animation_container_set.size;
+        let current_elements = "";
+        let previous_elements = "";
+        let index = 0;
+        setInterval( function(){
+            const previousIndex = index === 0 ? animation_container_set_len - 1 : index - 1;
+            current_elements = document.querySelectorAll('.animation-'+ index);
+            previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
+            for(let i = 0; i < current_elements.length; i++){
+                previous_elements[i].style.display = "none";
+                current_elements[i].style.display = "block";
+            }
+            index++;
+            if(index >= animation_container_set_len){
+                index = 0;
+            }
+        }, timer);
+    }
+
+
+    function clear_foreground(){
+        let fg_container = document.querySelectorAll('.foreground-container');
+        if(fg_container.length > 0){
+            for(let i = 0; i < fg_container.length; i++){
+                let div = fg_container[i].closest('div');
+                div.innerHTML = "";
+            }
+        }
+    }
+
+    function remove_animation(id){
+        let element = document.querySelectorAll('.animation-container-'+id)
+        for(let i = 0; i < element.length; i++){
+            element[i].innerHTML = "";
+        }
+        dict = dict.slice(parseInt(id-1))
     }
 
     let preview = document.querySelector("#preview");
