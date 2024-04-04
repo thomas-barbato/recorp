@@ -74,14 +74,16 @@ function add_sector_foreground(sector_element){
                     );
                     let img_div = document.createElement('div');
                     img_div.classList.add(
-                        'z-2',
                         'absolute',
                         'left-0',
                         'right-0',
                         'm-0',
-                        'no-borders',
+                        'p-0',
                         'w-[32px]',
                         'h-[32px]',
+                        'hover:w-[30px]',
+                        'hover:h-[30px]',
+                        'cursor-pointer',
                     );
                     img_div.style.backgroundImage = "url('" + bg_url + "')";
                     img_div.style.backgroundPositionX = `-${col_i}px`;

@@ -15,10 +15,10 @@
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
-                        <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted no-borders w-[32px] h-[32px] p-0 z-5 ">{{ row }}</td>
+                        <td class="text-center text-emerald-300 font-bold w-[32px] h-[32px] p-0 m-0">{{ row }}</td>
                         {% for col in map_size_range.cols %}
-                            <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="{{row}}_{{col}}" id="{{row}}_{{col}}">
-                                <div class="relative w-[32px] h-[32px] hover:border hover:bg-slate-300/10 hover:border-dashed block">
+                            <td class="relative w-[32px] h-[32px] m-0 p-0 tile" title="{{row}}_{{col}}" id="{{row}}_{{col}}">
+                                <div class="relative w-[32px] h-[32px] box-border hover:border hover:bg-slate-300/20 hover:border-dashed block">
                                 </div>
                             </td>
                         {% endfor %}
