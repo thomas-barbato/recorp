@@ -30,9 +30,15 @@ function add_sector_background(background_name){
         for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
             for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                let entry_point_border = entry_point.querySelector('span')
+
                 entry_point.style.backgroundImage = "url('" + bg_url + "')";
                 entry_point.style.backgroundPositionX = `-${col_i}px`;
                 entry_point.style.backgroundPositionY = `-${row_i}px`;
+
+                entry_point_border.classList.add('hover:bg-slate-300/20');
+                entry_point_border.setAttribute('title',`${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
+
                 index_col++;
             }
             index_row++;
@@ -67,30 +73,36 @@ function add_sector_foreground(sector_element){
                 for(let col_i = 0; col_i < (atlas.tilesize * size_x) ; col_i += atlas.tilesize){
                     let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
                     let entry_point_div = entry_point.querySelector('div');
-                    entry_point_div.style.borderColor = "orange";
+
+                    let entry_point_border = entry_point.querySelector('span')
+                    entry_point_border.style.borderColor = "orange";
+                    entry_point_border.style.borderStyle = "dashed";
+                    entry_point_border.style.cursor = "pointer";
+                    entry_point_border.setAttribute('title',`${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                    entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
+                    entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
+                    entry_point_border.classList.remove('hover:bg-slate-300/20');
+                    entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
+
                     entry_point_div.classList.add(
                         'foreground-container',
                         'animation-container-'+parseInt(animation_container_i)
                     );
                     let img_div = document.createElement('div');
                     img_div.classList.add(
-                        'absolute',
+                        'relative',
                         'left-0',
                         'right-0',
                         'm-0',
                         'p-0',
                         'w-[32px]',
                         'h-[32px]',
-                        'hover:w-[30px]',
-                        'hover:h-[30px]',
-                        'cursor-pointer',
+                        'z-1'
                     );
+                    img_div.setAttribute('title',`${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                     img_div.style.backgroundImage = "url('" + bg_url + "')";
                     img_div.style.backgroundPositionX = `-${col_i}px`;
                     img_div.style.backgroundPositionY = `-${row_i}px`;
-                    img_div.setAttribute('data-modal-target', "modal-" + element_data["name"]);
-                    img_div.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                    img_div.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')")
                     entry_point_div.append(img_div);
                     if(size_x > 1 && size_y > 1){
                         img_div.classList.add('animation-'+animation_i);
@@ -113,16 +125,27 @@ function add_pc_npc(data){
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
-        let div = entry_point.querySelector('div');
+        let entry_point_border = entry_point.querySelector('span')
+        entry_point_border.style.borderStyle = "double dashed";
+        entry_point_border.style.cursor = "pointer";
+        entry_point_border.setAttribute('title',`${data[i]["name"]} [x: ${data[i]["coordinates"]["coord_y"]}; y: ${data[i]["coordinates"]["coord_x"]}]`);
+        entry_point_border.classList.remove('hover:bg-slate-300/20');
+
+        if(data[i]["user_id"] == current_user_id){
+            update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
+            border_color = "lime";
+        }
+
         let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
-        border_color = "lime";
         if(data[i]["user_id"] != current_user_id && data[i]["is_npc"]){
             border_color = "red";
         }else if(data[i]["user_id"] != current_user_id && !data[i]["is_npc"]){
             border_color = "cyan";
         }
 
-        div.style.borderColor = border_color;
+        entry_point_border.style.borderColor = border_color;
+
+        let div = entry_point.querySelector('div');
 
         space_ship = document.createElement('img');
         space_ship.src = "/static/js/game/assets/ships/ship01-32px.png";
@@ -184,7 +207,6 @@ function open_close_modal(id){
 
 function display_animation(timer="500"){
     let animation_container_set_len = animation_container_set.size;
-    console.log(animation_container_set)
     let current_elements = "";
     let previous_elements = "";
     let index = 0;
@@ -201,6 +223,26 @@ function display_animation(timer="500"){
             index = 0;
         }
     }, timer);
+}
+
+function update_user_coord_display(x, y){
+    document.querySelector('#player-coord-x').textContent = `x = ${x}`;
+    document.querySelector('#player-coord-y').textContent = `y = ${y}`;
+}
+
+function update_target_coord_display(){
+    let selected_tile = document.querySelectorAll('.tile')
+    for(let i = 0; i < selected_tile.length; i++){
+        selected_tile[i].addEventListener('mouseover', function() {
+            let target_name = this.querySelector('span').title.split(' ')[0];
+            let x = this.cellIndex - 1;
+            let y = this.parentNode.rowIndex - 1;
+            document.querySelector('#target-coord-name').textContent = target_name;
+            document.querySelector('#target-coord-x').textContent = `x = ${x}`;
+            document.querySelector('#target-coord-y').textContent = `y = ${y}`;
+        })
+    }
+
 }
 
 
@@ -239,4 +281,5 @@ window.addEventListener('load', () => {
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
     display_animation(timer="500");
+    update_target_coord_display()
 });

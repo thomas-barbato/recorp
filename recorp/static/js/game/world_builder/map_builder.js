@@ -421,21 +421,21 @@
                     for(let col_i = 0; col_i < (atlas.tilesize*dict[dict_i]["size_x"]) ; col_i += atlas.tilesize){
                         let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                         let entry_point_div = entry_point.querySelector('div');
+
                         entry_point_div.classList.add(
                             'foreground-container',
                             'animation-container-'+parseInt(animation_container_i )
                         );
+
                         let img_div = document.createElement('div');
                         img_div.classList.add(
-                            'z-2',
-                            'absolute',
                             'm-auto',
-                            'left-0',
-                            'right-0',
                             'w-[32px]',
                             'h-[32px]',
-                            'no-borders',
+                            'hover:w-[30px]',
+                            'hover:h-[30px]',
                         );
+                        img_div.style.borderStyle = "dashed solid blue";
                         img_div.style.backgroundImage = "url('" + bg_url + "')";
                         img_div.style.backgroundPositionX = `-${col_i}px`;
                         img_div.style.backgroundPositionY = `-${row_i}px`;

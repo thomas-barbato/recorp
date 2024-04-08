@@ -236,6 +236,9 @@ msgstr "astéroïde"
 msgid "station"
 msgstr "station"
 
+msgid "Nothing selected for now"
+msgstr "Vous n'avez rien sélectionné"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""

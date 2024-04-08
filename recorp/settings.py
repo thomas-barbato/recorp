@@ -163,6 +163,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
     ("img", os.path.join(BASE_DIR, "recorp", "static", "img")),
+    ("ux_img", os.path.join(BASE_DIR, "recorp", "static", "img", "ux")),
     ("world_builder", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder")),
     ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
     ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
