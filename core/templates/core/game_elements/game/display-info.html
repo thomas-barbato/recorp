@@ -5,16 +5,16 @@
   <p>{% translate 'This sector is owned by' %}: <b>{{ map_informations.sector.faction_name }}</b></p>
   <p>{% translate 'Security level' %}: <b>{{ map_informations.sector.security_name_translated }}</b></p>
   <div class="w-full mx-auto flex flex-row justify-center items-center gap-2">
-    <span class="flex flex-row gap-1 bg-neutral-400 rounded-lg m-1">
+    <span class="flex flex-row bg-neutral-600 m-1 rounded-l rounded-r">
       <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye m-2"></i></label>
-      <p id="player-coord-x" class="bg-emerald-400 rounded-lg font-bold p-1"></p>
-      <p id="player-coord-y" class="bg-neutral-600 rounded-lg font-bold p-1"></p>
+      <span id="player-coord-x" class="bg-emerald-400 font-bold px-0.5 py-0.5"></span>
+      <span id="player-coord-y" class="bg-neutral-400 font-bold px-0.5 py-0.5 rounded-r"></span>
     </span>
-    <span class="flex flex-row gap-1 bg-neutral-400 rounded-lg">
+    <span class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600">
       <label for="target-coord-name"><i class="fa-solid fa-satellite-dish m-2"></i></label>
-      <p id="target-coord-name" class="font-bold p-1">{% translate 'Nothing selected for now' %}</p>
-      <p id="target-coord-x" class="bg-emerald-400 rounded-lg font-bold p-1"></p>
-      <p id="target-coord-y" class="bg-neutral-600 rounded-lg font-bold p-1"></p>
+      <span id="target-coord-name" class="font-bold bg-neutral-600 px-0.5 py-0.5">{% translate 'Nothing selected for now' %}</span>
+      <span id="target-coord-x" class="bg-emerald-400 font-bold px-0.5 py-0.5"></span>
+      <span id="target-coord-y" class="bg-neutral-400 font-bold px-0.5 py-0.5 rounded-r"></span>
     </span>
   </div>
 </div>

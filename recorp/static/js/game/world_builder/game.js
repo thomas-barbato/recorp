@@ -1,5 +1,4 @@
-const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
-const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
+
 let animation_container_set = new Set();
 let atlas = {
     "col": 20,
@@ -32,12 +31,14 @@ function add_sector_background(background_name){
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                 let entry_point_border = entry_point.querySelector('span')
 
+
                 entry_point.style.backgroundImage = "url('" + bg_url + "')";
                 entry_point.style.backgroundPositionX = `-${col_i}px`;
                 entry_point.style.backgroundPositionY = `-${row_i}px`;
 
                 entry_point_border.classList.add('hover:bg-slate-300/20');
                 entry_point_border.setAttribute('title',`${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
+                entry_point_border.setAttribute('onmouseover', 'set_path_coord(this)');
 
                 index_col++;
             }
@@ -237,12 +238,14 @@ function update_target_coord_display(){
             let target_name = this.querySelector('span').title.split(' ')[0];
             let x = this.cellIndex - 1;
             let y = this.parentNode.rowIndex - 1;
-            document.querySelector('#target-coord-name').textContent = target_name;
-            document.querySelector('#target-coord-x').textContent = `x = ${x}`;
-            document.querySelector('#target-coord-y').textContent = `y = ${y}`;
+            let coord_name = document.querySelector('#target-coord-name');
+            let coord_x = document.querySelector('#target-coord-x');
+            let coord_y = document.querySelector('#target-coord-y');
+            coord_name.textContent = target_name;
+            coord_x.textContent = `x = ${x}`;
+            coord_y.textContent = `y = ${y}`;
         })
     }
-
 }
 
 
@@ -281,5 +284,5 @@ window.addEventListener('load', () => {
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
     display_animation(timer="500");
-    update_target_coord_display()
+    update_target_coord_display();
 });
