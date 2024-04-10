@@ -38,7 +38,7 @@ function add_sector_background(background_name){
 
                 entry_point_border.classList.add('hover:bg-slate-300/20');
                 entry_point_border.setAttribute('title',`${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
-                entry_point_border.setAttribute('onmouseover', 'set_path_coord(this)');
+                entry_point_border.setAttribute('onmouseover', '(function(e){set_path_coord(e)}(this))');
 
                 index_col++;
             }
@@ -74,8 +74,11 @@ function add_sector_foreground(sector_element){
                 for(let col_i = 0; col_i < (atlas.tilesize * size_x) ; col_i += atlas.tilesize){
                     let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
                     let entry_point_div = entry_point.querySelector('div');
+                    let entry_point_border = entry_point.querySelector('span');
+                    let img_div = document.createElement('div');
 
-                    let entry_point_border = entry_point.querySelector('span')
+                    entry_point.classList.add('uncrossable');
+
                     entry_point_border.style.borderColor = "orange";
                     entry_point_border.style.borderStyle = "dashed";
                     entry_point_border.style.cursor = "pointer";
@@ -85,11 +88,6 @@ function add_sector_foreground(sector_element){
                     entry_point_border.classList.remove('hover:bg-slate-300/20');
                     entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
 
-                    entry_point_div.classList.add(
-                        'foreground-container',
-                        'animation-container-'+parseInt(animation_container_i)
-                    );
-                    let img_div = document.createElement('div');
                     img_div.classList.add(
                         'relative',
                         'left-0',
@@ -107,7 +105,7 @@ function add_sector_foreground(sector_element){
                     entry_point_div.append(img_div);
                     if(size_x > 1 && size_y > 1){
                         img_div.classList.add('animation-'+animation_i);
-                        animation_container_set.add('.animation-container-'+parseInt(animation_i));
+                        animation_container_set.add('.animation-'+animation_i);
                     }
                     index_col++;
                 }
@@ -126,7 +124,11 @@ function add_pc_npc(data){
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
-        let entry_point_border = entry_point.querySelector('span')
+        let entry_point_border = entry_point.querySelector('span');
+        let div = entry_point.querySelector('div');
+
+        entry_point.classList.add('uncrossable');
+
         entry_point_border.style.borderStyle = "double dashed";
         entry_point_border.style.cursor = "pointer";
         entry_point_border.setAttribute('title',`${data[i]["name"]} [x: ${data[i]["coordinates"]["coord_y"]}; y: ${data[i]["coordinates"]["coord_x"]}]`);
@@ -135,6 +137,7 @@ function add_pc_npc(data){
         if(data[i]["user_id"] == current_user_id){
             update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
             border_color = "lime";
+            entry_point.classList.add('player-start-pos');
         }
 
         let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
@@ -146,11 +149,9 @@ function add_pc_npc(data){
 
         entry_point_border.style.borderColor = border_color;
 
-        let div = entry_point.querySelector('div');
-
         space_ship = document.createElement('img');
         space_ship.src = "/static/js/game/assets/ships/ship01-32px.png";
-        space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', 'no-cross', pc_or_npc_class);
+        space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', 'uncrossable', pc_or_npc_class);
         div.append(space_ship);
     }
 }
