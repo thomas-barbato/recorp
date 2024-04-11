@@ -8,10 +8,17 @@ const opts = {
 };
 
 let end_coord_x = 0;
-let end_coord_y = 0;
+let end_coord_y = 0
+
 let start_coord_x = 0;
 let start_coord_y = 0;
-let css = { success: "bg-green-500/50", failure: "bg-red-600/50" };
+
+let css = {
+    success: "bg-green-500/50",
+    failure: "bg-red-600/50"
+};
+
+let grid = [];
 
 function set_path_coord(e) {
     let id = e.parentNode.parentNode.id.split('_');
@@ -27,7 +34,7 @@ function set_path_coord(e) {
     }
 
     let grid_container = document.querySelector('.tabletop-view').querySelector('tbody');
-    //let grid = new GraphSearch(grid_container, opts, astar.search);
+    //grid = new GraphSearch(grid_container, opts, astar.search);
 }
 
 let performance = window.performance;
@@ -45,10 +52,12 @@ GraphSearch.prototype.setOption = function(opts) {
 };*/
 
 GraphSearch.prototype.initialize = function() {
-    this.grid = [];
     let self = this;
-    let end_cell = this.graph.rows[end_coord_y].cells[end_coord_x];
-    nodes = [this.graph.querySelectorAll('div')];
+    self.clearFinishClass();
+    let end_cell = document.querySelectorAll('.tile').rows[end_coord_y].cells[end_coord_x];
+    nodes = Object.entries(this.graph.querySelectorAll('.tile'));
+    console.log(typeof nodes)
+    this.graph = new Graph(nodes);
     self.cellOnMouseHover(end_cell);
 };
 
@@ -57,14 +66,21 @@ GraphSearch.prototype.cellOnMouseHover = function(end_cell) {
     if (end_cell.classList.contains('uncrossable') || end_cell.classList.contains('player-start-pos')) {
         return;
     }
-
     end_cell.classList.add("finish");
     let start_cell = this.graph.rows[start_coord_y].cells[start_coord_x];
-
     var sTime = performance ? performance.now() : new Date().getTime();
     var path = this.search(this.graph, start_cell, end_cell, {
         closest: opts.closest
     });
+}
 
-    console.log(path)
+GraphSearch.prototype.nodeFromElement = function(cell) {
+    return this.graph.grid[parseInt(cell.attr("x"))][parseInt(cell.attr("y"))];
+};
+
+GraphSearch.prototype.clearFinishClass = function() {
+    let tile = document.querySelectorAll('.tile');
+    for (let i = 0; i < tile.length; i++) {
+        tile[i].classList.remove('finish');
+    }
 }

@@ -37,7 +37,8 @@ function add_sector_background(background_name) {
 
             entry_point_border.classList.add('hover:bg-slate-300/20');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
-            entry_point_border.setAttribute('onmouseover', '(function(e){set_path_coord(e)}(this))');
+            //entry_point_border.setAttribute('onmouseover', 'set_path_coord(this)');
+            entry_point_border.setAttribute('onmouseover', 'set_path_coord_v2(this)');
 
             index_col++;
         }
