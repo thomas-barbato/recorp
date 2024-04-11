@@ -111,11 +111,12 @@ CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS = 60 * 60
 CACHE_MIDDLEWARE_KEY_PREFIX = ""
 
+# Don't forget to create ODBC db user in your database gestion soft (i use heidiSQL)
 DATABASES = {
     "default": {
         'ENGINE': "mysql.connector.django",
         "NAME": os.getenv("SQL_DBNAME"),
-        "USER": os.getenv("PSQL_USER"),
+        "USER": os.getenv("SQL_USER"),
         "PASSWORD": os.getenv("SQL_PASSWORD"),
         "HOST": os.getenv("SQL_HOST"),
         "PORT": os.getenv("SQL_PORT"),
