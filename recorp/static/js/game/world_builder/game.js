@@ -1,4 +1,3 @@
-
 let animation_container_set = new Set();
 let atlas = {
     "col": 20,
@@ -9,50 +8,51 @@ let atlas = {
 }
 
 function ship_stationary_animation() {
-  let ship = document.querySelectorAll(".ship");
-  for (let i = 0; i < ship.length; i++) {
-    if (ship[i].style.top === "2px") {
-      ship[i].style.top = "0px";
-    } else {
-      ship[i].style.top = "2px";
+    let ship = document.querySelectorAll(".ship");
+    for (let i = 0; i < ship.length; i++) {
+        if (ship[i].style.top === "2px") {
+            ship[i].style.top = "0px";
+        } else {
+            ship[i].style.top = "2px";
+        }
     }
-  }
 }
 
 setInterval(ship_stationary_animation, "1000");
 
-function add_sector_background(background_name){
-        let index_row = 1;
-        let index_col = 1;
-        let game_rows = document.querySelectorAll('.rows');
-        let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.png';
-        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
-            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
-                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                let entry_point_border = entry_point.querySelector('span')
+function add_sector_background(background_name) {
+    let index_row = 1;
+    let index_col = 1;
+    let game_rows = document.querySelectorAll('.rows');
+    let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.png';
+    for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
+            let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+            let entry_point_border = entry_point.querySelector('span')
 
 
-                entry_point.style.backgroundImage = "url('" + bg_url + "')";
-                entry_point.style.backgroundPositionX = `-${col_i}px`;
-                entry_point.style.backgroundPositionY = `-${row_i}px`;
+            entry_point.style.backgroundImage = "url('" + bg_url + "')";
+            entry_point.style.backgroundPositionX = `-${col_i}px`;
+            entry_point.style.backgroundPositionY = `-${row_i}px`;
 
-                entry_point_border.classList.add('hover:bg-slate-300/20');
-                entry_point_border.setAttribute('title',`${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
-                entry_point_border.setAttribute('onmouseover', '(function(e){set_path_coord(e)}(this))');
+            entry_point_border.classList.add('hover:bg-slate-300/20');
+            entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
+            entry_point_border.setAttribute('onmouseover', '(function(e){set_path_coord(e)}(this))');
 
-                index_col++;
-            }
-            index_row++;
-            index_col = 1;
+            index_col++;
         }
+        index_row++;
+        index_col = 1;
+    }
 }
 
-function add_sector_foreground(sector_element){
+function add_sector_foreground(sector_element) {
     let element_data = "";
     let element_type = "";
     let modal = "";
     let animation_container_i = 1;
-    for(let sector_i = 0; sector_i < sector_element.length; sector_i++){
+    let element_type_translated = "";
+    for (let sector_i = 0; sector_i < sector_element.length; sector_i++) {
         let animation_dir_data = [];
         animation_dir_data.push(sector_element[sector_i]["animations"]);
         element_type = sector_element[sector_i]["type"];
@@ -64,14 +64,14 @@ function add_sector_foreground(sector_element){
             element_type_translated
         );
         document.querySelector('#modal-container').append(modal);
-        for(anim_index in animation_dir_data[0]){
+        for (let anim_index in animation_dir_data[0]) {
             let index_row = sector_element[sector_i]['data']['coord_y'];
             let index_col = sector_element[sector_i]['data']['coord_x'];
             let size_x = sector_element[sector_i]['size']["size_x"]
             let size_y = sector_element[sector_i]['size']["size_y"]
             let bg_url = '/static/img/atlas/foreground/' + element_type + '/' + animation_dir_data[0][anim_index] + '/' + '0.png';
-            for(let row_i = 0; row_i < (atlas.tilesize * size_y) ; row_i += atlas.tilesize){
-                for(let col_i = 0; col_i < (atlas.tilesize * size_x) ; col_i += atlas.tilesize){
+            for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
+                for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
                     let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
                     let entry_point_div = entry_point.querySelector('div');
                     let entry_point_border = entry_point.querySelector('span');
@@ -82,7 +82,7 @@ function add_sector_foreground(sector_element){
                     entry_point_border.style.borderColor = "orange";
                     entry_point_border.style.borderStyle = "dashed";
                     entry_point_border.style.cursor = "pointer";
-                    entry_point_border.setAttribute('title',`${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                    entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                     entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                     entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
                     entry_point_border.classList.remove('hover:bg-slate-300/20');
@@ -98,14 +98,14 @@ function add_sector_foreground(sector_element){
                         'h-[32px]',
                         'z-1'
                     );
-                    img_div.setAttribute('title',`${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                    img_div.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                     img_div.style.backgroundImage = "url('" + bg_url + "')";
                     img_div.style.backgroundPositionX = `-${col_i}px`;
                     img_div.style.backgroundPositionY = `-${row_i}px`;
                     entry_point_div.append(img_div);
-                    if(size_x > 1 && size_y > 1){
-                        img_div.classList.add('animation-'+animation_i);
-                        animation_container_set.add('.animation-'+animation_i);
+                    if (size_x > 1 && size_y > 1) {
+                        img_div.classList.add('animation-' + animation_i);
+                        animation_container_set.add('.animation-' + animation_i);
                     }
                     index_col++;
                 }
@@ -118,9 +118,9 @@ function add_sector_foreground(sector_element){
     }
 }
 
-function add_pc_npc(data){
+function add_pc_npc(data) {
     let border_color = "";
-    for(let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length; i++) {
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
         let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
@@ -131,19 +131,19 @@ function add_pc_npc(data){
 
         entry_point_border.style.borderStyle = "double dashed";
         entry_point_border.style.cursor = "pointer";
-        entry_point_border.setAttribute('title',`${data[i]["name"]} [x: ${data[i]["coordinates"]["coord_y"]}; y: ${data[i]["coordinates"]["coord_x"]}]`);
+        entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${data[i]["coordinates"]["coord_y"]}; y: ${data[i]["coordinates"]["coord_x"]}]`);
         entry_point_border.classList.remove('hover:bg-slate-300/20');
 
-        if(data[i]["user_id"] == current_user_id){
+        if (data[i]["user_id"] == current_user_id) {
             update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
             border_color = "lime";
             entry_point.classList.add('player-start-pos');
         }
 
         let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
-        if(data[i]["user_id"] != current_user_id && data[i]["is_npc"]){
+        if (data[i]["user_id"] != current_user_id && data[i]["is_npc"]) {
             border_color = "red";
-        }else if(data[i]["user_id"] != current_user_id && !data[i]["is_npc"]){
+        } else if (data[i]["user_id"] != current_user_id && !data[i]["is_npc"]) {
             border_color = "cyan";
         }
 
@@ -156,7 +156,7 @@ function add_pc_npc(data){
     }
 }
 
-function create_modal(id, elem_type, title=undefined, description=undefined, img=undefined) {
+function create_modal(id, elem_type, title = undefined, description = undefined, img = undefined) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -202,39 +202,39 @@ function create_modal(id, elem_type, title=undefined, description=undefined, img
     return e;
 }
 
-function open_close_modal(id){
-    let e = document.querySelector('#'+id)
+function open_close_modal(id) {
+    let e = document.querySelector('#' + id)
     e.classList.contains("hidden") == true ? e.classList.remove('hidden') : e.classList.add('hidden');
 }
 
-function display_animation(timer="500"){
+function display_animation(timer = "500") {
     let animation_container_set_len = animation_container_set.size;
     let current_elements = "";
     let previous_elements = "";
     let index = 0;
-    setInterval( function(){
+    setInterval(function() {
         const previousIndex = index === 0 ? animation_container_set_len - 1 : index - 1
-        current_elements = document.querySelectorAll('.animation-'+ index);
-        previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
-        for(let i = 0; i < current_elements.length; i++){
+        current_elements = document.querySelectorAll('.animation-' + index);
+        previous_elements = document.querySelectorAll('.animation-' + previousIndex);
+        for (let i = 0; i < current_elements.length; i++) {
             previous_elements[i].style.display = "none";
             current_elements[i].style.display = "block";
         }
         index++;
-        if(index >= animation_container_set.size){
+        if (index >= animation_container_set.size) {
             index = 0;
         }
     }, timer);
 }
 
-function update_user_coord_display(x, y){
+function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-x').textContent = `x = ${x}`;
     document.querySelector('#player-coord-y').textContent = `y = ${y}`;
 }
 
-function update_target_coord_display(){
+function update_target_coord_display() {
     let selected_tile = document.querySelectorAll('.tile')
-    for(let i = 0; i < selected_tile.length; i++){
+    for (let i = 0; i < selected_tile.length; i++) {
         selected_tile[i].addEventListener('mouseover', function() {
             let target_name = this.querySelector('span').title.split(' ')[0];
             let x = this.cellIndex - 1;
@@ -254,15 +254,15 @@ window.addEventListener('load', () => {
     let room = map_informations.sector.id;
     let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var gameSocket = new WebSocket(
-        ws_scheme
-        + '://'
-        + window.location.host
-        + "/ws/play_"
-        +room
-        + "/"
+        ws_scheme +
+        '://' +
+        window.location.host +
+        "/ws/play_" +
+        room +
+        "/"
     );
 
-    gameSocket.onopen = function(e){
+    gameSocket.onopen = function(e) {
         console.log("socket opened")
     };
 
@@ -271,12 +271,12 @@ window.addEventListener('load', () => {
         setTimeout(function() {
             console.log("Reconnecting...");
             var chatSocket = new WebSocket(
-                ws_scheme
-                + '://'
-                + window.location.host
-                + "/ws/play_"
-                +room
-                + "/"
+                ws_scheme +
+                '://' +
+                window.location.host +
+                "/ws/play_" +
+                room +
+                "/"
             );
         }, 1000);
     };
@@ -284,6 +284,6 @@ window.addEventListener('load', () => {
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
-    display_animation(timer="500");
+    display_animation(timer = "500");
     update_target_coord_display();
 });

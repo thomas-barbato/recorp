@@ -1,0 +1,19 @@
+[{
+    "model": "core.asteroid",
+    "pk": 1,
+    "fields": {
+        "name": "asteroid_1",
+        "data": {
+            "animation_1": "asteroid_",
+            "animation_2": "none",
+            "animation_3": "none",
+            "animation_4": "none"
+        },
+        "size": {
+            "size_x": 4,
+            "size_y": 4
+        },
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}]

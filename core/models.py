@@ -200,7 +200,7 @@ class SkillEffect(models.Model):
     min_level_range = models.PositiveIntegerField(default=0)
     max_level_range = models.PositiveIntegerField(default=1)
     effect = models.JSONField()
-    expertise = models.CharField(choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0])
+    expertise = models.CharField(max_length=20, choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0])
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -487,4 +487,4 @@ class StationResource(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.source.name} : {self.resource.name}, quantity : {self.quantity}"
+        return f"{self.source.name} : {self.resource.name}"

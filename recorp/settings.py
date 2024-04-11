@@ -113,12 +113,13 @@ CACHE_MIDDLEWARE_KEY_PREFIX = ""
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("PSQL_NAME"),
+        'ENGINE': "mysql.connector.django",
+        "NAME": os.getenv("SQL_DBNAME"),
         "USER": os.getenv("PSQL_USER"),
-        "PASSWORD": os.getenv("PSQL_PASSWORD"),
-        "HOST": "localhost",
-        "PORT": os.getenv("PSQL_PORT"),
+        "PASSWORD": os.getenv("SQL_PASSWORD"),
+        "HOST": os.getenv("SQL_HOST"),
+        "PORT": os.getenv("SQL_PORT"),
+        'default-character-set': os.getenv("SQL_CHARSET"),
     }
 }
 

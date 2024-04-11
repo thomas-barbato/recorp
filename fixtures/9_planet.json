@@ -1,0 +1,19 @@
+[{
+    "model": "core.planet",
+    "pk": 1,
+    "fields": {
+        "name": "planete_1",
+        "data": {
+            "animation_1": "p_1_1",
+            "animation_2": "p_1_2",
+            "animation_3": "p_1_3",
+            "animation_4": "p_1_4"
+        },
+        "size": {
+            "size_x": 4,
+            "size_y": 4
+        },
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}]

@@ -1,26 +1,24 @@
-import logging
 import datetime
+import logging
 from urllib import request
-from django.urls import reverse_lazy, reverse
-from django.contrib.messages import get_messages
-from django.contrib import messages
-from recorp.settings import LOGIN_REDIRECT_URL
 
-from core.forms import LoginForm
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.template import RequestContext, loader
-from django.shortcuts import redirect
-from django.contrib.auth import login, authenticate
-from django.utils.translation import gettext as _
-from django.http import HttpResponse
-from django.views.generic import TemplateView
-from core.backend.get_data import GetMapDataFromDB
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.template import RequestContext, loader
+from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext as _
+from django.views.generic import TemplateView
+
+from core.backend.get_data import GetMapDataFromDB
 from core.backend.store_in_cache import StoreInCache
-from core.models import (
-    Sector,
-    Player,
-)
+from core.forms import LoginForm
+from core.models import Player, Sector
+from recorp.settings import LOGIN_REDIRECT_URL
 
 logger = logging.getLogger("django")
 

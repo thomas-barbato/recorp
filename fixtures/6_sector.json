@@ -1,0 +1,14 @@
+[{
+    "model": "core.sector",
+    "pk": 1,
+    "fields": {
+        "name": "map-1",
+        "image": "bg_space_1",
+        "description": "lorem ipsum",
+        "is_faction_level_starter": true,
+        "faction_id": 1,
+        "security_id": 2,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}]
