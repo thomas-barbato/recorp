@@ -4,7 +4,7 @@
     "fields": {
         "name": "asteroid_1",
         "data": {
-            "animation_1": "asteroid_",
+            "animation_1": "asteroid_1",
             "animation_2": "none",
             "animation_3": "none",
             "animation_4": "none"

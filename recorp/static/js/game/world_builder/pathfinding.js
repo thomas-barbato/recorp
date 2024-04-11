@@ -11,15 +11,15 @@ let end_coord_x = 0;
 let end_coord_y = 0;
 let start_coord_x = 0;
 let start_coord_y = 0;
+let css = { success: "bg-green-500/50", failure: "bg-red-600/50" };
 
-
-function set_path_coord(e){
+function set_path_coord(e) {
     let id = e.parentNode.parentNode.id.split('_');
     end_coord_x = parseInt(id[1]) + 1;
     end_coord_y = parseInt(id[0]) + 1;
 
-    for(let i = 0; i < map_informations['pc_npc'].length; i++){
-        if(map_informations['pc_npc'][i]['user_id'] == current_user_id){
+    for (let i = 0; i < map_informations['pc_npc'].length; i++) {
+        if (map_informations['pc_npc'][i]['user_id'] == current_user_id) {
             start_coord_x = map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1;
             start_coord_y = map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1;
             break;
@@ -27,8 +27,7 @@ function set_path_coord(e){
     }
 
     let grid_container = document.querySelector('.tabletop-view').querySelector('tbody');
-    let grid = new GraphSearch(grid_container, opts, astar.search);
-    let css = {"success": "bg-green-500/50", "failure": "bg-red-600/50"} ;
+    //let grid = new GraphSearch(grid_container, opts, astar.search);
 }
 
 let performance = window.performance;
@@ -46,16 +45,16 @@ GraphSearch.prototype.setOption = function(opts) {
 };*/
 
 GraphSearch.prototype.initialize = function() {
+    this.grid = [];
     let self = this;
     let end_cell = this.graph.rows[end_coord_y].cells[end_coord_x];
-    nodes = this.graph.querySelectorAll('div');
-    console.log(nodes);
+    nodes = [this.graph.querySelectorAll('div')];
     self.cellOnMouseHover(end_cell);
 };
 
 GraphSearch.prototype.cellOnMouseHover = function(end_cell) {
 
-    if(end_cell.classList.contains('uncrossable') || end_cell.classList.contains('player-start-pos')) {
+    if (end_cell.classList.contains('uncrossable') || end_cell.classList.contains('player-start-pos')) {
         return;
     }
 
