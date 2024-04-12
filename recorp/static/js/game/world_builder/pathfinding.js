@@ -1,19 +1,21 @@
 function get_pathfinding(e) {
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user_id'] == current_user_id) {
+
             let id = e.parentNode.parentNode.id.split('_');
             let end_coord_x = parseInt(id[1]) + 1;
             let end_coord_y = parseInt(id[0]) + 1;
             let grid_container = document.querySelector('.tabletop-view');
             let grid_class = grid_container.rows[end_coord_y].cells[end_coord_x];
-            if (!(grid_class.classList.contains('uncrossable') || grid_class.classList.contains('start-player-pos'))) {
-                let start_coord_x = map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1;
-                let start_coord_y = map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1;
-                let pr = new pathfinding(grid_container, start_coord_x, start_coord_y, end_coord_x, end_coord_y);
-                break;
-            } else {
+
+            if (grid_class.classList.contains('uncrossable') || grid_class.classList.contains('start-player-pos')) {
                 return;
             }
+
+            let start_coord_x = map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1;
+            let start_coord_y = map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1;
+            let pr = new pathfinding(grid_container, start_coord_x, start_coord_y, end_coord_x, end_coord_y);
+            break;
         }
     }
 }
