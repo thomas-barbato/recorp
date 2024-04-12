@@ -1,3 +1,6 @@
+const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
+const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
+
 let animation_container_set = new Set();
 let atlas = {
     "col": 20,
@@ -38,7 +41,8 @@ function add_sector_background(background_name) {
             entry_point_border.classList.add('hover:bg-slate-300/20');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
             //entry_point_border.setAttribute('onmouseover', 'set_path_coord(this)');
-            entry_point_border.setAttribute('onmouseover', 'set_path_coord_v2(this)');
+            //entry_point_border.setAttribute('onmouseover', 'set_path_coord_v2(this)');
+            entry_point_border.setAttribute('onmouseover', 'get_pathfinding(this)');
 
             index_col++;
         }

@@ -11,13 +11,13 @@
                     {% if forloop.first %}
                         <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">0:0</td>
                         {% for col in map_size_range.cols %}
-                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5" style="">{{ col }}</td>
+                            <td class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">{{ col }}</td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
                         <td class="text-center text-emerald-300 font-bold border-gray-950 border-dotted w-[32px] h-[32px] p-0 m-0">{{ row }}</td>
                         {% for col in map_size_range.cols %}
-                            <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{row}}_{{col}}">
+                            <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row }}_{{ col }}">
                                 <div class="relative  w-[32px] h-[32px]">
                                     <span class="absolute hover:box-border hover:border-2 hover:border block z-10 w-[32px] h-[32px]"></span>
                                 </div>
@@ -49,6 +49,4 @@
     </div>
 </div>
 <script src="{% static 'world_builder/game.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/a_star.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/pathfinding.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/pathfinding_v2.js'%}" type='text/javascript'></script>
