@@ -42,44 +42,40 @@ pathfinding.prototype.init = function() {
 }
 
 pathfinding.prototype.getObstacles = function() {
-    let obstacles = []
+    let obstacles = [];
     for (let row_i = 0; row_i < this.map_size.map_rows; row_i++) {
         for (let col_i = 0; col_i < this.map_size.map_cols; col_i++) {
-            let cell = this.grid.rows[this.index_row].cells[this.index_col]
+            let cell = this.grid.rows[row_i].cells[col_i];
             if (cell.classList.contains('uncrossable') || cell.classList.contains('player-start-pos')) {
-                obstacles.push({ x: this.index_col, y: this.index_row, width: 1, height: 1 })
+                obstacles.push({ y: row_i, x: col_i, width: 1, height: 1 });
             }
-            this.index_col++;
         }
-        this.index_row++;
-        this.index_col = 1;
     }
-    this.index_row = 1;
     return obstacles;
 }
 
-pathfinding.prototype.isObstacle = function(x, y) {
-    return this.obstacles.find(o => o.x == x && o.y == y);
+pathfinding.prototype.isObstacle = function(y, x) {
+    return this.obstacles.find(o => o.y == y && o.x == x);
 }
 
 pathfinding.prototype.heuristic = function(state) {
     // Calculate the number of steps required to reach the goal, using the Manhattan distance formula
-    let dx = Math.abs(state.x - this.goal.x);
     let dy = Math.abs(state.y - this.goal.y);
+    let dx = Math.abs(state.x - this.goal.x);
     let penalty = this.pathIntersectsObstacle(state, this.goal, this.obstacles) * 10
-    return Math.sqrt(dx * dx + dy * dy) + penalty;
+    return Math.sqrt(dy * dy + dx * dx) + penalty;
 }
 
 pathfinding.prototype.pathIntersectsObstacle = function(start, end) {
     // Convert the starting and ending coordinates to grid coordinates
-    let { x: startX, y: startY } = start;
-    let { x: endX, y: endY } = end;
+    let { y: startY, x: startX } = start;
+    let { y: endY, x: endX } = end;
 
     // Get the coordinates of all points on the path
-    this.path = this.getPath(startX, startY, endX, endY);
+    this.path = this.getPath(startY, startX, endY, endX);
 
     //get the points in the array that are within the list of obstacles
-    let instersections = this.path.filter(point => !!this.obstacles.find(o => o.x == point[0] && o.y == point[1])).length
+    let instersections = this.path.filter(point => !!this.obstacles.find(o => o.y == point[0] && o.x == point[1])).length
     return instersections
 }
 
@@ -113,7 +109,6 @@ pathfinding.prototype.aStar = function(start, goal) {
 
         // Generate the possible next steps from this node's state
         let next = this.generateNextSteps(node.state);
-        console.log(next)
 
         // For each possible next step
         for (let i = 0; i < next.length; i++) {
@@ -257,21 +252,19 @@ pathfinding.prototype.displayGrid = function(path) {
     // using this.index_row and this.index_col to ignore [0][0]
     let grid = [];
     for (let row_i = 0; row_i < this.map_size.map_rows; row_i++) {
-        grid[this.index_row] = [];
+        grid[row_i] = [];
         for (let col_i = 0; col_i < this.map_size.map_cols; col_i++) {
-            grid[this.index_row][this.index_col] = " . ";
-            this.index_col++;
+            grid[row_i][col_i] = " . ";
         }
-        this.index_col = 1;
-        this.index_row++;
     }
-    this.index_row = 1;
 
     // Mark the starting and goal states on the grid
     grid[this.state.y][this.state.x] = " S ";
-    grid[this.goal.y][this.goal.x] = " G ";
     this.obstacles.forEach(obs => {
-        grid[obs.y][obs.x] = " - "
+        grid[obs.y][obs.x] = " - ";
+        if (this.grid.rows[obs.y].cells[obs.x].classList.contains("player-start-pos")) {
+            grid[obs.y][obs.x] = " G ";
+        }
     });
 
     // Mark the path on the grid
