@@ -14,7 +14,7 @@ function get_pathfinding(e) {
 
             let start_coord_x = map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1;
             let start_coord_y = map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1;
-            let pr = new pathfinding(grid_container, start_coord_x, start_coord_y, end_coord_x, end_coord_y);
+            new pathfinding(grid_container, start_coord_x, start_coord_y, end_coord_x, end_coord_y);
             break;
         }
     }
@@ -28,16 +28,17 @@ function pathfinding(grid_container, start_x, start_y, end_x, end_y) {
     };
     this.index_col = 1;
     this.index_row = 1;
-    this.state = { x: start_x, y: start_y };
-    this.goal = { x: end_x, y: end_y };
-    this.path = [];
+    this.state = { y: start_y, x: start_x };
+    this.goal = { y: end_y, x: end_x };
     this.init();
 }
 
 pathfinding.prototype.init = function() {
     let self = this;
     this.obstacles = self.getObstacles();
+    this.path = [];
     this.aStar(this.state, this.goal);
+    this.pathIntersectsObstacle(this.state, this.goal, this.obstacles)
     this.displayGrid(this.path);
 }
 
@@ -72,7 +73,7 @@ pathfinding.prototype.pathIntersectsObstacle = function(start, end) {
     let { y: endY, x: endX } = end;
 
     // Get the coordinates of all points on the path
-    this.path = this.getPath(startY, startX, endY, endX);
+    this.path = this.getPath(start.y, start.x, end.y, end.x);
 
     //get the points in the array that are within the list of obstacles
     let instersections = this.path.filter(point => !!this.obstacles.find(o => o.y == point[0] && o.x == point[1])).length
@@ -154,36 +155,36 @@ pathfinding.prototype.generateNextSteps = function(state) {
     // Check if the current state has any valid neighbors
     if (state.x > 0) {
         // If the current state has a neighbor to the left, add it to the array of next steps
-        if (!this.isObstacle(state.x - 1, state.y)) {
+        if (!this.isObstacle(state.y, state.x - 1)) {
             next.push({
-                state: { x: state.x - 1, y: state.y },
+                state: { y: state.y, x: state.x - 1 },
                 cost: 1
             });
         }
     }
     if (state.x < this.map_size.map_cols - 1) {
         // If the current state has a neighbor to the right, add it to the array of next steps
-        if (!this.isObstacle(state.x + 1, state.y)) {
+        if (!this.isObstacle(state.y, state.x + 1)) {
             next.push({
-                state: { x: state.x + 1, y: state.y },
+                state: { y: state.y, x: state.x + 1 },
                 cost: 1
             });
         }
     }
     if (state.y > 0) {
         // If the current state has a neighbor above it, add it to the array of next steps
-        if (!this.isObstacle(state.x, state.y - 1)) {
+        if (!this.isObstacle(state.y - 1, state.x)) {
             next.push({
-                state: { x: state.x, y: state.y - 1 },
+                state: { y: state.y - 1, x: state.x },
                 cost: 1
             });
         }
     }
     if (state.y < this.map_size.map_rows - 1) {
         // If the current state has a neighbor below it, add it to the array of next steps
-        if (!this.isObstacle(state.x, state.y + 1)) {
+        if (!this.isObstacle(state.y + 1, state.x)) {
             next.push({
-                state: { x: state.x, y: state.y + 1 },
+                state: { y: state.y + 1, x: state.x },
                 cost: 1
             });
         }
@@ -214,26 +215,26 @@ pathfinding.prototype.getPath = function(startX, startY, endX, endY) {
         [y1, y2] = [y2, y1];
         isReversed = true;
     }
-    let deltax = x2 - x1,
-        deltay = Math.abs(y2 - y1);
-    let error = Math.floor(deltax / 2);
-    let y = y1;
-    let ystep = null;
-    if (y1 < y2) {
-        ystep = 1;
+    let deltax = Math.abs(x2 - x1),
+        deltay = y2 - y1;
+    let error = Math.floor(deltay / 2);
+    let x = x1;
+    let xstep = null;
+    if (x1 < x2) {
+        xstep = 1;
     } else {
-        ystep = -1;
+        xstep = -1;
     }
-    for (let x = x1; x <= x2; x++) {
+    for (let y = y1; y <= y2; y++) {
         if (isSteep) {
-            path.push([y, x]);
-        } else {
             path.push([x, y]);
+        } else {
+            path.push([y, x]);
         }
-        error -= deltay;
+        error -= deltax;
         if (error < 0) {
-            y += ystep;
-            error += deltax;
+            x += xstep;
+            error += deltay;
         }
     }
 
@@ -241,7 +242,6 @@ pathfinding.prototype.getPath = function(startX, startY, endX, endY) {
     if (isReversed) {
         path = path.reverse();
     }
-
     return path;
 }
 
@@ -254,43 +254,50 @@ pathfinding.prototype.displayGrid = function(path) {
     for (let row_i = 0; row_i < this.map_size.map_rows; row_i++) {
         grid[row_i] = [];
         for (let col_i = 0; col_i < this.map_size.map_cols; col_i++) {
-            grid[row_i][col_i] = " . ";
+            if (row_i == this.state.y && col_i == this.state.x) {
+                grid[row_i][col_i] = " S ";
+            } else if (row_i == this.goal.y && col_i == this.goal.x) {
+                grid[row_i][col_i] = " G ";
+            } else {
+                grid[row_i][col_i] = " . ";
+            }
         }
     }
 
     // Mark the starting and goal states on the grid
-    grid[this.state.y][this.state.x] = " S ";
     this.obstacles.forEach(obs => {
-        grid[obs.y][obs.x] = " - ";
-        if (this.grid.rows[obs.y].cells[obs.x].classList.contains("player-start-pos")) {
-            grid[obs.y][obs.x] = " G ";
+        if (!this.grid.rows[obs.y].cells[obs.x].classList.contains('player-start-pos')) {
+            grid[obs.y][obs.x] = " - ";
         }
     });
 
     // Mark the path on the grid
     let finished = false;
+    console.log(path);
     let sortedPath = path.sort((a, b) => a.estimate - b.estimate);
     let currentCost = 0;
     let costs = [];
+
     while (!finished) {
         let step = sortedPath.shift();
-        if (step.state.y == this.goal.y && step.state.x == this.goal.x) {
+        if (step[1] == this.goal.y && step[0] == this.goal.x) {
             finished = true;
         } else {
             if (!costs.includes(step.cost)) {
-                grid[step.state.y][step.state.x] = " X ";
+                grid[step[1]][step[0]] = " X ";
+                console.log("grid: " + `${step}`);
                 costs.push(step.cost);
             }
         }
         currentCost++
-    }
 
+    }
     // Print the grid to the console
-    for (let y = 0; y < map_size.map_rows; y++) {
+    for (let y = 0; y < this.map_size.map_rows; y++) {
         let line = "";
-        for (let x = 0; x < map_size.map_cols; x++) {
+        for (let x = 0; x < this.map_size.map_cols; x++) {
             line += grid[y][x];
         }
-        console.log(line)
+        //console.log(line)
     }
 }
