@@ -1,303 +1,508 @@
 function get_pathfinding(e) {
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user_id'] == current_user_id) {
-
             let id = e.parentNode.parentNode.id.split('_');
-            let end_coord_x = parseInt(id[1]) + 1;
-            let end_coord_y = parseInt(id[0]) + 1;
             let grid_container = document.querySelector('.tabletop-view');
-            let grid_class = grid_container.rows[end_coord_y].cells[end_coord_x];
 
-            if (grid_class.classList.contains('uncrossable') || grid_class.classList.contains('start-player-pos')) {
+            let opts = {
+                grid_size: { cols: atlas.col, rows: atlas.row },
+                grid_start: {
+                    y: map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1,
+                    x: map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1
+                },
+                grid_goal: {
+                    y: parseInt(id[0]) + 1,
+                    x: parseInt(id[1]) + 1
+                },
+                debug: false,
+                diagonal: true,
+                closest: true
+            };
+
+
+            let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
+            if (grid.classList.contains('uncrossable') || grid.classList.contains('start-player-pos')) {
                 return;
             }
-
-            let start_coord_x = map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1;
-            let start_coord_y = map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1;
-            new pathfinding(grid_container, start_coord_x, start_coord_y, end_coord_x, end_coord_y);
+            pathfinding(grid_container, opts);
             break;
         }
     }
 }
 
-function pathfinding(grid_container, start_x, start_y, end_x, end_y) {
-    this.grid = grid_container;
-    this.map_size = {
-        map_rows: atlas.row,
-        map_cols: atlas.col,
-    };
-    this.index_col = 1;
-    this.index_row = 1;
-    this.state = { y: start_y, x: start_x };
-    this.goal = { y: end_y, x: end_x };
-    this.init();
+function pathfinding(graph, opts) {
+    this.graph = graph;
+    this.opts = opts;
+    this.search = astar.search;
+    this.performance = window.performance;
+    this.css = { start: "start-player-pos", finish: "finish", uncrossable: "uncrossable", active: "active" };
+    this.new_graph = new GraphSearch(this.graph, this.opts, this.search, this.css);
 }
 
-pathfinding.prototype.init = function() {
+function GraphSearch(graph, options, implementation, css) {
+    this.gs_graph = graph;
+    this.gs_search = implementation;
+    this.gs_opts = options;
+    this.gs_css = css;
+    this.initialize();
+}
+
+GraphSearch.prototype.initialize = function() {
+    this.gs_grid = [];
     let self = this;
-    this.obstacles = self.getObstacles();
-    this.path = [];
-    this.aStar(this.state, this.goal);
-    this.pathIntersectsObstacle(this.state, this.goal, this.obstacles)
-    this.displayGrid(this.path);
-}
 
-pathfinding.prototype.getObstacles = function() {
-    let obstacles = [];
-    for (let row_i = 0; row_i < this.map_size.map_rows; row_i++) {
-        for (let col_i = 0; col_i < this.map_size.map_cols; col_i++) {
-            let cell = this.grid.rows[row_i].cells[col_i];
-            if (cell.classList.contains('uncrossable') || cell.classList.contains('player-start-pos')) {
-                obstacles.push({ y: row_i, x: col_i, width: 1, height: 1 });
-            }
-        }
-    }
-    return obstacles;
-}
-
-pathfinding.prototype.isObstacle = function(y, x) {
-    return this.obstacles.find(o => o.y == y && o.x == x);
-}
-
-pathfinding.prototype.heuristic = function(state) {
-    // Calculate the number of steps required to reach the goal, using the Manhattan distance formula
-    let dy = Math.abs(state.y - this.goal.y);
-    let dx = Math.abs(state.x - this.goal.x);
-    let penalty = this.pathIntersectsObstacle(state, this.goal, this.obstacles) * 10
-    return Math.sqrt(dy * dy + dx * dx) + penalty;
-}
-
-pathfinding.prototype.pathIntersectsObstacle = function(start, end) {
-    // Convert the starting and ending coordinates to grid coordinates
-    let { y: startY, x: startX } = start;
-    let { y: endY, x: endX } = end;
-
-    // Get the coordinates of all points on the path
-    this.path = this.getPath(start.y, start.x, end.y, end.x);
-
-    //get the points in the array that are within the list of obstacles
-    let instersections = this.path.filter(point => !!this.obstacles.find(o => o.y == point[0] && o.x == point[1])).length
-    return instersections
-}
-
-pathfinding.prototype.aStar = function(start, goal) {
-    // Create an empty data structure to store the explored paths
-    let explored = [];
-    // Create a data structure to store the paths that are being explored
-    let frontier = [{
-        state: start,
-        cost: 0,
-        estimate: this.heuristic(start)
-    }];
-
-
-    // While there are paths being explored
-    while (frontier.length > 0) {
-        // Sort the paths in the frontier by cost, with the lowest-cost paths first
-        frontier.sort(function(a, b) {
-            return a.estimate - b.estimate;
-        });
-
-        // Choose the lowest-cost path from the frontier
-        let node = frontier.shift();
-
-        // Add this nodeto the explored paths
-        explored.push(node);
-        // If this nodereaches the goal, return thenode 
-        if (node.state.x == goal.x && node.state.y == goal.y) {
-            return explored
-        }
-
-        // Generate the possible next steps from this node's state
-        let next = this.generateNextSteps(node.state);
-
-        // For each possible next step
-        for (let i = 0; i < next.length; i++) {
-            // Calculate the cost of the next step by adding the step's cost to the node's cost
-            let step = next[i];
-            let cost = step.cost + node.cost;
-
-            // Check if this step has already been explored
-            let isExplored = (explored.find(e => {
-                return e.state.x == step.state.x &&
-                    e.state.y == step.state.y
-            }))
-
-            //avoid repeated nodes during the calculation of neighbors
-            let isFrontier = (frontier.find(e => {
-                return e.state.x == step.state.x &&
-                    e.state.y == step.state.y
-            }))
-
-
-            // If this step has not been explored
-            if (!isExplored && !isFrontier) {
-                // Add the step to the frontier, using the cost and the heuristic function to estimate the total cost to reach the goal
-                frontier.push({
-                    state: step.state,
-                    cost: cost,
-                    estimate: cost + this.heuristic(step.state)
-                });
-            }
+    // prepare graph, from object to array.
+    for (let row_i = 0; row_i < this.gs_opts.grid_size.rows; row_i++) {
+        this.gs_grid[row_i] = []
+        for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
+            this.gs_grid[row_i].push(this.gs_graph.rows[row_i].cells[col_i]);
         }
     }
 
-    // If there are no paths left to explore, return null to indicate that the goal cannot be reached
-    return null;
-}
+    this.temp_graph = new Graph(this.gs_grid);
+    self.cellOnMouseHover();
+};
+
+GraphSearch.prototype.cellOnMouseHover = function() {
+
+    this.end = this.nodeFromElement(this.gs_opts.grid_goal);
+    this.start = this.nodeFromElement(this.gs_opts.grid_start);
+
+    this.end.classList.add(this.gs_css.finish);
+
+    var path = this.gs_search(this.temp_graph, this.start, this.end, {
+        closest: true
+    });
+
+    if (path.length === 0) {
+        return;
+    }
 
 
-// Define the function to generate the possible next steps from a given state
-pathfinding.prototype.generateNextSteps = function(state) {
-    // Define an array to store the next steps
-    let next = [];
+    this.animatePath(path);
+};
 
-    // Check if the current state has any valid neighbors
-    if (state.x > 0) {
-        // If the current state has a neighbor to the left, add it to the array of next steps
-        if (!this.isObstacle(state.y, state.x - 1)) {
-            next.push({
-                state: { y: state.y, x: state.x - 1 },
-                cost: 1
-            });
+GraphSearch.prototype.nodeFromElement = function(arg) {
+    return this.gs_grid[parseInt(arg.y)][parseInt(arg.x)];
+};
+
+
+GraphSearch.prototype.animatePath = function(path) {
+    var grid = this.gs_grid,
+        timeout = 1000 / grid.length,
+        elementFromNode = function(node) {
+            return grid[node.x][node.y];
+        };
+
+    var self = this;
+    // will add start class if final
+    var removeClass = function(path, i) {
+        if (i >= path.length) { // finished removing path, set start positions
+            return setStartClass(path, i);
         }
-    }
-    if (state.x < this.map_size.map_cols - 1) {
-        // If the current state has a neighbor to the right, add it to the array of next steps
-        if (!this.isObstacle(state.y, state.x + 1)) {
-            next.push({
-                state: { y: state.y, x: state.x + 1 },
-                cost: 1
-            });
+        elementFromNode(path[i]).removeClass(css.active);
+        setTimeout(function() {
+            removeClass(path, i + 1);
+        }, timeout * path[i].getCost());
+    };
+    var setStartClass = function(path, i) {
+        if (i === path.length) {
+            self.$graph.find("." + css.start).removeClass(css.start);
+            elementFromNode(path[i - 1]).addClass(css.start);
         }
-    }
-    if (state.y > 0) {
-        // If the current state has a neighbor above it, add it to the array of next steps
-        if (!this.isObstacle(state.y - 1, state.x)) {
-            next.push({
-                state: { y: state.y - 1, x: state.x },
-                cost: 1
-            });
+    };
+    var addClass = function(path, i) {
+        if (i >= path.length) { // Finished showing path, now remove
+            return removeClass(path, 0);
         }
-    }
-    if (state.y < this.map_size.map_rows - 1) {
-        // If the current state has a neighbor below it, add it to the array of next steps
-        if (!this.isObstacle(state.y + 1, state.x)) {
-            next.push({
-                state: { y: state.y + 1, x: state.x },
-                cost: 1
-            });
-        }
-    }
+        elementFromNode(path[i]).addClass(css.active);
+        setTimeout(function() {
+            addClass(path, i + 1);
+        }, timeout * path[i].getCost());
+    };
 
-    // Return the array of next steps
-    return next;
-}
+    addClass(path, 0);
+    this.graph.find("." + css.start).removeClass(css.start);
+    this.graph.find("." + css.finish).removeClass(css.finish).addClass(css.start);
+};
 
-
-pathfinding.prototype.getPath = function(startX, startY, endX, endY) {
-    // Initialize an empty array to store the coordinates of the points on the path
-    let path = [];
-
-    // Use the Bresenham's line algorithm to get the coordinates of the points on the path
-    let x1 = startX,
-        y1 = startY,
-        x2 = endX,
-        y2 = endY;
-    let isSteep = Math.abs(y2 - y1) > Math.abs(x2 - x1);
-    if (isSteep) {
-        [x1, y1] = [y1, x1];
-        [x2, y2] = [y2, x2];
-    }
-    let isReversed = false;
-    if (x1 > x2) {
-        [x1, x2] = [x2, x1];
-        [y1, y2] = [y2, y1];
-        isReversed = true;
-    }
-    let deltax = Math.abs(x2 - x1),
-        deltay = y2 - y1;
-    let error = Math.floor(deltay / 2);
-    let x = x1;
-    let xstep = null;
-    if (x1 < x2) {
-        xstep = 1;
-    } else {
-        xstep = -1;
-    }
-    for (let y = y1; y <= y2; y++) {
-        if (isSteep) {
-            path.push([x, y]);
-        } else {
-            path.push([y, x]);
-        }
-        error -= deltax;
-        if (error < 0) {
-            x += xstep;
-            error += deltay;
-        }
-    }
-
-    // If the line is reversed, reverse the order of the points in the path
-    if (isReversed) {
-        path = path.reverse();
+function pathTo(node) {
+    var curr = node;
+    var path = [];
+    while (curr.parent) {
+        path.unshift(curr);
+        curr = curr.parent;
     }
     return path;
 }
 
-
-// Define a function to display the grid and the nodeon the screen
-pathfinding.prototype.displayGrid = function(path) {
-    // Create a two-dimensional array to represent the grid
-    // using this.index_row and this.index_col to ignore [0][0]
-    let grid = [];
-    for (let row_i = 0; row_i < this.map_size.map_rows; row_i++) {
-        grid[row_i] = [];
-        for (let col_i = 0; col_i < this.map_size.map_cols; col_i++) {
-            if (row_i == this.state.y && col_i == this.state.x) {
-                grid[row_i][col_i] = " S ";
-            } else if (row_i == this.goal.y && col_i == this.goal.x) {
-                grid[row_i][col_i] = " G ";
-            } else {
-                grid[row_i][col_i] = " . ";
-            }
-        }
-    }
-
-    // Mark the starting and goal states on the grid
-    this.obstacles.forEach(obs => {
-        if (!this.grid.rows[obs.y].cells[obs.x].classList.contains('player-start-pos')) {
-            grid[obs.y][obs.x] = " - ";
-        }
+function getHeap() {
+    return new BinaryHeap(function(node) {
+        return node.f;
     });
+}
 
-    // Mark the path on the grid
-    let finished = false;
-    console.log(path);
-    let sortedPath = path.sort((a, b) => a.estimate - b.estimate);
-    let currentCost = 0;
-    let costs = [];
 
-    while (!finished) {
-        let step = sortedPath.shift();
-        if (step[1] == this.goal.y && step[0] == this.goal.x) {
-            finished = true;
-        } else {
-            if (!costs.includes(step.cost)) {
-                grid[step[1]][step[0]] = " X ";
-                console.log("grid: " + `${step}`);
-                costs.push(step.cost);
+
+var astar = {
+    /**
+    * Perform an A* Search on a graph given a start and end node.
+    * @param {Graph} graph
+    * @param {GridNode} start
+    * @param {GridNode} end
+    * @param {Object} [options]
+    * @param {bool} [options.closest] Specifies whether to return the
+            path to the closest node if the target is unreachable.
+    * @param {Function} [options.heuristic] Heuristic function (see
+    *          astar.heuristics).
+    */
+    search: function(graph, start, end, options) {
+        graph.cleanDirty();
+        options = options || {};
+        var heuristic = options.heuristic || astar.heuristics.manhattan;
+        var closest = options.closest || false;
+        var openHeap = getHeap();
+        var closestNode = start; // set the start node to be the closest if required
+
+        start.h = heuristic(start, end);
+        graph.markDirty(start);
+
+        openHeap.push(start);
+
+        while (openHeap.size() > 0) {
+
+            // Grab the lowest f(x) to process next.  Heap keeps this sorted for us.
+            var currentNode = openHeap.pop();
+
+            // End case -- result has been found, return the traced path.
+            if (currentNode === end) {
+                return pathTo(currentNode);
+            }
+
+            // Normal case -- move currentNode from open to closed, process each of its neighbors.
+            currentNode.closed = true;
+
+            // Find all neighbors for the current node.
+            var neighbors = graph.neighbors(currentNode);
+
+            for (var i = 0, il = neighbors.length; i < il; ++i) {
+                var neighbor = neighbors[i];
+
+                if (neighbor.closed || neighbor.isWall()) {
+                    // Not a valid node to process, skip to next neighbor.
+                    continue;
+                }
+
+                // The g score is the shortest distance from start to current node.
+                // We need to check if the path we have arrived at this neighbor is the shortest one we have seen yet.
+                var gScore = currentNode.g + neighbor.getCost(currentNode);
+                var beenVisited = neighbor.visited;
+
+                if (!beenVisited || gScore < neighbor.g) {
+
+                    // Found an optimal (so far) path to this node.  Take score for node to see how good it is.
+                    neighbor.visited = true;
+                    neighbor.parent = currentNode;
+                    neighbor.h = neighbor.h || heuristic(neighbor, end);
+                    neighbor.g = gScore;
+                    neighbor.f = neighbor.g + neighbor.h;
+                    graph.markDirty(neighbor);
+                    if (closest) {
+                        // If the neighbour is closer than the current closestNode or if it's equally close but has
+                        // a cheaper path than the current closest node then it becomes the closest node
+                        if (neighbor.h < closestNode.h || (neighbor.h === closestNode.h && neighbor.g < closestNode.g)) {
+                            closestNode = neighbor;
+                        }
+                    }
+
+                    if (!beenVisited) {
+                        // Pushing to heap will put it in proper place based on the 'f' value.
+                        openHeap.push(neighbor);
+                    } else {
+                        // Already seen the node, but since it has been rescored we need to reorder it in the heap
+                        openHeap.rescoreElement(neighbor);
+                    }
+                }
             }
         }
-        currentCost++
 
-    }
-    // Print the grid to the console
-    for (let y = 0; y < this.map_size.map_rows; y++) {
-        let line = "";
-        for (let x = 0; x < this.map_size.map_cols; x++) {
-            line += grid[y][x];
+        if (closest) {
+            return pathTo(closestNode);
         }
-        //console.log(line)
+
+        // No result was found - empty array signifies failure to find path.
+        return [];
+    },
+    // See list of heuristics: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+    heuristics: {
+        manhattan: function(pos0, pos1) {
+            var d1 = Math.abs(pos1.x - pos0.x);
+            var d2 = Math.abs(pos1.y - pos0.y);
+            return d1 + d2;
+        },
+        diagonal: function(pos0, pos1) {
+            var D = 1;
+            var D2 = Math.sqrt(2);
+            var d1 = Math.abs(pos1.x - pos0.x);
+            var d2 = Math.abs(pos1.y - pos0.y);
+            return (D * (d1 + d2)) + ((D2 - (2 * D)) * Math.min(d1, d2));
+        }
+    },
+    cleanNode: function(node) {
+        node.f = 0;
+        node.g = 0;
+        node.h = 0;
+        node.visited = false;
+        node.closed = false;
+        node.parent = null;
     }
+};
+
+/**
+ * A graph memory structure
+ * @param {Array} gridIn 2D array of input weights
+ * @param {Object} [options]
+ * @param {bool} [options.diagonal] Specifies whether diagonal moves are allowed
+ */
+function Graph(gridIn, options) {
+    options = options || {};
+    this.nodes = [];
+    this.diagonal = !!options.diagonal;
+    this.grid = [];
+    for (var x = 0; x < gridIn.length; x++) {
+        this.grid[x] = [];
+
+        for (var y = 0, row = gridIn[x]; y < row.length; y++) {
+            var node = new GridNode(x, y, row[y]);
+            this.grid[x][y] = node;
+            this.nodes.push(node);
+        }
+    }
+    this.init();
 }
+
+Graph.prototype.init = function() {
+    this.dirtyNodes = [];
+    for (var i = 0; i < this.nodes.length; i++) {
+        astar.cleanNode(this.nodes[i]);
+    }
+};
+
+Graph.prototype.cleanDirty = function() {
+    for (var i = 0; i < this.dirtyNodes.length; i++) {
+        astar.cleanNode(this.dirtyNodes[i]);
+    }
+    this.dirtyNodes = [];
+};
+
+Graph.prototype.markDirty = function(node) {
+    this.dirtyNodes.push(node);
+};
+
+Graph.prototype.neighbors = function(node) {
+    var ret = [];
+    var x = node.x;
+    var y = node.y;
+    var grid = this.grid;
+
+    // West
+    if (grid[x - 1] && grid[x - 1][y]) {
+        ret.push(grid[x - 1][y]);
+    }
+
+    // East
+    if (grid[x + 1] && grid[x + 1][y]) {
+        ret.push(grid[x + 1][y]);
+    }
+
+    // South
+    if (grid[x] && grid[x][y - 1]) {
+        ret.push(grid[x][y - 1]);
+    }
+
+    // North
+    if (grid[x] && grid[x][y + 1]) {
+        ret.push(grid[x][y + 1]);
+    }
+
+    if (this.diagonal) {
+        // Southwest
+        if (grid[x - 1] && grid[x - 1][y - 1]) {
+            ret.push(grid[x - 1][y - 1]);
+        }
+
+        // Southeast
+        if (grid[x + 1] && grid[x + 1][y - 1]) {
+            ret.push(grid[x + 1][y - 1]);
+        }
+
+        // Northwest
+        if (grid[x - 1] && grid[x - 1][y + 1]) {
+            ret.push(grid[x - 1][y + 1]);
+        }
+
+        // Northeast
+        if (grid[x + 1] && grid[x + 1][y + 1]) {
+            ret.push(grid[x + 1][y + 1]);
+        }
+    }
+
+    return ret;
+};
+
+Graph.prototype.toString = function() {
+    var graphString = [];
+    var nodes = this.grid;
+    for (var x = 0; x < nodes.length; x++) {
+        var rowDebug = [];
+        var row = nodes[x];
+        for (var y = 0; y < row.length; y++) {
+            rowDebug.push(row[y].weight);
+        }
+        graphString.push(rowDebug.join(" "));
+    }
+    return graphString.join("\n");
+};
+
+function GridNode(x, y, weight) {
+    this.x = x;
+    this.y = y;
+    this.weight = weight;
+}
+
+GridNode.prototype.toString = function() {
+    return "[" + this.x + " " + this.y + "]";
+};
+
+GridNode.prototype.getCost = function(fromNeighbor) {
+    // Take diagonal weight into consideration.
+    if (fromNeighbor && fromNeighbor.x != this.x && fromNeighbor.y != this.y) {
+        return this.weight * 1.41421;
+    }
+    return this.weight;
+};
+
+GridNode.prototype.isWall = function() {
+    return this.weight === 0;
+};
+
+function BinaryHeap(scoreFunction) {
+    this.content = [];
+    this.scoreFunction = scoreFunction;
+}
+
+BinaryHeap.prototype = {
+    push: function(element) {
+        // Add the new element to the end of the array.
+        this.content.push(element);
+
+        // Allow it to sink down.
+        this.sinkDown(this.content.length - 1);
+    },
+    pop: function() {
+        // Store the first element so we can return it later.
+        var result = this.content[0];
+        // Get the element at the end of the array.
+        var end = this.content.pop();
+        // If there are any elements left, put the end element at the
+        // start, and let it bubble up.
+        if (this.content.length > 0) {
+            this.content[0] = end;
+            this.bubbleUp(0);
+        }
+        return result;
+    },
+    remove: function(node) {
+        var i = this.content.indexOf(node);
+
+        // When it is found, the process seen in 'pop' is repeated
+        // to fill up the hole.
+        var end = this.content.pop();
+
+        if (i !== this.content.length - 1) {
+            this.content[i] = end;
+
+            if (this.scoreFunction(end) < this.scoreFunction(node)) {
+                this.sinkDown(i);
+            } else {
+                this.bubbleUp(i);
+            }
+        }
+    },
+    size: function() {
+        return this.content.length;
+    },
+    rescoreElement: function(node) {
+        this.sinkDown(this.content.indexOf(node));
+    },
+    sinkDown: function(n) {
+        // Fetch the element that has to be sunk.
+        var element = this.content[n];
+
+        // When at 0, an element can not sink any further.
+        while (n > 0) {
+
+            // Compute the parent element's index, and fetch it.
+            var parentN = ((n + 1) >> 1) - 1;
+            var parent = this.content[parentN];
+            // Swap the elements if the parent is greater.
+            if (this.scoreFunction(element) < this.scoreFunction(parent)) {
+                this.content[parentN] = element;
+                this.content[n] = parent;
+                // Update 'n' to continue at the new position.
+                n = parentN;
+            }
+            // Found a parent that is less, no need to sink any further.
+            else {
+                break;
+            }
+        }
+    },
+    bubbleUp: function(n) {
+        // Look up the target element and its score.
+        var length = this.content.length;
+        var element = this.content[n];
+        var elemScore = this.scoreFunction(element);
+
+        while (true) {
+            // Compute the indices of the child elements.
+            var child2N = (n + 1) << 1;
+            var child1N = child2N - 1;
+            // This is used to store the new position of the element, if any.
+            var swap = null;
+            var child1Score;
+            // If the first child exists (is inside the array)...
+            if (child1N < length) {
+                // Look it up and compute its score.
+                var child1 = this.content[child1N];
+                child1Score = this.scoreFunction(child1);
+
+                // If the score is less than our element's, we need to swap.
+                if (child1Score < elemScore) {
+                    swap = child1N;
+                }
+            }
+
+            // Do the same checks for the other child.
+            if (child2N < length) {
+                var child2 = this.content[child2N];
+                var child2Score = this.scoreFunction(child2);
+                if (child2Score < (swap === null ? elemScore : child1Score)) {
+                    swap = child2N;
+                }
+            }
+
+            // If the element needs to be moved, swap it, and continue.
+            if (swap !== null) {
+                this.content[n] = this.content[swap];
+                this.content[swap] = element;
+                n = swap;
+            }
+            // Otherwise, we are done.
+            else {
+                break;
+
+            }
+        }
+    }
+};

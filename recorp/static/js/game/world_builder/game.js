@@ -31,18 +31,15 @@ function add_sector_background(background_name) {
     for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-            let entry_point_border = entry_point.querySelector('span')
+            let entry_point_border = entry_point.querySelector('div>span');
 
 
             entry_point.style.backgroundImage = "url('" + bg_url + "')";
             entry_point.style.backgroundPositionX = `-${col_i}px`;
             entry_point.style.backgroundPositionY = `-${row_i}px`;
 
-            entry_point_border.classList.add('hover:bg-slate-300/20');
+            entry_point_border.classList.add('hover:bg-slate-300/20', 'pathfinding-zone');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
-            //entry_point_border.setAttribute('onmouseover', 'set_path_coord(this)');
-            //entry_point_border.setAttribute('onmouseover', 'set_path_coord_v2(this)');
-            entry_point_border.setAttribute('onmouseover', 'get_pathfinding(this)');
 
             index_col++;
         }
@@ -254,6 +251,13 @@ function update_target_coord_display() {
     }
 }
 
+function set_pathfinding_event() {
+    let pf = document.querySelectorAll('.pathfinding-zone');
+    for (let i = 0; i < pf.length; i++) {
+        pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
+    }
+}
+
 
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
@@ -290,5 +294,11 @@ window.addEventListener('load', () => {
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
     display_animation(timer = "500");
-    update_target_coord_display();
+    set_pathfinding_event();
 });
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    update_target_coord_display();
+
+})
