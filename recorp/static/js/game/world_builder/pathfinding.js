@@ -1,4 +1,5 @@
 function get_pathfinding(e) {
+    cleanCss();
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user_id'] == current_user_id) {
             let id = e.parentNode.parentNode.id.split('_');
@@ -8,25 +9,34 @@ function get_pathfinding(e) {
                 grid_size: { cols: atlas.col, rows: atlas.row },
                 grid_start: {
                     y: map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1,
-                    x: map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1
+                    x: map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1,
                 },
                 grid_goal: {
-                    y: parseInt(id[0]) + 1,
-                    x: parseInt(id[1]) + 1
+                    y: parseInt(id[0]),
+                    x: parseInt(id[1])
                 },
                 debug: false,
-                diagonal: true,
-                closest: true
+                diagonal: false,
+                closest: false
             };
-
 
             let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
             if (grid.classList.contains('uncrossable') || grid.classList.contains('start-player-pos')) {
                 return;
+            } else {
+
             }
             pathfinding(grid_container, opts);
             break;
         }
+    }
+}
+
+function cleanCss() {
+    let pf_zone = document.querySelectorAll('.pathfinding-zone');
+    for (let i = 0; i < pf_zone.length; i++) {
+        pf_zone[i].classList.remove('bg-slate-300/20', 'finish')
+        pf_zone[i].classList.add('hover:bg-slate-300/20');
     }
 }
 
@@ -39,9 +49,8 @@ function pathfinding(graph, opts) {
     this.new_graph = new GraphSearch(this.graph, this.opts, this.search, this.css);
 }
 
-function GraphSearch(graph, options, implementation, css) {
+function GraphSearch(graph, options, css) {
     this.gs_graph = graph;
-    this.gs_search = implementation;
     this.gs_opts = options;
     this.gs_css = css;
     this.initialize();
@@ -55,6 +64,9 @@ GraphSearch.prototype.initialize = function() {
     for (let row_i = 0; row_i < this.gs_opts.grid_size.rows; row_i++) {
         this.gs_grid[row_i] = []
         for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
+            if (row_i == this.gs_opts.grid_goal.y && col_i == this.gs_opts.grid_goal.x) {
+                this.gs_graph.rows[row_i].cells[col_i].classList.add('finish');
+            }
             this.gs_grid[row_i].push(this.gs_graph.rows[row_i].cells[col_i]);
         }
     }
@@ -67,63 +79,26 @@ GraphSearch.prototype.cellOnMouseHover = function() {
 
     this.end = this.nodeFromElement(this.gs_opts.grid_goal);
     this.start = this.nodeFromElement(this.gs_opts.grid_start);
-
-    this.end.classList.add(this.gs_css.finish);
-
-    var path = this.gs_search(this.temp_graph, this.start, this.end, {
-        closest: true
-    });
+    var path = astar.search(this.temp_graph, this.start, this.end, this.gs_opts);
 
     if (path.length === 0) {
         return;
     }
 
-
     this.animatePath(path);
 };
 
 GraphSearch.prototype.nodeFromElement = function(arg) {
-    return this.gs_grid[parseInt(arg.y)][parseInt(arg.x)];
+    return this.temp_graph.grid[parseInt(arg.y)][parseInt(arg.x)];
 };
 
-
 GraphSearch.prototype.animatePath = function(path) {
-    var grid = this.gs_grid,
-        timeout = 1000 / grid.length,
-        elementFromNode = function(node) {
-            return grid[node.x][node.y];
-        };
-
-    var self = this;
-    // will add start class if final
-    var removeClass = function(path, i) {
-        if (i >= path.length) { // finished removing path, set start positions
-            return setStartClass(path, i);
-        }
-        elementFromNode(path[i]).removeClass(css.active);
-        setTimeout(function() {
-            removeClass(path, i + 1);
-        }, timeout * path[i].getCost());
-    };
-    var setStartClass = function(path, i) {
-        if (i === path.length) {
-            self.$graph.find("." + css.start).removeClass(css.start);
-            elementFromNode(path[i - 1]).addClass(css.start);
-        }
-    };
-    var addClass = function(path, i) {
-        if (i >= path.length) { // Finished showing path, now remove
-            return removeClass(path, 0);
-        }
-        elementFromNode(path[i]).addClass(css.active);
-        setTimeout(function() {
-            addClass(path, i + 1);
-        }, timeout * path[i].getCost());
-    };
-
-    addClass(path, 0);
-    this.graph.find("." + css.start).removeClass(css.start);
-    this.graph.find("." + css.finish).removeClass(css.finish).addClass(css.start);
+    for (let i = 0; i < path.length; i++) {
+        let td_el = this.gs_graph.rows[path[i].x].cells[path[i].y];
+        let span_el = td_el.querySelector('div>span');
+        span_el.classList.remove('hover:bg-slate-300/20')
+        span_el.classList.add('bg-slate-300/20')
+    }
 };
 
 function pathTo(node) {

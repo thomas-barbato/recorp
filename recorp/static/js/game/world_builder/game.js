@@ -26,7 +26,6 @@ setInterval(ship_stationary_animation, "1000");
 function add_sector_background(background_name) {
     let index_row = 1;
     let index_col = 1;
-    let game_rows = document.querySelectorAll('.rows');
     let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.png';
     for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
