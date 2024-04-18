@@ -2099,6 +2099,10 @@ video {
   border-width: 0px;
 }
 
+.border-2 {
+  border-width: 2px;
+}
+
 .border-x {
   border-left-width: 1px;
   border-right-width: 1px;
@@ -2301,8 +2305,8 @@ video {
   background-color: rgb(254 242 242 / var(--tw-bg-opacity));
 }
 
-.bg-slate-300\/20 {
-  background-color: rgb(203 213 225 / 0.2);
+.bg-teal-500\/30 {
+  background-color: rgb(20 184 166 / 0.3);
 }
 
 .bg-transparent {
@@ -3537,10 +3541,6 @@ select{
 
 .hover\:bg-slate-300\/10:hover {
   background-color: rgb(203 213 225 / 0.1);
-}
-
-.hover\:bg-slate-300\/20:hover {
-  background-color: rgb(203 213 225 / 0.2);
 }
 
 .hover\:bg-white:hover {

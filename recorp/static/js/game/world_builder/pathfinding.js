@@ -1,3 +1,16 @@
+let pathfinder_obj = {};
+
+function display_pathfinding() {
+    let player_span = pathfinder_obj.player_cell.querySelector('div>span');
+    player_span.classList.add('box-border', 'border-2', 'border');
+    for (let i = 0; i < pathfinder_obj.path.length; i++) {
+
+        let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x + 1].cells[pathfinder_obj.path[i].y + 1];
+        let span_el = td_el.querySelector('span');
+        span_el.classList.add('bg-teal-500/30');
+    }
+}
+
 function get_pathfinding(e) {
     cleanCss();
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
@@ -8,26 +21,31 @@ function get_pathfinding(e) {
             let opts = {
                 grid_size: { cols: atlas.col, rows: atlas.row },
                 grid_start: {
-                    y: map_informations['pc_npc'][i]['coordinates']['coord_y'] + 1,
-                    x: map_informations['pc_npc'][i]['coordinates']['coord_x'] + 1,
+                    y: map_informations['pc_npc'][i]['coordinates']['coord_y'],
+                    x: map_informations['pc_npc'][i]['coordinates']['coord_x'],
                 },
                 grid_goal: {
                     y: parseInt(id[0]),
                     x: parseInt(id[1])
                 },
+                css: {
+                    start: "start-player-pos",
+                    finish: "finish",
+                    wall: "uncrossable",
+                    active: "active"
+                },
+                wall: 0,
                 debug: false,
-                diagonal: false,
-                closest: false
+                diagonal: true,
+                closest: true
             };
 
-            let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
-            if (grid.classList.contains('uncrossable') || grid.classList.contains('start-player-pos')) {
+            let grid = grid_container.rows[opts.grid_goal.y + 1].cells[opts.grid_goal.x + 1];
+            if (grid.classList.contains(opts.css.wall)) {
                 return;
-            } else {
-
             }
             pathfinding(grid_container, opts);
-            break;
+
         }
     }
 }
@@ -35,8 +53,7 @@ function get_pathfinding(e) {
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {
-        pf_zone[i].classList.remove('bg-slate-300/20', 'finish')
-        pf_zone[i].classList.add('hover:bg-slate-300/20');
+        pf_zone[i].classList.remove('bg-teal-500/30', 'finish', 'weight1', 'weight3', 'weight5', 'box-border', 'border-2', 'border');
     }
 }
 
@@ -45,7 +62,7 @@ function pathfinding(graph, opts) {
     this.opts = opts;
     this.search = astar.search;
     this.performance = window.performance;
-    this.css = { start: "start-player-pos", finish: "finish", uncrossable: "uncrossable", active: "active" };
+    this.css = opts.css;
     this.new_graph = new GraphSearch(this.graph, this.opts, this.search, this.css);
 }
 
@@ -59,19 +76,35 @@ function GraphSearch(graph, options, css) {
 GraphSearch.prototype.initialize = function() {
     this.gs_grid = [];
     let self = this;
+    let nodes = [];
+    let node_row = [];
+
 
     // prepare graph, from object to array.
     for (let row_i = 0; row_i < this.gs_opts.grid_size.rows; row_i++) {
         this.gs_grid[row_i] = []
+        node_row = [];
         for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
+            this.gs_graph.rows[row_i].cells[col_i].classList.remove(this.gs_css.finish);
+            // add wall
+            if (this.gs_graph.rows[row_i].cells[col_i].classList.contains(this.gs_css.wall)) {
+                node_row.push(this.gs_opts.wall);
+            } else {
+                // define cell weigth
+                let cell_weight = Math.floor(Math.random() * 3) * 2 + 1;
+                node_row.push(cell_weight);
+                this.gs_graph.rows[row_i].cells[col_i].classList.add('weight' + cell_weight);
+            }
+            // define end path
             if (row_i == this.gs_opts.grid_goal.y && col_i == this.gs_opts.grid_goal.x) {
-                this.gs_graph.rows[row_i].cells[col_i].classList.add('finish');
+                this.gs_graph.rows[row_i].cells[col_i].classList.add(this.gs_css.finish);
             }
             this.gs_grid[row_i].push(this.gs_graph.rows[row_i].cells[col_i]);
         }
+        nodes.push(node_row);
     }
 
-    this.temp_graph = new Graph(this.gs_grid);
+    this.temp_graph = new Graph(nodes);
     self.cellOnMouseHover();
 };
 
@@ -85,20 +118,19 @@ GraphSearch.prototype.cellOnMouseHover = function() {
         return;
     }
 
-    this.animatePath(path);
+    this.setPathfindingObject(path);
 };
 
 GraphSearch.prototype.nodeFromElement = function(arg) {
     return this.temp_graph.grid[parseInt(arg.y)][parseInt(arg.x)];
 };
 
-GraphSearch.prototype.animatePath = function(path) {
-    for (let i = 0; i < path.length; i++) {
-        let td_el = this.gs_graph.rows[path[i].x].cells[path[i].y];
-        let span_el = td_el.querySelector('div>span');
-        span_el.classList.remove('hover:bg-slate-300/20')
-        span_el.classList.add('bg-slate-300/20')
-    }
+GraphSearch.prototype.setPathfindingObject = function(path) {
+    pathfinder_obj = {
+        path: path,
+        graph: this.gs_graph,
+        player_cell: this.gs_graph.rows[this.gs_opts.grid_start.y + 1].cells[this.gs_opts.grid_start.x + 1],
+    };
 };
 
 function pathTo(node) {
@@ -244,12 +276,12 @@ function Graph(gridIn, options) {
     this.nodes = [];
     this.diagonal = !!options.diagonal;
     this.grid = [];
-    for (var x = 0; x < gridIn.length; x++) {
-        this.grid[x] = [];
+    for (var y = 0; y < gridIn.length; y++) {
+        this.grid[y] = [];
 
-        for (var y = 0, row = gridIn[x]; y < row.length; y++) {
-            var node = new GridNode(x, y, row[y]);
-            this.grid[x][y] = node;
+        for (var x = 0, row = gridIn[y]; x < row.length; x++) {
+            var node = new GridNode(y, x, row[x]);
+            this.grid[y][x] = node;
             this.nodes.push(node);
         }
     }

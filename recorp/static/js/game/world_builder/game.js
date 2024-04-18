@@ -37,7 +37,7 @@ function add_sector_background(background_name) {
             entry_point.style.backgroundPositionX = `-${col_i}px`;
             entry_point.style.backgroundPositionY = `-${row_i}px`;
 
-            entry_point_border.classList.add('hover:bg-slate-300/20', 'pathfinding-zone');
+            entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
 
             index_col++;
@@ -86,7 +86,6 @@ function add_sector_foreground(sector_element) {
                     entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                     entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                     entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                    entry_point_border.classList.remove('hover:bg-slate-300/20');
                     entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
 
                     img_div.classList.add(
@@ -133,7 +132,6 @@ function add_pc_npc(data) {
         entry_point_border.style.borderStyle = "double dashed";
         entry_point_border.style.cursor = "pointer";
         entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${data[i]["coordinates"]["coord_y"]}; y: ${data[i]["coordinates"]["coord_x"]}]`);
-        entry_point_border.classList.remove('hover:bg-slate-300/20');
 
         if (data[i]["user_id"] == current_user_id) {
             update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
@@ -152,7 +150,7 @@ function add_pc_npc(data) {
 
         space_ship = document.createElement('img');
         space_ship.src = "/static/js/game/assets/ships/ship01-32px.png";
-        space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', 'uncrossable', pc_or_npc_class);
+        space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', pc_or_npc_class);
         div.append(space_ship);
     }
 }
@@ -254,6 +252,9 @@ function set_pathfinding_event() {
     let pf = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf.length; i++) {
         pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
+        if (!pf[i].parentNode.parentNode.classList.contains('uncrossable')) {
+            pf[i].setAttribute('onclick', 'display_pathfinding()');
+        }
     }
 }
 
