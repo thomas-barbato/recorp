@@ -1,0 +1,41 @@
+[{
+        "model": "core.playershipmodule",
+        "pk": 1,
+        "fields": {
+            "player_ship": 1,
+            "module": 1,
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.playershipmodule",
+        "pk": 1,
+        "fields": {
+            "player_ship": 2,
+            "module": 1,
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.playershipmodule",
+        "pk": 1,
+        "fields": {
+            "player_ship": 3,
+            "module": 1,
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.playershipmodule",
+        "pk": 1,
+        "fields": {
+            "player_ship": 4,
+            "module": 1,
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    }
+]

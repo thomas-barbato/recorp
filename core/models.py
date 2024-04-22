@@ -261,6 +261,7 @@ class ShipCategory(models.Model):
     )
     description = models.TextField(max_length=2500, blank=True)
     max_speed = models.FloatField(default=1.0)
+    ship_size = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -273,6 +274,7 @@ class Ship(models.Model):
     description = models.TextField(max_length=2500, blank=True)
     image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     module_slot_available = models.PositiveIntegerField(default=1)
+    ship_category = models.ForeignKey(ShipCategory, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -311,7 +313,7 @@ class PlayerLog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player.name} : {self.log.content}"
+        return f"{self.player.name} : {self.log}"
 
 
 class PlayerResource(models.Model):

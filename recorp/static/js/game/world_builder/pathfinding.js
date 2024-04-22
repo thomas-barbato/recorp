@@ -3,6 +3,7 @@ let pathfinder_obj = {};
 function display_pathfinding() {
     let player_span = pathfinder_obj.player_cell.querySelector('div>span');
     player_span.classList.add('box-border', 'border-2', 'border');
+
     for (let i = 0; i < pathfinder_obj.path.length; i++) {
 
         let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x + 1].cells[pathfinder_obj.path[i].y + 1];
@@ -34,9 +35,7 @@ function get_pathfinding(e) {
                     wall: "uncrossable",
                     active: "active"
                 },
-                wall: 0,
                 debug: false,
-                diagonal: true,
                 closest: true
             };
 
@@ -53,7 +52,7 @@ function get_pathfinding(e) {
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {
-        pf_zone[i].classList.remove('bg-teal-500/30', 'finish', 'weight1', 'weight3', 'weight5', 'box-border', 'border-2', 'border');
+        pf_zone[i].classList.remove('bg-teal-500/30', 'finish', 'weight0', 'weight1', 'weight3', 'weight5', 'box-border', 'border-2', 'border');
     }
 }
 
@@ -78,6 +77,7 @@ GraphSearch.prototype.initialize = function() {
     let self = this;
     let nodes = [];
     let node_row = [];
+    let cell_weight = 0;
 
 
     // prepare graph, from object to array.
@@ -85,13 +85,15 @@ GraphSearch.prototype.initialize = function() {
         this.gs_grid[row_i] = []
         node_row = [];
         for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
-            this.gs_graph.rows[row_i].cells[col_i].classList.remove(this.gs_css.finish);
+            this.gs_graph.rows[row_i].cells[col_i].classList.remove("finish");
             // add wall
-            if (this.gs_graph.rows[row_i].cells[col_i].classList.contains(this.gs_css.wall)) {
-                node_row.push(this.gs_opts.wall);
+            if (this.gs_graph.rows[row_i].cells[col_i].classList.contains("uncrossable")) {
+                cell_weight = 0;
+                node_row.push(cell_weight);
+                this.gs_graph.rows[row_i].cells[col_i].classList.add('weight' + cell_weight);
             } else {
                 // define cell weigth
-                let cell_weight = Math.floor(Math.random() * 3) * 2 + 1;
+                cell_weight = Math.floor(Math.random() * 3) * 2 + 1;
                 node_row.push(cell_weight);
                 this.gs_graph.rows[row_i].cells[col_i].classList.add('weight' + cell_weight);
             }
@@ -166,8 +168,8 @@ var astar = {
     search: function(graph, start, end, options) {
         graph.cleanDirty();
         options = options || {};
-        var heuristic = options.heuristic || astar.heuristics.manhattan;
-        var closest = options.closest || false;
+        var heuristic = astar.heuristics.manhattan;
+        var closest = options.closest;
         var openHeap = getHeap();
         var closestNode = start; // set the start node to be the closest if required
 
@@ -246,13 +248,6 @@ var astar = {
             var d1 = Math.abs(pos1.x - pos0.x);
             var d2 = Math.abs(pos1.y - pos0.y);
             return d1 + d2;
-        },
-        diagonal: function(pos0, pos1) {
-            var D = 1;
-            var D2 = Math.sqrt(2);
-            var d1 = Math.abs(pos1.x - pos0.x);
-            var d2 = Math.abs(pos1.y - pos0.y);
-            return (D * (d1 + d2)) + ((D2 - (2 * D)) * Math.min(d1, d2));
         }
     },
     cleanNode: function(node) {
@@ -269,12 +264,10 @@ var astar = {
  * A graph memory structure
  * @param {Array} gridIn 2D array of input weights
  * @param {Object} [options]
- * @param {bool} [options.diagonal] Specifies whether diagonal moves are allowed
  */
 function Graph(gridIn, options) {
     options = options || {};
     this.nodes = [];
-    this.diagonal = !!options.diagonal;
     this.grid = [];
     for (var y = 0; y < gridIn.length; y++) {
         this.grid[y] = [];
@@ -330,28 +323,6 @@ Graph.prototype.neighbors = function(node) {
     // North
     if (grid[x] && grid[x][y + 1]) {
         ret.push(grid[x][y + 1]);
-    }
-
-    if (this.diagonal) {
-        // Southwest
-        if (grid[x - 1] && grid[x - 1][y - 1]) {
-            ret.push(grid[x - 1][y - 1]);
-        }
-
-        // Southeast
-        if (grid[x + 1] && grid[x + 1][y - 1]) {
-            ret.push(grid[x + 1][y - 1]);
-        }
-
-        // Northwest
-        if (grid[x - 1] && grid[x - 1][y + 1]) {
-            ret.push(grid[x - 1][y + 1]);
-        }
-
-        // Northeast
-        if (grid[x + 1] && grid[x + 1][y + 1]) {
-            ret.push(grid[x + 1][y + 1]);
-        }
     }
 
     return ret;

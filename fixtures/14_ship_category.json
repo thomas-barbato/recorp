@@ -1,0 +1,61 @@
+[{
+        "model": "core.shipcategory",
+        "pk": 1,
+        "fields": {
+            "name": "light",
+            "description": "lorem ipsum bla bla bla",
+            "max_speed": 10,
+            "ship_size": {
+                "size_x": 1,
+                "size_y": 1
+            },
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.shipcategory",
+        "pk": 2,
+        "fields": {
+            "name": "medium",
+            "description": "lorem ipsum bla bla bla",
+            "max_speed": 8,
+            "ship_size": {
+                "size_x": 2,
+                "size_y": 1
+            },
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.shipcategory",
+        "pk": 3,
+        "fields": {
+            "name": "heavy",
+            "description": "lorem ipsum bla bla bla",
+            "max_speed": 6,
+            "ship_size": {
+                "size_x": 3,
+                "size_y": 2
+            },
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.shipcategory",
+        "pk": 4,
+        "fields": {
+            "name": "colossal",
+            "description": "lorem ipsum bla bla bla",
+            "max_speed": 4,
+            "ship_size": {
+                "size_x": 4,
+                "size_y": 4
+            },
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    }
+]

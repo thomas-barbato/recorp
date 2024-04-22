@@ -1,0 +1,53 @@
+[{
+        "model": "core.ship",
+        "pk": 1,
+        "fields": {
+            "ship_category": 1,
+            "name": "light-1",
+            "description": "lorem ipsum bla bla bla",
+            "module_slot_available": 1,
+            "image": "ship01-white-32px",
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.ship",
+        "pk": 2,
+        "fields": {
+            "ship_category": 1,
+            "name": "light-2",
+            "description": "lorem ipsum bla bla bla",
+            "module_slot_available": 1,
+            "image": "ship01-red-32px",
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.ship",
+        "pk": 3,
+        "fields": {
+            "ship_category": 1,
+            "name": "light-3",
+            "description": "lorem ipsum bla bla bla",
+            "module_slot_available": 1,
+            "image": "ship01-yellow-32px",
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    },
+    {
+        "model": "core.ship",
+        "pk": 4,
+        "fields": {
+            "ship_category": 4,
+            "name": "station-neutral-1",
+            "description": "lorem ipsum bla bla bla",
+            "module_slot_available": 1,
+            "image": "station01-128px",
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
+    }
+]

@@ -120,38 +120,56 @@ function add_sector_foreground(sector_element) {
 
 function add_pc_npc(data) {
     let border_color = "";
+
     for (let i = 0; i < data.length; i++) {
+
         let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
-        let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
-        let entry_point_border = entry_point.querySelector('span');
-        let div = entry_point.querySelector('div');
+        let ship_size_x = data[i]['playership__ship_id__ship_category__ship_size'].size_x;
+        let ship_size_y = data[i]['playership__ship_id__ship_category__ship_size'].size_y;
 
-        entry_point.classList.add('uncrossable');
+        for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
 
-        entry_point_border.style.borderStyle = "double dashed";
-        entry_point_border.style.cursor = "pointer";
-        entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${data[i]["coordinates"]["coord_y"]}; y: ${data[i]["coordinates"]["coord_x"]}]`);
+                let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
+                let entry_point_border = entry_point.querySelector('span');
+                let div = entry_point.querySelector('div');
+                let bg_url = "/static/js/game/assets/ships/" + data[i]['playership__ship_id__image'] + '.png';
 
-        if (data[i]["user_id"] == current_user_id) {
-            update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
-            border_color = "lime";
-            entry_point.classList.add('player-start-pos');
+                entry_point.classList.add('uncrossable');
+                entry_point_border.style.borderStyle = "double dashed";
+                entry_point_border.style.cursor = "pointer";
+                entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${coord_x}; y: ${coord_y}]`);
+                space_ship = document.createElement('div');
+
+                space_ship.style.backgroundImage = "url('" + bg_url + "')";
+                space_ship.style.backgroundPositionX = `-${col_i}px`;
+                space_ship.style.backgroundPositionY = `-${row_i}px`;
+
+                if (data[i]["user_id"] == current_user_id) {
+                    update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
+                    border_color = "lime";
+                    entry_point.classList.add('player-start-pos');
+                }
+
+                let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
+
+                if (data[i]["user_id"] != current_user_id && data[i]["is_npc"]) {
+                    border_color = "red";
+                } else if (data[i]["user_id"] != current_user_id && !data[i]["is_npc"]) {
+                    border_color = "cyan";
+                }
+
+                entry_point_border.style.borderColor = border_color;
+                space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', pc_or_npc_class);
+                div.append(space_ship);
+
+                coord_x++;
+
+            }
+            coord_y++;
+            coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
         }
-
-        let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
-        if (data[i]["user_id"] != current_user_id && data[i]["is_npc"]) {
-            border_color = "red";
-        } else if (data[i]["user_id"] != current_user_id && !data[i]["is_npc"]) {
-            border_color = "cyan";
-        }
-
-        entry_point_border.style.borderColor = border_color;
-
-        space_ship = document.createElement('img');
-        space_ship.src = "/static/js/game/assets/ships/ship01-32px.png";
-        space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', pc_or_npc_class);
-        div.append(space_ship);
     }
 }
 
@@ -251,8 +269,8 @@ function update_target_coord_display() {
 function set_pathfinding_event() {
     let pf = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf.length; i++) {
-        pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
         if (!pf[i].parentNode.parentNode.classList.contains('uncrossable')) {
+            pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
             pf[i].setAttribute('onclick', 'display_pathfinding()');
         }
     }

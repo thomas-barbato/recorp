@@ -323,9 +323,17 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                     "archetype_id__name",
                     "archetype_id__data",
                     "sector_id__name",
+                    "playership__ship_id__name",
+                    "playership__ship_id__image",
+                    "playership__ship_id__description",
+                    "playership__ship_id__module_slot_available",
+                    "playership__ship_id__ship_category__name",
+                    "playership__ship_id__ship_category__description",
+                    "playership__ship_id__ship_category__max_speed",
+                    "playership__ship_id__ship_category__ship_size",
+                    
                 )
             ]
-
             for p in result_dict["pc_npc"]:
                 p["archetype__id__name"] = _(p["archetype_id__name"])
 
