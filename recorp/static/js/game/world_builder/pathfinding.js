@@ -8,7 +8,8 @@ function display_pathfinding() {
 
         let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x + 1].cells[pathfinder_obj.path[i].y + 1];
         let span_el = td_el.querySelector('span');
-        span_el.classList.add('bg-teal-500/30');
+        span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
+        span_el.textContent = i + 1;
     }
 }
 
@@ -52,7 +53,8 @@ function get_pathfinding(e) {
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {
-        pf_zone[i].classList.remove('bg-teal-500/30', 'finish', 'weight0', 'weight1', 'weight3', 'weight5', 'box-border', 'border-2', 'border');
+        pf_zone[i].classList.remove('bg-teal-500/30', 'finish', 'weight0', 'weight1', 'weight3', 'weight5', 'box-border', 'border-2', 'border', 'text-white', 'font-bold', 'text-center');
+        pf_zone[i].textContent = "";
     }
 }
 

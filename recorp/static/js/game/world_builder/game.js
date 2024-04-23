@@ -135,34 +135,48 @@ function add_pc_npc(data) {
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]['playership__ship_id__image'] + '.png';
+                let bg_url_reversed_img = "/static/js/game/assets/ships/" + data[i]['playership__ship_id__image'] + '-reversed.png';
 
                 entry_point.classList.add('uncrossable');
                 entry_point_border.style.borderStyle = "double dashed";
                 entry_point_border.style.cursor = "pointer";
-                entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${coord_x}; y: ${coord_y}]`);
+                entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${coord_x-1}; y: ${coord_y-1}]`);
                 space_ship = document.createElement('div');
+                space_ship_reversed = document.createElement('div');
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.style.backgroundPositionX = `-${col_i}px`;
                 space_ship.style.backgroundPositionY = `-${row_i}px`;
 
+                space_ship_reversed.style.backgroundImage = "url('" + bg_url_reversed_img + "')";
+                space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
+                space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
+
                 if (data[i]["user_id"] == current_user_id) {
                     update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
                     border_color = "lime";
                     entry_point.classList.add('player-start-pos');
+                    space_ship.classList.add('player-ship');
+                    space_ship_reversed.classList.add('player-ship-reversed');
                 }
 
                 let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
 
-                if (data[i]["user_id"] != current_user_id && data[i]["is_npc"]) {
+                if (data[i]["is_npc"]) {
                     border_color = "red";
+                    space_ship.classList.add('clickable');
                 } else if (data[i]["user_id"] != current_user_id && !data[i]["is_npc"]) {
                     border_color = "cyan";
+                    space_ship.classList.add('clickable');
                 }
 
                 entry_point_border.style.borderColor = border_color;
-                space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', 'clickable', pc_or_npc_class);
+                space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', pc_or_npc_class);
+                space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', pc_or_npc_class);
+                space_ship_reversed.style.display = "none";
+
                 div.append(space_ship);
+                div.append(space_ship_reversed);
 
                 coord_x++;
 
@@ -276,6 +290,24 @@ function set_pathfinding_event() {
     }
 }
 
+function reverse_player_ship_display() {
+    let player_ship = document.querySelectorAll('.player-start-pos>div>div.player-ship');
+    let player_ship_reversed = document.querySelectorAll('.player-start-pos>div>div.player-ship-reversed');
+
+    if (player_ship[0].style.display == "block") {
+        for (let i = 0; i < player_ship.length; i++) {
+            player_ship[i].style.display = "none";
+            player_ship_reversed[i].style.display = "block";
+        }
+    } else {
+        for (let i = 0; i < player_ship.length; i++) {
+            player_ship[i].style.display = "block";
+            player_ship_reversed[i].style.display = "none";
+        }
+    }
+
+}
+
 
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
@@ -290,7 +322,7 @@ window.addEventListener('load', () => {
     );
 
     gameSocket.onopen = function(e) {
-        console.log("socket opened")
+        console.log("socket opened");
     };
 
     gameSocket.onclose = function(e) {
@@ -313,6 +345,10 @@ window.addEventListener('load', () => {
     add_pc_npc(map_informations.pc_npc);
     display_animation(timer = "500");
     set_pathfinding_event();
+
+    let player_start_pos = document.querySelector('.player-start-pos');
+    player_start_pos.addEventListener('click', reverse_player_ship_display);
+
 });
 
 
