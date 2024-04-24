@@ -1,9 +1,9 @@
 {% load static %}
 {% load i18n %}
 <div class="w-full lg:h-[12vh] overflow-hidden order-1 mx-auto min-[2000px]:text-xl xl:text-base text-center text-sm bg-gray-800/40 text-white p-2">
-  <p>{% translate 'You are now in the sector' %}: <b>{{ map_informations.sector.name }}</b></p>
-  <p>{% translate 'This sector is owned by' %}: <b>{{ map_informations.sector.faction_name }}</b></p>
-  <p>{% translate 'Security level' %}: <b>{{ map_informations.sector.security_name_translated }}</b></p>
+  <p>{% translate "You are now in the sector" %}: <b>{{ map_informations.sector.name }}</b></p>
+  <p>{% translate "This sector is owned by" %}: <b>{{ map_informations.sector.faction.name }}</b></p>
+  <p>{% translate "Security level" %}: <b>{{ map_informations.sector.security.translated_name }}</b></p>
   <div class="w-full mx-auto flex flex-row justify-center items-center gap-2">
     <span class="flex flex-row bg-neutral-600 m-1 rounded-l rounded-r">
       <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye m-2"></i></label>

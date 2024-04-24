@@ -139,9 +139,33 @@ class GetMapDataFromDB:
             sector.asteroid_sector.all(),
             sector.station_sector.all(),
         )
+        
+    @staticmethod
+    def get_pc_npc_from_sector(pk):
+        return Player.objects.filter(sector_id=pk).values(
+                "id",
+                "name",
+                "coordinates",
+                "image",
+                "description",
+                "is_npc",
+                "user_id",
+                "faction_id__name",
+                "archetype_id__name",
+                "archetype_id__data",
+                "sector_id__name",
+                "playership__ship_id__name",
+                "playership__ship_id__image",
+                "playership__ship_id__description",
+                "playership__ship_id__module_slot_available",
+                "playership__ship_id__ship_category__name",
+                "playership__ship_id__ship_category__description",
+                "playership__ship_id__ship_category__max_speed",
+                "playership__ship_id__ship_category__ship_size",
+            )
 
     @staticmethod
-    def check_if_no_missing_entry(data, data_item={}):
+    def check_if_no_missing_entry(data, data_item = None):
         missing_data = []
         for d_key, d_value in data.items():
             if (

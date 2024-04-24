@@ -2336,6 +2336,15 @@ video {
   background-color: rgb(9 9 11 / 0.7);
 }
 
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
+.bg-red-600\/30 {
+  background-color: rgb(220 38 38 / 0.3);
+}
+
 .decoration-slice {
   -webkit-box-decoration-break: slice;
           box-decoration-break: slice;

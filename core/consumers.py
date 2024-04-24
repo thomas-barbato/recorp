@@ -50,7 +50,26 @@ class GameConsumer(WebsocketConsumer):
 
     # Receive message from web socket
     def receive(self, text_data=None, bytes_data=None):
-        pass
+        print(json.loads(text_data))
+        data = json.loads(text_data)
+        message = data["message"]
+        type = data["type"]
+
+        if not self.user.is_authenticated:
+            return
+
+        # send chat message event to the room
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": type,
+                "user": self.user.username,
+                "message": message,
+            },
+        )
+    
+    def player_move(self, event):
+        self.send(text_data=json.dumps(event))
 
     def send_message(self, event):
         pass
@@ -59,7 +78,4 @@ class GameConsumer(WebsocketConsumer):
         pass
 
     def user_leave(self, event):
-        pass
-
-    def click_on_card(self, event):
         pass

@@ -3,28 +3,50 @@ let pathfinder_obj = {};
 function display_pathfinding() {
     let player_span = pathfinder_obj.player_cell.querySelector('div>span');
     player_span.classList.add('box-border', 'border-2', 'border');
+    let max_move_points = 10;
+    const pos = {
+        start: {
+            y: player_span.parentNode.parentNode.parentNode.rowIndex - 1,
+            x: player_span.parentNode.parentNode.cellIndex - 1,
+        },
+        end: {
+            y: 0,
+            x: 0,
+        }
+    };
 
     for (let i = 0; i < pathfinder_obj.path.length; i++) {
 
         let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x + 1].cells[pathfinder_obj.path[i].y + 1];
         let span_el = td_el.querySelector('span');
-        span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
+        span_el.classList.add('text-white', 'font-bold', 'text-center')
+        if (i < user_ship_max_speed || i <= max_move_points) {
+            span_el.classList.add('bg-teal-500/30');
+            pos.end = {
+                y: pathfinder_obj.path[i].y,
+                x: pathfinder_obj.path[i].x,
+            }
+        } else {
+            span_el.classList.add('bg-red-600/30');
+        }
         span_el.textContent = i + 1;
     }
+    player_move(pos)
+
 }
 
 function get_pathfinding(e) {
     cleanCss();
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
-        if (map_informations['pc_npc'][i]['user_id'] == current_user_id) {
+        if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
             let id = e.parentNode.parentNode.id.split('_');
             let grid_container = document.querySelector('.tabletop-view');
 
             let opts = {
                 grid_size: { cols: atlas.col, rows: atlas.row },
                 grid_start: {
-                    y: map_informations['pc_npc'][i]['coordinates']['coord_y'],
-                    x: map_informations['pc_npc'][i]['coordinates']['coord_x'],
+                    y: map_informations['pc_npc'][i]['user']['coordinates'].coord_y,
+                    x: map_informations['pc_npc'][i]['user']['coordinates'].coord_x,
                 },
                 grid_goal: {
                     y: parseInt(id[0]),
@@ -53,7 +75,7 @@ function get_pathfinding(e) {
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {
-        pf_zone[i].classList.remove('bg-teal-500/30', 'finish', 'weight0', 'weight1', 'weight3', 'weight5', 'box-border', 'border-2', 'border', 'text-white', 'font-bold', 'text-center');
+        pf_zone[i].classList.remove('bg-teal-500/30', 'bg-red-600/30', 'finish', 'box-border', 'border-2', 'border', 'text-white', 'font-bold', 'text-center');
         pf_zone[i].textContent = "";
     }
 }
@@ -87,23 +109,19 @@ GraphSearch.prototype.initialize = function() {
         this.gs_grid[row_i] = []
         node_row = [];
         for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
-            this.gs_graph.rows[row_i].cells[col_i].classList.remove("finish");
-            // add wall
-            if (this.gs_graph.rows[row_i].cells[col_i].classList.contains("uncrossable")) {
-                cell_weight = 0;
-                node_row.push(cell_weight);
-                this.gs_graph.rows[row_i].cells[col_i].classList.add('weight' + cell_weight);
+            this.gs_graph.rows[row_i + 1].cells[col_i + 1].classList.remove("finish");
+            // add wall (weight: 15)
+            if (this.gs_graph.rows[row_i + 1].cells[col_i + 1].classList.contains("uncrossable")) {
+                node_row.push(15);
             } else {
                 // define cell weigth
-                cell_weight = Math.floor(Math.random() * 3) * 2 + 1;
-                node_row.push(cell_weight);
-                this.gs_graph.rows[row_i].cells[col_i].classList.add('weight' + cell_weight);
+                node_row.push(Math.floor(Math.random() * 3) * 2 + 1);
             }
             // define end path
             if (row_i == this.gs_opts.grid_goal.y && col_i == this.gs_opts.grid_goal.x) {
-                this.gs_graph.rows[row_i].cells[col_i].classList.add(this.gs_css.finish);
+                this.gs_graph.rows[row_i + 1].cells[col_i + 1].classList.add(this.gs_css.finish);
             }
-            this.gs_grid[row_i].push(this.gs_graph.rows[row_i].cells[col_i]);
+            this.gs_grid[row_i].push(this.gs_graph.rows[row_i + 1].cells[col_i + 1]);
         }
         nodes.push(node_row);
     }

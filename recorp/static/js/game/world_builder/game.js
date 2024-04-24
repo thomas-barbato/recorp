@@ -1,5 +1,8 @@
+let gameSocket = "";
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
+let user_ship_max_speed = {};
+
 
 let animation_container_set = new Set();
 let atlas = {
@@ -9,19 +12,6 @@ let atlas = {
     "map_width_size": 20 * 32,
     "map_height_size": 15 * 32,
 }
-
-function ship_stationary_animation() {
-    let ship = document.querySelectorAll(".ship");
-    for (let i = 0; i < ship.length; i++) {
-        if (ship[i].style.top === "2px") {
-            ship[i].style.top = "0px";
-        } else {
-            ship[i].style.top = "2px";
-        }
-    }
-}
-
-setInterval(ship_stationary_animation, "1000");
 
 function add_sector_background(background_name) {
     let index_row = 1;
@@ -51,7 +41,6 @@ function add_sector_foreground(sector_element) {
     let element_data = "";
     let element_type = "";
     let modal = "";
-    let animation_container_i = 1;
     let element_type_translated = "";
     for (let sector_i = 0; sector_i < sector_element.length; sector_i++) {
         let animation_dir_data = [];
@@ -86,7 +75,7 @@ function add_sector_foreground(sector_element) {
                     entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                     entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                     entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                    entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                    entry_point_border.setAttribute('onclick', "open_modal('" + "modal-" + element_data["name"] + "')");
 
                     img_div.classList.add(
                         'relative',
@@ -112,7 +101,6 @@ function add_sector_foreground(sector_element) {
                 index_row++;
                 index_col = sector_element[sector_i]['data']['coord_x'];
             }
-            animation_container_i++;
             animation_i++;
         }
     }
@@ -122,11 +110,10 @@ function add_pc_npc(data) {
     let border_color = "";
 
     for (let i = 0; i < data.length; i++) {
-
-        let coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
-        let coord_y = (data[i]["coordinates"]["coord_y"]) + 1;
-        let ship_size_x = data[i]['playership__ship_id__ship_category__ship_size'].size_x;
-        let ship_size_y = data[i]['playership__ship_id__ship_category__ship_size'].size_y;
+        let coord_x = (data[i]["user"]["coordinates"].coord_x) + 1;
+        let coord_y = (data[i]["user"]["coordinates"].coord_y) + 1;
+        let ship_size_x = data[i]["ship"]['size'].size_x;
+        let ship_size_y = data[i]["ship"]['size'].size_y;
 
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
@@ -134,15 +121,15 @@ function add_pc_npc(data) {
                 let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
-                let bg_url = "/static/js/game/assets/ships/" + data[i]['playership__ship_id__image'] + '.png';
-                let bg_url_reversed_img = "/static/js/game/assets/ships/" + data[i]['playership__ship_id__image'] + '-reversed.png';
+                let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
+                let bg_url_reversed_img = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '-reversed.png';
+                let space_ship = document.createElement('div');
+                let space_ship_reversed = document.createElement('div');
 
                 entry_point.classList.add('uncrossable');
                 entry_point_border.style.borderStyle = "double dashed";
                 entry_point_border.style.cursor = "pointer";
-                entry_point_border.setAttribute('title', `${data[i]["name"]} [x: ${coord_x-1}; y: ${coord_y-1}]`);
-                space_ship = document.createElement('div');
-                space_ship_reversed = document.createElement('div');
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x: ${coord_x-1}; y: ${coord_y-1}]`);
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.style.backgroundPositionX = `-${col_i}px`;
@@ -152,20 +139,21 @@ function add_pc_npc(data) {
                 space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
-                if (data[i]["user_id"] == current_user_id) {
-                    update_user_coord_display(data[i]["coordinates"]["coord_x"], data[i]["coordinates"]["coord_y"]);
+                if (data[i]["user"]["user"] == current_user_id) {
+                    update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "lime";
                     entry_point.classList.add('player-start-pos');
                     space_ship.classList.add('player-ship');
                     space_ship_reversed.classList.add('player-ship-reversed');
+                    user_ship_max_speed = data[i]["ship"]['max_speed'];
                 }
 
-                let pc_or_npc_class = data[i]["is_npc"] == true ? "npc" : "pc"
+                let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc"
 
-                if (data[i]["is_npc"]) {
+                if (data[i]["user"]["is_npc"]) {
                     border_color = "red";
                     space_ship.classList.add('clickable');
-                } else if (data[i]["user_id"] != current_user_id && !data[i]["is_npc"]) {
+                } else if (data[i]["user"]["user"] != current_user_id && !data[i]["user"]["is_npc"]) {
                     border_color = "cyan";
                     space_ship.classList.add('clickable');
                 }
@@ -182,7 +170,7 @@ function add_pc_npc(data) {
 
             }
             coord_y++;
-            coord_x = (data[i]["coordinates"]["coord_x"]) + 1;
+            coord_x = (data[i]["user"]["coordinates"]["coord_x"]) + 1;
         }
     }
 }
@@ -233,9 +221,9 @@ function create_modal(id, elem_type, title = undefined, description = undefined,
     return e;
 }
 
-function open_close_modal(id) {
+function open_modal(id) {
     let e = document.querySelector('#' + id)
-    e.classList.contains("hidden") == true ? e.classList.remove('hidden') : e.classList.add('hidden');
+    e.classList.remove('hidden');
 }
 
 function display_animation(timer = "500") {
@@ -305,14 +293,13 @@ function reverse_player_ship_display() {
             player_ship_reversed[i].style.display = "none";
         }
     }
-
 }
 
 
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
     let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var gameSocket = new WebSocket(
+    gameSocket = new WebSocket(
         ws_scheme +
         '://' +
         window.location.host +
@@ -321,15 +308,15 @@ window.addEventListener('load', () => {
         "/"
     );
 
-    gameSocket.onopen = function(e) {
+    gameSocket.onopen = function() {
         console.log("socket opened");
     };
 
-    gameSocket.onclose = function(e) {
+    gameSocket.onclose = function() {
         console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 1s...");
         setTimeout(function() {
             console.log("Reconnecting...");
-            var chatSocket = new WebSocket(
+            var gameSocket = new WebSocket(
                 ws_scheme +
                 '://' +
                 window.location.host +
@@ -354,5 +341,4 @@ window.addEventListener('load', () => {
 
 window.addEventListener('DOMContentLoaded', () => {
     update_target_coord_display();
-
 })

@@ -309,41 +309,19 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         if Sector.objects.filter(id=pk).exists():
             data = StoreInCache(f"play_{pk}").get_or_set_cache()
             result_dict = dict()
-            result_dict["pc_npc"] = [
-                p
-                for p in Player.objects.filter(sector_id=pk).values(
-                    "id",
-                    "name",
-                    "coordinates",
-                    "image",
-                    "description",
-                    "is_npc",
-                    "user_id",
-                    "faction_id__name",
-                    "archetype_id__name",
-                    "archetype_id__data",
-                    "sector_id__name",
-                    "playership__ship_id__name",
-                    "playership__ship_id__image",
-                    "playership__ship_id__description",
-                    "playership__ship_id__module_slot_available",
-                    "playership__ship_id__ship_category__name",
-                    "playership__ship_id__ship_category__description",
-                    "playership__ship_id__ship_category__max_speed",
-                    "playership__ship_id__ship_category__ship_size",
-                    
-                )
-            ]
-            for p in result_dict["pc_npc"]:
-                p["archetype__id__name"] = _(p["archetype_id__name"])
+            for p in data["pc_npc"]:
+                p["user"]["archetype_name"] = _(p["user"]["archetype_name"])
 
-            data["sector"]["security_name_translated"] = _(data["sector"]["security_name_translated"])
+            data["sector"]["security"]["translated_name"] = _(
+                data["sector"]["security"]["translated_name"]
+            )
             for d in data["sector_element"]:
-                d["type_translated"] = _(d['type_translated'])
+                d["type_translated"] = _(d["type_translated"])
                 d["data"]["description"] = _(d["data"]["description"])
 
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
+            result_dict["pc_npc"] = data["pc_npc"]
             context["map_informations"] = result_dict
             return context
         else:

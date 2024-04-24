@@ -5,7 +5,8 @@ from django.core.cache import cache
 from django.contrib.auth.models import User
 from core.backend.get_data import GetMapDataFromDB
 from core.models import (
-    Sector
+    Sector,
+    Player,
 )
 
 
@@ -24,33 +25,40 @@ class StoreInCache:
             {
                 "sector": data["sector"],
                 "sector_element": data["sector_element"],
+                "pc_npc": data["pc_npc"],
                 "messages": [],
             },
         )
         return cache.get(self.room)
 
     def set_sector_data(self, pk):
+        
         planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(self.sector_pk)
-        table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+        foreground_table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+        sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk)
         sector = Sector.objects.get(id=pk)
         sector_data = dict()
         sector_data["sector_element"] = []
-        sector_data["users_online"] = []
+        sector_data["pc_npc"] = []
 
         sector_data["sector"] = {
             "id": pk,
             "name": sector.name,
             "description": sector.description,
             "image": sector.image,
-            "security_id": sector.security_id,
-            "security_name": sector.security.name,
-            "security_name_translated": sector.security.name,
-            "faction_name": sector.faction.name,
-            "faction_id": sector.faction_id,
-            "is_faction_level_starter": sector.is_faction_level_starter,
+            "security":{
+                "id": sector.security_id,
+                "name": sector.security.name,
+                "translated_name": sector.security.name
+            },
+            "faction":{
+                "id": sector.faction_id,
+                "name": sector.faction.name,
+                "is_faction_level_starter": sector.is_faction_level_starter
+            }
         }
 
-        for table_key, table_value in table_set.items():
+        for table_key, table_value in foreground_table_set.items():
             for table in table_value:
                 size = GetMapDataFromDB.get_specific_size(table_key)
                 element, _ = GetMapDataFromDB.get_table(table_key)
@@ -81,11 +89,48 @@ class StoreInCache:
                         "size": size,
                     }
                 )
+                
+        for data in sector_pc_npc:
+            sector_data["pc_npc"].append(
+                {
+                    "user": {
+                        "user" : data["user_id"],
+                        "name": data["name"],
+                        "coordinates": data["coordinates"],
+                        "image": data["image"],
+                        "description": data["description"],
+                        "is_npc": data["is_npc"],
+                        "archetype_name": data["archetype_id__name"],
+                        "archetype_data": data["archetype_id__data"],
+                        "sector_name": data["sector_id__name"],
+                    },
+                    "faction": {
+                        "name": data["faction_id__name"],
+                    },
+                    "ship": {
+                        "name": data["playership__ship_id__name"],
+                        "image": data["playership__ship_id__image"],
+                        "description": data["playership__ship_id__description"],
+                        "module_slot_available": data[
+                            "playership__ship_id__module_slot_available"
+                        ],
+                        "category_name": data["playership__ship_id__ship_category__name"],
+                        "category_description": data[
+                            "playership__ship_id__ship_category__description"
+                        ],
+                        "max_speed": data[
+                            "playership__ship_id__ship_category__max_speed"
+                        ],
+                        "size": data["playership__ship_id__ship_category__ship_size"],
+                        "reversed": False,
+                    }
+                }
+            )
+            
         return sector_data
 
     def set_selected_card(self):
         in_cache = cache.get(self.room)
-
         if any("id" in d for d in self.value):
             # if first card have been picked
             in_cache["selected_card"] = {
