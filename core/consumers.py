@@ -50,7 +50,6 @@ class GameConsumer(WebsocketConsumer):
 
     # Receive message from web socket
     def receive(self, text_data=None, bytes_data=None):
-        print(json.loads(text_data))
         data = json.loads(text_data)
         message = data["message"]
         type = data["type"]
@@ -68,8 +67,13 @@ class GameConsumer(WebsocketConsumer):
             },
         )
     
-    def player_move(self, event):
-        self.send(text_data=json.dumps(event))
+    def async_move(self, event):
+        store = StoreInCache(self.room_group_name, self.user.username)
+        new_coord = store.update_player_position(json.loads(event["message"]))
+        if self.user.is_authenticated:
+            self.send(
+                text_data=json.dumps({"type": "player_move", "message": new_coord})
+            )
 
     def send_message(self, event):
         pass

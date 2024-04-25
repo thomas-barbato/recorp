@@ -13,7 +13,7 @@ from core.models import (
 class StoreInCache:
     def __init__(self, room_name, value=[]):
         self.room = room_name
-        self.sector_pk = self.room.split('_')[1]
+        self.sector_pk = self.room.split("_")[1]
         self.value = value
 
     def get_or_set_cache(self):
@@ -32,9 +32,15 @@ class StoreInCache:
         return cache.get(self.room)
 
     def set_sector_data(self, pk):
-        
-        planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(self.sector_pk)
-        foreground_table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
+
+        planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(
+            self.sector_pk
+        )
+        foreground_table_set = {
+            "planet": planets,
+            "asteroid": asteroids,
+            "station": stations,
+        }
         sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk)
         sector = Sector.objects.get(id=pk)
         sector_data = dict()
@@ -46,16 +52,16 @@ class StoreInCache:
             "name": sector.name,
             "description": sector.description,
             "image": sector.image,
-            "security":{
+            "security": {
                 "id": sector.security_id,
                 "name": sector.security.name,
-                "translated_name": sector.security.name
+                "translated_name": sector.security.name,
             },
-            "faction":{
+            "faction": {
                 "id": sector.faction_id,
                 "name": sector.faction.name,
-                "is_faction_level_starter": sector.is_faction_level_starter
-            }
+                "is_faction_level_starter": sector.is_faction_level_starter,
+            },
         }
 
         for table_key, table_value in foreground_table_set.items():
@@ -81,20 +87,20 @@ class StoreInCache:
                         "sector_id": table.sector_id,
                         "animations": map_element,
                         "data": {
-                            'name': table.data['name'],
-                            'coord_x': table.data['coord_x'],
-                            'coord_y': table.data['coord_y'],
-                            'description': table.data['description']
+                            "name": table.data["name"],
+                            "coord_x": table.data["coord_x"],
+                            "coord_y": table.data["coord_y"],
+                            "description": table.data["description"],
                         },
                         "size": size,
                     }
                 )
-                
+
         for data in sector_pc_npc:
             sector_data["pc_npc"].append(
                 {
                     "user": {
-                        "user" : data["user_id"],
+                        "user": data["user_id"],
                         "name": data["name"],
                         "coordinates": data["coordinates"],
                         "image": data["image"],
@@ -114,7 +120,9 @@ class StoreInCache:
                         "module_slot_available": data[
                             "playership__ship_id__module_slot_available"
                         ],
-                        "category_name": data["playership__ship_id__ship_category__name"],
+                        "category_name": data[
+                            "playership__ship_id__ship_category__name"
+                        ],
                         "category_description": data[
                             "playership__ship_id__ship_category__description"
                         ],
@@ -123,10 +131,10 @@ class StoreInCache:
                         ],
                         "size": data["playership__ship_id__ship_category__ship_size"],
                         "reversed": False,
-                    }
+                    },
                 }
             )
-            
+
         return sector_data
 
     def set_selected_card(self):
@@ -149,6 +157,35 @@ class StoreInCache:
             }
 
         cache.set(self.room, in_cache)
+
+    def update_player_position(self, pos):
+        in_cache = cache.get(self.room)
+        player_position = in_cache["pc_npc"]
+        
+        # minus 1 to be same has in db.
+        position = {k: v-1 for k, v in pos.items()}
+        
+        try:
+            found_player = next(
+                p
+                for p in player_position
+                if position["start_x"] == p["user"]["coordinates"]["coord_x"]
+                and position["start_y"] == p["user"]["coordinates"]["coord_y"]
+            )
+            
+        except StopIteration:
+            return
+        
+        found_player_index = player_position.index(found_player)
+        player_position[found_player_index]["user"]["coordinates"] = {
+            "coord_x" : int(position["end_x"]), "coord_y" : int(position["end_y"])
+        }
+        
+        in_cache["pc_npc"] = player_position
+        cache.set(self.room, in_cache)
+        
+        return position
+        
 
     def get_selected_card(self):
         in_cache = cache.get(self.room)
