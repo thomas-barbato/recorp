@@ -41,8 +41,8 @@ class UploadThisImage:
 
     def save(self):
         self.__get_and_create_dir()
-        save_to = os.path.join(self.save_path, "0.png")
-        self.file.save(save_to)
+        save_to = os.path.join(self.save_path, "0.gif")
+        self.file.save(save_to, format="GIF", save_all=True, duration=100, loop=0)
 
     def get_save_path(self):
         return self.save_path

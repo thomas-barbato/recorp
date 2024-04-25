@@ -40,12 +40,12 @@ class StoreInCache:
             "planet": planets,
             "asteroid": asteroids,
             "station": stations,
-        }
-        sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk)
-        sector = Sector.objects.get(id=pk)
-        sector_data = dict()
-        sector_data["sector_element"] = []
-        sector_data["pc_npc"] = []
+        };
+        sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk);
+        sector = Sector.objects.get(id=pk);
+        sector_data = dict();
+        sector_data["sector_element"] = [];
+        sector_data["pc_npc"] = [];
 
         sector_data["sector"] = {
             "id": pk,
@@ -63,9 +63,10 @@ class StoreInCache:
                 "is_faction_level_starter": sector.is_faction_level_starter,
             },
         }
-
         for table_key, table_value in foreground_table_set.items():
             for table in table_value:
+                
+                
                 size = GetMapDataFromDB.get_specific_size(table_key)
                 element, _ = GetMapDataFromDB.get_table(table_key)
                 map_element = [
@@ -75,11 +76,13 @@ class StoreInCache:
                     .items()
                     if v != "none"
                 ]
+                
+                print(map_element)
 
                 sector_data["sector_element"].append(
                     {
-                        "type": table_key,
-                        "type_translated": table_key,
+                        "type": map_element[0],
+                        "type_translated": map_element[0],
                         "item_id": table.id,
                         "item_name": table.data["name"],
                         "resource_id": table.resource_id,
@@ -92,7 +95,7 @@ class StoreInCache:
                             "coord_y": table.data["coord_y"],
                             "description": table.data["description"],
                         },
-                        "size": size,
+                        "size": GetMapDataFromDB.get_specific_size(map_element[0]),
                     }
                 )
 

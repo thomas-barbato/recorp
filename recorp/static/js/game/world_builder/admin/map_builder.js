@@ -1,7 +1,6 @@
     let element = document.querySelector('#foreground-menu-container-1');
     const animations_json = JSON.parse(document.getElementById('script_animation_data').textContent);
     const csrf_token = document.getElementById('csrf_token').value;
-    let animation_container_set = new Set();
     let dict = [];
 
     let atlas = {
@@ -14,11 +13,11 @@
 
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
-    function display_faction_choice(){
+    function display_faction_choice() {
         let faction_starter = document.querySelector('#faction-starter');
         let faction_owner = document.querySelector('#owned-by-faction');
         document.querySelector('#faction-select').style.display = "none";
-        if(faction_starter.checked || faction_owner.checked){
+        if (faction_starter.checked || faction_owner.checked) {
             document.querySelector('#faction-select').style.display = "block";
         }
     }
@@ -28,17 +27,17 @@
     faction_starter.addEventListener('change', display_faction_choice);
     owned_by_faction.addEventListener('change', display_faction_choice);
 
-    function set_element_value(id, selected_value){
-        let e = document.querySelector('#'+id);
+    function set_element_value(id, selected_value) {
+        let e = document.querySelector('#' + id);
         e.value = selected_value;
     }
 
-    function check_uncheck(name, check_value){
-        let e = document.querySelector("input[name="+name+"]");
+    function check_uncheck(name, check_value) {
+        let e = document.querySelector("input[name=" + name + "]");
         check_value === true ? e.checked = true : e.checked = false;
     }
 
-    function clean_entire_map(){
+    function clean_entire_map() {
         let f_id_check = false;
         let f_starter_check = false;
 
@@ -53,20 +52,20 @@
 
 
         let fg_menu = document.querySelectorAll('.foreground-menu-container');
-        for(let i = 0; i < fg_menu.length; i++){
+        for (let i = 0; i < fg_menu.length; i++) {
             fg_menu[i].remove();
         }
 
         let tiles = document.querySelectorAll('.tile');
-        for(let i = 0 ; i < tiles.length; i++){
+        for (let i = 0; i < tiles.length; i++) {
             tiles[i].style.backgroundImage = "";
         }
 
         let fg_container = document.querySelectorAll('.foreground-container');
-        if(fg_container.length > 0){ clear_foreground() };
+        if (fg_container.length > 0) { clear_foreground() };
     }
 
-    function load_map_data(object){
+    function load_map_data(object) {
         let f_id_check = false;
         let f_starter_check = false;
         set_element_value("background", object['sector']['image']);
@@ -84,54 +83,54 @@
         set_element_value('sector-description', object['sector']['description']);
 
         let fg_menu = document.querySelectorAll('.foreground-menu-container');
-        for(let i = 0; i < fg_menu.length; i++){
+        for (let i = 0; i < fg_menu.length; i++) {
             fg_menu[i].remove();
         }
 
         let fg_container = document.querySelectorAll('.foreground-container');
-        if(fg_container.length > 0){ clear_foreground() };
-        for(let obj_fg in object['sector_element']){
-            append_foreground_menu(element, pre_existing_data=object['sector_element'][obj_fg]);
+        if (fg_container.length > 0) { clear_foreground() };
+        for (let obj_fg in object['sector_element']) {
+            append_foreground_menu(element, pre_existing_data = object['sector_element'][obj_fg]);
         }
 
     }
 
     let sector_selection = document.querySelector('#sector-select');
-    sector_selection.addEventListener('change', function(){
+    sector_selection.addEventListener('change', function() {
         let map_id = this.value;
         let map_name = this.options[this.selectedIndex].text;
         let modal_item_title = document.querySelector('#delete-item-title');
         modal_item_title.textContent = map_name + " (" + map_id + ") ";
         let trash_element = document.querySelector('.fa-trash')
-        if(map_id !== "none"){
+        if (map_id !== "none") {
             trash_element.style.display = "block";
-            let url ='sector_data'
+            let url = 'sector_data'
             const headers = new Headers({
-            'Content-Type': 'x-www-form-urlencoded',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': csrf_token
+                'Content-Type': 'x-www-form-urlencoded',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrf_token
             });
             fetch(url, {
-                method: 'POST',
-                headers,
-                credentials: 'include',
-                body: JSON.stringify({'map_id': map_id})
-            }).then(response => response.json())
+                    method: 'POST',
+                    headers,
+                    credentials: 'include',
+                    body: JSON.stringify({ 'map_id': map_id })
+                }).then(response => response.json())
                 .then(data => {
-                  load_map_data(JSON.parse(data));
+                    load_map_data(JSON.parse(data));
                 })
                 .catch(error => console.error(error));
-        }else{
+        } else {
             clean_entire_map()
             trash_element.style.display = "none";
         }
     })
 
-    function append_foreground_menu(element, pre_existing_data = undefined){
-        if(document.querySelectorAll('.foreground-menu-container').length > 0){
+    function append_foreground_menu(element, pre_existing_data = undefined) {
+        if (document.querySelectorAll('.foreground-menu-container').length > 0) {
             let fg_menu = document.querySelectorAll('.foreground-menu-container')
-            let next_id_value = parseInt(fg_menu[fg_menu.length-1].id.split('-')[3])+1;
+            let next_id_value = parseInt(fg_menu[fg_menu.length - 1].id.split('-')[3]) + 1;
             let clone = element.cloneNode(true);
             clone.id = "foreground-menu-container-" + next_id_value;
             let clone_item_nb = clone.querySelector('#item-nb');
@@ -156,7 +155,7 @@
 
             let fg_item_selector = clone.querySelector(".fg-item-selector");
             fg_item_selector.id = "fg-item-selector-" + next_id_value;
-            fg_item_selector.addEventListener("change", function(){
+            fg_item_selector.addEventListener("change", function() {
                 let text = this.options[this.selectedIndex].text;
                 let value = this.options[this.selectedIndex].value;
                 display_select_animation_preview(text, value, fg_item_selector.id);
@@ -169,34 +168,33 @@
             fg_item_name.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['name'] : "";
 
             let item_description = clone.querySelector('.item-description')
-            item_description.id = "item-description-"+ next_id_value;
+            item_description.id = "item-description-" + next_id_value;
             item_description.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['description'] : "";
 
-            clone.querySelector(".animations").style.display = "none";
             clone.querySelector(".trash-it").id = "trash-" + next_id_value;
 
             let preview_selector = clone.querySelector("#preview-animation");
             preview_selector.innerHTML = "";
-            if(typeof pre_existing_data !== "undefined"){
+            if (typeof pre_existing_data !== "undefined") {
                 clone.querySelector('input[name=item-id]').value = pre_existing_data['item_id'];
             }
 
             let last_element = Array.from(document.querySelectorAll('.foreground-menu-container')).pop();
             last_element.after(clone);
 
-            if(typeof pre_existing_data !== "undefined"){
-                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['item_name']);
+            if (typeof pre_existing_data !== "undefined") {
+                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex(option => option.text === pre_existing_data['item_name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
                 let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
                 display_select_animation_preview(text, value, fg_item_selector.id);
             }
 
-            document.querySelector('i#trash-'+ next_id_value).addEventListener('click', function(){
-                document.querySelector('#foreground-menu-container-'+parseInt(next_id_value)).remove();
+            document.querySelector('i#trash-' + next_id_value).addEventListener('click', function() {
+                document.querySelector('#foreground-menu-container-' + parseInt(next_id_value)).remove();
                 remove_animation(next_id_value);
             });
 
-        }else{
+        } else {
             dict = [];
             element.querySelector('#item-name-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['name'] : "";
             element.querySelector('#coord-x-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
@@ -205,12 +203,12 @@
             element.querySelector('input[type=hidden]').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['item_id'] : 0;
             let fg_item_selector = element.querySelector(".fg-item-selector");
             document.querySelector('#foreground-menu').appendChild(element)
-            if(typeof pre_existing_data !== "undefined"){
-                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex (option => option.text === pre_existing_data['item_name']);
+            if (typeof pre_existing_data !== "undefined") {
+                fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex(option => option.text === pre_existing_data['item_name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
                 let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
                 display_select_animation_preview(text, value, fg_item_selector.id);
-            }else{
+            } else {
                 fg_item_selector.value = "none";
                 element.querySelector(".animations").style.display = "none";
                 element.querySelector("#preview-animation").innerHTML = "";
@@ -219,7 +217,7 @@
     }
 
     let fg_item_selector = element.querySelector(".fg-item-selector");
-    fg_item_selector.addEventListener("change", function(){
+    fg_item_selector.addEventListener("change", function() {
         let text = this.options[this.selectedIndex].text;
         let value = this.options[this.selectedIndex].value;
         let item_id = element.querySelector('input[name=item-id]')
@@ -228,15 +226,15 @@
     });
 
     let tile = document.querySelectorAll('.tile');
-    for(let i = 0; i < tile.length; i++){
-        tile[i].addEventListener('click', function(){
+    for (let i = 0; i < tile.length; i++) {
+        tile[i].addEventListener('click', function() {
             let value = tile[i].id.split('_');
             let radio_btn = document.querySelectorAll(".coord-radio-button");
             let id = "";
-            for(let i = 0 ; i < radio_btn.length ; i++){
+            for (let i = 0; i < radio_btn.length; i++) {
                 if (radio_btn[i].checked) {
                     id = parseInt(radio_btn[i].id.split('-')[3]);
-                    let foreground_menu = document.querySelector('#foreground-menu-container-'+id);
+                    let foreground_menu = document.querySelector('#foreground-menu-container-' + id);
                     foreground_menu.querySelector('div.coord-x > input').value = parseInt(value[0]);
                     foreground_menu.querySelector('div.coord-y > input').value = parseInt(value[1]);
                     break;
@@ -246,19 +244,21 @@
     }
 
     let button_set_foreground = document.querySelector('#set-foreground-item')
-    button_set_foreground.addEventListener('click', function(){
+    button_set_foreground.addEventListener('click', function() {
         append_foreground_menu(element);
     })
 
     let trash_1 = document.querySelector('#trash-1');
-    trash_1.addEventListener('click', function(){
+    trash_1.addEventListener('click', function() {
         let id = trash_1.id.split('-')[1];
-        document.querySelector('#foreground-menu-container-'+id).remove();
+        document.querySelector('#foreground-menu-container-' + id).remove();
         remove_animation(parent);
     })
 
-    function display_select_animation_preview(select_text, select_value, element_id){
-        for (var [index_key, value] in animations_json[select_value]){
+    function display_select_animation_preview(select_text, select_value, element_id) {
+        console.log(select_value, select_text, element_id)
+        console.log(animations_json)
+        for (var [index_key, value] in animations_json[select_value]) {
             let col = animations_json[select_value][index_key]['fields']['size']['size_x'];
             let row = animations_json[select_value][index_key]['fields']['size']['size_y'];
             let id = element_id.split('-')[3];
@@ -268,23 +268,23 @@
         }
     }
 
-    function create_table(col, row, id){
+    function create_table(col, row, id) {
         let foreground_menu = document.querySelector('#foreground-menu-container-' + id);
         foreground_menu.querySelector(".animations").style.display = "block";
         foreground_menu.querySelector('#preview-animation').innerHTML = "";
         let table = "";
-        for(let row_i = 0 ; row_i < row ; row_i++){
+        for (let row_i = 0; row_i < row; row_i++) {
             table = foreground_menu.querySelector("#preview-animation")
             let tr = document.createElement('tr');
             tr.classList.add('rows');
 
-            for(let col_i = 0; col_i < col; col_i++){
+            for (let col_i = 0; col_i < col; col_i++) {
                 let td = document.createElement('td');
                 td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
 
                 let div = document.createElement('div');
                 div.classList.add(
-                    'relative',
+                    'absolute',
                     'w-[32px]',
                     'h-[32px]',
                     'hover:border',
@@ -301,7 +301,7 @@
         }
     }
 
-    function display_animation_preview(col, row, id, category, directory){
+    function display_animation_preview(col, row, id, category, directory) {
         let fg_menu = document.querySelector('#foreground-menu-container-' + id);
         let preview_animation_container = fg_menu.querySelectorAll('.preview-animation-container');
         dir_category = category.split('_')[0];
@@ -309,18 +309,18 @@
         let preview_width_size = 32 * col;
         let preview_height_size = 32 * row;
         let preview_tile_size = 32;
-        for(let i = 0; i < animations_json[category].length; i++){
-            if(animations_json[category][i]['fields']['name'] == directory){
+        for (let i = 0; i < animations_json[category].length; i++) {
+            if (animations_json[category][i]['fields']['name'] == directory) {
                 anim_array = Object.entries(Object.values(animations_json[category][i]['fields']['data']));
             }
         }
-        for(animation_i in anim_array){
-            if(anim_array[animation_i][1] !== "none"){
+        for (animation_i in anim_array) {
+            if (anim_array[animation_i][1] !== "none") {
                 let index_row = 0;
                 let index_col = 0;
-                let img_url = '/static/img/atlas/foreground/' + dir_category + '/' + anim_array[animation_i][1] + '/' + '0.png';
-                for(let row_i = 0; row_i < preview_height_size ; row_i += preview_tile_size){
-                    for(let col_i = 0; col_i < preview_width_size ; col_i += preview_tile_size){
+                let img_url = '/static/img/atlas/foreground/' + dir_category + '/' + anim_array[animation_i][1] + '/' + '0.gif';
+                for (let row_i = 0; row_i < preview_height_size; row_i += preview_tile_size) {
+                    for (let col_i = 0; col_i < preview_width_size; col_i += preview_tile_size) {
                         let img_div = document.createElement('div');
                         img_div.style.backgroundImage = "url('" + img_url + "')";
                         img_div.style.backgroundPositionX = `-${col_i}px`;
@@ -335,9 +335,8 @@
                             'w-[32px]',
                             'h-[32px]',
                             'no-borders',
-                            'preview-animation-'+animation_i
+                            'preview-animation'
                         );
-                        animation_container_set.add('.animation-container-'+parseInt(animation_i));
                         let entry_point = fg_menu.querySelector('#preview-animation').rows[index_row].cells[index_col];
                         entry_point.querySelector('div').append(img_div);
                         index_col++;
@@ -349,11 +348,11 @@
         }
     }
 
-    function set_animation_data(){
+    function set_animation_data() {
         let fg_data = document.querySelectorAll('.foreground-menu-container');
-        for(let i = 0; i < fg_data.length; i++){
+        for (let i = 0; i < fg_data.length; i++) {
             let selector = fg_data[i].querySelector('.fg-item-selector');
-            if(selector.options[selector.selectedIndex].value !== "none"){
+            if (selector.options[selector.selectedIndex].value !== "none") {
                 let s_x = "";
                 let s_y = "";
                 let animation_data = "";
@@ -362,12 +361,12 @@
                 let animation_data_direname = selector.options[selector.selectedIndex].value;
                 coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1;
                 coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1;
-                for (var [i_key, value] in animations_json[animation_data_direname]){
-                    let filtered_data = Object.assign({}, ...
-                        Object.entries(
-                            animations_json[animation_data_direname][i_key]['fields']['data']
-                        ).filter(([key, value]) => value != "none").map(([key, value]) => ({[key]:value}))
-                    );
+                for (var [i_key, value] in animations_json[animation_data_direname]) {
+                    let filtered_data = Object.assign({}, ...Object.entries(
+                        animations_json[animation_data_direname][i_key]['fields']['data']
+                    ).filter(([key, value]) => value != "none").map(([key, value]) => ({
+                        [key]: value
+                    })));
                     animation_data = filtered_data;
                     s_x = animations_json[animation_data_direname][i_key]['fields']['size']['size_x'];
                     s_y = animations_json[animation_data_direname][i_key]['fields']['size']['size_y'];
@@ -386,13 +385,12 @@
         }
     }
 
-    function add_background(folder_name){
-        let game_rows = document.querySelectorAll('.rows');
+    function add_background(folder_name) {
         let index_row = 1;
         let index_col = 1;
         let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.png';
-        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tilesize){
-            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tilesize){
+        for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                 entry_point.style.backgroundImage = "url('" + bg_url + "')";
                 entry_point.style.backgroundPositionX = `-${col_i}px`;
@@ -404,109 +402,77 @@
         }
     }
 
-    function set_foreground(dict){
+    function set_foreground(dict) {
         data = [];
-        let animation_dir_data = [];
-        let animation_type = "";
         let animation_container_i = 1;
-        for(let dict_i = 0; dict_i < dict.length; dict_i++){
-            animation_dir_data  = dict[dict_i]["animations"].map(i => Object.values(i));
-            animation_type = dict[dict_i]["animation_direname"].split('_')[0];
-            let animation_i = 0;
-            for(anim_index in animation_dir_data[0]){
-                let index_row = dict[dict_i]['coord_y'];
-                let index_col = dict[dict_i]['coord_x'];
-                let bg_url = '/static/img/atlas/foreground/' + animation_type + '/' + animation_dir_data[0][anim_index] + '/' + '0.png';
-                for(let row_i = 0; row_i < (atlas.tilesize*dict[dict_i]["size_y"]) ; row_i += atlas.tilesize){
-                    for(let col_i = 0; col_i < (atlas.tilesize*dict[dict_i]["size_x"]) ; col_i += atlas.tilesize){
-                        let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                        let entry_point_div = entry_point.querySelector('div');
+        for (let dict_i = 0; dict_i < dict.length; dict_i++) {
+            dict_value = dict[dict_i]["animations"][0];
+            let index_row = dict[dict_i]['coord_y'];
+            let index_col = dict[dict_i]['coord_x'];
+            let bg_url = '/static/img/atlas/foreground/' + dict_value["type"] + '/' + dict_value["animation"] + '/' + '0.gif';
+            for (let row_i = 0; row_i < (atlas.tilesize * dict[dict_i]["size_y"]); row_i += atlas.tilesize) {
+                for (let col_i = 0; col_i < (atlas.tilesize * dict[dict_i]["size_x"]); col_i += atlas.tilesize) {
+                    let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                    let entry_point_div = entry_point.querySelector('div');
 
-                        entry_point_div.classList.add(
-                            'foreground-container',
-                            'animation-container-'+parseInt(animation_container_i )
-                        );
+                    entry_point_div.classList.add(
+                        'foreground-container',
+                        'animation-container-' + parseInt(animation_container_i)
+                    );
 
-                        let img_div = document.createElement('div');
-                        img_div.classList.add(
-                            'm-auto',
-                            'w-[32px]',
-                            'h-[32px]',
-                            'hover:w-[30px]',
-                            'hover:h-[30px]',
-                        );
-                        img_div.style.borderStyle = "dashed solid blue";
-                        img_div.style.backgroundImage = "url('" + bg_url + "')";
-                        img_div.style.backgroundPositionX = `-${col_i}px`;
-                        img_div.style.backgroundPositionY = `-${row_i}px`;
-                        if(dict[dict_i]["size_y"] > 1 && dict[dict_i]["size_x"] > 1){
-                            img_div.classList.add('animation-'+animation_i);
-                            animation_container_set.add('.animation-container-'+parseInt(animation_i));
-                        }
-                        entry_point_div.append(img_div);
-                        index_col++;
-                    }
-                    index_row++;
-                    index_col = dict[dict_i]['coord_x'];
+                    let img_div = document.createElement('div');
+                    img_div.classList.add(
+                        'm-auto',
+                        'w-[32px]',
+                        'h-[32px]',
+                        'hover:w-[30px]',
+                        'hover:h-[30px]',
+                    );
+                    img_div.style.borderStyle = "dashed solid blue";
+                    img_div.style.backgroundImage = "url('" + bg_url + "')";
+                    img_div.style.backgroundPositionX = `-${col_i}px`;
+                    img_div.style.backgroundPositionY = `-${row_i}px`;
+                    entry_point_div.append(img_div);
+                    index_col++;
                 }
-                animation_container_i++;
-                animation_i++;
+                index_row++;
+                index_col = dict[dict_i]['coord_x'];
             }
+            animation_container_i++;
+            animation_i++;
         }
     }
 
-    function display_animation(timer="500"){
-        let animation_container_set_len = animation_container_set.size;
-        let current_elements = "";
-        let previous_elements = "";
-        let index = 0;
-        setInterval( function(){
-            const previousIndex = index === 0 ? animation_container_set_len - 1 : index - 1;
-            current_elements = document.querySelectorAll('.animation-'+ index);
-            previous_elements = document.querySelectorAll('.animation-'+ previousIndex);
-            for(let i = 0; i < current_elements.length; i++){
-                previous_elements[i].style.display = "none";
-                current_elements[i].style.display = "block";
-            }
-            index++;
-            if(index >= animation_container_set_len){
-                index = 0;
-            }
-        }, timer);
-    }
 
-
-    function clear_foreground(){
+    function clear_foreground() {
         let fg_container = document.querySelectorAll('.foreground-container');
-        if(fg_container.length > 0){
-            for(let i = 0; i < fg_container.length; i++){
+        if (fg_container.length > 0) {
+            for (let i = 0; i < fg_container.length; i++) {
                 let div = fg_container[i].closest('div');
                 div.innerHTML = "";
             }
         }
     }
 
-    function remove_animation(id){
-        let element = document.querySelectorAll('.animation-container-'+id)
-        for(let i = 0; i < element.length; i++){
+    function remove_animation(id) {
+        let element = document.querySelectorAll('.animation-container-' + id)
+        for (let i = 0; i < element.length; i++) {
             element[i].innerHTML = "";
         }
-        dict = dict.slice(parseInt(id-1))
+        dict = dict.slice(parseInt(id - 1))
     }
 
     let preview = document.querySelector("#preview");
 
     preview.addEventListener('click', function() {
         clear_foreground();
-        let fg_data = document.querySelectorAll('.foreground-menu-container');
         let bg_folder = document.getElementById("background").value;
         set_animation_data();
         add_background(bg_folder);
         set_foreground(dict);
-        display_animation("1000");
     });
 
-    let save_or_update_data = function(){
+    let save_or_update_data = function() {
         let element = document.querySelectorAll('.foreground-menu-container');
         let data_entry = {};
         let map_data = {};
@@ -514,11 +480,11 @@
         let is_owned_by_faction = document.querySelector('#owned-by-faction');
         let faction_id = "none";
         let item_id_element = null;
-        if(document.querySelector('#faction-select').style.display === "block"){
+        if (document.querySelector('#faction-select').style.display === "block") {
             faction_id = document.querySelector('#faction-choice').querySelector(':checked').value;
         }
-        for(let i = 0; i < element.length; i++){
-            const resource_data = Array.from(element[i].querySelectorAll("select[name=resource-data] option:checked"),e=>e.value);
+        for (let i = 0; i < element.length; i++) {
+            const resource_data = Array.from(element[i].querySelectorAll("select[name=resource-data] option:checked"), e => e.value);
             item_id_element = element[i].querySelector('input[name=item-id]');
             let item_id = typeof item_id_element !== 'undefined' && item_id_element !== null ? item_id_element.value : null;
             data_entry[i] = {
@@ -535,7 +501,7 @@
 
         let sector_selection_id = document.querySelector('#sector-select');
         let url = window.location.href;
-        if(sector_selection_id.value !== "none"){
+        if (sector_selection_id.value !== "none") {
             url = "sector_update_data";
             map_data = {
                 'sector_id': sector_selection_id.value,
@@ -547,7 +513,7 @@
                 'is_faction_starter': is_faction_starter.checked,
                 'is_owned_by_faction': is_owned_by_faction.checked,
             };
-        }else{
+        } else {
             map_data = {
                 'sector_name': document.querySelector('input[name=sector-name]').value,
                 'sector_background': document.querySelector('#background').querySelector(':checked').textContent,
@@ -560,21 +526,21 @@
         }
 
         const headers = new Headers({
-        'Content-Type': 'x-www-form-urlencoded',
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRFToken': csrf_token
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
         });
         fetch(url, {
             method: 'POST',
             headers,
             credentials: 'include',
             body: JSON.stringify({
-                'data':data_entry,
-                'map_data':map_data,
+                'data': data_entry,
+                'map_data': map_data,
             })
         }).then(() => {
-                window.location.reload();
+            window.location.reload();
         });
     }
 
@@ -582,16 +548,16 @@
     save_or_update_btn.addEventListener('click', save_or_update_data);
 
     let delete_btn = document.querySelector('#map-delete-btn');
-    delete_btn.addEventListener('click', function(){
+    delete_btn.addEventListener('click', function() {
         let sector_selected = document.querySelector('#sector-select');
-        if(sector_selected.value !== "none"){
-            data = {"pk": sector_selected.value}
+        if (sector_selected.value !== "none") {
+            data = { "pk": sector_selected.value }
             url = "sector_delete";
             const headers = new Headers({
-            'Content-Type': 'x-www-form-urlencoded',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': csrf_token
+                'Content-Type': 'x-www-form-urlencoded',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrf_token
             });
             fetch(url, {
                 method: 'POST',
@@ -600,6 +566,6 @@
                 body: JSON.stringify(data),
             }).then(() => {
                 window.location.reload();
-        });
+            });
         }
     })

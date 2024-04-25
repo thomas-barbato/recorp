@@ -9,6 +9,9 @@
 {{ foreground|json_script:"script_foreground" }}
 {{ size|json_script:"script_size" }}
 {{ planet_url|json_script:"script_planet_url" }}
+{{ satellite_url|json_script:"script_satellite_url" }}
+{{ blackhole_url|json_script:"script_blackhole_url" }}
+{{ star_url|json_script:"script_star_url" }}
 {{ station_url|json_script:"script_station_url" }}
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
@@ -116,6 +119,18 @@
                                 {% if item == "planet" %}
                                     {% for planet in animations_data.planet_data %}
                                     <option name="foreground-choice" value="{{ item }}_data">{{planet.fields.name}}</option>
+                                    {% endfor %}
+                                {% elif item == "star" %}
+                                    {% for star in animations_data.star_data %}
+                                    <option name="foreground-choice" value="{{ item }}_data">{{star.fields.name}}</option>
+                                    {% endfor %}
+                                {% elif item == "blackhole" %}
+                                    {% for blackhole in animations_data.blackhole_data %}
+                                    <option name="foreground-choice" value="{{ item }}_data">{{blackhole.fields.name}}</option>
+                                    {% endfor %}
+                                {% elif item == "satellite" %}
+                                    {% for satellite in animations_data.satellite_data %}
+                                    <option name="foreground-choice" value="{{ item }}_data">{{satellite.fields.name}}</option>
                                     {% endfor %}
                                 {% elif item == "asteroid" %}
                                     {% for asteroid in animations_data.asteroid_data %}

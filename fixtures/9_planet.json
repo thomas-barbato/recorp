@@ -4,10 +4,8 @@
     "fields": {
         "name": "planete_1",
         "data": {
-            "animation_1": "p_1_1",
-            "animation_2": "p_1_2",
-            "animation_3": "p_1_3",
-            "animation_4": "p_1_4"
+            "animation": "planete_1",
+            "type": "asteroid"
         },
         "size": {
             "size_x": 4,

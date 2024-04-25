@@ -8,6 +8,9 @@
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
 {{ size|json_script:"script_size" }}
 {{ planet_url|json_script:"script_planet_url" }}
+{{ star_url|json_script:"script_star_url" }}
+{{ blackhole_url|json_script:"script_blackhole_url" }}
+{{ satellite_url|json_script:"script_satellite_url" }}
 {{ station_url|json_script:"script_station_url" }}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
 
@@ -38,61 +41,14 @@
                 </section>
                 <section class="flex w-full flex-row animations-section gap-1">
                     <div class="flex flex-col w-1/2 animation-items">
-                        <label for="animation-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 1:</b></label>
-                        <select id="animation-1" name="animation-1" class="text-center mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
+                        <label for="animation" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation:</b></label>
+                        <select id="animation" name="animation" class="text-center mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
                         </select>
-                         <div id="preview-animation-1" class=" flex flex-row self-start" style="display: none;">
+                         <div id="preview-animation" class=" flex flex-row self-start" style="display: none;">
                             <div class="flex self-start item-center">
                                 <div class="grid">
                                     <table class="no-borders" cellspacing="0" border="0">
-                                        <tbody id="preview-1">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-                    <div class="flex flex-col w-1/2 animation-items">
-                        <label for="animation-2" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 2:</b></label>
-                        <select id="animation-2" name="animation-2" class="text-center mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
-                        </select>
-                         <div id="preview-animation-2" class=" flex flex-row self-start" style="display: none;">
-                            <div class="flex self-start item-center">
-                                <div class="grid">
-                                    <table class="no-spacing" cellspacing="0" border="0">
-                                        <tbody id="preview-2">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-                </section>
-                <section class="flex w-full flex-row gap-1 animations-section gap-1">
-                    <div class="flex flex-col w-1/2 animation-items">
-                        <label for="animation-3" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 3:</b></label>
-                        <select id="animation-3" name="animation-3" class="text-center mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
-                        </select>
-                         <div id="preview-animation-3" class=" flex flex-row self-start" style="display: none;">
-                            <div class="flex self-start item-center mx-auto">
-                                <div class="grid">
-                                    <table class="no-spacing" cellspacing="0" border="0">
-                                        <tbody id="preview-3">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-                    <div class="flex flex-col w-1/2 animation-items">
-                        <label for="animation-4" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Animation 4:</b></label>
-                        <select id="animation-4" name="animation-4" class="text-center mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer animation-selection">
-                        </select>
-                         <div id="preview-animation-4" class=" flex flex-row self-start" style="display: none;">
-                            <div class="flex self-start item-center">
-                                <div class="grid">
-                                    <table class="no-spacing" cellspacing="0" border="0">
-                                        <tbody id="preview-4">
+                                        <tbody id="preview">
                                         </tbody>
                                     </table>
                                 </div>

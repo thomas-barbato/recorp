@@ -38,70 +38,65 @@ function add_sector_background(background_name) {
 }
 
 function add_sector_foreground(sector_element) {
-    let element_data = "";
-    let element_type = "";
-    let modal = "";
-    let element_type_translated = "";
+    let element_data = undefined;
+    let element_type = undefined;
+    let modal = undefined;
+    let element_type_translated = undefined;
+    let folder_name = undefined;
+    console.log(sector_element);
     for (let sector_i = 0; sector_i < sector_element.length; sector_i++) {
-        let animation_dir_data = [];
-        animation_dir_data.push(sector_element[sector_i]["animations"]);
-        element_type = sector_element[sector_i]["type"];
+        element_type = sector_element[sector_i]["animations"][0];
         element_type_translated = sector_element[sector_i]["type_translated"];
         element_data = sector_element[sector_i]["data"];
-        let animation_i = 0;
+        folder_name = sector_element[sector_i]["animations"][1];
         modal = create_modal(
             element_data["name"],
             element_type_translated
         );
+
         document.querySelector('#modal-container').append(modal);
-        for (let anim_index in animation_dir_data[0]) {
-            let index_row = sector_element[sector_i]['data']['coord_y'];
-            let index_col = sector_element[sector_i]['data']['coord_x'];
-            let size_x = sector_element[sector_i]['size']["size_x"]
-            let size_y = sector_element[sector_i]['size']["size_y"]
-            let bg_url = '/static/img/atlas/foreground/' + element_type + '/' + animation_dir_data[0][anim_index] + '/' + '0.png';
-            for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
-                for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
-                    let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
-                    let entry_point_div = entry_point.querySelector('div');
-                    let entry_point_border = entry_point.querySelector('span');
-                    let img_div = document.createElement('div');
+        let index_row = sector_element[sector_i]['data']['coord_y'];
+        let index_col = sector_element[sector_i]['data']['coord_x'];
+        let size_x = sector_element[sector_i]['size']["size_x"];
+        let size_y = sector_element[sector_i]['size']["size_y"];
+        let bg_url = '/static/img/atlas/foreground/' + element_type + '/' + folder_name + '/' + '0.gif';
 
-                    entry_point.classList.add('uncrossable');
+        for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
+                let entry_point_div = entry_point.querySelector('div');
+                let entry_point_border = entry_point.querySelector('span');
+                let img_div = document.createElement('div');
 
-                    entry_point_border.style.borderColor = "orange";
-                    entry_point_border.style.borderStyle = "dashed";
-                    entry_point_border.style.cursor = "pointer";
-                    entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
-                    entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
-                    entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                    entry_point_border.setAttribute('onclick', "open_modal('" + "modal-" + element_data["name"] + "')");
+                entry_point.classList.add('uncrossable');
 
-                    img_div.classList.add(
-                        'relative',
-                        'left-0',
-                        'right-0',
-                        'm-0',
-                        'p-0',
-                        'w-[32px]',
-                        'h-[32px]',
-                        'z-1'
-                    );
-                    img_div.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
-                    img_div.style.backgroundImage = "url('" + bg_url + "')";
-                    img_div.style.backgroundPositionX = `-${col_i}px`;
-                    img_div.style.backgroundPositionY = `-${row_i}px`;
-                    entry_point_div.append(img_div);
-                    if (size_x > 1 && size_y > 1) {
-                        img_div.classList.add('animation-' + animation_i);
-                        animation_container_set.add('.animation-' + animation_i);
-                    }
-                    index_col++;
-                }
-                index_row++;
-                index_col = sector_element[sector_i]['data']['coord_x'];
+                entry_point_border.style.borderColor = "orange";
+                entry_point_border.style.borderStyle = "dashed";
+                entry_point_border.style.cursor = "pointer";
+                entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
+                entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
+                entry_point_border.setAttribute('onclick', "open_modal('" + "modal-" + element_data["name"] + "')");
+
+                img_div.classList.add(
+                    'relative',
+                    'left-0',
+                    'right-0',
+                    'm-0',
+                    'p-0',
+                    'w-[32px]',
+                    'h-[32px]',
+                    'z-1'
+                );
+                img_div.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                img_div.style.backgroundImage = "url('" + bg_url + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_div.append(img_div);
+                index_col++;
             }
-            animation_i++;
+            index_row++;
+            index_col = sector_element[sector_i]['data']['coord_x'];
         }
     }
 }
@@ -226,26 +221,6 @@ function open_modal(id) {
     e.classList.remove('hidden');
 }
 
-function display_animation(timer = "500") {
-    let animation_container_set_len = animation_container_set.size;
-    let current_elements = "";
-    let previous_elements = "";
-    let index = 0;
-    setInterval(function() {
-        const previousIndex = index === 0 ? animation_container_set_len - 1 : index - 1
-        current_elements = document.querySelectorAll('.animation-' + index);
-        previous_elements = document.querySelectorAll('.animation-' + previousIndex);
-        for (let i = 0; i < current_elements.length; i++) {
-            previous_elements[i].style.display = "none";
-            current_elements[i].style.display = "block";
-        }
-        index++;
-        if (index >= animation_container_set.size) {
-            index = 0;
-        }
-    }, timer);
-}
-
 function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-x').textContent = `x = ${x}`;
     document.querySelector('#player-coord-y').textContent = `y = ${y}`;
@@ -333,8 +308,6 @@ window.addEventListener('load', () => {
 
     let player_start_pos = document.querySelector('.player-start-pos');
     player_start_pos.addEventListener('click', reverse_player_ship_display);
-
-    display_animation(timer = "500");
     set_pathfinding_event();
 
     gameSocket.onmessage = function(e) {

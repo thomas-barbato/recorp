@@ -41,8 +41,6 @@ function display_pathfinding() {
             end_y: current_player.coord.end_x,
             end_x: current_player.coord.end_y
         });
-        //ship_end_pos.innerHTML = ship_start_pos.innerHTML;
-        //ship_start_pos.innerHTML = "";
         current_player.set_selected_cell_bool(false);
     }
 

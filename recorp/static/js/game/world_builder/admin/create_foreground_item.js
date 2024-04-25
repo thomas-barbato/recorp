@@ -2,6 +2,9 @@ const size = JSON.parse(document.getElementById('script_size').textContent);
 const planet_url = JSON.parse(document.getElementById('script_planet_url').textContent);
 const station_url = JSON.parse(document.getElementById('script_station_url').textContent);
 const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').textContent);
+const star_url = JSON.parse(document.getElementById('script_star_url').textContent);
+const blackhole_url = JSON.parse(document.getElementById('script_blackhole_url').textContent);
+const satellite_url = JSON.parse(document.getElementById('script_satellite_url').textContent);
 let fg_item_choice = document.querySelectorAll('input[name=item-type-choice-section]');
 let animation_selection = document.querySelectorAll('.animation-selection');
 let animation_array = []
@@ -14,10 +17,10 @@ let atlas = {
     'map_width_size': 0,
 };
 
-let display_animation_file_choice = function(){
+let display_animation_file_choice = function() {
     reset_field();
     fg_item = this.value;
-    switch(fg_item){
+    switch (fg_item) {
         case "planet":
             atlas.col = atlas.row = size[0]["planet_data"]["size_x"];
             append_select_field(planet_url);
@@ -30,6 +33,19 @@ let display_animation_file_choice = function(){
             atlas.col = atlas.row = size[2]["asteroid_data"]["size_x"];
             append_select_field(asteroid_url);
             break;
+        case "satellite":
+            atlas.col = atlas.row = size[3]["satellite_data"]["size_x"];
+            append_select_field(satellite_url);
+            break;
+        case "blackhole":
+            atlas.col = size[4]["blackhole_data"]["size_x"];
+            atlas.row = size[4]["blackhole_data"]["size_y"];
+            append_select_field(blackhole_url);
+            break;
+        case "star":
+            atlas.col = atlas.row = size[5]["star_data"]["size_x"];
+            append_select_field(star_url);
+            break;
         default:
             break;
     }
@@ -40,26 +56,25 @@ let display_animation_file_choice = function(){
     create_table();
 }
 
-let display_animation_preview = function(e){
+let display_animation_preview = function(e) {
     let element = this.parentNode.parentNode.parentNode;
-    let animation_number = e.target.id.split('-')[1];
     let directory = e.target.value;
-    document.querySelector('#preview-'+animation_number).innerHTML = "";
+    document.querySelector('#preview').innerHTML = "";
 
-    if(directory !== "none"){
+    if (directory !== "none") {
         let image_name = 0
         let tr = "";
         let td = "";
         let table = "";
-        let bg_url = '/static/img/atlas/foreground/' + fg_item + '/' + directory + '/' + '0.png';
+        let bg_url = '/static/img/atlas/foreground/' + fg_item + '/' + directory + '/' + '0.gif';
         let index = 0;
 
-        for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tile_size){
-            table = element.querySelector('#preview-'+animation_number)
+        for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tile_size) {
+            table = element.querySelector('#preview')
             tr = document.createElement('tr');
             tr.classList.add('rows', "no-borders");
 
-            for(let col_i = 0; col_i < atlas.map_width_size ; col_i += atlas.tile_size){
+            for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tile_size) {
                 td = document.createElement('td');
                 td.classList.add("w-[32px]", "h-[32px]", "m-0", "p-0", "z-5", "no-borders");
                 td.id = index;
@@ -71,16 +86,15 @@ let display_animation_preview = function(e){
                 index++;
             }
         }
-        console.log(table);
-        element.querySelector('#preview-animation-'+animation_number).style.display = "block";
-    }else{
-        element.querySelector('#preview-animation-'+animation_number).style.display = "none";
+        element.querySelector('#preview-animation').style.display = "block";
+    } else {
+        element.querySelector('#preview-animation').style.display = "none";
     }
 }
 
-function append_select_field(array){
-    for(let a = 0; a < animation_selection.length; a++){
-        if(animation_selection[a].length > 0){
+function append_select_field(array) {
+    for (let a = 0; a < animation_selection.length; a++) {
+        if (animation_selection[a].length > 0) {
             animation_selection[a].innerHTML = "";
         }
 
@@ -89,7 +103,7 @@ function append_select_field(array){
         opt_none.innerHTML = "none";
         animation_selection[a].appendChild(opt_none);
 
-        for(let i = 0; i < array.length; i++){
+        for (let i = 0; i < array.length; i++) {
             let opt = document.createElement('option');
             opt.value = array[i];
             opt.innerHTML = array[i];
@@ -99,26 +113,26 @@ function append_select_field(array){
     }
 }
 
-function reset_field(){
+function reset_field() {
     let select = document.querySelectorAll('select');
     let table = document.querySelectorAll('tbody');
-    for(let i = 0; i < select.length; i++){
+    for (let i = 0; i < select.length; i++) {
         select[i].innerHTML = "";
         table[i].innerHTML = "";
     }
 }
 
-for(let i = 0; i < fg_item_choice.length; i++){
+for (let i = 0; i < fg_item_choice.length; i++) {
     fg_item_choice[i].addEventListener('click', display_animation_file_choice);
 }
 
-function create_table(){
-    for(let row_i = 0; row_i < atlas.map_height_size ; row_i += atlas.tile_size){
+function create_table() {
+    for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tile_size) {
         let table = document.querySelector('#preview')
         let tr = document.createElement('tr');
         tr.classList.add('rows');
 
-        for(let col_i = 0;  col_i < atlas.map_width_size ; col_i += atlas.tile_size){
+        for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tile_size) {
             let td = document.createElement('td');
             td.classList.add(
                 "w-[32px]",

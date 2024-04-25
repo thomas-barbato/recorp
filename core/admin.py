@@ -151,27 +151,37 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["item_choice"] = ["planet", "asteroid", "station"]
+        context["item_choice"] = ["planet", "asteroid", "station", "satellite", "star", "blackhole"]
         context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
         context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
+        context["satellite_url"] = GetMapDataFromDB.get_fg_element_url("satellite")
+        context["star_url"] = GetMapDataFromDB.get_fg_element_url("star")
+        context["blackhole_url"] = GetMapDataFromDB.get_fg_element_url("blackhole")
         context["size"] = GetMapDataFromDB.get_size()
         return context
 
     def post(self, request):
-        select_type = ["planet", "asteroid", "station"]
+        select_type = ["planet", "asteroid", "station", "satellite", "star", "blackhole"]
         selected = request.POST.get("item-type-choice-section")
         if selected in select_type:
             fg_name = re.sub(r"\W", "", request.POST.get("foreground-item-name"))
             if len(fg_name) == 0:
                 fg_name = "Default value name"
             data = {
-                "animation_1": request.POST.get("animation-1"),
-                "animation_2": request.POST.get("animation-2"),
-                "animation_3": request.POST.get("animation-3"),
-                "animation_4": request.POST.get("animation-4"),
+                "animation": request.POST.get("animation"),
+                "type": request.POST.get("item-type-choice-section"), 
             }
             match selected:
+                case "satellite":
+                    size = {"size_x": 3, "size_y": 3}
+                    Planet.objects.create(name=fg_name, data=data, size=size)
+                case "star":
+                    size = {"size_x": 2, "size_y": 2}
+                    Planet.objects.create(name=fg_name, data=data, size=size)
+                case "blackhole":
+                    size = {"size_x": 3, "size_y": 5}
+                    Planet.objects.create(name=fg_name, data=data, size=size)
                 case "planet":
                     size = {"size_x": 4, "size_y": 4}
                     Planet.objects.create(name=fg_name, data=data, size=size)
@@ -202,6 +212,9 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         context["animations_data"] = GetMapDataFromDB.get_animation_queryset()
         context["resources_data"] = GetMapDataFromDB.get_resource_queryset()
         context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
+        context["star_url"] = GetMapDataFromDB.get_fg_element_url("star")
+        context["blackhole_url"] = GetMapDataFromDB.get_fg_element_url("blackhole")
+        context["satellite_url"] = GetMapDataFromDB.get_fg_element_url("satellite")
         context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
         context["security_data"] = GetMapDataFromDB.get_table(
@@ -332,6 +345,18 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                         case "planet":
                             item_name = Planet.objects.filter(
                                 id=table.source_id
+                            ).values_list("name", flat=True)[0]
+                        case "satellite":
+                            item_name = Planet.objects.filter(
+                                id=table.source_id, data__contains={'type': "satellite"}
+                            ).values_list("name", flat=True)[0]
+                        case "blackhole":
+                            item_name = Planet.objects.filter(
+                                id=table.source_id, data__contains={'type': "blackhole"}
+                            ).values_list("name", flat=True)[0]
+                        case "star":
+                            item_name = Planet.objects.filter(
+                                id=table.source_id, data__contains={'type': "star"}
                             ).values_list("name", flat=True)[0]
                         case "asteroid":
                             item_name = Asteroid.objects.filter(

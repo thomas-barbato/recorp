@@ -29,6 +29,9 @@ class GetMapDataFromDB:
             {"planet_data": {"size_x": 4, "size_y": 4}},
             {"station_data": {"size_x": 3, "size_y": 3}},
             {"asteroid_data": {"size_x": 1, "size_y": 1}},
+            {"satellite_data": {"size_x": 3, "size_y": 3}},
+            {"blackhole_data": {"size_x": 5, "size_y": 3}},
+            {"star_data": {"size_x": 2, "size_y": 2}},
         ]
 
     @staticmethod
@@ -37,6 +40,9 @@ class GetMapDataFromDB:
             "planet": {"size_x": 4, "size_y": 4},
             "station": {"size_x": 3, "size_y": 3},
             "asteroid": {"size_x": 1, "size_y": 1},
+            "satellite": {"size_x": 3, "size_y": 3},
+            "blackhole": {"size_x": 5, "size_y": 3},
+            "star": {"size_x": 2, "size_y": 2},
         }[element]
 
     @staticmethod
@@ -63,13 +69,22 @@ class GetMapDataFromDB:
 
     @staticmethod
     def get_fg_type():
-        return ["planet", "asteroid", "station"]
+        return ["planet", "asteroid", "station", "blackhole", "star", "satellite"]
 
     @staticmethod
     def get_animation_queryset():
         return {
             "planet_data": json.loads(
-                serializers.serialize("json", Planet.objects.all())
+                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "planet"}))
+            ),
+            "satellite_data": json.loads(
+                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "satellite"}))
+            ),
+            "blackhole_data": json.loads(
+                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "blackhole"}))
+            ),
+            "star_data": json.loads(
+                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "star"}))
             ),
             "asteroid_data": json.loads(
                 serializers.serialize("json", Asteroid.objects.all())
@@ -90,6 +105,9 @@ class GetMapDataFromDB:
     @staticmethod
     def get_table(table_name):
         return {
+            "satellite": [Planet, PlanetResource],
+            "star": [Planet, PlanetResource],
+            "blackhole": [Planet, PlanetResource],
             "planet": [Planet, PlanetResource],
             "asteroid": [Asteroid, AsteroidResource],
             "station": [Station, StationResource],
