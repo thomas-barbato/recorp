@@ -77,8 +77,6 @@ class StoreInCache:
                     if v != "none"
                 ]
                 
-                print(map_element)
-
                 sector_data["sector_element"].append(
                     {
                         "type": map_element[0],

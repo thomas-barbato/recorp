@@ -135,6 +135,7 @@ function create_table() {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tile_size) {
             let td = document.createElement('td');
             td.classList.add(
+                "absolute",
                 "w-[32px]",
                 "h-[32px]",
                 "m-0",
@@ -145,13 +146,13 @@ function create_table() {
 
             let div = document.createElement('div');
             div.classList.add(
-                'relative',
                 'w-[32px]',
                 'h-[32px]',
-                'hover:border',
-                'hover:border-amber-400',
                 'border-dashed',
                 'block',
+                "m-0",
+                "p-0",
+                "z-5",
                 'hover:bg-slate-300/10'
             );
             td.appendChild(div)
