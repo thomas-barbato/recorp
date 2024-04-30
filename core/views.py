@@ -307,7 +307,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             "sector_id", flat=True
         )[0]
         if Sector.objects.filter(id=pk).exists():
-            data = StoreInCache(f"play_{pk}").get_or_set_cache()
+            data = StoreInCache(f"play_{pk}", self.request.user).get_or_set_cache()
             result_dict = dict()
             for p in data["pc_npc"]:
                 p["user"]["archetype_name"] = _(p["user"]["archetype_name"])

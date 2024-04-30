@@ -11,10 +11,10 @@ from core.models import (
 
 
 class StoreInCache:
-    def __init__(self, room_name, value=[]):
+    def __init__(self, room_name, user_calling):
         self.room = room_name
         self.sector_pk = self.room.split("_")[1]
-        self.value = value
+        self.user_calling = user_calling
 
     def get_or_set_cache(self):
         if cache.get(self.room):
@@ -102,6 +102,7 @@ class StoreInCache:
                 {
                     "user": {
                         "user": data["user_id"],
+                        "player": data["id"],
                         "name": data["name"],
                         "coordinates": data["coordinates"],
                         "image": data["image"],
@@ -140,21 +141,21 @@ class StoreInCache:
 
     def set_selected_card(self):
         in_cache = cache.get(self.room)
-        if any("id" in d for d in self.value):
+        if any("id" in d for d in self.user_calling):
             # if first card have been picked
             in_cache["selected_card"] = {
-                "card_id": self.value["id"],
-                "username": self.value["username"],
+                "card_id": self.user_calling["id"],
+                "username": self.user_calling["username"],
             }
         else:
             # if a second card have been picked
             # useless with 2 cards, but with 3 it may be workeable
-            # because for the third card self.value["cards"][2]
+            # because for the third card self.user_calling["cards"][2]
             # valide_pair will be used.
             # need to be tested.
             in_cache["selected_card"] = {
-                "card_id": self.value["cards"][1],
-                "username": self.value["username"],
+                "card_id": self.user_calling["cards"][1],
+                "username": self.user_calling["username"],
             }
 
         cache.set(self.room, in_cache)
@@ -164,14 +165,13 @@ class StoreInCache:
         player_position = in_cache["pc_npc"]
         
         # minus 1 to be same has in db.
-        position = {k: v-1 for k, v in pos.items()}
+        player = pos["player"]
         
         try:
             found_player = next(
                 p
                 for p in player_position
-                if position["start_x"] == p["user"]["coordinates"]["coord_x"]
-                and position["start_y"] == p["user"]["coordinates"]["coord_y"]
+                if player == p["user"]["player"]
             )
             
         except StopIteration:
@@ -179,13 +179,11 @@ class StoreInCache:
         
         found_player_index = player_position.index(found_player)
         player_position[found_player_index]["user"]["coordinates"] = {
-            "coord_x" : int(position["end_x"]), "coord_y" : int(position["end_y"])
+            "coord_x" : int(pos["end_x"]), "coord_y" : int(pos["end_y"])
         }
         
         in_cache["pc_npc"] = player_position
         cache.set(self.room, in_cache)
-        
-        return position
         
 
     def get_selected_card(self):
@@ -197,13 +195,13 @@ class StoreInCache:
         value = in_cache["cards"]
 
         if validate_pair is True:
-            found_item = next(item for item in value if item["id"] == self.value["id"])
+            found_item = next(item for item in value if item["id"] == self.user_calling["id"])
             found_item_index = value.index(found_item)
-            value[found_item_index]["is_displayed"] = self.value["is_displayed"]
-            value[found_item_index]["picked_up_by"] = self.value["username"]
+            value[found_item_index]["is_displayed"] = self.user_calling["is_displayed"]
+            value[found_item_index]["picked_up_by"] = self.user_calling["username"]
             in_cache["cards"] = value
         else:
-            found_item = [item for item in value if item["id"] in self.value["cards"]]
+            found_item = [item for item in value if item["id"] in self.user_calling["cards"]]
             for index in found_item:
                 found_item_index = value.index(index)
                 value[found_item_index]["is_displayed"] = False
@@ -224,10 +222,10 @@ class StoreInCache:
     def set_user_score(self, username):
         in_cache = cache.get(self.room)
         user_value = in_cache["users"]
-        found_item = next(item for item in user_value if item["username"] == self.value)
+        found_item = next(item for item in user_value if item["username"] == self.user_calling)
         found_item_index = user_value.index(found_item)
 
-        if self.value == username:
+        if self.user_calling == username:
             user_value[found_item_index]["points"] += 5
             in_cache["users"] = user_value
             in_cache["pairs_found"] += 1
@@ -247,10 +245,10 @@ class StoreInCache:
     def add_user(self):
         in_cache = cache.get(self.room)
         user_list = in_cache["users"]
-        if not [key for key in user_list if key["username"] == self.value]:
+        if not [key for key in user_list if key["username"] == self.user_calling]:
             user_list.append(
                 {
-                    "username": self.value,
+                    "username": self.user_calling,
                     "points": 0,
                     "created_date": self.get_datetime_json(datetime.datetime.now()),
                 }
@@ -262,14 +260,14 @@ class StoreInCache:
     def get_user(self):
         user_array = []
         for key in cache.get(self.room)["users"]:
-            if key["username"] == self.value:
+            if key["username"] == self.user_calling:
                 user_array.append(key)
         return user_array
 
     def delete_user(self):
         in_cache = cache.get(self.room)
         in_cache["users"] = [
-            key for key in in_cache["users"] if key["username"] != self.value
+            key for key in in_cache["users"] if key["username"] != self.user_calling
         ]
         if not in_cache["selected_card"]["card_id"] is None:
             found_item = next(
@@ -295,7 +293,7 @@ class StoreInCache:
         new_msg.append(
             {
                 "username": user,
-                "value": self.value,
+                "value": self.user_calling,
                 "created_date": self.get_datetime_json(datetime.datetime.now()),
             }
         )

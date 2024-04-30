@@ -170,6 +170,10 @@ STATICFILES_DIRS = [
     ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
     ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
     ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations")),
+    ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "asteroids")),
+    ("asteroids", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "satellites")),
+    ("stars", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stars")),
+    ("blackholes", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "blackholes")),
     ("default_img", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "default_img")),
     ("fontawesome", os.path.join(BASE_DIR, "recorp", "static", "js", "fontawesome")),
     ("ckeditor", os.path.join(BASE_DIR, "recorp", "static", "js", "ckeditor5"))

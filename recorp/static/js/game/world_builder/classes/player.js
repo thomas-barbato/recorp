@@ -1,11 +1,16 @@
 class Player {
-    constructor(start_x, start_y, move_points) {
+    constructor(player_id, start_x, start_y, move_points) {
+        this.player_id = player_id;
         this.start_x = start_x;
         this.start_y = start_y;
         this.end_x = 0;
         this.end_y = 0;
         this.move_points = move_points;
         this.selected_cell = false;
+    }
+
+    set_player_id(player_id) {
+        this.player_id = player_id;
     }
 
     set_remaining_move_points(value) {
@@ -26,6 +31,10 @@ class Player {
     set_end_coord(end_x, end_y) {
         this.end_x = end_x;
         this.end_y = end_y;
+    }
+
+    get player() {
+        return this.player_id;
     }
 
     get selected_cell_bool() {

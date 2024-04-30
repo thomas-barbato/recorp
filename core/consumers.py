@@ -5,6 +5,7 @@ from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 
 from core.backend.store_in_cache import StoreInCache
+from core.backend.player_actions import PlayerAction
 
 logger = logging.getLogger("django")
 
@@ -68,12 +69,26 @@ class GameConsumer(WebsocketConsumer):
         )
     
     def async_move(self, event):
-        store = StoreInCache(self.room_group_name, self.user.username)
-        new_coord = store.update_player_position(json.loads(event["message"]))
-        if self.user.is_authenticated:
-            self.send(
-                text_data=json.dumps({"type": "player_move", "message": new_coord})
+        response = {}
+        message = json.loads(event["message"])
+        
+        store = StoreInCache(
+            room_name=self.room_group_name, 
+            user_calling=self.user
+        )
+        store.update_player_position(message)
+        
+        p = PlayerAction(self.user)
+        if p.destination_already_occupied(message["end_x"], message["end_y"]) is False:
+            p.move(
+                end_x=message["end_x"],
+                end_y=message["end_y"]
             )
+            response = {"type": "player_move", "message": message}
+        self.send(
+            text_data=json.dumps(response)
+        )
+            
 
     def send_message(self, event):
         pass

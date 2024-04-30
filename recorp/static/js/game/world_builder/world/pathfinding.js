@@ -3,8 +3,9 @@ let cell_already_clicked = false;
 
 
 let current_player = new Player(
-    0,
-    0,
+    null,
+    null,
+    null,
     10,
 )
 
@@ -15,12 +16,13 @@ function display_pathfinding() {
 
     if (current_player.selected_cell_bool === false) {
         for (let i = 0; i < pathfinder_obj.path.length; i++) {
-
+            // main element
             let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x + 1].cells[pathfinder_obj.path[i].y + 1];
+            // span inside main element
             let span_el = td_el.querySelector('span');
             span_el.classList.add('text-white', 'font-bold', 'text-center');
-
-            if (i <= current_player.move_points_value) {
+            // check movement point value
+            if (i < current_player.move_points_value) {
                 span_el.classList.add('bg-teal-500/30');
                 current_player.set_end_coord(
                     pathfinder_obj.path[i].x + 1,
@@ -35,13 +37,38 @@ function display_pathfinding() {
 
         current_player.set_selected_cell_bool(true);
     } else {
-        async_move({
-            start_y: current_player.coord.start_y + 1,
-            start_x: current_player.coord.start_x + 1,
-            end_y: current_player.coord.end_x,
-            end_x: current_player.coord.end_y
-        });
+
         current_player.set_selected_cell_bool(false);
+        // transfert all data from start pos to end pos
+        // becarfull, for end , x and y are reversed
+        let start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y + 1].cells[current_player.coord.start_x + 1];
+        let end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
+
+        let player_name = start_pos.querySelector('div>span').title.split(' ')[0];
+        let inbetween_pos = end_pos.innerHTML;
+
+        end_pos.innerHTML = start_pos.innerHTML;
+        start_pos.innerHTML = inbetween_pos;
+
+        end_pos.querySelector('span').addEventListener('click', reverse_player_ship_display)
+        end_pos.querySelector('div>span').title = `${player_name} [x = ${parseInt(current_player.coord.end_y)-1}; y = ${parseInt(current_player.coord.end_x)-1}]`;
+        end_pos.classList.add('player-start-pos', 'uncrossable');
+
+        // rebinding old start location in title
+        start_pos.classList.remove('player-start-pos', 'uncrossable');
+        start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(current_player.coord.start_x)}; y = ${parseInt(current_player.coord.start_y)}]`;
+
+        // redefine start_coord 
+        current_player.set_start_coord(current_player.coord.end_y - 1, current_player.coord.end_x - 1)
+        update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
+
+        async_move({
+            player: current_player.player,
+            end_y: current_player.coord.end_y,
+            end_x: current_player.coord.end_x,
+            start_x: current_player.coord.start_x,
+            start_y: current_player.coord.start_y
+        })
     }
 
 
@@ -52,18 +79,24 @@ function get_pathfinding(e) {
 
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
-
             let id = e.parentNode.parentNode.id.split('_');
             let grid_container = document.querySelector('.tabletop-view');
+            // Player.coord is null only when it's the first movement . 
+            if (current_player.coord.start_x === null && current_player.coord.start_y === null) {
+                current_player.set_player_id(
+                    map_informations['pc_npc'][i]['user']['player']
+                );
+                current_player.set_start_coord(
+                    map_informations['pc_npc'][i]['user']['coordinates'].coord_x,
+                    map_informations['pc_npc'][i]['user']['coordinates'].coord_y,
+                );
+            }
 
-            current_player.set_start_coord(
-                map_informations['pc_npc'][i]['user']['coordinates'].coord_x,
-                map_informations['pc_npc'][i]['user']['coordinates'].coord_y,
-            )
+            // we use target id to get destination coord.
             current_player.set_end_coord(
                 parseInt(id[1]),
                 parseInt(id[0])
-            )
+            );
 
             current_player.set_selected_cell_bool(false);
 
@@ -157,8 +190,11 @@ GraphSearch.prototype.initialize = function() {
 
 GraphSearch.prototype.cellOnMouseHover = function() {
 
+
     this.end = this.nodeFromElement(this.gs_opts.grid_goal);
     this.start = this.nodeFromElement(this.gs_opts.grid_start);
+
+
     var path = astar.search(this.temp_graph, this.start, this.end, this.gs_opts);
 
     if (path.length === 0) {
@@ -173,6 +209,7 @@ GraphSearch.prototype.nodeFromElement = function(arg) {
 };
 
 GraphSearch.prototype.setPathfindingObject = function(path) {
+    console.log(path)
     pathfinder_obj = {
         path: path,
         graph: this.gs_graph,

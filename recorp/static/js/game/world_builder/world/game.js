@@ -43,7 +43,6 @@ function add_sector_foreground(sector_element) {
     let modal = undefined;
     let element_type_translated = undefined;
     let folder_name = undefined;
-    console.log(sector_element);
     for (let sector_i = 0; sector_i < sector_element.length; sector_i++) {
         element_type = sector_element[sector_i]["animations"][0];
         element_type_translated = sector_element[sector_i]["type_translated"];
@@ -314,7 +313,7 @@ window.addEventListener('load', () => {
         const data = JSON.parse(e.data);
         switch (data.type) {
             case "player_move":
-                update_player_coord(JSON.parse(e.data))
+                update_player_coord(data)
                 break;
             case "send_message":
                 //sendMessage(data);
