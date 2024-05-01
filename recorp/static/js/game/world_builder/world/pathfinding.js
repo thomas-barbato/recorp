@@ -34,7 +34,6 @@ function display_pathfinding() {
 
             span_el.textContent = i + 1;
         }
-        console.log(pathfinder_obj)
         current_player.set_selected_cell_bool(true);
     } else {
 

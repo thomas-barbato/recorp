@@ -14,7 +14,6 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
-
     let entry_point = document.getElementById(`${data["start_y"]}_${data["start_x"]}`);
     let end_point = document.getElementById(`${data["end_y"]}_${data["end_x"]}`);
     let player_name = entry_point.querySelector('div>span').title.split(' ')[0];
@@ -23,8 +22,8 @@ function update_player_coord(data) {
     end_point.innerHTML = entry_point.innerHTML;
     entry_point.innerHTML = inbetween_pos;
 
-    entry_point.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(data["start_y"]) - 1}; y = ${parseInt(data["start_x"]) - 1}]`;
-    end_point.querySelector('div>span').title = `[${player_name} [x = ${parseInt(data["end_x"])} y = ${parseInt(data["end_x"])}]`;
+    entry_point.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(data["start_x"]) - 1}; y = ${parseInt(data["start_y"]) - 1}]`;
+    end_point.querySelector('div>span').title = `[${player_name} [x = ${parseInt(data["end_x"])} y = ${parseInt(data["end_y"])}]`;
     end_point.classList.add('pc', 'uncrossable');
     entry_point.classList.remove('pc', 'uncrossable');
 }

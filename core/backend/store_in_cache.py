@@ -133,7 +133,7 @@ class StoreInCache:
                     },
                 }
             )
-
+        cache.set(self.room, sector_data)
         return sector_data
 
     def update_player_position(self, pos):
