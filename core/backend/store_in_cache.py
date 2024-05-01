@@ -65,9 +65,6 @@ class StoreInCache:
         }
         for table_key, table_value in foreground_table_set.items():
             for table in table_value:
-                
-                
-                size = GetMapDataFromDB.get_specific_size(table_key)
                 element, _ = GetMapDataFromDB.get_table(table_key)
                 map_element = [
                     v
@@ -138,27 +135,6 @@ class StoreInCache:
             )
 
         return sector_data
-
-    def set_selected_card(self):
-        in_cache = cache.get(self.room)
-        if any("id" in d for d in self.user_calling):
-            # if first card have been picked
-            in_cache["selected_card"] = {
-                "card_id": self.user_calling["id"],
-                "username": self.user_calling["username"],
-            }
-        else:
-            # if a second card have been picked
-            # useless with 2 cards, but with 3 it may be workeable
-            # because for the third card self.user_calling["cards"][2]
-            # valide_pair will be used.
-            # need to be tested.
-            in_cache["selected_card"] = {
-                "card_id": self.user_calling["cards"][1],
-                "username": self.user_calling["username"],
-            }
-
-        cache.set(self.room, in_cache)
 
     def update_player_position(self, pos):
         in_cache = cache.get(self.room)

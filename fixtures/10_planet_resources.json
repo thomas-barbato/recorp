@@ -4,8 +4,8 @@
     "fields": {
         "data": {
             "name": "p-1",
-            "coord_x": "0",
-            "coord_y": "0",
+            "coord_x": "1",
+            "coord_y": "1",
             "description": "lorem ipsum "
         },
         "resource_id": 1,

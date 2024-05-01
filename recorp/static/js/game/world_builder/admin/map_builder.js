@@ -303,8 +303,7 @@
 
     function display_animation_preview(col, row, id, category, directory) {
         let fg_menu = document.querySelector('#foreground-menu-container-' + id);
-        let preview_animation_container = fg_menu.querySelectorAll('.preview-animation-container');
-        dir_category = category.split('_')[0];
+        let dir_category = category.split('_')[0];
         let anim_array = [];
         let preview_width_size = 32 * col;
         let preview_height_size = 32 * row;
@@ -359,8 +358,8 @@
                 let id = fg_data[i].id.split('-')[3];
                 let animation_name = selector.options[selector.selectedIndex].text;
                 let animation_data_direname = selector.options[selector.selectedIndex].value;
-                coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value) + 1;
-                coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value) + 1;
+                coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value);
+                coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value);
                 for (var [i_key, value] in animations_json[animation_data_direname]) {
                     let filtered_data = Object.assign({}, ...Object.entries(
                         animations_json[animation_data_direname][i_key]['fields']['data']

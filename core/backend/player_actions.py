@@ -19,11 +19,21 @@ from core.models import (
 )
 
 class PlayerAction:
-    def __init__(self, user_id):
-        self.player = Player.objects.get(user_id=user_id)
+    def __init__(self, id):
+        self.id = id
+        self.player = Player.objects.get(user_id=id)
+    
+    def is_player_exists(self, player_id):
+        return Player.objects.filter(id=player_id, user_id=self.user_id).exists()
+    
+    def get_player_id(self):
+        return self.player.id
         
     def get_coord(self):
         return self.player.coordinates
+    
+    def get_other_player_coord(self, id):
+        return Player.objects.filter(id=id).values_list('coordinates', flat=True)[0]
     
     def destination_already_occupied(self, end_x, end_y):
         return Player.objects.filter(coordinates__contains={"coord_x": end_x, "coord_y": end_y}).exists()

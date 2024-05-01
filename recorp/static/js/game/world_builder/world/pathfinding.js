@@ -17,7 +17,7 @@ function display_pathfinding() {
     if (current_player.selected_cell_bool === false) {
         for (let i = 0; i < pathfinder_obj.path.length; i++) {
             // main element
-            let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x + 1].cells[pathfinder_obj.path[i].y + 1];
+            let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x].cells[pathfinder_obj.path[i].y];
             // span inside main element
             let span_el = td_el.querySelector('span');
             span_el.classList.add('text-white', 'font-bold', 'text-center');
@@ -25,8 +25,8 @@ function display_pathfinding() {
             if (i < current_player.move_points_value) {
                 span_el.classList.add('bg-teal-500/30');
                 current_player.set_end_coord(
-                    pathfinder_obj.path[i].x + 1,
-                    pathfinder_obj.path[i].y + 1
+                    pathfinder_obj.path[i].x,
+                    pathfinder_obj.path[i].y
                 );
             } else {
                 span_el.classList.add('bg-red-600/30');
@@ -34,14 +34,14 @@ function display_pathfinding() {
 
             span_el.textContent = i + 1;
         }
-
+        console.log(pathfinder_obj)
         current_player.set_selected_cell_bool(true);
     } else {
 
         current_player.set_selected_cell_bool(false);
         // transfert all data from start pos to end pos
         // becarfull, for end , x and y are reversed
-        let start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y + 1].cells[current_player.coord.start_x + 1];
+        let start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y].cells[current_player.coord.start_x];
         let end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
 
         let player_name = start_pos.querySelector('div>span').title.split(' ')[0];
@@ -56,10 +56,10 @@ function display_pathfinding() {
 
         // rebinding old start location in title
         start_pos.classList.remove('player-start-pos', 'uncrossable');
-        start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(current_player.coord.start_x)}; y = ${parseInt(current_player.coord.start_y)}]`;
+        start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(current_player.coord.start_x) - 1}; y = ${parseInt(current_player.coord.start_y) - 1}]`;
 
         // redefine start_coord 
-        current_player.set_start_coord(current_player.coord.end_y - 1, current_player.coord.end_x - 1)
+        current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x)
         update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
 
         async_move({
@@ -70,8 +70,6 @@ function display_pathfinding() {
             start_y: current_player.coord.start_y
         })
     }
-
-
 }
 
 function get_pathfinding(e) {
@@ -93,9 +91,10 @@ function get_pathfinding(e) {
             }
 
             // we use target id to get destination coord.
+            // we add +1 to get the real coord. 
             current_player.set_end_coord(
-                parseInt(id[1]),
-                parseInt(id[0])
+                parseInt(id[1]) + 1,
+                parseInt(id[0]) + 1
             );
 
             current_player.set_selected_cell_bool(false);
@@ -120,7 +119,7 @@ function get_pathfinding(e) {
                 closest: true
             };
 
-            let grid = grid_container.rows[opts.grid_goal.y + 1].cells[opts.grid_goal.x + 1];
+            let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
             if (grid.classList.contains(opts.css.wall)) {
                 return;
             }
@@ -159,17 +158,15 @@ GraphSearch.prototype.initialize = function() {
     let self = this;
     let nodes = [];
     let node_row = [];
-    let cell_weight = 0;
-
 
     // prepare graph, from object to array.
     for (let row_i = 0; row_i < this.gs_opts.grid_size.rows; row_i++) {
         this.gs_grid[row_i] = []
         node_row = [];
         for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
-            this.gs_graph.rows[row_i + 1].cells[col_i + 1].classList.remove("finish");
+            this.gs_graph.rows[row_i].cells[col_i].classList.remove("finish");
             // add wall (weight: 15)
-            if (this.gs_graph.rows[row_i + 1].cells[col_i + 1].classList.contains("uncrossable")) {
+            if (this.gs_graph.rows[row_i].cells[col_i].classList.contains("uncrossable")) {
                 node_row.push(15);
             } else {
                 // define cell weigth
@@ -177,9 +174,9 @@ GraphSearch.prototype.initialize = function() {
             }
             // define end path
             if (row_i == this.gs_opts.grid_goal.y && col_i == this.gs_opts.grid_goal.x) {
-                this.gs_graph.rows[row_i + 1].cells[col_i + 1].classList.add(this.gs_css.finish);
+                this.gs_graph.rows[row_i].cells[col_i].classList.add(this.gs_css.finish);
             }
-            this.gs_grid[row_i].push(this.gs_graph.rows[row_i + 1].cells[col_i + 1]);
+            this.gs_grid[row_i].push(this.gs_graph.rows[row_i].cells[col_i]);
         }
         nodes.push(node_row);
     }
@@ -189,12 +186,8 @@ GraphSearch.prototype.initialize = function() {
 };
 
 GraphSearch.prototype.cellOnMouseHover = function() {
-
-
     this.end = this.nodeFromElement(this.gs_opts.grid_goal);
     this.start = this.nodeFromElement(this.gs_opts.grid_start);
-
-
     var path = astar.search(this.temp_graph, this.start, this.end, this.gs_opts);
 
     if (path.length === 0) {
@@ -205,15 +198,15 @@ GraphSearch.prototype.cellOnMouseHover = function() {
 };
 
 GraphSearch.prototype.nodeFromElement = function(arg) {
+    console.log(arg)
     return this.temp_graph.grid[parseInt(arg.y)][parseInt(arg.x)];
 };
 
 GraphSearch.prototype.setPathfindingObject = function(path) {
-    console.log(path)
     pathfinder_obj = {
         path: path,
         graph: this.gs_graph,
-        player_cell: this.gs_graph.rows[this.gs_opts.grid_start.y + 1].cells[this.gs_opts.grid_start.x + 1],
+        player_cell: this.gs_graph.rows[this.gs_opts.grid_start.y].cells[this.gs_opts.grid_start.x],
     };
 };
 

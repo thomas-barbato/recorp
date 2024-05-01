@@ -4,8 +4,8 @@
         "fields": {
             "data": {
                 "name": "a-1",
-                "coord_x": "6",
-                "coord_y": "5",
+                "coord_x": "7",
+                "coord_y": "6",
                 "description": "lorem ipsum "
             },
             "resource_id": 1,
@@ -21,8 +21,8 @@
         "fields": {
             "data": {
                 "name": "a-2",
-                "coord_x": "5",
-                "coord_y": "5",
+                "coord_x": "6",
+                "coord_y": "6",
                 "description": "lorem ipsum "
             },
             "resource_id": 1,
@@ -38,8 +38,8 @@
         "fields": {
             "data": {
                 "name": "a-3",
-                "coord_x": "5",
-                "coord_y": "6",
+                "coord_x": "6",
+                "coord_y": "7",
                 "description": "lorem ipsum "
             },
             "resource_id": 1,
@@ -55,8 +55,8 @@
         "fields": {
             "data": {
                 "name": "a-4",
-                "coord_x": "6",
-                "coord_y": "6",
+                "coord_x": "7",
+                "coord_y": "7",
                 "description": "lorem ipsum "
             },
             "resource_id": 1,

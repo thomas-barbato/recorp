@@ -28,7 +28,7 @@ function add_sector_background(background_name) {
             entry_point.style.backgroundPositionY = `-${row_i}px`;
 
             entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
-            entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col)-1}; y = ${parseInt(index_row)-1}]`);
+            entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col - 1)}; y = ${parseInt(index_row - 1)}]`);
 
             index_col++;
         }
@@ -62,7 +62,7 @@ function add_sector_foreground(sector_element) {
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
-                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
+                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row)].cells[parseInt(index_col)];
                 let entry_point_div = entry_point.querySelector('div');
                 let entry_point_border = entry_point.querySelector('span');
                 let img_div = document.createElement('div');
@@ -72,7 +72,7 @@ function add_sector_foreground(sector_element) {
                 entry_point_border.style.borderColor = "orange";
                 entry_point_border.style.borderStyle = "dashed";
                 entry_point_border.style.cursor = "pointer";
-                entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute('onclick', "open_modal('" + "modal-" + element_data["name"] + "')");
@@ -87,7 +87,7 @@ function add_sector_foreground(sector_element) {
                     'h-[32px]',
                     'z-1'
                 );
-                img_div.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                img_div.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
                 img_div.style.backgroundImage = "url('" + bg_url + "')";
                 img_div.style.backgroundPositionX = `-${col_i}px`;
                 img_div.style.backgroundPositionY = `-${row_i}px`;
@@ -104,8 +104,8 @@ function add_pc_npc(data) {
     let border_color = "";
 
     for (let i = 0; i < data.length; i++) {
-        let coord_x = (data[i]["user"]["coordinates"].coord_x) + 1;
-        let coord_y = (data[i]["user"]["coordinates"].coord_y) + 1;
+        let coord_x = (data[i]["user"]["coordinates"].coord_x);
+        let coord_y = (data[i]["user"]["coordinates"].coord_y);
         let ship_size_x = data[i]["ship"]['size'].size_x;
         let ship_size_y = data[i]["ship"]['size'].size_y;
 
@@ -123,7 +123,7 @@ function add_pc_npc(data) {
                 entry_point.classList.add('uncrossable');
                 entry_point_border.style.borderStyle = "double dashed";
                 entry_point_border.style.cursor = "pointer";
-                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x: ${coord_x-1}; y: ${coord_y-1}]`);
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x: ${coord_x - 1}; y: ${coord_y - 1}]`);
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.style.backgroundPositionX = `-${col_i}px`;
@@ -134,7 +134,7 @@ function add_pc_npc(data) {
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
                 if (data[i]["user"]["user"] == current_user_id) {
-                    update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
+                    update_user_coord_display(data[i]["user"]["coordinates"].coord_x - 1, data[i]["user"]["coordinates"].coord_y - 1);
                     border_color = "lime";
                     entry_point.classList.add('player-start-pos');
                     space_ship.classList.add('player-ship');
@@ -164,7 +164,7 @@ function add_pc_npc(data) {
 
             }
             coord_y++;
-            coord_x = (data[i]["user"]["coordinates"]["coord_x"]) + 1;
+            coord_x = data[i]["user"]["coordinates"]["coord_x"];
         }
     }
 }
@@ -221,8 +221,8 @@ function open_modal(id) {
 }
 
 function update_user_coord_display(x, y) {
-    document.querySelector('#player-coord-x').textContent = `x = ${x}`;
-    document.querySelector('#player-coord-y').textContent = `y = ${y}`;
+    document.querySelector('#player-coord-x').textContent = `x = ${x - 1}`;
+    document.querySelector('#player-coord-y').textContent = `y = ${y - 1}`;
 }
 
 function update_target_coord_display() {
@@ -313,13 +313,10 @@ window.addEventListener('load', () => {
         const data = JSON.parse(e.data);
         switch (data.type) {
             case "player_move":
-                update_player_coord(data)
+                update_player_coord(data.message)
                 break;
             case "send_message":
                 //sendMessage(data);
-                break;
-            case "player_move":
-                //userJoin(data);
                 break;
             case "user_leave":
                 //userLeave(data);
