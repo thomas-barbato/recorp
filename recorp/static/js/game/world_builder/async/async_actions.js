@@ -14,8 +14,11 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
+    console.log(data)
     let entry_point = document.getElementById(`${data["start_y"]}_${data["start_x"]}`);
     let end_point = document.getElementById(`${data["end_y"]}_${data["end_x"]}`);
+    console.log(entry_point);
+    console.log(end_point);
     let player_name = entry_point.querySelector('div>span').title.split(' ')[0];
     let inbetween_pos = end_point.innerHTML;
 

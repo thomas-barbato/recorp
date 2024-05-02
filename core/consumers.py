@@ -89,6 +89,8 @@ class GameConsumer(WebsocketConsumer):
         response = {"type": "player_move", "message": message}
     
         coord = p.get_other_player_coord(message["player"])
+        print(message)
+        print(coord)
         response = {
             "type": "player_move", 
             "message": {

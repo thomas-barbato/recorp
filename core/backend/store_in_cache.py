@@ -17,22 +17,11 @@ class StoreInCache:
         self.user_calling = user_calling
 
     def get_or_set_cache(self):
-        if cache.get(self.room):
-            return cache.get(self.room)
-        data = self.set_sector_data(self.sector_pk)
-        cache.set(
-            self.room,
-            {
-                "sector": data["sector"],
-                "sector_element": data["sector_element"],
-                "pc_npc": data["pc_npc"],
-                "messages": [],
-            },
-        )
+        if not cache.get(self.room):
+            self.set_sector_data(self.sector_pk)
         return cache.get(self.room)
 
     def set_sector_data(self, pk):
-
         planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(
             self.sector_pk
         )
@@ -134,13 +123,10 @@ class StoreInCache:
                 }
             )
         cache.set(self.room, sector_data)
-        return sector_data
 
     def update_player_position(self, pos):
         in_cache = cache.get(self.room)
         player_position = in_cache["pc_npc"]
-        
-        # minus 1 to be same has in db.
         player = pos["player"]
         
         try:
@@ -159,8 +145,7 @@ class StoreInCache:
         }
         
         in_cache["pc_npc"] = player_position
-        cache.set(self.room, in_cache)
-        
+        cache.set(self.room, in_cache)  
 
     def get_selected_card(self):
         in_cache = cache.get(self.room)
