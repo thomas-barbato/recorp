@@ -32,6 +32,9 @@ class PlayerAction:
     def get_coord(self):
         return self.player.coordinates
     
+    def get_other_player_name(self, id):
+        return Player.objects.filter(id=id).values_list('name', flat=True)[0]
+    
     def get_other_player_coord(self, id):
         return Player.objects.filter(id=id).values_list('coordinates', flat=True)[0]
     

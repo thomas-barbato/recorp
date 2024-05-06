@@ -128,7 +128,6 @@ class StoreInCache:
         in_cache = cache.get(self.room)
         player_position = in_cache["pc_npc"]
         player = pos["player"]
-        
         try:
             found_player = next(
                 p

@@ -74,6 +74,7 @@ class GameConsumer(WebsocketConsumer):
         response = {}
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
+        coord = p.get_other_player_coord(message["player"])
         if p.get_player_id() == message["player"]:
             if p.destination_already_occupied(message["end_x"], message["end_y"]) is False:
                 p.move(
@@ -86,21 +87,20 @@ class GameConsumer(WebsocketConsumer):
             user_calling=self.user
         )
         store.update_player_position(message)
-        response = {"type": "player_move", "message": message}
-    
-        coord = p.get_other_player_coord(message["player"])
-        print(message)
-        print(coord)
+        
         response = {
             "type": "player_move", 
             "message": {
-                "player": message["player"],
-                "start_x": message["start_x"],
-                "start_y": message["start_y"],
-                "end_x": coord["coord_x"],
-                "end_y": coord["coord_y"],
+                "player": p.get_other_player_name(message["player"]),
+                "start_x": coord["coord_x"],
+                "start_y": coord["coord_y"],
+                "end_x": message["end_x"],
+                "end_y": message["end_y"],
             }   
         }
+        
+        print(response)
+        
             
         self.send(
             text_data=json.dumps(response)

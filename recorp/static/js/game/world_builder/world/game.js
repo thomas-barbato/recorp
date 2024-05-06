@@ -153,8 +153,9 @@ function add_pc_npc(data) {
                 }
 
                 entry_point_border.style.borderColor = border_color;
-                space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', pc_or_npc_class);
-                space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', pc_or_npc_class);
+                entry_point.classList.add(pc_or_npc_class)
+                space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer', );
+                space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 space_ship_reversed.style.display = "none";
 
                 div.append(space_ship);

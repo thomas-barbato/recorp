@@ -43,38 +43,30 @@ function display_pathfinding() {
         let start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y].cells[current_player.coord.start_x];
         // revert x and y here.
         let end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
-
         let player_name = start_pos.querySelector('div>span').title.split(' ')[0];
-        let inbetween_pos = end_pos.innerHTML;
 
+        let inbetween_pos = end_pos.innerHTML;
         end_pos.innerHTML = start_pos.innerHTML;
         start_pos.innerHTML = inbetween_pos;
 
         end_pos.querySelector('span').addEventListener('click', reverse_player_ship_display)
         end_pos.querySelector('div>span').title = `${player_name} [x = ${parseInt(current_player.coord.end_y)-1}; y = ${parseInt(current_player.coord.end_x)-1}]`;
-        end_pos.classList.add('player-start-pos', 'uncrossable');
+        end_pos.classList.add('player-start-pos', 'uncrossable', 'pc');
 
         // rebinding old start location in title
         start_pos.classList.remove('player-start-pos', 'uncrossable');
+        start_pos.querySelector('span').removeEventListener('click', reverse_player_ship_display)
         start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(current_player.coord.start_x) - 1}; y = ${parseInt(current_player.coord.start_y) - 1}]`;
 
         // redefine start_coord 
-        current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x)
-        update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
         // you have to revert end_x and end_y because graph use x as y and y as x ...
-        console.log("debut:")
-        let s_x = pathfinder_obj.path[0]["x"]
-        let s_y = pathfinder_obj.path[0]["y"]
-        let e_x = pathfinder_obj.path[pathfinder_obj.path.length - 1]["x"]
-        let e_y = pathfinder_obj.path[pathfinder_obj.path.length - 1]["y"]
-        console.log("x: " + e_x + " y: " + e_y);
+        current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
+        update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
 
         async_move({
             player: current_player.player,
-            end_y: e_x,
-            end_x: e_y,
-            start_x: s_x,
-            start_y: s_y
+            end_y: current_player.coord.end_x,
+            end_x: current_player.coord.end_y,
         })
     }
 }
@@ -85,7 +77,7 @@ function get_pathfinding(e) {
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
             let id = e.parentNode.parentNode.id.split('_');
-            let grid_container = document.querySelector('.tabletop-view');
+            let grid_container = document.querySelector('tbody');
             // Player.coord is null only when it's the first movement . 
             if (current_player.coord.start_x === null && current_player.coord.start_y === null) {
                 current_player.set_player_id(
@@ -167,10 +159,10 @@ GraphSearch.prototype.initialize = function() {
     let node_row = [];
 
     // prepare graph, from object to array.
-    for (let row_i = 0; row_i < this.gs_opts.grid_size.rows; row_i++) {
+    for (let row_i = 0; row_i < this.gs_opts.grid_size.rows + 1; row_i++) {
         this.gs_grid[row_i] = []
         node_row = [];
-        for (let col_i = 0; col_i < this.gs_opts.grid_size.cols; col_i++) {
+        for (let col_i = 0; col_i < this.gs_opts.grid_size.cols + 1; col_i++) {
             this.gs_graph.rows[row_i].cells[col_i].classList.remove("finish");
             // add wall (weight: 15)
             if (this.gs_graph.rows[row_i].cells[col_i].classList.contains("uncrossable")) {
@@ -205,6 +197,15 @@ GraphSearch.prototype.cellOnMouseHover = function() {
 };
 
 GraphSearch.prototype.nodeFromElement = function(arg) {
+    // temporary redefine borders.
+    /*console.log(arg)
+    if (arg.x == 20) {
+        arg.x = 19;
+    }
+    if (arg.y == 15) {
+        arg.y = 14;
+    }
+    console.log(arg)*/
     return this.temp_graph.grid[parseInt(arg.y)][parseInt(arg.x)];
 };
 
@@ -275,7 +276,7 @@ var astar = {
             // Find all neighbors for the current node.
             var neighbors = graph.neighbors(currentNode);
 
-            for (var i = 0, il = neighbors.length; i < il; ++i) {
+            for (var i = 0; i < neighbors.length; ++i) {
                 var neighbor = neighbors[i];
 
                 if (neighbor.closed || neighbor.isWall()) {
