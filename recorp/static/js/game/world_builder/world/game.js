@@ -123,7 +123,7 @@ function add_pc_npc(data) {
                 entry_point.classList.add('uncrossable');
                 entry_point_border.style.borderStyle = "double dashed";
                 entry_point_border.style.cursor = "pointer";
-                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x: ${coord_x - 1}; y: ${coord_y - 1}]`);
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.style.backgroundPositionX = `-${col_i}px`;

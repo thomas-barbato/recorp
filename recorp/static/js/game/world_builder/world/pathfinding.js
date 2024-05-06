@@ -43,20 +43,20 @@ function display_pathfinding() {
         let start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y].cells[current_player.coord.start_x];
         // revert x and y here.
         let end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
-        let player_name = start_pos.querySelector('div>span').title.split(' ')[0];
+        let player_name = start_pos.querySelector('div>span').title;
 
         let inbetween_pos = end_pos.innerHTML;
         end_pos.innerHTML = start_pos.innerHTML;
         start_pos.innerHTML = inbetween_pos;
 
         end_pos.querySelector('span').addEventListener('click', reverse_player_ship_display)
-        end_pos.querySelector('div>span').title = `${player_name} [x = ${parseInt(current_player.coord.end_y)-1}; y = ${parseInt(current_player.coord.end_x)-1}]`;
+        end_pos.querySelector('div>span').title = `${player_name}`;
         end_pos.classList.add('player-start-pos', 'uncrossable', 'pc');
 
         // rebinding old start location in title
-        start_pos.classList.remove('player-start-pos', 'uncrossable');
+        start_pos.classList.remove('player-start-pos', 'uncrossable', 'pc');
         start_pos.querySelector('span').removeEventListener('click', reverse_player_ship_display)
-        start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(current_player.coord.start_x) - 1}; y = ${parseInt(current_player.coord.start_y) - 1}]`;
+        start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${current_player.coord.start_x - 1}; y = ${current_player.coord.start_y - 1}]`;
 
         // redefine start_coord 
         // you have to revert end_x and end_y because graph use x as y and y as x ...

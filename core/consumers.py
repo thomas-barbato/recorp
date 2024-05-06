@@ -99,9 +99,6 @@ class GameConsumer(WebsocketConsumer):
             }   
         }
         
-        print(response)
-        
-            
         self.send(
             text_data=json.dumps(response)
         )
