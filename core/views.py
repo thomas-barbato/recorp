@@ -315,10 +315,16 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             data["sector"]["security"]["translated_name"] = _(
                 data["sector"]["security"]["translated_name"]
             )
+            
+            data["sector"]["faction"]["translated_text_faction_level_starter"] = _(
+                "The faction's main planet"
+            )
+            
             for d in data["sector_element"]:
-                d["type_translated"] = _(d["type_translated"])
+                d["data"]["type_translated"] = _(d["data"]["type"])
                 d["data"]["description"] = _(d["data"]["description"])
-
+                d["resource"]["translated_text_resource"] = _("Resources available"),
+                d["resource"]["translated_quantity_str"] = _(d["resource"]["translated_quantity_str"])
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc_npc"] = data["pc_npc"]

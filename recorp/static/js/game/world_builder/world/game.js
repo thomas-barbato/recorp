@@ -38,19 +38,41 @@ function add_sector_background(background_name) {
 }
 
 function add_sector_foreground(sector_element) {
-    let element_data = undefined;
-    let element_type = undefined;
-    let modal = undefined;
-    let element_type_translated = undefined;
-    let folder_name = undefined;
     for (let sector_i = 0; sector_i < sector_element.length; sector_i++) {
         element_type = sector_element[sector_i]["animations"][0];
         element_type_translated = sector_element[sector_i]["type_translated"];
         element_data = sector_element[sector_i]["data"];
         folder_name = sector_element[sector_i]["animations"][1];
-        modal = create_modal(
+        modal_data = {
+            "type": sector_element[sector_i].data.type,
+            "translated_type": sector_element[sector_i].data.type_translated,
+            "animation": {
+                "dir": sector_element[sector_i]["animations"][0],
+                "img": sector_element[sector_i]["animations"][1],
+            },
+            "name": sector_element[sector_i].data.name,
+            "description": sector_element[sector_i].data.description,
+            "resources": {
+                "id": sector_element[sector_i].resource.id,
+                "name": sector_element[sector_i].resource.name,
+                "quantity_str": sector_element[sector_i].resource.quantity_str,
+                "quantity": sector_element[sector_i].resource.quantity,
+                "translated_text_resource": sector_element[sector_i].resource.translated_text_resource,
+                "translated_quantity_str": sector_element[sector_i].resource.translated_quantity_str,
+            },
+            "faction": {
+                "starter": map_informations.sector.faction.is_faction_level_starter,
+                "name": map_informations.sector.faction.name,
+                "translated_str": map_informations.sector.faction.translated_text_faction_level_starter,
+            },
+            "coord": {
+                "x": sector_element[sector_i].data.coord_x,
+                "y": sector_element[sector_i].data.coord_y
+            }
+        }
+        let modal = create_foreground_modal(
             element_data["name"],
-            element_type_translated
+            modal_data
         );
 
         document.querySelector('#modal-container').append(modal);
@@ -170,7 +192,8 @@ function add_pc_npc(data) {
     }
 }
 
-function create_modal(id, elem_type, title = undefined, description = undefined, img = undefined) {
+function create_foreground_modal(id, data) {
+    console.log(data)
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -195,16 +218,62 @@ function create_modal(id, elem_type, title = undefined, description = undefined,
     );
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'w-full', 'rounded-t', 'bg-black/60', 'flex', 'justify-center', 'mx-auto', 'flex-col');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col');
+
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400');
-    header_div.textContent = elem_type.toUpperCase();
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'bg-gray-600', 'p-1');
+    header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
+
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
-    body_container_div.textContent = "blibliblibli"
+
+    let item_img = document.createElement('img');
+    item_img.src = `/static/img/atlas/foreground/${data.animation.dir}/${data.animation.img}/0.gif`;
+    item_img.style.width = "30%";
+    item_img.style.height = "30%";
+    item_img.style.margin = "0 auto";
+
+    let item_description_p = document.createElement('p');
+    item_description_p.classList.add('text-white', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'md:text-base', 'text-sm');
+    item_description_p.textContent = data.description;
+
+    let item_resource_div = document.createElement('div');
+    item_resource_div.classList.add('flex')
+    if (data.type !== "planet") {
+        let item_resource_label = document.createElement('label');
+        item_resource_label.htmlFor = "resources";
+        item_resource_label.textContent = `${data.resources.translated_text_resource} :`
+        item_resource_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2')
+
+        let item_resource_content = document.createElement('div');
+        item_resource_content.classList.add('flex', 'flex-row');
+
+        item_resource_div.append(item_resource_label);
+        item_resource_div.append(item_resource_content);
+    } else {
+        if (data.faction.starter) {
+            let item_faction_label = document.createElement('label');
+            item_faction_label.htmlFor = "faction";
+            item_faction_label.textContent = `${data.faction.translated_str} ${data.faction.name}`;
+            item_faction_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2')
+
+            let item_faction_content = document.createElement('div');
+            item_faction_content.classList.add('flex', 'flex-row');
+
+            item_resource_div.append(item_faction_label);
+            item_resource_div.append(item_faction_content);
+        }
+    }
+
+
+    body_container_div.append(item_img);
+    body_container_div.append(item_description_p);
+    body_container_div.append(item_resource_div);
 
 
     header_container_div.append(header_div);

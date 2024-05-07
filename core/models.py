@@ -455,6 +455,7 @@ class PlanetResource(models.Model):
     sector = models.ForeignKey(
         Sector, on_delete=models.CASCADE, related_name="planet_sector"
     )
+    quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)

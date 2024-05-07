@@ -230,6 +230,29 @@ msgstr "estación"
 msgid "Nothing selected for now"
 msgstr "Nada seleccionado por ahora"
 
+msgid "Resources available"
+msgstr "Recursos disponibles"
+
+msgid "full"
+msgstr "completo"
+
+msgid "above average"
+msgstr "superior a la media"
+
+msgid "average"
+msgstr "media"
+
+msgid "bellow average"
+msgstr "inferior a la media"
+
+msgid "depleted"
+msgstr "reducido"
+
+msgid "empty"
+msgstr "vacía"
+
+msgid "The faction's main planet"
+msgstr "El planeta principal de la facción"
 
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"

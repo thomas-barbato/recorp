@@ -50,6 +50,7 @@ class StoreInCache:
                 "id": sector.faction_id,
                 "name": sector.faction.name,
                 "is_faction_level_starter": sector.is_faction_level_starter,
+                "translated_text_faction_level_starter": [],
             },
         }
         for table_key, table_value in foreground_table_set.items():
@@ -63,17 +64,26 @@ class StoreInCache:
                     if v != "none"
                 ]
                 
+                resource_quantity = GetMapDataFromDB.get_resource_quantity_value(
+                    table.quantity, 100
+                )
+                
                 sector_data["sector_element"].append(
                     {
-                        "type": map_element[0],
-                        "type_translated": map_element[0],
                         "item_id": table.id,
                         "item_name": table.data["name"],
-                        "resource_id": table.resource_id,
+                        "resource": {
+                            "id": table.resource_id,
+                            "name": table.resource.name,
+                            "quantity": table.quantity,
+                            "quantity_str": resource_quantity,
+                            "translated_quantity_str": resource_quantity
+                        },
                         "source_id": table.source_id,
                         "sector_id": table.sector_id,
                         "animations": map_element,
                         "data": {
+                            "type": map_element[0],
                             "name": table.data["name"],
                             "coord_x": table.data["coord_x"],
                             "coord_y": table.data["coord_y"],
@@ -82,7 +92,7 @@ class StoreInCache:
                         "size": GetMapDataFromDB.get_specific_size(map_element[0]),
                     }
                 )
-
+                
         for data in sector_pc_npc:
             sector_data["pc_npc"].append(
                 {

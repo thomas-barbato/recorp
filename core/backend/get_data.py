@@ -208,3 +208,20 @@ class GetMapDataFromDB:
             return True, missing_data
         else:
             return False, []
+        
+    @staticmethod
+    def get_resource_quantity_value(value, max_value):
+        result_value = 100 * (value/max_value)
+        if max_value == value:
+            result = "full"
+        elif result_value >= 75.0 and result_value < 100.0:
+            result = "above average"
+        elif result_value >= 50.0 and result_value < 75.0:
+            result = "average"
+        elif result_value > 25.0 and result_value < 50.0:
+            result = "below average"
+        elif  result_value > 0.0 and result_value <= 25.0:
+            result = "depleted"
+        elif value == 0:
+            result = "empty"
+        return result
