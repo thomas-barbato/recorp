@@ -16,6 +16,7 @@ from django.views.generic import TemplateView
 
 from core.backend.get_data import GetMapDataFromDB
 from core.backend.store_in_cache import StoreInCache
+from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm
 from core.models import Player, Sector
 from recorp.settings import LOGIN_REDIRECT_URL
@@ -303,11 +304,9 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 },
             ],
         }
-        pk = Player.objects.filter(user_id=self.request.user.id).values_list(
-            "sector_id", flat=True
-        )[0]
-        if Sector.objects.filter(id=pk).exists():
-            data = StoreInCache(f"play_{pk}", self.request.user).get_or_set_cache()
+        player = PlayerAction(self.request.user.id)
+        if Sector.objects.filter(id=player.get_player_sector()).exists():
+            data = StoreInCache(f"play_{player.get_player_sector()}", self.request.user).get_or_set_cache()
             result_dict = dict()
             for p in data["pc_npc"]:
                 p["user"]["archetype_name"] = _(p["user"]["archetype_name"])
@@ -320,11 +319,19 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 "The faction's main planet"
             )
             
+            result_dict["actions"] = {
+                "translated_action_label_msg": _("Actions available"),
+                "translated_close_msg": _("Close"),
+                "player_is_same_faction": player.get_player_faction() == data["sector"]["faction"]["id"]
+            }
+            
             for d in data["sector_element"]:
                 d["data"]["type_translated"] = _(d["data"]["type"])
                 d["data"]["description"] = _(d["data"]["description"])
                 d["resource"]["translated_text_resource"] = _("Resources available"),
                 d["resource"]["translated_quantity_str"] = _(d["resource"]["translated_quantity_str"])
+                d["resource"]["translated_scan_msg_str"] = _("In order to display resource you must scan it. Scan's effect will last for a day")
+                
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc_npc"] = data["pc_npc"]

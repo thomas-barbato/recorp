@@ -59,11 +59,17 @@ function add_sector_foreground(sector_element) {
                 "quantity": sector_element[sector_i].resource.quantity,
                 "translated_text_resource": sector_element[sector_i].resource.translated_text_resource,
                 "translated_quantity_str": sector_element[sector_i].resource.translated_quantity_str,
+                "translated_scan_msg_str": sector_element[sector_i].resource.translated_scan_msg_str,
             },
             "faction": {
                 "starter": map_informations.sector.faction.is_faction_level_starter,
                 "name": map_informations.sector.faction.name,
                 "translated_str": map_informations.sector.faction.translated_text_faction_level_starter,
+            },
+            "actions": {
+                "action_label": map_informations.actions.translated_action_label_msg,
+                "close": map_informations.actions.translated_close_msg,
+                "player_in_same_faction": map_informations.actions.player_is_same_faction,
             },
             "coord": {
                 "x": sector_element[sector_i].data.coord_x,
@@ -214,20 +220,33 @@ function create_foreground_modal(id, data) {
         'md:inset-0',
         'backdrop-blur-sm',
         'bg-black/20',
-        'border-1'
+        'border-1',
+
     );
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
 
     let header_container_div = document.createElement('div');
-    header_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'bg-gray-600', 'p-1');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'p-1', 'flex', 'w-[95%]', 'justify-center');
     header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
+
+    let close_button_url = '/static/img/ux/close.svg';;
+
+    let header_close_button = document.createElement("img");
+    header_close_button.src = close_button_url;
+    header_close_button.title = `${data.actions.close}`;
+    header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
+    header_close_button.setAttribute('onclick', "close_modal('" + "modal-" + id + "')");
+
+    let footer_close_button = document.createElement("img");
+    footer_close_button.src = close_button_url;
+    footer_close_button.setAttribute('onclick', "close_modal('" + "modal-" + id + "')");
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
@@ -238,45 +257,233 @@ function create_foreground_modal(id, data) {
     item_img.style.height = "30%";
     item_img.style.margin = "0 auto";
 
+    let item_content_div = document.createElement('div');
+    item_content_div.classList.add('flex', 'flex-col');
+
     let item_description_p = document.createElement('p');
     item_description_p.classList.add('text-white', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'md:text-base', 'text-sm');
     item_description_p.textContent = data.description;
 
-    let item_resource_div = document.createElement('div');
-    item_resource_div.classList.add('flex')
+    let item_action_container = document.createElement("div");
+    item_action_container.classList.add('mt-2');
+    item_action_container.id = "item-action-container";
+
+    let item_action_container_label = document.createElement("label");
+    item_action_container_label.htmlFor = "item-action-container";
+    item_action_container_label.textContent = `${data.actions.action_label}: `;
+    item_action_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1');
+
+    let item_action_container_div = document.createElement('figure');
+    item_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'gap-3');
+    item_action_container_div.setAttribute('role', 'group');
+
     if (data.type !== "planet") {
         let item_resource_label = document.createElement('label');
         item_resource_label.htmlFor = "resources";
         item_resource_label.textContent = `${data.resources.translated_text_resource} :`
-        item_resource_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2')
+        item_resource_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
 
         let item_resource_content = document.createElement('div');
-        item_resource_content.classList.add('flex', 'flex-row');
+        item_resource_content.classList.add('flex', 'flex-col');
+        item_resource_content.id = "ressource-content";
 
-        item_resource_div.append(item_resource_label);
-        item_resource_div.append(item_resource_content);
+        let item_resource_content_span = document.createElement('span');
+        item_resource_content_span.classList.add('flex', 'flex-row');
+
+        let item_resource_content_p_resource = document.createElement('p');
+        item_resource_content_p_resource.classList.add('text-white', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
+        item_resource_content_p_resource.id = "resource-name";
+        item_resource_content_p_resource.textContent = `${data.resources.name}`;
+        item_resource_content_p_resource.style.display = "none";
+
+
+        let item_resource_content_p_quantity = document.createElement('p');
+        item_resource_content_p_quantity.classList.add('font-bold', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
+        if (data.resources.quantity == "empty") {
+            item_resource_content_p_quantity.classList.add('text-red-600', 'animate-pulse');
+        } else {
+            item_resource_content_p_quantity.classList.add('text-white');
+        }
+        item_resource_content_p_quantity.id = "resource-quantity";
+        item_resource_content_p_quantity.textContent = `${data.resources.translated_quantity_str.toUpperCase()}`
+        item_resource_content_p_quantity.style.display = "none";
+
+        let item_resource_content_p_scan_msg = document.createElement('p');
+        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse');
+        item_resource_content_p_scan_msg.id = "resource-scan-msg";
+        item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`
+
+        let item_action_container_img_scan_container = document.createElement('div');
+        item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_gather_container = document.createElement('div');
+        item_action_container_img_gather_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_scan = document.createElement('img');
+        item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
+        item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_scan_figcaption = document.createElement('figcaption');
+        item_action_container_img_scan_figcaption.textContent = "Scan";
+        item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
+        item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
+        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_img_gather = document.createElement('img');
+        item_action_container_img_gather.src = '/static/img/ux/gather_icon.svg';
+        item_action_container_img_gather.classList.add('cursor-pointer', 'flex', 'justify-center', 'hover:animate-pulse');
+
+        let item_action_container_img_gather_figcaption = document.createElement('figcaption');
+        item_action_container_img_gather_figcaption.textContent = "Gather";
+        item_action_container_img_gather_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold');
+
+        let item_action_container_img_gather_figcaption_ap = document.createElement('figcaption');
+        item_action_container_img_gather_figcaption_ap.textContent = "1 AP";
+        item_action_container_img_gather_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold');
+
+        item_resource_content_span.append(item_resource_content_p_resource);
+        item_resource_content_span.append(item_resource_content_p_quantity);
+        item_resource_content_span.append(item_resource_content_p_scan_msg);
+        item_resource_content.append(item_resource_content_span);
+
+        item_action_container_img_scan_container.append(item_action_container_img_scan);
+        item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
+        item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption_ap);
+
+        item_action_container_img_gather_container.append(item_action_container_img_gather);
+        item_action_container_img_gather_container.append(item_action_container_img_gather_figcaption);
+        item_action_container_img_gather_container.append(item_action_container_img_gather_figcaption_ap);
+
+        item_action_container_div.append(item_action_container_img_scan_container);
+        item_action_container_div.append(item_action_container_img_gather_container);
+
+        item_content_div.append(item_resource_label);
+        item_content_div.append(item_resource_content);
+
+        item_action_container.append(item_action_container_div);
+
     } else {
         if (data.faction.starter) {
             let item_faction_label = document.createElement('label');
             item_faction_label.htmlFor = "faction";
             item_faction_label.textContent = `${data.faction.translated_str} ${data.faction.name}`;
-            item_faction_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2')
+            item_faction_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
 
             let item_faction_content = document.createElement('div');
             item_faction_content.classList.add('flex', 'flex-row');
 
-            item_resource_div.append(item_faction_label);
-            item_resource_div.append(item_faction_content);
+            item_content_div.append(item_faction_label);
+            item_content_div.append(item_faction_content);
         }
+
+        let item_action_container_img_setNewStartLoc_container = document.createElement('div');
+        item_action_container_img_setNewStartLoc_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_joinFaction_container = document.createElement('div');
+        item_action_container_img_joinFaction_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_opendock_container = document.createElement('div');
+        item_action_container_img_opendock_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_openmarket_container = document.createElement('div');
+        item_action_container_img_openmarket_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_gettask_container = document.createElement('div');
+        item_action_container_img_gettask_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_invade_container = document.createElement('div');
+        item_action_container_img_invade_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_setNewStartLoc_img = document.createElement('img');
+        item_action_container_setNewStartLoc_img.src = '/static/img/ux/new_location.svg';
+        item_action_container_setNewStartLoc_img.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_setNewStartLoc_figcaption = document.createElement('figcaption');
+        item_action_container_img_setNewStartLoc_figcaption.textContent = "Set new home";
+        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_joinFaction_img = document.createElement('img');
+        item_action_container_joinFaction_img.src = '/static/img/ux/join_faction.svg';
+        item_action_container_joinFaction_img.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_joinFaction_figcaption = document.createElement('figcaption');
+        item_action_container_img_joinFaction_figcaption.textContent = `Join ${data.faction.name}`;
+        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_opendock_img = document.createElement('img');
+        item_action_container_opendock_img.src = '/static/img/ux/dock.svg';
+        item_action_container_opendock_img.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_opendock_figcaption = document.createElement('figcaption');
+        item_action_container_img_opendock_figcaption.textContent = "dock";
+        item_action_container_img_opendock_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_openmarket_img = document.createElement('img');
+        item_action_container_openmarket_img.src = '/static/img/ux/market.svg';
+        item_action_container_openmarket_img.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_openmarket_figcaption = document.createElement('figcaption');
+        item_action_container_img_openmarket_figcaption.textContent = "market";
+        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_gettask_img = document.createElement('img');
+        item_action_container_gettask_img.src = '/static/img/ux/task.svg';
+        item_action_container_gettask_img.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_gettask_figcaption = document.createElement('figcaption');
+        item_action_container_img_gettask_figcaption.textContent = "task";
+        item_action_container_img_gettask_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+        let item_action_container_invade_img = document.createElement('img');
+        item_action_container_invade_img.src = '/static/img/ux/invade.svg';
+        item_action_container_invade_img.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_invade_figcaption = document.createElement('figcaption');
+        item_action_container_img_invade_figcaption.textContent = "invade";
+        item_action_container_img_invade_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+
+
+        if (data.actions.player_is_same_faction == true) {
+            item_action_container_img_joinFaction_container.style.display = "none";
+            item_action_container_img_invade_container.style.display = "none";
+        } else {
+            item_action_container_img_setNewStartLoc_container.style.display = "none";
+        }
+
+        item_action_container_img_setNewStartLoc_container.append(item_action_container_setNewStartLoc_img);
+        item_action_container_img_setNewStartLoc_container.append(item_action_container_img_setNewStartLoc_figcaption);
+        item_action_container_img_joinFaction_container.append(item_action_container_joinFaction_img);
+        item_action_container_img_joinFaction_container.append(item_action_container_img_joinFaction_figcaption);
+        item_action_container_img_opendock_container.append(item_action_container_opendock_img);
+        item_action_container_img_opendock_container.append(item_action_container_img_opendock_figcaption);
+        item_action_container_img_openmarket_container.append(item_action_container_openmarket_img);
+        item_action_container_img_openmarket_container.append(item_action_container_img_openmarket_figcaption);
+        item_action_container_img_gettask_container.append(item_action_container_gettask_img);
+        item_action_container_img_gettask_container.append(item_action_container_img_gettask_figcaption);
+        item_action_container_img_invade_container.append(item_action_container_invade_img);
+        item_action_container_img_invade_container.append(item_action_container_img_invade_figcaption);
+
+        item_action_container_div.append(item_action_container_img_setNewStartLoc_container);
+        item_action_container_div.append(item_action_container_img_joinFaction_container);
+        item_action_container_div.append(item_action_container_img_opendock_container);
+        item_action_container_div.append(item_action_container_img_openmarket_container);
+        item_action_container_div.append(item_action_container_img_gettask_container);
+        item_action_container_div.append(item_action_container_img_invade_container);
+
+        item_action_container.append(item_action_container_div);
     }
 
 
     body_container_div.append(item_img);
     body_container_div.append(item_description_p);
-    body_container_div.append(item_resource_div);
-
+    body_container_div.append(item_content_div);
+    body_container_div.append(item_action_container_label);
+    body_container_div.append(item_action_container);
 
     header_container_div.append(header_div);
+    header_container_div.append(header_close_button);
     content_div.append(header_container_div);
     content_div.append(body_container_div);
     container_div.append(content_div);
@@ -289,6 +496,12 @@ function open_modal(id) {
     let e = document.querySelector('#' + id)
     e.classList.remove('hidden');
 }
+
+function close_modal(id) {
+    let e = document.querySelector('#' + id)
+    e.classList.add('hidden');
+}
+
 
 function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-x').textContent = `x = ${x - 1}`;

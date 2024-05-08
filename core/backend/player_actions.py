@@ -21,13 +21,19 @@ from core.models import (
 class PlayerAction:
     def __init__(self, id):
         self.id = id
-        self.player = Player.objects.get(user_id=id)
+        self.player = Player.objects.filter(user_id=id).all()
     
     def is_player_exists(self, player_id):
         return Player.objects.filter(id=player_id, user_id=self.user_id).exists()
     
     def get_player_id(self):
-        return self.player.id
+        return self.player.values_list('id', flat=True)[0]
+    
+    def get_player_faction(self):
+        return self.player.values_list('faction_id', flat=True)[0]
+    
+    def get_player_sector(self):
+        return self.player.values_list('sector_id', flat=True)[0]
         
     def get_coord(self):
         return self.player.coordinates
