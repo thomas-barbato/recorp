@@ -5,6 +5,8 @@ class Player {
         this.start_y = start_y;
         this.end_x = 0;
         this.end_y = 0;
+        this.ship_size_x = 0;
+        this.ship_size_y = 0;
         this.move_points = move_points;
         this.selected_cell = false;
     }
@@ -31,6 +33,18 @@ class Player {
     set_end_coord(end_x, end_y) {
         this.end_x = end_x;
         this.end_y = end_y;
+    }
+
+    set_ship_size(size_x, size_y) {
+        this.ship_size_x = size_x;
+        this.ship_size_y = size_y;
+    }
+
+    get s_size() {
+        return {
+            "x": this.ship_size_x,
+            "y": this.ship_size_y,
+        }
     }
 
     get player() {

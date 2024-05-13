@@ -102,7 +102,30 @@ class GameConsumer(WebsocketConsumer):
         self.send(
             text_data=json.dumps(response)
         )
-            
+    
+    def async_reverse_ship(self, event):
+        response = {}
+        message = json.loads(event["message"])
+                
+        store = StoreInCache(
+            room_name=self.room_group_name, 
+            user_calling=self.user
+        )
+        
+        is_reversed = store.update_ship_is_reversed(message, self.user.id)
+        
+        response = {
+            "type": "async_reverse_ship", 
+            "message": {
+                "id_array": message['id_array'],
+                "is_reversed": is_reversed,
+            }   
+        }
+        
+        self.send(
+            text_data=json.dumps(response)
+        )
+        
 
     def send_message(self, event):
         pass

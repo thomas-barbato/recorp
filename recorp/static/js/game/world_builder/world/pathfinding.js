@@ -1,14 +1,12 @@
 let pathfinder_obj = {};
 let cell_already_clicked = false;
 
-
 let current_player = new Player(
     null,
     null,
     null,
     10,
 )
-
 
 function display_pathfinding() {
     let player_span = pathfinder_obj.player_cell.querySelector('div>span');
@@ -76,25 +74,47 @@ function get_pathfinding(e) {
 
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
-            let id = e.parentNode.parentNode.id.split('_');
+            let start_node_id = document.querySelector('.player-start-pos').id.split('_');
+            let destination_node_id = e.parentNode.parentNode.id.split('_');
+            let ship_size = document.querySelector('.player-start-pos');
             let grid_container = document.querySelector('tbody');
-            // Player.coord is null only when it's the first movement . 
-            if (current_player.coord.start_x === null && current_player.coord.start_y === null) {
-                current_player.set_player_id(
-                    map_informations['pc_npc'][i]['user']['player']
-                );
+
+            current_player.set_player_id(
+                map_informations['pc_npc'][i]['user']['player']
+            );
+            console.log(parseInt(ship_size.getAttribute('size_x')));
+            current_player.set_ship_size(
+                parseInt(ship_size.getAttribute('size_x')),
+                parseInt(ship_size.getAttribute('size_y'))
+            );
+
+            // we use start_node_id to get destination coord.
+            // we check ship size to define itterator.
+            if (current_player.s_size.x == 1 && current_player.s_size.y == 1 || current_player.s_size.x == 2 && current_player.s_size.y == 1) {
                 current_player.set_start_coord(
-                    map_informations['pc_npc'][i]['user']['coordinates'].coord_x,
-                    map_informations['pc_npc'][i]['user']['coordinates'].coord_y,
+                    parseInt(start_node_id[1]) + 1,
+                    parseInt(start_node_id[0]) + 1,
                 );
+            } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
+                current_player.set_start_coord(
+                    parseInt(start_node_id[1]) + 2,
+                    parseInt(start_node_id[0]) + 1,
+                );
+            } else if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
+                current_player.set_start_coord(
+                    parseInt(start_node_id[1]) + 2,
+                    parseInt(start_node_id[0]) + 1,
+                );
+
             }
 
-            // we use target id to get destination coord.
+            // we use destination_node_id to get destination coord.
             // we add +1 to get the real coord. 
             current_player.set_end_coord(
-                parseInt(id[1]) + 1,
-                parseInt(id[0]) + 1
+                parseInt(destination_node_id[1]) + 1,
+                parseInt(destination_node_id[0]) + 1
             );
+
 
             current_player.set_selected_cell_bool(false);
 
@@ -122,6 +142,7 @@ function get_pathfinding(e) {
             if (grid.classList.contains(opts.css.wall)) {
                 return;
             }
+
             pathfinding(grid_container, opts);
 
         }
@@ -197,15 +218,6 @@ GraphSearch.prototype.cellOnMouseHover = function() {
 };
 
 GraphSearch.prototype.nodeFromElement = function(arg) {
-    // temporary redefine borders.
-    /*console.log(arg)
-    if (arg.x == 20) {
-        arg.x = 19;
-    }
-    if (arg.y == 15) {
-        arg.y = 14;
-    }
-    console.log(arg)*/
     return this.temp_graph.grid[parseInt(arg.y)][parseInt(arg.x)];
 };
 

@@ -128,7 +128,7 @@ class StoreInCache:
                             "playership__ship_id__ship_category__max_speed"
                         ],
                         "size": data["playership__ship_id__ship_category__ship_size"],
-                        "reversed": False,
+                        "is_reversed": False,
                     },
                 }
             )
@@ -155,30 +155,32 @@ class StoreInCache:
         
         in_cache["pc_npc"] = player_position
         cache.set(self.room, in_cache)  
-
-    def get_selected_card(self):
+        
+    def update_ship_is_reversed(self, data, user_id):
         in_cache = cache.get(self.room)
-        return in_cache["selected_card"]
-
-    def update_cards(self, validate_pair=False, username=""):
-        in_cache = cache.get(self.room)
-        value = in_cache["cards"]
-
-        if validate_pair is True:
-            found_item = next(item for item in value if item["id"] == self.user_calling["id"])
-            found_item_index = value.index(found_item)
-            value[found_item_index]["is_displayed"] = self.user_calling["is_displayed"]
-            value[found_item_index]["picked_up_by"] = self.user_calling["username"]
-            in_cache["cards"] = value
-        else:
-            found_item = [item for item in value if item["id"] in self.user_calling["cards"]]
-            for index in found_item:
-                found_item_index = value.index(index)
-                value[found_item_index]["is_displayed"] = False
-                value[found_item_index]["picked_up_by"] = ""
-                in_cache["cards"] = value
-
-        cache.set(self.room, in_cache)
+        pc_cache = in_cache["pc_npc"]
+        user = data["user"]
+        
+        try:
+            player = next(
+                p
+                for p in pc_cache
+                if user == p["user"]["user"]
+            )
+            
+        except StopIteration:
+            return
+        
+        player_index = pc_cache.index(player)
+        ship_is_reversed = pc_cache[player_index]["ship"]["is_reversed"]
+        
+        if user == user_id:
+            pc_cache[player_index]["ship"]["is_reversed"] = True if ship_is_reversed is False else False
+            in_cache["pc_npc"] = pc_cache
+            cache.set(self.room, in_cache)
+        
+        return ship_is_reversed
+            
 
     def get_cardname_by_id(self, cards):
         in_cache = cache.get(self.room)["cards"]

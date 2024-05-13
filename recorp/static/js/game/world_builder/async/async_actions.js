@@ -11,6 +11,17 @@ function async_move(pos) {
     }));
 }
 
+function async_reverse_ship(data) {
+    gameSocket.send(JSON.stringify({
+        message: JSON.stringify({
+            "user": data.user,
+            "id_array": data.id_array,
+        }),
+        type: "async_reverse_ship"
+    }));
+}
+
+
 function update_player_coord(data) {
     let entry_point = document.querySelectorAll('.pc');
     let player_name = data["player"]
@@ -27,6 +38,24 @@ function update_player_coord(data) {
             end_point.querySelector('div>span').title = `${player_name}`;
             end_point.classList.add('pc', 'uncrossable');
             entry_point[i].classList.remove('pc', 'uncrossable');
+        }
+    }
+}
+
+function reverse_ship(data) {
+    let id_list = data["id_array"]
+
+    for (let i = 0; i < id_list.length; i++) {
+        let element = document.getElementById(id_list[i]);
+        let element_ship = element.querySelector('.ship');
+        let element_ship_reversed = element.querySelector('.ship-reversed');
+
+        if (data["is_reversed"] == true) {
+            element_ship.style.display = "none";
+            element_ship_reversed.style.display = "block";
+        } else {
+            element_ship.style.display = "block";
+            element_ship_reversed.style.display = "none";
         }
     }
 
