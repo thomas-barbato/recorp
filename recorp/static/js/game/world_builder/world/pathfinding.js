@@ -9,8 +9,11 @@ let current_player = new Player(
 )
 
 function display_pathfinding() {
-    let player_span = pathfinder_obj.player_cell.querySelector('div>span');
+    let span = pathfinder_obj.player_cell;
+    let player_span = span.querySelector('div>span');
     player_span.classList.add('box-border', 'border-2', 'border');
+
+
 
     if (current_player.selected_cell_bool === false) {
         for (let i = 0; i < pathfinder_obj.path.length; i++) {
@@ -36,41 +39,51 @@ function display_pathfinding() {
     } else {
 
         current_player.set_selected_cell_bool(false);
+        let start_pos = undefined;
+        let end_pos = undefined;
+        let player_name = undefined;
         // transfert all data from start pos to end pos
         // becarfull, for end , x and y are reversed
-        let start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y].cells[current_player.coord.start_x];
+        start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y].cells[current_player.coord.start_x];
         // revert x and y here.
-        let end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
-        let player_name = start_pos.querySelector('div>span').title;
-
-        let inbetween_pos = end_pos.innerHTML;
-        end_pos.innerHTML = start_pos.innerHTML;
-        start_pos.innerHTML = inbetween_pos;
-
-        end_pos.querySelector('span').addEventListener('click', reverse_player_ship_display)
-        end_pos.querySelector('div>span').title = `${player_name}`;
-        end_pos.classList.add('player-start-pos', 'uncrossable', 'pc');
-
-        // rebinding old start location in title
-        start_pos.classList.remove('player-start-pos', 'uncrossable', 'pc');
-        start_pos.querySelector('span').removeEventListener('click', reverse_player_ship_display)
-        start_pos.querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${current_player.coord.start_x - 1}; y = ${current_player.coord.start_y - 1}]`;
+        end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
+        player_name = start_pos.querySelector('div>span').title;
 
         // redefine start_coord 
         // you have to revert end_x and end_y because graph use x as y and y as x ...
         current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
         update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
 
+        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
+            return element.id;
+        });
+
+        console.log(current_player.coord.end_y)
+        console.log(current_player.coord.end_x)
+        let destination_coord_array = []
+        for (let row_i = current_player.coord.end_y; row_i < (row_i + current_player.s_size.y); row_i++) {
+            for (let col_i = current_player.coord.end_x; col_i < (col_i + current_player.s_size.x); col_i++) {
+                destination_coord_array.push(`${row_i}_${col_i}`);
+            }
+        }
+
+        console.log(destination_coord_array)
         async_move({
             player: current_player.player,
             end_y: current_player.coord.end_x,
             end_x: current_player.coord.end_y,
-        })
+            is_reversed: current_player.reversed_ship_status,
+            id_array: player_coord_array
+        });
+
     }
 }
 
 function get_pathfinding(e) {
     cleanCss();
+
+    let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
+    current_player.set_is_reversed(ship_is_reversed);
 
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
@@ -82,7 +95,6 @@ function get_pathfinding(e) {
             current_player.set_player_id(
                 map_informations['pc_npc'][i]['user']['player']
             );
-            console.log(parseInt(ship_size.getAttribute('size_x')));
             current_player.set_ship_size(
                 parseInt(ship_size.getAttribute('size_x')),
                 parseInt(ship_size.getAttribute('size_y'))
@@ -90,22 +102,48 @@ function get_pathfinding(e) {
 
             // we use start_node_id to get destination coord.
             // we check ship size to define itterator.
-            if (current_player.s_size.x == 1 && current_player.s_size.y == 1 || current_player.s_size.x == 2 && current_player.s_size.y == 1) {
+            if (current_player.s_size.x == 1 && current_player.s_size.y == 1) {
                 current_player.set_start_coord(
                     parseInt(start_node_id[1]) + 1,
                     parseInt(start_node_id[0]) + 1,
                 );
+            } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
+                if (current_player.reversed_ship_status == true) {
+                    current_player.set_start_coord(
+                        parseInt(start_node_id[1]) + 2,
+                        parseInt(start_node_id[0]) + 1,
+                    );
+                } else {
+                    current_player.set_start_coord(
+                        parseInt(start_node_id[1]) + 1,
+                        parseInt(start_node_id[0]) + 1,
+                    );
+                }
             } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
-                current_player.set_start_coord(
-                    parseInt(start_node_id[1]) + 2,
-                    parseInt(start_node_id[0]) + 1,
-                );
+                if (current_player.reversed_ship_status == true) {
+                    current_player.set_start_coord(
+                        parseInt(start_node_id[1]),
+                        parseInt(start_node_id[0]) + 1,
+                    );
+                } else {
+                    current_player.set_start_coord(
+                        parseInt(start_node_id[1]) + 2,
+                        parseInt(start_node_id[0]) + 1,
+                    );
+                }
             } else if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
-                current_player.set_start_coord(
-                    parseInt(start_node_id[1]) + 2,
-                    parseInt(start_node_id[0]) + 1,
-                );
+                if (current_player.reversed_ship_status == true) {
+                    current_player.set_start_coord(
+                        parseInt(start_node_id[1]),
+                        parseInt(start_node_id[0]) + 1,
+                    );
+                } else {
+                    current_player.set_start_coord(
+                        parseInt(start_node_id[1]) + 2,
+                        parseInt(start_node_id[0]) + 1,
+                    );
 
+                }
             }
 
             // we use destination_node_id to get destination coord.

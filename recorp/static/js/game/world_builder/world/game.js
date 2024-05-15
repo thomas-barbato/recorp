@@ -172,7 +172,7 @@ function add_pc_npc(data) {
                     entry_point.classList.add("player-ship-pos");
                     entry_point.setAttribute('size_x', ship_size_x);
                     entry_point.setAttribute('size_y', ship_size_y);
-                    entry_point.addEventListener('click', reverse_player_ship_display);
+                    entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
@@ -196,10 +196,8 @@ function add_pc_npc(data) {
 
                 if (data[i]["user"]["is_npc"]) {
                     border_color = "red";
-                    space_ship.classList.add('clickable');
                 } else if (data[i]["user"]["user"] != current_user_id && !data[i]["user"]["is_npc"]) {
                     border_color = "cyan";
-                    space_ship.classList.add('clickable');
                 }
 
                 entry_point_border.style.borderColor = border_color;
@@ -227,47 +225,11 @@ function add_pc_npc(data) {
 }
 
 function reverse_player_ship_display() {
-    let player_ship = document.querySelectorAll('.player-ship-pos>div>div.player-ship');
-    let player_ship_reversed = document.querySelectorAll('.player-ship-pos>div>div.player-ship-reversed');
-    let is_reverted = false;
-
-    if (player_ship[0].style.display == "block") {
-        is_reverted = true;
-        for (let i = 0; i < player_ship.length; i++) {
-            player_ship[i].style.display = "none";
-            player_ship_reversed[i].style.display = "block";
-        }
-    } else {
-        is_reverted = false;
-        for (let i = 0; i < player_ship.length; i++) {
-            player_ship[i].style.display = "block";
-            player_ship_reversed[i].style.display = "none";
-        }
-    }
-
-    if (player_ship.length == 2) {
-        let ship_part_1 = player_ship[0].parentNode.parentNode;
-        let ship_part_2 = player_ship[1].parentNode.parentNode;
-        if (is_reverted == true) {
-            ship_part_1.classList.remove('player-start-pos');
-            ship_part_2.classList.add('player-start-pos');
-        } else {
-            ship_part_1.classList.add('player-start-pos');
-            ship_part_2.classList.remove('player-start-pos');
-        }
-    }
-
     var ids = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
         return element.id;
     });
 
-
-
-    var ids = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
-        return element.id;
-    });
-
-    async_reverse_ship({
+    return async_reverse_ship({
         user: current_user_id,
         id_array: ids,
     });

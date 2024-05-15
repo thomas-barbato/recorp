@@ -67,5 +67,19 @@
             "is_superuser": false,
             "date_joined": "2020-03-20 10:38:15"
         }
+    },
+    {
+        "model": "auth.user",
+        "pk": 7,
+        "fields": {
+            "username": "test5",
+            "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
+            "last_login": null,
+            "email": "test4@email.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "date_joined": "2020-03-20 10:38:15"
+        }
     }
 ]

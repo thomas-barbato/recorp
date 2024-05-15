@@ -75,5 +75,18 @@
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
+    },
+    {
+        "model": "core.playership",
+        "pk": 7,
+        "fields": {
+            "ship": 6,
+            "player": 7,
+            "current_hp": 75,
+            "max_hp": 100,
+            "status": "WOUNDED",
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
     }
 ]

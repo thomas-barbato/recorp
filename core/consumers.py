@@ -31,9 +31,11 @@ class GameConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name,
         )
-        """
+        
         if self.user.is_authenticated:
-            store = StoreInCache(self.room_group_name, self.user.username)
+            store = StoreInCache(self.room_group_name, self.user)
+            store.get_or_set_cache()
+            """
             store.add_user()
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
@@ -92,10 +94,12 @@ class GameConsumer(WebsocketConsumer):
             "type": "player_move", 
             "message": {
                 "player": p.get_other_player_name(message["player"]),
+                "player_user_id": p.get_other_player_user_id(message["player"]),
                 "start_x": coord["coord_x"],
                 "start_y": coord["coord_y"],
                 "end_x": message["end_x"],
                 "end_y": message["end_y"],
+                "is_reversed": message["is_reversed"]
             }   
         }
         
@@ -112,13 +116,14 @@ class GameConsumer(WebsocketConsumer):
             user_calling=self.user
         )
         
-        is_reversed = store.update_ship_is_reversed(message, self.user.id)
+        data = store.update_ship_is_reversed(message, self.user.id)
         
         response = {
             "type": "async_reverse_ship", 
             "message": {
                 "id_array": message['id_array'],
-                "is_reversed": is_reversed,
+                "is_reversed": data[0],
+                "player_id": data[1]
             }   
         }
         

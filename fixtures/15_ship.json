@@ -62,5 +62,18 @@
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
+    },
+    {
+        "model": "core.ship",
+        "pk": 6,
+        "fields": {
+            "ship_category": 3,
+            "name": "heavy-1",
+            "description": "lorem ipsum bla bla bla",
+            "module_slot_available": 1,
+            "image": "ship-02-grey-96x32px",
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
     }
 ]

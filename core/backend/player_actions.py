@@ -24,31 +24,35 @@ class PlayerAction:
         self.player = Player.objects.filter(user_id=id).all()
     
     def is_player_exists(self, player_id):
-        return Player.objects.filter(id=player_id, user_id=self.user_id).exists()
+        return Player.objects.filter(id=player_id, user_id=self.id).exists()
     
     def get_player_id(self):
-        return self.player.values_list('id', flat=True)[0]
+        return Player.objects.filter(user_id=self.id).values_list('id', flat=True)[0]
     
     def get_player_faction(self):
-        return self.player.values_list('faction_id', flat=True)[0]
+        return Player.objects.filter(user_id=self.id).values_list('faction_id', flat=True)[0]
     
     def get_player_sector(self):
-        return self.player.values_list('sector_id', flat=True)[0]
+        return Player.objects.filter(user_id=self.id).values_list('sector_id', flat=True)[0]
         
     def get_coord(self):
-        return self.player.coordinates
+        return Player.objects.filter(user_id=self.id).values_list('coordinates', flat=True)[0]
     
-    def get_other_player_name(self, id):
-        return Player.objects.filter(id=id).values_list('name', flat=True)[0]
+    def get_other_player_name(self, other_player_id):
+        return Player.objects.filter(id=other_player_id).values_list('name', flat=True)[0]
     
-    def get_other_player_coord(self, id):
-        return Player.objects.filter(id=id).values_list('coordinates', flat=True)[0]
+    def get_other_player_user_id(self, other_player_id):
+        return Player.objects.filter(id=other_player_id).values_list('user_id', flat=True)[0]
+    
+    def get_other_player_coord(self, other_player_id):
+        return Player.objects.filter(id=other_player_id).values_list('coordinates', flat=True)[0]
     
     def destination_already_occupied(self, end_x, end_y):
         return Player.objects.filter(coordinates__contains={"coord_x": end_x, "coord_y": end_y}).exists()
     
     def move(self, end_x, end_y):
         if self.destination_already_occupied(end_x, end_y) is False:
-            self.player.coordinates = {"coord_x": end_x, "coord_y": end_y}
-            self.player.save()
+            Player.objects.filter(user_id=self.id).update(
+                coordinates={"coord_x": end_x, "coord_y": end_y}
+            )
     

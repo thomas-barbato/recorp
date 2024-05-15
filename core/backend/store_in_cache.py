@@ -173,62 +173,15 @@ class StoreInCache:
         
         player_index = pc_cache.index(player)
         ship_is_reversed = pc_cache[player_index]["ship"]["is_reversed"]
+        player_id = pc_cache[player_index]["user"]["player"]
         
         if user == user_id:
             pc_cache[player_index]["ship"]["is_reversed"] = True if ship_is_reversed is False else False
             in_cache["pc_npc"] = pc_cache
             cache.set(self.room, in_cache)
-        
-        return ship_is_reversed
             
-
-    def get_cardname_by_id(self, cards):
-        in_cache = cache.get(self.room)["cards"]
-        found_card = [
-            key["short_name"].split("_")[0] for key in in_cache if key["id"] in cards
-        ]
-
-        if found_card:
-            return found_card[0] == found_card[1] if len(found_card) >= 2 else False
-
-    def set_user_score(self, username):
-        in_cache = cache.get(self.room)
-        user_value = in_cache["users"]
-        found_item = next(item for item in user_value if item["username"] == self.user_calling)
-        found_item_index = user_value.index(found_item)
-
-        if self.user_calling == username:
-            user_value[found_item_index]["points"] += 5
-            in_cache["users"] = user_value
-            in_cache["pairs_found"] += 1
-            cache.set(self.room, in_cache)
-            return (
-                in_cache["users"][found_item_index]["points"],
-                in_cache["pairs_found"],
-                in_cache["users"][found_item_index]["username"],
-            )
-        else:
-            return (
-                in_cache["users"][found_item_index]["points"] + 5,
-                in_cache["pairs_found"] + 1,
-                in_cache["users"][found_item_index]["username"],
-            )
-
-    def add_user(self):
-        in_cache = cache.get(self.room)
-        user_list = in_cache["users"]
-        if not [key for key in user_list if key["username"] == self.user_calling]:
-            user_list.append(
-                {
-                    "username": self.user_calling,
-                    "points": 0,
-                    "created_date": self.get_datetime_json(datetime.datetime.now()),
-                }
-            )
-            in_cache["users"] = user_list
-
-            cache.set(self.room, in_cache)
-
+        return pc_cache[player_index]["ship"]["is_reversed"], player_id
+            
     def get_user(self):
         user_array = []
         for key in cache.get(self.room)["users"]:

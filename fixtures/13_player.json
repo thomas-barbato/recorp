@@ -77,5 +77,25 @@
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
+    },
+    {
+        "model": "core.player",
+        "pk": 7,
+        "fields": {
+            "user": 7,
+            "name": "pc-5",
+            "faction": 1,
+            "sector": 1,
+            "archetype": 4,
+            "is_npc": false,
+            "description": "lorem ipsum bla bla bla",
+            "faction_xp": 25,
+            "coordinates": {
+                "coord_x": 9,
+                "coord_y": 12
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
     }
 ]

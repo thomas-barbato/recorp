@@ -9,6 +9,8 @@ class Player {
         this.ship_size_y = 0;
         this.move_points = move_points;
         this.selected_cell = false;
+        this.is_reversed = false;
+
     }
 
     set_player_id(player_id) {
@@ -40,11 +42,19 @@ class Player {
         this.ship_size_y = size_y;
     }
 
+    set_is_reversed(is_reversed) {
+        this.is_reversed = is_reversed;
+    }
+
     get s_size() {
         return {
             "x": this.ship_size_x,
             "y": this.ship_size_y,
         }
+    }
+
+    get reversed_ship_status() {
+        return this.is_reversed;
     }
 
     get player() {
