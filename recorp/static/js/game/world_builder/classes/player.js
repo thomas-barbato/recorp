@@ -7,6 +7,7 @@ class Player {
         this.end_y = 0;
         this.ship_size_x = 0;
         this.ship_size_y = 0;
+        this.fullsize_coordinates_array = [];
         this.move_points = move_points;
         this.selected_cell = false;
         this.is_reversed = false;
@@ -42,6 +43,10 @@ class Player {
         this.ship_size_y = size_y;
     }
 
+    set_fullsize_coordinates(id_array) {
+        this.fullsize_coordinates_array = id_array;
+    }
+
     set_is_reversed(is_reversed) {
         this.is_reversed = is_reversed;
     }
@@ -51,6 +56,10 @@ class Player {
             "x": this.ship_size_x,
             "y": this.ship_size_y,
         }
+    }
+
+    get fullsize_coordinate() {
+        return this.fullsize_coordinates_array;
     }
 
     get reversed_ship_status() {

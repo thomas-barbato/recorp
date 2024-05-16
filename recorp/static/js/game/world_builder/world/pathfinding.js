@@ -17,24 +17,57 @@ function display_pathfinding() {
 
     if (current_player.selected_cell_bool === false) {
         for (let i = 0; i < pathfinder_obj.path.length; i++) {
-            // main element
             let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x].cells[pathfinder_obj.path[i].y];
-            // span inside main element
             let span_el = td_el.querySelector('span');
-            span_el.classList.add('text-white', 'font-bold', 'text-center');
-            // check movement point value
-            if (i < current_player.move_points_value) {
-                span_el.classList.add('bg-teal-500/30');
-                current_player.set_end_coord(
-                    pathfinder_obj.path[i].x,
-                    pathfinder_obj.path[i].y
-                );
+            // if path is lower or equal to move_point value
+            if (pathfinder_obj.path.length <= current_player.move_points_value) {
+                // if i index is lower than path - ship size x  
+                // show teal path.
+                if (i < pathfinder_obj.path.length - current_player.s_size.x) {
+                    span_el.classList.add('bg-teal-500/30');
+                    span_el.classList.add('text-white', 'font-bold', 'text-center');
+                    span_el.textContent = i + 1;
+                    // if i index is same has path - size x
+                    // show ship placeholder.
+                } else if (i == pathfinder_obj.path.length - current_player.s_size.x) {
+                    // will be used to stock real ship coordinates
+                    let ship_arrival_coordinates = []
+                    let can_be_crossed = true;
+                    for (let row_i = pathfinder_obj.path[i].x; row_i < (pathfinder_obj.path[i].x + current_player.s_size.y); row_i++) {
+                        for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
+                            let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`)
+                            if (td_ship_el.classList.contains('uncrossable')) {
+                                console.log("putain")
+                                can_be_crossed = false
+                            }
+                            ship_arrival_coordinates.push(`${row_i-1}_${col_i-1}`)
+                        }
+                    }
+
+                    if (can_be_crossed == true) {
+                        for (let row_i = pathfinder_obj.path[i].x; row_i < (pathfinder_obj.path[i].x + current_player.s_size.y); row_i++) {
+                            for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
+                                let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`)
+                                let span_ship_el = td_ship_el.querySelector('span');
+                                span_ship_el.classList.add('bg-amber-400/30', 'animate-pulse');
+                            }
+                        }
+                        // set new end_coord
+                        current_player.set_end_coord(
+                            pathfinder_obj.path[i].x,
+                            pathfinder_obj.path[i].y
+                        );
+                        // set real coordinates
+                        current_player.set_fullsize_coordinates(ship_arrival_coordinates);
+                    }
+                }
             } else {
                 span_el.classList.add('bg-red-600/30');
+                span_el.classList.add('text-white', 'font-bold', 'text-center');
+                span_el.textContent = i + 1;
             }
-
-            span_el.textContent = i + 1;
         }
+
         current_player.set_selected_cell_bool(true);
     } else {
 
@@ -57,15 +90,15 @@ function display_pathfinding() {
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });
-
-        console.log(current_player.coord.end_y)
-        console.log(current_player.coord.end_x)
         let destination_coord_array = []
-        for (let row_i = current_player.coord.end_y; row_i < (row_i + current_player.s_size.y); row_i++) {
-            for (let col_i = current_player.coord.end_x; col_i < (col_i + current_player.s_size.x); col_i++) {
-                destination_coord_array.push(`${row_i}_${col_i}`);
+
+        /*
+        for (let row_i = current_player.coord.end_x; row_i < (current_player.s_size.y + row_i); row_i++) {
+            for (let col_i = current_player.coord.end_y; col_i < (current_player.s_size.x + col_i); col_i++) {
+                //destination_coord_array.push(`${row_i}_${col_i}`);
+                console.log(row_i, col_i)
             }
-        }
+        }*/
 
         console.log(destination_coord_array)
         async_move({
@@ -190,7 +223,7 @@ function get_pathfinding(e) {
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {
-        pf_zone[i].classList.remove('bg-teal-500/30', 'bg-red-600/30', 'finish', 'box-border', 'border-2', 'border', 'text-white', 'font-bold', 'text-center');
+        pf_zone[i].classList.remove('bg-teal-500/30', 'bg-red-600/30', 'animate-pulse', 'bg-amber-400/30', 'finish', 'box-border', 'border-2', 'border', 'text-white', 'font-bold', 'text-center');
         pf_zone[i].textContent = "";
     }
 }
