@@ -89,17 +89,15 @@ class GameConsumer(WebsocketConsumer):
             user_calling=self.user
         )
         store.update_player_position(message)
-        
         response = {
             "type": "player_move", 
             "message": {
                 "player": p.get_other_player_name(message["player"]),
                 "player_user_id": p.get_other_player_user_id(message["player"]),
-                "start_x": coord["coord_x"],
-                "start_y": coord["coord_y"],
-                "end_x": message["end_x"],
-                "end_y": message["end_y"],
-                "is_reversed": message["is_reversed"]
+                "is_reversed": message["is_reversed"],
+                "start_id_array": message["start_id_array"],
+                "destination_id_array": message["destination_id_array"]
+                
             }   
         }
         

@@ -33,11 +33,15 @@ function display_pathfinding() {
                     // will be used to stock real ship coordinates
                     let ship_arrival_coordinates = []
                     let can_be_crossed = true;
+                    // check how to reverse when we hit col_i 19+ 
                     for (let row_i = pathfinder_obj.path[i].x; row_i < (pathfinder_obj.path[i].x + current_player.s_size.y); row_i++) {
                         for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
-                            let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`)
-                            if (td_ship_el.classList.contains('uncrossable')) {
-                                console.log("putain")
+                            if (col_i < 21) {
+                                let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
+                                if (td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
+                                    can_be_crossed = false;
+                                }
+                            } else {
                                 can_be_crossed = false
                             }
                             ship_arrival_coordinates.push(`${row_i-1}_${col_i-1}`)
@@ -49,6 +53,7 @@ function display_pathfinding() {
                             for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
                                 let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`)
                                 let span_ship_el = td_ship_el.querySelector('span');
+                                span_ship_el.classList.remove('bg-teal-500/30');
                                 span_ship_el.classList.add('bg-amber-400/30', 'animate-pulse');
                             }
                         }
@@ -59,6 +64,17 @@ function display_pathfinding() {
                         );
                         // set real coordinates
                         current_player.set_fullsize_coordinates(ship_arrival_coordinates);
+                        current_player.set_selected_cell_bool(true);
+                    } else {
+                        for (let row_i = pathfinder_obj.path[i].x; row_i < (pathfinder_obj.path[i].x + current_player.s_size.y); row_i++) {
+                            for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
+                                let uncrossable_td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`)
+                                let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
+                                uncrossable_span_ship_el.classList.add('bg-red-600/30', 'animate-pulse');
+                            }
+                        }
+                        current_player.selected_cell_bool === false
+
                     }
                 }
             } else {
@@ -68,20 +84,8 @@ function display_pathfinding() {
             }
         }
 
-        current_player.set_selected_cell_bool(true);
     } else {
-
         current_player.set_selected_cell_bool(false);
-        let start_pos = undefined;
-        let end_pos = undefined;
-        let player_name = undefined;
-        // transfert all data from start pos to end pos
-        // becarfull, for end , x and y are reversed
-        start_pos = pathfinder_obj.graph.rows[current_player.coord.start_y].cells[current_player.coord.start_x];
-        // revert x and y here.
-        end_pos = pathfinder_obj.graph.rows[current_player.coord.end_x].cells[current_player.coord.end_y];
-        player_name = start_pos.querySelector('div>span').title;
-
         // redefine start_coord 
         // you have to revert end_x and end_y because graph use x as y and y as x ...
         current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
@@ -90,23 +94,14 @@ function display_pathfinding() {
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });
-        let destination_coord_array = []
 
-        /*
-        for (let row_i = current_player.coord.end_x; row_i < (current_player.s_size.y + row_i); row_i++) {
-            for (let col_i = current_player.coord.end_y; col_i < (current_player.s_size.x + col_i); col_i++) {
-                //destination_coord_array.push(`${row_i}_${col_i}`);
-                console.log(row_i, col_i)
-            }
-        }*/
-
-        console.log(destination_coord_array)
         async_move({
             player: current_player.player,
             end_y: current_player.coord.end_x,
             end_x: current_player.coord.end_y,
             is_reversed: current_player.reversed_ship_status,
-            id_array: player_coord_array
+            start_id_array: player_coord_array,
+            destination_id_array: current_player.fullsize_coordinate,
         });
 
     }

@@ -2383,10 +2383,6 @@ video {
   background-color: rgb(9 9 11 / 0.7);
 }
 
-.bg-stone-200\/30 {
-  background-color: rgb(231 229 228 / 0.3);
-}
-
 .decoration-slice {
   -webkit-box-decoration-break: slice;
           box-decoration-break: slice;
