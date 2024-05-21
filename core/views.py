@@ -21,7 +21,7 @@ from core.forms import LoginForm
 from core.models import Player, Sector
 from recorp.settings import LOGIN_REDIRECT_URL
 
-logger = logging.getLogger("django")
+#logger = logging.getLogger("django")
 
 
 def admin_index(request):

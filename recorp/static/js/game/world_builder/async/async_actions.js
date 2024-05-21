@@ -16,10 +16,9 @@ function async_move(pos) {
 
 function update_player_coord(data) {
     let player_name = data["player"];
-    let user_id = data["player_user_id"];
+    let target_user_id = data["player_user_id"];
     let start_pos_array = data["start_id_array"];
     let end_pos_array = data["destination_id_array"];
-    let first_end_pos_coord = end_pos_array[0].split('_')
     for (let i = 0; i < start_pos_array.length; i++) {
         let entry_point = document.getElementById(start_pos_array[i]);
         let temp_point = document.getElementById(end_pos_array[i]).innerHTML;
@@ -32,16 +31,19 @@ function update_player_coord(data) {
 
         entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [x = ${get_start_coord[1]}; y = ${get_start_coord[0]}]`;
 
-        if (current_user_id != user_id) {
+        if (current_user_id != target_user_id) {
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
-
         } else {
             end_point.setAttribute('onclick', 'reverse_player_ship_display()');
             end_point.setAttribute('size_x', current_player.s_size.x);
             end_point.setAttribute('size_y', current_player.s_size.y);
             end_point.querySelector('div>span').title = `${player_name}`;
-            end_point.classList.add('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
+            end_point.classList.add('uncrossable', 'pc', 'player-ship-pos');
+
+            if (entry_point.classList.contains('player-start-pos')) {
+                end_point.classList.add('player-start-pos');
+            }
 
             entry_point.classList.remove('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()')
@@ -49,39 +51,7 @@ function update_player_coord(data) {
             entry_point.removeAttribute('size_y');
         }
 
-        /*
-        if (entry_point.querySelector('span').title == player_name) {
-
-            let end_point = document.querySelector('tbody').rows[`${data["end_y"]}`].cells[`${data["end_x"]}`];
-            let player_name = entry_point[i].querySelector('div>span').title;
-            let inbetween_pos = end_point.innerHTML;
-
-            end_point.innerHTML = entry_point[i].innerHTML;
-            entry_point[i].innerHTML = inbetween_pos;
-            entry_point[i].querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${parseInt(data["start_x"]) - 1}; y = ${parseInt(data["start_y"]) - 1}]`;
-
-            if (current_user_id != user_id) {
-
-                end_point.querySelector('div>span').title = `${player_name}`;
-                end_point.classList.add('pc', 'uncrossable');
-                entry_point[i].classList.remove('pc', 'uncrossable');
-                update_player_coord_in_cache_array(player_name, { "coord_x": data["end_x"], "coord_y": data["end_y"] })
-
-            } else {
-                end_point.setAttribute('onclick', 'reverse_player_ship_display()');
-                end_point.setAttribute('size_x', current_player.s_size.x);
-                end_point.setAttribute('size_y', current_player.s_size.y);
-                end_point.querySelector('div>span').title = `${player_name}`;
-                end_point.classList.add('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
-
-                // rebinding old start location in title
-                entry_point[i].classList.remove('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
-                entry_point[i].removeAttribute('onclick', 'reverse_player_ship_display()')
-                entry_point[i].querySelector('div>span').title = `${map_informations["sector"]["name"]} [x = ${current_player.coord.start_x - 1}; y = ${current_player.coord.start_y - 1}]`;
-                entry_point[i].removeAttribute('size_x');
-                entry_point[i].removeAttribute('size_y');
-            }
-        }*/
+        update_player_coord_in_cache_array(player_name, { "coord_x": data["end_x"], "coord_y": data["end_y"] })
     }
 }
 

@@ -7,7 +7,7 @@ from django.core.cache import cache
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 
-logger = logging.getLogger("django")
+#logger = logging.getLogger("django")
 
 
 class GameConsumer(WebsocketConsumer):
@@ -76,7 +76,6 @@ class GameConsumer(WebsocketConsumer):
         response = {}
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
-        coord = p.get_other_player_coord(message["player"])
         if p.get_player_id() == message["player"]:
             if p.destination_already_occupied(message["end_x"], message["end_y"]) is False:
                 p.move(
@@ -96,8 +95,9 @@ class GameConsumer(WebsocketConsumer):
                 "player_user_id": p.get_other_player_user_id(message["player"]),
                 "is_reversed": message["is_reversed"],
                 "start_id_array": message["start_id_array"],
-                "destination_id_array": message["destination_id_array"]
-                
+                "destination_id_array": message["destination_id_array"],
+                "end_x": message["end_x"],
+                "end_y": message["end_y"]
             }   
         }
         
