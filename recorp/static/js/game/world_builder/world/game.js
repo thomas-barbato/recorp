@@ -99,9 +99,7 @@ function add_sector_foreground(sector_element) {
                 // TODO: Set one border for a full element.
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
-                entry_point_border.style.borderColor = "orange";
-                entry_point_border.style.borderStyle = "dashed";
-                entry_point_border.style.cursor = "pointer";
+                entry_point_border.classList.add('hover:border-dashed', 'border-amber-500', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
@@ -152,8 +150,7 @@ function add_pc_npc(data) {
                 let space_ship_reversed = document.createElement('div');
 
                 entry_point.classList.add('uncrossable');
-                entry_point_border.style.borderStyle = "double dashed";
-                entry_point_border.style.cursor = "pointer";
+                entry_point_border.classList.add('border-dashed', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
@@ -168,7 +165,7 @@ function add_pc_npc(data) {
 
                 if (data[i]["user"]["user"] == current_user_id) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x - 1, data[i]["user"]["coordinates"].coord_y - 1);
-                    border_color = "lime";
+                    border_color = "border-green-300";
                     entry_point.classList.add("player-ship-pos");
                     entry_point.setAttribute('size_x', ship_size_x);
                     entry_point.setAttribute('size_y', ship_size_y);
@@ -176,15 +173,15 @@ function add_pc_npc(data) {
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
-                            entry_point.classList.add("player-start-pos");
+                            entry_point.classList.add("player-start-pos", "border-dashed");
                         }
                     } else if (ship_size_y == 1 && ship_size_x == 3) {
                         if (col_i == 32) {
-                            entry_point.classList.add("player-start-pos");
+                            entry_point.classList.add("player-start-pos", "border-dashed");
                         }
                     } else if (ship_size_y == 3 && ship_size_x == 3) {
                         if (row_i == 32 && col_i == 32) {
-                            entry_point.classList.add("player-start-pos");
+                            entry_point.classList.add("player-start-pos", "border-dashed");
                         }
                     }
                     space_ship.classList.add("player-ship");
@@ -192,16 +189,16 @@ function add_pc_npc(data) {
                     user_ship_max_speed = data[i]["ship"]["max_speed"];
                 }
 
-                let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc"
+                let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc";
 
                 if (data[i]["user"]["is_npc"]) {
-                    border_color = "red";
+                    border_color = "border-red-700";
                 } else if (data[i]["user"]["user"] != current_user_id && !data[i]["user"]["is_npc"]) {
-                    border_color = "cyan";
+                    border_color = "border-cyan-400";
                 }
 
-                entry_point_border.style.borderColor = border_color;
-                entry_point.classList.add(pc_or_npc_class)
+                entry_point_border.classList.add(border_color);
+                entry_point.classList.add(pc_or_npc_class);
                 space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 if (is_reversed) {
@@ -257,7 +254,6 @@ function create_foreground_modal(id, data) {
         'backdrop-blur-sm',
         'bg-black/20',
         'border-1',
-
     );
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");

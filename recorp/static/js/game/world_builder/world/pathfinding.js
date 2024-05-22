@@ -17,6 +17,7 @@ function display_pathfinding() {
         for (let i = 0; i < pathfinder_obj.path.length; i++) {
             let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x].cells[pathfinder_obj.path[i].y];
             let span_el = td_el.querySelector('span');
+            span_el.classList.remove('border', 'border-2');
             // if path is lower or equal to move_point value
             if (i <= current_player.move_points_value) {
                 // if i index is lower than path - ship size x  
@@ -25,27 +26,64 @@ function display_pathfinding() {
                     span_el.classList.add('bg-teal-500/30');
                     span_el.classList.add('text-white', 'font-bold', 'text-center');
                     span_el.textContent = i + 1;
-                    // if i index is same has path - size x
+                    // if i index is same has path - 1
                     // show ship placeholder.
                 } else if (i == pathfinder_obj.path.length - 1) {
                     span_el.textContent = "";
-                    console.log("dedans")
-                        // will be used to stock real ship coordinates
+                    // will be used to stock real ship coordinates
                     let ship_arrival_coordinates = []
                     let can_be_crossed = true;
-                    // check how to reverse when we hit col_i 19+ 
                     for (let row_i = pathfinder_obj.path[i].x; row_i < (pathfinder_obj.path[i].x + current_player.s_size.y); row_i++) {
                         for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
                             let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
                             if (td_ship_el) {
+                                // check outbount
                                 if ((col_i) >= 21 || (row_i - 1) >= 15 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
-                                    can_be_crossed = false
+                                    can_be_crossed = false;
                                 }
-                                ship_arrival_coordinates.push(`${row_i-1}_${col_i-1}`)
-
+                                ship_arrival_coordinates.push(`${row_i-1}_${col_i-1}`);
+                            } else {
+                                can_be_crossed = false;
                             }
                         }
                     }
+
+                    for (let i = 0; i < ship_arrival_coordinates.length; i++) {
+                        let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                        let span_ship_el = td_ship_el.querySelector('span');
+                        if (td_ship_el.classList.contains('player-ship-pos')) {
+                            span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                        }
+                        if (ship_arrival_coordinates.length == 9) {
+                            if (i == 0) {
+                                span_ship_el.classList.add('border-t', 'border-l');
+                                span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                            };
+                            if (i == 1) {
+                                span_ship_el.classList.add('border-t');
+                            };
+                            if (i == 2) { span_ship_el.classList.add('border-t', 'border-r') };
+                            if (i == 3) { span_ship_el.classList.add('border-l') };
+                            if (i == 5) { span_ship_el.classList.add('border-r') };
+                            if (i == 6) { span_ship_el.classList.add('border-l', 'border-b') };
+                            if (i == 7) { span_ship_el.classList.add('border-b') };
+                            if (i == 8) { span_ship_el.classList.add('border-b', 'border-r') };
+                        } else if (ship_arrival_coordinates.length == 3) {
+                            if (i == 0) {
+                                span_ship_el.classList.add('border-t', 'border-l', 'border-b')
+                                span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                            };
+                            if (i == 1) { span_ship_el.classList.add('border-t', 'border-b') };
+                            if (i == 2) { span_ship_el.classList.add('border-t', 'border-r', 'border-b') };
+                        } else if (ship_arrival_coordinates.length == 2) {
+                            if (i == 0) {
+                                span_ship_el.classList.add('border-t', 'border-l', 'border-b')
+                                span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                            };
+                            if (i == 1) { span_ship_el.classList.add('border-t', 'border-r', 'border-b') };
+                        }
+                    }
+
 
                     if (can_be_crossed == true) {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
@@ -53,7 +91,7 @@ function display_pathfinding() {
                             let span_ship_el = td_ship_el.querySelector('span');
                             span_ship_el.textContent = "";
                             span_ship_el.classList.remove('bg-teal-500/30');
-                            span_ship_el.classList.add('bg-amber-400/50', 'animate-pulse');
+                            span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400', 'animate-pulse');
                         }
                         // set new end_coord
                         current_player.set_end_coord(
@@ -68,15 +106,15 @@ function display_pathfinding() {
                             let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
                             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
                             uncrossable_span_ship_el.textContent = "";
-                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30');
-                            uncrossable_span_ship_el.classList.add('bg-red-600/50', 'animate-pulse');
+                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
+                            uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse');
                         }
                         current_player.set_selected_cell_bool(false);
                     }
                 }
             } else {
                 span_el.textContent = i + 1;
-                span_el.classList.add('bg-red-600/30', 'text-white', 'font-bold', 'text-center');
+                span_el.classList.add('bg-red-600/30', 'border-red-600', 'text-white', 'font-bold', 'text-center');
             }
         }
 
@@ -100,7 +138,6 @@ function display_pathfinding() {
             start_id_array: player_coord_array,
             destination_id_array: current_player.fullsize_coordinate,
         });
-
     }
 }
 
@@ -215,6 +252,7 @@ function get_pathfinding(e) {
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {
+        let pf_parent = pf_zone[i].parentNode.parentNode;
         pf_zone[i].classList.remove(
             'bg-teal-500/30',
             'bg-red-600/30',
@@ -222,12 +260,23 @@ function cleanCss() {
             'animate-pulse',
             'bg-amber-400/30',
             'bg-amber-400/50',
+            'border-amber-400',
+            'border-red-600',
             'finish', 'box-border',
             'border-2',
             'border',
             'text-white',
             'font-bold',
-            'text-center');
+            'text-center',
+            'border-l',
+            'border-r',
+            'border-b',
+            'border-t'
+        );
+        pf_zone[i].classList.add('hover:border-2', 'hover:border');
+        if (pf_parent.classList.contains('player-ship-pos')) {
+            pf_zone[i].classList.add('border-dashed', 'border-green-300');
+        }
         pf_zone[i].textContent = "";
     }
 }

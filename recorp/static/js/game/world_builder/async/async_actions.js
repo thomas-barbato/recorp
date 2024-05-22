@@ -50,8 +50,6 @@ function update_player_coord(data) {
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
         }
-
-        update_player_coord_in_cache_array(player_name, { "coord_x": data["end_x"], "coord_y": data["end_y"] })
     }
 }
 

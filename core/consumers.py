@@ -83,11 +83,11 @@ class GameConsumer(WebsocketConsumer):
                     end_y=message["end_y"]
                 )
                 
-        store = StoreInCache(
-            room_name=self.room_group_name, 
-            user_calling=self.user
-        )
-        store.update_player_position(message)
+                store = StoreInCache(
+                    room_name=self.room_group_name, 
+                    user_calling=self.user
+                )
+                store.update_player_position(message)
         response = {
             "type": "player_move", 
             "message": {

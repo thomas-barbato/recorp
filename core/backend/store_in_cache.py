@@ -153,6 +153,12 @@ class StoreInCache:
             "coord_x" : int(pos["end_x"]), "coord_y" : int(pos["end_y"])
         }
         
+        for player in player_position:
+            if player["user"]["player"] == found_player["user"]["player"]:
+                if player["user"]["coordinates"]["coord_y"] != int(pos["end_y"]) or player["user"]["coordinates"]["coord_x"] != int(pos["end_x"]):
+                    player_index = player_position.index(player)
+                    player_position.pop(player_index)
+        
         in_cache["pc_npc"] = player_position
         cache.set(self.room, in_cache)  
         
