@@ -46,7 +46,7 @@ function update_player_coord(data) {
             }
 
             entry_point.classList.remove('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
-            entry_point.removeAttribute('onclick', 'reverse_player_ship_display()')
+            entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
         }
@@ -93,7 +93,7 @@ function reverse_ship(data) {
 function update_reverse_ship_in_cache_array(player_id, status) {
     for (let i = 0; i < map_informations.pc_npc.length; i++) {
         if (map_informations.pc_npc[i].user.player == player_id) {
-            map_informations.pc_npc[i].ship.is_reversed = status
+            map_informations.pc_npc[i].ship.is_reversed = status;
         }
     }
 }

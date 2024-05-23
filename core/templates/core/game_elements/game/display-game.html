@@ -2,7 +2,7 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-full order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
+<div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-[6/12] order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
     <div class="flex self-center item-center">
         <div class="grid">
             <table class="tabletop-view">

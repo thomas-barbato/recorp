@@ -1,22 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body{
+body {
     background-color: #0f0e0e;
 }
 
-#player-container{
+#player-container {
     background-image: url("/static/fonts/space_2.jpg");
     background-size: cover;
 }
 
-#settings-button{
+#settings-button {
     color: #F5F5F5;
-    border:none;
+    border: none;
 }
 
-.font-shadow{
+.font-shadow {
     text-shadow: 1px 1px 2px black;
 }
 
@@ -29,11 +28,11 @@ fieldset {
     border: 1px solid whitesmoke;
 }
 
-.progress-bar-color{
+.progress-bar-color {
     background-color: #01ff66;
 }
 
-.game-container-border{
+.game-container-border {
     background-image: url("/static/fonts/border-container-withbg.svg");
     background-color: transparent;
     background-repeat: no-repeat;
@@ -41,101 +40,105 @@ fieldset {
 }
 
 .game-container {
-  clip-path:
-    polygon(
-      0% 20px,                 /* top left */
-      20px 0%,                 /* top left */
-      calc(100% - 20px) 0%,    /* top right */
-      100% 20px,               /* top right */
-      100% calc(100% - 20px),  /* bottom right */
-      calc(100% - 20px) 100%,  /* bottom right */
-      20px 100%,               /* bottom left */
-      0 calc(100% - 20px)      /* bottom left */
+    clip-path: polygon( 0% 20px, /* top left */
+    20px 0%, /* top left */
+    calc(100% - 20px) 0%, /* top right */
+    100% 20px, /* top right */
+    100% calc(100% - 20px), /* bottom right */
+    calc(100% - 20px) 100%, /* bottom right */
+    20px 100%, /* bottom left */
+    0 calc(100% - 20px)/* bottom left */
     );
-
 }
 
 .inset-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-28 {
-  position: absolute;
-  top: 28%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-32 {
-  position: absolute;
-  top: 32%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-40 {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-45 {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-52 {
-  position: absolute;
-  top: 52%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-58 {
-  position: absolute;
-  top: 58vh;
-  left: 50vw;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 58vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
 }
 
 .inset-center-60 {
-  position: absolute;
-  top: 60vh;
-  left: 50vw;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 60vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
 }
 
-.img-container-size{
+.img-container-size {
     background-size: auto 100vh;
 }
+
+
 /* Hide scrollbar for IE, Edge and Firefox */
+
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 table.no-spacing {
-  border-spacing:0; /* Removes the cell spacing via CSS */
-  border-collapse: collapse;  /* Optional - if you don't want to have double border where cells touch */
+    border-spacing: 0;
+    /* Removes the cell spacing via CSS */
+    border-collapse: collapse;
+    /* Optional - if you don't want to have double border where cells touch */
 }
 
-.no-borders{
-    border:0;
-    border-spacing:0;
+.no-borders {
+    border: 0;
+    border-spacing: 0;
 }
 
-select{
-    text-align:center;
+select {
+    text-align: center;
 }
 
 .loader-container {
@@ -148,6 +151,8 @@ select{
     background: #000;
     z-index: 1;
 }
+
+
 /*
 .loading-spinner {
     width: 64px;
@@ -165,4 +170,5 @@ select{
     100% {
         transform: rotate(360deg);
     }
-}*/
+}
+*/

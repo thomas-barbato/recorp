@@ -22,7 +22,6 @@ function add_sector_background(background_name) {
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
             let entry_point_border = entry_point.querySelector('div>span');
 
-
             entry_point.style.backgroundImage = "url('" + bg_url + "')";
             entry_point.style.backgroundPositionX = `-${col_i}px`;
             entry_point.style.backgroundPositionY = `-${row_i}px`;
@@ -170,6 +169,7 @@ function add_pc_npc(data) {
                     entry_point.setAttribute('size_x', ship_size_x);
                     entry_point.setAttribute('size_y', ship_size_y);
                     entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
+                    entry_point.setAttribute('touchstart', 'reverse_player_ship_display()');
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
@@ -219,6 +219,63 @@ function add_pc_npc(data) {
             coord_x = data[i]["user"]["coordinates"]["coord_x"];
         }
     }
+}
+
+function hide_sector_overflow(limite_x, limite_y) {
+
+    let limite_x_is_paire = true ? limite_x % 2 == 0 : false;
+    let limite_y_is_paire = true ? limite_y % 2 == 0 : false;
+
+    var ids = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
+        return element.id;
+    });
+
+    let id = undefined;
+
+    if (ids.length == 9) {
+        id = ids[5];
+    } else if (ids.length == 3) {
+        id = ids[1];
+    } else if (ids.length == 2 || ids.length == 1) {
+        id = ids[0];
+    }
+
+    let first_element = id.split('_');
+
+    let position_on_map = {
+        size: {
+            x: atlas.col,
+            y: atlas.row
+        },
+        middle_element: {
+            x: first_element[1],
+            y: first_element[0]
+        },
+    };
+
+    let display_map_start_x = position_on_map.middle_element.x - Math.floor(limite_x / 2) > 0 ? position_on_map.middle_element.x - Math.floor(limite_x / 2) : 0
+    let display_map_end_x = (display_map_start_x + limite_x) <= position_on_map.size.x ? display_map_start_x + limite_x : position_on_map.size.x;
+    let display_map_start_y = position_on_map.middle_element.y - Math.floor(limite_y / 2) > 0 ? position_on_map.middle_element.y - Math.floor(limite_y / 2) : 0
+    let display_map_end_y = (display_map_start_y + limite_y) <= position_on_map.size.y ? display_map_start_y + limite_y : position_on_map.size.y;
+
+    console.log(display_map_start_x, display_map_end_x)
+
+    console.log(display_map_start_x, display_map_start_y)
+
+    for (let row_i = 0; row_i <= atlas.row; row_i++) {
+        for (let col_i = 0; col_i <= atlas.col; col_i++) {
+            if (col_i <= display_map_start_x || col_i >= display_map_end_x) {
+                let entry_point = document.querySelector('.tabletop-view').rows[row_i].cells[col_i];
+                entry_point.style.display = "none";
+            } else if (row_i <= display_map_start_y || row_i >= display_map_end_y) {
+                let entry_point = document.querySelector('.tabletop-view').rows[row_i].cells[col_i];
+                entry_point.style.display = "none";
+
+            }
+
+        }
+    }
+
 }
 
 function reverse_player_ship_display() {
@@ -275,10 +332,12 @@ function create_foreground_modal(id, data) {
     header_close_button.title = `${data.actions.close}`;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
     header_close_button.setAttribute('onclick', "close_modal('" + "modal-" + id + "')");
+    header_close_button.setAttribute('touchstart', "close_modal('" + "modal-" + id + "')");
 
     let footer_close_button = document.createElement("img");
     footer_close_button.src = close_button_url;
     footer_close_button.setAttribute('onclick', "close_modal('" + "modal-" + id + "')");
+    header_close_button.setAttribute('touchstart', "close_modal('" + "modal-" + id + "')");
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
@@ -545,14 +604,12 @@ function update_target_coord_display() {
     for (let i = 0; i < selected_tile.length; i++) {
         selected_tile[i].addEventListener('mouseover', function() {
             let target_name = this.querySelector('span').title.split(' ')[0];
-            let x = this.cellIndex - 1;
-            let y = this.parentNode.rowIndex - 1;
             let coord_name = document.querySelector('#target-coord-name');
             let coord_x = document.querySelector('#target-coord-x');
             let coord_y = document.querySelector('#target-coord-y');
             coord_name.textContent = target_name;
-            coord_x.textContent = `x = ${x}`;
-            coord_y.textContent = `y = ${y}`;
+            coord_x.textContent = `x = ${this.cellIndex - 1}`;
+            coord_y.textContent = `y = ${this.parentNode.rowIndex}`;
         })
     }
 }
@@ -602,6 +659,7 @@ window.addEventListener('load', () => {
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
+    hide_sector_overflow(11, 11);
     set_pathfinding_event();
 
     gameSocket.onmessage = function(e) {

@@ -47,44 +47,67 @@ function display_pathfinding() {
                             }
                         }
                     }
-
-                    for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-                        let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
-                        let span_ship_el = td_ship_el.querySelector('span');
-                        if (td_ship_el.classList.contains('player-ship-pos')) {
-                            span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
-                        }
-                        if (ship_arrival_coordinates.length == 9) {
-                            if (i == 0) {
-                                span_ship_el.classList.add('border-t', 'border-l');
-                                span_ship_el.classList.remove('hover:border-2', 'hover:border');
-                            };
-                            if (i == 1) {
-                                span_ship_el.classList.add('border-t');
-                            };
-                            if (i == 2) { span_ship_el.classList.add('border-t', 'border-r') };
-                            if (i == 3) { span_ship_el.classList.add('border-l') };
-                            if (i == 5) { span_ship_el.classList.add('border-r') };
-                            if (i == 6) { span_ship_el.classList.add('border-l', 'border-b') };
-                            if (i == 7) { span_ship_el.classList.add('border-b') };
-                            if (i == 8) { span_ship_el.classList.add('border-b', 'border-r') };
-                        } else if (ship_arrival_coordinates.length == 3) {
-                            if (i == 0) {
-                                span_ship_el.classList.add('border-t', 'border-l', 'border-b')
-                                span_ship_el.classList.remove('hover:border-2', 'hover:border');
-                            };
-                            if (i == 1) { span_ship_el.classList.add('border-t', 'border-b') };
-                            if (i == 2) { span_ship_el.classList.add('border-t', 'border-r', 'border-b') };
-                        } else if (ship_arrival_coordinates.length == 2) {
-                            if (i == 0) {
-                                span_ship_el.classList.add('border-t', 'border-l', 'border-b')
-                                span_ship_el.classList.remove('hover:border-2', 'hover:border');
-                            };
-                            if (i == 1) { span_ship_el.classList.add('border-t', 'border-r', 'border-b') };
-                        }
+                    switch (ship_arrival_coordinates.length) {
+                        case 9:
+                            for (let i = 0; i < 9; i++) {
+                                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                                let span_ship_el = td_ship_el.querySelector('span');
+                                if (td_ship_el.classList.contains('player-ship-pos')) {
+                                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                                }
+                                if (i == 0) {
+                                    span_ship_el.classList.add('border-t', 'border-l');
+                                    span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                                } else if (i == 1) {
+                                    span_ship_el.classList.add('border-t');
+                                } else if (i == 2) {
+                                    span_ship_el.classList.add('border-t', 'border-r');
+                                } else if (i == 3) {
+                                    span_ship_el.classList.add('border-l');
+                                } else if (i == 5) {
+                                    span_ship_el.classList.add('border-r');
+                                } else if (i == 6) {
+                                    span_ship_el.classList.add('border-l', 'border-b');
+                                } else if (i == 7) {
+                                    span_ship_el.classList.add('border-b');
+                                } else if (i == 8) {
+                                    span_ship_el.classList.add('border-b', 'border-r');
+                                }
+                            }
+                            break;
+                        case 3:
+                            for (let i = 0; i < 3; i++) {
+                                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                                let span_ship_el = td_ship_el.querySelector('span');
+                                if (td_ship_el.classList.contains('player-ship-pos')) {
+                                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                                }
+                                if (i == 0) {
+                                    span_ship_el.classList.add('border-t', 'border-l', 'border-b');
+                                    span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                                } else if (i == 1) {
+                                    span_ship_el.classList.add('border-t', 'border-b');
+                                } else if (i == 2) {
+                                    span_ship_el.classList.add('border-t', 'border-r', 'border-b');
+                                }
+                            }
+                            break;
+                        case 2:
+                            for (let i = 0; i < 2; i++) {
+                                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                                let span_ship_el = td_ship_el.querySelector('span');
+                                if (td_ship_el.classList.contains('player-ship-pos')) {
+                                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                                }
+                                if (i == 0) {
+                                    span_ship_el.classList.add('border-t', 'border-l', 'border-b');
+                                    span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                                } else if (i == 1) {
+                                    span_ship_el.classList.add('border-t', 'border-r', 'border-b');
+                                }
+                            }
+                            break;
                     }
-
-
                     if (can_be_crossed == true) {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
                             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
