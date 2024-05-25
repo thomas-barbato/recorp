@@ -25,7 +25,6 @@ function add_sector_background(background_name) {
             entry_point.style.backgroundImage = "url('" + bg_url + "')";
             entry_point.style.backgroundPositionX = `-${col_i}px`;
             entry_point.style.backgroundPositionY = `-${row_i}px`;
-
             entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col - 1)}; y = ${parseInt(index_row - 1)}]`);
 
@@ -233,7 +232,7 @@ function hide_sector_overflow(limite_x, limite_y) {
     let id = undefined;
 
     if (ids.length == 9) {
-        id = ids[5];
+        id = ids[4];
     } else if (ids.length == 3) {
         id = ids[1];
     } else if (ids.length == 2 || ids.length == 1) {
@@ -248,33 +247,31 @@ function hide_sector_overflow(limite_x, limite_y) {
             y: atlas.row
         },
         middle_element: {
-            x: first_element[1],
-            y: first_element[0]
+            x: parseInt(first_element[1]),
+            y: parseInt(first_element[0])
         },
     };
 
-    let display_map_start_x = position_on_map.middle_element.x - Math.floor(limite_x / 2) > 0 ? position_on_map.middle_element.x - Math.floor(limite_x / 2) : 0
-    let display_map_end_x = (display_map_start_x + limite_x) <= position_on_map.size.x ? display_map_start_x + limite_x : position_on_map.size.x;
-    let display_map_start_y = position_on_map.middle_element.y - Math.floor(limite_y / 2) > 0 ? position_on_map.middle_element.y - Math.floor(limite_y / 2) : 0
-    let display_map_end_y = (display_map_start_y + limite_y) <= position_on_map.size.y ? display_map_start_y + limite_y : position_on_map.size.y;
+    let display_map_start_x = (position_on_map.middle_element.x - Math.round(limite_x / 2)) <= 0 ? 0 : position_on_map.middle_element.x - Math.round(limite_x / 2);
+    let display_map_end_x = (position_on_map.middle_element.x + Math.round(limite_x / 2)) >= position_on_map.size.x - 1 ? position_on_map.size.x - 1 : position_on_map.middle_element.x + Math.round(limite_x / 2);
+    let display_map_start_y = (position_on_map.middle_element.y - limite_y) <= 0 ? 0 : position_on_map.middle_element.y - limite_y;
+    let display_map_end_y = (position_on_map.middle_element.y + limite_y) > position_on_map.size.y - 1 ? position_on_map.size.y : position_on_map.middle_element.y + limite_y;
 
-    console.log(display_map_start_x, display_map_end_x)
-
-    console.log(display_map_start_x, display_map_start_y)
-
-    for (let row_i = 0; row_i <= atlas.row; row_i++) {
-        for (let col_i = 0; col_i <= atlas.col; col_i++) {
-            if (col_i <= display_map_start_x || col_i >= display_map_end_x) {
-                let entry_point = document.querySelector('.tabletop-view').rows[row_i].cells[col_i];
+    /*
+    for (let y = 0; y < position_on_map.size.y; y++) {
+        for (let x = 0; x < position_on_map.size.x; x++) {
+            let entry_point = document.getElementById(`${y}_${x}`);
+            if (x < display_map_start_x || x > display_map_end_x) {
                 entry_point.style.display = "none";
-            } else if (row_i <= display_map_start_y || row_i >= display_map_end_y) {
-                let entry_point = document.querySelector('.tabletop-view').rows[row_i].cells[col_i];
+            } else if (y < display_map_start_y || y > display_map_end_y) {
                 entry_point.style.display = "none";
 
             }
-
         }
     }
+    */
+
+
 
 }
 
