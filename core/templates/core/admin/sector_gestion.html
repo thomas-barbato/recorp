@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
@@ -15,11 +16,9 @@
 {{ station_url|json_script:"script_station_url" }}
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
-<div class="flex w-[90vw] lg:flex-row flex-col gap-20 justify-center">
-    <div class="flex flex-col lg:w-1/2 w-full m-0 p-0 self-start">
-
+<div class="flex flex-col">
+    <div class="flex flex-col w-[90%]">
         <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
-
         <section class="mb-2">
             <div class="flex flex-row">
                 <div class="flex w-full flex-col">
@@ -90,17 +89,17 @@
             </div>
         </section>
 
-        <section id="foreground-menu" class="mt-1 w-full">
+        <section id="foreground-menu" class="mt-1 lg:w-[40vw] w-full">
             <div id="foreground-menu-container-1" class="w-full flex lg:flex-row flex-col bg-gray-600 border border-white gap-1 mb-1 foreground-menu-container">
-                <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-1/2 w-full" id="foreground-menu-1">
-                    <p class="flex w-[100%] justify-center text-center text-2xl font-bold text-[#B4B86E]" id="item-nb">ITEM #1</p>
+                <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-2/3 w-full" id="foreground-menu-1">
+                    <p class="flex justify-center text-center text-2xl font-bold text-[#B4B86E]" id="item-nb">ITEM #1</p>
                     <span class="foreground-menu-title text-center text-sm flex flex-col" id="foreground-menu-title-1"><b>New Foreground item <i id="trash-1" class="fa-solid fa-trash fa-xl cursor-pointer trash-it"></i></b>
                         <label for="coord-radio-button">Get coordinate</label>
                         <input class="mt-1 coord-radio-button text-center" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
                     </span>
-                    <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-1/2 w-full coord_size">
-                        <section class="flex w-2/2 gap-1 coord">
-                            <div class="flex flex-col coord-x">
+                    <div class="flex gap-2 flex-col items-start mt-1 mb-1 coord_size">
+                        <section class="flex w-1/2 gap-1 coord">
+                            <div class="flex flex-col coord-x w-">
                                 <label for="coord-x" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Coord X :</b></label>
                                 <input type="number" id="coord-x-1" name="coord-x" min="0" value="0" class="cursor-pointer text-center">
                             </div>
@@ -145,9 +144,9 @@
                         </select>
                     </div>
                     <input type="hidden" name="item-id" value="">
-                    <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 lg:w-2/2 w-full p-2 animations">
-                        <section class="flex w-full flex-row animations-section gap-1">
-                            <div class="flex flex-col w-1/2 animation-items">
+                    <div class="flex gap-2 items-center mx-auto mt-1 mb-1 animations">
+                        <section class="flex animations-section gap-1">
+                            <div class="flex  animation-items">
                                  <div id="preview-animation-1" class=" flex flex-row self-start">
                                     <div class="flex self-start item-center">
                                         <div class="grid">
@@ -162,7 +161,7 @@
                         </section>
                     </div>
                 </div>
-                <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-1/2 w-full" id="foreground-menu-left-1">
+                <div class="flex flex-col mb-1 foreground-menu-item lg:w-1/3 w-full" id="foreground-menu-left-1">
                     <section>
                         <label for="item-name-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Name this element:</b></label>
                         <input type="text" value="" id="item-name-1" class="item-name text-center" name="item-name">
@@ -191,7 +190,7 @@
         </section>
 
     </div>
-    <div class="flex flex-col w-1/2 m-0 p-0 self-start">
+    <div class="flex flex-col mt-2 self-start w-[80vw]">
         <div id="map-background" class=" flex flex-row self-start">
             <div class="flex xl:self-center self-start item-center">
                 <div class="grid">

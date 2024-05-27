@@ -1,22 +1,20 @@
 let gameSocket = "";
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
-let user_ship_max_speed = {};
-
 
 let animation_container_set = new Set();
 let atlas = {
-    "col": 20,
-    "row": 15,
+    "col": 40,
+    "row": 40,
     "tilesize": 32,
-    "map_width_size": 20 * 32,
-    "map_height_size": 15 * 32,
+    "map_width_size": 40 * 32,
+    "map_height_size": 40 * 32,
 }
 
 function add_sector_background(background_name) {
     let index_row = 1;
     let index_col = 1;
-    let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.png';
+    let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.gif';
     for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -33,6 +31,16 @@ function add_sector_background(background_name) {
         index_row++;
         index_col = 1;
     }
+
+    for (let i = 0; i < map_informations.pc_npc.length; i++) {
+        let player = map_informations.pc_npc[i]
+        if (player.user.user == current_user_id) {
+            hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y, map_informations.screen_sized_map["col"], map_informations.screen_sized_map["row"]);
+            break;
+        }
+    }
+
+
 }
 
 function add_sector_foreground(sector_element) {
@@ -101,7 +109,7 @@ function add_sector_foreground(sector_element) {
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                entry_point_border.setAttribute('onclick', "open_modal('" + "modal-" + element_data["name"] + "')");
+                entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
 
                 img_div.classList.add(
                     'relative',
@@ -220,59 +228,36 @@ function add_pc_npc(data) {
     }
 }
 
-function hide_sector_overflow(limite_x, limite_y) {
-
-    let limite_x_is_paire = true ? limite_x % 2 == 0 : false;
-    let limite_y_is_paire = true ? limite_y % 2 == 0 : false;
-
-    var ids = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
-        return element.id;
-    });
-
-    let id = undefined;
-
-    if (ids.length == 9) {
-        id = ids[4];
-    } else if (ids.length == 3) {
-        id = ids[1];
-    } else if (ids.length == 2 || ids.length == 1) {
-        id = ids[0];
-    }
-
-    let first_element = id.split('_');
+function hide_sector_overflow(coord_x, coord_y, limite_x, limite_y) {
 
     let position_on_map = {
-        size: {
-            x: atlas.col,
-            y: atlas.row
-        },
-        middle_element: {
-            x: parseInt(first_element[1]),
-            y: parseInt(first_element[0])
-        },
+        x: parseInt(coord_x),
+        y: parseInt(coord_y)
     };
 
-    let display_map_start_x = (position_on_map.middle_element.x - Math.round(limite_x / 2)) <= 0 ? 0 : position_on_map.middle_element.x - Math.round(limite_x / 2);
-    let display_map_end_x = (position_on_map.middle_element.x + Math.round(limite_x / 2)) >= position_on_map.size.x - 1 ? position_on_map.size.x - 1 : position_on_map.middle_element.x + Math.round(limite_x / 2);
-    let display_map_start_y = (position_on_map.middle_element.y - limite_y) <= 0 ? 0 : position_on_map.middle_element.y - limite_y;
-    let display_map_end_y = (position_on_map.middle_element.y + limite_y) > position_on_map.size.y - 1 ? position_on_map.size.y : position_on_map.middle_element.y + limite_y;
+    let display_map_start_x = (position_on_map.x - Math.round(limite_x / 2)) <= 0 ? 0 : (position_on_map.x - Math.round(limite_x / 2));
+    let display_map_end_x = (position_on_map.x + Math.round(limite_x / 2)) >= atlas.col ? atlas.col : (display_map_start_x + limite_x);
+    if (display_map_end_x == atlas.col) {
+        display_map_start_x = display_map_end_x - limite_x;
+    }
+    let display_map_start_y = (position_on_map.y - Math.round(limite_y / 2)) <= 0 ? 0 : (position_on_map.y - Math.round(limite_y / 2));
+    let display_map_end_y = (position_on_map.y + Math.round(limite_y / 2)) >= atlas.row ? atlas.row : (display_map_start_y + limite_y);
+    if (display_map_end_y == atlas.row) {
+        display_map_start_y = display_map_end_y - limite_y;
+    }
 
-    /*
-    for (let y = 0; y < position_on_map.size.y; y++) {
-        for (let x = 0; x < position_on_map.size.x; x++) {
-            let entry_point = document.getElementById(`${y}_${x}`);
-            if (x < display_map_start_x || x > display_map_end_x) {
+    for (let y = 0; y <= atlas.row; y++) {
+        for (let x = 0; x <= atlas.col; x++) {
+            let entry_point = document.querySelector('.tabletop-view').rows[y].cells[x]
+            if ((x < display_map_start_x || x > display_map_end_x) && x != 0) {
                 entry_point.style.display = "none";
-            } else if (y < display_map_start_y || y > display_map_end_y) {
-                entry_point.style.display = "none";
-
             }
+            if ((y < display_map_start_y || y > display_map_end_y) && y != 0) {
+                entry_point.style.display = "none";
+            }
+            document.getElementById('0_0').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
         }
     }
-    */
-
-
-
 }
 
 function reverse_player_ship_display() {
@@ -328,13 +313,13 @@ function create_foreground_modal(id, data) {
     header_close_button.src = close_button_url;
     header_close_button.title = `${data.actions.close}`;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
-    header_close_button.setAttribute('onclick', "close_modal('" + "modal-" + id + "')");
-    header_close_button.setAttribute('touchstart', "close_modal('" + "modal-" + id + "')");
+    header_close_button.setAttribute('onclick', "open_close_modal('" + "modal-" + id + "')");
+    header_close_button.setAttribute('touchstart', "open_close_modal('" + "modal-" + id + "')");
 
     let footer_close_button = document.createElement("img");
     footer_close_button.src = close_button_url;
-    footer_close_button.setAttribute('onclick', "close_modal('" + "modal-" + id + "')");
-    header_close_button.setAttribute('touchstart', "close_modal('" + "modal-" + id + "')");
+    footer_close_button.setAttribute('onclick', "open_close_modal('" + "modal-" + id + "')");
+    header_close_button.setAttribute('touchstart', "open_close_modal('" + "modal-" + id + "')");
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
@@ -580,14 +565,9 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function open_modal(id) {
+function open_close_modal(id) {
     let e = document.querySelector('#' + id)
-    e.classList.remove('hidden');
-}
-
-function close_modal(id) {
-    let e = document.querySelector('#' + id)
-    e.classList.add('hidden');
+    e.classList.contains('hidden') == true ? e.classList.remove('hidden') : e.classList.add('hidden');
 }
 
 
@@ -656,7 +636,6 @@ window.addEventListener('load', () => {
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
-    hide_sector_overflow(11, 11);
     set_pathfinding_event();
 
     gameSocket.onmessage = function(e) {

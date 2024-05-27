@@ -15,6 +15,7 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
+    console.log(data)
     let player_name = data["player"];
     let target_user_id = data["player_user_id"];
     let start_pos_array = data["start_id_array"];
@@ -49,7 +50,9 @@ function update_player_coord(data) {
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
+            hide_sector_overflow(end_pos_array[0].split('_')[1], end_pos_array[0].split('_')[0], map_informations.screen_sized_map["col"], map_informations.screen_sized_map["row"])
         }
+
     }
 }
 

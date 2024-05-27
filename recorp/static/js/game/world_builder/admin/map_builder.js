@@ -4,11 +4,11 @@
     let dict = [];
 
     let atlas = {
-        "col": 20,
-        "row": 15,
+        "col": 40,
+        "row": 40,
         "tilesize": 32,
-        "map_width_size": 20 * 32,
-        "map_height_size": 15 * 32,
+        "map_width_size": 40 * 32,
+        "map_height_size": 40 * 32,
     }
 
     Set.prototype.getByIndex = function(index) { return [...this][index]; }
@@ -256,8 +256,6 @@
     })
 
     function display_select_animation_preview(select_text, select_value, element_id) {
-        console.log(select_value, select_text, element_id)
-        console.log(animations_json)
         for (var [index_key, value] in animations_json[select_value]) {
             let col = animations_json[select_value][index_key]['fields']['size']['size_x'];
             let row = animations_json[select_value][index_key]['fields']['size']['size_y'];
@@ -317,7 +315,7 @@
             if (anim_array[animation_i][1] !== "none") {
                 let index_row = 0;
                 let index_col = 0;
-                let img_url = '/static/img/atlas/foreground/' + dir_category + '/' + anim_array[animation_i][1] + '/' + '0.gif';
+                let img_url = '/static/img/atlas/foreground/' + dir_category + '/' + anim_array[1][1] + '/' + '0.gif';
                 for (let row_i = 0; row_i < preview_height_size; row_i += preview_tile_size) {
                     for (let col_i = 0; col_i < preview_width_size; col_i += preview_tile_size) {
                         let img_div = document.createElement('div');
@@ -358,15 +356,13 @@
                 let id = fg_data[i].id.split('-')[3];
                 let animation_name = selector.options[selector.selectedIndex].text;
                 let animation_data_direname = selector.options[selector.selectedIndex].value;
+                console.log("animation_name  = " + animation_name)
+                console.log(animation_data_direname)
+                console.log("animations_json")
+                console.log(animations_json)
                 coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value);
                 coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value);
                 for (var [i_key, value] in animations_json[animation_data_direname]) {
-                    let filtered_data = Object.assign({}, ...Object.entries(
-                        animations_json[animation_data_direname][i_key]['fields']['data']
-                    ).filter(([key, value]) => value != "none").map(([key, value]) => ({
-                        [key]: value
-                    })));
-                    animation_data = filtered_data;
                     s_x = animations_json[animation_data_direname][i_key]['fields']['size']['size_x'];
                     s_y = animations_json[animation_data_direname][i_key]['fields']['size']['size_y'];
                 }
@@ -376,10 +372,13 @@
                     size_x: s_x,
                     size_y: s_y,
                     animation_direname: animation_data_direname,
-                    animations: [
-                        animation_data,
-                    ],
+                    animations: [{
+                        "animation": animation_name,
+                        "type": animation_data_direname.split('_')[0]
+                    }],
                 }
+
+                console.log(dict[i])
             }
         }
     }
@@ -387,7 +386,7 @@
     function add_background(folder_name) {
         let index_row = 1;
         let index_col = 1;
-        let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.png';
+        let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.gif';
         for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];

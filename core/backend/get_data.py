@@ -61,11 +61,19 @@ class GetMapDataFromDB:
 
     @staticmethod
     def get_map_size():
-        return {"cols": 20, "rows": 15}
+        return {"cols": 40, "rows": 40}
 
     @staticmethod
     def get_map_size_range():
-        return {"cols": range(20), "rows": range(15)}
+        return {"cols": range(40), "rows": range(40)}
+    
+    @staticmethod
+    def get_resolution_sized_map(device_type):
+        return {
+            "is_pc": {"col": 20, "row": 15},
+            "is_mobile": {"col": 11, "row": 11},
+            "is_tablet": {"col": 20, "row": 20},
+        }[device_type]
 
     @staticmethod
     def get_fg_type():

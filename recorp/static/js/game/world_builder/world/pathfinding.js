@@ -38,9 +38,10 @@ function display_pathfinding() {
                             let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
                             if (td_ship_el) {
                                 // check outbount
-                                if ((col_i) >= 21 || (row_i - 1) >= 15 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
+                                if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
                                     can_be_crossed = false;
                                 }
+                                // save id in list
                                 ship_arrival_coordinates.push(`${row_i-1}_${col_i-1}`);
                             } else {
                                 can_be_crossed = false;
