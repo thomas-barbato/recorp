@@ -78,6 +78,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        
         user_agent = self.request.user_agent
         if user_agent.is_pc:
             map_range = GetMapDataFromDB.get_resolution_sized_map("is_pc")
@@ -85,6 +86,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             map_range = GetMapDataFromDB.get_resolution_sized_map("is_mobile")
         elif user_agent.is_tablet:
             map_range = GetMapDataFromDB.get_resolution_sized_map("is_tablet")
+            
         context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(40), "rows": range(40)}
         

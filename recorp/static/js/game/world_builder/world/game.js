@@ -35,12 +35,11 @@ function add_sector_background(background_name) {
     for (let i = 0; i < map_informations.pc_npc.length; i++) {
         let player = map_informations.pc_npc[i]
         if (player.user.user == current_user_id) {
-            hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y, map_informations.screen_sized_map["col"], map_informations.screen_sized_map["row"]);
+            hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
+            document.querySelector('.tabletop-view').classList.remove('hidden')
             break;
         }
     }
-
-
 }
 
 function add_sector_foreground(sector_element) {
@@ -228,36 +227,45 @@ function add_pc_npc(data) {
     }
 }
 
-function hide_sector_overflow(coord_x, coord_y, limite_x, limite_y) {
+function hide_sector_overflow(coord_x, coord_y) {
 
     let position_on_map = {
         x: parseInt(coord_x),
         y: parseInt(coord_y)
     };
 
+    let limite_x = map_informations.screen_sized_map["col"];
+    let limite_y = map_informations.screen_sized_map["row"];
+
     let display_map_start_x = (position_on_map.x - Math.round(limite_x / 2)) <= 0 ? 0 : (position_on_map.x - Math.round(limite_x / 2));
     let display_map_end_x = (position_on_map.x + Math.round(limite_x / 2)) >= atlas.col ? atlas.col : (display_map_start_x + limite_x);
+
+    let display_map_start_y = (position_on_map.y - Math.round(limite_y / 2)) <= 0 ? 0 : (position_on_map.y - Math.round(limite_y / 2));
+    let display_map_end_y = (position_on_map.y + Math.round(limite_y / 2)) >= atlas.row ? atlas.row : (display_map_start_y + limite_y);
+
     if (display_map_end_x == atlas.col) {
         display_map_start_x = display_map_end_x - limite_x;
     }
-    let display_map_start_y = (position_on_map.y - Math.round(limite_y / 2)) <= 0 ? 0 : (position_on_map.y - Math.round(limite_y / 2));
-    let display_map_end_y = (position_on_map.y + Math.round(limite_y / 2)) >= atlas.row ? atlas.row : (display_map_start_y + limite_y);
     if (display_map_end_y == atlas.row) {
         display_map_start_y = display_map_end_y - limite_y;
     }
 
+
     for (let y = 0; y <= atlas.row; y++) {
         for (let x = 0; x <= atlas.col; x++) {
             let entry_point = document.querySelector('.tabletop-view').rows[y].cells[x]
+            entry_point.classList.remove("hidden");
             if ((x < display_map_start_x || x > display_map_end_x) && x != 0) {
-                entry_point.style.display = "none";
+                entry_point.classList.add("hidden");
             }
             if ((y < display_map_start_y || y > display_map_end_y) && y != 0) {
-                entry_point.style.display = "none";
+                entry_point.classList.add("hidden");
             }
-            document.getElementById('0_0').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
+
         }
     }
+    document.getElementById('0_0').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
+
 }
 
 function reverse_player_ship_display() {

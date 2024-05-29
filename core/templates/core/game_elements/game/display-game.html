@@ -5,17 +5,17 @@
 <div id="map-background" class="2xl:w-8/12 lg:w-6/12 w-[6/12] order-2 flex item-center justify-center flex-row 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] md:bg-no-repeat md:bg-contain xl:bg-center bg-center lg:mb-0">
     <div class="flex self-center item-center">
         <div class="grid">
-            <table class="tabletop-view">
+            <table class="tabletop-view hidden">
                 <tbody>
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
-                        <td id="0_0" class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">0:0</td>
+                        <td id="0_0" class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs ">0:0</td>
                         {% for col in map_size_range.cols %}
-                            <td id="X_{{ col }}" class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5">{{ col }}</td>
+                            <td id="X_{{ col }}" class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs">{{ col }}</td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
-                        <td id="Y_{{ row }}" class="text-center text-emerald-300 font-bold border-gray-950 border-dotted w-[32px] h-[32px] p-0 m-0">{{ row }}</td>
+                        <td id="Y_{{ row }}" class="text-center text-emerald-300 font-bold border-gray-950 border-dotted w-[32px] h-[32px] p-0 m-0 md:text-sm text-xs">{{ row }}</td>
                         {% for col in map_size_range.cols %}
                             <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row }}_{{ col }}">
                                 <div class="relative w-[32px] h-[32px]">

@@ -326,7 +326,6 @@ GraphSearch.prototype.initialize = function() {
     let self = this;
     let nodes = [];
     let node_row = [];
-
     // prepare graph, from object to array.
     for (let row_i = 0; row_i < this.gs_opts.grid_size.rows + 1; row_i++) {
         this.gs_grid[row_i] = []

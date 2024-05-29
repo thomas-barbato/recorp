@@ -50,7 +50,15 @@ function update_player_coord(data) {
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
-            hide_sector_overflow(end_pos_array[0].split('_')[1], end_pos_array[0].split('_')[0], map_informations.screen_sized_map["col"], map_informations.screen_sized_map["row"])
+
+            let destination_id = current_player.fullsize_coordinates_array[0].split('_');
+            console.log("destination_id : " + destination_id[1] + " " + destination_id[0]);
+            //location.reload();
+
+            hide_sector_overflow(
+                current_player.start_x - 1,
+                current_player.start_y - 1,
+            )
         }
 
     }
@@ -75,8 +83,8 @@ function async_reverse_ship(data) {
 }
 
 function reverse_ship(data) {
-    let id_list = data["id_array"]
-    update_reverse_ship_in_cache_array(data["player_id"], data["is_reversed"])
+    let id_list = data["id_array"];
+    update_reverse_ship_in_cache_array(data["player_id"], data["is_reversed"]);
 
     for (let i = 0; i < id_list.length; i++) {
         let element = document.getElementById(id_list[i]);

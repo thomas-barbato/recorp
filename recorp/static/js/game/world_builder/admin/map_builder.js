@@ -356,10 +356,6 @@
                 let id = fg_data[i].id.split('-')[3];
                 let animation_name = selector.options[selector.selectedIndex].text;
                 let animation_data_direname = selector.options[selector.selectedIndex].value;
-                console.log("animation_name  = " + animation_name)
-                console.log(animation_data_direname)
-                console.log("animations_json")
-                console.log(animations_json)
                 coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value);
                 coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value);
                 for (var [i_key, value] in animations_json[animation_data_direname]) {
