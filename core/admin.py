@@ -28,7 +28,6 @@ from core.models import (
     Log,
     ShipCategory,
     Ship,
-    ModuleEffect,
     Module,
     PlayerLog,
     PlayerResource,
@@ -535,11 +534,6 @@ class ShipCategoryAdmin(admin.ModelAdmin):
 @admin.register(Ship, site=admin_site)
 class ShipAdmin(admin.ModelAdmin):
     model = Ship
-
-
-@admin.register(ModuleEffect, site=admin_site)
-class ModuleEffectAdmin(admin.ModelAdmin):
-    model = ModuleEffect
 
 
 @admin.register(Module, site=admin_site)

@@ -710,10 +710,6 @@ video {
   right: 0px;
 }
 
-.start-0 {
-  inset-inline-start: 0px;
-}
-
 .top-0 {
   top: 0px;
 }
@@ -812,10 +808,6 @@ video {
 
 .m-1 {
   margin: 0.25rem;
-}
-
-.m-2 {
-  margin: 0.5rem;
 }
 
 .m-auto {
@@ -2629,16 +2621,6 @@ video {
   padding-right: 1.5rem;
 }
 
-.py-0 {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-.py-0\.5 {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
-}
-
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -4175,6 +4157,16 @@ select {
 
   .lg\:p-1 {
     padding: 0.25rem;
+  }
+
+  .lg\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .lg\:py-0\.5 {
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
   }
 
   .lg\:text-xl {

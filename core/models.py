@@ -237,12 +237,12 @@ class Log(models.Model):
     LOG_TYPE_CHOICES = (
         ("ATTACK", "attack"),
         ("DEFENSE", "defense"),
-        ("ZONE_CHANGE", "zone_change"),
+        ("ZONE_CHANGE", "zone change"),
         ("DEATH", "death"),
         ("KILL", "kill"),
-        ("CRAFT_END", "craft_end"),
-        ("RESEARCH_END", "research_end"),
-        ("LEVEL_UP", "level_up"),
+        ("CRAFT_END", "craft end"),
+        ("RESEARCH_END", "research end"),
+        ("LEVEL_UP", "level up"),
     )
     content = models.TextField(max_length=2500, blank=True)
     log_type = models.CharField(
@@ -281,30 +281,36 @@ class Ship(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-
-class ModuleEffect(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False)
-    description = models.TextField(max_length=2500, blank=True)
-    effect = models.JSONField()
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.name} - {self.effect}"
-
-
 class Module(models.Model):
+    MODULE_TYPE_CHOICES = (
+        ("NONE", "none"),
+        ("WEAPONRY", "weaponry"),
+        ("DEFENSE", "defense"),
+        ("MOVEMENT", "movement"),
+        ("GATHERING", "gathering"),
+        ("PROBE", "probe"),
+        ("REPAIR", "repair"),
+        ("ELECTRONIC_WARFARE", "electronic warfare"),
+        ("RESEARCH", "research"),
+        ("CRAFT", "craft"),
+        ("HOLD", "hold"),
+        ("COLONIZATION", "colonization"),
+    )
+    
     name = models.CharField(
         max_length=30, null=False, blank=False, default="Light Cruiser"
     )
     description = models.TextField(max_length=2500, blank=True)
-    module_effect = models.ForeignKey(ModuleEffect, on_delete=models.CASCADE)
+    tier = models.SmallIntegerField(null=False, blank=False, default=1)
+    type = models.CharField(
+        max_length=30, choices=MODULE_TYPE_CHOICES, default=MODULE_TYPE_CHOICES[0][0]
+    )
+    effect = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name}"
-
 
 class PlayerLog(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)

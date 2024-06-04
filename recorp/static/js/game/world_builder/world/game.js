@@ -143,6 +143,12 @@ function add_pc_npc(data) {
         let ship_size_y = data[i]["ship"]['size'].size_y;
         let is_reversed = data[i]["ship"]["is_reversed"];
 
+        modal_data = {
+
+        }
+
+        let modal = create_pc_npc_modal();
+
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
 
@@ -250,7 +256,6 @@ function hide_sector_overflow(coord_x, coord_y) {
         display_map_start_y = display_map_end_y - limite_y;
     }
 
-
     for (let y = 0; y <= atlas.row; y++) {
         for (let x = 0; x <= atlas.col; x++) {
             let entry_point = document.querySelector('.tabletop-view').rows[y].cells[x]
@@ -261,9 +266,9 @@ function hide_sector_overflow(coord_x, coord_y) {
             if ((y < display_map_start_y || y > display_map_end_y) && y != 0) {
                 entry_point.classList.add("hidden");
             }
-
         }
     }
+
     document.getElementById('0_0').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
 
 }
@@ -392,7 +397,7 @@ function create_foreground_modal(id, data) {
         let item_resource_content_p_scan_msg = document.createElement('p');
         item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse');
         item_resource_content_p_scan_msg.id = "resource-scan-msg";
-        item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`
+        item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`;
 
         let item_action_container_img_scan_container = document.createElement('div');
         item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
@@ -571,6 +576,10 @@ function create_foreground_modal(id, data) {
     e.append(container_div);
 
     return e;
+}
+
+function create_pc_npc_modal() {
+
 }
 
 function open_close_modal(id) {
