@@ -198,7 +198,6 @@ function add_pc_npc(data) {
                     }
                     space_ship.classList.add("player-ship");
                     space_ship_reversed.classList.add("player-ship-reversed");
-                    user_ship_max_speed = data[i]["ship"]["max_speed"];
                 }
 
                 let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc";

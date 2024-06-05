@@ -125,7 +125,7 @@ class Sector(models.Model):
 class Archetype(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField(max_length=2500, blank=True)
-    data = models.JSONField()
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -260,7 +260,6 @@ class ShipCategory(models.Model):
         max_length=30, null=False, blank=False, default="Light Cruiser"
     )
     description = models.TextField(max_length=2500, blank=True)
-    max_speed = models.FloatField(default=1.0)
     ship_size = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -273,7 +272,9 @@ class Ship(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     description = models.TextField(max_length=2500, blank=True)
     image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
-    module_slot_available = models.PositiveIntegerField(default=1)
+    module_slot_available = models.PositiveIntegerField(default=4)
+    default_hp = models.PositiveSmallIntegerField(default=100)
+    default_movement = models.PositiveSmallIntegerField(default=10)
     ship_category = models.ForeignKey(ShipCategory, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -310,8 +311,8 @@ class Module(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
-
+        return f"{self.name} - {self.type}"
+    
 class PlayerLog(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     log = models.ForeignKey(Log, on_delete=models.CASCADE)
@@ -391,8 +392,10 @@ class PlayerShip(models.Model):
 
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    current_hp = models.IntegerField()
-    max_hp = models.PositiveIntegerField()
+    current_hp = models.SmallIntegerField(default=100)
+    max_hp = models.SmallIntegerField(default=100)
+    current_movement = models.PositiveSmallIntegerField(default=10)
+    max_movement = models.PositiveSmallIntegerField(default=10)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )
@@ -404,8 +407,8 @@ class PlayerShip(models.Model):
 
 
 class PlayerShipModule(models.Model):
-    player_ship = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    player_ship = models.ForeignKey(PlayerShip, on_delete=models.CASCADE, related_name="current_player_ship")
+    module_ship = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="current_player_module")
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -416,6 +419,9 @@ class PlayerShipResource(models.Model):
         Resource, on_delete=models.CASCADE, null=True
     )
     quantity = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.source.name} - {self.resource.name} - quantity : {self.quantity}"
 
 
 class FactionLeader(models.Model):

@@ -3,7 +3,7 @@
     "pk": 1,
     "fields": {
         "name": "map-1",
-        "image": "bg_space_1",
+        "image": "bg_space_2",
         "description": "lorem ipsum",
         "is_faction_level_starter": true,
         "faction_id": 1,

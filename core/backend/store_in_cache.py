@@ -124,9 +124,6 @@ class StoreInCache:
                         "category_description": data[
                             "playership__ship_id__ship_category__description"
                         ],
-                        "max_speed": data[
-                            "playership__ship_id__ship_category__max_speed"
-                        ],
                         "size": data["playership__ship_id__ship_category__ship_size"],
                         "is_reversed": False,
                     },

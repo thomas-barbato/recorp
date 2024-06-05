@@ -186,7 +186,6 @@ class GetMapDataFromDB:
                 "playership__ship_id__module_slot_available",
                 "playership__ship_id__ship_category__name",
                 "playership__ship_id__ship_category__description",
-                "playership__ship_id__ship_category__max_speed",
                 "playership__ship_id__ship_category__ship_size",
             )
 

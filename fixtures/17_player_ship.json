@@ -4,8 +4,10 @@
         "fields": {
             "ship": 1,
             "player": 1,
-            "current_hp": 25,
-            "max_hp": 100,
+            "current_hp": 50,
+            "max_hp": 50,
+            "current_movement": 30,
+            "max_movement": 30,
             "status": "WOUNDED",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -18,7 +20,9 @@
             "ship": 2,
             "player": 2,
             "current_hp": 47,
-            "max_hp": 100,
+            "max_hp": 50,
+            "current_movement": 17,
+            "max_movement": 30,
             "status": "WOUNDED",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -32,6 +36,8 @@
             "player": 3,
             "current_hp": 100,
             "max_hp": 100,
+            "current_movement": 100,
+            "max_movement": 100,
             "status": "FULL",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -43,9 +49,11 @@
         "fields": {
             "ship": 3,
             "player": 4,
-            "current_hp": 75,
-            "max_hp": 100,
-            "status": "WOUNDED",
+            "current_hp": 125,
+            "max_hp": 125,
+            "current_movement": 15,
+            "max_movement": 15,
+            "status": "FULL",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -56,8 +64,10 @@
         "fields": {
             "ship": 5,
             "player": 5,
-            "current_hp": 75,
-            "max_hp": 100,
+            "current_hp": 55,
+            "max_hp": 75,
+            "current_movement": 25,
+            "max_movement": 25,
             "status": "WOUNDED",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -69,9 +79,11 @@
         "fields": {
             "ship": 4,
             "player": 6,
-            "current_hp": 75,
+            "current_hp": 100,
             "max_hp": 100,
-            "status": "WOUNDED",
+            "current_movement": 100,
+            "max_movement": 100,
+            "status": "FULL",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -84,6 +96,8 @@
             "player": 7,
             "current_hp": 75,
             "max_hp": 100,
+            "current_movement": 20,
+            "max_movement": 20,
             "status": "WOUNDED",
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"

@@ -5,7 +5,7 @@
         "name": "planete_1",
         "data": {
             "animation": "planete_1",
-            "type": "asteroid"
+            "type": "planet"
         },
         "size": {
             "size_x": 4,
