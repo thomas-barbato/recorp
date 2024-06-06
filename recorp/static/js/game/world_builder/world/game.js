@@ -648,7 +648,7 @@ window.addEventListener('load', () => {
             );
         }, 1000);
     };
-
+    console.log(map_informations.pc_npc)
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);

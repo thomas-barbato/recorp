@@ -2,7 +2,7 @@
     "model": "core.sector",
     "pk": 1,
     "fields": {
-        "name": "map-1",
+        "name": "test_sector",
         "image": "bg_space_2",
         "description": "lorem ipsum",
         "is_faction_level_starter": true,

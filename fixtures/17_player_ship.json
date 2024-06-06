@@ -9,6 +9,8 @@
             "current_movement": 30,
             "max_movement": 30,
             "status": "WOUNDED",
+            "is_current_ship": true,
+            "module_id_list": [95, 35, 36, 23, 78, 92],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -24,6 +26,8 @@
             "current_movement": 17,
             "max_movement": 30,
             "status": "WOUNDED",
+            "is_current_ship": true,
+            "module_id_list": [9, 23, 30, 36, 71, 101],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -39,6 +43,8 @@
             "current_movement": 100,
             "max_movement": 100,
             "status": "FULL",
+            "is_current_ship": true,
+            "module_id_list": [1, 16, 23, 30, 36, 108],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -54,6 +60,8 @@
             "current_movement": 15,
             "max_movement": 15,
             "status": "FULL",
+            "is_current_ship": true,
+            "module_id_list": [2, 9, 16, 24, 30, 37, 57, 65, 102, 108],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -69,6 +77,8 @@
             "current_movement": 25,
             "max_movement": 25,
             "status": "WOUNDED",
+            "is_current_ship": true,
+            "module_id_list": [16, 23, 37, 79, 92, 95, 102],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -84,6 +94,8 @@
             "current_movement": 100,
             "max_movement": 100,
             "status": "FULL",
+            "is_current_ship": true,
+            "module_id_list": [2, 23, 31, 44, 78, 85, 96],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -99,6 +111,8 @@
             "current_movement": 20,
             "max_movement": 20,
             "status": "WOUNDED",
+            "is_current_ship": true,
+            "module_id_list": [2, 23, 31, 44, 71, 78, 85, 96],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }

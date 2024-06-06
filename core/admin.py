@@ -36,7 +36,6 @@ from core.models import (
     PlayerResearch,
     PlayerPrivateMessage,
     PlayerShip,
-    PlayerShipModule,
     PlayerShipResource,
     FactionLeader,
     FactionResource,
@@ -575,16 +574,9 @@ class PlayerPrivateMessageAdmin(admin.ModelAdmin):
 class PlayerShipAdmin(admin.ModelAdmin):
     model = PlayerShip
 
-
-@admin.register(PlayerShipModule, site=admin_site)
-class PlayerShipModuleAdmin(admin.ModelAdmin):
-    model = PlayerShipModule
-
-
 @admin.register(PlayerShipResource, site=admin_site)
 class PlayerShipResourceAdmin(admin.ModelAdmin):
     model = PlayerShipResource
-
 
 @admin.register(FactionLeader, site=admin_site)
 class FactionLeaderAdmin(admin.ModelAdmin):

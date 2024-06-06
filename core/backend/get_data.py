@@ -16,6 +16,7 @@ from core.models import (
     Security,
     Sector,
     Player,
+    PlayerShip,
 )
 
 
@@ -168,7 +169,7 @@ class GetMapDataFromDB:
         
     @staticmethod
     def get_pc_npc_from_sector(pk):
-        return Player.objects.filter(sector_id=pk).values(
+        return Player.objects.filter(sector_id=pk).select_related('playershipmodule').values(
                 "id",
                 "name",
                 "coordinates",
@@ -183,12 +184,19 @@ class GetMapDataFromDB:
                 "playership__ship_id__name",
                 "playership__ship_id__image",
                 "playership__ship_id__description",
+                "playership__is_current_ship",
+                "playership__module_id_list",
+                "playership__current_hp",
+                "playership__max_hp",
+                "playership__current_movement",
+                "playership__max_movement",
+                "playership__status",
                 "playership__ship_id__module_slot_available",
                 "playership__ship_id__ship_category__name",
                 "playership__ship_id__ship_category__description",
                 "playership__ship_id__ship_category__ship_size",
             )
-
+        
     @staticmethod
     def check_if_no_missing_entry(data, data_item = None):
         missing_data = []

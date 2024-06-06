@@ -392,6 +392,8 @@ class PlayerShip(models.Model):
 
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    is_current_ship = models.BooleanField(default=True)
+    module_id_list = models.JSONField(null=True)
     current_hp = models.SmallIntegerField(default=100)
     max_hp = models.SmallIntegerField(default=100)
     current_movement = models.PositiveSmallIntegerField(default=10)
@@ -404,13 +406,6 @@ class PlayerShip(models.Model):
 
     def __str__(self):
         return f"{self.ship.name} : {self.player.name}"
-
-
-class PlayerShipModule(models.Model):
-    player_ship = models.ForeignKey(PlayerShip, on_delete=models.CASCADE, related_name="current_player_ship")
-    module_ship = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="current_player_module")
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 class PlayerShipResource(models.Model):

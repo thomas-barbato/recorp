@@ -7,6 +7,7 @@ from core.backend.get_data import GetMapDataFromDB
 from core.models import (
     Sector,
     Player,
+    Module,
 )
 
 
@@ -29,12 +30,12 @@ class StoreInCache:
             "planet": planets,
             "asteroid": asteroids,
             "station": stations,
-        };
-        sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk);
-        sector = Sector.objects.get(id=pk);
-        sector_data = dict();
-        sector_data["sector_element"] = [];
-        sector_data["pc_npc"] = [];
+        }
+        sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk)
+        sector = Sector.objects.get(id=pk)
+        sector_data = dict()
+        sector_data["sector_element"] = []
+        sector_data["pc_npc"] = []
 
         sector_data["sector"] = {
             "id": pk,
@@ -63,11 +64,11 @@ class StoreInCache:
                     .items()
                     if v != "none"
                 ]
-                
+
                 resource_quantity = GetMapDataFromDB.get_resource_quantity_value(
                     table.quantity, 100
                 )
-                
+
                 sector_data["sector_element"].append(
                     {
                         "item_id": table.id,
@@ -77,7 +78,7 @@ class StoreInCache:
                             "name": table.resource.name,
                             "quantity": table.quantity,
                             "quantity_str": resource_quantity,
-                            "translated_quantity_str": resource_quantity
+                            "translated_quantity_str": resource_quantity,
                         },
                         "source_id": table.source_id,
                         "sector_id": table.sector_id,
@@ -92,8 +93,30 @@ class StoreInCache:
                         "size": GetMapDataFromDB.get_specific_size(map_element[0]),
                     }
                 )
-                
+
         for data in sector_pc_npc:
+            module_list = [
+                {
+                    "name": module["name"],
+                    "effect": module["effect"],
+                    "description": module["description"],
+                    "type": module["type"],
+                }
+                for module in Module.objects.filter(
+                    id__in=data["playership__module_id_list"]
+                ).values("name", "description", "effect", "type")
+            ]
+
+            max_hp = int(data["playership__max_hp"])
+            max_movement = int(data["playership__max_movement"])
+
+            for module in module_list:
+                for k, v in module.items():
+                    if "hull" in v:
+                        max_hp += module["effect"]["hull_hp"]
+                    if "propulsion" in v:
+                        max_movement += module["effect"]["bonus_mvt"]
+
             sector_data["pc_npc"].append(
                 {
                     "user": {
@@ -114,6 +137,10 @@ class StoreInCache:
                     "ship": {
                         "name": data["playership__ship_id__name"],
                         "image": data["playership__ship_id__image"],
+                        "max_hp": max_hp,
+                        "current_hp": max_hp,
+                        "max_movement": max_movement,
+                        "current_movement": max_movement,
                         "description": data["playership__ship_id__description"],
                         "module_slot_available": data[
                             "playership__ship_id__module_slot_available"
@@ -126,9 +153,11 @@ class StoreInCache:
                         ],
                         "size": data["playership__ship_id__ship_category__ship_size"],
                         "is_reversed": False,
+                        "modules": module_list,
                     },
                 }
             )
+
         cache.set(self.room, sector_data)
 
     def update_player_position(self, pos):
@@ -137,54 +166,53 @@ class StoreInCache:
         player = pos["player"]
         try:
             found_player = next(
-                p
-                for p in player_position
-                if player == p["user"]["player"]
+                p for p in player_position if player == p["user"]["player"]
             )
-            
+
         except StopIteration:
             return
-        
+
         found_player_index = player_position.index(found_player)
         player_position[found_player_index]["user"]["coordinates"] = {
-            "coord_x" : int(pos["end_x"]), "coord_y" : int(pos["end_y"])
+            "coord_x": int(pos["end_x"]),
+            "coord_y": int(pos["end_y"]),
         }
-        
+
         for player in player_position:
             if player["user"]["player"] == found_player["user"]["player"]:
-                if player["user"]["coordinates"]["coord_y"] != int(pos["end_y"]) or player["user"]["coordinates"]["coord_x"] != int(pos["end_x"]):
+                if player["user"]["coordinates"]["coord_y"] != int(
+                    pos["end_y"]
+                ) or player["user"]["coordinates"]["coord_x"] != int(pos["end_x"]):
                     player_index = player_position.index(player)
                     player_position.pop(player_index)
-        
+
         in_cache["pc_npc"] = player_position
-        cache.set(self.room, in_cache)  
-        
+        cache.set(self.room, in_cache)
+
     def update_ship_is_reversed(self, data, user_id):
         in_cache = cache.get(self.room)
         pc_cache = in_cache["pc_npc"]
         user = data["user"]
-        
+
         try:
-            player = next(
-                p
-                for p in pc_cache
-                if user == p["user"]["user"]
-            )
-            
+            player = next(p for p in pc_cache if user == p["user"]["user"])
+
         except StopIteration:
             return
-        
+
         player_index = pc_cache.index(player)
         ship_is_reversed = pc_cache[player_index]["ship"]["is_reversed"]
         player_id = pc_cache[player_index]["user"]["player"]
-        
+
         if user == user_id:
-            pc_cache[player_index]["ship"]["is_reversed"] = True if ship_is_reversed is False else False
+            pc_cache[player_index]["ship"]["is_reversed"] = (
+                True if ship_is_reversed is False else False
+            )
             in_cache["pc_npc"] = pc_cache
             cache.set(self.room, in_cache)
-            
+
         return pc_cache[player_index]["ship"]["is_reversed"], player_id
-            
+
     def get_user(self):
         user_array = []
         for key in cache.get(self.room)["users"]:
