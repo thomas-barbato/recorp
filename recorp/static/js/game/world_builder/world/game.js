@@ -36,6 +36,8 @@ function add_sector_background(background_name) {
         let player = map_informations.pc_npc[i]
         if (player.user.user == current_user_id) {
             hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
+
+            set_pathfinding_event();
             document.querySelector('.tabletop-view').classList.remove('hidden')
             break;
         }
@@ -49,36 +51,36 @@ function add_sector_foreground(sector_element) {
         element_data = sector_element[sector_i]["data"];
         folder_name = sector_element[sector_i]["animations"][1];
         modal_data = {
-            "type": sector_element[sector_i].data.type,
-            "translated_type": sector_element[sector_i].data.type_translated,
-            "animation": {
-                "dir": sector_element[sector_i]["animations"][0],
-                "img": sector_element[sector_i]["animations"][1],
+            type: sector_element[sector_i].data.type,
+            translated_type: sector_element[sector_i].data.type_translated,
+            animation: {
+                dir: sector_element[sector_i]["animations"][0],
+                img: sector_element[sector_i]["animations"][1],
             },
-            "name": sector_element[sector_i].data.name,
-            "description": sector_element[sector_i].data.description,
-            "resources": {
-                "id": sector_element[sector_i].resource.id,
-                "name": sector_element[sector_i].resource.name,
-                "quantity_str": sector_element[sector_i].resource.quantity_str,
-                "quantity": sector_element[sector_i].resource.quantity,
-                "translated_text_resource": sector_element[sector_i].resource.translated_text_resource,
-                "translated_quantity_str": sector_element[sector_i].resource.translated_quantity_str,
-                "translated_scan_msg_str": sector_element[sector_i].resource.translated_scan_msg_str,
+            name: sector_element[sector_i].data.name,
+            description: sector_element[sector_i].data.description,
+            resources: {
+                id: sector_element[sector_i].resource.id,
+                name: sector_element[sector_i].resource.name,
+                quantity_str: sector_element[sector_i].resource.quantity_str,
+                quantity: sector_element[sector_i].resource.quantity,
+                translated_text_resource: sector_element[sector_i].resource.translated_text_resource,
+                translated_quantity_str: sector_element[sector_i].resource.translated_quantity_str,
+                translated_scan_msg_str: sector_element[sector_i].resource.translated_scan_msg_str,
             },
-            "faction": {
-                "starter": map_informations.sector.faction.is_faction_level_starter,
-                "name": map_informations.sector.faction.name,
-                "translated_str": map_informations.sector.faction.translated_text_faction_level_starter,
+            faction: {
+                starter: map_informations.sector.faction.is_faction_level_starter,
+                name: map_informations.sector.faction.name,
+                translated_str: map_informations.sector.faction.translated_text_faction_level_starter,
             },
-            "actions": {
-                "action_label": map_informations.actions.translated_action_label_msg,
-                "close": map_informations.actions.translated_close_msg,
-                "player_in_same_faction": map_informations.actions.player_is_same_faction,
+            actions: {
+                action_label: map_informations.actions.translated_action_label_msg,
+                close: map_informations.actions.translated_close_msg,
+                player_in_same_faction: map_informations.actions.player_is_same_faction,
             },
-            "coord": {
-                "x": sector_element[sector_i].data.coord_x,
-                "y": sector_element[sector_i].data.coord_y
+            coord: {
+                x: sector_element[sector_i].data.coord_x,
+                y: sector_element[sector_i].data.coord_y
             }
         }
         let modal = create_foreground_modal(
@@ -101,7 +103,6 @@ function add_sector_foreground(sector_element) {
                 let img_div = document.createElement('div');
 
                 entry_point.classList.add('uncrossable');
-                // TODO: Set one border for a full element.
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
                 entry_point_border.classList.add('hover:border-dashed', 'border-amber-500', 'cursor-pointer');
@@ -142,12 +143,35 @@ function add_pc_npc(data) {
         let ship_size_x = data[i]["ship"]['size'].size_x;
         let ship_size_y = data[i]["ship"]['size'].size_y;
         let is_reversed = data[i]["ship"]["is_reversed"];
-
         modal_data = {
-
+            player: {
+                name: data[i].user.name,
+                is_npc: data[i].user.is_npc,
+                image: data[i].user.image,
+                faction_name: data[i].faction.name
+            },
+            ship: {
+                name: data[i].ship.name,
+                category: data[i].ship.category_name,
+                description: data[i].ship.category_description,
+                max_hp: data[i].ship.max_hp,
+                current_hp: data[i].ship.current_hp,
+                max_movement: data[i].ship.max_movement,
+                current_movement: data[i].ship.current_movement,
+                status: data[i].ship.status,
+                modules: data[i].ship.modules,
+            },
+            actions: {
+                action_label: map_informations.actions.translated_action_label_msg,
+                close: map_informations.actions.translated_close_msg,
+                player_in_same_faction: map_informations.actions.player_is_same_faction,
+            },
         }
 
-        let modal = create_pc_npc_modal();
+
+        let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data);
+        document.querySelector('#modal-container').append(modal);
+
 
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
@@ -163,6 +187,10 @@ function add_pc_npc(data) {
                 entry_point.classList.add('uncrossable');
                 entry_point_border.classList.add('border-dashed', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
+                entry_point_border.setAttribute('data-modal-target', `modal-pc_npc_${data[i].user.player}`);
+                entry_point_border.setAttribute('data-modal-toggle', `modal-pc_npc_${data[i].user.player}`);
+                entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_npc_${data[i].user.player}` + "')");
+                entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.classList.add('ship');
@@ -306,6 +334,7 @@ function create_foreground_modal(id, data) {
         'bg-black/20',
         'border-1',
     );
+
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
 
@@ -313,6 +342,9 @@ function create_foreground_modal(id, data) {
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
 
     let header_container_div = document.createElement('div');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
+
+    let footer_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
 
     let header_div = document.createElement('h3');
@@ -325,13 +357,14 @@ function create_foreground_modal(id, data) {
     header_close_button.src = close_button_url;
     header_close_button.title = `${data.actions.close}`;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
-    header_close_button.setAttribute('onclick', "open_close_modal('" + "modal-" + id + "')");
-    header_close_button.setAttribute('touchstart', "open_close_modal('" + "modal-" + id + "')");
+    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
+    header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
-    let footer_close_button = document.createElement("img");
-    footer_close_button.src = close_button_url;
-    footer_close_button.setAttribute('onclick', "open_close_modal('" + "modal-" + id + "')");
-    header_close_button.setAttribute('touchstart', "open_close_modal('" + "modal-" + id + "')");
+    let footer_close_button = document.createElement("div");
+    footer_close_button.textContent = `${data.actions.close}`;
+    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm');
+    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
+    header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
@@ -410,11 +443,11 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_scan_figcaption = document.createElement('figcaption');
         item_action_container_img_scan_figcaption.textContent = "Scan";
-        item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
         item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
-        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_img_gather = document.createElement('img');
         item_action_container_img_gather.src = '/static/img/ux/gather_icon.svg';
@@ -486,8 +519,8 @@ function create_foreground_modal(id, data) {
         item_action_container_setNewStartLoc_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_setNewStartLoc_figcaption = document.createElement('figcaption');
-        item_action_container_img_setNewStartLoc_figcaption.textContent = "Set new home";
-        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_setNewStartLoc_figcaption.textContent = "New Home";
+        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_joinFaction_img = document.createElement('img');
         item_action_container_joinFaction_img.src = '/static/img/ux/join_faction.svg';
@@ -495,7 +528,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_joinFaction_figcaption = document.createElement('figcaption');
         item_action_container_img_joinFaction_figcaption.textContent = `Join ${data.faction.name}`;
-        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_opendock_img = document.createElement('img');
         item_action_container_opendock_img.src = '/static/img/ux/dock.svg';
@@ -503,7 +536,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_opendock_figcaption = document.createElement('figcaption');
         item_action_container_img_opendock_figcaption.textContent = "dock";
-        item_action_container_img_opendock_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_opendock_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_openmarket_img = document.createElement('img');
         item_action_container_openmarket_img.src = '/static/img/ux/market.svg';
@@ -511,7 +544,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_openmarket_figcaption = document.createElement('figcaption');
         item_action_container_img_openmarket_figcaption.textContent = "market";
-        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_gettask_img = document.createElement('img');
         item_action_container_gettask_img.src = '/static/img/ux/task.svg';
@@ -519,7 +552,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_gettask_figcaption = document.createElement('figcaption');
         item_action_container_img_gettask_figcaption.textContent = "task";
-        item_action_container_img_gettask_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
+        item_action_container_img_gettask_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_invade_img = document.createElement('img');
         item_action_container_invade_img.src = '/static/img/ux/invade.svg';
@@ -527,39 +560,34 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_invade_figcaption = document.createElement('figcaption');
         item_action_container_img_invade_figcaption.textContent = "invade";
-        item_action_container_img_invade_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-base');
-
-
-        if (data.actions.player_is_same_faction == true) {
-            item_action_container_img_joinFaction_container.style.display = "none";
-            item_action_container_img_invade_container.style.display = "none";
+        item_action_container_img_invade_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        if (data.actions.player_in_same_faction == true) {
+            item_action_container_img_setNewStartLoc_container.append(item_action_container_setNewStartLoc_img);
+            item_action_container_img_setNewStartLoc_container.append(item_action_container_img_setNewStartLoc_figcaption);
+            item_action_container_div.append(item_action_container_img_setNewStartLoc_container);
         } else {
-            item_action_container_img_setNewStartLoc_container.style.display = "none";
+            item_action_container_img_joinFaction_container.append(item_action_container_joinFaction_img);
+            item_action_container_img_joinFaction_container.append(item_action_container_img_joinFaction_figcaption);
+            item_action_container_img_invade_container.append(item_action_container_invade_img);
+            item_action_container_img_invade_container.append(item_action_container_img_invade_figcaption);
+            item_action_container_div.append(item_action_container_img_joinFaction_container);
+            item_action_container_div.append(item_action_container_img_invade_container);
         }
-
-        item_action_container_img_setNewStartLoc_container.append(item_action_container_setNewStartLoc_img);
-        item_action_container_img_setNewStartLoc_container.append(item_action_container_img_setNewStartLoc_figcaption);
-        item_action_container_img_joinFaction_container.append(item_action_container_joinFaction_img);
-        item_action_container_img_joinFaction_container.append(item_action_container_img_joinFaction_figcaption);
         item_action_container_img_opendock_container.append(item_action_container_opendock_img);
         item_action_container_img_opendock_container.append(item_action_container_img_opendock_figcaption);
         item_action_container_img_openmarket_container.append(item_action_container_openmarket_img);
         item_action_container_img_openmarket_container.append(item_action_container_img_openmarket_figcaption);
         item_action_container_img_gettask_container.append(item_action_container_gettask_img);
         item_action_container_img_gettask_container.append(item_action_container_img_gettask_figcaption);
-        item_action_container_img_invade_container.append(item_action_container_invade_img);
-        item_action_container_img_invade_container.append(item_action_container_img_invade_figcaption);
 
-        item_action_container_div.append(item_action_container_img_setNewStartLoc_container);
-        item_action_container_div.append(item_action_container_img_joinFaction_container);
         item_action_container_div.append(item_action_container_img_opendock_container);
         item_action_container_div.append(item_action_container_img_openmarket_container);
         item_action_container_div.append(item_action_container_img_gettask_container);
-        item_action_container_div.append(item_action_container_img_invade_container);
 
         item_action_container.append(item_action_container_div);
     }
 
+    footer_container_div.append(footer_close_button);
 
     body_container_div.append(item_img);
     body_container_div.append(item_description_p);
@@ -571,18 +599,87 @@ function create_foreground_modal(id, data) {
     header_container_div.append(header_close_button);
     content_div.append(header_container_div);
     content_div.append(body_container_div);
+    content_div.append(footer_container_div);
     container_div.append(content_div);
     e.append(container_div);
 
     return e;
 }
 
-function create_pc_npc_modal() {
+function create_pc_npc_modal(id, data) {
+    let e = document.createElement('div');
+    e.id = "modal-" + id;
+    e.setAttribute('aria-hidden', true);
+    e.setAttribute('tabindex', -1);
+    e.classList.add(
+        'hidden',
+        'overflow-y-auto',
+        'overflow-x-hidden',
+        'fixed',
+        'top-0',
+        'right-0',
+        'left-0',
+        'z-50',
+        'justify-center',
+        'items-center',
+        'w-full',
+        'h-full',
+        'md:inset-0',
+        'backdrop-blur-sm',
+        'bg-black/20',
+        'border-1',
+    );
+    let container_div = document.createElement('div');
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+
+    let content_div = document.createElement('div');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
+
+    let header_container_div = document.createElement('div');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
+
+    let header_div = document.createElement('h3');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'p-1', 'flex', 'w-[95%]', 'justify-center');
+    if (data.player.is_npc == false) {
+        header_div.textContent = `${data.player.name.toUpperCase()} (${data.player.faction_name.toUpperCase()})`;
+    } else {
+        header_div.textContent = `${data.player.name.toUpperCase()} (NPC)`;
+    }
+
+    let footer_container_div = document.createElement('div');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
+
+    let footer_close_button = document.createElement("div");
+    footer_close_button.textContent = `${data.actions.close}`;
+    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm');
+    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
+    footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
+
+    let close_button_url = '/static/img/ux/close.svg';
+
+    let header_close_button = document.createElement("img");
+    header_close_button.src = close_button_url;
+    header_close_button.title = ``;
+    header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
+    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
+    header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
+
+
+
+    header_container_div.append(header_div);
+    header_container_div.append(header_close_button);
+    content_div.append(header_container_div);
+    //content_div.append(body_container_div);
+    content_div.append(footer_container_div);
+    container_div.append(content_div);
+    e.append(container_div);
+
+    return e;
 
 }
 
 function open_close_modal(id) {
-    let e = document.querySelector('#' + id)
+    let e = document.querySelector('#' + id);
     e.classList.contains('hidden') == true ? e.classList.remove('hidden') : e.classList.add('hidden');
 }
 
@@ -648,11 +745,10 @@ window.addEventListener('load', () => {
             );
         }, 1000);
     };
-    console.log(map_informations.pc_npc)
+
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
     add_pc_npc(map_informations.pc_npc);
-    set_pathfinding_event();
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);

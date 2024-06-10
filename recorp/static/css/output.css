@@ -1038,6 +1038,10 @@ video {
   height: 100%;
 }
 
+.h-\[10\%\] {
+  height: 10%;
+}
+
 .max-h-\[40vh\] {
   max-height: 40vh;
 }
@@ -1156,6 +1160,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[10\%\] {
+  width: 10%;
 }
 
 .max-w-2xl {

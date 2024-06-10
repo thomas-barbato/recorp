@@ -35,6 +35,8 @@ function update_player_coord(data) {
         if (current_user_id != target_user_id) {
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
+            end_point.removeAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
+            end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
         } else {
             end_point.setAttribute('onclick', 'reverse_player_ship_display()');
             end_point.setAttribute('size_x', current_player.s_size.x);
@@ -50,10 +52,6 @@ function update_player_coord(data) {
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
-
-            let destination_id = current_player.fullsize_coordinates_array[0].split('_');
-            console.log("destination_id : " + destination_id[1] + " " + destination_id[0]);
-            //location.reload();
 
             hide_sector_overflow(
                 current_player.start_x - 1,

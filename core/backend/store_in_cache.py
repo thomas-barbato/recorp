@@ -101,10 +101,11 @@ class StoreInCache:
                     "effect": module["effect"],
                     "description": module["description"],
                     "type": module["type"],
+                    "id": module["id"]
                 }
                 for module in Module.objects.filter(
                     id__in=data["playership__module_id_list"]
-                ).values("name", "description", "effect", "type")
+                ).values("name", "description", "effect", "type", "id")
             ]
 
             max_hp = int(data["playership__max_hp"])
@@ -112,9 +113,9 @@ class StoreInCache:
 
             for module in module_list:
                 for k, v in module.items():
-                    if "hull" in v:
+                    if isinstance(v, str) and "hull" in v:
                         max_hp += module["effect"]["hull_hp"]
-                    if "propulsion" in v:
+                    if isinstance(v, str) and "propulsion" in v:
                         max_movement += module["effect"]["bonus_mvt"]
 
             sector_data["pc_npc"].append(
@@ -141,6 +142,7 @@ class StoreInCache:
                         "current_hp": max_hp,
                         "max_movement": max_movement,
                         "current_movement": max_movement,
+                        "status": data["playership__status"],
                         "description": data["playership__ship_id__description"],
                         "module_slot_available": data[
                             "playership__ship_id__module_slot_available"
@@ -236,13 +238,7 @@ class StoreInCache:
             in_cache["cards"][found_item_index]["picked_up_by"] = ""
 
         cache.set(self.room, in_cache)
-
-    def get_all_users(self):
-        return sorted(
-            [key for key in cache.get(self.room)["users"]],
-            key=lambda d: d["created_date"],
-        )
-
+        
     def add_msg(self, user):
         in_cache = cache.get(self.room)
         new_msg = in_cache["messages"]
@@ -264,37 +260,3 @@ class StoreInCache:
 
     def get_datetime_json(self, date_time):
         return json.dumps(date_time, indent=4, sort_keys=True, default=str)
-
-    def update_cache_reload(self):
-        in_cache = cache.get(self.room)
-
-        if in_cache["have_been_reloaded"] == 0:
-            final_cards = []
-            for index, card in enumerate(""):
-                card["id"] = index
-                final_cards.append(card)
-            in_cache["cards"] = final_cards
-            in_cache["users"] = [
-                {
-                    "username": key["username"],
-                    "points": 0,
-                    "created_date": key["created_date"],
-                }
-                for key in in_cache["users"]
-            ]
-            in_cache["current_position"] = 0
-            in_cache["pairs_found"] = 0
-            in_cache["have_been_reloaded"] = 1
-            in_cache["selected_card"] = {"card_id": None, "username": None}
-            in_cache["best_player"] = {"username": "", "points": 0}
-
-            cache.set(self.room, in_cache)
-
-        return cache.get(self.room)
-
-    def delete_cache_reload(self):
-        in_cache = cache.get(self.room)
-
-        if in_cache["have_been_reloaded"] == 1:
-            in_cache["have_been_reloaded"] = 0
-            cache.set(self.room, in_cache)

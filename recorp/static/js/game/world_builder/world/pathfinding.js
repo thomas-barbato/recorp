@@ -37,7 +37,7 @@ function display_pathfinding() {
                         for (let col_i = pathfinder_obj.path[i].y; col_i < (pathfinder_obj.path[i].y + current_player.s_size.x); col_i++) {
                             let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
                             if (td_ship_el) {
-                                // check outbount
+                                // check outbound
                                 if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
                                     can_be_crossed = false;
                                 }
@@ -138,7 +138,7 @@ function display_pathfinding() {
                 }
             } else {
                 span_el.textContent = i + 1;
-                span_el.classList.add('bg-red-600/30', 'border-red-600', 'text-white', 'font-bold', 'text-center');
+                span_el.classList.add('bg-red-600/30', 'border-red-600', 'text-white', 'font-bold', 'text-center', 'animate-pulse');
             }
         }
 
