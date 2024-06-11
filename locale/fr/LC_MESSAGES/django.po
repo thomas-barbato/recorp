@@ -263,6 +263,15 @@ msgstr "vide"
 msgid "The faction's main planet"
 msgstr "Planète mère de la faction"
 
+msgid "In order to display spaceship statistics you must scan it"
+msgstr "Pour afficher les statistiques de ce vaisseau spatial, vous devez le scanner"
+
+msgid "In order to display resource you must scan it"
+msgstr "Pour afficher une ressource, vous devez utiliser votre scanner"
+
+msgid "statistics"
+msgstr "statistiques"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""

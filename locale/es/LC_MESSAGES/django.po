@@ -254,6 +254,15 @@ msgstr "vacía"
 msgid "The faction's main planet"
 msgstr "El planeta principal de la facción"
 
+msgid "In order to display spaceship statistics you must scan it"
+msgstr "PPara mostrar las estadísticas de la nave espacial debes escanearla"
+
+msgid "In order to display resource you must scan it"
+msgstr "Para visualizar el recurso debe escanearlo"
+
+msgid "statistics"
+msgstr "estadísticas"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""

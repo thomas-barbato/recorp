@@ -136,42 +136,49 @@ function add_sector_foreground(sector_element) {
 
 function add_pc_npc(data) {
     let border_color = "";
-
+    console.log(map_informations)
     for (let i = 0; i < data.length; i++) {
         let coord_x = (data[i]["user"]["coordinates"].coord_x);
         let coord_y = (data[i]["user"]["coordinates"].coord_y);
         let ship_size_x = data[i]["ship"]['size'].size_x;
         let ship_size_y = data[i]["ship"]['size'].size_y;
         let is_reversed = data[i]["ship"]["is_reversed"];
-        modal_data = {
-            player: {
-                name: data[i].user.name,
-                is_npc: data[i].user.is_npc,
-                image: data[i].user.image,
-                faction_name: data[i].faction.name
-            },
-            ship: {
-                name: data[i].ship.name,
-                category: data[i].ship.category_name,
-                description: data[i].ship.category_description,
-                max_hp: data[i].ship.max_hp,
-                current_hp: data[i].ship.current_hp,
-                max_movement: data[i].ship.max_movement,
-                current_movement: data[i].ship.current_movement,
-                status: data[i].ship.status,
-                modules: data[i].ship.modules,
-            },
-            actions: {
-                action_label: map_informations.actions.translated_action_label_msg,
-                close: map_informations.actions.translated_close_msg,
-                player_in_same_faction: map_informations.actions.player_is_same_faction,
-            },
+
+
+        if (data[i].user.user != current_user_id) {
+            modal_data = {
+                player: {
+                    name: data[i].user.name,
+                    is_npc: data[i].user.is_npc,
+                    image: data[i].user.image,
+                    faction_name: data[i].faction.name
+                },
+                ship: {
+                    name: data[i].ship.name,
+                    category: data[i].ship.category_name,
+                    description: data[i].ship.category_description,
+                    max_hp: data[i].ship.max_hp,
+                    current_hp: data[i].ship.current_hp,
+                    current_thermal_defense: data[i].ship.current_thermal_defense,
+                    current_missile_defense: data[i].ship.current_missile_defense,
+                    current_ballistic_defense: data[i].ship.current_ballistic_defense,
+                    max_movement: data[i].ship.max_movement,
+                    current_movement: data[i].ship.current_movement,
+                    status: data[i].ship.status,
+                    modules: data[i].ship.modules,
+                },
+                actions: {
+                    action_label: map_informations.actions.translated_action_label_msg,
+                    close: map_informations.actions.translated_close_msg,
+                    player_in_same_faction: map_informations.actions.player_is_same_faction,
+                    translated_statistics_label: map_informations.actions.translated_statistics_msg_label,
+                    translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
+                },
+            }
+
+            let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data);
+            document.querySelector('#modal-container').append(modal);
         }
-
-
-        let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data);
-        document.querySelector('#modal-container').append(modal);
-
 
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
@@ -252,7 +259,6 @@ function add_pc_npc(data) {
                 div.append(space_ship_reversed);
 
                 coord_x++;
-
             }
             coord_y++;
             coord_x = data[i]["user"]["coordinates"]["coord_x"];
@@ -348,7 +354,7 @@ function create_foreground_modal(id, data) {
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'p-1', 'flex', 'w-[95%]', 'justify-center');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-amber-500', 'p-1', 'flex', 'w-[95%]', 'justify-center');
     header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
 
     let close_button_url = '/static/img/ux/close.svg';
@@ -362,7 +368,7 @@ function create_foreground_modal(id, data) {
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm');
+    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
@@ -629,6 +635,7 @@ function create_pc_npc_modal(id, data) {
         'bg-black/20',
         'border-1',
     );
+
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
 
@@ -642,8 +649,10 @@ function create_pc_npc_modal(id, data) {
     header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'p-1', 'flex', 'w-[95%]', 'justify-center');
     if (data.player.is_npc == false) {
         header_div.textContent = `${data.player.name.toUpperCase()} (${data.player.faction_name.toUpperCase()})`;
+        header_div.classList.add('text-cyan-400');
     } else {
-        header_div.textContent = `${data.player.name.toUpperCase()} (NPC)`;
+        header_div.textContent = `${data.player.name.toUpperCase()}`;
+        header_div.classList.add('text-red-600');
     }
 
     let footer_container_div = document.createElement('div');
@@ -651,7 +660,7 @@ function create_pc_npc_modal(id, data) {
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm');
+    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
@@ -664,12 +673,186 @@ function create_pc_npc_modal(id, data) {
     header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
+    let body_container_div = document.createElement('div');
+    body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+    if (!data.player.is_npc) {
 
+        let target_img = document.createElement('img');
+        target_img.src = "/static/js/game/assets/default_img/default-user.svg";
+        target_img.style.width = "30%";
+        target_img.style.height = "30%";
+        target_img.style.margin = "0 auto";
 
+        body_container_div.append(target_img)
+    }
+
+    let ship_statistics_container_div = document.createElement('div');
+    let ship_statistics_container_label = document.createElement("label");
+    ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
+    ship_statistics_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'text-base', 'mt-5');
+
+    let ship_statistics_warning_msg_container_p = document.createElement('p');
+    ship_statistics_warning_msg_container_p.classList.add('font-bold', 'text-justify', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse');
+    ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str}: `;
+    console.log(data);
+
+    let hp_progress_bar_container_div = document.createElement('div');
+    let hp_progress_bar_container_content = document.createElement('div');
+    let hp_progress_bar_container_label = document.createElement('label');
+    let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
+    hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700');
+    hp_progress_bar_container_label.textContent = "Hp:"
+    hp_progress_bar_container_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
+    hp_progress_bar_container_content.classList.add('bg-blue-600', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5', 'leading-none');
+    hp_progress_bar_container_content.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
+    hp_progress_bar_container_content.style.width = hp_percent;
+
+    hp_progress_bar_container_div.append(hp_progress_bar_container_content);
+
+    let movement_progress_bar_container_div = document.createElement('div');
+    let movement_progress_bar_container_content = document.createElement('div');
+    let movement_progress_bar_container_label = document.createElement('label');
+    let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
+    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700');
+    movement_progress_bar_container_label.textContent = "Movement left:"
+    movement_progress_bar_container_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
+    movement_progress_bar_container_content.classList.add('bg-blue-600', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5', 'leading-none')
+    movement_progress_bar_container_content.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
+    movement_progress_bar_container_content.style.width = move_percent;
+
+    movement_progress_bar_container_div.append(movement_progress_bar_container_content);
+
+    ship_statistics_container_div.append(hp_progress_bar_container_label);
+    ship_statistics_container_div.append(hp_progress_bar_container_div);
+    ship_statistics_container_div.append(movement_progress_bar_container_label);
+    ship_statistics_container_div.append(movement_progress_bar_container_div);
+
+    let ship_action_container = document.createElement("div");
+    ship_action_container.classList.add('mt-2');
+    ship_action_container.id = "item-action-container";
+
+    let ship_action_container_label = document.createElement("label");
+    ship_action_container_label.htmlFor = "item-action-container";
+    ship_action_container_label.textContent = `${data.actions.action_label}: `;
+    ship_action_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1');
+
+    let ship_action_container_div = document.createElement('figure');
+    ship_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'gap-3');
+    ship_action_container_div.setAttribute('role', 'group');
+
+    let item_action_container_img_scan_container = document.createElement('div');
+    item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+    let item_action_container_img_attack_container = document.createElement('div');
+    item_action_container_img_attack_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+    let item_action_container_img_contact_container = document.createElement('div');
+    item_action_container_img_contact_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+    let item_action_container_img_repaire_container = document.createElement('div');
+    item_action_container_img_repaire_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+    let item_action_container_img_scan = document.createElement('img');
+    item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
+    item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+    let item_action_container_img_scan_figcaption = document.createElement('figcaption');
+    item_action_container_img_scan_figcaption.textContent = "Scan";
+    item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
+    item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
+    item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_attack = document.createElement('img');
+    item_action_container_img_attack.src = '/static/img/ux/target_icon.svg';
+    item_action_container_img_attack.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+    let item_action_container_img_attack_figcaption = document.createElement('figcaption');
+    item_action_container_img_attack_figcaption.textContent = "Attack";
+    item_action_container_img_attack_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_attack_figcaption_ap = document.createElement('figcaption');
+    item_action_container_img_attack_figcaption_ap.textContent = "0 AP";
+    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_contact = document.createElement('img');
+    item_action_container_img_contact.src = '/static/img/ux/contact_icon.svg';
+    item_action_container_img_contact.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+    let item_action_container_img_contact_figcaption = document.createElement('figcaption');
+    item_action_container_img_contact_figcaption.textContent = "Contact";
+    item_action_container_img_contact_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_contact_figcaption_ap = document.createElement('figcaption');
+    item_action_container_img_contact_figcaption_ap.textContent = "0 AP";
+    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_repaire = document.createElement('img');
+    item_action_container_img_repaire.src = '/static/img/ux/repaire_icon.svg';
+    item_action_container_img_repaire.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+    let item_action_container_img_repaire_figcaption = document.createElement('figcaption');
+    item_action_container_img_repaire_figcaption.textContent = "Repaire";
+    item_action_container_img_repaire_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_repaire_figcaption_ap = document.createElement('figcaption');
+    item_action_container_img_repaire_figcaption_ap.textContent = "0 AP";
+    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    item_action_container_img_scan_container.append(item_action_container_img_scan);
+    item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
+    item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption_ap);
+
+    item_action_container_img_attack_container.append(item_action_container_img_attack);
+    item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption);
+    item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption_ap);
+
+    item_action_container_img_contact_container.append(item_action_container_img_contact);
+    item_action_container_img_contact_container.append(item_action_container_img_contact_figcaption);
+    item_action_container_img_contact_container.append(item_action_container_img_contact_figcaption_ap);
+
+    item_action_container_img_repaire_container.append(item_action_container_img_repaire);
+    item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption);
+    item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
+
+    ship_action_container_div.append(item_action_container_img_scan_container);
+    ship_action_container_div.append(item_action_container_img_attack_container);
+    ship_action_container_div.append(item_action_container_img_contact_container);
+    ship_action_container_div.append(item_action_container_img_repaire_container);
+
+    for (defense_module_i in data.ship.modules) {
+        if (data.ship.modules[defense_module_i]["type"] == "DEFENSE" && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
+            let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase()
+            let defense_value = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
+
+            let module_element = document.createElement('div');
+            let module_content_label = document.createElement("label");
+            let module_content = document.createElement('div');
+
+            module_content_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
+            module_content_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
+            module_element.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700');
+            module_content.classList.add('bg-blue-600', 'text-xs', 'font-medium', 'text-blue-100', 'text-center', 'p-0.5', 'leading-none');
+            module_content.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
+            module_content.style.width = defense_value;
+
+            module_element.append(module_content);
+
+            ship_statistics_container_div.append(module_content_label);
+            ship_statistics_container_div.append(module_element);
+        }
+    }
+
+    body_container_div.append(ship_statistics_container_label);
+    body_container_div.append(ship_statistics_warning_msg_container_p);
+    body_container_div.append(ship_statistics_container_div);
+    body_container_div.append(ship_action_container_label);
+    body_container_div.append(ship_action_container_div);
     header_container_div.append(header_div);
     header_container_div.append(header_close_button);
     content_div.append(header_container_div);
-    //content_div.append(body_container_div);
+    content_div.append(body_container_div);
     content_div.append(footer_container_div);
     container_div.append(content_div);
     e.append(container_div);

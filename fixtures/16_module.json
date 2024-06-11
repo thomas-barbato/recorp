@@ -14,7 +14,7 @@
         "model": "core.module",
         "pk": 2,
         "fields": {
-            "name": "Ballistic shield",
+            "name": "Ballistic shield lv-1",
             "type": "DEFENSE",
             "tier": 1,
             "effect": {
@@ -28,7 +28,7 @@
         "model": "core.module",
         "pk": 3,
         "fields": {
-            "name": "Ballistic shield v2",
+            "name": "Ballistic shield lv-2",
             "type": "DEFENSE",
             "tier": 2,
             "effect": {
@@ -42,7 +42,7 @@
         "model": "core.module",
         "pk": 4,
         "fields": {
-            "name": "Ballistic shield lv-2",
+            "name": "Ballistic shield lv-3",
             "type": "DEFENSE",
             "tier": 3,
             "effect": {
@@ -1484,7 +1484,7 @@
         "model": "core.module",
         "pk": 101,
         "fields": {
-            "name": "laser weapon lv-1",
+            "name": "thermal weapon lv-1",
             "type": "WEAPONRY",
             "tier": 1,
             "effect": {
@@ -1501,7 +1501,7 @@
         "model": "core.module",
         "pk": 102,
         "fields": {
-            "name": "laser weapon lv-2",
+            "name": "thermal weapon lv-2",
             "type": "WEAPONRY",
             "tier": 2,
             "effect": {
@@ -1518,7 +1518,7 @@
         "model": "core.module",
         "pk": 103,
         "fields": {
-            "name": "laser weapon lv-3",
+            "name": "thermal weapon lv-3",
             "type": "WEAPONRY",
             "tier": 3,
             "effect": {
@@ -1535,7 +1535,7 @@
         "model": "core.module",
         "pk": 104,
         "fields": {
-            "name": "laser weapon lv-4",
+            "name": "thermal weapon lv-4",
             "type": "WEAPONRY",
             "tier": 4,
             "effect": {
@@ -1552,7 +1552,7 @@
         "model": "core.module",
         "pk": 105,
         "fields": {
-            "name": "laser weapon lv-5",
+            "name": "thermal weapon lv-5",
             "type": "WEAPONRY",
             "tier": 4,
             "effect": {
@@ -1569,7 +1569,7 @@
         "model": "core.module",
         "pk": 106,
         "fields": {
-            "name": "laser weapon lv-6",
+            "name": "thermal weapon lv-6",
             "type": "WEAPONRY",
             "tier": 6,
             "effect": {
@@ -1586,7 +1586,7 @@
         "model": "core.module",
         "pk": 107,
         "fields": {
-            "name": "laser weapon lv-7",
+            "name": "thermal weapon lv-7",
             "type": "WEAPONRY",
             "tier": 7,
             "effect": {

@@ -123,7 +123,10 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["actions"] = {
                 "translated_action_label_msg": _("Actions available"),
                 "translated_close_msg": _("Close"),
-                "player_is_same_faction": player.get_player_faction() == data["sector"]["faction"]["id"]
+                "player_is_same_faction": player.get_player_faction() == data["sector"]["faction"]["id"],
+                "translated_scan_msg_str": _("In order to display resource you must scan it"),
+                "translated_statistics_msg_str": _("In order to display spaceship statistics you must scan it"),
+                "translated_statistics_msg_label": _("statistics")
             }
             
             for d in data["sector_element"]:
@@ -131,7 +134,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 d["data"]["description"] = _(d["data"]["description"])
                 d["resource"]["translated_text_resource"] = _("Resources available"),
                 d["resource"]["translated_quantity_str"] = _(d["resource"]["translated_quantity_str"])
-                d["resource"]["translated_scan_msg_str"] = _("In order to display resource you must scan it. Scan's effect will last for a day")
                 
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]

@@ -142,6 +142,10 @@ class StoreInCache:
                         "current_hp": max_hp,
                         "max_movement": max_movement,
                         "current_movement": max_movement,
+                        "current_ballistic_defense": data["playership__current_ballistic_defense"],
+                        "current_thermal_defense": data["playership__current_thermal_defense"],
+                        "current_missile_defense": data["playership__current_missile_defense"],
+                        "current_cargo_size": data["playership__current_cargo_size"],
                         "status": data["playership__status"],
                         "description": data["playership__ship_id__description"],
                         "module_slot_available": data[

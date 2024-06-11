@@ -398,6 +398,10 @@ class PlayerShip(models.Model):
     max_hp = models.SmallIntegerField(default=100)
     current_movement = models.PositiveSmallIntegerField(default=10)
     max_movement = models.PositiveSmallIntegerField(default=10)
+    current_missile_defense = models.SmallIntegerField(default=0)
+    current_thermal_defense = models.SmallIntegerField(default=0)
+    current_ballistic_defense = models.SmallIntegerField(default=0)
+    current_cargo_size = models.SmallIntegerField(default=2)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )
