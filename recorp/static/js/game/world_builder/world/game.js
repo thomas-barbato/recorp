@@ -345,16 +345,16 @@ function create_foreground_modal(id, data) {
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
 
     let header_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-amber-500', 'p-1', 'flex', 'w-[95%]', 'justify-center');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-white', 'p-1', 'flex', 'w-[95%]', 'justify-center');
     header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
 
     let close_button_url = '/static/img/ux/close.svg';
@@ -368,7 +368,7 @@ function create_foreground_modal(id, data) {
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
+    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
@@ -632,38 +632,32 @@ function create_pc_npc_modal(id, data) {
         'h-full',
         'md:inset-0',
         'backdrop-blur-sm',
-        'bg-black/20',
         'border-1',
+        'bg-black/20'
     );
 
+
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full", "bg-black/70");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'bg-black/70', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
 
     let header_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-emerald-400', 'p-1', 'flex', 'w-[95%]', 'justify-center');
-    if (data.player.is_npc == false) {
-        header_div.textContent = `${data.player.name.toUpperCase()} (${data.player.faction_name.toUpperCase()})`;
-        header_div.classList.add('text-cyan-400');
-    } else {
-        header_div.textContent = `${data.player.name.toUpperCase()}`;
-        header_div.classList.add('text-red-600');
-    }
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'rounded-t', 'p-1', 'flex', 'w-[95%]', 'justify-center', 'text-white');
+
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'bg-gray-600');
-
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'bg-gray-600', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
+    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
-
+    // 'bg-gray-600'
     let close_button_url = '/static/img/ux/close.svg';
 
     let header_close_button = document.createElement("img");
@@ -675,51 +669,50 @@ function create_pc_npc_modal(id, data) {
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
-    if (!data.player.is_npc) {
-
-        let target_img = document.createElement('img');
-        target_img.src = "/static/js/game/assets/default_img/default-user.svg";
-        target_img.style.width = "30%";
-        target_img.style.height = "30%";
-        target_img.style.margin = "0 auto";
-
-        body_container_div.append(target_img)
-    }
 
     let ship_statistics_container_div = document.createElement('div');
     let ship_statistics_container_label = document.createElement("label");
+    ship_statistics_container_div.classList.add('hidden');
+    ship_statistics_container_div.id = "ship-statistics";
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
     ship_statistics_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'text-base', 'mt-5');
 
     let ship_statistics_warning_msg_container_p = document.createElement('p');
     ship_statistics_warning_msg_container_p.classList.add('font-bold', 'text-justify', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse');
+    ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
     ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str}: `;
     console.log(data);
 
     let hp_progress_bar_container_div = document.createElement('div');
     let hp_progress_bar_container_content = document.createElement('div');
+    let hp_progress_bar_container_text = document.createElement('span');
     let hp_progress_bar_container_label = document.createElement('label');
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
-    hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700');
+    hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
     hp_progress_bar_container_label.textContent = "Hp:"
     hp_progress_bar_container_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
-    hp_progress_bar_container_content.classList.add('bg-blue-600', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5', 'leading-none');
-    hp_progress_bar_container_content.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
+    hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
+    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5');
+    hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
     hp_progress_bar_container_content.style.width = hp_percent;
 
+    hp_progress_bar_container_div.append(hp_progress_bar_container_text);
     hp_progress_bar_container_div.append(hp_progress_bar_container_content);
 
     let movement_progress_bar_container_div = document.createElement('div');
     let movement_progress_bar_container_content = document.createElement('div');
+    let movement_progress_bar_container_text = document.createElement('span');
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
-    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700');
+    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700', 'relative');
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
-    movement_progress_bar_container_content.classList.add('bg-blue-600', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5', 'leading-none')
-    movement_progress_bar_container_content.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
+    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]')
+    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5');
+    movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
     movement_progress_bar_container_content.style.width = move_percent;
 
+    movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
 
     ship_statistics_container_div.append(hp_progress_bar_container_label);
@@ -728,13 +721,13 @@ function create_pc_npc_modal(id, data) {
     ship_statistics_container_div.append(movement_progress_bar_container_div);
 
     let ship_action_container = document.createElement("div");
-    ship_action_container.classList.add('mt-2');
+    ship_action_container.classList.add('mt-3');
     ship_action_container.id = "item-action-container";
 
     let ship_action_container_label = document.createElement("label");
+    ship_action_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'text-base', 'mt-5');
     ship_action_container_label.htmlFor = "item-action-container";
-    ship_action_container_label.textContent = `${data.actions.action_label}: `;
-    ship_action_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1');
+    ship_action_container_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
 
     let ship_action_container_div = document.createElement('figure');
     ship_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'gap-3');
@@ -759,6 +752,13 @@ function create_pc_npc_modal(id, data) {
     let item_action_container_img_scan_figcaption = document.createElement('figcaption');
     item_action_container_img_scan_figcaption.textContent = "Scan";
     item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_scan.addEventListener('click', function() {
+        element = document.querySelector('#' + e.id);
+        ship_statistics = element.querySelector('#ship-statistics');
+        alert_message = element.querySelector('#statistics-warning-msg');
+        ship_statistics.classList.remove('hidden');
+        alert_message.classList.add('hidden');
+    })
 
     let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
@@ -816,10 +816,31 @@ function create_pc_npc_modal(id, data) {
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption);
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
 
-    ship_action_container_div.append(item_action_container_img_scan_container);
-    ship_action_container_div.append(item_action_container_img_attack_container);
-    ship_action_container_div.append(item_action_container_img_contact_container);
-    ship_action_container_div.append(item_action_container_img_repaire_container);
+    if (!data.player.is_npc) {
+
+        let target_img = document.createElement('img');
+        target_img.src = "/static/js/game/assets/default_img/default-user.svg";
+        target_img.style.width = "30%";
+        target_img.style.height = "30%";
+        target_img.style.margin = "0 auto";
+
+        header_div.textContent = `${data.player.name.toUpperCase()} (${data.player.faction_name.toUpperCase()})`;
+        content_div.classList.add('bg-gradient-to-b', 'from-cyan-400/70', 'to-black/70');
+
+        body_container_div.append(target_img);
+        ship_action_container_div.append(item_action_container_img_scan_container);
+        ship_action_container_div.append(item_action_container_img_attack_container);
+        ship_action_container_div.append(item_action_container_img_contact_container);
+        ship_action_container_div.append(item_action_container_img_repaire_container);
+
+    } else {
+
+        header_div.textContent = `${data.player.name.toUpperCase()}`;
+        content_div.classList.add('bg-gradient-to-b', 'from-red-600/70', 'to-black/70');
+        ship_action_container_div.append(item_action_container_img_scan_container);
+        ship_action_container_div.append(item_action_container_img_attack_container);
+    }
+
 
     for (defense_module_i in data.ship.modules) {
         if (data.ship.modules[defense_module_i]["type"] == "DEFENSE" && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
@@ -829,20 +850,26 @@ function create_pc_npc_modal(id, data) {
             let module_element = document.createElement('div');
             let module_content_label = document.createElement("label");
             let module_content = document.createElement('div');
+            let module_content_text = document.createElement('span');
 
             module_content_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
             module_content_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
-            module_element.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700');
-            module_content.classList.add('bg-blue-600', 'text-xs', 'font-medium', 'text-blue-100', 'text-center', 'p-0.5', 'leading-none');
-            module_content.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
+            module_element.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
+            module_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
+            module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5');
+            module_content_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
             module_content.style.width = defense_value;
 
+            module_element.append(module_content_text);
             module_element.append(module_content);
 
             ship_statistics_container_div.append(module_content_label);
             ship_statistics_container_div.append(module_element);
         }
     }
+
+
+    footer_container_div.append(footer_close_button);
 
     body_container_div.append(ship_statistics_container_label);
     body_container_div.append(ship_statistics_warning_msg_container_p);
@@ -897,6 +924,30 @@ function set_pathfinding_event() {
     }
 }
 
+function set_range_finding(target_id, player_id, min_range, max_range) {
+    let target = target_id.split('_');
+    let player = player_id.split('_');
+
+    let target_y = parseInt(target[0]);
+    let player_y = parseInt(player[0]);
+    let target_x = parseInt(target[1]);
+    let player_x = parseInt(player[1]);
+
+    let can_be_attacked = false;
+
+    if (target_y > player_y || target_x > player_x) {
+
+        if ((target_y - player_y) >= min_range && (target_y - player_y) <= max_range) { can_be_attacked = true; }
+        if ((target_x - player_x) >= min_range && (target_x - player_x) <= max_range) { can_be_attacked = true; }
+
+    } else {
+
+        if ((player_y - target_y) >= min_range && (player_y - target_y) <= max_range) { can_be_attacked = true; }
+        if ((player_x - target_x) >= min_range && (player_x - target_x) <= max_range) { can_be_attacked = true; }
+    }
+
+    return can_be_attacked;
+}
 
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
