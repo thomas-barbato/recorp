@@ -911,10 +911,11 @@ function create_pc_npc_modal(id, data) {
     );
 
     ship_offensive_module_container_h3_cat_1_btn.addEventListener('click', function() {
-        display_attack_options(e.id, this.parentNode.id)
+        display_attack_options(e.id, 1)
     });
 
     ship_offensive_module_container_h3_cat_1_btn_span.textContent = "Weaponry";
+    ship_offensive_module_container_h3_cat_1_btn_svg.id = "offensive-module-menu-svg-1";
     ship_offensive_module_container_h3_cat_1_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
     ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("fill", "none");
     ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("viewBox", "0 0 10 6");
@@ -945,12 +946,13 @@ function create_pc_npc_modal(id, data) {
     );
 
     ship_offensive_module_container_h3_cat_2_btn.addEventListener('click', function() {
-        display_attack_options(e.id, this.parentNode.id)
+        display_attack_options(e.id, 2)
     });
 
     ship_offensive_module_container_h3_cat_2.id = "offensive-module-heading-2";
 
     ship_offensive_module_container_h3_cat_2_btn_span.textContent = "Electronic Warfare";
+    ship_offensive_module_container_h3_cat_2_btn_svg.id = "offensive-module-menu-svg-2";
     ship_offensive_module_container_h3_cat_2_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
     ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("fill", "none");
     ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("viewBox", "0 0 10 6");
@@ -1060,10 +1062,11 @@ function set_pathfinding_event() {
 
 let display_attack_options = function(e_id, element) {
     let parent_el = document.querySelector('#' + e_id);
-    let id_nb = element.split('-')[3];
+    let id_nb = element;
     let other_element_id = id_nb == "1" ? "2" : "1";
     let option = parent_el.querySelector('#offensive-module-body-' + id_nb);
     let other_option = parent_el.querySelector('#offensive-module-body-' + other_element_id);
+    let option_svg = parent_el.querySelector('#offensive-module-menu-svg-' + id_nb);
 
     if (option.classList.contains("hidden")) {
         option.classList.remove("hidden");
@@ -1071,7 +1074,7 @@ let display_attack_options = function(e_id, element) {
     } else {
         option.classList.add("hidden");
     }
-
+    option_svg.classList.contains('rotate-180') === true ? option_svg.classList.remove("rotate-180") : option_svg.classList.add("rotate-180");
 }
 
 function set_range_finding(target_id, player_id, min_range, max_range) {
