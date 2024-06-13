@@ -1067,6 +1067,7 @@ let display_attack_options = function(e_id, element) {
     let option = parent_el.querySelector('#offensive-module-body-' + id_nb);
     let other_option = parent_el.querySelector('#offensive-module-body-' + other_element_id);
     let option_svg = parent_el.querySelector('#offensive-module-menu-svg-' + id_nb);
+    let other_option_svg = parent_el.querySelector('#offensive-module-menu-svg-' + other_element_id);
 
     if (option.classList.contains("hidden")) {
         option.classList.remove("hidden");
@@ -1074,7 +1075,13 @@ let display_attack_options = function(e_id, element) {
     } else {
         option.classList.add("hidden");
     }
-    option_svg.classList.contains('rotate-180') === true ? option_svg.classList.remove("rotate-180") : option_svg.classList.add("rotate-180");
+    if (option_svg.classList.contains('rotate-180') === true) {
+        option_svg.classList.remove("rotate-180");
+        other_option_svg.classList.add('rotate-180') === false ? other_option_svg.classList.remove('rotate-180') : other_option_svg.classList.add('rotate-180');
+    } else {
+        option_svg.classList.add("rotate-180");
+        other_option_svg.classList.contains('rotate-180') === true ? other_option_svg.classList.add('rotate-180') : other_option_svg.classList.remove('rotate-180');
+    }
 }
 
 function set_range_finding(target_id, player_id, min_range, max_range) {
