@@ -2,7 +2,6 @@ let gameSocket = "";
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
 
-let animation_container_set = new Set();
 let atlas = {
     "col": 40,
     "row": 40,
@@ -433,7 +432,7 @@ function create_foreground_modal(id, data) {
         item_resource_content_p_quantity.style.display = "none";
 
         let item_resource_content_p_scan_msg = document.createElement('p');
-        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse');
+        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse', 'font-bold');
         item_resource_content_p_scan_msg.id = "resource-scan-msg";
         item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`;
 
@@ -678,7 +677,7 @@ function create_pc_npc_modal(id, data) {
     ship_statistics_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'text-base', 'mt-5');
 
     let ship_statistics_warning_msg_container_p = document.createElement('p');
-    ship_statistics_warning_msg_container_p.classList.add('font-bold', 'text-justify', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse');
+    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold');
     ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
     ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str}: `;
     console.log(data);
@@ -735,9 +734,22 @@ function create_pc_npc_modal(id, data) {
 
     let item_action_container_img_scan_container = document.createElement('div');
     item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+    item_action_container_img_scan_container.addEventListener('click', function() {
+        let element = document.querySelector('#' + e.id);
+        let ship_statistics = element.querySelector('#ship-statistics');
+        let alert_message = element.querySelector('#statistics-warning-msg');
+        ship_statistics.classList.remove('hidden');
+        alert_message.classList.add('hidden');
+    })
+
 
     let item_action_container_img_attack_container = document.createElement('div');
     item_action_container_img_attack_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+    item_action_container_img_attack_container.addEventListener('click', function() {
+        let element = document.querySelector('#' + e.id);
+        let ship_attack_modules = element.querySelector('#accordion-collapse');
+        ship_attack_modules.classList.remove('hidden');
+    })
 
     let item_action_container_img_contact_container = document.createElement('div');
     item_action_container_img_contact_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
@@ -752,13 +764,6 @@ function create_pc_npc_modal(id, data) {
     let item_action_container_img_scan_figcaption = document.createElement('figcaption');
     item_action_container_img_scan_figcaption.textContent = "Scan";
     item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
-    item_action_container_img_scan.addEventListener('click', function() {
-        element = document.querySelector('#' + e.id);
-        ship_statistics = element.querySelector('#ship-statistics');
-        alert_message = element.querySelector('#statistics-warning-msg');
-        ship_statistics.classList.remove('hidden');
-        alert_message.classList.add('hidden');
-    })
 
     let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
@@ -771,6 +776,7 @@ function create_pc_npc_modal(id, data) {
     let item_action_container_img_attack_figcaption = document.createElement('figcaption');
     item_action_container_img_attack_figcaption.textContent = "Attack";
     item_action_container_img_attack_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
 
     let item_action_container_img_attack_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_attack_figcaption_ap.textContent = "0 AP";
@@ -842,7 +848,7 @@ function create_pc_npc_modal(id, data) {
     }
 
 
-    for (defense_module_i in data.ship.modules) {
+    for (let defense_module_i in data.ship.modules) {
         if (data.ship.modules[defense_module_i]["type"] == "DEFENSE" && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
             let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase()
             let defense_value = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
@@ -868,6 +874,133 @@ function create_pc_npc_modal(id, data) {
         }
     }
 
+    let ship_offensive_module_container = document.createElement('div');
+    ship_offensive_module_container.classList.add('mt-5', 'hidden');
+    ship_offensive_module_container.setAttribute("data-accordion", "collapse");
+    ship_offensive_module_container.id = "accordion-collapse";
+
+    let ship_offensive_module_container_h3_cat_1 = document.createElement('h3');
+    let ship_offensive_module_container_h3_cat_2 = document.createElement('h3');
+    let ship_offensive_module_container_h3_cat_1_btn = document.createElement('button');
+    let ship_offensive_module_container_h3_cat_1_btn_span = document.createElement('span');
+    let ship_offensive_module_container_h3_cat_1_btn_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    let ship_offensive_module_container_h3_cat_1_btn_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    let ship_offensive_module_container_h3_cat_2_btn = document.createElement('button');
+    let ship_offensive_module_container_h3_cat_2_btn_span = document.createElement('span');
+    let ship_offensive_module_container_h3_cat_2_btn_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    let ship_offensive_module_container_h3_cat_2_btn_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    let ship_offensive_module_container_cat_1_div = document.createElement('div');
+    let ship_offensive_module_container_cat_2_div = document.createElement('div');
+
+    ship_offensive_module_container_h3_cat_1.id = "offensive-module-heading-1";
+
+    ship_offensive_module_container_h3_cat_1_btn.setAttribute('type', 'button');
+    ship_offensive_module_container_h3_cat_1_btn.classList.add(
+        'flex',
+        'items-center',
+        'justify-between',
+        'w-full',
+        'p-2',
+        'font-medium',
+        'hover:font-bold',
+        'rtl:text-right',
+        'text-white',
+        'hover:bg-gray-100',
+        'dark:hover:bg-gray-800',
+        'gap-3'
+    );
+
+    ship_offensive_module_container_h3_cat_1_btn.addEventListener('click', function() {
+        display_attack_options(e.id, this.parentNode.id)
+    });
+
+    ship_offensive_module_container_h3_cat_1_btn_span.textContent = "Weaponry";
+    ship_offensive_module_container_h3_cat_1_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
+    ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("fill", "none");
+    ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("viewBox", "0 0 10 6");
+    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke", "currentColor");
+    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-linecap", "round");
+    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-linejoin", "round");
+    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-width", "2");
+    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+
+    ship_offensive_module_container_cat_1_div.id = "offensive-module-body-1";
+    ship_offensive_module_container_cat_1_div.classList.add('hidden');
+    ship_offensive_module_container_cat_1_div.setAttribute('aria-labelledby', "offensive-module-heading-1");
+
+    ship_offensive_module_container_h3_cat_2_btn.setAttribute('type', 'button');
+    ship_offensive_module_container_h3_cat_2_btn.classList.add(
+        'flex',
+        'items-center',
+        'justify-between',
+        'w-full',
+        'p-2',
+        'font-medium',
+        'hover:font-bold',
+        'rtl:text-right',
+        'text-white',
+        'hover:bg-gray-100',
+        'dark:hover:bg-gray-800',
+        'gap-3'
+    );
+
+    ship_offensive_module_container_h3_cat_2_btn.addEventListener('click', function() {
+        display_attack_options(e.id, this.parentNode.id)
+    });
+
+    ship_offensive_module_container_h3_cat_2.id = "offensive-module-heading-2";
+
+    ship_offensive_module_container_h3_cat_2_btn_span.textContent = "Electronic Warfare";
+    ship_offensive_module_container_h3_cat_2_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
+    ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("fill", "none");
+    ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("viewBox", "0 0 10 6");
+    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke", "currentColor");
+    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-linecap", "round");
+    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-linejoin", "round");
+    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-width", "2");
+    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+
+    ship_offensive_module_container_cat_2_div.id = "offensive-module-body-2";
+    ship_offensive_module_container_cat_2_div.classList.add('hidden');
+    ship_offensive_module_container_cat_2_div.setAttribute('aria-labelledby', "offensive-module-heading-2");
+
+
+
+    for (let ship_i in map_informations.pc_npc) {
+        if (map_informations.pc_npc[ship_i].user.user == current_user_id) {
+            for (let module_i in map_informations.pc_npc[ship_i].ship.modules) {
+                if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
+
+                    let new_weapon_module_div = document.createElement('div');
+                    new_weapon_module_div.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i];
+                    ship_offensive_module_container_cat_1_div.append(new_weapon_module_div);
+
+                } else if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
+
+                    let new_electronicWarfare_module_div = document.createElement('div');
+                    new_electronicWarfare_module_div.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i];
+                    ship_offensive_module_container_cat_2_div.append(new_electronicWarfare_module_div);
+
+                }
+            }
+        }
+    }
+
+    ship_offensive_module_container_h3_cat_1_btn_svg.append(ship_offensive_module_container_h3_cat_1_btn_svg_path);
+    ship_offensive_module_container_h3_cat_2_btn_svg.append(ship_offensive_module_container_h3_cat_2_btn_svg_path);
+
+    ship_offensive_module_container_h3_cat_1_btn.append(ship_offensive_module_container_h3_cat_1_btn_span);
+    ship_offensive_module_container_h3_cat_1_btn.append(ship_offensive_module_container_h3_cat_1_btn_svg);
+    ship_offensive_module_container_h3_cat_2_btn.append(ship_offensive_module_container_h3_cat_2_btn_span);
+    ship_offensive_module_container_h3_cat_2_btn.append(ship_offensive_module_container_h3_cat_2_btn_svg);
+
+    ship_offensive_module_container_h3_cat_1.append(ship_offensive_module_container_h3_cat_1_btn);
+    ship_offensive_module_container_h3_cat_2.append(ship_offensive_module_container_h3_cat_2_btn);
+
+    ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_1);
+    ship_offensive_module_container.append(ship_offensive_module_container_cat_1_div);
+    ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_2);
+    ship_offensive_module_container.append(ship_offensive_module_container_cat_2_div);
 
     footer_container_div.append(footer_close_button);
 
@@ -876,6 +1009,7 @@ function create_pc_npc_modal(id, data) {
     body_container_div.append(ship_statistics_container_div);
     body_container_div.append(ship_action_container_label);
     body_container_div.append(ship_action_container_div);
+    body_container_div.append(ship_offensive_module_container);
     header_container_div.append(header_div);
     header_container_div.append(header_close_button);
     content_div.append(header_container_div);
@@ -922,6 +1056,22 @@ function set_pathfinding_event() {
             pf[i].setAttribute('onclick', 'display_pathfinding()');
         }
     }
+}
+
+let display_attack_options = function(e_id, element) {
+    let parent_el = document.querySelector('#' + e_id);
+    let id_nb = element.split('-')[3];
+    let other_element_id = id_nb == "1" ? "2" : "1";
+    let option = parent_el.querySelector('#offensive-module-body-' + id_nb);
+    let other_option = parent_el.querySelector('#offensive-module-body-' + other_element_id);
+
+    if (option.classList.contains("hidden")) {
+        option.classList.remove("hidden");
+        other_option.classList.add("hidden");
+    } else {
+        option.classList.add("hidden");
+    }
+
 }
 
 function set_range_finding(target_id, player_id, min_range, max_range) {
