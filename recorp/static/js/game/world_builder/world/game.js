@@ -656,7 +656,7 @@ function create_pc_npc_modal(id, data) {
     footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
-    // 'bg-gray-600'
+
     let close_button_url = '/static/img/ux/close.svg';
 
     let header_close_button = document.createElement("img");
@@ -966,21 +966,89 @@ function create_pc_npc_modal(id, data) {
     ship_offensive_module_container_cat_2_div.classList.add('hidden');
     ship_offensive_module_container_cat_2_div.setAttribute('aria-labelledby', "offensive-module-heading-2");
 
-
-
     for (let ship_i in map_informations.pc_npc) {
         if (map_informations.pc_npc[ship_i].user.user == current_user_id) {
             for (let module_i in map_informations.pc_npc[ship_i].ship.modules) {
+                let module_item_content = document.createElement('div');
+                let module_item_p = document.createElement('p');
+                module_item_content.classList.add('flex', 'flex-col', 'py-2', 'px-4');
+                module_item_p.classList.add('text-white', 'font-bold');
+                let new_electronicWarfare_module_div = document.createElement('div');
                 if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
 
-                    let new_weapon_module_div = document.createElement('div');
-                    new_weapon_module_div.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i];
-                    ship_offensive_module_container_cat_1_div.append(new_weapon_module_div);
+                    module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
+                    module_item_content.append(module_item_p);
+                    console.log(map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"])
+                    if ("damage_type" in map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]) {
+                        let damage_type_span = document.createElement('span');
+                        let damage_type_small = document.createElement('small');
+                        let damage_type_small_value = document.createElement('small');
+                        let damage_span = document.createElement('span');
+                        let damage_small = document.createElement('small');
+                        let damage_small_value = document.createElement('small');
+                        let range_span = document.createElement('span');
+                        let range_small = document.createElement('small');
+                        let range_small_value = document.createElement('small');
+
+                        damage_type_small.textContent = "Damage type : ";
+                        damage_type_small_value.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
+                        damage_type_small.classList.add('text-white', 'italic');
+                        damage_type_small_value.classList.add('text-emerald-400', 'font-bold');
+                        damage_type_span.append(damage_type_small);
+                        damage_type_span.append(damage_type_small_value);
+
+                        damage_small.textContent = "Damages : ";
+                        damage_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_damage"]} - ${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_damage"]}`;
+                        damage_small.classList.add('text-white', 'italic');
+                        damage_small_value.classList.add('text-emerald-400', 'font-bold');
+                        damage_span.append(damage_small);
+                        damage_span.append(damage_small_value);
+
+                        range_small.textContent = "Range : ";
+                        range_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_range"]} - ${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_range"]}`;
+                        range_small.classList.add('text-white', 'italic');
+                        range_small_value.classList.add('text-emerald-400', 'font-bold');
+                        range_span.append(range_small);
+                        range_span.append(range_small_value);
+
+                        module_item_content.append(damage_type_span);
+                        module_item_content.append(damage_span);
+                        module_item_content.append(range_span);
+                    } else {
+                        let other_bonus_span = document.createElement('span');
+                        let other_bonus_small = document.createElement('small');
+                        let other_bonus_small_value = document.createElement('small');
+
+                        other_bonus_small.textContent = "accuracy bonus : ";
+                        other_bonus_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["aiming_increase"]} %`;
+                        other_bonus_small.classList.add('text-white', 'italic');
+                        other_bonus_small_value.classList.add('text-emerald-400', 'font-bold');
+                        other_bonus_span.append(other_bonus_small);
+                        other_bonus_span.append(other_bonus_small_value);
+                        module_item_content.append(other_bonus_span);
+
+                    }
+                    ship_offensive_module_container_cat_1_div.append(module_item_content);
 
                 } else if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
 
-                    let new_electronicWarfare_module_div = document.createElement('div');
-                    new_electronicWarfare_module_div.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i];
+                    module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
+                    module_item_small = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"];
+                    module_item_content.append(module_item_p);
+                    for (const [key, value] of Object.entries(map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"])) {
+                        let module_item_text_span = document.createElement('span');
+                        module_item_text_span.classList.add('flex', 'flex-row');
+                        let module_item_small_effect_name = document.createElement('small');
+                        let module_item_small_effect_value = document.createElement('small');
+                        module_item_small_effect_name.classList.add('text-white', 'italic');
+                        module_item_small_effect_value.classList.add('text-emerald-400', 'font-bold');
+                        module_item_small_effect_name.textContent = `${key.replace('_',' ')}: `;
+                        module_item_small_effect_value.textContent = `${value}`;
+
+                        module_item_content.append(module_item_small_effect_name);
+                        module_item_content.append(module_item_small_effect_value);
+                    }
+                    new_electronicWarfare_module_div.append(module_item_content)
                     ship_offensive_module_container_cat_2_div.append(new_electronicWarfare_module_div);
 
                 }
