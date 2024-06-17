@@ -135,7 +135,6 @@ function add_sector_foreground(sector_element) {
 
 function add_pc_npc(data) {
     let border_color = "";
-    console.log(map_informations)
     for (let i = 0; i < data.length; i++) {
         let coord_x = (data[i]["user"]["coordinates"].coord_x);
         let coord_y = (data[i]["user"]["coordinates"].coord_y);
@@ -175,7 +174,7 @@ function add_pc_npc(data) {
                 },
             }
 
-            let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data);
+            let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data, `${coord_y}_${coord_x}`);
             document.querySelector('#modal-container').append(modal);
         }
 
@@ -367,7 +366,7 @@ function create_foreground_modal(id, data) {
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
+    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
@@ -384,7 +383,7 @@ function create_foreground_modal(id, data) {
     item_content_div.classList.add('flex', 'flex-col');
 
     let item_description_p = document.createElement('p');
-    item_description_p.classList.add('text-white', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'md:text-base', 'text-sm');
+    item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'md:text-base', 'text-sm');
     item_description_p.textContent = data.description;
 
     let item_action_container = document.createElement("div");
@@ -394,7 +393,7 @@ function create_foreground_modal(id, data) {
     let item_action_container_label = document.createElement("label");
     item_action_container_label.htmlFor = "item-action-container";
     item_action_container_label.textContent = `${data.actions.action_label}: `;
-    item_action_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1');
+    item_action_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1');
 
     let item_action_container_div = document.createElement('figure');
     item_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'gap-3');
@@ -404,7 +403,7 @@ function create_foreground_modal(id, data) {
         let item_resource_label = document.createElement('label');
         item_resource_label.htmlFor = "resources";
         item_resource_label.textContent = `${data.resources.translated_text_resource} :`
-        item_resource_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
+        item_resource_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
 
         let item_resource_content = document.createElement('div');
         item_resource_content.classList.add('flex', 'flex-col');
@@ -414,25 +413,25 @@ function create_foreground_modal(id, data) {
         item_resource_content_span.classList.add('flex', 'flex-row');
 
         let item_resource_content_p_resource = document.createElement('p');
-        item_resource_content_p_resource.classList.add('text-white', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
+        item_resource_content_p_resource.classList.add('text-white', 'font-shadow', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
         item_resource_content_p_resource.id = "resource-name";
         item_resource_content_p_resource.textContent = `${data.resources.name}`;
         item_resource_content_p_resource.style.display = "none";
 
 
         let item_resource_content_p_quantity = document.createElement('p');
-        item_resource_content_p_quantity.classList.add('font-bold', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
+        item_resource_content_p_quantity.classList.add('font-bold', 'font-shadow', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
         if (data.resources.quantity == "empty") {
-            item_resource_content_p_quantity.classList.add('text-red-600', 'animate-pulse');
+            item_resource_content_p_quantity.classList.add('text-red-600', 'animate-pulse', 'font-shadow');
         } else {
-            item_resource_content_p_quantity.classList.add('text-white');
+            item_resource_content_p_quantity.classList.add('text-white', 'font-shadow');
         }
         item_resource_content_p_quantity.id = "resource-quantity";
         item_resource_content_p_quantity.textContent = `${data.resources.translated_quantity_str.toUpperCase()}`
         item_resource_content_p_quantity.style.display = "none";
 
         let item_resource_content_p_scan_msg = document.createElement('p');
-        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse', 'font-bold');
+        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse', 'font-bold', 'font-shadow');
         item_resource_content_p_scan_msg.id = "resource-scan-msg";
         item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`;
 
@@ -448,11 +447,11 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_scan_figcaption = document.createElement('figcaption');
         item_action_container_img_scan_figcaption.textContent = "Scan";
-        item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_scan_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'md:text-sm');
 
         let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
         item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
-        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'md:text-sm');
 
         let item_action_container_img_gather = document.createElement('img');
         item_action_container_img_gather.src = '/static/img/ux/gather_icon.svg';
@@ -460,11 +459,11 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_gather_figcaption = document.createElement('figcaption');
         item_action_container_img_gather_figcaption.textContent = "Gather";
-        item_action_container_img_gather_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold');
+        item_action_container_img_gather_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow');
 
         let item_action_container_img_gather_figcaption_ap = document.createElement('figcaption');
         item_action_container_img_gather_figcaption_ap.textContent = "1 AP";
-        item_action_container_img_gather_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold');
+        item_action_container_img_gather_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow');
 
         item_resource_content_span.append(item_resource_content_p_resource);
         item_resource_content_span.append(item_resource_content_p_quantity);
@@ -492,7 +491,7 @@ function create_foreground_modal(id, data) {
             let item_faction_label = document.createElement('label');
             item_faction_label.htmlFor = "faction";
             item_faction_label.textContent = `${data.faction.translated_str} ${data.faction.name}`;
-            item_faction_label.classList.add('font-bold', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
+            item_faction_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
 
             let item_faction_content = document.createElement('div');
             item_faction_content.classList.add('flex', 'flex-row');
@@ -525,7 +524,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_setNewStartLoc_figcaption = document.createElement('figcaption');
         item_action_container_img_setNewStartLoc_figcaption.textContent = "New Home";
-        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_joinFaction_img = document.createElement('img');
         item_action_container_joinFaction_img.src = '/static/img/ux/join_faction.svg';
@@ -533,7 +532,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_joinFaction_figcaption = document.createElement('figcaption');
         item_action_container_img_joinFaction_figcaption.textContent = `Join ${data.faction.name}`;
-        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_opendock_img = document.createElement('img');
         item_action_container_opendock_img.src = '/static/img/ux/dock.svg';
@@ -541,7 +540,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_opendock_figcaption = document.createElement('figcaption');
         item_action_container_img_opendock_figcaption.textContent = "dock";
-        item_action_container_img_opendock_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_opendock_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_openmarket_img = document.createElement('img');
         item_action_container_openmarket_img.src = '/static/img/ux/market.svg';
@@ -549,7 +548,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_openmarket_figcaption = document.createElement('figcaption');
         item_action_container_img_openmarket_figcaption.textContent = "market";
-        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_gettask_img = document.createElement('img');
         item_action_container_gettask_img.src = '/static/img/ux/task.svg';
@@ -557,7 +556,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_gettask_figcaption = document.createElement('figcaption');
         item_action_container_img_gettask_figcaption.textContent = "task";
-        item_action_container_img_gettask_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_gettask_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_invade_img = document.createElement('img');
         item_action_container_invade_img.src = '/static/img/ux/invade.svg';
@@ -565,7 +564,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_invade_figcaption = document.createElement('figcaption');
         item_action_container_img_invade_figcaption.textContent = "invade";
-        item_action_container_img_invade_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_invade_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
         if (data.actions.player_in_same_faction == true) {
             item_action_container_img_setNewStartLoc_container.append(item_action_container_setNewStartLoc_img);
             item_action_container_img_setNewStartLoc_container.append(item_action_container_img_setNewStartLoc_figcaption);
@@ -611,7 +610,7 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function create_pc_npc_modal(id, data) {
+function create_pc_npc_modal(id, data, this_ship_id) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -637,7 +636,7 @@ function create_pc_npc_modal(id, data) {
 
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full", "bg-black/70");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "bg-black/70");
 
     let content_div = document.createElement('div');
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
@@ -653,7 +652,7 @@ function create_pc_npc_modal(id, data) {
     let footer_container_div = document.createElement('div');
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold');
+    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
@@ -674,13 +673,12 @@ function create_pc_npc_modal(id, data) {
     ship_statistics_container_div.classList.add('hidden');
     ship_statistics_container_div.id = "ship-statistics";
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
-    ship_statistics_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'text-base', 'mt-5');
+    ship_statistics_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base', 'mt-5');
 
     let ship_statistics_warning_msg_container_p = document.createElement('p');
-    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold');
+    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'font-shadow', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold', 'font-shadow');
     ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
     ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str}: `;
-    console.log(data);
 
     let hp_progress_bar_container_div = document.createElement('div');
     let hp_progress_bar_container_content = document.createElement('div');
@@ -689,9 +687,9 @@ function create_pc_npc_modal(id, data) {
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
     hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
     hp_progress_bar_container_label.textContent = "Hp:"
-    hp_progress_bar_container_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
+    hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
     hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
-    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5');
+    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center', 'p-0.5');
     hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
     hp_progress_bar_container_content.style.width = hp_percent;
 
@@ -705,9 +703,9 @@ function create_pc_npc_modal(id, data) {
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
     movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700', 'relative');
     movement_progress_bar_container_label.textContent = "Movement left:"
-    movement_progress_bar_container_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
+    movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]')
-    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5');
+    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center', 'p-0.5');
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
     movement_progress_bar_container_content.style.width = move_percent;
 
@@ -724,7 +722,7 @@ function create_pc_npc_modal(id, data) {
     ship_action_container.id = "item-action-container";
 
     let ship_action_container_label = document.createElement("label");
-    ship_action_container_label.classList.add('font-bold', 'text-white', 'text-justify', 'text-base', 'mt-5');
+    ship_action_container_label.classList.add('font-bold', 'text-white', 'font-shadow', 'text-justify', 'text-base', 'font-shadow', 'mt-5');
     ship_action_container_label.htmlFor = "item-action-container";
     ship_action_container_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
 
@@ -763,11 +761,11 @@ function create_pc_npc_modal(id, data) {
 
     let item_action_container_img_scan_figcaption = document.createElement('figcaption');
     item_action_container_img_scan_figcaption.textContent = "Scan";
-    item_action_container_img_scan_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_scan_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_attack = document.createElement('img');
     item_action_container_img_attack.src = '/static/img/ux/target_icon.svg';
@@ -775,12 +773,12 @@ function create_pc_npc_modal(id, data) {
 
     let item_action_container_img_attack_figcaption = document.createElement('figcaption');
     item_action_container_img_attack_figcaption.textContent = "Attack";
-    item_action_container_img_attack_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_attack_figcaption.classList.add('text-white', 'font-shadow', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
 
     let item_action_container_img_attack_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_attack_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_contact = document.createElement('img');
     item_action_container_img_contact.src = '/static/img/ux/contact_icon.svg';
@@ -788,11 +786,11 @@ function create_pc_npc_modal(id, data) {
 
     let item_action_container_img_contact_figcaption = document.createElement('figcaption');
     item_action_container_img_contact_figcaption.textContent = "Contact";
-    item_action_container_img_contact_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_contact_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_contact_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_contact_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_repaire = document.createElement('img');
     item_action_container_img_repaire.src = '/static/img/ux/repaire_icon.svg';
@@ -800,11 +798,11 @@ function create_pc_npc_modal(id, data) {
 
     let item_action_container_img_repaire_figcaption = document.createElement('figcaption');
     item_action_container_img_repaire_figcaption.textContent = "Repaire";
-    item_action_container_img_repaire_figcaption.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_repaire_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_repaire_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_repaire_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     item_action_container_img_scan_container.append(item_action_container_img_scan);
     item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
@@ -859,10 +857,10 @@ function create_pc_npc_modal(id, data) {
             let module_content_text = document.createElement('span');
 
             module_content_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
-            module_content_label.classList.add('font-bold', 'text-white', 'text-sm', 'mt-2');
+            module_content_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
             module_element.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
             module_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
-            module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'text-center', 'p-0.5');
+            module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center', 'p-0.5');
             module_content_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
             module_content.style.width = defense_value;
 
@@ -901,13 +899,11 @@ function create_pc_npc_modal(id, data) {
         'justify-between',
         'w-full',
         'p-2',
-        'font-medium',
-        'hover:font-bold',
+        'font-bold',
+        'italic',
         'rtl:text-right',
         'text-white',
-        'hover:bg-gray-100',
-        'dark:hover:bg-gray-800',
-        'gap-3'
+        'mb-1',
     );
 
     ship_offensive_module_container_h3_cat_1_btn.addEventListener('click', function() {
@@ -936,13 +932,12 @@ function create_pc_npc_modal(id, data) {
         'justify-between',
         'w-full',
         'p-2',
-        'font-medium',
-        'hover:font-bold',
+        'font-bold',
+        'italic',
         'rtl:text-right',
         'text-white',
-        'hover:bg-gray-100',
-        'dark:hover:bg-gray-800',
-        'gap-3'
+        'mb-1',
+        'font-shadow',
     );
 
     ship_offensive_module_container_h3_cat_2_btn.addEventListener('click', function() {
@@ -969,17 +964,50 @@ function create_pc_npc_modal(id, data) {
     for (let ship_i in map_informations.pc_npc) {
         if (map_informations.pc_npc[ship_i].user.user == current_user_id) {
             for (let module_i in map_informations.pc_npc[ship_i].ship.modules) {
+
                 let module_item_content = document.createElement('div');
                 let module_item_p = document.createElement('p');
-                module_item_content.classList.add('flex', 'flex-col', 'py-2', 'px-4');
-                module_item_p.classList.add('text-white', 'font-bold');
-                let new_electronicWarfare_module_div = document.createElement('div');
+                module_item_content.classList.add(
+                    'flex',
+                    'flex-col',
+                    'py-2',
+                    'px-4',
+                    'mb-1',
+                    'rounded-md',
+                    'border',
+                    'hover:border-gray-800',
+                    'border-slate-400',
+                    'hover:bg-slate-300',
+                    'bg-gray-800',
+                    'text-white',
+                    'hover:text-gray-800',
+                    'hover:animate-pulse',
+                    'cursor-pointer',
+                    'divide-y',
+                    'divide-dashed',
+                    'divide-white',
+                    'hover:divide-gray-800',
+
+                );
+                module_item_p.classList.add('font-bold');
+                module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
+                module_item_content.append(module_item_p);
+                module_item_content.classList.add('module-container')
+                module_item_content.id = `module-${map_informations.pc_npc[ship_i].ship.modules[module_i]["id"]}`;
+                module_item_content.addEventListener('click', function() {
+                    check_radio_btn_and_swap_color(e.id, module_item_content.id)
+                })
+
+                let radio_btn = document.createElement('input');
+                radio_btn.type = "radio";
+                radio_btn.name = "module_choice";
+                radio_btn.value = map_informations.pc_npc[ship_i].ship.modules[module_i]["id"];
+                radio_btn.classList.add('hidden');
+
                 if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
 
-                    module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
-                    module_item_content.append(module_item_p);
-                    console.log(map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"])
                     if ("damage_type" in map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]) {
+
                         let damage_type_span = document.createElement('span');
                         let damage_type_small = document.createElement('small');
                         let damage_type_small_value = document.createElement('small');
@@ -989,67 +1017,101 @@ function create_pc_npc_modal(id, data) {
                         let range_span = document.createElement('span');
                         let range_small = document.createElement('small');
                         let range_small_value = document.createElement('small');
+                        let range_finder_span = document.createElement('span');
+                        let chance_to_hit_span = document.createElement('span');
+                        let chance_to_hit_small = document.createElement('small');
+                        let chance_to_hit_small_value = document.createElement('small');
+                        let damage_type_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
+                        let min_range_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_range"];
+                        let max_range_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_range"];
+                        let min_damage_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
+                        let max_damage_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
 
                         damage_type_small.textContent = "Damage type : ";
-                        damage_type_small_value.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
-                        damage_type_small.classList.add('text-white', 'italic');
-                        damage_type_small_value.classList.add('text-emerald-400', 'font-bold');
+                        damage_type_small_value.textContent = damage_type_value;
+                        damage_type_small_value.classList.add('text-blue-500', 'font-bold');
                         damage_type_span.append(damage_type_small);
                         damage_type_span.append(damage_type_small_value);
 
                         damage_small.textContent = "Damages : ";
-                        damage_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_damage"]} - ${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_damage"]}`;
-                        damage_small.classList.add('text-white', 'italic');
-                        damage_small_value.classList.add('text-emerald-400', 'font-bold');
+                        damage_small_value.textContent = `${min_damage_value} - ${max_damage_value}`;
+                        damage_small_value.classList.add('text-blue-500', 'font-bold');
                         damage_span.append(damage_small);
                         damage_span.append(damage_small_value);
 
                         range_small.textContent = "Range : ";
-                        range_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_range"]} - ${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_range"]}`;
-                        range_small.classList.add('text-white', 'italic');
-                        range_small_value.classList.add('text-emerald-400', 'font-bold');
+                        range_small_value.textContent = `${min_range_value} - ${max_range_value}`;
+                        range_small_value.classList.add('text-blue-500', 'font-bold');
                         range_span.append(range_small);
                         range_span.append(range_small_value);
 
+                        chance_to_hit_small.textContent = "Chance to hit : ";
+                        chance_to_hit_small_value.textContent = "100%";
+                        chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold');
+                        chance_to_hit_span.append(chance_to_hit_small);
+                        chance_to_hit_span.append(chance_to_hit_small_value);
+
+                        range_finder_span.textContent = "Your target is out of range";
+                        range_finder_span.classList.add('text-red-600', 'animate-pulse');
+                        let user_id = `${map_informations.pc_npc[ship_i].user.coordinates.coord_y}_${map_informations.pc_npc[ship_i].user.coordinates.coord_x}`;
+                        /*
+                        console.log("this_ship_id: " + this_ship_id)
+                        console.log("user_id: " + user_id);
+                        let target_at_range = set_range_finding(this_ship_id, user_id, min_range_value, max_range_value)
+                        console.log("target_at_range: " + target_at_range);
+                        if (target_at_range === false) {
+                            range_finder_span.classList.add('hidden');
+                        }
+                        */
+                        module_item_content.append(radio_btn);
                         module_item_content.append(damage_type_span);
                         module_item_content.append(damage_span);
                         module_item_content.append(range_span);
+                        module_item_content.append(chance_to_hit_span);
+                        module_item_content.append(range_finder_span);
+
                     } else {
+
                         let other_bonus_span = document.createElement('span');
                         let other_bonus_small = document.createElement('small');
                         let other_bonus_small_value = document.createElement('small');
 
                         other_bonus_small.textContent = "accuracy bonus : ";
                         other_bonus_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["aiming_increase"]} %`;
-                        other_bonus_small.classList.add('text-white', 'italic');
-                        other_bonus_small_value.classList.add('text-emerald-400', 'font-bold');
+                        other_bonus_small_value.classList.add('text-blue-500', 'font-bold', 'font-shadow');
+
+                        module_item_content.append(radio_btn);
                         other_bonus_span.append(other_bonus_small);
                         other_bonus_span.append(other_bonus_small_value);
+
                         module_item_content.append(other_bonus_span);
 
                     }
+
                     ship_offensive_module_container_cat_1_div.append(module_item_content);
 
                 } else if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
 
                     module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
-                    module_item_small = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"];
+                    module_item_p.classList.add('font-bold');
                     module_item_content.append(module_item_p);
+
                     for (const [key, value] of Object.entries(map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"])) {
-                        let module_item_text_span = document.createElement('span');
-                        module_item_text_span.classList.add('flex', 'flex-row');
+                        let module_item_small_effect = document.createElement('span');
                         let module_item_small_effect_name = document.createElement('small');
                         let module_item_small_effect_value = document.createElement('small');
-                        module_item_small_effect_name.classList.add('text-white', 'italic');
-                        module_item_small_effect_value.classList.add('text-emerald-400', 'font-bold');
+                        module_item_small_effect_name.classList.add('italic');
+                        module_item_small_effect_value.classList.add('text-blue-500', 'font-bold');
                         module_item_small_effect_name.textContent = `${key.replace('_',' ')}: `;
                         module_item_small_effect_value.textContent = `${value}`;
 
-                        module_item_content.append(module_item_small_effect_name);
-                        module_item_content.append(module_item_small_effect_value);
+                        module_item_content.append(radio_btn);
+                        module_item_small_effect.append(module_item_small_effect_name);
+                        module_item_small_effect.append(module_item_small_effect_value);
+                        module_item_content.append(module_item_small_effect);
                     }
-                    new_electronicWarfare_module_div.append(module_item_content)
-                    ship_offensive_module_container_cat_2_div.append(new_electronicWarfare_module_div);
+
+                    ship_offensive_module_container_cat_2_div.append(module_item_content);
 
                 }
             }
@@ -1128,6 +1190,57 @@ function set_pathfinding_event() {
     }
 }
 
+function check_radio_btn_and_swap_color(id, module_id) {
+    let element = document.querySelector('#' + id);
+    let module_list = element.querySelectorAll('.module-container');
+    for (let i = 0; i < module_list.length; i++) {
+        let radio_btn = module_list[i].querySelector('input[type=radio]');
+        if (module_list[i].id == module_id) {
+            radio_btn.checked = true;
+            module_list[i].classList.remove(
+                'hover:border-gray-800',
+                'border-slate-400',
+                'hover:bg-slate-300',
+                'bg-gray-800',
+                'text-white',
+                'hover:text-gray-800',
+                'hover:animate-pulse',
+                'divide-white',
+                'hover:divide-gray-800',
+            )
+            module_list[i].classList.add(
+                'border-gray-800',
+                'bg-slate-300',
+                'text-gray-800',
+                'divide-gray-800',
+            )
+        } else {
+            radio_btn.checked = false;
+            module_list[i].classList.remove(
+                'border-gray-800',
+                'hover:border-slate-400',
+                'bg-slate-300',
+                'hover:bg-gray-800',
+                'text-gray-800',
+                'hover:text-white',
+                'divide-gray-800',
+            )
+            module_list[i].classList.add(
+                'hover:border-gray-800',
+                'border-slate-400',
+                'hover:bg-slate-300',
+                'bg-gray-800',
+                'text-white',
+                'hover:text-gray-800',
+                'hover:animate-pulse',
+                'divide-white',
+                'hover:divide-gray-800',
+            )
+
+        }
+    }
+}
+
 let display_attack_options = function(e_id, element) {
     let parent_el = document.querySelector('#' + e_id);
     let id_nb = element;
@@ -1163,15 +1276,15 @@ function set_range_finding(target_id, player_id, min_range, max_range) {
 
     let can_be_attacked = false;
 
-    if (target_y > player_y || target_x > player_x) {
+    if (target_y >= player_y || target_x >= player_x) {
 
-        if ((target_y - player_y) >= min_range && (target_y - player_y) <= max_range) { can_be_attacked = true; }
-        if ((target_x - player_x) >= min_range && (target_x - player_x) <= max_range) { can_be_attacked = true; }
+        if ((target_y - player_y) >= min_range && (target_y - player_y) <= max_range) { check_correct_coord = true; }
+        if ((target_x - player_x) >= min_range && (target_x - player_x) <= max_range) { check_correct_coord = true; }
 
     } else {
 
-        if ((player_y - target_y) >= min_range && (player_y - target_y) <= max_range) { can_be_attacked = true; }
-        if ((player_x - target_x) >= min_range && (player_x - target_x) <= max_range) { can_be_attacked = true; }
+        if ((player_y - target_y) >= min_range && (player_y - target_y) <= max_range) { check_correct_coord = true; }
+        if ((player_x - target_x) >= min_range && (player_x - target_x) <= max_range) { check_correct_coord = true; }
     }
 
     return can_be_attacked;

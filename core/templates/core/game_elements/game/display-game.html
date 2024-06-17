@@ -9,9 +9,9 @@
                 <tbody>
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
-                        <td id="0_0" class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs ">0:0</td>
+                        <td id="0_0" class="text-center bg-gray-800/40 text-emerald-300 font-shadow font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs ">0:0</td>
                         {% for col in map_size_range.cols %}
-                            <td id="X_{{ col }}" class="text-center bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs">{{ col }}</td>
+                            <td id="X_{{ col }}" class="text-center font-shadow bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs">{{ col }}</td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
