@@ -630,8 +630,8 @@ function create_pc_npc_modal(id, data, this_ship_id) {
         'h-full',
         'md:inset-0',
         'backdrop-blur-sm',
+        'bg-black/20',
         'border-1',
-        'bg-black/20'
     );
 
 
@@ -755,6 +755,11 @@ function create_pc_npc_modal(id, data, this_ship_id) {
     let item_action_container_img_repaire_container = document.createElement('div');
     item_action_container_img_repaire_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
 
+
+    let item_action_container_img_attack_btn_container = document.createElement('div');
+    item_action_container_img_attack_btn_container.id = "action-btn";
+    item_action_container_img_attack_btn_container.classList.add('w-full', 'hidden');
+
     let item_action_container_img_scan = document.createElement('img');
     item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
     item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
@@ -803,6 +808,14 @@ function create_pc_npc_modal(id, data, this_ship_id) {
     let item_action_container_img_repaire_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_repaire_figcaption_ap.textContent = "0 AP";
     item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+
+    let item_action_container_img_attack_btn_img = document.createElement('img');
+    item_action_container_img_attack_btn_img.src = '/static/img/ux/target_icon.svg';
+    item_action_container_img_attack_btn_img.classList.add('cursor-pointer', 'flex', 'inline-block', 'mx-auto', 'object-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+    item_action_container_img_attack_btn_img.addEventListener('click', function() {
+        check_radio_btn_and_swap_color(e.id, module_item_content.id);
+    })
+
 
     item_action_container_img_scan_container.append(item_action_container_img_scan);
     item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
@@ -995,7 +1008,7 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                 module_item_content.classList.add('module-container')
                 module_item_content.id = `module-${map_informations.pc_npc[ship_i].ship.modules[module_i]["id"]}`;
                 module_item_content.addEventListener('click', function() {
-                    check_radio_btn_and_swap_color(e.id, module_item_content.id)
+                    check_radio_btn_and_swap_color(e.id, module_item_content.id);
                 })
 
                 let radio_btn = document.createElement('input');
@@ -1054,15 +1067,10 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
                         let user_id = `${map_informations.pc_npc[ship_i].user.coordinates.coord_y}_${map_informations.pc_npc[ship_i].user.coordinates.coord_x}`;
-                        /*
                         console.log("this_ship_id: " + this_ship_id)
                         console.log("user_id: " + user_id);
-                        let target_at_range = set_range_finding(this_ship_id, user_id, min_range_value, max_range_value)
-                        console.log("target_at_range: " + target_at_range);
-                        if (target_at_range === false) {
-                            range_finder_span.classList.add('hidden');
-                        }
-                        */
+                        set_range_finding(this_ship_id, user_id, min_range_value, max_range_value)
+                        console.log("_________")
                         module_item_content.append(radio_btn);
                         module_item_content.append(damage_type_span);
                         module_item_content.append(damage_span);
@@ -1078,7 +1086,7 @@ function create_pc_npc_modal(id, data, this_ship_id) {
 
                         other_bonus_small.textContent = "accuracy bonus : ";
                         other_bonus_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["aiming_increase"]} %`;
-                        other_bonus_small_value.classList.add('text-blue-500', 'font-bold', 'font-shadow');
+                        other_bonus_small_value.classList.add('text-blue-500', 'font-bold');
 
                         module_item_content.append(radio_btn);
                         other_bonus_span.append(other_bonus_small);
@@ -1115,6 +1123,8 @@ function create_pc_npc_modal(id, data, this_ship_id) {
 
                 }
             }
+
+            item_action_container_img_attack_btn_container.append(item_action_container_img_attack_btn_img);
         }
     }
 
@@ -1133,6 +1143,7 @@ function create_pc_npc_modal(id, data, this_ship_id) {
     ship_offensive_module_container.append(ship_offensive_module_container_cat_1_div);
     ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_2);
     ship_offensive_module_container.append(ship_offensive_module_container_cat_2_div);
+    ship_offensive_module_container.append(item_action_container_img_attack_btn_container);
 
     footer_container_div.append(footer_close_button);
 
@@ -1193,6 +1204,9 @@ function set_pathfinding_event() {
 function check_radio_btn_and_swap_color(id, module_id) {
     let element = document.querySelector('#' + id);
     let module_list = element.querySelectorAll('.module-container');
+    let action_btn = element.querySelector('#action-btn');
+    action_btn.classList.remove('hidden');
+
     for (let i = 0; i < module_list.length; i++) {
         let radio_btn = module_list[i].querySelector('input[type=radio]');
         if (module_list[i].id == module_id) {
@@ -1276,16 +1290,45 @@ function set_range_finding(target_id, player_id, min_range, max_range) {
 
     let can_be_attacked = false;
 
-    if (target_y >= player_y || target_x >= player_x) {
+    let start_y = ((player_y - min_range) - max_range) > 0 ? ((player_y - min_range) - max_range) : 0;
+    console.log(player_y, player_y - min_range)
+    console.log(start_y)
+    let end_y = ((player_y + min_range) + max_range) < atlas.row ? ((player_y + min_range) + max_range) : atlas.row - 1;
+    console.log(end_y)
+    let start_x = ((player_x - min_range) - max_range) > 0 ? ((player_x - min_range) - max_range) : 1;
+    console.log(start_x)
+    let end_x = ((player_x + min_range) + max_range) < atlas.col ? ((player_x + min_range) + max_range) : atlas.col - 1;
+    console.log(end_x)
 
-        if ((target_y - player_y) >= min_range && (target_y - player_y) <= max_range) { check_correct_coord = true; }
-        if ((target_x - player_x) >= min_range && (target_x - player_x) <= max_range) { check_correct_coord = true; }
+    let ship = document.getElementById(player_id);
+    let ship_size_x = ship.getAttribute('size_x');
+    let ship_size_y = ship.getAttribute('size_y');
+    let ship_gap_x = 0;
+    let ship_gap_y = 0;
 
+    if (ship_size_x == 3 && ship_size_y == 3) {
+        ship_gap_x = 1;
+        ship_gap_y = 1;
+    } else if (ship_size_x == 3 && ship_size_y == 1 || ship_size_x == 2 && ship_size_y == 1) {
+        ship_gap_x = 1;
+        ship_gap_y = 0;
     } else {
-
-        if ((player_y - target_y) >= min_range && (player_y - target_y) <= max_range) { check_correct_coord = true; }
-        if ((player_x - target_x) >= min_range && (player_x - target_x) <= max_range) { check_correct_coord = true; }
+        ship_gap_x = 0;
+        ship_gap_y = 0;
     }
+
+    let array = [];
+    for (let coord_y = start_y; coord_y < end_y; coord_y++) {
+        for (let coord_x = start_x; coord_x < end_x; coord_x++) {
+            let ok = document.getElementById(`${coord_y}_${coord_x}`)
+            if (!ok.classList.contains('player-ship-pos')) {
+                let ok_d = ok.querySelector('div')
+                ok_d.classList.add('bg-red-500')
+            }
+        }
+    }
+
+    console.log(array)
 
     return can_be_attacked;
 }
@@ -1334,6 +1377,9 @@ window.addEventListener('load', () => {
             case "async_reverse_ship":
                 reverse_ship(data.message)
                 break;
+            case "player_attack":
+                update_ship_after_attack(data.message)
+                break;
             case "send_message":
                 //sendMessage(data);
                 break;
@@ -1346,7 +1392,6 @@ window.addEventListener('load', () => {
     };
 
 });
-
 
 window.addEventListener('DOMContentLoaded', () => {
     update_target_coord_display();
