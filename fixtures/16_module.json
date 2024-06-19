@@ -1393,8 +1393,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 1,
                 "max_damage": 10,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1411,8 +1410,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 5,
                 "max_damage": 15,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1429,8 +1427,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 10,
                 "max_damage": 20,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1447,8 +1444,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 15,
                 "max_damage": 25,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1465,8 +1461,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 20,
                 "max_damage": 30,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1483,8 +1478,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 25,
                 "max_damage": 35,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1501,8 +1495,7 @@
                 "damage_type": "ballistic",
                 "min_damage": 30,
                 "max_damage": 40,
-                "min_range": 1,
-                "max_range": 3
+                "range": 3
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1519,8 +1512,7 @@
                 "damage_type": "thermal",
                 "min_damage": 4,
                 "max_damage": 4,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1537,8 +1529,7 @@
                 "damage_type": "thermal",
                 "min_damage": 8,
                 "max_damage": 8,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1555,8 +1546,7 @@
                 "damage_type": "thermal",
                 "min_damage": 12,
                 "max_damage": 12,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1573,8 +1563,7 @@
                 "damage_type": "thermal",
                 "min_damage": 16,
                 "max_damage": 16,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1591,8 +1580,7 @@
                 "damage_type": "thermal",
                 "min_damage": 20,
                 "max_damage": 20,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1609,8 +1597,7 @@
                 "damage_type": "thermal",
                 "min_damage": 24,
                 "max_damage": 24,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1627,8 +1614,7 @@
                 "damage_type": "thermal",
                 "min_damage": 28,
                 "max_damage": 28,
-                "min_range": 3,
-                "max_range": 10
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1645,8 +1631,7 @@
                 "damage_type": "missile",
                 "min_damage": 5,
                 "max_damage": 15,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1663,8 +1648,7 @@
                 "damage_type": "missile",
                 "min_damage": 5,
                 "max_damage": 25,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1681,8 +1665,7 @@
                 "damage_type": "missile",
                 "min_damage": 10,
                 "max_damage": 35,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1699,8 +1682,7 @@
                 "damage_type": "missile",
                 "min_damage": 10,
                 "max_damage": 45,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1717,8 +1699,7 @@
                 "damage_type": "missile",
                 "min_damage": 15,
                 "max_damage": 55,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1735,8 +1716,7 @@
                 "damage_type": "missile",
                 "min_damage": 15,
                 "max_damage": 65,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1753,8 +1733,7 @@
                 "damage_type": "missile",
                 "min_damage": 20,
                 "max_damage": 75,
-                "min_range": 1,
-                "max_range": 6
+                "range": 6
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"

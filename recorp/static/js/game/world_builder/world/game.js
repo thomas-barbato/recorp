@@ -190,6 +190,8 @@ function add_pc_npc(data) {
                 let space_ship_reversed = document.createElement('div');
 
                 entry_point.classList.add('uncrossable');
+                entry_point.setAttribute('size_x', ship_size_x);
+                entry_point.setAttribute('size_y', ship_size_y);
                 entry_point_border.classList.add('border-dashed', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_npc_${data[i].user.player}`);
@@ -211,8 +213,6 @@ function add_pc_npc(data) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x - 1, data[i]["user"]["coordinates"].coord_y - 1);
                     border_color = "border-green-300";
                     entry_point.classList.add("player-ship-pos");
-                    entry_point.setAttribute('size_x', ship_size_x);
-                    entry_point.setAttribute('size_y', ship_size_y);
                     entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                     entry_point.setAttribute('touchstart', 'reverse_player_ship_display()');
                     /* Check ship_size and set player-start-pos in the middle */
@@ -1020,7 +1020,6 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                 if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
 
                     if ("damage_type" in map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]) {
-
                         let damage_type_span = document.createElement('span');
                         let damage_type_small = document.createElement('small');
                         let damage_type_small_value = document.createElement('small');
@@ -1035,10 +1034,12 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                         let chance_to_hit_small = document.createElement('small');
                         let chance_to_hit_small_value = document.createElement('small');
                         let damage_type_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
-                        let min_range_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_range"];
-                        let max_range_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_range"];
+                        let range_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["range"];
                         let min_damage_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
                         let max_damage_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
+                        let user_id = `${map_informations.pc_npc[ship_i].user.coordinates.coord_y-1}_${map_informations.pc_npc[ship_i].user.coordinates.coord_x-1}`;
+                        let ship_size_y = map_informations.pc_npc[ship_i].ship.size.size_y;
+                        let ship_size_x = map_informations.pc_npc[ship_i].ship.size.size_x;
 
                         damage_type_small.textContent = "Damage type : ";
                         damage_type_small_value.textContent = damage_type_value;
@@ -1053,7 +1054,7 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                         damage_span.append(damage_small_value);
 
                         range_small.textContent = "Range : ";
-                        range_small_value.textContent = `${min_range_value} - ${max_range_value}`;
+                        range_small_value.textContent = `${range_value}`;
                         range_small_value.classList.add('text-blue-500', 'font-bold');
                         range_span.append(range_small);
                         range_span.append(range_small_value);
@@ -1066,11 +1067,9 @@ function create_pc_npc_modal(id, data, this_ship_id) {
 
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                        let user_id = `${map_informations.pc_npc[ship_i].user.coordinates.coord_y}_${map_informations.pc_npc[ship_i].user.coordinates.coord_x}`;
-                        console.log("this_ship_id: " + this_ship_id)
-                        console.log("user_id: " + user_id);
-                        set_range_finding(this_ship_id, user_id, min_range_value, max_range_value)
-                        console.log("_________")
+
+                        set_range_finding(this_ship_id, user_id, range_value, ship_size_y, ship_size_x)
+
                         module_item_content.append(radio_btn);
                         module_item_content.append(damage_type_span);
                         module_item_content.append(damage_span);
@@ -1279,7 +1278,7 @@ let display_attack_options = function(e_id, element) {
     }
 }
 
-function set_range_finding(target_id, player_id, min_range, max_range) {
+function set_range_finding(target_id, player_id, max_range, ship_size_y, ship_size_x) {
     let target = target_id.split('_');
     let player = player_id.split('_');
 
@@ -1287,22 +1286,7 @@ function set_range_finding(target_id, player_id, min_range, max_range) {
     let player_y = parseInt(player[0]);
     let target_x = parseInt(target[1]);
     let player_x = parseInt(player[1]);
-
     let can_be_attacked = false;
-
-    let start_y = ((player_y - min_range) - max_range) > 0 ? ((player_y - min_range) - max_range) : 0;
-    console.log(player_y, player_y - min_range)
-    console.log(start_y)
-    let end_y = ((player_y + min_range) + max_range) < atlas.row ? ((player_y + min_range) + max_range) : atlas.row - 1;
-    console.log(end_y)
-    let start_x = ((player_x - min_range) - max_range) > 0 ? ((player_x - min_range) - max_range) : 1;
-    console.log(start_x)
-    let end_x = ((player_x + min_range) + max_range) < atlas.col ? ((player_x + min_range) + max_range) : atlas.col - 1;
-    console.log(end_x)
-
-    let ship = document.getElementById(player_id);
-    let ship_size_x = ship.getAttribute('size_x');
-    let ship_size_y = ship.getAttribute('size_y');
     let ship_gap_x = 0;
     let ship_gap_y = 0;
 
@@ -1312,24 +1296,41 @@ function set_range_finding(target_id, player_id, min_range, max_range) {
     } else if (ship_size_x == 3 && ship_size_y == 1 || ship_size_x == 2 && ship_size_y == 1) {
         ship_gap_x = 1;
         ship_gap_y = 0;
-    } else {
-        ship_gap_x = 0;
-        ship_gap_y = 0;
     }
+
+    let start_y = ((player_y - ship_gap_x) - (max_range / 2)) > 0 ? ((player_y - ship_gap_x) - (max_range / 2)) : 0;
+    let end_y = ((player_y + ship_gap_x) + (max_range / 2)) < atlas.row ? ((player_y + ship_gap_x) + (max_range / 2)) : atlas.row;
+    let start_x = ((player_x - ship_gap_y) - (max_range / 2)) > 0 ? ((player_x - ship_gap_y) - (max_range / 2)) : 0;
+    let end_x = ((player_x + ship_gap_x) + (max_range / 2)) < atlas.col ? ((player_x + ship_gap_x) + (max_range / 2)) : atlas.col;
+
+    let py_start = player_y - ship_size_y;
+    let py_end = player_y + ship_size_y;
+    let px_start = player_x - ship_size_x;
+    let px_end = player_x + ship_size_x;
+
+    let player_non_detection_array = [];
+    for (let y = py_start; y < py_end; y++) {
+        for (let x = px_start; x < px_end; x++) {
+            player_non_detection_array.push(`${y}_${x}`)
+        }
+    }
+
+    console.log(player_non_detection_array)
 
     let array = [];
     for (let coord_y = start_y; coord_y < end_y; coord_y++) {
         for (let coord_x = start_x; coord_x < end_x; coord_x++) {
-            let ok = document.getElementById(`${coord_y}_${coord_x}`)
-            if (!ok.classList.contains('player-ship-pos')) {
+            let coord = `${coord_y}_${coord_x}`;
+            if (!player_non_detection_array.includes(coord)) {
+                let ok = document.getElementById(`${coord_y}_${coord_x}`)
                 let ok_d = ok.querySelector('div')
-                ok_d.classList.add('bg-red-500')
+                if (ok_d) {
+
+                    ok_d.classList.add('bg-red-500')
+                }
             }
         }
     }
-
-    console.log(array)
-
     return can_be_attacked;
 }
 
