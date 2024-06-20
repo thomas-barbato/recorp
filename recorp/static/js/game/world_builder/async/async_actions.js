@@ -15,7 +15,6 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
-    console.log(data)
     let player_name = data["player"];
     let target_user_id = data["player_user_id"];
     let start_pos_array = data["start_id_array"];
@@ -54,8 +53,8 @@ function update_player_coord(data) {
             entry_point.removeAttribute('size_y');
 
             hide_sector_overflow(
-                current_player.start_x - 1,
-                current_player.start_y - 1,
+                current_player.start_x,
+                current_player.start_y,
             )
         }
 

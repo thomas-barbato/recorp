@@ -174,7 +174,7 @@ function add_pc_npc(data) {
                 },
             }
 
-            let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data, `${coord_y}_${coord_x}`);
+            let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x);
             document.querySelector('#modal-container').append(modal);
         }
 
@@ -610,7 +610,7 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function create_pc_npc_modal(id, data, this_ship_id) {
+function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -887,7 +887,6 @@ function create_pc_npc_modal(id, data, this_ship_id) {
 
     let ship_offensive_module_container = document.createElement('div');
     ship_offensive_module_container.classList.add('mt-5', 'hidden');
-    ship_offensive_module_container.setAttribute("data-accordion", "collapse");
     ship_offensive_module_container.id = "accordion-collapse";
 
     let ship_offensive_module_container_h3_cat_1 = document.createElement('h3');
@@ -980,6 +979,7 @@ function create_pc_npc_modal(id, data, this_ship_id) {
 
                 let module_item_content = document.createElement('div');
                 let module_item_p = document.createElement('p');
+
                 module_item_content.classList.add(
                     'flex',
                     'flex-col',
@@ -1000,7 +1000,6 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                     'divide-dashed',
                     'divide-white',
                     'hover:divide-gray-800',
-
                 );
                 module_item_p.classList.add('font-bold');
                 module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
@@ -1068,7 +1067,10 @@ function create_pc_npc_modal(id, data, this_ship_id) {
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
 
-                        set_range_finding(this_ship_id, user_id, range_value, ship_size_y, ship_size_x)
+                        let target_in_range = set_range_finding(this_ship_id, user_id, range_value, ship_size_y, ship_size_x, other_ship_size_y, other_ship_size_x);
+                        if (target_in_range) {
+                            range_finder_span.classList.add('hidden');
+                        }
 
                         module_item_content.append(radio_btn);
                         module_item_content.append(damage_type_span);
@@ -1278,61 +1280,72 @@ let display_attack_options = function(e_id, element) {
     }
 }
 
-function set_range_finding(target_id, player_id, max_range, ship_size_y, ship_size_x) {
-    let target = target_id.split('_');
+function set_range_finding(target_id, player_id, max_range, ship_size_y, ship_size_x, other_ship_size_y, other_ship_size_x) {
     let player = player_id.split('_');
+    let target = target_id.split('_');
 
-    let target_y = parseInt(target[0]);
     let player_y = parseInt(player[0]);
-    let target_x = parseInt(target[1]);
     let player_x = parseInt(player[1]);
+    let target_y = parseInt(target[0]);
+    let target_x = parseInt(target[1]);
     let can_be_attacked = false;
-    let ship_gap_x = 0;
-    let ship_gap_y = 0;
+    let ship_gap_x_right = 1;
+    let ship_gap_x_left = 1;
+    let ship_gap_y_top = 1;
+    let ship_gap_y_bottom = 1;
+    let other_ship_start_x = 0;
+    let other_ship_end_x = 0;
+    let other_ship_start_y = 0;
+    let other_ship_end_y = 0;
 
     if (ship_size_x == 3 && ship_size_y == 3) {
-        ship_gap_x = 1;
-        ship_gap_y = 1;
-    } else if (ship_size_x == 3 && ship_size_y == 1 || ship_size_x == 2 && ship_size_y == 1) {
-        ship_gap_x = 1;
-        ship_gap_y = 0;
+        ship_gap_x_right = 3;
+        ship_gap_y_bottom = 3;
+    } else if (ship_size_x == 3 && ship_size_y == 1) {
+        ship_gap_x_right = 3;
+    } else if (ship_size_x == 2 && ship_size_y == 1) {
+        ship_gap_x_right = 2;
     }
 
-    let start_y = ((player_y - ship_gap_x) - (max_range / 2)) > 0 ? ((player_y - ship_gap_x) - (max_range / 2)) : 0;
-    let end_y = ((player_y + ship_gap_x) + (max_range / 2)) < atlas.row ? ((player_y + ship_gap_x) + (max_range / 2)) : atlas.row;
-    let start_x = ((player_x - ship_gap_y) - (max_range / 2)) > 0 ? ((player_x - ship_gap_y) - (max_range / 2)) : 0;
-    let end_x = ((player_x + ship_gap_x) + (max_range / 2)) < atlas.col ? ((player_x + ship_gap_x) + (max_range / 2)) : atlas.col;
+    let target_zone = []
 
-    let py_start = player_y - ship_size_y;
-    let py_end = player_y + ship_size_y;
-    let px_start = player_x - ship_size_x;
-    let px_end = player_x + ship_size_x;
-
-    let player_non_detection_array = [];
-    for (let y = py_start; y < py_end; y++) {
-        for (let x = px_start; x < px_end; x++) {
-            player_non_detection_array.push(`${y}_${x}`)
+    if (other_ship_size_y == 1 && other_ship_size_x == 1) {
+        target_zone.push(`${target_y}_${target_x}`)
+    } else {
+        if (other_ship_size_x == 3 && other_ship_size_y == 3) {
+            other_ship_end_x = 3;
+            other_ship_end_y = 3;
+        } else if (other_ship_size_x == 3 && other_ship_size_y == 1) {
+            other_ship_end_x = 3;
+            other_ship_end_y = 1;
+        } else if (other_ship_size_x == 2 && other_ship_size_y == 1) {
+            other_ship_end_x = 2;
+            other_ship_end_y = 1;
+        }
+        for (let y = (target_y - other_ship_start_y); y < (target_y + other_ship_end_y); y++) {
+            for (let x = (target_x - other_ship_start_x); x < (target_x + other_ship_end_x); x++) {
+                target_zone.push(`${y}_${x}`)
+            }
         }
     }
 
-    console.log(player_non_detection_array)
+    let start_y = (player_y - max_range - ship_gap_y_top) + 1 > 0 ? (player_y - max_range - ship_gap_y_top) + 1 : 0;
+    let end_y = (player_y + max_range + ship_gap_y_bottom) < atlas.row ? (player_y + max_range + ship_gap_y_bottom) : atlas.row;
+    let start_x = (player_x - max_range - ship_gap_x_left) + 1 > 0 ? (player_x - max_range - ship_gap_x_left) + 1 : 0;
+    let end_x = (player_x + max_range + ship_gap_x_right) < atlas.col ? (player_x + max_range + ship_gap_x_right) : atlas.col;
 
-    let array = [];
-    for (let coord_y = start_y; coord_y < end_y; coord_y++) {
-        for (let coord_x = start_x; coord_x < end_x; coord_x++) {
-            let coord = `${coord_y}_${coord_x}`;
-            if (!player_non_detection_array.includes(coord)) {
-                let ok = document.getElementById(`${coord_y}_${coord_x}`)
-                let ok_d = ok.querySelector('div')
-                if (ok_d) {
-
-                    ok_d.classList.add('bg-red-500')
-                }
+    for (let y = start_y; y < end_y; y++) {
+        for (let x = start_x; x < end_x; x++) {
+            let coord = `${y}_${x}`;
+            if (target_zone.includes(coord)) {
+                can_be_attacked = true;
+                break;
             }
         }
     }
     return can_be_attacked;
 }
+
 
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
