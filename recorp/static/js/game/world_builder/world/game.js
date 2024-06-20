@@ -1174,7 +1174,7 @@ function open_close_modal(id) {
 
 function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-x').textContent = `x = ${x - 1}`;
-    document.querySelector('#player-coord-y').textContent = `y = ${y - 1}`;
+    document.querySelector('#player-coord-y').textContent = `y = ${y}`;
 }
 
 function update_target_coord_display() {
@@ -1187,7 +1187,7 @@ function update_target_coord_display() {
             let coord_y = document.querySelector('#target-coord-y');
             coord_name.textContent = target_name;
             coord_x.textContent = `x = ${this.cellIndex - 1}`;
-            coord_y.textContent = `y = ${this.parentNode.rowIndex}`;
+            coord_y.textContent = `y = ${this.parentNode.rowIndex - 1}`;
         })
     }
 }

@@ -53,8 +53,8 @@ function update_player_coord(data) {
             entry_point.removeAttribute('size_y');
 
             hide_sector_overflow(
-                current_player.start_x,
-                current_player.start_y,
+                current_player.start_x - 1,
+                current_player.start_y - 1,
             )
         }
 
