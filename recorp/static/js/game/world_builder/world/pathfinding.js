@@ -8,6 +8,16 @@ let current_player = new Player(
     10,
 )
 
+function set_pathfinding_event() {
+    let pf = document.querySelectorAll('.pathfinding-zone');
+    for (let i = 0; i < pf.length; i++) {
+        if (!pf[i].parentNode.parentNode.classList.contains('uncrossable')) {
+            pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
+            pf[i].setAttribute('onclick', 'display_pathfinding()');
+        }
+    }
+}
+
 function display_pathfinding() {
     let span = pathfinder_obj.player_cell;
     let player_span = span.querySelector('div>span');

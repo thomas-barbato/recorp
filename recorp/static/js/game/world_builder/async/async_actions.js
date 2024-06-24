@@ -34,7 +34,6 @@ function update_player_coord(data) {
         if (current_user_id != target_user_id) {
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
-            end_point.removeAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
             end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
         } else {
             end_point.setAttribute('onclick', 'reverse_player_ship_display()');
