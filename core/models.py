@@ -346,9 +346,9 @@ class PlayerRecipe(models.Model):
         return f"{self.player.name} : {self.recipe.name}"
 
 
-class PlayerSkillEffect(models.Model):
+class PlayerSkill(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    skill_effect = models.ForeignKey(SkillEffect, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, default=1)
     level = models.PositiveIntegerField(default=0)
     progress = models.FloatField(default=1.0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -356,7 +356,7 @@ class PlayerSkillEffect(models.Model):
 
     def __str__(self):
         return (
-            f"{self.player.name} : {self.skill_effect.skill.name}, level = {self.level}"
+            f"{self.player.name} : {self.skill.name}, level = {self.level}"
         )
 
 

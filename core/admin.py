@@ -32,7 +32,7 @@ from core.models import (
     PlayerLog,
     PlayerResource,
     PlayerRecipe,
-    PlayerSkillEffect,
+    PlayerSkill,
     PlayerResearch,
     PlayerPrivateMessage,
     PlayerShip,
@@ -555,9 +555,9 @@ class PlayerRecipeAdmin(admin.ModelAdmin):
     model = PlayerRecipe
 
 
-@admin.register(PlayerSkillEffect, site=admin_site)
-class PlayerSkillEffectAdmin(admin.ModelAdmin):
-    model = PlayerSkillEffect
+@admin.register(PlayerSkill, site=admin_site)
+class PlayerSkillAdmin(admin.ModelAdmin):
+    model = PlayerSkill
 
 
 @admin.register(PlayerResearch, site=admin_site)

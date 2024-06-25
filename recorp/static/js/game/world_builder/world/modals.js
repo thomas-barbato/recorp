@@ -402,10 +402,16 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
 
+    let ok = document.querySelector("#player-progressbar");
+
     ship_statistics_container_div.append(hp_progress_bar_container_label);
     ship_statistics_container_div.append(hp_progress_bar_container_div);
     ship_statistics_container_div.append(movement_progress_bar_container_label);
     ship_statistics_container_div.append(movement_progress_bar_container_div);
+    ok.append(hp_progress_bar_container_label);
+    ok.append(hp_progress_bar_container_div);
+    ok.append(movement_progress_bar_container_label);
+    ok.append(movement_progress_bar_container_div);
 
     let ship_action_container = document.createElement("div");
     ship_action_container.classList.add('mt-3');

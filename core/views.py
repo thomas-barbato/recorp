@@ -87,7 +87,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         elif user_agent.is_tablet:
             map_range = GetMapDataFromDB.get_resolution_sized_map("is_tablet")
             
-        context["loop"] = range(25)
+        context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(40), "rows": range(40)}
         
         context["skills"] = {

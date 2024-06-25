@@ -2,16 +2,16 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="map-background" class="lg:w-6/12 w-full order-2 2xl:h-[75vh] xl:h-[80%] flex item-center justify-center m-0 p-1 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center">
+<div id="map-background" class="lg:w-6/12 w-full 2xl:mx-0 xl:mx-2 mx-0 order-2 2xl:h-[75vh] xl:h-[80%] flex item-center justify-center 2xl:bg-[url('/static/img/ux/border-container-withbg.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center lg:mb-0 mb-1">
     <div class="flex self-center item-center">
         <div class="grid">
             <table class="tabletop-view hidden">
                 <tbody>
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
-                        <td id="0_0" class="text-center bg-gray-800/40 text-emerald-300 font-shadow font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs ">0:0</td>
+                        <td id="0_0" class="text-center 2xl:bg-gray-800/0 bg-gray-800/40 text-emerald-300 font-shadow font-bold w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs ">0:0</td>
                         {% for col in map_size_range.cols %}
-                            <td id="X_{{ col }}" class="text-center font-shadow bg-gray-800/40 text-emerald-300 font-bold border border-gray-950 border-dotted w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs">{{ col }}</td>
+                            <td id="X_{{ col }}" class="text-center font-shadow 2xl:bg-gray-800/0 bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs">{{ col }}</td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
