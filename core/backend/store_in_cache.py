@@ -128,6 +128,8 @@ class StoreInCache:
                         "image": data["image"],
                         "description": data["description"],
                         "is_npc": data["is_npc"],
+                        "current_ap": data["current_ap"],
+                        "max_ap": data["max_ap"],
                         "archetype_name": data["archetype_id__name"],
                         "archetype_data": data["archetype_id__data"],
                         "sector_name": data["sector_id__name"],

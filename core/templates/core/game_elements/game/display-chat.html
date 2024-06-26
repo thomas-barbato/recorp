@@ -1,6 +1,6 @@
 {% load static %}
 {% load i18n %}
-<div class="lg:w-3/12 w-10/12 mx-auto lg:mb-0 lg:mt-0 md:mt-2 mt-2 lg:order-3 order-5 2xl:h-[75vh] xl:h-[71vh] lg:h-[80vh] md:h-[60%] h-[40%] 2xl:bg-[url('/static/img/ux/small-container.svg')] 2xl:bg-no-repeat 2xl:bg-contain min-[2000px]:bg-center md:self-top 2xl:bg-gray-800/0 bg-gray-800/40 2xl:border border border-solid border-slate-600 2xl:border-slate-600/0">
+<div class="lg:w-3/12 w-10/12 mx-auto lg:mb-0 lg:mt-0 md:mt-2 mt-2 lg:order-3 order-5 2xl:h-[75vh] xl:h-[71vh] lg:h-[80vh] md:h-[60%] h-[40%] 2xl:bg-[url('/static/js/game/assets/ux/small-container.svg')] 2xl:bg-no-repeat 2xl:bg-contain min-[2000px]:bg-center md:self-top 2xl:bg-gray-800/0 bg-gray-800/40 2xl:border border border-solid border-slate-600 2xl:border-slate-600/0">
     <div class="min-[2000px]:h-[50%] min-[2000px]:mt-[50%] 2xl:w-[80%] 2xl:mt-[10%] lg:w-full md:mx-auto 2xl:h-[75%] xl:h-[75%] md:h-[80%] h-[80%]  text-center text-white min-[2000px]:text-xl text-sm overflow-y-scroll no-scrollbar border-content" id="chat-item-container">
     {% for i in loop %}
         <div class="flex flex-col text-wrap m-1 p-1 gap-1 font-shadow min-[2000px]:text-xl xl:text-sm text-justify ">
@@ -10,7 +10,7 @@
     {% endfor %}
     </div>
     <div class="2xl:w-[100%] 2xl:mt-2 lg:mt-5 lg:mb-2 mx-auto">
-        <textarea name="chat-area" rows="4" cols="20" maxlength="150" placeholder="{% translate 'Send a message' %}..." class="lg:w-[80%] w-[90%] p-1 mx-auto md:mb-0 mb-3 mt-2 bg-gray-50 border border-gray-800 text-white text-sm block text-white bg-gray-700 font-bold min-[2000px]:text-xl text-sm border-1 border-white no-scrollbar"></textarea>
+        <textarea name="chat-area" rows="4" cols="20" maxlength="150" placeholder="{% translate 'Send a message' %}..." class="lg:w-[80%] w-[90%] mx-auto md:mb-0 mb-3 mt-2 bg-gray-50 border border-gray-800 text-white text-sm block text-white bg-gray-700 font-bold min-[2000px]:text-xl text-sm border-1 border-white no-scrollbar"></textarea>
     </div>
     <input type="submit" id="chat-message-submit" hidden>
 </div>

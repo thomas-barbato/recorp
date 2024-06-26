@@ -2467,6 +2467,10 @@ video {
   background-color: rgb(9 9 11 / 0.7);
 }
 
+.bg-gray-600\/40 {
+  background-color: rgb(75 85 99 / 0.4);
+}
+
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -4373,8 +4377,8 @@ select {
     height: 75vh;
   }
 
-  .\32xl\:w-48 {
-    width: 12rem;
+  .\32xl\:w-24 {
+    width: 6rem;
   }
 
   .\32xl\:w-\[100\%\] {
@@ -4405,16 +4409,16 @@ select {
     background-color: rgb(31 41 55 / 0);
   }
 
-  .\32xl\:bg-\[url\(\'\/static\/img\/ux\/border-container-withbg\.svg\'\)\] {
-    background-image: url('/static/img/ux/border-container-withbg.svg');
+  .\32xl\:bg-\[url\(\'\/static\/js\/game\/assets\/ux\/border-container-withbg\.svg\'\)\] {
+    background-image: url('/static/js/game/assets/ux/border-container-withbg.svg');
   }
 
-  .\32xl\:bg-\[url\(\'\/static\/img\/ux\/small-container-2\.svg\'\)\] {
-    background-image: url('/static/img/ux/small-container-2.svg');
+  .\32xl\:bg-\[url\(\'\/static\/js\/game\/assets\/ux\/small-container-2\.svg\'\)\] {
+    background-image: url('/static/js/game/assets/ux/small-container-2.svg');
   }
 
-  .\32xl\:bg-\[url\(\'\/static\/img\/ux\/small-container\.svg\'\)\] {
-    background-image: url('/static/img/ux/small-container.svg');
+  .\32xl\:bg-\[url\(\'\/static\/js\/game\/assets\/ux\/small-container\.svg\'\)\] {
+    background-image: url('/static/js/game/assets/ux/small-container.svg');
   }
 
   .\32xl\:bg-contain {

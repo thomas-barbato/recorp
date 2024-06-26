@@ -45,7 +45,7 @@ function create_foreground_modal(id, data) {
     header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-white', 'p-1', 'flex', 'w-[95%]', 'justify-center');
     header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
 
-    let close_button_url = '/static/img/ux/close.svg';
+    let close_button_url = '/static/js/game/assets/ux/close.svg';
 
     let header_close_button = document.createElement("img");
     header_close_button.src = close_button_url;
@@ -132,7 +132,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_gather_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
 
         let item_action_container_img_scan = document.createElement('img');
-        item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
+        item_action_container_img_scan.src = '/static/js/game/assets/ux/scan_resource_icon.svg';
         item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_scan_figcaption = document.createElement('figcaption');
@@ -144,7 +144,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'md:text-sm');
 
         let item_action_container_img_gather = document.createElement('img');
-        item_action_container_img_gather.src = '/static/img/ux/gather_icon.svg';
+        item_action_container_img_gather.src = '/static/js/game/assets/ux/gather_icon.svg';
         item_action_container_img_gather.classList.add('cursor-pointer', 'flex', 'justify-center', 'hover:animate-pulse');
 
         let item_action_container_img_gather_figcaption = document.createElement('figcaption');
@@ -209,7 +209,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_invade_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
 
         let item_action_container_setNewStartLoc_img = document.createElement('img');
-        item_action_container_setNewStartLoc_img.src = '/static/img/ux/new_location.svg';
+        item_action_container_setNewStartLoc_img.src = '/static/js/game/assets/ux/new_location.svg';
         item_action_container_setNewStartLoc_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_setNewStartLoc_figcaption = document.createElement('figcaption');
@@ -217,7 +217,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_joinFaction_img = document.createElement('img');
-        item_action_container_joinFaction_img.src = '/static/img/ux/join_faction.svg';
+        item_action_container_joinFaction_img.src = '/static/js/game/assets/ux/join_faction.svg';
         item_action_container_joinFaction_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_joinFaction_figcaption = document.createElement('figcaption');
@@ -225,7 +225,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_opendock_img = document.createElement('img');
-        item_action_container_opendock_img.src = '/static/img/ux/dock.svg';
+        item_action_container_opendock_img.src = '/static/js/game/assets/ux/dock.svg';
         item_action_container_opendock_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_opendock_figcaption = document.createElement('figcaption');
@@ -233,7 +233,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_opendock_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_openmarket_img = document.createElement('img');
-        item_action_container_openmarket_img.src = '/static/img/ux/market.svg';
+        item_action_container_openmarket_img.src = '/static/js/game/assets/ux/market.svg';
         item_action_container_openmarket_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_openmarket_figcaption = document.createElement('figcaption');
@@ -241,7 +241,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_openmarket_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_gettask_img = document.createElement('img');
-        item_action_container_gettask_img.src = '/static/img/ux/task.svg';
+        item_action_container_gettask_img.src = '/static/js/game/assets/ux/task.svg';
         item_action_container_gettask_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_gettask_figcaption = document.createElement('figcaption');
@@ -249,7 +249,7 @@ function create_foreground_modal(id, data) {
         item_action_container_img_gettask_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
         let item_action_container_invade_img = document.createElement('img');
-        item_action_container_invade_img.src = '/static/img/ux/invade.svg';
+        item_action_container_invade_img.src = '/static/js/game/assets/ux/invade.svg';
         item_action_container_invade_img.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_invade_figcaption = document.createElement('figcaption');
@@ -346,7 +346,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
-    let close_button_url = '/static/img/ux/close.svg';
+    let close_button_url = '/static/js/game/assets/ux/close.svg';
 
     let header_close_button = document.createElement("img");
     header_close_button.src = close_button_url;
@@ -375,6 +375,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let hp_progress_bar_container_text = document.createElement('span');
     let hp_progress_bar_container_label = document.createElement('label');
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
+
     hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
     hp_progress_bar_container_label.textContent = "Hp:"
     hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
@@ -402,16 +403,11 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
 
-    let ok = document.querySelector("#player-progressbar");
 
     ship_statistics_container_div.append(hp_progress_bar_container_label);
     ship_statistics_container_div.append(hp_progress_bar_container_div);
     ship_statistics_container_div.append(movement_progress_bar_container_label);
     ship_statistics_container_div.append(movement_progress_bar_container_div);
-    ok.append(hp_progress_bar_container_label);
-    ok.append(hp_progress_bar_container_div);
-    ok.append(movement_progress_bar_container_label);
-    ok.append(movement_progress_bar_container_div);
 
     let ship_action_container = document.createElement("div");
     ship_action_container.classList.add('mt-3');
@@ -457,7 +453,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_attack_btn_container.classList.add('w-full', 'hidden');
 
     let item_action_container_img_scan = document.createElement('img');
-    item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
+    item_action_container_img_scan.src = '/static/js/game/assets/ux/scan_resource_icon.svg';
     item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
 
     let item_action_container_img_scan_figcaption = document.createElement('figcaption');
@@ -469,7 +465,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_attack = document.createElement('img');
-    item_action_container_img_attack.src = '/static/img/ux/target_icon.svg';
+    item_action_container_img_attack.src = '/static/js/game/assets/ux/target_icon.svg';
     item_action_container_img_attack.classList.add('cursor-pointer', 'flex', 'justify-center');
 
     let item_action_container_img_attack_figcaption = document.createElement('figcaption');
@@ -482,7 +478,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_contact = document.createElement('img');
-    item_action_container_img_contact.src = '/static/img/ux/contact_icon.svg';
+    item_action_container_img_contact.src = '/static/js/game/assets/ux/contact_icon.svg';
     item_action_container_img_contact.classList.add('cursor-pointer', 'flex', 'justify-center');
 
     let item_action_container_img_contact_figcaption = document.createElement('figcaption');
@@ -494,7 +490,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_repaire = document.createElement('img');
-    item_action_container_img_repaire.src = '/static/img/ux/repaire_icon.svg';
+    item_action_container_img_repaire.src = '/static/js/game/assets/ux/repaire_icon.svg';
     item_action_container_img_repaire.classList.add('cursor-pointer', 'flex', 'justify-center');
 
     let item_action_container_img_repaire_figcaption = document.createElement('figcaption');
@@ -506,7 +502,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_attack_btn_img = document.createElement('img');
-    item_action_container_img_attack_btn_img.src = '/static/img/ux/target_icon.svg';
+    item_action_container_img_attack_btn_img.src = '/static/js/game/assets/ux/target_icon.svg';
     item_action_container_img_attack_btn_img.classList.add('cursor-pointer', 'flex', 'inline-block', 'mx-auto', 'object-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
     item_action_container_img_attack_btn_img.addEventListener('click', function() {
         check_radio_btn_and_swap_color(e.id, module_item_content.id);
@@ -532,7 +528,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     if (!data.player.is_npc) {
 
         let target_img = document.createElement('img');
-        target_img.src = "/static/js/game/assets/default_img/default-user.svg";
+        target_img.src = "/static/js/game/assets/ux/default-user.svg";
         target_img.style.width = "30%";
         target_img.style.height = "30%";
         target_img.style.margin = "0 auto";

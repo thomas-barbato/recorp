@@ -373,8 +373,6 @@
                         "type": animation_data_direname.split('_')[0]
                     }],
                 }
-
-                console.log(dict[i])
             }
         }
     }

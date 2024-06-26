@@ -168,7 +168,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
     ("img", os.path.join(BASE_DIR, "recorp", "static", "img")),
-    ("ux_img", os.path.join(BASE_DIR, "recorp", "static", "img", "ux")),
+    ("ux", os.path.join(BASE_DIR,  "recorp", "static", "js", "game", "assets", "ux")),
     ("world_builder", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder")),
     ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
     ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
@@ -177,7 +177,6 @@ STATICFILES_DIRS = [
     ("asteroids", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "satellites")),
     ("stars", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stars")),
     ("blackholes", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "blackholes")),
-    ("default_img", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "default_img")),
     ("fontawesome", os.path.join(BASE_DIR, "recorp", "static", "js", "fontawesome")),
     ("ckeditor", os.path.join(BASE_DIR, "recorp", "static", "js", "ckeditor5"))
 ]
