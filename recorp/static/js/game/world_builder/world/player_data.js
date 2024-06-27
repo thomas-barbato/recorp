@@ -29,9 +29,9 @@ let character_statistics_progressbar_ap_text = document.createElement('span');
 let character_module_progressbar_container = document.createElement('div');
 
 character_main_container.classList.add(
-    'lg:w-full',
-    'w-1/2',
+    'w-full',
     'mt-1',
+    'mb-2',
     'flex',
     'items-center',
     'lg:justify-center',
@@ -84,14 +84,13 @@ character_basic_information_li_faction_span.classList.add(
 );
 
 character_statistics_progressbar_container.classList.add(
-    'w-full',
-    'p-2',
-    'mt-1',
+    'w-[80%]',
+    'lg:p-5',
+    'lg:mt-2',
     'flex',
     'items-center',
     'justify-center',
     'gap-2',
-    'lg:flex-col',
     'flex-col',
     'bg-gray-600/40'
 );
@@ -107,9 +106,9 @@ character_statistics_progressbar_hp_label.classList.add(
     'font-shadow',
     'text-white',
     'text-sm',
-    'mt-2'
+    'mt-2',
 );
-character_statistics_progressbar_hp_label.textContent = "HP:"
+character_statistics_progressbar_hp_label.textContent = "HULL POINTS:"
 character_statistics_progressbar_hp_content.classList.add(
     'bg-blue-600',
     'leading-none',
@@ -120,7 +119,7 @@ character_statistics_progressbar_hp_text.classList.add(
     'absolute',
     'z-10',
     'text-center',
-    'text-xs',
+    'text-sm',
     'font-bold',
     'font-shadow',
     'text-blue-100',
@@ -152,7 +151,7 @@ character_statistics_progressbar_move_text.classList.add(
     'absolute',
     'z-10',
     'text-center',
-    'text-xs',
+    'text-sm',
     'font-bold',
     'font-shadow',
     'text-blue-100',
@@ -184,7 +183,7 @@ character_statistics_progressbar_ap_text.classList.add(
     'absolute',
     'z-10',
     'text-center',
-    'text-xs',
+    'text-sm',
     'font-bold',
     'font-shadow',
     'text-blue-100',
@@ -209,10 +208,6 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         let move_percent = `${Math.round((map_informations['pc_npc'][i].ship.current_movement * 100) / (map_informations['pc_npc'][i].ship.max_movement))}%`;
         let ap_percent = `${Math.round((map_informations['pc_npc'][i].user.current_ap * 100) / (map_informations['pc_npc'][i].user.max_ap))}%`;
 
-        character_statistics_progressbar_hp_div
-        character_statistics_progressbar_move_div
-        character_statistics_progressbar_ap_div
-
         character_statistics_progressbar_hp_content.style.width = hp_percent;
         character_statistics_progressbar_hp_text.textContent = `${map_informations['pc_npc'][i].ship.current_hp} / ${map_informations['pc_npc'][i].ship.max_hp}`;
         character_statistics_progressbar_move_content.style.width = move_percent;
@@ -234,20 +229,20 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         character_basic_information_container.append(character_basic_information_img);
         character_basic_information_container.append(character_basic_information_ul);
 
-        character_statistics_progressbar_hp_div.append(character_statistics_progressbar_hp_label);
         character_statistics_progressbar_hp_div.append(character_statistics_progressbar_hp_content);
         character_statistics_progressbar_hp_div.append(character_statistics_progressbar_hp_text);
 
-        character_statistics_progressbar_move_div.append(character_statistics_progressbar_move_label);
         character_statistics_progressbar_move_div.append(character_statistics_progressbar_move_content);
         character_statistics_progressbar_move_div.append(character_statistics_progressbar_move_text);
 
-        character_statistics_progressbar_ap_div.append(character_statistics_progressbar_ap_label);
         character_statistics_progressbar_ap_div.append(character_statistics_progressbar_ap_content);
         character_statistics_progressbar_ap_div.append(character_statistics_progressbar_ap_text);
 
+        character_statistics_progressbar_container.append(character_statistics_progressbar_hp_label);
         character_statistics_progressbar_container.append(character_statistics_progressbar_hp_div);
+        character_statistics_progressbar_container.append(character_statistics_progressbar_move_label);
         character_statistics_progressbar_container.append(character_statistics_progressbar_move_div);
+        character_statistics_progressbar_container.append(character_statistics_progressbar_ap_label);
         character_statistics_progressbar_container.append(character_statistics_progressbar_ap_div);
 
         character_main_container.append(character_basic_information_container);

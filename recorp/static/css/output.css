@@ -1023,10 +1023,6 @@ video {
   height: 20px;
 }
 
-.h-\[20vh\] {
-  height: 20vh;
-}
-
 .h-\[30px\] {
   height: 30px;
 }
@@ -1037,6 +1033,10 @@ video {
 
 .h-\[40\%\] {
   height: 40%;
+}
+
+.h-\[40vh\] {
+  height: 40vh;
 }
 
 .h-\[5\%\] {
@@ -1053,6 +1053,14 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.h-\[30\%\] {
+  height: 30%;
+}
+
+.h-\[10\%\] {
+  height: 10%;
 }
 
 .max-h-\[40vh\] {
@@ -1129,6 +1137,10 @@ video {
 
 .w-\[5\%\] {
   width: 5%;
+}
+
+.w-\[80\%\] {
+  width: 80%;
 }
 
 .w-\[80vw\] {
@@ -2385,6 +2397,10 @@ video {
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
 
+.bg-gray-600\/40 {
+  background-color: rgb(75 85 99 / 0.4);
+}
+
 .bg-gray-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
@@ -2436,6 +2452,10 @@ video {
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
+.bg-slate-600\/50 {
+  background-color: rgb(71 85 105 / 0.5);
+}
+
 .bg-teal-500\/30 {
   background-color: rgb(20 184 166 / 0.3);
 }
@@ -2465,10 +2485,6 @@ video {
 
 .bg-zinc-950\/70 {
   background-color: rgb(9 9 11 / 0.7);
-}
-
-.bg-gray-600\/40 {
-  background-color: rgb(75 85 99 / 0.4);
 }
 
 .bg-gradient-to-b {
@@ -2626,10 +2642,6 @@ video {
 
 .p-1 {
   padding: 0.25rem;
-}
-
-.p-10 {
-  padding: 2.5rem;
 }
 
 .p-2 {
@@ -2798,6 +2810,18 @@ video {
 
 .align-super {
   vertical-align: super;
+}
+
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.font-sans {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .text-2xl {
@@ -3398,6 +3422,7 @@ video {
 
 body {
   background-color: #0f0e0e;
+  font-family: monospace;
 }
 
 #player-container {
@@ -4179,6 +4204,10 @@ select {
     margin-top: 0px;
   }
 
+  .lg\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
   .lg\:mt-3 {
     margin-top: 0.75rem;
   }
@@ -4283,6 +4312,10 @@ select {
     padding: 0.25rem;
   }
 
+  .lg\:p-5 {
+    padding: 1.25rem;
+  }
+
   .lg\:py-0 {
     padding-top: 0px;
     padding-bottom: 0px;
@@ -4317,8 +4350,16 @@ select {
     margin-top: 0vh;
   }
 
-  .xl\:h-\[60vh\] {
-    height: 60vh;
+  .xl\:mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
+  .xl\:mb-10 {
+    margin-bottom: 2.5rem;
+  }
+
+  .xl\:mb-24 {
+    margin-bottom: 6rem;
   }
 
   .xl\:h-\[71vh\] {
@@ -4331,6 +4372,26 @@ select {
 
   .xl\:h-\[80\%\] {
     height: 80%;
+  }
+
+  .xl\:h-\[70\%\] {
+    height: 70%;
+  }
+
+  .xl\:h-full {
+    height: 100%;
+  }
+
+  .xl\:h-\[75vh\] {
+    height: 75vh;
+  }
+
+  .xl\:h-\[76vh\] {
+    height: 76vh;
+  }
+
+  .xl\:h-\[75\.5vh\] {
+    height: 75.5vh;
   }
 
   .xl\:gap-3 {
@@ -4365,20 +4426,16 @@ select {
     margin-top: 10%;
   }
 
-  .\32xl\:h-\[100\%\] {
-    height: 100%;
+  .\32xl\:mb-0 {
+    margin-bottom: 0px;
   }
 
-  .\32xl\:h-\[75\%\] {
-    height: 75%;
+  .\32xl\:h-\[70\%\] {
+    height: 70%;
   }
 
   .\32xl\:h-\[75vh\] {
     height: 75vh;
-  }
-
-  .\32xl\:w-24 {
-    width: 6rem;
   }
 
   .\32xl\:w-\[100\%\] {
@@ -4409,8 +4466,8 @@ select {
     background-color: rgb(31 41 55 / 0);
   }
 
-  .\32xl\:bg-\[url\(\'\/static\/js\/game\/assets\/ux\/border-container-withbg\.svg\'\)\] {
-    background-image: url('/static/js/game/assets/ux/border-container-withbg.svg');
+  .\32xl\:bg-\[url\(\'\/static\/js\/game\/assets\/ux\/border-container-withbg-wide\.svg\'\)\] {
+    background-image: url('/static/js/game/assets/ux/border-container-withbg-wide.svg');
   }
 
   .\32xl\:bg-\[url\(\'\/static\/js\/game\/assets\/ux\/small-container-2\.svg\'\)\] {
@@ -4450,14 +4507,6 @@ select {
 
   .min-\[2000px\]\:h-\[50\%\] {
     height: 50%;
-  }
-
-  .min-\[2000px\]\:h-\[50vh\] {
-    height: 50vh;
-  }
-
-  .min-\[2000px\]\:w-\[90\%\] {
-    width: 90%;
   }
 
   .min-\[2000px\]\:bg-center {

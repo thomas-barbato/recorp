@@ -375,9 +375,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let hp_progress_bar_container_text = document.createElement('span');
     let hp_progress_bar_container_label = document.createElement('label');
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
-
     hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
-    hp_progress_bar_container_label.textContent = "Hp:"
+    hp_progress_bar_container_label.textContent = "Hull points:"
     hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
     hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
     hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center', 'p-0.5');
@@ -733,26 +732,30 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         let ship_size_x = map_informations.pc_npc[ship_i].ship.size.size_x;
 
                         damage_type_small.textContent = "Damage type : ";
+                        damage_type_small.classList.add('font-sans');
                         damage_type_small_value.textContent = damage_type_value;
-                        damage_type_small_value.classList.add('text-blue-500', 'font-bold');
+                        damage_type_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
                         damage_type_span.append(damage_type_small);
                         damage_type_span.append(damage_type_small_value);
 
                         damage_small.textContent = "Damages : ";
+                        damage_small.classList.add('font-sans');
                         damage_small_value.textContent = `${min_damage_value} - ${max_damage_value}`;
-                        damage_small_value.classList.add('text-blue-500', 'font-bold');
+                        damage_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
                         damage_span.append(damage_small);
                         damage_span.append(damage_small_value);
 
                         range_small.textContent = "Range : ";
+                        range_small.classList.add('font-sans');
                         range_small_value.textContent = `${range_value}`;
-                        range_small_value.classList.add('text-blue-500', 'font-bold');
+                        range_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
                         range_span.append(range_small);
                         range_span.append(range_small_value);
 
                         chance_to_hit_small.textContent = "Chance to hit : ";
+                        chance_to_hit_small.classList.add('font-sans');
                         chance_to_hit_small_value.textContent = "100%";
-                        chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold');
+                        chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
                         chance_to_hit_span.append(chance_to_hit_small);
                         chance_to_hit_span.append(chance_to_hit_small_value);
 

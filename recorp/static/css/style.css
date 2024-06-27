@@ -3,6 +3,7 @@
 @tailwind utilities;
 body {
     background-color: #0f0e0e;
+    font-family: monospace;
 }
 
 #player-container {
