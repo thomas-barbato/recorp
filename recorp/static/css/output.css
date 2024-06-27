@@ -1055,12 +1055,8 @@ video {
   height: 100%;
 }
 
-.h-\[30\%\] {
-  height: 30%;
-}
-
-.h-\[10\%\] {
-  height: 10%;
+.h-\[5vh\] {
+  height: 5vh;
 }
 
 .max-h-\[40vh\] {
@@ -2816,10 +2812,6 @@ video {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.font-serif {
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
 .font-sans {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
@@ -4346,52 +4338,44 @@ select {
     margin-right: 0.5rem;
   }
 
-  .xl\:mt-\[0vh\] {
-    margin-top: 0vh;
-  }
-
-  .xl\:mb-5 {
-    margin-bottom: 1.25rem;
-  }
-
-  .xl\:mb-10 {
-    margin-bottom: 2.5rem;
-  }
-
   .xl\:mb-24 {
     margin-bottom: 6rem;
   }
 
-  .xl\:h-\[71vh\] {
-    height: 71vh;
+  .xl\:mt-\[0vh\] {
+    margin-top: 0vh;
   }
 
   .xl\:h-\[75\%\] {
     height: 75%;
   }
 
+  .xl\:h-\[75\.5vh\] {
+    height: 75.5vh;
+  }
+
   .xl\:h-\[80\%\] {
     height: 80%;
   }
 
-  .xl\:h-\[70\%\] {
-    height: 70%;
+  .xl\:h-\[5vh\] {
+    height: 5vh;
   }
 
-  .xl\:h-full {
-    height: 100%;
+  .xl\:h-\[10vh\] {
+    height: 10vh;
   }
 
-  .xl\:h-\[75vh\] {
-    height: 75vh;
+  .xl\:h-\[2vh\] {
+    height: 2vh;
   }
 
-  .xl\:h-\[76vh\] {
-    height: 76vh;
+  .xl\:h-\[3vh\] {
+    height: 3vh;
   }
 
-  .xl\:h-\[75\.5vh\] {
-    height: 75.5vh;
+  .xl\:h-\[4vh\] {
+    height: 4vh;
   }
 
   .xl\:gap-3 {
@@ -4400,6 +4384,20 @@ select {
 
   .xl\:self-center {
     align-self: center;
+  }
+
+  .xl\:p-0 {
+    padding: 0px;
+  }
+
+  .xl\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .xl\:px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   .xl\:text-sm {
@@ -4414,6 +4412,10 @@ select {
     margin-right: 0px;
   }
 
+  .\32xl\:mb-0 {
+    margin-bottom: 0px;
+  }
+
   .\32xl\:mb-2 {
     margin-bottom: 0.5rem;
   }
@@ -4426,16 +4428,24 @@ select {
     margin-top: 10%;
   }
 
-  .\32xl\:mb-0 {
-    margin-bottom: 0px;
-  }
-
   .\32xl\:h-\[70\%\] {
     height: 70%;
   }
 
   .\32xl\:h-\[75vh\] {
     height: 75vh;
+  }
+
+  .\32xl\:h-auto {
+    height: auto;
+  }
+
+  .\32xl\:h-\[7vh\] {
+    height: 7vh;
+  }
+
+  .\32xl\:h-\[2vh\] {
+    height: 2vh;
   }
 
   .\32xl\:w-\[100\%\] {
@@ -4494,9 +4504,24 @@ select {
     background-repeat: no-repeat;
   }
 
+  .\32xl\:p-3 {
+    padding: 0.75rem;
+  }
+
+  @media (min-width: 1536px) {
+    .\32xl\:2xl\:p-3 {
+      padding: 0.75rem;
+    }
+  }
+
   .\32xl\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+
+  .\32xl\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 }
 
