@@ -368,7 +368,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let ship_statistics_warning_msg_container_p = document.createElement('p');
     ship_statistics_warning_msg_container_p.classList.add('text-justify', 'font-shadow', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold', 'font-shadow');
     ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
-    ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str}: `;
+    ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str} `;
 
     let hp_progress_bar_container_div = document.createElement('div');
     let hp_progress_bar_container_content = document.createElement('div');
@@ -430,7 +430,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         ship_statistics.classList.remove('hidden');
         alert_message.classList.add('hidden');
     })
-
 
     let item_action_container_img_attack_container = document.createElement('div');
     item_action_container_img_attack_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
@@ -507,7 +506,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         check_radio_btn_and_swap_color(e.id, module_item_content.id);
     })
 
-
     item_action_container_img_scan_container.append(item_action_container_img_scan);
     item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
     item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption_ap);
@@ -548,7 +546,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         ship_action_container_div.append(item_action_container_img_scan_container);
         ship_action_container_div.append(item_action_container_img_attack_container);
     }
-
 
     for (let defense_module_i in data.ship.modules) {
         if (data.ship.modules[defense_module_i]["type"] == "DEFENSE" && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
