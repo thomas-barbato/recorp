@@ -1047,20 +1047,16 @@ video {
   height: 80%;
 }
 
+.h-\[85\%\] {
+  height: 85%;
+}
+
 .h-\[calc\(100\%-1rem\)\] {
   height: calc(100% - 1rem);
 }
 
 .h-full {
   height: 100%;
-}
-
-.h-\[90\%\] {
-  height: 90%;
-}
-
-.h-\[85\%\] {
-  height: 85%;
 }
 
 .max-h-\[40vh\] {
@@ -2490,10 +2486,6 @@ video {
 
 .bg-zinc-950\/70 {
   background-color: rgb(9 9 11 / 0.7);
-}
-
-.bg-gray-600\/30 {
-  background-color: rgb(75 85 99 / 0.3);
 }
 
 .bg-gradient-to-b {

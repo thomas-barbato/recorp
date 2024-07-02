@@ -283,7 +283,7 @@ character_offensive_modules_fieldset.append(character_offensive_modules_fieldset
 
 character_other_modules_fieldset.classList.add(
     'p-2',
-    'mt-5',
+    'mt-1',
     'flex',
     'w-[70%]',
     'items-center',
@@ -478,28 +478,30 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     character_offensive_modules_fieldset.append(offensive_module_container);
                 } else {
 
-
                     let offensive_module_span = document.createElement('span');
-                    let offensive_module_type_small = document.createElement('small');
-                    let offensive_module_type_small_value = document.createElement('small');
-
-                    offensive_module_container.classList.add('flex', 'flex-col', 'gap-1');
-                    offensive_module_type_small.classList.add('font-shadow', 'text-white', 'gap-1', 'text-sm');
-                    offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'gap-1', 'text-sm', 'font-bold');
-
-                    offensive_module_span.append(offensive_module_name_label);
 
                     for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
 
-                        offensive_module_container.innerHTML = "";
+
+                        let offensive_module_type_small = document.createElement('small');
+                        let offensive_module_type_small_value = document.createElement('small');
+                        let offensive_module_type_small_container = document.createElement('div');
+
+                        offensive_module_type_small_container.classList.add('flex', 'flex-row');
+
+                        offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
+                        offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+
+                        offensive_module_type_small_container.append(offensive_module_type_small);
+                        offensive_module_type_small_container.append(offensive_module_type_small_value);
 
                         let content_keys = key.replace('_', ' ');
                         let content_value = typeof value == 'boolean' ? value : value + '%';
                         offensive_module_type_small.textContent = `${content_keys}: `;
                         offensive_module_type_small_value.textContent = `${content_value}`;
 
-                        offensive_module_span.append(offensive_module_type_small);
-                        offensive_module_span.append(offensive_module_type_small_value);
+                        offensive_module_span.append(offensive_module_name_label);
+                        offensive_module_span.append(offensive_module_type_small_container);
 
                         offensive_module_container.append(offensive_module_name_label);
                         offensive_module_container.append(offensive_module_span);
