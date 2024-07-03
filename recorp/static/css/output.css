@@ -1035,20 +1035,12 @@ video {
   height: 40%;
 }
 
-.h-\[40vh\] {
-  height: 40vh;
-}
-
 .h-\[5\%\] {
   height: 5%;
 }
 
 .h-\[80\%\] {
   height: 80%;
-}
-
-.h-\[85\%\] {
-  height: 85%;
 }
 
 .h-\[calc\(100\%-1rem\)\] {
@@ -1135,8 +1127,8 @@ video {
   width: 5%;
 }
 
-.w-\[70\%\] {
-  width: 70%;
+.w-\[80\%\] {
+  width: 80%;
 }
 
 .w-\[80vw\] {
@@ -1153,6 +1145,10 @@ video {
 
 .w-\[95\%\] {
   width: 95%;
+}
+
+.w-\[full\] {
+  width: full;
 }
 
 .w-\[this-is\\\\\] {
@@ -4225,6 +4221,10 @@ select {
     height: 7vh;
   }
 
+  .lg\:h-\[80\%\] {
+    height: 80%;
+  }
+
   .lg\:h-\[80vh\] {
     height: 80vh;
   }
@@ -4265,12 +4265,20 @@ select {
     width: 80%;
   }
 
+  .lg\:w-\[90\%\] {
+    width: 90%;
+  }
+
   .lg\:w-auto {
     width: auto;
   }
 
   .lg\:w-full {
     width: 100%;
+  }
+
+  .lg\:w-\[85\%\] {
+    width: 85%;
   }
 
   .lg\:cursor-pointer {
@@ -4301,12 +4309,12 @@ select {
     justify-content: center;
   }
 
-  .lg\:p-1 {
-    padding: 0.25rem;
+  .lg\:overflow-y-scroll {
+    overflow-y: scroll;
   }
 
-  .lg\:p-2 {
-    padding: 0.5rem;
+  .lg\:p-1 {
+    padding: 0.25rem;
   }
 
   .lg\:py-0 {
@@ -4317,6 +4325,10 @@ select {
   .lg\:py-0\.5 {
     padding-top: 0.125rem;
     padding-bottom: 0.125rem;
+  }
+
+  .lg\:pl-2 {
+    padding-left: 0.5rem;
   }
 
   .lg\:text-xl {
@@ -4337,10 +4349,6 @@ select {
   .xl\:mx-2 {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-  }
-
-  .xl\:mt-\[0vh\] {
-    margin-top: 0vh;
   }
 
   .xl\:h-\[4vh\] {

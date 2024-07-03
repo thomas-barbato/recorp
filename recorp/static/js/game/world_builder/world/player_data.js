@@ -6,6 +6,8 @@ let character_defensive_modules_fieldset = document.createElement('fieldset');
 let character_defensive_modules_fieldset_legend = document.createElement('legend');
 let character_offensive_modules_fieldset = document.createElement('fieldset');
 let character_offensive_modules_fieldset_legend = document.createElement('legend');
+let character_electronicWarfare_modules_fieldset = document.createElement('fieldset');
+let character_electronicWarfare_modules_fieldset_legend = document.createElement('legend');
 let character_other_modules_fieldset = document.createElement('fieldset');
 let character_other_modules_fieldset_legend = document.createElement('legend');
 let character_basic_information_img = document.createElement('img');
@@ -37,29 +39,24 @@ let character_statistics_progressbar_ap_text = document.createElement('span');
 let character_module_progressbar_container = document.createElement('div');
 
 character_main_container.classList.add(
-    'w-full',
-    'mt-1',
+    'w-[full]',
     'mb-2',
     'flex',
+    'flex-wrap',
     'items-center',
-    'lg:justify-center',
-    'justify-start',
-    'lg:flex-col',
-    'flex-row',
-    'overflow-y-scroll',
-    'no-scrollbar'
+    'justify-center',
+    'flex-col',
 );
 
 character_basic_information_fieldset.classList.add(
     'p-2',
-    'mt-5',
     'flex',
-    'w-[70%]',
+    'lg:w-[80%]',
+    'w-[100%]',
     'items-center',
     'justify-center',
     'gap-2',
-    'lg:flex-row',
-    'flex-col',
+    'flex-row',
     'bg-gray-600/40',
     'border',
     'border-slate-600',
@@ -67,8 +64,7 @@ character_basic_information_fieldset.classList.add(
 );
 character_basic_information_fieldset_legend.classList.add(
     "text-md",
-    "md:text-start",
-    "text-center",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-gray-900",
@@ -113,8 +109,9 @@ character_basic_information_li_faction_span.classList.add(
 
 character_statistics_progressbar_fieldset.classList.add(
     'flex',
-    'w-[70%]',
-    'lg:p-2',
+    'lg:w-[80%]',
+    'w-[100%]',
+    'p-2',
     'items-start',
     'justify-center',
     'gap-2',
@@ -232,8 +229,9 @@ character_statistics_progressbar_ap_text.classList.add(
 
 character_defensive_modules_fieldset.classList.add(
     'flex',
-    'w-[70%]',
-    'lg:p-2',
+    'lg:w-[80%]',
+    'w-[100%]',
+    'p-2',
     'items-start',
     'justify-center',
     'gap-2',
@@ -245,8 +243,7 @@ character_defensive_modules_fieldset.classList.add(
 );
 character_defensive_modules_fieldset_legend.classList.add(
     "text-md",
-    "md:text-start",
-    "text-center",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-gray-900",
@@ -260,9 +257,11 @@ character_offensive_modules_fieldset.classList.add(
     'p-2',
     'mt-1',
     'flex',
-    'w-[70%]',
+    'lg:w-[80%]',
+    'w-[100%]',
     'gap-2',
     'flex-col',
+    'items-start',
     'bg-gray-600/40',
     'border',
     'border-slate-600',
@@ -270,8 +269,7 @@ character_offensive_modules_fieldset.classList.add(
 );
 character_offensive_modules_fieldset_legend.classList.add(
     "text-md",
-    "md:text-start",
-    "text-center",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-gray-900",
@@ -281,15 +279,45 @@ character_offensive_modules_fieldset_legend.classList.add(
 character_offensive_modules_fieldset_legend.textContent = "Offensive modules";
 character_offensive_modules_fieldset.append(character_offensive_modules_fieldset_legend);
 
+character_offensive_modules_fieldset_legend.textContent = "Offensive modules";
+character_offensive_modules_fieldset.append(character_offensive_modules_fieldset_legend);
+
+character_electronicWarfare_modules_fieldset.classList.add(
+    'p-2',
+    'mt-1',
+    'flex',
+    'lg:w-[80%]',
+    'w-[100%]',
+    'gap-2',
+    'lg:flex-col',
+    'flex-col',
+    'flex-col',
+    'bg-gray-600/40',
+    'border',
+    'border-slate-600',
+    'rounded-md'
+);
+character_electronicWarfare_modules_fieldset_legend.classList.add(
+    "text-md",
+    "md:text-start",
+    "text-center",
+    "font-shadow",
+    "font-bold",
+    "text-gray-900",
+    "dark:text-white",
+    "p-1"
+);
+character_electronicWarfare_modules_fieldset_legend.textContent = "Electronic warfare";
+character_electronicWarfare_modules_fieldset.append(character_electronicWarfare_modules_fieldset_legend);
+
 character_other_modules_fieldset.classList.add(
     'p-2',
     'mt-1',
     'flex',
-    'w-[70%]',
-    'items-center',
-    'justify-center',
+    'lg:w-[80%]',
+    'w-[100%]',
     'gap-2',
-    'lg:flex-row',
+    'lg:flex-col',
     'flex-col',
     'bg-gray-600/40',
     'border',
@@ -306,7 +334,7 @@ character_other_modules_fieldset_legend.classList.add(
     "dark:text-white",
     "p-1"
 );
-character_other_modules_fieldset_legend.textContent = "Other type modules";
+character_other_modules_fieldset_legend.textContent = "Other modules";
 character_other_modules_fieldset.append(character_other_modules_fieldset_legend);
 
 
@@ -424,7 +452,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 character_defensive_modules_fieldset.append(defensive_module_div);
                 character_main_container.append(character_defensive_modules_fieldset);
 
-            } else if (map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "WEAPONRY" || map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
+            } else if (map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "WEAPONRY") {
 
                 let offensive_module_container = document.createElement('div');
                 let offensive_module_name_label = document.createElement('label');
@@ -444,9 +472,9 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     let weapon_range_small = document.createElement('small');
                     let weapon_range_small_value = document.createElement('small');
 
-                    weapon_damage_type_span.classList.add('flex', 'flex-row', 'gap-1');
-                    weapon_damage_span.classList.add('flex', 'flex-row', 'gap-1');
-                    weapon_range_span.classList.add('flex', 'flex-row', 'gap-1');
+                    weapon_damage_type_span.classList.add('flex', 'flex-row', 'gap-1', 'lg:pl-2');
+                    weapon_damage_span.classList.add('flex', 'flex-row', 'gap-1', 'lg:pl-2');
+                    weapon_range_span.classList.add('flex', 'flex-row', 'gap-1', 'lg:pl-2');
 
                     weapon_damage_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
                     weapon_damage_small.classList.add('font-shadow', 'text-white', 'text-sm');
@@ -482,12 +510,11 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
 
                     for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
 
-
                         let offensive_module_type_small = document.createElement('small');
                         let offensive_module_type_small_value = document.createElement('small');
                         let offensive_module_type_small_container = document.createElement('div');
 
-                        offensive_module_type_small_container.classList.add('flex', 'flex-row');
+                        offensive_module_type_small_container.classList.add('flex', 'flex-row', 'lg:pl-2');
 
                         offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
                         offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
@@ -510,10 +537,101 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     }
 
                 }
+            } else if (map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
+
+                let electronicWarfare_module_container = document.createElement('div');
+                let electronicWarfare_module_name_label = document.createElement('label');
+                let electronicWarfare_module_span = document.createElement('span');
+
+                electronicWarfare_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                electronicWarfare_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
+                electronicWarfare_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
+
+                for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
+
+
+                    let electronicWarfare_module_type_small = document.createElement('small');
+                    let electronicWarfare_module_type_small_value = document.createElement('small');
+                    let electronicWarfare_module_type_small_container = document.createElement('div');
+
+                    electronicWarfare_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2');
+
+                    electronicWarfare_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
+                    electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+
+                    electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small);
+                    electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small_value);
+
+                    let content_keys = key.replace('_', ' ');
+                    let content_value = typeof value == 'boolean' ? value : value + '%';
+                    electronicWarfare_module_type_small.textContent = `${content_keys}: `;
+                    electronicWarfare_module_type_small_value.textContent = `${content_value}`;
+
+                    electronicWarfare_module_span.append(electronicWarfare_module_name_label);
+                    electronicWarfare_module_span.append(electronicWarfare_module_type_small_container);
+
+                    electronicWarfare_module_container.append(electronicWarfare_module_name_label);
+                    electronicWarfare_module_container.append(electronicWarfare_module_span);
+
+                    character_electronicWarfare_modules_fieldset.append(electronicWarfare_module_container);
+
+                }
+            } else {
+
+                let other_module_container = document.createElement('div');
+                let other_module_name_label = document.createElement('label');
+                let other_module_span = document.createElement('span');
+
+                other_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                other_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
+                other_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
+
+                for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
+
+
+                    let other_module_type_small = document.createElement('small');
+                    let other_module_type_small_value = document.createElement('small');
+                    let other_module_type_small_container = document.createElement('div');
+
+                    other_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
+
+                    other_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
+                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+
+                    other_module_type_small_container.append(other_module_type_small);
+                    other_module_type_small_container.append(other_module_type_small_value);
+
+                    let content_keys = key.replace('_', ' ');
+                    let content_value = undefined;
+                    if (typeof value == 'boolean') {
+                        content_value = value;
+                    } else {
+                        if (map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('hull')) {
+                            content_value = `+${ value } hp`;
+                        } else if (map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('propulsion')) {
+                            content_value = `+${ value } movement points`;
+                        } else {
+                            content_value = value;
+                        }
+                    }
+                    other_module_type_small.textContent = `${content_keys}: `;
+                    other_module_type_small_value.textContent = `${content_value}`;
+
+                    other_module_span.append(other_module_name_label);
+                    other_module_span.append(other_module_type_small_container);
+
+                    other_module_container.append(other_module_name_label);
+                    other_module_container.append(other_module_span);
+
+                    character_other_modules_fieldset.append(other_module_container);
+
+                }
+                character_main_container.append(character_offensive_modules_fieldset);
+                character_main_container.append(character_electronicWarfare_modules_fieldset);
+                character_main_container.append(character_other_modules_fieldset);
+                character_main.append(character_main_container);
+
             }
         }
-        character_main_container.append(character_offensive_modules_fieldset)
-        character_main.append(character_main_container);
-
     }
 }
