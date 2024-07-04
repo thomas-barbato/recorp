@@ -173,3 +173,13 @@ select {
     }
 }
 */
+
+.thin-semi-transparent-scrollbar {
+    scrollbar-color: transparent transparent;
+    scrollbar-width: thin;
+}
+
+.thin-semi-transparent-scrollbar:hover {
+    scrollbar-color: #34D399 transparent;
+    scrollbar-width: thin;
+}

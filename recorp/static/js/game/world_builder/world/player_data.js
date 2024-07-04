@@ -3,13 +3,21 @@ let character_main_container = document.createElement('div');
 let character_basic_information_fieldset = document.createElement('fieldset');
 let character_basic_information_fieldset_legend = document.createElement('legend');
 let character_defensive_modules_fieldset = document.createElement('fieldset');
+let character_defensive_modules_fieldset_legend_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+let character_defensive_modules_fieldset_legend_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 let character_defensive_modules_fieldset_legend = document.createElement('legend');
 let character_offensive_modules_fieldset = document.createElement('fieldset');
 let character_offensive_modules_fieldset_legend = document.createElement('legend');
+let character_offensive_modules_fieldset_legend_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+let character_offensive_modules_fieldset_legend_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 let character_electronicWarfare_modules_fieldset = document.createElement('fieldset');
 let character_electronicWarfare_modules_fieldset_legend = document.createElement('legend');
+let character_electronicWarfare_modules_fieldset_legend_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+let character_electronicWarfare_modules_fieldset_legend_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 let character_other_modules_fieldset = document.createElement('fieldset');
 let character_other_modules_fieldset_legend = document.createElement('legend');
+let character_other_modules_fieldset_legend_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+let character_other_modules_fieldset_legend_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 let character_basic_information_img = document.createElement('img');
 let character_basic_information_ul = document.createElement('ul');
 let character_basic_information_li_name = document.createElement('li');
@@ -40,7 +48,6 @@ let character_module_progressbar_container = document.createElement('div');
 
 character_main_container.classList.add(
     'w-[full]',
-    'mb-2',
     'flex',
     'flex-wrap',
     'items-center',
@@ -49,10 +56,11 @@ character_main_container.classList.add(
 );
 
 character_basic_information_fieldset.classList.add(
-    'p-2',
+    'px-2',
     'flex',
+    '2xl:w-[80%]',
+    'xl:w-[90%]',
     'lg:w-[80%]',
-    'w-[100%]',
     'items-center',
     'justify-center',
     'gap-2',
@@ -78,7 +86,8 @@ character_basic_information_fieldset.append(character_basic_information_fieldset
 character_basic_information_img.id = "user-avatar";
 character_basic_information_img.classList.add(
     'w-24',
-    'box-content'
+    'box-content',
+    'mb-1',
 );
 
 character_basic_information_li_name.classList.add(
@@ -109,9 +118,11 @@ character_basic_information_li_faction_span.classList.add(
 
 character_statistics_progressbar_fieldset.classList.add(
     'flex',
+    '2xl:w-[80%]',
+    'xl:w-[90%]',
     'lg:w-[80%]',
     'w-[100%]',
-    'p-2',
+    'px-2',
     'items-start',
     'justify-center',
     'gap-2',
@@ -129,7 +140,6 @@ character_statistics_progressbar_fieldset_legend.classList.add(
     "font-bold",
     "text-gray-900",
     "dark:text-white",
-    "p-1"
 )
 character_statistics_progressbar_fieldset_legend.textContent = "Statistics";
 character_statistics_progressbar_fieldset.append(character_statistics_progressbar_fieldset_legend);
@@ -200,7 +210,8 @@ character_statistics_progressbar_ap_div.classList.add(
     'w-full',
     'bg-red-500',
     'relative',
-    'h-[20px]'
+    'h-[20px]',
+    'mb-1'
 );
 character_statistics_progressbar_ap_label.classList.add(
     'font-bold',
@@ -229,9 +240,11 @@ character_statistics_progressbar_ap_text.classList.add(
 
 character_defensive_modules_fieldset.classList.add(
     'flex',
+    '2xl:w-[80%]',
+    'xl:w-[90%]',
     'lg:w-[80%]',
     'w-[100%]',
-    'p-2',
+    'px-2',
     'items-start',
     'justify-center',
     'gap-2',
@@ -248,15 +261,38 @@ character_defensive_modules_fieldset_legend.classList.add(
     "font-bold",
     "text-gray-900",
     "dark:text-white",
+    "cursor-pointer",
     "p-1"
 );
-character_defensive_modules_fieldset_legend.textContent = "Defensive modules";
+character_defensive_modules_fieldset_legend_svg.id = "defensive-module-menu";
+character_defensive_modules_fieldset_legend.addEventListener('click', function() {
+    hide_display_modules(this);
+})
+character_defensive_modules_fieldset_legend_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0', 'm-1.5', 'legend-svg');
+character_defensive_modules_fieldset_legend_svg.setAttribute("fill", "none");
+character_defensive_modules_fieldset_legend_svg.setAttribute("viewBox", "0 0 10 6");
+character_defensive_modules_fieldset_legend_svg_path.setAttribute("stroke", "currentColor");
+character_defensive_modules_fieldset_legend_svg_path.setAttribute("stroke-linecap", "round");
+character_defensive_modules_fieldset_legend_svg_path.setAttribute("stroke-linejoin", "round");
+character_defensive_modules_fieldset_legend_svg_path.setAttribute("stroke-width", "2");
+character_defensive_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+character_defensive_modules_fieldset_legend_svg.append(character_defensive_modules_fieldset_legend_svg_path);
+
+let character_defensive_modules_fieldset_legend_span = document.createElement('span');
+character_defensive_modules_fieldset_legend_span.textContent = "shield modules";
+
+character_defensive_modules_fieldset_legend.classList.add('flex', 'flex-row');
+
+character_defensive_modules_fieldset_legend.append(character_defensive_modules_fieldset_legend_span);
+character_defensive_modules_fieldset_legend.append(character_defensive_modules_fieldset_legend_svg);
 character_defensive_modules_fieldset.append(character_defensive_modules_fieldset_legend);
 
 character_offensive_modules_fieldset.classList.add(
-    'p-2',
+    'px-2',
     'mt-1',
     'flex',
+    '2xl:w-[80%]',
+    'xl:w-[90%]',
     'lg:w-[80%]',
     'w-[100%]',
     'gap-2',
@@ -274,18 +310,40 @@ character_offensive_modules_fieldset_legend.classList.add(
     "font-bold",
     "text-gray-900",
     "dark:text-white",
+    "cursor-pointer",
     "p-1"
 );
-character_offensive_modules_fieldset_legend.textContent = "Offensive modules";
-character_offensive_modules_fieldset.append(character_offensive_modules_fieldset_legend);
 
-character_offensive_modules_fieldset_legend.textContent = "Offensive modules";
+character_offensive_modules_fieldset_legend_svg.id = "offensive-module-menu";
+character_offensive_modules_fieldset_legend.addEventListener('click', function() {
+    hide_display_modules(this);
+})
+character_offensive_modules_fieldset_legend_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0', 'm-1.5', 'legend-svg');
+character_offensive_modules_fieldset_legend_svg.setAttribute("fill", "none");
+character_offensive_modules_fieldset_legend_svg.setAttribute("viewBox", "0 0 10 6");
+character_offensive_modules_fieldset_legend_svg_path.setAttribute("stroke", "currentColor");
+character_offensive_modules_fieldset_legend_svg_path.setAttribute("stroke-linecap", "round");
+character_offensive_modules_fieldset_legend_svg_path.setAttribute("stroke-linejoin", "round");
+character_offensive_modules_fieldset_legend_svg_path.setAttribute("stroke-width", "2");
+character_offensive_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+character_offensive_modules_fieldset_legend_svg.append(character_offensive_modules_fieldset_legend_svg_path);
+
+let character_offensive_modules_fieldset_legend_span = document.createElement('span');
+character_offensive_modules_fieldset_legend_span.textContent = "weaponry modules";
+
+character_offensive_modules_fieldset_legend.classList.add('flex', 'flex-row')
+
+character_offensive_modules_fieldset_legend.append(character_offensive_modules_fieldset_legend_span)
+character_offensive_modules_fieldset_legend.append(character_offensive_modules_fieldset_legend_svg)
+
 character_offensive_modules_fieldset.append(character_offensive_modules_fieldset_legend);
 
 character_electronicWarfare_modules_fieldset.classList.add(
-    'p-2',
+    'px-2',
     'mt-1',
     'flex',
+    '2xl:w-[80%]',
+    'xl:w-[90%]',
     'lg:w-[80%]',
     'w-[100%]',
     'gap-2',
@@ -305,15 +363,40 @@ character_electronicWarfare_modules_fieldset_legend.classList.add(
     "font-bold",
     "text-gray-900",
     "dark:text-white",
+    "cursor-pointer",
     "p-1"
 );
-character_electronicWarfare_modules_fieldset_legend.textContent = "Electronic warfare";
+
+
+character_electronicWarfare_modules_fieldset_legend_svg.id = "electronicWarfare-module-menu";
+character_electronicWarfare_modules_fieldset_legend.addEventListener('click', function() {
+    hide_display_modules(this);
+})
+character_electronicWarfare_modules_fieldset_legend_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0', 'm-1.5', 'legend-svg');
+character_electronicWarfare_modules_fieldset_legend_svg.setAttribute("fill", "none");
+character_electronicWarfare_modules_fieldset_legend_svg.setAttribute("viewBox", "0 0 10 6");
+character_electronicWarfare_modules_fieldset_legend_svg_path.setAttribute("stroke", "currentColor");
+character_electronicWarfare_modules_fieldset_legend_svg_path.setAttribute("stroke-linecap", "round");
+character_electronicWarfare_modules_fieldset_legend_svg_path.setAttribute("stroke-linejoin", "round");
+character_electronicWarfare_modules_fieldset_legend_svg_path.setAttribute("stroke-width", "2");
+character_electronicWarfare_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+character_electronicWarfare_modules_fieldset_legend_svg.append(character_electronicWarfare_modules_fieldset_legend_svg_path);
+
+let character_electronicWarfare_modules_fieldset_legend_span = document.createElement('span');
+character_electronicWarfare_modules_fieldset_legend_span.textContent = "Electronic warfare";
+
+character_electronicWarfare_modules_fieldset_legend.classList.add('flex', 'flex-row');
+
+character_electronicWarfare_modules_fieldset_legend.append(character_electronicWarfare_modules_fieldset_legend_span);
+character_electronicWarfare_modules_fieldset_legend.append(character_electronicWarfare_modules_fieldset_legend_svg);
 character_electronicWarfare_modules_fieldset.append(character_electronicWarfare_modules_fieldset_legend);
 
 character_other_modules_fieldset.classList.add(
-    'p-2',
+    'px-2',
     'mt-1',
     'flex',
+    '2xl:w-[80%]',
+    'xl:w-[90%]',
     'lg:w-[80%]',
     'w-[100%]',
     'gap-2',
@@ -332,9 +415,31 @@ character_other_modules_fieldset_legend.classList.add(
     "font-bold",
     "text-gray-900",
     "dark:text-white",
+    "cursor-pointer",
     "p-1"
 );
-character_other_modules_fieldset_legend.textContent = "Other modules";
+
+character_other_modules_fieldset_legend_svg.id = "electronicWarfare-module-menu";
+character_other_modules_fieldset_legend.addEventListener('click', function() {
+    hide_display_modules(this);
+})
+character_other_modules_fieldset_legend_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0', 'm-1.5', 'legend-svg');
+character_other_modules_fieldset_legend_svg.setAttribute("fill", "none");
+character_other_modules_fieldset_legend_svg.setAttribute("viewBox", "0 0 10 6");
+character_other_modules_fieldset_legend_svg_path.setAttribute("stroke", "currentColor");
+character_other_modules_fieldset_legend_svg_path.setAttribute("stroke-linecap", "round");
+character_other_modules_fieldset_legend_svg_path.setAttribute("stroke-linejoin", "round");
+character_other_modules_fieldset_legend_svg_path.setAttribute("stroke-width", "2");
+character_other_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+character_other_modules_fieldset_legend_svg.append(character_other_modules_fieldset_legend_svg_path);
+
+let character_other_modules_fieldset_legend_span = document.createElement('span');
+character_other_modules_fieldset_legend_span.textContent = "Utility modules";
+
+character_other_modules_fieldset_legend.classList.add('flex', 'flex-row');
+
+character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_span);
+character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_svg);
 character_other_modules_fieldset.append(character_other_modules_fieldset_legend);
 
 
@@ -404,15 +509,19 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 let defensive_module_div = document.createElement('div');
                 let defensive_module_label = document.createElement('label');
                 let defensive_module_content = document.createElement('div');
-                let defensive_module_text = document.createElement('span');
+                let defensive_module_text = document.createElement('div');
 
                 defensive_module_div.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+
 
                 defensive_module_div.classList.add(
                     'w-full',
                     'bg-red-500',
                     'relative',
-                    'h-[20px]'
+                    'h-[20px]',
+                    'hidden',
+                    'module-container',
+                    'mb-1'
                 )
 
                 defensive_module_label.classList.add(
@@ -420,6 +529,8 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     'font-shadow',
                     'text-white',
                     'text-sm',
+                    'hidden',
+                    'module-container'
                 );
                 defensive_module_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i]["name"].toLowerCase();
 
@@ -427,7 +538,9 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     'bg-blue-600',
                     'leading-none',
                     'h-[20px]',
-                    'absolute'
+                    'absolute',
+                    'hidden',
+                    'module-container'
                 );
 
                 defensive_module_text.classList.add(
@@ -440,6 +553,8 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     'font-shadow',
                     'text-blue-100',
                     'text-center',
+                    'hidden',
+                    'module-container'
                 );
 
                 defensive_module_text.textContent = `${map_informations['pc_npc'][i].ship["current_"+defense_name+"_defense"]} / ${map_informations['pc_npc'][i].ship.modules[module_i].effect.defense}`;
@@ -458,6 +573,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 let offensive_module_name_label = document.createElement('label');
 
                 offensive_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                offensive_module_container.classList.add('hidden', 'module-container', 'mb-1');
                 offensive_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
                 offensive_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
@@ -472,9 +588,9 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     let weapon_range_small = document.createElement('small');
                     let weapon_range_small_value = document.createElement('small');
 
-                    weapon_damage_type_span.classList.add('flex', 'flex-row', 'gap-1', 'lg:pl-2');
-                    weapon_damage_span.classList.add('flex', 'flex-row', 'gap-1', 'lg:pl-2');
-                    weapon_range_span.classList.add('flex', 'flex-row', 'gap-1', 'lg:pl-2');
+                    weapon_damage_type_span.classList.add('flex', 'flex-row', 'gap-1', 'pl-2');
+                    weapon_damage_span.classList.add('flex', 'flex-row', 'gap-1', 'pl-2');
+                    weapon_range_span.classList.add('flex', 'flex-row', 'gap-1', 'pl-2');
 
                     weapon_damage_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
                     weapon_damage_small.classList.add('font-shadow', 'text-white', 'text-sm');
@@ -514,7 +630,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                         let offensive_module_type_small_value = document.createElement('small');
                         let offensive_module_type_small_container = document.createElement('div');
 
-                        offensive_module_type_small_container.classList.add('flex', 'flex-row', 'lg:pl-2');
+                        offensive_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'py-1');
 
                         offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
                         offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
@@ -544,6 +660,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 let electronicWarfare_module_span = document.createElement('span');
 
                 electronicWarfare_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                electronicWarfare_module_container.classList.add('hidden', 'module-container', 'mb-1');
                 electronicWarfare_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
                 electronicWarfare_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
@@ -583,6 +700,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 let other_module_span = document.createElement('span');
 
                 other_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                other_module_container.classList.add('hidden', 'module-container', 'mb-1');
                 other_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
                 other_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
@@ -596,7 +714,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     other_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
 
                     other_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
-                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold', 'text-justify');
 
                     other_module_type_small_container.append(other_module_type_small);
                     other_module_type_small_container.append(other_module_type_small_value);
@@ -609,7 +727,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                         if (map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('hull')) {
                             content_value = `+${ value } hp`;
                         } else if (map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('propulsion')) {
-                            content_value = `+${ value } movement points`;
+                            content_value = `+${ value } `;
                         } else {
                             content_value = value;
                         }
@@ -633,5 +751,23 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
 
             }
         }
+    }
+}
+
+
+function hide_display_modules(e) {
+    let parent_element = e.parentNode;
+    console.log(parent_element)
+    let element_legend_svg = parent_element.querySelector('.legend-svg');
+    let element = parent_element.querySelectorAll('.module-container');
+    for (let i = 0; i < element.length; i++) {
+        if (element[i].classList.contains("hidden")) {
+            element[i].classList.remove('hidden');
+            element_legend_svg.classList.remove('rotate-180');
+        } else {
+            element[i].classList.add('hidden');
+            element_legend_svg.classList.add('rotate-180');
+        }
+
     }
 }
