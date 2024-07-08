@@ -1,20 +1,20 @@
 {% load static %}
 {% load i18n %}
-<div class="w-full overflow-hidden order-1 mx-auto min-[2000px]:text-xl 2xl:text-base text-sm 2xl:mb-2 mb-1 2xl:h-auto text-center bg-gray-800/40 text-white  2xl:border-b border-b border-solid border-slate-600 2xl:border-slate-600/0">
+<div class="w-full overflow-hidden order-1 mx-auto min-[2000px]:text-xl 2xl:text-base text-sm 2xl:mb-2 mb-1 2xl:h-auto text-center bg-gray-800/40 text-white 2xl:border-b border-b border-solid border-slate-600 2xl:border-slate-600/0">
   <p class="font-shadow">{% translate "You are now in the sector" %}: <b>{{ map_informations.sector.name }}</b></p>
   <p class="font-shadow">{% translate "This sector is owned by" %}: <b>{{ map_informations.sector.faction.name }}</b></p>
   <p class="font-shadow">{% translate "Security level" %}: <b>{{ map_informations.sector.security.translated_name }}</b></p>
   <div class="w-full mx-auto flex flex-row justify-center items-center gap-2">
     <span class="flex flex-row bg-neutral-600 m-1 rounded-l rounded-r flex justify-center items-center">
-      <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye p-2"></i></label>
-      <span id="player-coord-x" class="bg-emerald-400 font-bold px-1 lg:py-0.5 py-1"></span>
-      <span id="player-coord-y" class="bg-neutral-400 font-bold px-1 lg:py-0.5 py-1 rounded-r"></span>
+      <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye lg:p-2 md:p-1"></i></label>
+      <span id="player-coord-x" class="bg-emerald-400 font-bold lg:px-1 px-0.5 py-0.5 lg:py-1 md:p-1"></span>
+      <span id="player-coord-y" class="bg-neutral-400 font-bold lg:px-1 px-0.5 py-0.5 lg:py-1 md:p-1 rounded-r"></span>
     </span>
-    <span class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex justify-center items-center">
-      <label for="target-coord-name"><i class="fa-solid fa-satellite-dish p-2"></i></label>
-      <span id="target-coord-name" class="font-bold bg-neutral-600 px-1 lg:py-0.5 py-1 font-shadow">{% translate 'Nothing selected for now' %}</span>
-      <span id="target-coord-x" class="bg-emerald-400 font-bold px-1 lg:py-0.5 py-1"></span>
-      <span id="target-coord-y" class="bg-neutral-400 font-bold px-1 lg:py-0.5 py-1 rounded-r"></span>
+    <span class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex justify-center items-center lg:gap-0 gap-1">
+      <label for="target-coord-name"><i class="fa-solid fa-satellite-dish lg:p-2 md:p-1"></i></label>
+      <span id="target-coord-name" class="font-bold bg-neutral-600 lg:px-1 py-0.5 lg:py-1 md:p-1 font-shadow">{% translate 'Nothing selected for now' %}</span>
+      <span id="target-coord-x" class="bg-emerald-400 font-bold px-0.5 py-0.5 lg:py-1 md:p-1"></span>
+      <span id="target-coord-y" class="bg-neutral-400 font-bold px-0.5 py-0.5 lg:py-1 md:p-1 rounded-r"></span>
     </span>
   </div>
 </div>

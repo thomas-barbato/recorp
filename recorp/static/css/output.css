@@ -1043,6 +1043,10 @@ video {
   height: 5%;
 }
 
+.h-\[50px\] {
+  height: 50px;
+}
+
 .h-\[80\%\] {
   height: 80%;
 }
@@ -1147,6 +1151,10 @@ video {
   width: 95%;
 }
 
+.w-\[95px\] {
+  width: 95px;
+}
+
 .w-\[full\] {
   width: full;
 }
@@ -1244,18 +1252,8 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.-rotate-45 {
-  --tw-rotate: -45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .rotate-180 {
   --tw-rotate: 180deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-45 {
-  --tw-rotate: 45deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2407,6 +2405,10 @@ video {
   background-color: rgb(31 41 55 / 0.4);
 }
 
+.bg-gray-800\/50 {
+  background-color: rgb(31 41 55 / 0.5);
+}
+
 .bg-gray-900\/50 {
   background-color: rgb(17 24 39 / 0.5);
 }
@@ -2671,9 +2673,9 @@ video {
   padding-right: 0.125rem;
 }
 
-.px-1 {
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .px-3 {
@@ -2694,6 +2696,16 @@ video {
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
 }
 
 .py-1 {
@@ -2719,11 +2731,6 @@ video {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .pb-5 {
@@ -3589,6 +3596,16 @@ select {
 }
 */
 
+.thin-semi-transparent-scrollbar {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
+
+.thin-semi-transparent-scrollbar:hover {
+  scrollbar-color: #34D399 transparent;
+  scrollbar-width: thin;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -4101,10 +4118,6 @@ select {
     margin-top: 0.5rem;
   }
 
-  .md\:hidden {
-    display: none;
-  }
-
   .md\:h-\[5vh\] {
     height: 5vh;
   }
@@ -4143,6 +4156,10 @@ select {
 
   .md\:bg-center {
     background-position: center;
+  }
+
+  .md\:p-1 {
+    padding: 0.25rem;
   }
 
   .md\:p-3 {
@@ -4306,6 +4323,10 @@ select {
     justify-content: center;
   }
 
+  .lg\:gap-0 {
+    gap: 0px;
+  }
+
   .lg\:overflow-y-scroll {
     overflow-y: scroll;
   }
@@ -4314,18 +4335,18 @@ select {
     padding: 0.25rem;
   }
 
-  .lg\:py-0 {
-    padding-top: 0px;
-    padding-bottom: 0px;
+  .lg\:p-2 {
+    padding: 0.5rem;
   }
 
-  .lg\:py-0\.5 {
-    padding-top: 0.125rem;
-    padding-bottom: 0.125rem;
+  .lg\:px-1 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 
-  .lg\:pl-2 {
-    padding-left: 0.5rem;
+  .lg\:py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 
   .lg\:text-xl {

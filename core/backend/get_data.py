@@ -73,7 +73,7 @@ class GetMapDataFromDB:
         return {
             "is_pc": {"col": 20, "row": 15},
             "is_mobile": {"col": 11, "row": 11},
-            "is_tablet": {"col": 20, "row": 20},
+            "is_tablet": {"col": 20, "row": 15},
         }[device_type]
 
     @staticmethod

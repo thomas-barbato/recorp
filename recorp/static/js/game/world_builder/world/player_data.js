@@ -445,7 +445,6 @@ character_other_modules_fieldset.append(character_other_modules_fieldset_legend)
 
 for (let i = 0; i < map_informations['pc_npc'].length; i++) {
     if (map_informations['pc_npc'][i].user.user == current_user_id) {
-        console.log(map_informations['pc_npc'][i])
         let img_src = map_informations['pc_npc'][i].user.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${map_informations['pc_npc'][i].user.player}/0.jpg`
         character_basic_information_img.src = img_src;
         character_basic_information_li_name_b.textContent = "Name: ";
@@ -512,8 +511,6 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 let defensive_module_text = document.createElement('div');
 
                 defensive_module_div.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
-
-
                 defensive_module_div.classList.add(
                     'w-full',
                     'bg-red-500',
@@ -706,7 +703,6 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
 
                 for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
 
-
                     let other_module_type_small = document.createElement('small');
                     let other_module_type_small_value = document.createElement('small');
                     let other_module_type_small_container = document.createElement('div');
@@ -757,7 +753,6 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
 
 function hide_display_modules(e) {
     let parent_element = e.parentNode;
-    console.log(parent_element)
     let element_legend_svg = parent_element.querySelector('.legend-svg');
     let element = parent_element.querySelectorAll('.module-container');
     for (let i = 0; i < element.length; i++) {
