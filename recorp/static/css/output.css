@@ -3606,6 +3606,11 @@ select {
   scrollbar-width: thin;
 }
 
+.disabled-arrow {
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent, rgb(223, 5, 5) 15px, rgb(223, 5, 5) 15px);
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

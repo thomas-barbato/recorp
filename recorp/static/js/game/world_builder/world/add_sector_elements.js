@@ -18,13 +18,13 @@ function add_sector_background(background_name) {
         index_row++;
         index_col = 1;
     }
-
     for (let i = 0; i < map_informations.pc_npc.length; i++) {
         let player = map_informations.pc_npc[i]
         if (player.user.user == current_user_id) {
             hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
-
-            set_pathfinding_event();
+            if (!user_is_on_mobile_device()) {
+                set_pathfinding_event();
+            }
             document.querySelector('.tabletop-view').classList.remove('hidden')
             break;
         }
@@ -96,7 +96,11 @@ function add_sector_foreground(sector_element) {
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                if (!user_is_on_mobile_device()) {
+                    entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                } else {
+                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                }
 
                 img_div.classList.add(
                     'relative',
@@ -184,8 +188,12 @@ function add_pc_npc(data) {
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_npc_${data[i].user.player}`);
                 entry_point_border.setAttribute('data-modal-toggle', `modal-pc_npc_${data[i].user.player}`);
-                entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_npc_${data[i].user.player}` + "')");
-                entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+                if (!user_is_on_mobile_device()) {
+                    entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_npc_${data[i].user.player}` + "')");
+                    entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+                } else {
+                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-pc_npc_${data[i].user.player}` + "')");
+                }
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.classList.add('ship');
@@ -201,8 +209,11 @@ function add_pc_npc(data) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x - 1, data[i]["user"]["coordinates"].coord_y - 1);
                     border_color = "border-green-300";
                     entry_point.classList.add("player-ship-pos");
-                    entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
-                    entry_point.setAttribute('touchstart', 'reverse_player_ship_display()');
+                    if (!user_is_on_mobile_device()) {
+                        entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
+                    } else {
+                        entry_point.setAttribute('touchstart', 'reverse_player_ship_display()');
+                    }
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {

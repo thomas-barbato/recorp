@@ -10,6 +10,12 @@ let atlas = {
     "map_height_size": 40 * 32,
 }
 
+function user_is_on_mobile_device() {
+    return (
+        /\b(BlackBerry|webOS|iPhone|IEMobile|Android|Windows Phone|iPad|iPod|KFAPWI)\b/i.test(window.navigator.userAgent)
+    );
+}
+
 function reverse_player_ship_display() {
     var ids = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
         return element.id;
