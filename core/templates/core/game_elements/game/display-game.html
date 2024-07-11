@@ -34,17 +34,17 @@
 <div class="w-full flex items-center justify-center lg:hidden lg:order-99 order-3 mb-2 mt-2" dir="ltr" id="mobile-cross">
     <div class="w-[100px] h-[200px] flex flex-col">
         <div class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[95px] h-[50px] inset-center"/></div>
-        <div class="flex-1 w-full pb-5 relative bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" ontouchend="touchend_btn_style('left')" id="move-left"><i class="fa-solid fa-left-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
         <div class="flex-1 w-full pb-5 relative" id="top-right"><i class="text-emerald-400 absolute bottom-0"></i></div>
     </div>
     <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
-        <div class="flex-1 w-full pb-5 relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" id="move-top" ontouchstart="display_pathfinding_mobile('top')"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" ontouchend="touchend_btn_style('top')" id="move-top"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
         <div class="flex-1 w-full pb-5 self-center relative" id="center"><i class="fa-solid fa-location-crosshairs fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
-        <div class="flex-1 w-full pb-5 self-bottom relative bg-gray-800/40 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" id="move-bottom" ontouchstart="display_pathfinding_mobile('bottom')"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
+        <div class="flex-1 w-full pb-5 self-bottom relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" ontouchend="touchend_btn_style('bottom')" id="move-bottom"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
     </div>
     <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
         <div class="flex-1 w-full pb-5 relative"><i class="text-emerald-400 absolute top-0" id="bottom-left"></i></div>
-        <div class="flex-1 w-full pb-5 relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
+        <div class="flex-1 w-full pb-5 relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" ontouchend="touchend_btn_style('right')" id="move-right"><i class="fa-solid fa-right-long fa-3x text-emerald-400 inset-center arrow-icon"></i></div>
         <div class="flex-1 w-full pb-5 relative" id="bottom-right"><i class="text-emerald-400 absolute bottom-0"></i></div>
     </div>
 </div>

@@ -212,7 +212,7 @@ function add_pc_npc(data) {
                     if (!user_is_on_mobile_device()) {
                         entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                     } else {
-                        entry_point.setAttribute('touchstart', 'reverse_player_ship_display()');
+                        entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
                     }
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
