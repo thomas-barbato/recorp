@@ -279,7 +279,7 @@ character_defensive_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1
 character_defensive_modules_fieldset_legend_svg.append(character_defensive_modules_fieldset_legend_svg_path);
 
 let character_defensive_modules_fieldset_legend_span = document.createElement('span');
-character_defensive_modules_fieldset_legend_span.textContent = "shield modules";
+character_defensive_modules_fieldset_legend_span.textContent = "Shield";
 
 character_defensive_modules_fieldset_legend.classList.add('flex', 'flex-row');
 
@@ -329,7 +329,7 @@ character_offensive_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1
 character_offensive_modules_fieldset_legend_svg.append(character_offensive_modules_fieldset_legend_svg_path);
 
 let character_offensive_modules_fieldset_legend_span = document.createElement('span');
-character_offensive_modules_fieldset_legend_span.textContent = "weaponry modules";
+character_offensive_modules_fieldset_legend_span.textContent = "Weaponry";
 
 character_offensive_modules_fieldset_legend.classList.add('flex', 'flex-row')
 
@@ -394,6 +394,7 @@ character_electronicWarfare_modules_fieldset.append(character_electronicWarfare_
 character_other_modules_fieldset.classList.add(
     'px-2',
     'mt-1',
+    'mb-1',
     'flex',
     '2xl:w-[80%]',
     'xl:w-[90%]',
@@ -434,7 +435,7 @@ character_other_modules_fieldset_legend_svg_path.setAttribute("d", "M9 5 5 1 1 5
 character_other_modules_fieldset_legend_svg.append(character_other_modules_fieldset_legend_svg_path);
 
 let character_other_modules_fieldset_legend_span = document.createElement('span');
-character_other_modules_fieldset_legend_span.textContent = "Utility modules";
+character_other_modules_fieldset_legend_span.textContent = "Utility";
 
 character_other_modules_fieldset_legend.classList.add('flex', 'flex-row');
 

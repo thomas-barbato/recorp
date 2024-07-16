@@ -69,6 +69,7 @@ function update_player_coord_in_cache_array(player_name, coord) {
 }
 
 function async_reverse_ship(data) {
+    clear_path();
     gameSocket.send(JSON.stringify({
         message: JSON.stringify({
             "user": data.user,
