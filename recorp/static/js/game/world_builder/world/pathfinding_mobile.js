@@ -11,9 +11,10 @@ let mobile_current_player = new Player(
 
 function display_pathfinding_mobile(direction) {
     touchstart_btn_style(direction);
-    set_disabled_button_status(false);
+    unset_disabled_button_status();
     define_user_values();
     add_to_movement_array(direction);
+    movement_already_exists(movement_array[movement_array.length - 1]);
     let last_coord = movement_array[movement_array.length - 1].split('_');
     mobile_current_player.set_end_coord(
         parseInt(last_coord[1]),
@@ -24,27 +25,41 @@ function display_pathfinding_mobile(direction) {
 
         let can_be_crossed = true;
         let last_td_ship_el = document.getElementById(`${mobile_current_player.coord.end_y}_${mobile_current_player.coord.end_x}`);
-        let last_span_el = last_td_ship_el.querySelector('span');
-        last_span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
-        last_span_el.textContent = movement_array.length;
+        if (last_td_ship_el) {
+            let last_span_el = last_td_ship_el.querySelector('span');
+            last_span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
+            last_span_el.textContent = movement_array.length;
 
-        for (let row_i = mobile_current_player.coord.end_y; row_i < (mobile_current_player.coord.end_y + mobile_current_player.s_size.y); row_i++) {
-            for (let col_i = mobile_current_player.coord.end_x; col_i < (mobile_current_player.coord.end_x + mobile_current_player.s_size.x); col_i++) {
-                let td_ship_el = document.getElementById(`${row_i}_${col_i}`);
-                if (td_ship_el) {
-                    ship_arrival_coordinates.push(`${row_i}_${col_i}`);
-                    // check outbound
-                    if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
+            for (let row_i = mobile_current_player.coord.end_y; row_i < (mobile_current_player.coord.end_y + mobile_current_player.s_size.y); row_i++) {
+                for (let col_i = mobile_current_player.coord.end_x; col_i < (mobile_current_player.coord.end_x + mobile_current_player.s_size.x); col_i++) {
+                    let td_ship_el = document.getElementById(`${row_i}_${col_i}`);
+                    if (td_ship_el) {
+                        ship_arrival_coordinates.push(`${row_i}_${col_i}`);
+                        // check outbound
+                        if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
+                            if (col_i >= 41) {
+                                disable_button('right');
+                            } else if (col_i <= 0) {
+                                disable_button('left');
+                            }
+                            if (row_i >= 41) {
+                                disable_button('bottom');
+                            } else if (row_i <= 0) {
+                                disable_button('top');
+                            }
+                            can_be_crossed = false;
+                        }
+                    } else {
                         can_be_crossed = false;
                     }
-                } else {
-                    can_be_crossed = false;
                 }
             }
+            define_position_preview(ship_arrival_coordinates, can_be_crossed);
+        } else {
+            clean_previous_preview_position(ship_arrival_coordinates);
         }
-        define_position_preview(ship_arrival_coordinates, can_be_crossed);
     } else {
-        set_disabled_button_status(true);
+        set_disabled_center_button_status(true);
     }
 }
 
@@ -53,6 +68,8 @@ function add_to_movement_array(direction) {
     let modified_x = 0;
     let move_y = mobile_current_player.coord.start_y;
     let move_x = mobile_current_player.coord.start_x;
+    let last_position = 0;
+    let coord = 0;
     if (movement_array.length > 0) {
         switch (direction) {
             case "top":
@@ -68,16 +85,14 @@ function add_to_movement_array(direction) {
                 modified_x = 1;
                 break;
         }
-        let last_position = movement_array[(movement_array.length - 1)].split('_');
+        last_position = movement_array[(movement_array.length - 1)].split('_');
         move_y = parseInt(last_position[0]) + modified_y;
         move_x = parseInt(last_position[1]) + modified_x;
-    }
-    if (movement_array.length > 0) {
-        if (check_if_movement_already_exists() === false) {
-            movement_array.push(`${ move_y }_${ move_x }`);
+        coord = `${move_y}_${move_x}`
+        if (!movement_already_exists(coord)) {
+            movement_array.push(coord);
         } else {
-            delete_last_destination();
-            return;
+            delete_last_destination(coord);
         }
     } else {
         movement_array.push(`${ move_y }_${ move_x }`);
@@ -85,7 +100,7 @@ function add_to_movement_array(direction) {
 }
 
 function clear_path() {
-    set_disabled_button_status(false)
+    unset_disabled_button_status();
     for (let i = 0; i < movement_array.length; i++) {
         let td_ship_el = document.getElementById(`${movement_array[i]}`);
         let e_target = td_ship_el.querySelector('div>span');
@@ -96,40 +111,54 @@ function clear_path() {
     clean_previous_preview_position(ship_arrival_coordinates);
 }
 
-function set_disabled_button_status(is_disabled) {
+function set_disabled_center_button_status(is_disabled) {
+
     let center = document.querySelector('#center')
+    let center_i = center.querySelector('i');
+
+    if (is_disabled) {
+        center.classList.add('text-red-600', 'border-red-600', 'disabled-arrow');
+        center_i.classList.add('text-red-600');
+        center.classList.remove('text-emerald-400');
+        center_i.classList.remove('text-emerald-400');
+    } else {
+        center.classList.remove('text-red-600', 'disabled-arrow');
+        center_i.classList.remove('text-red-600');
+        center.classList.add('text-emerald-400');
+        center_i.classList.add('text-emerald-400');
+    }
+}
+
+function unset_disabled_button_status() {
+    let center = document.querySelector('#center');
+    let center_i = center.querySelector('i');
     let direction_icon = document.querySelectorAll('.arrow-icon');
     let direction_element = document.querySelectorAll('.direction-arrow');
 
-    if (is_disabled) {
-
-        for (let i = 0; i < direction_element.length; i++) {
-            direction_element[i].classList.remove('bg-gray-800/40', 'border-[#B1F1CB]');
-            direction_element[i].classList.add('border-red-600', 'disabled-arrow');
-        }
-        center.classList.add('text-red-600');
-        center.classList.remove('text-emerald-400');
-
-        for (let i = 0; i < direction_icon.length; i++) {
-            direction_icon[i].classList.remove('text-emerald-400');
-            direction_icon[i].classList.add('text-red-600');
-        }
-
-    } else {
-
-        for (let i = 0; i < direction_element.length; i++) {
-            direction_element[i].classList.add('bg-gray-800/40', 'border-[#B1F1CB]');
-            direction_element[i].classList.remove('border-red-600', 'disabled-arrow');
-        }
-
-        center.classList.remove('text-red-600');
-        center.classList.add('text-emerald-400');
-
-        for (let i = 0; i < direction_icon.length; i++) {
-            direction_icon[i].classList.remove('text-red-600');
-            direction_icon[i].classList.add('text-emerald-400');
-        }
+    for (let i = 0; i < direction_element.length; i++) {
+        direction_element[i].classList.add('bg-gray-800/40', 'border-[#B1F1CB]');
+        direction_element[i].classList.remove('border-red-600', 'disabled-arrow');
     }
+
+    center.classList.remove('text-red-600');
+    center.classList.add('text-emerald-400');
+    center_i.classList.remove('text-emerald-400');
+    center.classList.remove('text-red-600', 'disabled-arrow');
+
+    for (let i = 0; i < direction_icon.length; i++) {
+        direction_icon[i].classList.remove('text-red-600');
+        direction_icon[i].classList.add('text-emerald-400');
+    }
+}
+
+function disable_button(direction) {
+    let button = document.querySelector('#move-' + direction);
+    let button_i = button.querySelector('i');
+
+    button.classList.remove('text-emerald-400', 'border-[#B1F1CB]');
+    button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
+    button_i.classList.remove('text-emerald-400');
+    button_i.classList.add('text-red-600');
 }
 
 
@@ -316,25 +345,38 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
     ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length)
 }
 
-function check_if_movement_already_exists() {
-    return new Set(movement_array).size !== movement_array.length
+function movement_already_exists(coord) {
+    console.log(movement_array.includes(coord))
+    return movement_array.includes(coord);
 }
 
-function delete_last_destination() {
-    let e = document.getElementById(movement_array[movement_array.length - 1]);
-    let e_span = e.querySelector('span');
-    e_span.classList.remove(
-        'border-t',
-        'border-b',
-        'border-l',
-        'border-r',
-        'border-red-600',
-        'border-amber-400',
-        'bg-red-600/50',
-        'bg-amber-400/50',
-        'bg-teal-500/30'
-    )
-    return movement_array.pop();
+function delete_last_destination(coord) {
+    let index = movement_array.findIndex(x => x == coord);
+    for (let i = index; i < movement_array.length; i++) {
+        let e = document.getElementById(movement_array[i]);
+        let e_span = e.querySelector('span');
+        e_span.classList.remove(
+            'bg-teal-500/30'
+        );
+        e_span.textContent = "";
+    }
+    for (let i = 0; i < ship_arrival_coordinates.length; i++) {
+        let e = document.getElementById(ship_arrival_coordinates[i]);
+        let e_span = e.querySelector('span');
+        e_span.classList.remove(
+            'border-t',
+            'border-b',
+            'border-l',
+            'border-r',
+            'border-red-600',
+            'border-amber-400',
+            'bg-red-600/50',
+            'bg-amber-400/50',
+        );
+    }
+
+    movement_array.splice(index, movement_array.length, coord);
+    ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
 }
 
 function touchstart_btn_style(direction) {
