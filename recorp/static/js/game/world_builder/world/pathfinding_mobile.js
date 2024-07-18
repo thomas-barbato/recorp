@@ -37,7 +37,15 @@ function display_pathfinding_mobile(direction) {
                 for (let col_i = mobile_current_player.coord.end_x; col_i < (mobile_current_player.coord.end_x + mobile_current_player.s_size.x); col_i++) {
                     let td_ship_el = document.getElementById(`${row_i}_${col_i}`);
                     if (td_ship_el) {
-                        ship_arrival_coordinates.push(`${row_i}_${col_i}`);
+                        let temp_row_i = row_i;
+                        let temp_col_i = col_i;
+                        if (mobile_current_player.s_size.y == 3) {
+                            temp_row_i = row_i - 1;
+                        }
+                        if (mobile_current_player.s_size.x == 3) {
+                            temp_col_i = col_i - 1;
+                        }
+                        ship_arrival_coordinates.push(`${temp_row_i}_${temp_col_i}`);
                         // check outbound
                         if (col_i >= 39 || row_i >= 39 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
                             if (col_i > 39) {
@@ -295,10 +303,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
-                let ship_arrival_split = ship_arrival_coordinates[i].split('_')
-                let ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
-                let ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
-                let td_ship_el = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`);
+                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (td_ship_el.classList.contains('player-ship-pos')) {
                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
@@ -358,20 +363,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
     }
     if (can_be_crossed == true) {
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-            let ship_arrival_split = ship_arrival_coordinates[i].split('_');
-            let ship_arrival_y = 0;
-            let ship_arrival_x = 0;
-            if (mobile_current_player.s_size.y == 3) {
-                ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
-            } else {
-                ship_arrival_y = parseInt(ship_arrival_split[0]);
-            }
-            if (mobile_current_player.s_size.x == 3) {
-                ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
-            } else {
-                ship_arrival_x = parseInt(ship_arrival_split[1]);
-            }
-            let td_ship_el = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`);
+            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
             let span_ship_el = td_ship_el.querySelector('span');
             span_ship_el.textContent = "";
             span_ship_el.classList.remove('bg-teal-500/30');
@@ -382,20 +374,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
         current_player.set_selected_cell_bool(true);
     } else {
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-            let ship_arrival_split = ship_arrival_coordinates[i].split('_');
-            let ship_arrival_y = 0;
-            let ship_arrival_x = 0;
-            if (mobile_current_player.s_size.y == 3) {
-                ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
-            } else {
-                ship_arrival_y = parseInt(ship_arrival_split[0]);
-            }
-            if (mobile_current_player.s_size.x == 3) {
-                ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
-            } else {
-                ship_arrival_x = parseInt(ship_arrival_split[1]);
-            }
-            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`)
+            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
             uncrossable_span_ship_el.textContent = "";
             uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
@@ -406,20 +385,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
 
 function clean_previous_preview_position(ship_arrival_coordinates) {
     for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-        let ship_arrival_split = ship_arrival_coordinates[i].split('_');
-        let ship_arrival_y = 0;
-        let ship_arrival_x = 0;
-        if (mobile_current_player.s_size.y == 3) {
-            ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
-        } else {
-            ship_arrival_y = parseInt(ship_arrival_split[0]);
-        }
-        if (mobile_current_player.s_size.x == 3) {
-            ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
-        } else {
-            ship_arrival_x = parseInt(ship_arrival_split[1]);
-        }
-        let e = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`);
+        let e = document.getElementById(ship_arrival_coordinates[i]);
         let e_span = e.querySelector('span');
         e_span.classList.remove(
             'border-t',
