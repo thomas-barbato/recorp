@@ -140,7 +140,7 @@ function display_pathfinding() {
                             let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
                             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
                             uncrossable_span_ship_el.textContent = "";
-                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
+                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30');
                             uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse');
                         }
                         current_player.set_selected_cell_bool(false);

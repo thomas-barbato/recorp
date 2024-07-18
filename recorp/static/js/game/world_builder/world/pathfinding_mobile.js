@@ -16,15 +16,18 @@ function display_pathfinding_mobile(direction) {
     add_to_movement_array(direction);
     movement_already_exists(movement_array[movement_array.length - 1]);
     let last_coord = movement_array[movement_array.length - 1].split('_');
+    // fix display for 3x3 ship, move start in the middle.
     mobile_current_player.set_end_coord(
         parseInt(last_coord[1]),
         parseInt(last_coord[0]),
     );
+
     if (mobile_current_player.move_points_value >= movement_array.length) {
         clean_previous_preview_position(ship_arrival_coordinates);
 
         let can_be_crossed = true;
         let last_td_ship_el = document.getElementById(`${mobile_current_player.coord.end_y}_${mobile_current_player.coord.end_x}`);
+
         if (last_td_ship_el) {
             let last_span_el = last_td_ship_el.querySelector('span');
             last_span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
@@ -36,18 +39,38 @@ function display_pathfinding_mobile(direction) {
                     if (td_ship_el) {
                         ship_arrival_coordinates.push(`${row_i}_${col_i}`);
                         // check outbound
-                        if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
-                            if (col_i >= 41) {
+                        if (col_i >= 39 || row_i >= 39 || td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
+                            if (col_i > 39) {
                                 disable_button('right');
-                            } else if (col_i <= 0) {
+                                can_be_crossed = false;
+                            } else if (col_i < 1) {
                                 disable_button('left');
+                                can_be_crossed = false;
+                            } else if (col_i == 39) {
+                                disable_button('right');
+                                can_be_crossed = true;
+                            } else if (col_i == 1) {
+                                disable_button('left');
+                                can_be_crossed = true;
+                            } else {
+                                can_be_crossed = true;
                             }
-                            if (row_i >= 41) {
+
+                            if (row_i > 39) {
                                 disable_button('bottom');
-                            } else if (row_i <= 0) {
+                                can_be_crossed = false;
+                            } else if (row_i < 1) {
                                 disable_button('top');
+                                can_be_crossed = false;
+                            } else if (row_i == 39) {
+                                can_be_crossed = true;
+                                disable_button('right');
+                            } else if (row_i == 1) {
+                                disable_button('top');
+                                can_be_crossed = true;
+                            } else {
+                                can_be_crossed = true;
                             }
-                            can_be_crossed = false;
                         }
                     } else {
                         can_be_crossed = false;
@@ -112,16 +135,25 @@ function clear_path() {
 }
 
 function set_disabled_center_button_status(is_disabled) {
-
+    let top = document.querySelector('#move-top');
+    let bottom = document.querySelector('#move-bottom');
+    let left = document.querySelector('#move-left');
+    let right = document.querySelector('#move-right');
     let center = document.querySelector('#center')
     let center_i = center.querySelector('i');
 
     if (is_disabled) {
+        center.disabled = true;
         center.classList.add('text-red-600', 'border-red-600', 'disabled-arrow');
         center_i.classList.add('text-red-600');
         center.classList.remove('text-emerald-400');
         center_i.classList.remove('text-emerald-400');
+        top.classList.add('border-b-red-600');
+        bottom.classList.add('border-t-red-600');
+        left.classList.add('border-r-red-600');
+        right.classList.add('border-l-red-600');
     } else {
+        center.disabled = false;
         center.classList.remove('text-red-600', 'disabled-arrow');
         center_i.classList.remove('text-red-600');
         center.classList.add('text-emerald-400');
@@ -132,6 +164,10 @@ function set_disabled_center_button_status(is_disabled) {
 function unset_disabled_button_status() {
     let center = document.querySelector('#center');
     let center_i = center.querySelector('i');
+    let top = document.querySelector('#move-top');
+    let bottom = document.querySelector('#move-bottom');
+    let left = document.querySelector('#move-left');
+    let right = document.querySelector('#move-right');
     let direction_icon = document.querySelectorAll('.arrow-icon');
     let direction_element = document.querySelectorAll('.direction-arrow');
 
@@ -145,6 +181,17 @@ function unset_disabled_button_status() {
     center_i.classList.remove('text-emerald-400');
     center.classList.remove('text-red-600', 'disabled-arrow');
 
+    top.disabled = false;
+    bottom.disabled = false;
+    left.disabled = false;
+    right.disabled = false;
+    center.disabled = false;
+
+    top.classList.remove('border-b-red-600');
+    bottom.classList.remove('border-t-red-600');
+    left.classList.remove('border-r-red-600');
+    right.classList.remove('border-l-red-600');
+
     for (let i = 0; i < direction_icon.length; i++) {
         direction_icon[i].classList.remove('text-red-600');
         direction_icon[i].classList.add('text-emerald-400');
@@ -155,6 +202,7 @@ function disable_button(direction) {
     let button = document.querySelector('#move-' + direction);
     let button_i = button.querySelector('i');
 
+    button.disabled = true;
     button.classList.remove('text-emerald-400', 'border-[#B1F1CB]');
     button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
     button_i.classList.remove('text-emerald-400');
@@ -247,7 +295,10 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
-                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                let ship_arrival_split = ship_arrival_coordinates[i].split('_')
+                let ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
+                let ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
+                let td_ship_el = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`);
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (td_ship_el.classList.contains('player-ship-pos')) {
                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
@@ -307,7 +358,20 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
     }
     if (can_be_crossed == true) {
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+            let ship_arrival_split = ship_arrival_coordinates[i].split('_');
+            let ship_arrival_y = 0;
+            let ship_arrival_x = 0;
+            if (mobile_current_player.s_size.y == 3) {
+                ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
+            } else {
+                ship_arrival_y = parseInt(ship_arrival_split[0]);
+            }
+            if (mobile_current_player.s_size.x == 3) {
+                ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
+            } else {
+                ship_arrival_x = parseInt(ship_arrival_split[1]);
+            }
+            let td_ship_el = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`);
             let span_ship_el = td_ship_el.querySelector('span');
             span_ship_el.textContent = "";
             span_ship_el.classList.remove('bg-teal-500/30');
@@ -318,7 +382,20 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
         current_player.set_selected_cell_bool(true);
     } else {
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
+            let ship_arrival_split = ship_arrival_coordinates[i].split('_');
+            let ship_arrival_y = 0;
+            let ship_arrival_x = 0;
+            if (mobile_current_player.s_size.y == 3) {
+                ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
+            } else {
+                ship_arrival_y = parseInt(ship_arrival_split[0]);
+            }
+            if (mobile_current_player.s_size.x == 3) {
+                ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
+            } else {
+                ship_arrival_x = parseInt(ship_arrival_split[1]);
+            }
+            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`)
             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
             uncrossable_span_ship_el.textContent = "";
             uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
@@ -329,7 +406,20 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
 
 function clean_previous_preview_position(ship_arrival_coordinates) {
     for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-        let e = document.getElementById(ship_arrival_coordinates[i]);
+        let ship_arrival_split = ship_arrival_coordinates[i].split('_');
+        let ship_arrival_y = 0;
+        let ship_arrival_x = 0;
+        if (mobile_current_player.s_size.y == 3) {
+            ship_arrival_y = parseInt(ship_arrival_split[0]) - 1;
+        } else {
+            ship_arrival_y = parseInt(ship_arrival_split[0]);
+        }
+        if (mobile_current_player.s_size.x == 3) {
+            ship_arrival_x = parseInt(ship_arrival_split[1]) - 1;
+        } else {
+            ship_arrival_x = parseInt(ship_arrival_split[1]);
+        }
+        let e = document.getElementById(`${ship_arrival_y}_${ship_arrival_x}`);
         let e_span = e.querySelector('span');
         e_span.classList.remove(
             'border-t',
@@ -346,7 +436,6 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
 }
 
 function movement_already_exists(coord) {
-    console.log(movement_array.includes(coord))
     return movement_array.includes(coord);
 }
 
