@@ -84,16 +84,16 @@ function add_sector_foreground(sector_element) {
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
-                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row)].cells[parseInt(index_col)];
+                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
                 let entry_point_div = entry_point.querySelector('div');
-                let entry_point_border = entry_point.querySelector('span');
+                let entry_point_border = entry_point_div.querySelector('span');
                 let img_div = document.createElement('div');
 
                 entry_point.classList.add('uncrossable');
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
                 entry_point_border.classList.add('hover:border-dashed', 'border-amber-500', 'cursor-pointer');
-                entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
+                entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
                 if (!user_is_on_mobile_device()) {
@@ -173,7 +173,7 @@ function add_pc_npc(data) {
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
 
-                let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
+                let entry_point = document.querySelector('.tabletop-view').rows[coord_y + 1].cells[coord_x + 1];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
@@ -299,12 +299,12 @@ function hide_sector_overflow(coord_x, coord_y) {
         }
     }
 
-    document.getElementById('0_0').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
+    document.getElementById('Y_X').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
 
 }
 
 function update_user_coord_display(x, y) {
-    document.querySelector('#player-coord-x').textContent = `x = ${x - 1}`;
+    document.querySelector('#player-coord-x').textContent = `x = ${x}`;
     document.querySelector('#player-coord-y').textContent = `y = ${y}`;
 }
 

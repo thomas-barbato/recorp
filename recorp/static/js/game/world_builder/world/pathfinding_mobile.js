@@ -44,11 +44,12 @@ function display_pathfinding_mobile(direction) {
             for (let row_i = mobile_current_player.coord.end_y; row_i > (mobile_current_player.coord.end_y - mobile_current_player.s_size.y); row_i--) {
                 for (let col_i = mobile_current_player.coord.end_x; col_i < (mobile_current_player.coord.end_x + mobile_current_player.s_size.x); col_i++) {
                     let td_ship_el = document.getElementById(`${row_i + coord_minus_ship_size_y}_${col_i + coord_minus_ship_size_x}`);
+                    final_row_i = row_i + coord_minus_ship_size_y;
+                    final_col_i = col_i + coord_minus_ship_size_x;
                     if (td_ship_el) {
                         if (td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
                             can_be_crossed_temp_array.push(false);
                         }
-                        ship_arrival_coordinates.push(`${row_i + coord_minus_ship_size_y}_${col_i + coord_minus_ship_size_x}`);
                         if ((row_i + coord_minus_ship_size_y) < 1) {
                             disable_button('top');
                         } else if ((row_i + coord_minus_ship_size_y) >= 39) {
@@ -58,6 +59,9 @@ function display_pathfinding_mobile(direction) {
                             disable_button('left');
                         } else if ((col_i + coord_minus_ship_size_x) >= 39) {
                             disable_button('right');
+                        }
+                        if (document.getElementById(`${row_i + coord_minus_ship_size_y}_${col_i + coord_minus_ship_size_x}`)) {
+                            ship_arrival_coordinates.push(`${row_i + coord_minus_ship_size_y}_${col_i + coord_minus_ship_size_x}`);
                         }
 
                     } else {
@@ -286,30 +290,33 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             span_ship_el.textContent = `${i + 1}`;
         }
     }
+    console.log(ship_arrival_coordinates);
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
-                if (td_ship_el.classList.contains('player-ship-pos')) {
-                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border');
-                }
-                if (i == 8) {
-                    span_ship_el.classList.add('border-t', 'border-r');
-                } else if (i == 7) {
-                    span_ship_el.classList.add('border-t');
-                } else if (i == 6) {
-                    span_ship_el.classList.add('border-l', 'border-t');
-                } else if (i == 5) {
-                    span_ship_el.classList.add('border-r');
-                } else if (i == 3) {
-                    span_ship_el.classList.add('border-l');
-                } else if (i == 2) {
-                    span_ship_el.classList.add('border-b', 'border-r');
-                } else if (i == 1) {
-                    span_ship_el.classList.add('border-b');
-                } else if (i == 0) {
-                    span_ship_el.classList.add('border-b', 'border-l');
+                if (span_ship_el) {
+                    if (td_ship_el.classList.contains('player-ship-pos')) {
+                        span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border');
+                    }
+                    if (i == 8) {
+                        span_ship_el.classList.add('border-t', 'border-r');
+                    } else if (i == 7) {
+                        span_ship_el.classList.add('border-t');
+                    } else if (i == 6) {
+                        span_ship_el.classList.add('border-l', 'border-t');
+                    } else if (i == 5) {
+                        span_ship_el.classList.add('border-r');
+                    } else if (i == 3) {
+                        span_ship_el.classList.add('border-l');
+                    } else if (i == 2) {
+                        span_ship_el.classList.add('border-b', 'border-r');
+                    } else if (i == 1) {
+                        span_ship_el.classList.add('border-b');
+                    } else if (i == 0) {
+                        span_ship_el.classList.add('border-b', 'border-l');
+                    }
                 }
             }
             break;
@@ -350,9 +357,10 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
             let span_ship_el = td_ship_el.querySelector('span');
-            span_ship_el.textContent = "";
-            span_ship_el.classList.remove('bg-teal-500/30');
-            span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400');
+            if (span_ship_el) {
+                span_ship_el.classList.remove('bg-teal-500/30');
+                span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400');
+            }
         }
         // set real coordinates
         current_player.set_fullsize_coordinates(ship_arrival_coordinates);
@@ -361,9 +369,11 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
             let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
-            uncrossable_span_ship_el.textContent = "";
-            uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
-            uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600');
+            if (uncrossable_span_ship_el) {
+                uncrossable_span_ship_el.textContent = "";
+                uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
+                uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600');
+            }
         }
     }
 }
