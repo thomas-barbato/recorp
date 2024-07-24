@@ -66,13 +66,13 @@ window.addEventListener('load', () => {
         const data = JSON.parse(e.data);
         switch (data.type) {
             case "player_move":
-                update_player_coord(data.message)
+                update_player_coord(data.message);
                 break;
             case "async_reverse_ship":
-                reverse_ship(data.message)
+                reverse_ship(data.message);
                 break;
             case "player_attack":
-                update_ship_after_attack(data.message)
+                update_ship_after_attack(data.message);
                 break;
             case "send_message":
                 //sendMessage(data);

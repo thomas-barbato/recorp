@@ -1,6 +1,7 @@
 let movement_array = [];
 let ship_arrival_coordinates = []
 let can_be_crossed_temp_array = [];
+let last_direction = "";
 
 let mobile_current_player = new Player(
     null,
@@ -85,37 +86,49 @@ function display_pathfinding_mobile(direction) {
 function add_to_movement_array(direction) {
     let modified_y = 0;
     let modified_x = 0;
-    let move_y = mobile_current_player.coord.start_y;
-    let move_x = mobile_current_player.coord.start_x;
-    let last_position = 0;
+    let move_y = 0;
+    let move_x = 0;
     let coord = 0;
+    switch (direction) {
+        case "top":
+            modified_y = -1;
+            break;
+        case "bottom":
+            modified_y = 1;
+            break;
+        case "left":
+            modified_x = -1;
+            break;
+        case "right":
+            modified_x = 1;
+            break;
+    }
+
+
+    if (movement_array.length > 0) {
+        let last_position = movement_array.slice(-1)[0].split('_');
+        move_y = parseInt(last_position[0]) + modified_y;
+        move_x = parseInt(last_position[1]) + modified_x;
+    } else {
+        move_y = mobile_current_player.coord.start_y;
+        move_x = mobile_current_player.coord.start_x;
+    }
+
+    coord = `${move_y}_${move_x}`;
+
     if (mobile_current_player.move_points_value >= movement_array.length) {
-        if (movement_array.length > 0) {
-            switch (direction) {
-                case "top":
-                    modified_y = -1;
-                    break;
-                case "bottom":
-                    modified_y = 1;
-                    break;
-                case "left":
-                    modified_x = -1;
-                    break;
-                case "right":
-                    modified_x = 1;
-                    break;
-            }
-            last_position = movement_array.slice(-1)[0].split('_');
-            move_y = parseInt(last_position[0]) + modified_y;
-            move_x = parseInt(last_position[1]) + modified_x;
-            coord = `${move_y}_${move_x}`;
-            if (!movement_already_exists(coord)) {
-                movement_array.push(coord);
-            } else {
-                delete_last_destination(coord);
-            }
+        if (!movement_already_exists(coord)) {
+            set_disabled_center_button_status(false);
+            last_direction = direction;
+            movement_array.push(coord);
         } else {
-            movement_array.push(`${ move_y }_${ move_x }`);
+            set_disabled_center_button_status(true);
+            delete_last_destination(coord);
+        }
+    } else {
+        set_disabled_center_button_status(true);
+        if (movement_already_exists(coord)) {
+            delete_last_destination(coord);
         }
     }
 }
@@ -290,7 +303,6 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             span_ship_el.textContent = `${i + 1}`;
         }
     }
-    console.log(ship_arrival_coordinates);
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
@@ -354,28 +366,29 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             break;
     }
     if (can_be_crossed == true) {
+        set_disabled_center_button_status(false);
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
             let span_ship_el = td_ship_el.querySelector('span');
             if (span_ship_el) {
-                span_ship_el.classList.remove('bg-teal-500/30');
+                span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
                 span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400');
             }
         }
-        // set real coordinates
-        current_player.set_fullsize_coordinates(ship_arrival_coordinates);
-        current_player.set_selected_cell_bool(true);
     } else {
+        set_disabled_center_button_status(true);
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
             let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
             if (uncrossable_span_ship_el) {
-                uncrossable_span_ship_el.textContent = "";
                 uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
                 uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600');
             }
         }
     }
+    // set real coordinates
+    current_player.set_fullsize_coordinates(ship_arrival_coordinates);
+    current_player.set_selected_cell_bool(true);
 }
 
 function clean_previous_preview_position(ship_arrival_coordinates) {

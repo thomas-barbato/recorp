@@ -206,7 +206,7 @@ function add_pc_npc(data) {
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
                 if (data[i]["user"]["user"] == current_user_id) {
-                    update_user_coord_display(data[i]["user"]["coordinates"].coord_x - 1, data[i]["user"]["coordinates"].coord_y - 1);
+                    update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
                     entry_point.classList.add("player-ship-pos");
                     if (!user_is_on_mobile_device()) {
@@ -305,7 +305,7 @@ function hide_sector_overflow(coord_x, coord_y) {
 
 function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-x').textContent = `x = ${x}`;
-    document.querySelector('#player-coord-y').textContent = `y = ${y}`;
+    document.querySelector('#player-coord-y').textContent = `y = ${y    }`;
 }
 
 function update_target_coord_display() {

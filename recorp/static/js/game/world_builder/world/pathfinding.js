@@ -35,11 +35,9 @@ function display_pathfinding() {
                 if (i < pathfinder_obj.path.length - 1) {
                     span_el.classList.add('bg-teal-500/30');
                     span_el.classList.add('text-white', 'font-bold', 'text-center');
-                    span_el.textContent = i + 1;
                     // if i index is same has path - 1
                     // show ship placeholder.
                 } else if (i == pathfinder_obj.path.length - 1) {
-                    span_el.textContent = "";
                     // will be used to stock real ship coordinates
                     let ship_arrival_coordinates = []
                     let can_be_crossed = true;
@@ -123,8 +121,7 @@ function display_pathfinding() {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
                             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                             let span_ship_el = td_ship_el.querySelector('span');
-                            span_ship_el.textContent = "";
-                            span_ship_el.classList.remove('bg-teal-500/30');
+                            span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
                             span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400', 'animate-pulse');
                         }
                         // set new end_coord
@@ -139,17 +136,18 @@ function display_pathfinding() {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
                             let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
                             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
-                            uncrossable_span_ship_el.textContent = "";
-                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30');
+                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
                             uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse');
                         }
                         current_player.set_selected_cell_bool(false);
                     }
                 }
             } else {
-                span_el.textContent = i + 1;
                 span_el.classList.add('bg-red-600/30', 'border-red-600', 'text-white', 'font-bold', 'text-center', 'animate-pulse');
             }
+            // display coord on screen.
+            span_el.classList.add('text-white', 'font-bold', 'text-center');
+            span_el.textContent = i + 1;
         }
 
     } else {
