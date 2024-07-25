@@ -52,14 +52,14 @@ function display_pathfinding_mobile(direction) {
                             can_be_crossed_temp_array.push(false);
                         }
                         if ((row_i + coord_minus_ship_size_y) < 1) {
-                            disable_button('top');
+                            disable_button(['top']);
                         } else if ((row_i + coord_minus_ship_size_y) >= 39) {
-                            disable_button('bottom');
+                            disable_button(['bottom']);
                         }
                         if ((col_i + coord_minus_ship_size_x) < 1) {
-                            disable_button('left');
+                            disable_button(['left']);
                         } else if ((col_i + coord_minus_ship_size_x) >= 39) {
-                            disable_button('right');
+                            disable_button(['right']);
                         }
                         if (document.getElementById(`${row_i + coord_minus_ship_size_y}_${col_i + coord_minus_ship_size_x}`)) {
                             ship_arrival_coordinates.push(`${row_i + coord_minus_ship_size_y}_${col_i + coord_minus_ship_size_x}`);
@@ -72,11 +72,34 @@ function display_pathfinding_mobile(direction) {
             }
             if (can_be_crossed_temp_array.length > 0) {
                 can_be_crossed = false;
-                can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length)
+                can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
             }
             define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
+            if (mobile_current_player.move_points_value == movement_array.length) {
+                let reverse_last_direction = "";
+                switch (last_direction) {
+                    case "left":
+                        reverse_last_direction = "right";
+                        break;
+                    case "right":
+                        reverse_last_direction = "left";
+                        break;
+                    case "top":
+                        reverse_last_direction = "bottom";
+                        break;
+                    case "bottom":
+                        reverse_last_direction = "top";
+                        break;
+                    default:
+                        break;
+                }
+                let direction_array = ["top", "bottom", "right", "left"];
+                let block_these_buttons = direction_array.filter(e => e !== reverse_last_direction);
+                disable_button(block_these_buttons);
+            }
         } else {
             clean_previous_preview_position(ship_arrival_coordinates);
+            set_disabled_center_button_status(true);
         }
     } else {
         set_disabled_center_button_status(true);
@@ -123,6 +146,7 @@ function add_to_movement_array(direction) {
             movement_array.push(coord);
         } else {
             set_disabled_center_button_status(true);
+            last_direction = direction;
             delete_last_destination(coord);
         }
     } else {
@@ -141,7 +165,7 @@ function clear_path() {
         e_target.classList.remove('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
         e_target.textContent = "";
     }
-    movement_array.splice(0, movement_array.length)
+    movement_array.splice(0, movement_array.length);
     clean_previous_preview_position(ship_arrival_coordinates);
 }
 
@@ -169,6 +193,10 @@ function set_disabled_center_button_status(is_disabled) {
         center_i.classList.remove('text-red-600');
         center.classList.add('text-emerald-400');
         center_i.classList.add('text-emerald-400');
+        top.classList.remove('border-b-red-600');
+        bottom.classList.remove('border-t-red-600');
+        left.classList.remove('border-r-red-600');
+        right.classList.remove('border-l-red-600');
     }
 }
 
@@ -210,14 +238,16 @@ function unset_disabled_button_status() {
 }
 
 function disable_button(direction) {
-    let button = document.querySelector('#move-' + direction);
-    let button_i = button.querySelector('i');
+    for (let i = 0; i < direction.length; i++) {
+        let button = document.querySelector('#move-' + direction[i]);
+        let button_i = button.querySelector('i');
 
-    button.disabled = true;
-    button.classList.remove('text-emerald-400', 'border-[#B1F1CB]');
-    button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
-    button_i.classList.remove('text-emerald-400');
-    button_i.classList.add('text-red-600');
+        button.disabled = true;
+        button.classList.remove('text-emerald-400', 'border-[#B1F1CB]');
+        button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
+        button_i.classList.remove('text-emerald-400');
+        button_i.classList.add('text-red-600');
+    }
 }
 
 
@@ -387,7 +417,6 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
         }
     }
     // set real coordinates
-    current_player.set_fullsize_coordinates(ship_arrival_coordinates);
     current_player.set_selected_cell_bool(true);
 }
 
@@ -440,6 +469,25 @@ function delete_last_destination(coord) {
 
     movement_array.splice(index, movement_array.length, coord);
     ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
+}
+
+function mobile_movement_action() {
+    let e = document.querySelector('#center');
+    if (e && e.disabled == false) {
+        mobile_current_player.set_fullsize_coordinates(ship_arrival_coordinates.reverse());
+        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
+            return element.id;
+        });
+        cleanCss();
+        async_move({
+            player: mobile_current_player.player,
+            end_x: mobile_current_player.coord.end_x,
+            end_y: mobile_current_player.coord.end_y,
+            is_reversed: mobile_current_player.reversed_ship_status,
+            start_id_array: player_coord_array.reverse(),
+            destination_id_array: mobile_current_player.fullsize_coordinate,
+        });
+    }
 }
 
 function touchstart_btn_style(direction) {

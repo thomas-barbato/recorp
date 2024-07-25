@@ -40,7 +40,7 @@
     </div>
     <div class="w-[100px] h-[200px] flex flex-col" dir="ltr">
         <button type='button' class="flex-1 w-full pb-5 relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" ontouchend="touchend_btn_style('top')" id="move-top"><i class="fa-solid fa-up-long fa-3x text-emerald-400 inset-center arrow-icon"></i></button>
-        <button type='button' class="flex-1 w-full pb-5 self-center relative" id="center"><i class="fa-solid fa-location-crosshairs fa-3x text-emerald-400 inset-center arrow-icon"></i></button>
+        <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center"><i class="fa-solid fa-location-crosshairs fa-3x text-emerald-400 inset-center arrow-icon"></i></button>
         <button type='button' class="flex-1 w-full pb-5 self-bottom relative bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" ontouchend="touchend_btn_style('bottom')" id="move-bottom"><i class="fa-solid fa-down-long fa-3x text-emerald-400 inset-center arrow-icon"></i></button>
     </div>
     <div class="w-[100px] h-[200px] flex flex-col" dir="rtl">
