@@ -241,7 +241,7 @@ function get_pathfinding(e) {
             }
 
             // we use destination_node_id to get destination coord.
-            // we add +1 to get the real coord. 
+            // we add +1 to get the real coord.  
             current_player.set_end_coord(
                 parseInt(destination_node_id[1]) + 1,
                 parseInt(destination_node_id[0]) + 1

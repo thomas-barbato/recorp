@@ -112,7 +112,7 @@ function add_sector_foreground(sector_element) {
                     'h-[32px]',
                     'z-1'
                 );
-                img_div.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col) - 1}; y: ${parseInt(index_row) - 1}]`);
+                img_div.setAttribute('title', `${element_data["name"]} [y: ${parseInt(index_row) - 1}; x: ${parseInt(index_col) - 1}]`);
                 img_div.style.backgroundImage = "url('" + bg_url + "')";
                 img_div.style.backgroundPositionX = `-${col_i}px`;
                 img_div.style.backgroundPositionY = `-${row_i}px`;
@@ -173,7 +173,7 @@ function add_pc_npc(data) {
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
 
-                let entry_point = document.querySelector('.tabletop-view').rows[coord_y + 1].cells[coord_x + 1];
+                let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
@@ -273,11 +273,17 @@ function hide_sector_overflow(coord_x, coord_y) {
     let limite_x = map_informations.screen_sized_map["col"];
     let limite_y = map_informations.screen_sized_map["row"];
 
-    let display_map_start_x = (position_on_map.x - Math.round(limite_x / 2)) <= 0 ? 0 : (position_on_map.x - Math.round(limite_x / 2));
-    let display_map_end_x = (position_on_map.x + Math.round(limite_x / 2)) >= atlas.col ? atlas.col : (display_map_start_x + limite_x);
+    let x = document.querySelector('#Y_X').textContent;
+    console.log(x)
 
-    let display_map_start_y = (position_on_map.y - Math.round(limite_y / 2)) <= 0 ? 0 : (position_on_map.y - Math.round(limite_y / 2));
-    let display_map_end_y = (position_on_map.y + Math.round(limite_y / 2)) >= atlas.row ? atlas.row : (display_map_start_y + limite_y);
+
+    let limite_divider = 2;
+
+    let display_map_start_x = (position_on_map.x - Math.round(limite_x / limite_divider)) <= 0 ? 0 : (position_on_map.x - Math.round(limite_x / limite_divider));
+    let display_map_end_x = (position_on_map.x + Math.round(limite_x / limite_divider)) >= atlas.col ? atlas.col : (display_map_start_x + limite_x);
+
+    let display_map_start_y = (position_on_map.y - Math.round(limite_y / limite_divider)) <= 0 ? 0 : (position_on_map.y - Math.round(limite_y / limite_divider));
+    let display_map_end_y = (position_on_map.y + Math.round(limite_y / limite_divider)) >= atlas.row ? atlas.row : (display_map_start_y + limite_y);
 
     if (display_map_end_x == atlas.col) {
         display_map_start_x = display_map_end_x - limite_x;
@@ -305,7 +311,7 @@ function hide_sector_overflow(coord_x, coord_y) {
 
 function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-x').textContent = `x = ${x}`;
-    document.querySelector('#player-coord-y').textContent = `y = ${y    }`;
+    document.querySelector('#player-coord-y').textContent = `y = ${y}`;
 }
 
 function update_target_coord_display() {

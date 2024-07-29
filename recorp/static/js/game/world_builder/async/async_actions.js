@@ -29,7 +29,7 @@ function update_player_coord(data) {
         end_point.innerHTML = entry_point.innerHTML;
         entry_point.innerHTML = temp_point;
 
-        entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [x = ${get_start_coord[1]}; y = ${get_start_coord[0]}]`;
+        entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
 
         if (current_user_id != target_user_id) {
             end_point.classList.add('pc', 'uncrossable');
