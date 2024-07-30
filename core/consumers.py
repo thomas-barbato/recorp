@@ -108,13 +108,14 @@ class GameConsumer(WebsocketConsumer):
     def async_reverse_ship(self, event):
         response = {}
         message = json.loads(event["message"])
-                
         store = StoreInCache(
             room_name=self.room_group_name, 
             user_calling=self.user
         )
         
-        data = store.update_ship_is_reversed(message, self.user.id)
+        p = PlayerAction(self.user.id)
+        p.set_reverse_ship_status()
+        data = store.update_ship_is_reversed(message, self.user.id, p.get_reverse_ship_status())
         
         response = {
             "type": "async_reverse_ship", 

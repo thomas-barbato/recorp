@@ -19,7 +19,7 @@ function add_sector_background(background_name) {
         index_col = 1;
     }
     for (let i = 0; i < map_informations.pc_npc.length; i++) {
-        let player = map_informations.pc_npc[i]
+        let player = map_informations.pc_npc[i];
         if (player.user.user == current_user_id) {
             hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
             if (!user_is_on_mobile_device()) {
@@ -265,6 +265,9 @@ function add_pc_npc(data) {
 
 function hide_sector_overflow(coord_x, coord_y) {
 
+    console.log(`COORD_X: ${coord_x}`)
+    console.log(`COORD_Y: ${coord_y}`)
+
     let position_on_map = {
         x: parseInt(coord_x),
         y: parseInt(coord_y)
@@ -272,9 +275,6 @@ function hide_sector_overflow(coord_x, coord_y) {
 
     let limite_x = map_informations.screen_sized_map["col"];
     let limite_y = map_informations.screen_sized_map["row"];
-
-    let x = document.querySelector('#Y_X').textContent;
-    console.log(x)
 
 
     let limite_divider = 2;

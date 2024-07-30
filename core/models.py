@@ -394,6 +394,7 @@ class PlayerShip(models.Model):
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     is_current_ship = models.BooleanField(default=True)
+    is_reversed = models.BooleanField(default=False)
     module_id_list = models.JSONField(null=True)
     current_hp = models.SmallIntegerField(default=100)
     max_hp = models.SmallIntegerField(default=100)

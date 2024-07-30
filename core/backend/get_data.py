@@ -187,6 +187,7 @@ class GetMapDataFromDB:
                 "playership__ship_id__image",
                 "playership__ship_id__description",
                 "playership__is_current_ship",
+                "playership__is_reversed",
                 "playership__module_id_list",
                 "playership__current_hp",
                 "playership__max_hp",

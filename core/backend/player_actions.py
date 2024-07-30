@@ -16,12 +16,14 @@ from core.models import (
     Security,
     Sector,
     Player,
+    PlayerShip,
 )
 
 class PlayerAction:
     def __init__(self, id):
         self.id = id
         self.player = Player.objects.filter(user_id=id).all()
+        self.player_id = self.get_player_id()
     
     def is_player_exists(self, player_id):
         return Player.objects.filter(id=player_id, user_id=self.id).exists()
@@ -49,6 +51,13 @@ class PlayerAction:
     
     def destination_already_occupied(self, end_x, end_y):
         return Player.objects.filter(coordinates__contains={"coord_x": end_x, "coord_y": end_y}).exists()
+    
+    def get_reverse_ship_status(self):
+        return PlayerShip.objects.filter(player_id=self.player_id, is_current_ship=True).values_list('is_reversed', flat=True)[0]
+    
+    def set_reverse_ship_status(self):
+        playership_reverse_status = PlayerShip.objects.filter(player_id=self.player_id, is_current_ship=True)
+        playership_reverse_status.update(is_reversed = True if playership_reverse_status.values_list('is_reversed', flat=True)[0] == False else False) 
     
     def move(self, end_x, end_y):
         if self.destination_already_occupied(end_x, end_y) is False:

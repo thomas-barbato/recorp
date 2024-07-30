@@ -1,6 +1,7 @@
 // ASYNC GAME LOGIC
 
 function async_move(pos) {
+    cleanCss();
     gameSocket.send(JSON.stringify({
         message: JSON.stringify({
             "player": pos.player,
@@ -50,7 +51,6 @@ function update_player_coord(data) {
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
-
             hide_sector_overflow(
                 current_player.start_x - 1,
                 current_player.start_y - 1,

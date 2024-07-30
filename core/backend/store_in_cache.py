@@ -4,6 +4,7 @@ import logging
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from core.backend.get_data import GetMapDataFromDB
+from core.backend.player_actions import PlayerAction
 from core.models import (
     Sector,
     Player,
@@ -160,7 +161,7 @@ class StoreInCache:
                             "playership__ship_id__ship_category__description"
                         ],
                         "size": data["playership__ship_id__ship_category__ship_size"],
-                        "is_reversed": False,
+                        "is_reversed": data["playership__is_reversed"],
                         "modules": module_list,
                     },
                 }
@@ -197,7 +198,7 @@ class StoreInCache:
         in_cache["pc_npc"] = player_position
         cache.set(self.room, in_cache)
 
-    def update_ship_is_reversed(self, data, user_id):
+    def update_ship_is_reversed(self, data, user_id, status):
         in_cache = cache.get(self.room)
         pc_cache = in_cache["pc_npc"]
         user = data["user"]
@@ -207,17 +208,14 @@ class StoreInCache:
 
         except StopIteration:
             return
-
+        
         player_index = pc_cache.index(player)
-        ship_is_reversed = pc_cache[player_index]["ship"]["is_reversed"]
         player_id = pc_cache[player_index]["user"]["player"]
-
-        if user == user_id:
-            pc_cache[player_index]["ship"]["is_reversed"] = (
-                True if ship_is_reversed is False else False
-            )
-            in_cache["pc_npc"] = pc_cache
-            cache.set(self.room, in_cache)
+        pc_cache[player_index]["ship"]["is_reversed"] = (
+            status
+        )
+        in_cache["pc_npc"] = pc_cache
+        cache.set(self.room, in_cache)
 
         return pc_cache[player_index]["ship"]["is_reversed"], player_id
 
