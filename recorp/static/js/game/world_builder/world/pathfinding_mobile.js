@@ -5,9 +5,8 @@ let last_direction = "";
 
 
 function display_pathfinding_mobile(direction) {
-    touchstart_btn_style(direction);
-    unset_disabled_button_status();
     define_user_values();
+    unset_disabled_button_status();
     add_to_movement_array(direction);
     movement_already_exists(movement_array.slice(-1)[0]);
     let last_coord = movement_array.slice(-1)[0].split('_');
@@ -19,13 +18,29 @@ function display_pathfinding_mobile(direction) {
     let coord_minus_ship_size_x = 0;
     let coord_minus_ship_size_y = 0;
 
-    if (current_player.s_size.x == 3) {
+    if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
         if (current_player.is_reversed) {
             coord_minus_ship_size_x = -1;
             coord_minus_ship_size_y = -1;
         } else {
             coord_minus_ship_size_x = -1;
             coord_minus_ship_size_y = -1;
+        }
+    } else if (current_player.s_size.y == 1 && current_player.s_size.x == 2) {
+        if (direction == "top" || direction == "bottom") {
+            coord_minus_ship_size_x = -1;
+        } else if (direction == "left") {
+            coord_minus_ship_size_x = -1;
+        } else if (direction == "right") {
+            coord_minus_ship_size_x = 0;
+        }
+    } else if (current_player.s_size.y == 1 && current_player.s_size.x == 3) {
+        if (direction == "top" || direction == "bottom") {
+            coord_minus_ship_size_x = -1;
+        } else if (direction == "left") {
+            coord_minus_ship_size_x = -2;
+        } else if (direction == "right") {
+            coord_minus_ship_size_x = 0;
         }
     }
 
@@ -96,7 +111,9 @@ function display_pathfinding_mobile(direction) {
                 disable_button(block_these_buttons);
             }
         } else {
-            clean_previous_preview_position(ship_arrival_coordinates);
+            cleanCss();
+            clear_path();
+            //clean_previous_preview_position(ship_arrival_coordinates);
             set_disabled_center_button_status(true);
         }
     } else {
@@ -131,8 +148,84 @@ function add_to_movement_array(direction) {
         move_y = parseInt(last_position[0]) + modified_y;
         move_x = parseInt(last_position[1]) + modified_x;
     } else {
-        move_y = current_player.coord.start_y;
-        move_x = current_player.coord.start_x;
+        if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
+            if (direction == "top") {
+                move_y = current_player.coord.start_y - 3;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "bottom") {
+                move_y = current_player.coord.start_y + 3;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "right") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x + 2;
+            } else if (direction == "left") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x - 3;
+            }
+        } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
+            if (direction == "top") {
+                move_y = current_player.coord.start_y - 1;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "bottom") {
+                move_y = current_player.coord.start_y + 1;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "right") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x + 2;
+            } else if (direction == "left") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x - 2;
+            }
+        } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
+            if (direction == "top") {
+                if (current_player.is_reversed) {
+                    move_y = current_player.coord.start_y - 1;
+                    move_x = current_player.coord.start_x;
+                } else {
+                    move_y = current_player.coord.start_y - 1;
+                    move_x = current_player.coord.start_x + 1;
+                }
+            } else if (direction == "bottom") {
+                if (current_player.is_reversed) {
+                    move_y = current_player.coord.start_y + 1;
+                    move_x = current_player.coord.start_x;
+                } else {
+                    move_y = current_player.coord.start_y + 1;
+                    move_x = current_player.coord.start_x + 1;
+                }
+            } else if (direction == "right") {
+                if (current_player.is_reversed) {
+                    move_y = current_player.coord.start_y;
+                    move_x = current_player.coord.start_x + 2;
+                } else {
+                    move_y = current_player.coord.start_y;
+                    move_x = current_player.coord.start_x + 1;
+                }
+            } else if (direction == "left") {
+                if (current_player.is_reversed) {
+                    move_y = current_player.coord.start_y;
+                    move_x = current_player.coord.start_x - 1;
+                } else {
+                    move_y = current_player.coord.start_y;
+                    move_x = current_player.coord.start_x;
+                }
+            }
+
+        } else {
+            if (direction == "top") {
+                move_y = current_player.coord.start_y - 1;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "bottom") {
+                move_y = current_player.coord.start_y + 1;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "right") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x + 1;
+            } else if (direction == "left") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x - 1;
+            }
+        }
     }
 
     coord = `${move_y}_${move_x}`;
@@ -179,8 +272,8 @@ function set_disabled_center_button_status(is_disabled) {
         center.disabled = true;
         center.classList.add('text-red-600', 'border-red-600', 'disabled-arrow');
         center_i.classList.add('text-red-600');
-        center.classList.remove('text-emerald-400');
-        center_i.classList.remove('text-emerald-400');
+        center.classList.remove('text-emerald-400', 'active:bg-[#25482D]');
+        center_i.classList.remove('text-emerald-400', 'active:text-white');
         top.classList.add('border-b-red-600');
         bottom.classList.add('border-t-red-600');
         left.classList.add('border-r-red-600');
@@ -189,8 +282,8 @@ function set_disabled_center_button_status(is_disabled) {
         center.disabled = false;
         center.classList.remove('text-red-600', 'disabled-arrow');
         center_i.classList.remove('text-red-600');
-        center.classList.add('text-emerald-400');
-        center_i.classList.add('text-emerald-400');
+        center.classList.add('text-emerald-400', 'active:bg-[#25482D]');
+        center_i.classList.add('text-emerald-400', 'active:text-white');
         top.classList.remove('border-b-red-600');
         bottom.classList.remove('border-t-red-600');
         left.classList.remove('border-r-red-600');
@@ -209,14 +302,13 @@ function unset_disabled_button_status() {
     let direction_element = document.querySelectorAll('.direction-arrow');
 
     for (let i = 0; i < direction_element.length; i++) {
-        direction_element[i].classList.add('bg-gray-800/40', 'border-[#B1F1CB]');
+        direction_element[i].classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
         direction_element[i].classList.remove('border-red-600', 'disabled-arrow');
     }
 
-    center.classList.remove('text-red-600');
-    center.classList.add('text-emerald-400');
-    center_i.classList.remove('text-emerald-400');
     center.classList.remove('text-red-600', 'disabled-arrow');
+    center.classList.add('text-emerald-400');
+    center_i.classList.add('text-emerald-400');
 
     top.disabled = false;
     bottom.disabled = false;
@@ -241,9 +333,9 @@ function disable_button(direction) {
         let button_i = button.querySelector('i');
 
         button.disabled = true;
-        button.classList.remove('text-emerald-400', 'border-[#B1F1CB]');
+        button.classList.remove('text-emerald-400', 'border-[#B1F1CB]', 'active:text-white', 'active:bg-[#25482D]');
         button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
-        button_i.classList.remove('text-emerald-400');
+        button_i.classList.remove('text-emerald-400', 'active:text-white');
         button_i.classList.add('text-red-600');
     }
 }
@@ -269,55 +361,11 @@ function define_user_values() {
 
             // we use start_node_id to get destination coord.
             // we check ship size to define itterator.
-            if (current_player.s_size.x == 1 && current_player.s_size.y == 1) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) - 1,
-                        parseInt(start_node_id[0]),
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 1,
-                        parseInt(start_node_id[0]),
-                    );
-                }
-            } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
-                        parseInt(start_node_id[0]),
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) - 1,
-                        parseInt(start_node_id[0]),
-                    );
-                }
-            } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) - 2,
-                        parseInt(start_node_id[0]),
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
-                        parseInt(start_node_id[0]),
-                    );
-                }
-            } else if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) - 2,
-                        parseInt(start_node_id[0]),
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
-                        parseInt(start_node_id[0]),
-                    );
-                }
-            }
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]),
+                parseInt(start_node_id[0]),
+            );
+
         }
     }
 }
@@ -479,6 +527,9 @@ function delete_last_destination(coord) {
 
     movement_array.splice(index, movement_array.length, coord);
     ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
+    if (Array.isArray(movement_array) && movement_array.length === 1) {
+        clear_path();
+    }
 }
 
 function mobile_movement_action() {
@@ -498,17 +549,4 @@ function mobile_movement_action() {
             destination_id_array: current_player.fullsize_coordinate,
         });
     }
-}
-
-function touchstart_btn_style(direction) {
-    let e = document.querySelector('#move-' + direction);
-    e.classList.remove('bg-gray-800/50');
-    e.classList.add('bg-[#25482D]');
-};
-
-function touchend_btn_style(element_id) {
-    let e = document.querySelector('#move-' + element_id);
-    e.classList.remove('bg-[#25482D]');
-    e.classList.add('bg-gray-800/50');
-
 }

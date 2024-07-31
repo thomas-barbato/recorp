@@ -16,6 +16,7 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
+    clear_path();
     let player_name = data["player"];
     let target_user_id = data["player_user_id"];
     let start_pos_array = data["start_id_array"];

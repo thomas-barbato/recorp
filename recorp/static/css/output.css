@@ -3920,6 +3920,16 @@ select {
   text-align: center;
 }
 
+.active\:bg-\[\#25482D\]:active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 72 45 / var(--tw-bg-opacity));
+}
+
+.active\:text-white:active {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 :is([dir="rtl"] .rtl\:text-right) {
   text-align: right;
 }
