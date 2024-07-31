@@ -1,5 +1,5 @@
 let movement_array = [];
-let ship_arrival_coordinates = []
+let ship_arrival_coordinates = [];
 let can_be_crossed_temp_array = [];
 let last_direction = "";
 
@@ -19,11 +19,18 @@ function display_pathfinding_mobile(direction) {
     let coord_minus_ship_size_y = 0;
 
     if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
-        if (current_player.is_reversed) {
+        if (direction == "top") {
             coord_minus_ship_size_x = -1;
+            coord_minus_ship_size_y = -2;
+        } else if (direction == "bottom") {
+            coord_minus_ship_size_x = -1;
+            coord_minus_ship_size_y = 0;
+
+        } else if (direction == "left") {
+            coord_minus_ship_size_x = -2;
             coord_minus_ship_size_y = -1;
-        } else {
-            coord_minus_ship_size_x = -1;
+        } else if (direction == "right") {
+            coord_minus_ship_size_x = 0;
             coord_minus_ship_size_y = -1;
         }
     } else if (current_player.s_size.y == 1 && current_player.s_size.x == 2) {
@@ -113,7 +120,7 @@ function display_pathfinding_mobile(direction) {
         } else {
             cleanCss();
             clear_path();
-            //clean_previous_preview_position(ship_arrival_coordinates);
+            clean_previous_preview_position(ship_arrival_coordinates);
             set_disabled_center_button_status(true);
         }
     } else {
@@ -150,17 +157,17 @@ function add_to_movement_array(direction) {
     } else {
         if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
             if (direction == "top") {
-                move_y = current_player.coord.start_y - 3;
+                move_y = current_player.coord.start_y - 2;
                 move_x = current_player.coord.start_x;
             } else if (direction == "bottom") {
-                move_y = current_player.coord.start_y + 3;
+                move_y = current_player.coord.start_y + 2;
                 move_x = current_player.coord.start_x;
             } else if (direction == "right") {
                 move_y = current_player.coord.start_y;
                 move_x = current_player.coord.start_x + 2;
             } else if (direction == "left") {
                 move_y = current_player.coord.start_y;
-                move_x = current_player.coord.start_x - 3;
+                move_x = current_player.coord.start_x - 2;
             }
         } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
             if (direction == "top") {
@@ -493,7 +500,7 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
             'bg-amber-400/50',
         );
     }
-    ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length)
+    ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
 }
 
 function movement_already_exists(coord) {
@@ -527,9 +534,6 @@ function delete_last_destination(coord) {
 
     movement_array.splice(index, movement_array.length, coord);
     ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
-    if (Array.isArray(movement_array) && movement_array.length === 1) {
-        clear_path();
-    }
 }
 
 function mobile_movement_action() {
