@@ -173,7 +173,7 @@ function add_pc_npc(data) {
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
 
-                let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
+                let entry_point = document.querySelector('.tabletop-view').rows[coord_y + 1].cells[coord_x + 1];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
@@ -264,9 +264,6 @@ function add_pc_npc(data) {
 }
 
 function hide_sector_overflow(coord_x, coord_y) {
-
-    console.log(`COORD_X: ${coord_x}`)
-    console.log(`COORD_Y: ${coord_y}`)
 
     let position_on_map = {
         x: parseInt(coord_x),

@@ -88,6 +88,7 @@ class GameConsumer(WebsocketConsumer):
                     user_calling=self.user
                 )
                 store.update_player_position(message)
+        print(message["player"])
         response = {
             "type": "player_move", 
             "message": {
