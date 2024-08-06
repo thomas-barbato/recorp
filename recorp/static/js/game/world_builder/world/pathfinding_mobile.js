@@ -9,7 +9,6 @@ function display_pathfinding_mobile(direction) {
     unset_disabled_button_status();
     add_to_movement_array(direction);
     movement_already_exists(movement_array.slice(-1)[0]);
-    console.log("Movement array : " + movement_array);
     let last_coord = movement_array.slice(-1)[0].split('_');
     current_player.set_end_coord(
         parseInt(last_coord[1]),
@@ -36,7 +35,7 @@ function display_pathfinding_mobile(direction) {
         }
     } else if (current_player.s_size.y == 1 && current_player.s_size.x == 2) {
         if (direction == "top" || direction == "bottom") {
-            coord_minus_ship_size_x = -1;
+            coord_minus_ship_size_x = 0;
         } else if (direction == "left") {
             coord_minus_ship_size_x = -1;
         } else if (direction == "right") {
@@ -85,7 +84,6 @@ function display_pathfinding_mobile(direction) {
                         if (document.getElementById(`${final_row_i}_${final_col_i}`)) {
                             ship_arrival_coordinates.push(`${final_row_i}_${final_col_i}`);
                         }
-                        console.log(ship_arrival_coordinates)
 
                     } else {
                         can_be_crossed_temp_array.push(false);
@@ -156,13 +154,34 @@ function add_to_movement_array(direction) {
         move_y = parseInt(last_position[0]) + modified_y;
         move_x = parseInt(last_position[1]) + modified_x;
     } else if (movement_array.length == 0) {
-        if (current_player.s_size.x == 3) {
+        if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
             if (direction == "right") {
                 move_y = current_player.coord.start_y;
                 move_x = current_player.coord.start_x + 2;
             } else if (direction == "left") {
                 move_y = current_player.coord.start_y;
                 move_x = current_player.coord.start_x - 2;
+            } else if (direction == "top") {
+                move_y = current_player.coord.start_y - 2;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "bottom") {
+                move_y = current_player.coord.start_y + 2;
+                move_x = current_player.coord.start_x;
+            }
+        } else if (current_player.s_size.y == 1 && current_player.s_size.x == 3) {
+
+            if (direction == "right") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x + 2;
+            } else if (direction == "left") {
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x - 2;
+            } else if (direction == "top") {
+                move_y = current_player.coord.start_y - 2;
+                move_x = current_player.coord.start_x;
+            } else if (direction == "bottom") {
+                move_y = current_player.coord.start_y + 2;
+                move_x = current_player.coord.start_x;
             }
         } else if (current_player.s_size.x == 2) {
             if (direction == "right") {
@@ -171,7 +190,7 @@ function add_to_movement_array(direction) {
                     move_x = current_player.coord.start_x + 2;
                 } else {
                     move_y = current_player.coord.start_y;
-                    move_x = current_player.coord.start_x + 1;
+                    move_x = current_player.coord.start_x + 2;
                 }
             } else if (direction == "left") {
                 if (current_player.is_reversed) {
@@ -179,6 +198,22 @@ function add_to_movement_array(direction) {
                     move_x = current_player.coord.start_x - 1;
                 } else {
                     move_y = current_player.coord.start_y;
+                    move_x = current_player.coord.start_x;
+                }
+            } else if (direction == "top") {
+                if (current_player.is_reversed) {
+                    move_y = current_player.coord.start_y + 1;
+                    move_x = current_player.coord.start_x;
+                } else {
+                    move_y = current_player.coord.start_y - 2;
+                    move_x = current_player.coord.start_x;
+                }
+            } else if (direction == "bottom") {
+                if (current_player.is_reversed) {
+                    move_y = current_player.coord.start_y + 2;
+                    move_x = current_player.coord.start_x;
+                } else {
+                    move_y = current_player.coord.start_y + 1;
                     move_x = current_player.coord.start_x;
                 }
             }
@@ -192,15 +227,7 @@ function add_to_movement_array(direction) {
             }
         }
 
-        if (current_player.s_size.y == 3) {
-            if (direction == "top") {
-                move_y = current_player.coord.start_y - 2;
-                move_x = current_player.coord.start_x;
-            } else if (direction == "bottom") {
-                move_y = current_player.coord.start_y + 2;
-                move_x = current_player.coord.start_x;
-            }
-        } else {
+        if (current_player.s_size.y == 3) {} else {
             if (direction == "top") {
                 move_y = current_player.coord.start_y - 1;
                 move_x = current_player.coord.start_x;
@@ -210,6 +237,7 @@ function add_to_movement_array(direction) {
             }
         }
     }
+
     coord = `${move_y}_${move_x}`;
 
     if (current_player.move_points_value >= movement_array.length) {
@@ -438,6 +466,11 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
     }
     if (can_be_crossed == true) {
         set_disabled_center_button_status(false);
+        let first_td = document.getElementById(`${ship_arrival_coordinates[0]}`);
+        display_ship_start_point = first_td.id.split('_');
+        // taking first element of ship_arrival_coordinate to start display new ship pos
+        // + 1 to match add_sector_elements.js display of pc / npc rows[] cells[];
+        current_player.set_end_coord(parseInt(display_ship_start_point[1]) + 1, parseInt(display_ship_start_point[0]) + 1)
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
             let span_ship_el = td_ship_el.querySelector('span');
@@ -516,7 +549,7 @@ function mobile_movement_action() {
     let e = document.querySelector('#center');
     if (e && e.disabled == false) {
         current_player.set_fullsize_coordinates(ship_arrival_coordinates);
-        console.log("SHIP_ARRIVAL A LA FIN : " + ship_arrival_coordinates)
+        console.log(current_player.fullsize_coordinate);
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });

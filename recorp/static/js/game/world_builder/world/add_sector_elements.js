@@ -134,7 +134,6 @@ function add_pc_npc(data) {
         let ship_size_y = data[i]["ship"]['size'].size_y;
         let is_reversed = data[i]["ship"]["is_reversed"];
 
-
         if (data[i].user.user != current_user_id) {
             modal_data = {
                 player: {
@@ -168,12 +167,14 @@ function add_pc_npc(data) {
 
             let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x);
             document.querySelector('#modal-container').append(modal);
+        } else {
+            console.log(coord_x, coord_y);
         }
 
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
-
-                let entry_point = document.querySelector('.tabletop-view').rows[coord_y + 1].cells[coord_x + 1];
+                console.log(coord_y, coord_x);
+                let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
