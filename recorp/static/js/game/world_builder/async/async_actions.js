@@ -26,7 +26,7 @@ function update_player_coord(data) {
         let temp_point = document.getElementById(end_pos_array[i]).innerHTML;
         let end_point = document.getElementById(end_pos_array[i]);
 
-        let get_start_coord = start_pos_array[i].split('_')
+        let get_start_coord = start_pos_array[i].split('_');
 
         end_point.innerHTML = entry_point.innerHTML;
         entry_point.innerHTML = temp_point;

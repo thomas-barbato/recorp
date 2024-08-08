@@ -270,9 +270,6 @@ function get_pathfinding(e) {
             };
 
             let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
-            console.log("ici")
-            console.log(grid)
-            console.log(opts.grid_goal.y, opts.grid_goal.y)
             if (grid.classList.contains(opts.css.wall)) {
                 return;
             }

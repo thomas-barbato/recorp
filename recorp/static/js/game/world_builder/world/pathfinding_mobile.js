@@ -17,7 +17,6 @@ function display_pathfinding_mobile(direction) {
 
     let coord_minus_ship_size_x = 0;
     let coord_minus_ship_size_y = 0;
-    // PROBLEM HERE !
     if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
         if (direction == "top") {
             coord_minus_ship_size_x = -1;
@@ -226,16 +225,6 @@ function add_to_movement_array(direction) {
                 move_x = current_player.coord.start_x - 1;
             }
         }
-
-        if (current_player.s_size.y == 3) {} else {
-            if (direction == "top") {
-                move_y = current_player.coord.start_y - 1;
-                move_x = current_player.coord.start_x;
-            } else if (direction == "bottom") {
-                move_y = current_player.coord.start_y + 1;
-                move_x = current_player.coord.start_x;
-            }
-        }
     }
 
     coord = `${move_y}_${move_x}`;
@@ -248,6 +237,7 @@ function add_to_movement_array(direction) {
         } else {
             set_disabled_center_button_status(true);
             last_direction = direction;
+            movement_array.push(coord);
             delete_last_destination(coord);
         }
     } else {
@@ -383,13 +373,17 @@ function define_user_values() {
 
 function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
     for (let i = 0; i < movement_array.length; i++) {
+        let td_ship_el = document.getElementById(`${movement_array[i]}`);
+        let span_ship_el = td_ship_el.querySelector('span');
         if (!ship_arrival_coordinates.includes(movement_array[i])) {
-            let td_ship_el = document.getElementById(`${movement_array[i]}`);
-            let span_ship_el = td_ship_el.querySelector('span');
             span_ship_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
             span_ship_el.textContent = `${i + 1}`;
+        } else {
+            span_ship_el.classList.remove('bg-teal-500/30');
+            span_ship_el.textContent = "";
         }
     }
+    console.log(ship_arrival_coordinates.length)
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
@@ -397,7 +391,8 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (span_ship_el) {
                     if (td_ship_el.classList.contains('player-ship-pos')) {
-                        span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border');
+                        span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
+                        span_ship_el.textContent = "";
                     }
 
                     switch (i) {
@@ -412,6 +407,10 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
                             break;
                         case 3:
                             span_ship_el.classList.add('border-l');
+                            break;
+                        case 4:
+                            span_ship_el.classList.add('text-white', 'font-bold', 'text-center');
+                            span_ship_el.textContent = `${movement_array.length}`;
                             break;
                         case 5:
                             span_ship_el.classList.add('border-r');
@@ -437,12 +436,14 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (td_ship_el.classList.contains('player-ship-pos')) {
                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                    span_ship_el.textContent = "";
                 }
                 if (i == 0) {
                     span_ship_el.classList.add('border-t', 'border-l', 'border-b');
                     span_ship_el.classList.remove('hover:border-2', 'hover:border');
                 } else if (i == 1) {
-                    span_ship_el.classList.add('border-t', 'border-b');
+                    span_ship_el.classList.add('border-t', 'border-b', 'text-white', 'font-bold', 'text-center');
+                    span_ship_el.textContent = `${movement_array.length}`;
                 } else if (i == 2) {
                     span_ship_el.classList.add('border-t', 'border-r', 'border-b');
                 }
@@ -459,7 +460,8 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
                     span_ship_el.classList.add('border-t', 'border-l', 'border-b');
                     span_ship_el.classList.remove('hover:border-2', 'hover:border');
                 } else if (i == 1) {
-                    span_ship_el.classList.add('border-t', 'border-r', 'border-b');
+                    span_ship_el.classList.add('border-t', 'border-r', 'border-b', 'text-white', 'font-bold', 'text-center');
+                    span_ship_el.textContent = `${movement_array.length}`;
                 }
             }
             break;
@@ -476,6 +478,10 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
             let span_ship_el = td_ship_el.querySelector('span');
             if (span_ship_el) {
                 span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
+                if (ship_arrival_coordinates.length == 1) {
+                    span_ship_el.classList.add('text-white', 'font-bold', 'text-center')
+                    span_ship_el.textContent = `${movement_array.length}`;
+                }
                 span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400');
             }
         }
@@ -498,6 +504,7 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
     for (let i = 0; i < ship_arrival_coordinates.length; i++) {
         let e = document.getElementById(ship_arrival_coordinates[i]);
         let e_span = e.querySelector('span');
+        e_span.textContent = "";
         e_span.classList.remove(
             'border-t',
             'border-b',
@@ -507,6 +514,9 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
             'border-amber-400',
             'bg-red-600/50',
             'bg-amber-400/50',
+            'text-white',
+            'font-bold',
+            'text-center'
         );
     }
     ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
@@ -517,7 +527,11 @@ function movement_already_exists(coord) {
 }
 
 function delete_last_destination(coord) {
+    console.log("DEDANS: " + coord)
+
     let index = movement_array.findIndex(x => x == coord);
+    console.log("INDEX: " + index)
+    console.log("MOVEMENT_ARRAY SIZE: " + movement_array.length);
     for (let i = index; i < movement_array.length; i++) {
         let e = document.getElementById(movement_array[i]);
         let e_span = e.querySelector('span');
@@ -529,6 +543,7 @@ function delete_last_destination(coord) {
     for (let i = 0; i < ship_arrival_coordinates.length; i++) {
         let e = document.getElementById(ship_arrival_coordinates[i]);
         let e_span = e.querySelector('span');
+        e_span.textContent = "";
         e_span.classList.remove(
             'border-t',
             'border-b',
@@ -538,6 +553,9 @@ function delete_last_destination(coord) {
             'border-amber-400',
             'bg-red-600/50',
             'bg-amber-400/50',
+            'text-white',
+            'font-bold',
+            'text-center'
         );
     }
 
@@ -549,7 +567,6 @@ function mobile_movement_action() {
     let e = document.querySelector('#center');
     if (e && e.disabled == false) {
         current_player.set_fullsize_coordinates(ship_arrival_coordinates);
-        console.log(current_player.fullsize_coordinate);
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });
