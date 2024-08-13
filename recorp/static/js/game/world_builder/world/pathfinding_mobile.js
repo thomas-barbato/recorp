@@ -1,14 +1,15 @@
 let movement_array = [];
 let ship_arrival_coordinates = [];
 let can_be_crossed_temp_array = [];
-let last_direction = "";
+let current_direction = "";
+let direction_array = [];
 
 
 function display_pathfinding_mobile(direction) {
+    direction_array.push(direction);
     define_user_values();
     unset_disabled_button_status();
     add_to_movement_array(direction);
-    movement_already_exists(movement_array.slice(-1)[0]);
     let last_coord = movement_array.slice(-1)[0].split('_');
     current_player.set_end_coord(
         parseInt(last_coord[1]),
@@ -17,10 +18,39 @@ function display_pathfinding_mobile(direction) {
 
     let coord_minus_ship_size_x = 0;
     let coord_minus_ship_size_y = 0;
+
     if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
         if (direction == "top") {
+
+
+            if (is_reversed_movement(direction_array)) {
+                coord_minus_ship_size_y = 0;
+                coord_minus_ship_size_x = -1;
+            } else {
+                if (movement_array.length <= 1) {
+                    coord_minus_ship_size_y = -2;
+                    coord_minus_ship_size_x = -1;
+                } else {
+                    coord_minus_ship_size_y = 0;
+                    coord_minus_ship_size_x = -1;
+                }
+            }
+
+
+            /*
+            if (movement_array.length == 1) {
+                coord_minus_ship_size_y = -2;
+                coord_minus_ship_size_x = -1;
+            } else {
+                coord_minus_ship_size_y = 0;
+                coord_minus_ship_size_x = -1;
+            }
             coord_minus_ship_size_x = -1;
             coord_minus_ship_size_y = -2;
+            */
+
+
+
         } else if (direction == "bottom") {
             coord_minus_ship_size_x = -1;
             coord_minus_ship_size_y = 0;
@@ -95,25 +125,25 @@ function display_pathfinding_mobile(direction) {
             }
             define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
             if (current_player.move_points_value == movement_array.length) {
-                let reverse_last_direction = "";
-                switch (last_direction) {
+                let reverse_current_direction = "";
+                switch (current_direction) {
                     case "left":
-                        reverse_last_direction = "right";
+                        reverse_current_direction = "right";
                         break;
                     case "right":
-                        reverse_last_direction = "left";
+                        reverse_current_direction = "left";
                         break;
                     case "top":
-                        reverse_last_direction = "bottom";
+                        reverse_current_direction = "bottom";
                         break;
                     case "bottom":
-                        reverse_last_direction = "top";
+                        reverse_current_direction = "top";
                         break;
                     default:
                         break;
                 }
                 let direction_array = ["top", "bottom", "right", "left"];
-                let block_these_buttons = direction_array.filter(e => e !== reverse_last_direction);
+                let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
                 disable_button(block_these_buttons);
             }
         } else {
@@ -127,12 +157,25 @@ function display_pathfinding_mobile(direction) {
     }
 }
 
-function add_to_movement_array(direction) {
+function is_reversed_movement(direction_array) {
+    let last_move = direction_array[direction_array.length - 1];
+    let seconde_last_move = direction_array[direction_array.length - 2];
+
+    let movement_is_reversed = false;
+
+    if ((last_move == "top" && seconde_last_move == "bottom") || (last_move == "bottom" && seconde_last_move == "top")) {
+        movement_is_reversed = true
+    } else if ((last_move == "right" && seconde_last_move == "left") || (last_move == "left" && seconde_last_move == "right")) {
+        movement_is_reversed = true
+    }
+
+    return movement_is_reversed;
+}
+
+function get_direction_modifier(direction) {
     let modified_y = 0;
     let modified_x = 0;
-    let move_y = 0;
-    let move_x = 0;
-    let coord = 0;
+    // set direction modifier.
     switch (direction) {
         case "top":
             modified_y = -1;
@@ -147,12 +190,39 @@ function add_to_movement_array(direction) {
             modified_x = 1;
             break;
     }
+    return [modified_y, modified_x];
+}
+
+function add_to_movement_array(direction) {
+    let move_y = 0;
+    let move_x = 0;
+    let coord = 0;
+    let direction_coord_modified = get_direction_modifier(direction);
 
     if (movement_array.length >= 1) {
         let last_position = movement_array.slice(-1)[0].split('_');
-        move_y = parseInt(last_position[0]) + modified_y;
-        move_x = parseInt(last_position[1]) + modified_x;
+        move_y = parseInt(last_position[0]) + direction_coord_modified[0];
+        move_x = parseInt(last_position[1]) + direction_coord_modified[1];
+        let coord = `${move_y}_${move_x}`;
+        if (current_player.move_points_value >= movement_array.length) {
+            if (!movement_already_exists(coord)) {
+                set_disabled_center_button_status(false);
+                current_direction = direction;
+                movement_array.push(coord);
+            } else {
+                set_disabled_center_button_status(true);
+                current_direction = direction;
+                delete_last_destination(coord);
+            }
+        } else {
+            set_disabled_center_button_status(true);
+            if (movement_already_exists(coord)) {
+                delete_last_destination(coord);
+            }
+        }
     } else if (movement_array.length == 0) {
+        // set start location for pathfinding.
+        // per ship size.
         if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
             if (direction == "right") {
                 move_y = current_player.coord.start_y;
@@ -168,7 +238,6 @@ function add_to_movement_array(direction) {
                 move_x = current_player.coord.start_x;
             }
         } else if (current_player.s_size.y == 1 && current_player.s_size.x == 3) {
-
             if (direction == "right") {
                 move_y = current_player.coord.start_y;
                 move_x = current_player.coord.start_x + 2;
@@ -225,26 +294,10 @@ function add_to_movement_array(direction) {
                 move_x = current_player.coord.start_x - 1;
             }
         }
-    }
 
-    coord = `${move_y}_${move_x}`;
-
-    if (current_player.move_points_value >= movement_array.length) {
-        if (!movement_already_exists(coord)) {
-            set_disabled_center_button_status(false);
-            last_direction = direction;
-            movement_array.push(coord);
-        } else {
-            set_disabled_center_button_status(true);
-            last_direction = direction;
-            movement_array.push(coord);
-            delete_last_destination(coord);
-        }
-    } else {
-        set_disabled_center_button_status(true);
-        if (movement_already_exists(coord)) {
-            delete_last_destination(coord);
-        }
+        current_direction = direction;
+        coord = `${move_y}_${move_x}`;
+        movement_array.push(coord);
     }
 }
 
@@ -371,7 +424,7 @@ function define_user_values() {
     }
 }
 
-function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
+function define_position_preview(ship_arrival_coordinates, can_be_crossed, direction) {
     for (let i = 0; i < movement_array.length; i++) {
         let td_ship_el = document.getElementById(`${movement_array[i]}`);
         let span_ship_el = td_ship_el.querySelector('span');
@@ -383,7 +436,6 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
             span_ship_el.textContent = "";
         }
     }
-    console.log(ship_arrival_coordinates.length)
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
@@ -472,7 +524,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
         display_ship_start_point = first_td.id.split('_');
         // taking first element of ship_arrival_coordinate to start display new ship pos
         // + 1 to match add_sector_elements.js display of pc / npc rows[] cells[];
-        current_player.set_end_coord(parseInt(display_ship_start_point[1]) + 1, parseInt(display_ship_start_point[0]) + 1)
+        current_player.set_end_coord(parseInt(display_ship_start_point[1]) + 1, parseInt(display_ship_start_point[0]) + 1);
         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
             let span_ship_el = td_ship_el.querySelector('span');
@@ -493,6 +545,10 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed) {
             if (uncrossable_span_ship_el) {
                 uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
                 uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600');
+                if (ship_arrival_coordinates.length == 1) {
+                    uncrossable_span_ship_el.classList.add('text-white', 'font-bold', 'text-center')
+                    uncrossable_span_ship_el.textContent = `${movement_array.length}`;
+                }
             }
         }
     }
@@ -527,19 +583,12 @@ function movement_already_exists(coord) {
 }
 
 function delete_last_destination(coord) {
-    console.log("DEDANS: " + coord)
-
-    let index = movement_array.findIndex(x => x == coord);
-    console.log("INDEX: " + index)
-    console.log("MOVEMENT_ARRAY SIZE: " + movement_array.length);
-    for (let i = index; i < movement_array.length; i++) {
-        let e = document.getElementById(movement_array[i]);
-        let e_span = e.querySelector('span');
-        e_span.classList.remove(
-            'bg-teal-500/30'
-        );
-        e_span.textContent = "";
-    }
+    let e = document.getElementById(movement_array[movement_array.length - 1]);
+    let e_span = e.querySelector('span');
+    e_span.classList.remove(
+        'bg-teal-500/30'
+    );
+    e_span.textContent = "";
     for (let i = 0; i < ship_arrival_coordinates.length; i++) {
         let e = document.getElementById(ship_arrival_coordinates[i]);
         let e_span = e.querySelector('span');
@@ -559,8 +608,7 @@ function delete_last_destination(coord) {
         );
     }
 
-    movement_array.splice(index, movement_array.length, coord);
-    ship_arrival_coordinates.splice(0, ship_arrival_coordinates.length);
+    movement_array.splice(-1);
 }
 
 function mobile_movement_action() {
@@ -570,6 +618,7 @@ function mobile_movement_action() {
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });
+        direction_array.slice(0, -1);
         async_move({
             player: current_player.player,
             end_x: current_player.coord.end_x,
