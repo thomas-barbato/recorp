@@ -16,44 +16,33 @@ function display_pathfinding_mobile(direction) {
         parseInt(last_coord[0]),
     );
 
+    define_preview_zone(direction)
+
+}
+
+function define_preview_zone(direction) {
+
     let coord_minus_ship_size_x = 0;
     let coord_minus_ship_size_y = 0;
-
     if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
         if (direction == "top") {
-
-
             if (is_reversed_movement(direction_array)) {
                 coord_minus_ship_size_y = 0;
                 coord_minus_ship_size_x = -1;
             } else {
-                if (movement_array.length <= 1) {
-                    coord_minus_ship_size_y = -2;
-                    coord_minus_ship_size_x = -1;
-                } else {
-                    coord_minus_ship_size_y = 0;
-                    coord_minus_ship_size_x = -1;
-                }
-            }
-
-
-            /*
-            if (movement_array.length == 1) {
                 coord_minus_ship_size_y = -2;
                 coord_minus_ship_size_x = -1;
+            }
+        } else if (direction == "bottom") {
+            if (is_reversed_movement(direction_array)) {
+                coord_minus_ship_size_y = 0;
+                coord_minus_ship_size_x = -1;
+                console.log(movement_array)
+                console.log(ship_arrival_coordinates)
             } else {
                 coord_minus_ship_size_y = 0;
                 coord_minus_ship_size_x = -1;
             }
-            coord_minus_ship_size_x = -1;
-            coord_minus_ship_size_y = -2;
-            */
-
-
-
-        } else if (direction == "bottom") {
-            coord_minus_ship_size_x = -1;
-            coord_minus_ship_size_y = 0;
 
         } else if (direction == "left") {
             coord_minus_ship_size_x = -2;
@@ -79,73 +68,132 @@ function display_pathfinding_mobile(direction) {
             coord_minus_ship_size_x = 0;
         }
     }
-
     if (current_player.move_points_value >= movement_array.length) {
         clean_previous_preview_position(ship_arrival_coordinates);
 
         let can_be_crossed = true;
-        let last_td_ship_el = document.getElementById(`${current_player.coord.end_y}_${current_player.coord.end_x}`);
+        let movement_array_slice = movement_array.slice(-1)[0].split('_');
+        console.log(movement_array_slice)
+        let last_td_ship_el = document.getElementById(`${movement_array_slice[0]}_${movement_array_slice[1]}`);
 
         if (last_td_ship_el) {
             let last_span_el = last_td_ship_el.querySelector('span');
             last_span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
             last_span_el.textContent = movement_array.length;
+            if (direction == "bottom" || direction == "right") {
+                for (let row_i = parseInt(movement_array_slice[0]); row_i < (parseInt(movement_array_slice[0]) + current_player.s_size.y); row_i++) {
+                    for (let col_i = parseInt(movement_array_slice[1]); col_i < (parseInt(movement_array_slice[1]) + current_player.s_size.x); col_i++) {
+                        final_row_i = (row_i + coord_minus_ship_size_y);
+                        final_col_i = (col_i + coord_minus_ship_size_x);
+                        let td_ship_el = document.getElementById(`${final_row_i}_${final_col_i}`);
+                        if (td_ship_el) {
+                            if ((final_row_i) < 1) {
+                                disable_button(['top']);
+                            } else if ((final_row_i) >= 39) {
+                                disable_button(['bottom']);
+                            }
+                            if ((final_col_i) < 1) {
+                                disable_button(['left']);
+                            } else if ((final_col_i) >= 39) {
+                                disable_button(['right']);
+                            }
+                            if (td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos')) {
+                                can_be_crossed_temp_array.push(false);
+                            }
+                            if (document.getElementById(`${final_row_i}_${final_col_i}`)) {
+                                ship_arrival_coordinates.push(`${final_row_i}_${final_col_i}`);
+                            }
 
-            for (let row_i = current_player.coord.end_y; row_i < (current_player.coord.end_y + current_player.s_size.y); row_i++) {
-                for (let col_i = current_player.coord.end_x; col_i < (current_player.coord.end_x + current_player.s_size.x); col_i++) {
-                    final_row_i = (row_i + coord_minus_ship_size_y);
-                    final_col_i = (col_i + coord_minus_ship_size_x);
-                    let td_ship_el = document.getElementById(`${final_row_i}_${final_col_i}`);
-                    if (td_ship_el) {
-                        if ((final_row_i) < 1) {
-                            disable_button(['top']);
-                        } else if ((final_row_i) >= 39) {
-                            disable_button(['bottom']);
-                        }
-                        if ((final_col_i) < 1) {
-                            disable_button(['left']);
-                        } else if ((final_col_i) >= 39) {
-                            disable_button(['right']);
-                        }
-                        if (td_ship_el.classList.contains('uncrossable') && !td_ship_el.classList.contains('player-ship-pos')) {
+                        } else {
                             can_be_crossed_temp_array.push(false);
                         }
-                        if (document.getElementById(`${final_row_i}_${final_col_i}`)) {
-                            ship_arrival_coordinates.push(`${final_row_i}_${final_col_i}`);
-                        }
-
-                    } else {
-                        can_be_crossed_temp_array.push(false);
                     }
                 }
-            }
-            if (can_be_crossed_temp_array.length > 0) {
-                can_be_crossed = false;
-                can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
-            }
-            define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
-            if (current_player.move_points_value == movement_array.length) {
-                let reverse_current_direction = "";
-                switch (current_direction) {
-                    case "left":
-                        reverse_current_direction = "right";
-                        break;
-                    case "right":
-                        reverse_current_direction = "left";
-                        break;
-                    case "top":
-                        reverse_current_direction = "bottom";
-                        break;
-                    case "bottom":
-                        reverse_current_direction = "top";
-                        break;
-                    default:
-                        break;
+                if (can_be_crossed_temp_array.length > 0) {
+                    can_be_crossed = false;
+                    can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
                 }
-                let direction_array = ["top", "bottom", "right", "left"];
-                let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
-                disable_button(block_these_buttons);
+                define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
+                if (current_player.move_points_value == movement_array.length) {
+                    let reverse_current_direction = "";
+                    switch (current_direction) {
+                        case "left":
+                            reverse_current_direction = "right";
+                            break;
+                        case "right":
+                            reverse_current_direction = "left";
+                            break;
+                        case "top":
+                            reverse_current_direction = "bottom";
+                            break;
+                        case "bottom":
+                            reverse_current_direction = "top";
+                            break;
+                        default:
+                            break;
+                    }
+                    let direction_array = ["top", "bottom", "right", "left"];
+                    let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
+                    disable_button(block_these_buttons);
+                }
+            } else {
+                for (let row_i = parseInt(movement_array_slice[0]); row_i > (parseInt(movement_array_slice[0]) - current_player.s_size.y); row_i--) {
+                    for (let col_i = parseInt(movement_array_slice[1]); col_i > (parseInt(movement_array_slice[1]) - current_player.s_size.x); col_i--) {
+                        final_row_i = (row_i + coord_minus_ship_size_y);
+                        final_col_i = (col_i + coord_minus_ship_size_x);
+                        let td_ship_el = document.getElementById(`${final_row_i}_${final_col_i}`);
+                        if (td_ship_el) {
+                            if ((final_row_i) < 1) {
+                                disable_button(['top']);
+                            } else if ((final_row_i) >= 39) {
+                                disable_button(['bottom']);
+                            }
+                            if ((final_col_i) < 1) {
+                                disable_button(['left']);
+                            } else if ((final_col_i) >= 39) {
+                                disable_button(['right']);
+                            }
+                            if (td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos')) {
+                                can_be_crossed_temp_array.push(false);
+                            }
+                            if (document.getElementById(`${final_row_i}_${final_col_i}`)) {
+                                ship_arrival_coordinates.push(`${final_row_i}_${final_col_i}`);
+                            }
+
+                        } else {
+                            can_be_crossed_temp_array.push(false);
+                        }
+                    }
+                }
+                if (can_be_crossed_temp_array.length > 0) {
+                    can_be_crossed = false;
+                    can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
+                }
+                define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
+                if (current_player.move_points_value == movement_array.length) {
+                    let reverse_current_direction = "";
+                    switch (current_direction) {
+                        case "left":
+                            reverse_current_direction = "right";
+                            break;
+                        case "right":
+                            reverse_current_direction = "left";
+                            break;
+                        case "top":
+                            reverse_current_direction = "bottom";
+                            break;
+                        case "bottom":
+                            reverse_current_direction = "top";
+                            break;
+                        default:
+                            break;
+                    }
+                    let direction_array = ["top", "bottom", "right", "left"];
+                    let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
+                    disable_button(block_these_buttons);
+                }
             }
+
         } else {
             cleanCss();
             clear_path();
@@ -223,6 +271,7 @@ function add_to_movement_array(direction) {
     } else if (movement_array.length == 0) {
         // set start location for pathfinding.
         // per ship size.
+        console.log(current_player.coord.start_y, current_player.coord.start_x)
         if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
             if (direction == "right") {
                 move_y = current_player.coord.start_y;
@@ -608,7 +657,7 @@ function delete_last_destination(coord) {
         );
     }
 
-    movement_array.splice(-1);
+    movement_array.pop();
 }
 
 function mobile_movement_action() {
