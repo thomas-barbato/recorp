@@ -21,179 +21,75 @@ function display_pathfinding_mobile(direction) {
 }
 
 function define_preview_zone(direction) {
-
-    let coord_minus_ship_size_x = 0;
-    let coord_minus_ship_size_y = 0;
-    if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
-        if (direction == "top") {
-            if (is_reversed_movement(direction_array)) {
-                coord_minus_ship_size_y = 0;
-                coord_minus_ship_size_x = -1;
-            } else {
-                coord_minus_ship_size_y = -2;
-                coord_minus_ship_size_x = -1;
-            }
-        } else if (direction == "bottom") {
-            if (is_reversed_movement(direction_array)) {
-                coord_minus_ship_size_y = 0;
-                coord_minus_ship_size_x = -1;
-                console.log(movement_array)
-                console.log(ship_arrival_coordinates)
-            } else {
-                coord_minus_ship_size_y = 0;
-                coord_minus_ship_size_x = -1;
-            }
-
-        } else if (direction == "left") {
-            coord_minus_ship_size_x = -2;
-            coord_minus_ship_size_y = -1;
-        } else if (direction == "right") {
-            coord_minus_ship_size_x = 0;
-            coord_minus_ship_size_y = -1;
-        }
-    } else if (current_player.s_size.y == 1 && current_player.s_size.x == 2) {
-        if (direction == "top" || direction == "bottom") {
-            coord_minus_ship_size_x = 0;
-        } else if (direction == "left") {
-            coord_minus_ship_size_x = -1;
-        } else if (direction == "right") {
-            coord_minus_ship_size_x = 0;
-        }
-    } else if (current_player.s_size.y == 1 && current_player.s_size.x == 3) {
-        if (direction == "top" || direction == "bottom") {
-            coord_minus_ship_size_x = -1;
-        } else if (direction == "left") {
-            coord_minus_ship_size_x = -2;
-        } else if (direction == "right") {
-            coord_minus_ship_size_x = 0;
-        }
-    }
     if (current_player.move_points_value >= movement_array.length) {
         clean_previous_preview_position(ship_arrival_coordinates);
 
         let can_be_crossed = true;
         let movement_array_slice = movement_array.slice(-1)[0].split('_');
-        console.log(movement_array_slice)
         let last_td_ship_el = document.getElementById(`${movement_array_slice[0]}_${movement_array_slice[1]}`);
 
         if (last_td_ship_el) {
-            let last_span_el = last_td_ship_el.querySelector('span');
-            last_span_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
-            last_span_el.textContent = movement_array.length;
-            if (direction == "bottom" || direction == "right") {
-                for (let row_i = parseInt(movement_array_slice[0]); row_i < (parseInt(movement_array_slice[0]) + current_player.s_size.y); row_i++) {
-                    for (let col_i = parseInt(movement_array_slice[1]); col_i < (parseInt(movement_array_slice[1]) + current_player.s_size.x); col_i++) {
-                        final_row_i = (row_i + coord_minus_ship_size_y);
-                        final_col_i = (col_i + coord_minus_ship_size_x);
-                        let td_ship_el = document.getElementById(`${final_row_i}_${final_col_i}`);
-                        if (td_ship_el) {
-                            if ((final_row_i) < 1) {
-                                disable_button(['top']);
-                            } else if ((final_row_i) >= 39) {
-                                disable_button(['bottom']);
-                            }
-                            if ((final_col_i) < 1) {
-                                disable_button(['left']);
-                            } else if ((final_col_i) >= 39) {
-                                disable_button(['right']);
-                            }
-                            if (td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos')) {
-                                can_be_crossed_temp_array.push(false);
-                            }
-                            if (document.getElementById(`${final_row_i}_${final_col_i}`)) {
-                                ship_arrival_coordinates.push(`${final_row_i}_${final_col_i}`);
-                            }
+            last_span_el = last_td_ship_el.querySelector('span');
 
-                        } else {
-                            can_be_crossed_temp_array.push(false);
+            for (let row_i = parseInt(movement_array_slice[0]); row_i < (parseInt(movement_array_slice[0]) + current_player.s_size.y); row_i++) {
+                for (let col_i = parseInt(movement_array_slice[1]); col_i < (parseInt(movement_array_slice[1]) + current_player.s_size.x); col_i++) {
+                    let td_ship_el = document.getElementById(`${row_i}_${col_i}`);
+                    if (td_ship_el) {
+                        if ((row_i) < 1) {
+                            disable_button(['top']);
+                        } else if ((row_i) >= 39) {
+                            disable_button(['bottom']);
                         }
-                    }
-                }
-                if (can_be_crossed_temp_array.length > 0) {
-                    can_be_crossed = false;
-                    can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
-                }
-                define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
-                if (current_player.move_points_value == movement_array.length) {
-                    let reverse_current_direction = "";
-                    switch (current_direction) {
-                        case "left":
-                            reverse_current_direction = "right";
-                            break;
-                        case "right":
-                            reverse_current_direction = "left";
-                            break;
-                        case "top":
-                            reverse_current_direction = "bottom";
-                            break;
-                        case "bottom":
-                            reverse_current_direction = "top";
-                            break;
-                        default:
-                            break;
-                    }
-                    let direction_array = ["top", "bottom", "right", "left"];
-                    let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
-                    disable_button(block_these_buttons);
-                }
-            } else {
-                for (let row_i = parseInt(movement_array_slice[0]); row_i > (parseInt(movement_array_slice[0]) - current_player.s_size.y); row_i--) {
-                    for (let col_i = parseInt(movement_array_slice[1]); col_i > (parseInt(movement_array_slice[1]) - current_player.s_size.x); col_i--) {
-                        final_row_i = (row_i + coord_minus_ship_size_y);
-                        final_col_i = (col_i + coord_minus_ship_size_x);
-                        let td_ship_el = document.getElementById(`${final_row_i}_${final_col_i}`);
-                        if (td_ship_el) {
-                            if ((final_row_i) < 1) {
-                                disable_button(['top']);
-                            } else if ((final_row_i) >= 39) {
-                                disable_button(['bottom']);
+                        if ((col_i) < 1) {
+                            disable_button(['left']);
+                        } else if ((col_i) >= 39) {
+                            disable_button(['right']);
+                        }
+                        if (td_ship_el.classList.contains('uncrossable')) {
+                            can_be_crossed_temp_array.push(false);
+                            if (td_ship_el.classList.contains('player-ship-pos')) {
+                                clear_path();
+                                cleanCss();
+                                //
+                                //clean_previous_preview_position(ship_arrival_coordinates);
                             }
-                            if ((final_col_i) < 1) {
-                                disable_button(['left']);
-                            } else if ((final_col_i) >= 39) {
-                                disable_button(['right']);
-                            }
-                            if (td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos')) {
-                                can_be_crossed_temp_array.push(false);
-                            }
-                            if (document.getElementById(`${final_row_i}_${final_col_i}`)) {
-                                ship_arrival_coordinates.push(`${final_row_i}_${final_col_i}`);
-                            }
+                        }
+                        if (document.getElementById(`${row_i}_${col_i}`)) {
+                            ship_arrival_coordinates.push(`${row_i}_${col_i}`);
+                        }
 
-                        } else {
-                            can_be_crossed_temp_array.push(false);
-                        }
+                    } else {
+                        can_be_crossed_temp_array.push(false);
                     }
-                }
-                if (can_be_crossed_temp_array.length > 0) {
-                    can_be_crossed = false;
-                    can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
-                }
-                define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
-                if (current_player.move_points_value == movement_array.length) {
-                    let reverse_current_direction = "";
-                    switch (current_direction) {
-                        case "left":
-                            reverse_current_direction = "right";
-                            break;
-                        case "right":
-                            reverse_current_direction = "left";
-                            break;
-                        case "top":
-                            reverse_current_direction = "bottom";
-                            break;
-                        case "bottom":
-                            reverse_current_direction = "top";
-                            break;
-                        default:
-                            break;
-                    }
-                    let direction_array = ["top", "bottom", "right", "left"];
-                    let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
-                    disable_button(block_these_buttons);
                 }
             }
-
+            if (can_be_crossed_temp_array.length > 0) {
+                can_be_crossed = false;
+                can_be_crossed_temp_array.splice(0, can_be_crossed_temp_array.length);
+            }
+            define_position_preview(ship_arrival_coordinates, can_be_crossed, direction);
+            if (current_player.move_points_value == movement_array.length) {
+                let reverse_current_direction = "";
+                switch (current_direction) {
+                    case "left":
+                        reverse_current_direction = "right";
+                        break;
+                    case "right":
+                        reverse_current_direction = "left";
+                        break;
+                    case "top":
+                        reverse_current_direction = "bottom";
+                        break;
+                    case "bottom":
+                        reverse_current_direction = "top";
+                        break;
+                    default:
+                        break;
+                }
+                let direction_array = ["top", "bottom", "right", "left"];
+                let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
+                disable_button(block_these_buttons);
+            }
         } else {
             cleanCss();
             clear_path();
@@ -264,27 +160,23 @@ function add_to_movement_array(direction) {
             }
         } else {
             set_disabled_center_button_status(true);
-            if (movement_already_exists(coord)) {
-                delete_last_destination(coord);
-            }
         }
     } else if (movement_array.length == 0) {
         // set start location for pathfinding.
         // per ship size.
-        console.log(current_player.coord.start_y, current_player.coord.start_x)
         if (current_player.s_size.y == 3 && current_player.s_size.x == 3) {
             if (direction == "right") {
-                move_y = current_player.coord.start_y;
+                move_y = current_player.coord.start_y - 1;
                 move_x = current_player.coord.start_x + 2;
             } else if (direction == "left") {
-                move_y = current_player.coord.start_y;
-                move_x = current_player.coord.start_x - 2;
+                move_y = current_player.coord.start_y - 1;
+                move_x = current_player.coord.start_x - 4;
             } else if (direction == "top") {
-                move_y = current_player.coord.start_y - 2;
-                move_x = current_player.coord.start_x;
+                move_y = current_player.coord.start_y - 4;
+                move_x = current_player.coord.start_x - 1;
             } else if (direction == "bottom") {
                 move_y = current_player.coord.start_y + 2;
-                move_x = current_player.coord.start_x;
+                move_x = current_player.coord.start_x - 1;
             }
         } else if (current_player.s_size.y == 1 && current_player.s_size.x == 3) {
             if (direction == "right") {
@@ -292,47 +184,27 @@ function add_to_movement_array(direction) {
                 move_x = current_player.coord.start_x + 2;
             } else if (direction == "left") {
                 move_y = current_player.coord.start_y;
-                move_x = current_player.coord.start_x - 2;
+                move_x = current_player.coord.start_x - 4;
             } else if (direction == "top") {
-                move_y = current_player.coord.start_y - 2;
-                move_x = current_player.coord.start_x;
+                move_y = current_player.coord.start_y - 1;
+                move_x = current_player.coord.start_x - 1;
             } else if (direction == "bottom") {
-                move_y = current_player.coord.start_y + 2;
-                move_x = current_player.coord.start_x;
+                move_y = current_player.coord.start_y + 1;
+                move_x = current_player.coord.start_x - 1;
             }
         } else if (current_player.s_size.x == 2) {
             if (direction == "right") {
-                if (current_player.is_reversed) {
-                    move_y = current_player.coord.start_y;
-                    move_x = current_player.coord.start_x + 2;
-                } else {
-                    move_y = current_player.coord.start_y;
-                    move_x = current_player.coord.start_x + 2;
-                }
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x + 2;
             } else if (direction == "left") {
-                if (current_player.is_reversed) {
-                    move_y = current_player.coord.start_y;
-                    move_x = current_player.coord.start_x - 1;
-                } else {
-                    move_y = current_player.coord.start_y;
-                    move_x = current_player.coord.start_x;
-                }
+                move_y = current_player.coord.start_y;
+                move_x = current_player.coord.start_x - 2;
             } else if (direction == "top") {
-                if (current_player.is_reversed) {
-                    move_y = current_player.coord.start_y + 1;
-                    move_x = current_player.coord.start_x;
-                } else {
-                    move_y = current_player.coord.start_y - 2;
-                    move_x = current_player.coord.start_x;
-                }
+                move_x = current_player.coord.start_x;
+                move_y = current_player.coord.start_y - 1;
             } else if (direction == "bottom") {
-                if (current_player.is_reversed) {
-                    move_y = current_player.coord.start_y + 2;
-                    move_x = current_player.coord.start_x;
-                } else {
-                    move_y = current_player.coord.start_y + 1;
-                    move_x = current_player.coord.start_x;
-                }
+                move_y = current_player.coord.start_y + 1;
+                move_x = current_player.coord.start_x;
             }
         } else {
             if (direction == "right") {
@@ -356,8 +228,7 @@ function clear_path() {
     for (let i = 0; i < movement_array.length; i++) {
         let td_ship_el = document.getElementById(`${movement_array[i]}`);
         let e_target = td_ship_el.querySelector('div>span');
-        e_target.classList.remove('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
-        e_target.textContent = "";
+        e_target.classList.remove('text-white', 'font-bold', 'text-center');
     }
     movement_array.splice(0, movement_array.length);
     clean_previous_preview_position(ship_arrival_coordinates);
@@ -443,7 +314,6 @@ function disable_button(direction) {
     }
 }
 
-
 function define_user_values() {
     for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
@@ -474,17 +344,6 @@ function define_user_values() {
 }
 
 function define_position_preview(ship_arrival_coordinates, can_be_crossed, direction) {
-    for (let i = 0; i < movement_array.length; i++) {
-        let td_ship_el = document.getElementById(`${movement_array[i]}`);
-        let span_ship_el = td_ship_el.querySelector('span');
-        if (!ship_arrival_coordinates.includes(movement_array[i])) {
-            span_ship_el.classList.add('bg-teal-500/30', 'text-white', 'font-bold', 'text-center');
-            span_ship_el.textContent = `${i + 1}`;
-        } else {
-            span_ship_el.classList.remove('bg-teal-500/30');
-            span_ship_el.textContent = "";
-        }
-    }
     switch (ship_arrival_coordinates.length) {
         case 9:
             for (let i = 0; i < 9; i++) {
@@ -578,7 +437,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
             let span_ship_el = td_ship_el.querySelector('span');
             if (span_ship_el) {
-                span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
+                span_ship_el.classList.remove('border-dashed');
                 if (ship_arrival_coordinates.length == 1) {
                     span_ship_el.classList.add('text-white', 'font-bold', 'text-center')
                     span_ship_el.textContent = `${movement_array.length}`;
@@ -592,7 +451,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
             if (uncrossable_span_ship_el) {
-                uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed');
+                uncrossable_span_ship_el.classList.remove('border-dashed');
                 uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600');
                 if (ship_arrival_coordinates.length == 1) {
                     uncrossable_span_ship_el.classList.add('text-white', 'font-bold', 'text-center')
@@ -632,7 +491,8 @@ function movement_already_exists(coord) {
 }
 
 function delete_last_destination(coord) {
-    let e = document.getElementById(movement_array[movement_array.length - 1]);
+    let e = document.getElementById(coord);
+    movement_array.pop();
     let e_span = e.querySelector('span');
     e_span.classList.remove(
         'bg-teal-500/30'
@@ -657,7 +517,6 @@ function delete_last_destination(coord) {
         );
     }
 
-    movement_array.pop();
 }
 
 function mobile_movement_action() {
