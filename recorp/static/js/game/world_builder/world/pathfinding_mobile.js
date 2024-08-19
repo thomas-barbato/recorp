@@ -30,7 +30,6 @@ function define_preview_zone(direction) {
 
         if (last_td_ship_el) {
             last_span_el = last_td_ship_el.querySelector('span');
-
             for (let row_i = parseInt(movement_array_slice[0]); row_i < (parseInt(movement_array_slice[0]) + current_player.s_size.y); row_i++) {
                 for (let col_i = parseInt(movement_array_slice[1]); col_i < (parseInt(movement_array_slice[1]) + current_player.s_size.x); col_i++) {
                     let td_ship_el = document.getElementById(`${row_i}_${col_i}`);
