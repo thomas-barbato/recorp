@@ -6,18 +6,20 @@ let direction_array = [];
 
 
 function display_pathfinding_mobile(direction) {
-    direction_array.push(direction);
-    define_user_values();
-    unset_disabled_button_status();
-    add_to_movement_array(direction);
-    let last_coord = movement_array.slice(-1)[0].split('_');
-    current_player.set_end_coord(
-        parseInt(last_coord[1]),
-        parseInt(last_coord[0]),
-    );
-
-    define_preview_zone(direction)
-
+    let element = document.querySelector('#move-' + direction);
+    if (!element.classList.contains('disabled-arrow')) {
+        console.log("DEDANS 1")
+        direction_array.push(direction);
+        define_user_values();
+        unset_disabled_button_status();
+        add_to_movement_array(direction);
+        let last_coord = movement_array.slice(-1)[0].split('_');
+        current_player.set_end_coord(
+            parseInt(last_coord[1]),
+            parseInt(last_coord[0]),
+        );
+        define_preview_zone(direction)
+    }
 }
 
 function define_preview_zone(direction) {
@@ -46,11 +48,9 @@ function define_preview_zone(direction) {
                         }
                         if (td_ship_el.classList.contains('uncrossable')) {
                             can_be_crossed_temp_array.push(false);
-                            if (td_ship_el.classList.contains('player-ship-pos')) {
+                            if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('start-player-pos')) {
                                 clear_path();
                                 cleanCss();
-                                //
-                                //clean_previous_preview_position(ship_arrival_coordinates);
                             }
                         }
                         if (document.getElementById(`${row_i}_${col_i}`)) {
@@ -91,7 +91,6 @@ function define_preview_zone(direction) {
             }
         } else {
             cleanCss();
-            clear_path();
             clean_previous_preview_position(ship_arrival_coordinates);
             set_disabled_center_button_status(true);
         }
@@ -267,37 +266,86 @@ function set_disabled_center_button_status(is_disabled) {
 function unset_disabled_button_status() {
     let center = document.querySelector('#center');
     let center_i = center.querySelector('i');
-    let top = document.querySelector('#move-top');
-    let bottom = document.querySelector('#move-bottom');
-    let left = document.querySelector('#move-left');
-    let right = document.querySelector('#move-right');
-    let direction_icon = document.querySelectorAll('.arrow-icon');
-    let direction_element = document.querySelectorAll('.direction-arrow');
+    let direction_array = document.querySelectorAll('.direction-arrow');
+    let temp_direction_set = new Set();
+    let player_location = document.querySelectorAll('.player-ship-pos');
 
-    for (let i = 0; i < direction_element.length; i++) {
-        direction_element[i].classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
-        direction_element[i].classList.remove('border-red-600', 'disabled-arrow');
+    for (let i = 0; i < player_location.length; i++) {
+        let player_direction_split = player_location[i].id.split('_');
+        let y = player_direction_split[0];
+        let x = player_direction_split[1];
+
+        if (x <= 0) {
+            temp_direction_set.add("move-left")
+        } else if (x >= 39) {
+            temp_direction_set.add("move-right")
+        }
+
+        if (y <= 0) {
+            temp_direction_set.add("move-top");
+        } else if (y >= 39) {
+            temp_direction_set.add("move-bottom")
+        }
+    }
+    console.log(movement_array.length)
+    if (movement_array.length == 0) {
+        for (let i = 0; i < direction_array.length; i++) {
+
+            let direction_element = document.getElementById(direction_array[i].id);
+            let direction_icon = direction_element.querySelector('i')
+
+            if (!temp_direction_set.has(direction_array[i].id)) {
+
+                direction_element.disabled = false;
+
+                direction_element.classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
+                direction_element.classList.remove('border-red-600', 'disabled-arrow');
+
+                direction_icon.classList.remove('text-red-600');
+                direction_icon.classList.add('text-emerald-400');
+
+                if (direction_array[i] == "move-right") {
+                    direction_element.classList.remove('border-l');
+                } else if (direction_array[i] == "move-left") {
+                    direction_element.classList.remove('border-r');
+                }
+
+                if (direction_array[i] == "move-top") {
+                    direction_element.classList.remove('border-b');
+                } else if (direction_array[i] == "move-bottom") {
+                    direction_element.classList.remove('border-t');
+                }
+            } else {
+
+                direction_element.disabled = true;
+
+                direction_element.classList.remove('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
+                direction_element.classList.add('border-red-600', 'disabled-arrow');
+
+                direction_icon.classList.add('text-red-600');
+                direction_icon.classList.remove('text-emerald-400');
+            }
+        }
+
+    } else {
+        for (let i = 0; i < direction_array.length; i++) {
+
+            let direction_element = document.getElementById(direction_array[i].id);
+            let direction_icon = direction_element.querySelector('i')
+
+            direction_element.disabled = false;
+
+            direction_element.classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
+            direction_element.classList.remove('border-red-600', 'disabled-arrow');
+
+            direction_icon.classList.remove('text-red-600');
+            direction_icon.classList.add('text-emerald-400');
+        }
     }
 
     center.classList.remove('text-red-600', 'disabled-arrow');
     center.classList.add('text-emerald-400');
     center_i.classList.add('text-emerald-400');
-
-    top.disabled = false;
-    bottom.disabled = false;
-    left.disabled = false;
-    right.disabled = false;
-    center.disabled = false;
-
-    top.classList.remove('border-b-red-600');
-    bottom.classList.remove('border-t-red-600');
-    left.classList.remove('border-r-red-600');
-    right.classList.remove('border-l-red-600');
-
-    for (let i = 0; i < direction_icon.length; i++) {
-        direction_icon[i].classList.remove('text-red-600');
-        direction_icon[i].classList.add('text-emerald-400');
-    }
 }
 
 function disable_button(direction) {
@@ -349,11 +397,10 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (span_ship_el) {
-                    if (td_ship_el.classList.contains('player-ship-pos')) {
+                    if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('player-start-pos')) {
                         span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                         span_ship_el.textContent = "";
                     }
-
                     switch (i) {
                         case 0:
                             span_ship_el.classList.add('border-l', 'border-t');
@@ -393,8 +440,8 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             for (let i = 0; i < 3; i++) {
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
-                if (td_ship_el.classList.contains('player-ship-pos')) {
-                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('player-start-pos')) {
+                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = "";
                 }
                 if (i == 0) {
@@ -412,8 +459,9 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             for (let i = 0; i < 2; i++) {
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
-                if (td_ship_el.classList.contains('player-ship-pos')) {
-                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
+                if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('player-start-pos')) {
+                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
+                    span_ship_el.textContent = "";
                 }
                 if (i == 0) {
                     span_ship_el.classList.add('border-t', 'border-l', 'border-b');

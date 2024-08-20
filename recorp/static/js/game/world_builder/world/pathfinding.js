@@ -185,6 +185,9 @@ function display_pathfinding() {
                     }
                     pathfinding_path_before_preview_zone_len = 1;
                 }
+            } else {
+                span_el.classList.add('bg-red-600/50', 'border-red-600', 'text-white', 'font-bold', 'text-center')
+                span_el.textContent = `${i + 1}`;
             }
         }
 

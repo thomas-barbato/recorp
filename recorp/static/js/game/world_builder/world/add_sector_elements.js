@@ -171,7 +171,6 @@ function add_pc_npc(data) {
 
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
-
                 let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
@@ -205,6 +204,7 @@ function add_pc_npc(data) {
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
                 if (data[i]["user"]["user"] == current_user_id) {
+
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
                     entry_point.classList.add("player-ship-pos");
@@ -212,6 +212,18 @@ function add_pc_npc(data) {
                         entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                     } else {
                         entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
+                        // WORK HERE
+                        if (coord_x == 1) {
+                            disable_button(['left']);
+                        } else if (coord_x == 39) {
+                            disable_button(['right']);
+                        }
+
+                        if (coord_y == 1) {
+                            disable_button(['top']);
+                        } else if (coord_y == 39) {
+                            disable_button(['bottom']);
+                        }
                     }
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
@@ -229,6 +241,7 @@ function add_pc_npc(data) {
                     }
                     space_ship.classList.add("player-ship");
                     space_ship_reversed.classList.add("player-ship-reversed");
+
                 }
 
                 let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc";
