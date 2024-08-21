@@ -76,18 +76,15 @@ class GameConsumer(WebsocketConsumer):
         response = {}
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
+        store = StoreInCache(
+            room_name=self.room_group_name, 
+            user_calling=self.user
+        )
         if p.get_player_id() == message["player"]:
             if p.destination_already_occupied(message["end_x"], message["end_y"]) is False:
-                p.move(
-                    end_x=message["end_x"],
-                    end_y=message["end_y"]
-                )
-                
-                store = StoreInCache(
-                    room_name=self.room_group_name, 
-                    user_calling=self.user
-                )
-                store.update_player_position(message)
+                if p.move_have_been_registered(end_x=message["end_x"],end_y=message["end_y"],move_cost=int(message["move_cost"])):
+                    store.update_player_position(message)
+        
         response = {
             "type": "player_move", 
             "message": {
@@ -97,7 +94,9 @@ class GameConsumer(WebsocketConsumer):
                 "start_id_array": message["start_id_array"],
                 "destination_id_array": message["destination_id_array"],
                 "end_x": message["end_x"],
-                "end_y": message["end_y"]
+                "end_y": message["end_y"],
+                "movement_remaining": p.get_other_player_movement_remaining(message["player"]),
+                "max_movement": store.get_specific_player_data(message["player"], "pc_npc", "ship", "max_movement")
             }   
         }
         

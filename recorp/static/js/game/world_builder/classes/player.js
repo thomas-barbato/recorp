@@ -7,6 +7,7 @@ class Player {
         this.end_y = 0;
         this.ship_size_x = 0;
         this.ship_size_y = 0;
+        this.move_cost = 0;
         this.fullsize_coordinates_array = [];
         this.move_points = move_points;
         this.selected_cell = false;
@@ -51,6 +52,10 @@ class Player {
         this.is_reversed = is_reversed;
     }
 
+    set_move_cost(cost) {
+        this.move_cost = parseInt(cost);
+    }
+
     get s_size() {
         return {
             "x": this.ship_size_x,
@@ -85,5 +90,9 @@ class Player {
             end_x: this.end_x,
             end_y: this.end_y,
         }
+    }
+
+    get player_move_cost() {
+        return this.move_cost;
     }
 }

@@ -48,7 +48,6 @@ function display_pathfinding() {
                     // will be used to stock real ship coordinates
                     let ship_arrival_coordinates = []
                     let can_be_crossed = true;
-                    console.log(pathfinder_obj.path)
                     for (let row_i = pathfinder_obj.path[pathfinder_obj.path.length - 1].x; row_i < (pathfinder_obj.path[pathfinder_obj.path.length - 1].x + current_player.s_size.y); row_i++) {
                         for (let col_i = pathfinder_obj.path[pathfinder_obj.path.length - 1].y; col_i < (pathfinder_obj.path[pathfinder_obj.path.length - 1].y + current_player.s_size.x); col_i++) {
                             let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
@@ -121,6 +120,7 @@ function display_pathfinding() {
 
                                         span_ship_el.classList.add('text-white', 'font-bold', 'text-center');
                                         span_ship_el.textContent = `${teal_zone_size}`;
+                                        current_player.set_move_cost(teal_zone_size);
                                         break;
                                     case 5:
                                         span_ship_el.classList.add('border-r');
@@ -176,11 +176,18 @@ function display_pathfinding() {
                                         break;
                                     case 1:
                                         span_ship_el.classList.add('border-t', 'border-r', 'border-b');
+                                        current_player.set_move_cost(teal_zone_size);
                                         break;
                                     default:
                                         break;
                                 }
                             }
+                            break;
+                        case 1:
+                            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
+                            let span_ship_el = td_ship_el.querySelector('span')
+                            span_ship_el.classList.add('border');
+                            current_player.set_move_cost(teal_zone_size);
                             break;
                     }
                     pathfinding_path_before_preview_zone_len = 1;
@@ -209,6 +216,7 @@ function display_pathfinding() {
             end_x: current_player.coord.end_y,
             is_reversed: current_player.reversed_ship_status,
             start_id_array: player_coord_array,
+            move_cost: current_player.player_move_cost,
             destination_id_array: current_player.fullsize_coordinate,
         });
     }

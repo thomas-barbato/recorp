@@ -181,6 +181,8 @@ character_statistics_progressbar_move_div.classList.add(
     'relative',
     'h-[20px]'
 );
+character_statistics_progressbar_move_div.id = "remaining-movement-div";
+
 character_statistics_progressbar_move_label.classList.add(
     'font-bold',
     'font-shadow',

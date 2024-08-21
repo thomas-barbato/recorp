@@ -142,9 +142,9 @@ class StoreInCache:
                         "name": data["playership__ship_id__name"],
                         "image": data["playership__ship_id__image"],
                         "max_hp": max_hp,
-                        "current_hp": max_hp,
+                        "current_hp": int(data["playership__current_hp"]),
                         "max_movement": max_movement,
-                        "current_movement": max_movement,
+                        "current_movement": int(data["playership__current_movement"]),
                         "current_ballistic_defense": data["playership__current_ballistic_defense"],
                         "current_thermal_defense": data["playership__current_thermal_defense"],
                         "current_missile_defense": data["playership__current_missile_defense"],
@@ -168,11 +168,29 @@ class StoreInCache:
             )
 
         cache.set(self.room, sector_data)
+        
+    def get_specific_player_data(self, player_id, category="", subcategory="", search=""):
+        in_cache = cache.get(self.room)
+        cache_data = in_cache[category]
+        player = player_id
+        
+        try:
+            found_player = next(
+                p for p in cache_data if player == p["user"]["player"]
+            )
+
+        except StopIteration:
+            return
+        
+        found_player_index = cache_data.index(found_player)
+        
+        return cache_data[found_player_index][subcategory][search]
 
     def update_player_position(self, pos):
         in_cache = cache.get(self.room)
         player_position = in_cache["pc_npc"]
         player = pos["player"]
+        
         try:
             found_player = next(
                 p for p in player_position if player == p["user"]["player"]
@@ -186,6 +204,8 @@ class StoreInCache:
             "coord_x": int(pos["end_x"]),
             "coord_y": int(pos["end_y"]),
         }
+        
+        player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
 
         for player in player_position:
             if player["user"]["player"] == found_player["user"]["player"]:

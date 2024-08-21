@@ -9,6 +9,7 @@ function async_move(pos) {
             "end_y": pos.end_y,
             "is_reversed": pos.is_reversed,
             "start_id_array": pos.start_id_array,
+            "move_cost": pos.move_cost,
             "destination_id_array": pos.destination_id_array,
         }),
         type: "async_move"
@@ -21,6 +22,9 @@ function update_player_coord(data) {
     let target_user_id = data["player_user_id"];
     let start_pos_array = data["start_id_array"];
     let end_pos_array = data["destination_id_array"];
+    let movement_remaining = parseInt(data["movement_remaining"]);
+    let max_movement = parseInt(data["max_movement"]);
+
     for (let i = 0; i < start_pos_array.length; i++) {
         let entry_point = document.getElementById(start_pos_array[i]);
         let temp_point = document.getElementById(end_pos_array[i]).innerHTML;
@@ -44,14 +48,27 @@ function update_player_coord(data) {
             end_point.querySelector('div>span').title = `${player_name}`;
             end_point.classList.add('uncrossable', 'pc', 'player-ship-pos');
 
+            let movement_remaining_div = document.getElementById("remaining-movement-div");
+            let movement_progress_bar_size = movement_remaining_div.querySelector('div');
+            let movement_progress_bar_text = movement_remaining_div.querySelector('span');
+
+            movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
+            movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+
             if (entry_point.classList.contains('player-start-pos')) {
                 end_point.classList.add('player-start-pos');
+            }
+
+            if (user_is_on_mobile_device()) {
+                disable_button(get_direction_to_disable_button((data.destination_id_array)));
             }
 
             entry_point.classList.remove('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
+
+
             hide_sector_overflow(
                 current_player.start_x - 1,
                 current_player.start_y - 1,

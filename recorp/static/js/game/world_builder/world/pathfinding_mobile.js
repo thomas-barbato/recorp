@@ -3,12 +3,11 @@ let ship_arrival_coordinates = [];
 let can_be_crossed_temp_array = [];
 let current_direction = "";
 let direction_array = [];
-
+let move_cost = 0;
 
 function display_pathfinding_mobile(direction) {
     let element = document.querySelector('#move-' + direction);
     if (!element.classList.contains('disabled-arrow')) {
-        console.log("DEDANS 1")
         direction_array.push(direction);
         define_user_values();
         unset_disabled_button_status();
@@ -85,7 +84,7 @@ function define_preview_zone(direction) {
                     default:
                         break;
                 }
-                let direction_array = ["top", "bottom", "right", "left"];
+                let direction_array = ("top", "bottom", "right", "left");
                 let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
                 disable_button(block_these_buttons);
             }
@@ -348,9 +347,33 @@ function unset_disabled_button_status() {
     center_i.classList.add('text-emerald-400');
 }
 
+function get_direction_to_disable_button(coords) {
+    console.log(coords)
+    let direction_set = new Set();
+    for (let i = 0; i < coords.length; i++) {
+        let sliced_coord = coords[i].split('_')
+        console.log(sliced_coord)
+        if (parseInt(sliced_coord[1]) <= 1) {
+            direction_set.add('left');
+        } else if (parseInt(sliced_coord[1]) >= 39) {
+            direction_set.add('right');
+        }
+
+        if (parseInt(sliced_coord[0]) <= 1) {
+            direction_set.add('top');
+        } else if (parseInt(sliced_coord[0]) >= 39) {
+            direction_set.add('bottom');
+        }
+    }
+
+    console.log(direction_set)
+
+    return direction_set;
+}
+
 function disable_button(direction) {
-    for (let i = 0; i < direction.length; i++) {
-        let button = document.querySelector('#move-' + direction[i]);
+    for (const d of direction) {
+        let button = document.querySelector('#move-' + d);
         let button_i = button.querySelector('i');
 
         button.disabled = true;
@@ -417,6 +440,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                         case 4:
                             span_ship_el.classList.add('text-white', 'font-bold', 'text-center');
                             span_ship_el.textContent = `${movement_array.length}`;
+                            current_player.set_move_cost(movement_array.length);
                             break;
                         case 5:
                             span_ship_el.classList.add('border-r');
@@ -450,6 +474,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 } else if (i == 1) {
                     span_ship_el.classList.add('border-t', 'border-b', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = `${movement_array.length}`;
+                    current_player.set_move_cost(movement_array.length);
                 } else if (i == 2) {
                     span_ship_el.classList.add('border-t', 'border-r', 'border-b');
                 }
@@ -469,8 +494,15 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 } else if (i == 1) {
                     span_ship_el.classList.add('border-t', 'border-r', 'border-b', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = `${movement_array.length}`;
+                    current_player.set_move_cost(movement_array.length);
                 }
             }
+            break;
+        case 1:
+            let td_ship_el = document.getElementById(`${ship_arrival_coordinates}`);
+            let span_ship_el = td_ship_el.querySelector('span')
+            span_ship_el.classList.add('border');
+            current_player.set_move_cost(movement_array.length);
             break;
     }
     if (can_be_crossed == true) {
@@ -580,6 +612,7 @@ function mobile_movement_action() {
             end_y: current_player.coord.end_y,
             is_reversed: current_player.reversed_ship_status,
             start_id_array: player_coord_array,
+            move_cost: current_player.player_move_cost,
             destination_id_array: current_player.fullsize_coordinate,
         });
     }

@@ -127,6 +127,7 @@ function add_sector_foreground(sector_element) {
 
 function add_pc_npc(data) {
     let border_color = "";
+    let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
         let coord_x = (data[i]["user"]["coordinates"].coord_x);
         let coord_y = (data[i]["user"]["coordinates"].coord_y);
@@ -212,18 +213,7 @@ function add_pc_npc(data) {
                         entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                     } else {
                         entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
-                        // WORK HERE
-                        if (coord_x == 1) {
-                            disable_button(['left']);
-                        } else if (coord_x == 39) {
-                            disable_button(['right']);
-                        }
-
-                        if (coord_y == 1) {
-                            disable_button(['top']);
-                        } else if (coord_y == 39) {
-                            disable_button(['bottom']);
-                        }
+                        coordinates_array_to_disable_button.push(`${coord_y}_${coord_x}`)
                     }
                     /* Check ship_size and set player-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
@@ -272,6 +262,9 @@ function add_pc_npc(data) {
             coord_y++;
             coord_x = data[i]["user"]["coordinates"]["coord_x"];
         }
+    }
+    if (user_is_on_mobile_device()) {
+        disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
 }
 

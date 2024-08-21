@@ -55,13 +55,28 @@ class PlayerAction:
     def get_reverse_ship_status(self):
         return PlayerShip.objects.filter(player_id=self.player_id, is_current_ship=True).values_list('is_reversed', flat=True)[0]
     
+    def get_other_player_movement(self, other_player_id):
+        return PlayerShip.objects.filter(player_id=other_player_id, is_current_ship=True).values_list('max_movement', flat=True)[0]
+    
+    def get_other_player_movement_remaining(self, other_player_id):
+        return PlayerShip.objects.filter(player_id=other_player_id, is_current_ship=True).values_list('current_movement', flat=True)[0]
+    
     def set_reverse_ship_status(self):
         playership_reverse_status = PlayerShip.objects.filter(player_id=self.player_id, is_current_ship=True)
-        playership_reverse_status.update(is_reversed = True if playership_reverse_status.values_list('is_reversed', flat=True)[0] == False else False) 
+        playership_reverse_status.update(is_reversed = True if playership_reverse_status.values_list('is_reversed', flat=True)[0] == False else False)
+        
+    def __check_if_player_can_move_and_update(self, move_cost):
+        playership_movement_value = PlayerShip.objects.filter(player_id=self.player_id, is_current_ship=True, current_movement__gte=move_cost)
+        if playership_movement_value.exists():
+            current_movement_value = playership_movement_value.values_list('current_movement', flat=True)[0]
+            if (current_movement_value - move_cost) >= 0:
+                playership_movement_value.update(current_movement = current_movement_value - move_cost)
+                return True
     
-    def move(self, end_x, end_y):
-        if self.destination_already_occupied(end_x, end_y) is False:
+    def move_have_been_registered(self, end_x, end_y, move_cost):
+        if self.__check_if_player_can_move_and_update(move_cost) is True:
             Player.objects.filter(user_id=self.id).update(
                 coordinates={"coord_x": end_x, "coord_y": end_y}
             )
+            return True
     
