@@ -286,7 +286,6 @@ function unset_disabled_button_status() {
             temp_direction_set.add("move-bottom")
         }
     }
-    console.log(movement_array.length)
     if (movement_array.length == 0) {
         for (let i = 0; i < direction_array.length; i++) {
 
@@ -348,11 +347,9 @@ function unset_disabled_button_status() {
 }
 
 function get_direction_to_disable_button(coords) {
-    console.log(coords)
     let direction_set = new Set();
     for (let i = 0; i < coords.length; i++) {
         let sliced_coord = coords[i].split('_')
-        console.log(sliced_coord)
         if (parseInt(sliced_coord[1]) <= 1) {
             direction_set.add('left');
         } else if (parseInt(sliced_coord[1]) >= 39) {
@@ -365,8 +362,6 @@ function get_direction_to_disable_button(coords) {
             direction_set.add('bottom');
         }
     }
-
-    console.log(direction_set)
 
     return direction_set;
 }
@@ -501,7 +496,8 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
         case 1:
             let td_ship_el = document.getElementById(`${ship_arrival_coordinates}`);
             let span_ship_el = td_ship_el.querySelector('span')
-            span_ship_el.classList.add('border');
+            span_ship_el.classList.add('border', 'text-white', 'font-bold', 'text-center');
+            span_ship_el.classList.remove('hover:border-2', 'hover:border');
             current_player.set_move_cost(movement_array.length);
             break;
     }
@@ -549,6 +545,7 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
         let e_span = e.querySelector('span');
         e_span.textContent = "";
         e_span.classList.remove(
+            'border',
             'border-t',
             'border-b',
             'border-l',
@@ -582,6 +579,7 @@ function delete_last_destination(coord) {
         let e_span = e.querySelector('span');
         e_span.textContent = "";
         e_span.classList.remove(
+            'border',
             'border-t',
             'border-b',
             'border-l',

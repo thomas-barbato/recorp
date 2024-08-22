@@ -323,6 +323,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         'bg-black/20',
         'border-1',
     );
+    let player_id = id.split('_')[2]
 
 
     let container_div = document.createElement('div');
@@ -392,6 +393,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
     movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700', 'relative');
+    movement_progress_bar_container_div.id = `movement-container-${player_id}`;
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]')

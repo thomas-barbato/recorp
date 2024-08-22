@@ -117,7 +117,6 @@ function display_pathfinding() {
                                         span_ship_el.classList.add('border-l');
                                         break;
                                     case 4:
-
                                         span_ship_el.classList.add('text-white', 'font-bold', 'text-center');
                                         span_ship_el.textContent = `${teal_zone_size}`;
                                         current_player.set_move_cost(teal_zone_size);
@@ -153,6 +152,7 @@ function display_pathfinding() {
                                         break;
                                     case 1:
                                         span_ship_el.classList.add('border-t', 'border-b');
+                                        span_ship_el.textContent = `${teal_zone_size}`;
                                         break;
                                     case 2:
                                         span_ship_el.classList.add('border-t', 'border-r', 'border-b');
@@ -176,6 +176,7 @@ function display_pathfinding() {
                                         break;
                                     case 1:
                                         span_ship_el.classList.add('border-t', 'border-r', 'border-b');
+                                        span_ship_el.textContent = `${teal_zone_size}`;
                                         current_player.set_move_cost(teal_zone_size);
                                         break;
                                     default:
@@ -184,10 +185,13 @@ function display_pathfinding() {
                             }
                             break;
                         case 1:
-                            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
+                            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[0]}`);
                             let span_ship_el = td_ship_el.querySelector('span')
                             span_ship_el.classList.add('border');
+                            span_ship_el.textContent = `${teal_zone_size}`;
                             current_player.set_move_cost(teal_zone_size);
+                            break;
+                        default:
                             break;
                     }
                     pathfinding_path_before_preview_zone_len = 1;

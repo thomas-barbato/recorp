@@ -19,7 +19,8 @@ function async_move(pos) {
 function update_player_coord(data) {
     clear_path();
     let player_name = data["player"];
-    let target_user_id = data["player_user_id"];
+    let target_user_id = data["user_id"];
+    let target_player_id = data["player_id"];
     let start_pos_array = data["start_id_array"];
     let end_pos_array = data["destination_id_array"];
     let movement_remaining = parseInt(data["movement_remaining"]);
@@ -41,6 +42,14 @@ function update_player_coord(data) {
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
             end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
+
+            let movement_remaining_div = document.getElementById(`movement-container-${target_player_id}`);
+            let movement_progress_bar_size = movement_remaining_div.querySelector('div');
+            let movement_progress_bar_text = movement_remaining_div.querySelector('span');
+
+            movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
+            movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+
         } else {
             end_point.setAttribute('onclick', 'reverse_player_ship_display()');
             end_point.setAttribute('size_x', current_player.s_size.x);

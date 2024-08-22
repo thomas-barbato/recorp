@@ -165,7 +165,6 @@ function add_pc_npc(data) {
                     translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
                 },
             }
-
             let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x);
             document.querySelector('#modal-container').append(modal);
         }

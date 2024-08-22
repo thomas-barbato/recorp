@@ -89,7 +89,8 @@ class GameConsumer(WebsocketConsumer):
             "type": "player_move", 
             "message": {
                 "player": p.get_other_player_name(message["player"]),
-                "player_user_id": p.get_other_player_user_id(message["player"]),
+                "player_id": message["player"],
+                "user_id": p.get_other_player_user_id(message["player"]),
                 "is_reversed": message["is_reversed"],
                 "start_id_array": message["start_id_array"],
                 "destination_id_array": message["destination_id_array"],
