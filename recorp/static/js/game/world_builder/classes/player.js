@@ -1,5 +1,5 @@
 class Player {
-    constructor(player_id, start_x, start_y, move_points) {
+    constructor(player_id, start_x, start_y) {
         this.player_id = player_id;
         this.start_x = start_x;
         this.start_y = start_y;
@@ -9,7 +9,7 @@ class Player {
         this.ship_size_y = 0;
         this.move_cost = 0;
         this.fullsize_coordinates_array = [];
-        this.move_points = move_points;
+        this.move_points = 0;
         this.selected_cell = false;
         this.is_reversed = false;
 
@@ -56,6 +56,10 @@ class Player {
         this.move_cost = parseInt(cost);
     }
 
+    set_movement_point_value(value) {
+        this.move_points = value;
+    }
+
     get s_size() {
         return {
             "x": this.ship_size_x,
@@ -93,6 +97,10 @@ class Player {
     }
 
     get player_move_cost() {
-        return this.move_cost;
+        return parseInt(this.move_cost);
+    }
+
+    get player_move_remaining() {
+        return (this.move_points - player_move_cost()) > 0 ? this.move_points - this.player_move_cost() : 0;
     }
 }

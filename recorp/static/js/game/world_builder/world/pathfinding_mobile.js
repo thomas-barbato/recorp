@@ -84,7 +84,7 @@ function define_preview_zone(direction) {
                     default:
                         break;
                 }
-                let direction_array = ("top", "bottom", "right", "left");
+                let direction_array = ["top", "bottom", "right", "left"];
                 let block_these_buttons = direction_array.filter(e => e !== reverse_current_direction);
                 disable_button(block_these_buttons);
             }
@@ -268,31 +268,69 @@ function unset_disabled_button_status() {
     let direction_array = document.querySelectorAll('.direction-arrow');
     let temp_direction_set = new Set();
     let player_location = document.querySelectorAll('.player-ship-pos');
+    if (current_player.move_points_value > 0) {
 
-    for (let i = 0; i < player_location.length; i++) {
-        let player_direction_split = player_location[i].id.split('_');
-        let y = player_direction_split[0];
-        let x = player_direction_split[1];
+        for (let i = 0; i < player_location.length; i++) {
+            let player_direction_split = player_location[i].id.split('_');
+            let y = player_direction_split[0];
+            let x = player_direction_split[1];
 
-        if (x <= 0) {
-            temp_direction_set.add("move-left")
-        } else if (x >= 39) {
-            temp_direction_set.add("move-right")
+            if (x <= 0) {
+                temp_direction_set.add("move-left")
+            } else if (x >= 39) {
+                temp_direction_set.add("move-right")
+            }
+
+            if (y <= 0) {
+                temp_direction_set.add("move-top");
+            } else if (y >= 39) {
+                temp_direction_set.add("move-bottom")
+            }
         }
+        if (movement_array.length == 0) {
+            for (let i = 0; i < direction_array.length; i++) {
 
-        if (y <= 0) {
-            temp_direction_set.add("move-top");
-        } else if (y >= 39) {
-            temp_direction_set.add("move-bottom")
-        }
-    }
-    if (movement_array.length == 0) {
-        for (let i = 0; i < direction_array.length; i++) {
+                let direction_element = document.getElementById(direction_array[i].id);
+                let direction_icon = direction_element.querySelector('i')
 
-            let direction_element = document.getElementById(direction_array[i].id);
-            let direction_icon = direction_element.querySelector('i')
+                if (!temp_direction_set.has(direction_array[i].id)) {
 
-            if (!temp_direction_set.has(direction_array[i].id)) {
+                    direction_element.disabled = false;
+
+                    direction_element.classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
+                    direction_element.classList.remove('border-red-600', 'disabled-arrow');
+
+                    direction_icon.classList.remove('text-red-600');
+                    direction_icon.classList.add('text-emerald-400');
+
+                    if (direction_array[i] == "move-right") {
+                        direction_element.classList.remove('border-l');
+                    } else if (direction_array[i] == "move-left") {
+                        direction_element.classList.remove('border-r');
+                    }
+
+                    if (direction_array[i] == "move-top") {
+                        direction_element.classList.remove('border-b');
+                    } else if (direction_array[i] == "move-bottom") {
+                        direction_element.classList.remove('border-t');
+                    }
+                } else {
+
+                    direction_element.disabled = true;
+
+                    direction_element.classList.remove('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
+                    direction_element.classList.add('border-red-600', 'disabled-arrow', 'border-l', 'border-r', 'border-t', 'border-b');
+
+                    direction_icon.classList.add('text-red-600');
+                    direction_icon.classList.remove('text-emerald-400');
+                }
+            }
+
+        } else {
+            for (let i = 0; i < direction_array.length; i++) {
+
+                let direction_element = document.getElementById(direction_array[i].id);
+                let direction_icon = direction_element.querySelector('i')
 
                 direction_element.disabled = false;
 
@@ -301,43 +339,7 @@ function unset_disabled_button_status() {
 
                 direction_icon.classList.remove('text-red-600');
                 direction_icon.classList.add('text-emerald-400');
-
-                if (direction_array[i] == "move-right") {
-                    direction_element.classList.remove('border-l');
-                } else if (direction_array[i] == "move-left") {
-                    direction_element.classList.remove('border-r');
-                }
-
-                if (direction_array[i] == "move-top") {
-                    direction_element.classList.remove('border-b');
-                } else if (direction_array[i] == "move-bottom") {
-                    direction_element.classList.remove('border-t');
-                }
-            } else {
-
-                direction_element.disabled = true;
-
-                direction_element.classList.remove('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
-                direction_element.classList.add('border-red-600', 'disabled-arrow');
-
-                direction_icon.classList.add('text-red-600');
-                direction_icon.classList.remove('text-emerald-400');
             }
-        }
-
-    } else {
-        for (let i = 0; i < direction_array.length; i++) {
-
-            let direction_element = document.getElementById(direction_array[i].id);
-            let direction_icon = direction_element.querySelector('i')
-
-            direction_element.disabled = false;
-
-            direction_element.classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
-            direction_element.classList.remove('border-red-600', 'disabled-arrow');
-
-            direction_icon.classList.remove('text-red-600');
-            direction_icon.classList.add('text-emerald-400');
         }
     }
 
@@ -367,15 +369,19 @@ function get_direction_to_disable_button(coords) {
 }
 
 function disable_button(direction) {
-    for (const d of direction) {
-        let button = document.querySelector('#move-' + d);
-        let button_i = button.querySelector('i');
+    if (direction.size > 0) {
+        for (const d of direction) {
+            let button = document.querySelector('#move-' + d);
+            let button_i = button.querySelector('i');
 
-        button.disabled = true;
-        button.classList.remove('text-emerald-400', 'border-[#B1F1CB]', 'active:text-white', 'active:bg-[#25482D]');
-        button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
-        button_i.classList.remove('text-emerald-400', 'active:text-white');
-        button_i.classList.add('text-red-600');
+            button.disabled = true;
+            button.classList.remove('text-emerald-400', 'border-[#B1F1CB]', 'active:text-white', 'active:bg-[#25482D]');
+            button.classList.add('text-red-600', 'disabled-arrow', 'border-red-600');
+            button_i.classList.remove('text-emerald-400', 'active:text-white');
+            button_i.classList.add('text-red-600');
+        }
+    } else {
+        return;
     }
 }
 

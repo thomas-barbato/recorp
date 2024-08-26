@@ -5,7 +5,6 @@ let current_player = new Player(
     null,
     null,
     null,
-    10,
 )
 
 let pathfinding_path_before_preview_zone_len = 1;

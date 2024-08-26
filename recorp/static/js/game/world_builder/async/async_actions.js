@@ -69,9 +69,14 @@ function update_player_coord(data) {
             }
 
             if (user_is_on_mobile_device()) {
-                disable_button(get_direction_to_disable_button((data.destination_id_array)));
+                if (movement_remaining > 0) {
+                    disable_button(get_direction_to_disable_button((data.destination_id_array)));
+                } else {
+                    disable_button(("top", "bottom", "right", "left", "center"));
+                }
             }
 
+            current_player.set_remaining_move_points(movement_remaining);
             entry_point.classList.remove('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
