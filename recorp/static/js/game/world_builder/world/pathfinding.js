@@ -23,9 +23,8 @@ function display_pathfinding() {
     let span = pathfinder_obj.player_cell;
     let player_span = span.querySelector('div>span');
     player_span.classList.add('box-border', 'border-2', 'border');
-
     if (current_player.selected_cell_bool === false) {
-        let pathfinding_path_before_preview_zone_len = 0;
+        pathfinding_path_before_preview_zone_len = 0;
         for (let i = 0; i < pathfinder_obj.path.length; i++) {
             let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x].cells[pathfinder_obj.path[i].y];
             let span_el = td_el.querySelector('span');
@@ -36,8 +35,13 @@ function display_pathfinding() {
                 // show teal path.
                 if (i < pathfinder_obj.path.length - 1) {
                     // Test without teal
-                    span_el.classList.add('bg-teal-500/30', 'teal-zone');
-                    span_el.classList.add('text-white', 'font-bold', 'text-center');
+                    if (current_player.move_points_value == 0) {
+                        span_el.classList.add('bg-red-600/50', 'border-red-600');
+                        span_el.classList.add('text-white', 'font-bold', 'text-center');
+                    } else {
+                        span_el.classList.add('bg-teal-500/30', 'teal-zone');
+                        span_el.classList.add('text-white', 'font-bold', 'text-center');
+                    }
                     // display coord on screen.
                     span_el.textContent = i + 1;
 
@@ -52,7 +56,7 @@ function display_pathfinding() {
                             let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
                             if (td_ship_el) {
                                 // check outbound
-                                if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos')) {
+                                if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos') || current_player.move_points == 0) {
                                     can_be_crossed = false;
                                 }
                                 // save id in list
@@ -82,7 +86,7 @@ function display_pathfinding() {
                         current_player.set_selected_cell_bool(true);
                     } else {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`)
+                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
                             uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed', 'teal-zone');
                             uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse', 'text-white', 'font-bold', 'text-center');
@@ -92,7 +96,6 @@ function display_pathfinding() {
                     }
 
                     let teal_zone_size = document.querySelectorAll('.teal-zone').length + 1
-
                     switch (ship_arrival_coordinates.length) {
                         case 9:
                             for (let index = 0; index < 9; index++) {
@@ -212,7 +215,7 @@ function display_pathfinding() {
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });
-
+        console.log("ON ENTRE DEDANS PUTAIN DE MERDE!!!!! :grimace: !")
         async_move({
             player: current_player.player,
             end_y: current_player.coord.end_x,
@@ -256,12 +259,12 @@ function get_pathfinding(e) {
             } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
                 if (current_player.reversed_ship_status == true) {
                     current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
+                        parseInt(start_node_id[1]) + 1,
                         parseInt(start_node_id[0]) + 1,
                     );
                 } else {
                     current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 1,
+                        parseInt(start_node_id[1]) + 2,
                         parseInt(start_node_id[0]) + 1,
                     );
                 }

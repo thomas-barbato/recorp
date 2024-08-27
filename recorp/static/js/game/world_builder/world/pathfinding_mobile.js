@@ -105,9 +105,9 @@ function is_reversed_movement(direction_array) {
     let movement_is_reversed = false;
 
     if ((last_move == "top" && seconde_last_move == "bottom") || (last_move == "bottom" && seconde_last_move == "top")) {
-        movement_is_reversed = true
+        movement_is_reversed = true;
     } else if ((last_move == "right" && seconde_last_move == "left") || (last_move == "left" && seconde_last_move == "right")) {
-        movement_is_reversed = true
+        movement_is_reversed = true;
     }
 
     return movement_is_reversed;
