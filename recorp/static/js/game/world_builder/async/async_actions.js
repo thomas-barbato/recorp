@@ -72,7 +72,7 @@ function update_player_coord(data) {
                 if (movement_remaining > 0) {
                     disable_button(get_direction_to_disable_button((data.destination_id_array)));
                 } else {
-                    disable_button(("top", "bottom", "right", "left", "center"));
+                    disable_button(["top", "bottom", "right", "left", "center"]);
                 }
             }
 

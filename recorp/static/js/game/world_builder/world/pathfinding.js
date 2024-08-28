@@ -155,6 +155,7 @@ function display_pathfinding() {
                                     case 1:
                                         span_ship_el.classList.add('border-t', 'border-b');
                                         span_ship_el.textContent = `${teal_zone_size}`;
+                                        current_player.set_move_cost(teal_zone_size);
                                         break;
                                     case 2:
                                         span_ship_el.classList.add('border-t', 'border-r', 'border-b');
@@ -215,7 +216,7 @@ function display_pathfinding() {
         let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
             return element.id;
         });
-        console.log("ON ENTRE DEDANS PUTAIN DE MERDE!!!!! :grimace: !")
+
         async_move({
             player: current_player.player,
             end_y: current_player.coord.end_x,

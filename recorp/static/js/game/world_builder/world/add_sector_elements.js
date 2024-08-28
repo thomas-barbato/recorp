@@ -229,28 +229,11 @@ function add_pc_npc(data) {
                     }
                     space_ship.classList.add("player-ship");
                     space_ship_reversed.classList.add("player-ship-reversed");
-
-                    if (data[i]["ship"]["current_movement"] <= 0) {
-                        let direction_arrow_element = document.querySelectorAll('.direction-arrow');
-                        for (let i = 0; i < direction_arrow_element.length; i++) {
-                            let direction_arrow_element_icon = direction_arrow_element[i].querySelector('i');
-
-                            direction_arrow_element[i].classList.add('disabled-arrow', 'border-red-600');
-                            direction_arrow_element[i].classList.remove('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
-                            direction_arrow_element[i].disabled = true;
-
-                            direction_arrow_element_icon.classList.add('text-red-600');
-                            direction_arrow_element_icon.classList.remove('text-emerald-400');
-
+                    if (user_is_on_mobile_device()) {
+                        if (data[i]["ship"]["current_movement"] <= 0) {
+                            disable_button(["top", "bottom", "right", "left", "center"])
                         }
-
-                        let move_button_element = document.querySelector('#center')
-                        let move_button_element_icon = move_button_element.querySelector('i');
-
-                        move_button_element.disabled = true;
-                        move_button_element_icon.classList.add('text-red-600');
                     }
-
                     current_player.set_remaining_move_points(data[i]["ship"]["current_movement"]);
                 }
 

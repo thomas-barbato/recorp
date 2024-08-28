@@ -274,7 +274,6 @@ function unset_disabled_button_status() {
             let player_direction_split = player_location[i].id.split('_');
             let y = player_direction_split[0];
             let x = player_direction_split[1];
-
             if (x <= 0) {
                 temp_direction_set.add("move-left")
             } else if (x >= 39) {
@@ -341,11 +340,13 @@ function unset_disabled_button_status() {
                 direction_icon.classList.add('text-emerald-400');
             }
         }
-    }
 
-    center.classList.remove('text-red-600', 'disabled-arrow');
-    center.classList.add('text-emerald-400');
-    center_i.classList.add('text-emerald-400');
+        center.classList.remove('disabled-arrow', 'border-red-600');
+        center_i.classList.remove('text-red-600');
+        center.classList.add('text-emerald-400');
+        center_i.classList.add('text-emerald-400');
+        center.disabled = false;
+    }
 }
 
 function get_direction_to_disable_button(coords) {
@@ -364,14 +365,14 @@ function get_direction_to_disable_button(coords) {
             direction_set.add('bottom');
         }
     }
-
-    return direction_set;
+    return Array.from(direction_set);
 }
 
-function disable_button(direction) {
-    if (direction.size > 0) {
-        for (const d of direction) {
-            let button = document.querySelector('#move-' + d);
+function disable_button(direction_array) {
+    if (direction_array) {
+        for (let i = 0; i < direction_array.length; i++) {
+            let id = direction_array[i] != "center" ? `#move-${direction_array[i]}` : `#${direction_array[i]}`;
+            let button = document.querySelector(id);
             let button_i = button.querySelector('i');
 
             button.disabled = true;
