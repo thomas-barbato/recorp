@@ -30,7 +30,7 @@ function display_pathfinding() {
             let span_el = td_el.querySelector('span');
             span_el.classList.remove('border', 'border-2');
             // if path is lower or equal to move_point value
-            if (i <= current_player.move_points_value) {
+            if (i < current_player.move_points_value) {
                 // if i index is lower than path - ship size x  
                 // show teal path.
                 if (i < pathfinder_obj.path.length - 1) {
@@ -86,7 +86,7 @@ function display_pathfinding() {
                         current_player.set_selected_cell_bool(true);
                     } else {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i-1]}`);
                             let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
                             uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed', 'teal-zone');
                             uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse', 'text-white', 'font-bold', 'text-center');
@@ -176,11 +176,17 @@ function display_pathfinding() {
                                     case 0:
                                         span_ship_el.classList.add('border-t', 'border-l', 'border-b');
                                         span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                                        if (!current_player.reversed_ship_status) {
+                                            span_ship_el.textContent = `${teal_zone_size}`;
+                                            current_player.set_move_cost(teal_zone_size);
+                                        }
                                         break;
                                     case 1:
                                         span_ship_el.classList.add('border-t', 'border-r', 'border-b');
-                                        span_ship_el.textContent = `${teal_zone_size}`;
-                                        current_player.set_move_cost(teal_zone_size);
+                                        if (current_player.reversed_ship_status) {
+                                            span_ship_el.textContent = `${teal_zone_size}`;
+                                            current_player.set_move_cost(teal_zone_size);
+                                        }
                                         break;
                                     default:
                                         break;

@@ -8,6 +8,7 @@ let move_cost = 0;
 function display_pathfinding_mobile(direction) {
     let element = document.querySelector('#move-' + direction);
     if (!element.classList.contains('disabled-arrow')) {
+        console.log(element)
         direction_array.push(direction);
         define_user_values();
         unset_disabled_button_status();
@@ -210,6 +211,12 @@ function add_to_movement_array(direction) {
             } else if (direction == "left") {
                 move_y = current_player.coord.start_y;
                 move_x = current_player.coord.start_x - 1;
+            } else if (direction == "top") {
+                move_x = current_player.coord.start_x;
+                move_y = current_player.coord.start_y - 1;
+            } else if (direction == "bottom") {
+                move_y = current_player.coord.start_y + 1;
+                move_x = current_player.coord.start_x;
             }
         }
 
@@ -226,6 +233,7 @@ function clear_path() {
         let td_ship_el = document.getElementById(`${movement_array[i]}`);
         let e_target = td_ship_el.querySelector('div>span');
         e_target.classList.remove('text-white', 'font-bold', 'text-center');
+        e_target.textContent = "";
     }
     movement_array.splice(0, movement_array.length);
     clean_previous_preview_position(ship_arrival_coordinates);
@@ -329,18 +337,17 @@ function unset_disabled_button_status() {
             for (let i = 0; i < direction_array.length; i++) {
 
                 let direction_element = document.getElementById(direction_array[i].id);
-                let direction_icon = direction_element.querySelector('i')
+                let direction_icon = direction_element.querySelector('i');
 
                 direction_element.disabled = false;
 
                 direction_element.classList.add('bg-gray-800/40', 'border-[#B1F1CB]', 'active:bg-[#25482D]');
-                direction_element.classList.remove('border-red-600', 'disabled-arrow');
+                direction_element.classList.remove('border-red-600', 'disabled-arrow', 'border-b-red-600', 'border-l-red-600', 'border-r-red-600', 'border-t-red-600');
 
                 direction_icon.classList.remove('text-red-600');
                 direction_icon.classList.add('text-emerald-400');
             }
         }
-
         center.classList.remove('disabled-arrow', 'border-red-600');
         center_i.classList.remove('text-red-600');
         center.classList.add('text-emerald-400');
@@ -491,12 +498,18 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                     span_ship_el.textContent = "";
                 }
                 if (i == 0) {
-                    span_ship_el.classList.add('border-t', 'border-l', 'border-b');
+                    span_ship_el.classList.add('border-t', 'border-l', 'border-b', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                    if (current_player.reversed_ship_status) {
+                        span_ship_el.textContent = `${movement_array.length}`;
+                        current_player.set_move_cost(movement_array.length);
+                    }
                 } else if (i == 1) {
                     span_ship_el.classList.add('border-t', 'border-r', 'border-b', 'text-white', 'font-bold', 'text-center');
-                    span_ship_el.textContent = `${movement_array.length}`;
-                    current_player.set_move_cost(movement_array.length);
+                    if (!current_player.reversed_ship_status) {
+                        span_ship_el.textContent = `${movement_array.length}`;
+                        current_player.set_move_cost(movement_array.length);
+                    }
                 }
             }
             break;
