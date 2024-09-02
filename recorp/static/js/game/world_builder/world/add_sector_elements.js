@@ -281,23 +281,29 @@ function hide_sector_overflow(coord_x, coord_y) {
     let limite_x = map_informations.screen_sized_map["col"];
     let limite_y = map_informations.screen_sized_map["row"];
 
-    console.log(limite_y, limite_x);
+    let camera_limite_y = limite_y / 2.0;
+    let camera_limite_x = limite_x / 2.0;
 
+    let display_map_start_x = (position_on_map.x - camera_limite_x) > 0 ? (position_on_map.x - camera_limite_x) : 0;
+    let display_map_end_x = (position_on_map.x + camera_limite_x) < atlas.col ? (position_on_map.x + camera_limite_x) : atlas.col;
 
-    let limite_divider = 2;
+    let display_map_start_y = (position_on_map.y - camera_limite_y) > 0 ? (position_on_map.y - camera_limite_y) : 0;
+    let display_map_end_y = (position_on_map.y + camera_limite_y) < atlas.row ? (position_on_map.y + camera_limite_y) : atlas.row;
 
-    let display_map_start_x = (position_on_map.x - Math.round(limite_x / limite_divider)) <= 0 ? 0 : (position_on_map.x - Math.round(limite_x / limite_divider));
-    let display_map_end_x = (position_on_map.x + Math.round(limite_x / limite_divider)) >= atlas.col ? atlas.col : (display_map_start_x + limite_x);
-
-    let display_map_start_y = (position_on_map.y - Math.round(limite_y / limite_divider)) <= 0 ? 0 : (position_on_map.y - Math.round(limite_y / limite_divider));
-    let display_map_end_y = (position_on_map.y + Math.round(limite_y / limite_divider)) >= atlas.row ? atlas.row : (display_map_start_y + limite_y);
-
-    if (display_map_end_x == atlas.col) {
+    if (display_map_start_x == 0) {
+        display_map_end_x = limite_x;
+    } else if (display_map_end_x == atlas.col) {
         display_map_start_x = display_map_end_x - limite_x;
     }
-    if (display_map_end_y == atlas.row) {
+
+
+    if (display_map_start_y == 0) {
+        display_map_end_y = limite_y;
+    } else if (display_map_end_y == atlas.row) {
         display_map_start_y = display_map_end_y - limite_y;
     }
+
+
 
     for (let y = 0; y <= atlas.row; y++) {
         for (let x = 0; x <= atlas.col; x++) {

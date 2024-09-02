@@ -84,8 +84,8 @@ function update_player_coord(data) {
 
 
             hide_sector_overflow(
-                current_player.start_x - 1,
-                current_player.start_y - 1,
+                current_player.end_x - 1,
+                current_player.end_y - 1,
             )
         }
 
