@@ -71,9 +71,9 @@ class GetMapDataFromDB:
     @staticmethod
     def get_resolution_sized_map(device_type):
         return {
-            "is_pc": {"col": 20, "row": 15},
+            "is_pc": {"col": 20, "row": 16},
             "is_mobile": {"col": 11, "row": 11},
-            "is_tablet": {"col": 20, "row": 15},
+            "is_tablet": {"col": 20, "row": 20},
         }[device_type]
 
     @staticmethod

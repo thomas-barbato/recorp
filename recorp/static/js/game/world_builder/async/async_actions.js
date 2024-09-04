@@ -81,14 +81,10 @@ function update_player_coord(data) {
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
             entry_point.removeAttribute('size_y');
-
-
-            hide_sector_overflow(
-                current_player.end_x - 1,
-                current_player.end_y - 1,
-            )
+            // if i can find better solution
+            // than this bullshit ... 
+            window.location.reload();
         }
-
     }
 }
 

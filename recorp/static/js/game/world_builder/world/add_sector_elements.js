@@ -281,38 +281,34 @@ function hide_sector_overflow(coord_x, coord_y) {
     let limite_x = map_informations.screen_sized_map["col"];
     let limite_y = map_informations.screen_sized_map["row"];
 
-    let camera_limite_y = limite_y / 2.0;
-    let camera_limite_x = limite_x / 2.0;
+    let camera_limite_y = limite_y / 2;
+    let camera_limite_x = limite_x / 2;
 
-    let display_map_start_x = (position_on_map.x - camera_limite_x) > 0 ? (position_on_map.x - camera_limite_x) : 0;
-    let display_map_end_x = (position_on_map.x + camera_limite_x) < atlas.col ? (position_on_map.x + camera_limite_x) : atlas.col;
+    let display_map_start_x = (position_on_map.x - camera_limite_x) > 0 ? position_on_map.x - camera_limite_x : 0;
+    let display_map_start_y = (position_on_map.y - camera_limite_y) > 0 ? position_on_map.y - camera_limite_y : 0;
+    let display_map_end_x = (position_on_map.x + camera_limite_x) < atlas.col ? position_on_map.x + camera_limite_x : atlas.col;
+    let display_map_end_y = (position_on_map.y + camera_limite_y) < atlas.row ? position_on_map.y + camera_limite_y : atlas.row;
 
-    let display_map_start_y = (position_on_map.y - camera_limite_y) > 0 ? (position_on_map.y - camera_limite_y) : 0;
-    let display_map_end_y = (position_on_map.y + camera_limite_y) < atlas.row ? (position_on_map.y + camera_limite_y) : atlas.row;
 
     if (display_map_start_x == 0) {
-        display_map_end_x = limite_x;
+        display_map_end_x = limite_x + 1;
     } else if (display_map_end_x == atlas.col) {
-        display_map_start_x = display_map_end_x - limite_x;
+        display_map_start_x = atlas.col - (limite_x + 1);
     }
-
 
     if (display_map_start_y == 0) {
-        display_map_end_y = limite_y;
+        display_map_end_y = limite_y + 1;
     } else if (display_map_end_y == atlas.row) {
-        display_map_start_y = display_map_end_y - limite_y;
+        display_map_start_y = atlas.row - (limite_y + 1);
     }
-
 
 
     for (let y = 0; y <= atlas.row; y++) {
         for (let x = 0; x <= atlas.col; x++) {
             let entry_point = document.querySelector('.tabletop-view').rows[y].cells[x];
-            entry_point.classList.remove("hidden");
-            if ((x < display_map_start_x || x > display_map_end_x) && x != 0) {
-                entry_point.classList.add("hidden");
-            }
-            if ((y < display_map_start_y || y > display_map_end_y) && y != 0) {
+            if (((y >= display_map_start_y && y <= display_map_end_y) || y == 0) && ((x >= display_map_start_x && x <= display_map_end_x) || x == 0)) {
+                entry_point.classList.remove("hidden");
+            } else {
                 entry_point.classList.add("hidden");
             }
         }

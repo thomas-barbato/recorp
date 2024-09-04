@@ -8,7 +8,6 @@ let move_cost = 0;
 function display_pathfinding_mobile(direction) {
     let element = document.querySelector('#move-' + direction);
     if (!element.classList.contains('disabled-arrow')) {
-        console.log(element)
         direction_array.push(direction);
         define_user_values();
         unset_disabled_button_status();
