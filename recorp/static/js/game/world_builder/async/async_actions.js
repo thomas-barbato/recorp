@@ -27,18 +27,18 @@ function update_player_coord(data) {
     let max_movement = parseInt(data["max_movement"]);
 
     for (let i = 0; i < start_pos_array.length; i++) {
-        let entry_point = document.getElementById(start_pos_array[i]);
-        let temp_point = document.getElementById(end_pos_array[i]).innerHTML;
-        let end_point = document.getElementById(end_pos_array[i]);
-
-        let get_start_coord = start_pos_array[i].split('_');
-
-        end_point.innerHTML = entry_point.innerHTML;
-        entry_point.innerHTML = temp_point;
-
-        entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
 
         if (current_user_id != target_user_id) {
+            let entry_point = document.getElementById(start_pos_array[i]);
+            let temp_point = document.getElementById(end_pos_array[i]).innerHTML;
+            let end_point = document.getElementById(end_pos_array[i]);
+
+            let get_start_coord = start_pos_array[i].split('_');
+
+            end_point.innerHTML = entry_point.innerHTML;
+            entry_point.innerHTML = temp_point;
+
+            entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
             end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
@@ -51,7 +51,7 @@ function update_player_coord(data) {
             movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
 
         } else {
-            end_point.setAttribute('onclick', 'reverse_player_ship_display()');
+            /*end_point.setAttribute('onclick', 'reverse_player_ship_display()');
             end_point.setAttribute('size_x', current_player.s_size.x);
             end_point.setAttribute('size_y', current_player.s_size.y);
             end_point.querySelector('div>span').title = `${player_name}`;
@@ -80,7 +80,7 @@ function update_player_coord(data) {
             entry_point.classList.remove('player-start-pos', 'uncrossable', 'pc', 'player-ship-pos');
             entry_point.removeAttribute('onclick', 'reverse_player_ship_display()');
             entry_point.removeAttribute('size_x');
-            entry_point.removeAttribute('size_y');
+            entry_point.removeAttribute('size_y');*/
             // if i can find better solution
             // than this bullshit ... 
             window.location.reload();

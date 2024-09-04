@@ -25,7 +25,7 @@ function add_sector_background(background_name) {
             if (!user_is_on_mobile_device()) {
                 set_pathfinding_event();
             }
-            document.querySelector('.tabletop-view').classList.remove('hidden')
+            document.querySelector('.tabletop-view').classList.remove('invisible')
             break;
         }
     }
