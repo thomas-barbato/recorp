@@ -44,6 +44,9 @@ from core.models import (
     AsteroidResource,
     StationResource,
     Sector,
+    Npc,
+    NpcTemplate,
+    NpcResource
 )
 
 
@@ -75,6 +78,18 @@ class CustomAdminSite(admin.AdminSite):
                         "name": "create / update / delete sector",
                         "object_name": "create / update / delete sector",
                         "admin_url": "/admin/sector_gestion",
+                        "view_only": True,
+                    },
+                    {
+                        "name": "create / update / delete new npc template",
+                        "object_name": "create / update / delete new npc template",
+                        "admin_url": "/admin/npc/template",
+                        "view_only": True,
+                    },
+                    {
+                        "name": "create / update / delete new npc and assign it on sector",
+                        "object_name": "create / update / delete new npc and assign it on sector",
+                        "admin_url": "/admin/sector_gestion/npc",
                         "view_only": True,
                     },
                 ],
@@ -120,7 +135,37 @@ class CustomAdminSite(admin.AdminSite):
                 self.admin_view(SectorDeleteView.as_view()),
                 name="sector_delete",
             ),
-        ] + urls
+            re_path(
+                r"^npc/template/$",
+                self.admin_view(NpcTemplateDataView.as_view()),
+                name="npc_template_add",
+            ),
+            re_path(
+                r"^npc/template/delete$",
+                self.admin_view(NpcTemplateDeleteDataView.as_view()),
+                name="npc_template_delete",
+            ),
+            re_path(
+                r"^npc/template/update$",
+                self.admin_view(NpcTemplateUpdateDataView.as_view()),
+                name="npc_template_update",
+            ),
+            re_path(
+                r"^sector_gestion/npc$",
+                self.admin_view(NpcToSectorDataView.as_view()),
+                name="npc_assign",
+            ),
+            re_path(
+                r"^sector_gestion/npc/update$",
+                self.admin_view(NpcToSectorUpdateDataView.as_view()),
+                name="npc_assign_update",
+            ),
+            re_path(
+                r"^sector_gestion/npc/delete$",
+                self.admin_view(NpcToSectorDeleteDataView.as_view()),
+                name="npc_assign_delete",
+            ),
+        ] + urls 
         return urls
 
 
@@ -452,6 +497,33 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
         return JsonResponse(json.dumps(response), safe=False)
 
 
+class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
+    template_name = "create_npc_template.html"
+
+
+class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
+    model = NpcTemplate
+
+
+class NpcTemplateDeleteDataView(LoginRequiredMixin, DeleteView):
+    template_name = "create_npc_template.html"
+    model = NpcTemplate
+    
+    
+class NpcToSectorDataView(LoginRequiredMixin, TemplateView):
+    template_name = "generate_npc_on_sector.html"
+    model = Npc
+
+
+class NpcToSectorUpdateDataView(LoginRequiredMixin, UpdateView):
+    template_name = "generate_npc_on_sector.html"
+    model = Npc
+
+
+class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):
+    template_name = "create_npc_template.html"
+    model = Npc
+
 admin_site = CustomAdminSite()
 
 
@@ -611,3 +683,18 @@ class StationResourceAdmin(admin.ModelAdmin):
 @admin.register(Sector, site=admin_site)
 class SectorAdmin(admin.ModelAdmin):
     model = Sector
+
+
+@admin.register(Npc, site=admin_site)
+class NpcrAdmin(admin.ModelAdmin):
+    model = Npc
+
+
+@admin.register(NpcResource, site=admin_site)
+class SectorAdmin(admin.ModelAdmin):
+    model = NpcResource
+
+
+@admin.register(NpcTemplate, site=admin_site)
+class SectorAdmin(admin.ModelAdmin):
+    model = NpcTemplate

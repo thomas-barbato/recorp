@@ -21,7 +21,7 @@
         "fields": {
             "name": "moon-1",
             "data": {
-                "animation": "moon-2",
+                "animation": "moon_1",
                 "type": "satellite"
             },
             "size": {

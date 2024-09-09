@@ -163,7 +163,6 @@ class Player(models.Model):
     def __str__(self):
         return f"{self.name} - (user:{self.user.username}, {self.user}) : {self.archetype.name}"
 
-
 class Skill(models.Model):
     SKILL_CATEGORIES_CHOICES = (
         ("STEERING", "steering"),
@@ -282,6 +281,74 @@ class Ship(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class NpcTemplate(models.Model):
+    STATUS_CHOICES = (("FULL", "pleine forme"), ("WOUNDED", "blesse"), ("DEAD", "mort"))
+    
+    ship = models.ForeignKey(Ship, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=50)
+    difficulty = models.SmallIntegerField(default=0)
+    description = models.TextField(max_length=2500, blank=True)
+    module_id_list = models.JSONField(null=True)
+    current_hp = models.SmallIntegerField(default=100)
+    max_hp = models.SmallIntegerField(default=100)
+    current_movement = models.PositiveSmallIntegerField(default=10)
+    max_movement = models.PositiveSmallIntegerField(default=10)
+    current_missile_defense = models.SmallIntegerField(default=0)
+    current_thermal_defense = models.SmallIntegerField(default=0)
+    current_ballistic_defense = models.SmallIntegerField(default=0)
+    current_cargo_size = models.SmallIntegerField(default=2)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+    )
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class NpcResource(models.Model):
+    
+    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
+    resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
+    quantity = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.npc_template.name} - {self.resource.name} ({self.quantity})"
+
+class Npc(models.Model):
+    npc_teplate = models.ForeignKey(NpcTemplate, on_delete=models.CASCADE)
+    faction = models.ForeignKey(
+        Faction,
+        on_delete=models.SET_DEFAULT,
+        null=False,
+        default=Faction.get_default_pk,
+        related_name="npc_faction",
+    )
+    sector = models.ForeignKey(
+        Sector,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="npc_sector",
+    )
+    is_npc = models.BooleanField(default=False)
+    name = models.CharField(max_length=30, null=False, blank=False, default="npc")
+    description = models.TextField(max_length=2500, blank=True)
+    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
+    faction_xp = models.PositiveIntegerField(null=False, default=0)
+    current_ap = models.PositiveIntegerField(default=10)
+    max_ap = models.PositiveBigIntegerField(default=10)
+    coordinates = models.JSONField()
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.sector.name} - {self.name} : {self.coordinates}"
+
 
 class Module(models.Model):
     MODULE_TYPE_CHOICES = (

@@ -525,9 +525,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
 
     if (!data.player.is_npc) {
-
+        console.log(data)
         let target_img = document.createElement('img');
-        target_img.src = "/static/js/game/assets/ux/default-user.svg";
+        target_img.src = data.player.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${player_id}/0.jpg`
         target_img.style.width = "30%";
         target_img.style.height = "30%";
         target_img.style.margin = "0 auto";

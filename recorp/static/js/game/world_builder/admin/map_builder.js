@@ -367,9 +367,9 @@
                     coord_y: coord_y,
                     size_x: s_x,
                     size_y: s_y,
-                    animation_direname: animation_data_direname,
                     animations: [{
                         "animation": animation_name,
+                        "animation_direname": animation_data_direname,
                         "type": animation_data_direname.split('_')[0]
                     }],
                 }
@@ -398,12 +398,14 @@
         data = [];
         let animation_container_i = 1;
         for (let dict_i = 0; dict_i < dict.length; dict_i++) {
+            console.log(dict[dict_i])
             dict_value = dict[dict_i]["animations"][0];
-            let index_row = dict[dict_i]['coord_y'];
-            let index_col = dict[dict_i]['coord_x'];
+            let index_row = dict[dict_i]['coord_y'] + 1;
+            let index_col = dict[dict_i]['coord_x'] + 1;
             let bg_url = '/static/img/atlas/foreground/' + dict_value["type"] + '/' + dict_value["animation"] + '/' + '0.gif';
             for (let row_i = 0; row_i < (atlas.tilesize * dict[dict_i]["size_y"]); row_i += atlas.tilesize) {
                 for (let col_i = 0; col_i < (atlas.tilesize * dict[dict_i]["size_x"]); col_i += atlas.tilesize) {
+
                     let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                     let entry_point_div = entry_point.querySelector('div');
 
@@ -428,7 +430,7 @@
                     index_col++;
                 }
                 index_row++;
-                index_col = dict[dict_i]['coord_x'];
+                index_col = dict[dict_i]['coord_x'] + 1;
             }
             animation_container_i++;
             animation_i++;
