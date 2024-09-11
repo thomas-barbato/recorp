@@ -7,7 +7,7 @@ from django.contrib.messages import get_messages
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from core.backend.tiles import UploadThisImage
-from core.backend.get_data import GetMapDataFromDB
+from core.backend.get_data import GetDataFromDB
 from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
 from core.forms import UploadImageForm
 from core.views import admin_index
@@ -195,13 +195,13 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["item_choice"] = ["planet", "asteroid", "station", "satellite", "star", "blackhole"]
-        context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
-        context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
-        context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
-        context["satellite_url"] = GetMapDataFromDB.get_fg_element_url("satellite")
-        context["star_url"] = GetMapDataFromDB.get_fg_element_url("star")
-        context["blackhole_url"] = GetMapDataFromDB.get_fg_element_url("blackhole")
-        context["size"] = GetMapDataFromDB.get_size()
+        context["planet_url"] = GetDataFromDB.get_fg_element_url("planet")
+        context["station_url"] = GetDataFromDB.get_fg_element_url("station")
+        context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
+        context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
+        context["star_url"] = GetDataFromDB.get_fg_element_url("star")
+        context["blackhole_url"] = GetDataFromDB.get_fg_element_url("blackhole")
+        context["size"] = GetDataFromDB.get_size()
         return context
 
     def post(self, request):
@@ -247,34 +247,34 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["map_size_range"] = GetMapDataFromDB.get_map_size_range()
-        context["map_size"] = GetMapDataFromDB.get_map_size()
-        context["background"] = GetMapDataFromDB.get_bg_fg_url("background")
-        context["foreground"] = GetMapDataFromDB.get_bg_fg_url("foreground")
-        context["foreground_type"] = GetMapDataFromDB.get_fg_type()
-        context["animations_data"] = GetMapDataFromDB.get_animation_queryset()
-        context["resources_data"] = GetMapDataFromDB.get_resource_queryset()
-        context["planet_url"] = GetMapDataFromDB.get_fg_element_url("planet")
-        context["star_url"] = GetMapDataFromDB.get_fg_element_url("star")
-        context["blackhole_url"] = GetMapDataFromDB.get_fg_element_url("blackhole")
-        context["satellite_url"] = GetMapDataFromDB.get_fg_element_url("satellite")
-        context["station_url"] = GetMapDataFromDB.get_fg_element_url("station")
-        context["asteroid_url"] = GetMapDataFromDB.get_fg_element_url("asteroid")
-        context["security_data"] = GetMapDataFromDB.get_table(
+        context["map_size_range"] = GetDataFromDB.get_map_size_range()
+        context["map_size"] = GetDataFromDB.get_map_size()
+        context["background"] = GetDataFromDB.get_bg_fg_url("background")
+        context["foreground"] = GetDataFromDB.get_bg_fg_url("foreground")
+        context["foreground_type"] = GetDataFromDB.get_fg_type()
+        context["animations_data"] = GetDataFromDB.get_animation_queryset()
+        context["resources_data"] = GetDataFromDB.get_resource_queryset()
+        context["planet_url"] = GetDataFromDB.get_fg_element_url("planet")
+        context["star_url"] = GetDataFromDB.get_fg_element_url("star")
+        context["blackhole_url"] = GetDataFromDB.get_fg_element_url("blackhole")
+        context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
+        context["station_url"] = GetDataFromDB.get_fg_element_url("station")
+        context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
+        context["security_data"] = GetDataFromDB.get_table(
             "security"
         ).objects.values("id", "name")
-        context["sector_data"] = GetMapDataFromDB.get_table("sector").objects.values(
+        context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
             "id", "name"
         )
-        context["faction_data"] = GetMapDataFromDB.get_table("faction")[0].objects.all()
-        context["size"] = GetMapDataFromDB.get_size()
+        context["faction_data"] = GetDataFromDB.get_table("faction")[0].objects.all()
+        context["size"] = GetDataFromDB.get_size()
         return context
 
     def post(self, request):
         data_from_post = json.load(request)
         response = {"success": False}
         data_is_missing, missing_data_response = (
-            GetMapDataFromDB.check_if_no_missing_entry(
+            GetDataFromDB.check_if_no_missing_entry(
                 data_from_post["map_data"],
                 data_item=data_from_post["data"],
             )
@@ -308,7 +308,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
             for item, _ in data_from_post["data"].items():
                 item_type = data_from_post["data"][item]["item_type"]
                 item_img_name = data_from_post["data"][item]["item_img_name"]
-                table, table_resource = GetMapDataFromDB.get_table(item_type)
+                table, table_resource = GetDataFromDB.get_table(item_type)
                 rsrc_data_list = data_from_post["data"][item]["resource_data"]
                 for rsrc in rsrc_data_list:
                     item_type_id = table.objects.filter(name=item_img_name).values_list(
@@ -347,7 +347,7 @@ class SectorDeleteView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         response = {"success": False}
         pk = json.load(request)["pk"]
-        if GetMapDataFromDB.check_if_table_pk_exists("sector", pk):
+        if GetDataFromDB.check_if_table_pk_exists("sector", pk):
             sector_name = Sector.objects.filter(id=pk).values_list("name", flat=True)[0]
             Sector.objects.filter(id=pk).delete()
             response = {"success": True}
@@ -364,7 +364,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(pk)
+            planets, asteroids, stations = GetDataFromDB.get_items_from_sector(pk)
             table_set = {"planet": planets, "asteroid": asteroids, "station": stations}
             result_dict = dict()
             result_dict["sector_element"] = []
@@ -434,13 +434,13 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
         sector_name = Sector.objects.filter(id=pk).values_list("name", flat=True)[0]
         response = {"success": False}
         data_is_missing, missing_data_response = (
-            GetMapDataFromDB.check_if_no_missing_entry(
+            GetDataFromDB.check_if_no_missing_entry(
                 data_from_post["map_data"],
                 data_item=data_from_post["data"],
             )
         )
         if data_is_missing is False:
-            if GetMapDataFromDB.check_if_table_pk_exists("sector", pk):
+            if GetDataFromDB.check_if_table_pk_exists("sector", pk):
                 Sector.objects.filter(id=pk).update(
                     name=data_from_post["map_data"]["sector_name"],
                     description=data_from_post["map_data"]["sector_description"],
@@ -452,12 +452,12 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                     ],
                 )
 
-                GetMapDataFromDB.delete_items_from_sector(pk)
+                GetDataFromDB.delete_items_from_sector(pk)
 
                 for item, _ in data_from_post["data"].items():
                     item_type = data_from_post["data"][item]["item_type"]
                     item_img_name = data_from_post["data"][item]["item_img_name"]
-                    table, table_resource = GetMapDataFromDB.get_table(item_type)
+                    table, table_resource = GetDataFromDB.get_table(item_type)
                     rsrc_data_list = data_from_post["data"][item]["resource_data"]
                     for rsrc in rsrc_data_list:
                         item_type_id = table.objects.filter(
@@ -499,6 +499,22 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
 
 class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
     template_name = "create_npc_template.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        _, npc_template, npc_resources = GetDataFromDB.get_table(
+            "npc"
+        )
+        ship_list = GetDataFromDB.get_table("ship").objects.all()
+        skill_list = GetDataFromDB.get_table("skill").objects.values('name', 'id', 'category')
+        skill_categories = ["Steering", "Offensive", "Defensive", "Utility", "Industry"]
+        
+        context["npc_template"] = npc_template.objects.all()
+        context["npc_resources"] = npc_resources.objects.values_list("id", flat=True)
+        context["ship_list"] = ship_list
+        context["skill_list"] = skill_list
+        context["skill_categories"] = skill_categories
+        return context
 
 
 class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):

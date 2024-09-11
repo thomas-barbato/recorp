@@ -17,10 +17,15 @@ from core.models import (
     Sector,
     Player,
     PlayerShip,
+    Ship,
+    Npc,
+    NpcResource,
+    NpcTemplate,
+    Skill
 )
 
 
-class GetMapDataFromDB:
+class GetDataFromDB:
     def __init__(self):
         pass
 
@@ -122,8 +127,11 @@ class GetMapDataFromDB:
             "station": [Station, StationResource],
             "faction": [Faction, FactionResource],
             "player": [User, Player],
+            "npc": [Npc, NpcTemplate, NpcResource],
+            "ship": Ship,
             "security": Security,
             "sector": Sector,
+            "skill": Skill,
         }[table_name]
 
     @staticmethod
@@ -144,7 +152,7 @@ class GetMapDataFromDB:
 
     @staticmethod
     def check_if_table_pk_exists(table, pk):
-        this_table = GetMapDataFromDB.get_table(table)
+        this_table = GetDataFromDB.get_table(table)
         return this_table.objects.filter(id=pk).exists()
 
     @staticmethod

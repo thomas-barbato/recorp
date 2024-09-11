@@ -3,7 +3,7 @@ import json
 import logging
 from django.core.cache import cache
 from django.contrib.auth.models import User
-from core.backend.get_data import GetMapDataFromDB
+from core.backend.get_data import GetDataFromDB
 from core.backend.player_actions import PlayerAction
 from core.models import (
     Sector,
@@ -24,7 +24,7 @@ class StoreInCache:
         return cache.get(self.room)
 
     def set_sector_data(self, pk):
-        planets, asteroids, stations = GetMapDataFromDB.get_items_from_sector(
+        planets, asteroids, stations = GetDataFromDB.get_items_from_sector(
             self.sector_pk
         )
         foreground_table_set = {
@@ -32,7 +32,7 @@ class StoreInCache:
             "asteroid": asteroids,
             "station": stations,
         }
-        sector_pc_npc = GetMapDataFromDB.get_pc_npc_from_sector(self.sector_pk)
+        sector_pc_npc = GetDataFromDB.get_pc_npc_from_sector(self.sector_pk)
         sector = Sector.objects.get(id=pk)
         sector_data = dict()
         sector_data["sector_element"] = []
@@ -57,7 +57,7 @@ class StoreInCache:
         }
         for table_key, table_value in foreground_table_set.items():
             for table in table_value:
-                element, _ = GetMapDataFromDB.get_table(table_key)
+                element, _ = GetDataFromDB.get_table(table_key)
                 map_element = [
                     v
                     for k, v in element.objects.filter(name=table.source.name)
@@ -66,7 +66,7 @@ class StoreInCache:
                     if v != "none"
                 ]
 
-                resource_quantity = GetMapDataFromDB.get_resource_quantity_value(
+                resource_quantity = GetDataFromDB.get_resource_quantity_value(
                     table.quantity, 100
                 )
 
@@ -91,7 +91,7 @@ class StoreInCache:
                             "coord_y": table.data["coord_y"],
                             "description": table.data["description"],
                         },
-                        "size": GetMapDataFromDB.get_specific_size(map_element[0]),
+                        "size": GetDataFromDB.get_specific_size(map_element[0]),
                     }
                 )
 

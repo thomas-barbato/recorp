@@ -15,7 +15,7 @@ from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
 from django_user_agents.utils import get_user_agent
 
-from core.backend.get_data import GetMapDataFromDB
+from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm
@@ -81,11 +81,11 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         
         user_agent = self.request.user_agent
         if user_agent.is_pc:
-            map_range = GetMapDataFromDB.get_resolution_sized_map("is_pc")
+            map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
         elif user_agent.is_mobile:
-            map_range = GetMapDataFromDB.get_resolution_sized_map("is_mobile")
+            map_range = GetDataFromDB.get_resolution_sized_map("is_mobile")
         elif user_agent.is_tablet:
-            map_range = GetMapDataFromDB.get_resolution_sized_map("is_tablet")
+            map_range = GetDataFromDB.get_resolution_sized_map("is_tablet")
             
         context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(40), "rows": range(40)}

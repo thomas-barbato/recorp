@@ -398,7 +398,6 @@
         data = [];
         let animation_container_i = 1;
         for (let dict_i = 0; dict_i < dict.length; dict_i++) {
-            console.log(dict[dict_i])
             dict_value = dict[dict_i]["animations"][0];
             let index_row = dict[dict_i]['coord_y'] + 1;
             let index_col = dict[dict_i]['coord_x'] + 1;
