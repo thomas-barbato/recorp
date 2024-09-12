@@ -1,4 +1,5 @@
 import pprint
+from random import random
 import re
 import json
 from django.contrib import admin
@@ -46,7 +47,8 @@ from core.models import (
     Sector,
     Npc,
     NpcTemplate,
-    NpcResource
+    NpcTemplateResource,
+    NpcTemplateSkill,
 )
 
 
@@ -83,7 +85,7 @@ class CustomAdminSite(admin.AdminSite):
                     {
                         "name": "create / update / delete new npc template",
                         "object_name": "create / update / delete new npc template",
-                        "admin_url": "/admin/npc/template",
+                        "admin_url": "/admin/npc/template/",
                         "view_only": True,
                     },
                     {
@@ -138,6 +140,11 @@ class CustomAdminSite(admin.AdminSite):
             re_path(
                 r"^npc/template/$",
                 self.admin_view(NpcTemplateDataView.as_view()),
+                name="npc_template",
+            ),
+            re_path(
+                r"^npc/template/npc_template_add$",
+                self.admin_view(NpcTemplateDataView.as_view()),
                 name="npc_template_add",
             ),
             re_path(
@@ -165,7 +172,7 @@ class CustomAdminSite(admin.AdminSite):
                 self.admin_view(NpcToSectorDeleteDataView.as_view()),
                 name="npc_assign_delete",
             ),
-        ] + urls 
+        ] + urls
         return urls
 
 
@@ -194,7 +201,14 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["item_choice"] = ["planet", "asteroid", "station", "satellite", "star", "blackhole"]
+        context["item_choice"] = [
+            "planet",
+            "asteroid",
+            "station",
+            "satellite",
+            "star",
+            "blackhole",
+        ]
         context["planet_url"] = GetDataFromDB.get_fg_element_url("planet")
         context["station_url"] = GetDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
@@ -205,7 +219,14 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request):
-        select_type = ["planet", "asteroid", "station", "satellite", "star", "blackhole"]
+        select_type = [
+            "planet",
+            "asteroid",
+            "station",
+            "satellite",
+            "star",
+            "blackhole",
+        ]
         selected = request.POST.get("item-type-choice-section")
         if selected in select_type:
             fg_name = re.sub(r"\W", "", request.POST.get("foreground-item-name"))
@@ -213,7 +234,7 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
                 fg_name = "Default value name"
             data = {
                 "animation": request.POST.get("animation"),
-                "type": request.POST.get("item-type-choice-section"), 
+                "type": request.POST.get("item-type-choice-section"),
             }
             match selected:
                 case "satellite":
@@ -260,9 +281,9 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
         context["station_url"] = GetDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
-        context["security_data"] = GetDataFromDB.get_table(
-            "security"
-        ).objects.values("id", "name")
+        context["security_data"] = GetDataFromDB.get_table("security").objects.values(
+            "id", "name"
+        )
         context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
             "id", "name"
         )
@@ -391,15 +412,15 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                             ).values_list("name", flat=True)[0]
                         case "satellite":
                             item_name = Planet.objects.filter(
-                                id=table.source_id, data__contains={'type': "satellite"}
+                                id=table.source_id, data__contains={"type": "satellite"}
                             ).values_list("name", flat=True)[0]
                         case "blackhole":
                             item_name = Planet.objects.filter(
-                                id=table.source_id, data__contains={'type': "blackhole"}
+                                id=table.source_id, data__contains={"type": "blackhole"}
                             ).values_list("name", flat=True)[0]
                         case "star":
                             item_name = Planet.objects.filter(
-                                id=table.source_id, data__contains={'type': "star"}
+                                id=table.source_id, data__contains={"type": "star"}
                             ).values_list("name", flat=True)[0]
                         case "asteroid":
                             item_name = Asteroid.objects.filter(
@@ -502,19 +523,62 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        _, npc_template, npc_resources = GetDataFromDB.get_table(
-            "npc"
-        )
+        _, npc_template, npc_resources, _ = GetDataFromDB.get_table("npc")
         ship_list = GetDataFromDB.get_table("ship").objects.all()
-        skill_list = GetDataFromDB.get_table("skill").objects.values('name', 'id', 'category')
+        skill_list = GetDataFromDB.get_table("skill").objects.values(
+            "name", "id", "category"
+        )
         skill_categories = ["Steering", "Offensive", "Defensive", "Utility", "Industry"]
-        
+        resources = GetDataFromDB.get_table("resource").objects.all()
+
         context["npc_template"] = npc_template.objects.all()
-        context["npc_resources"] = npc_resources.objects.values_list("id", flat=True)
+        context["npc_resources"] = npc_resources.objects.values("id", "quantity")
         context["ship_list"] = ship_list
         context["skill_list"] = skill_list
         context["skill_categories"] = skill_categories
+        context["resource_list"] = resources
         return context
+
+    def post(self, request, *args, **kwargs):
+        data_from_post = json.load(request)["data"]
+        # NEED TO WORK ON MODULES IN JS / HTML.
+        new_template = NpcTemplate(
+            name=data_from_post["template_name"],
+            difficulty=data_from_post["template_difficulty"],
+            ship_id=data_from_post["template_ship"],
+            description="",
+            module_id_list=data_from_post["module_list"],
+            current_hp=data_from_post["hp"],
+            max_hp=data_from_post["hp"],
+            current_movement=data_from_post["movement"],
+            current_missile_defense=data_from_post["missile_defense"],
+            current_thermal_defense=data_from_post["thermal_defense"],
+            current_ballistic_defense=data_from_post["ballistic_defense"],
+            current_cargo_size=data_from_post["cargo_size"],
+            status="FULL",
+        )
+        new_template.save()
+
+        for i in range(0, len(data_from_post["resource"])):
+            new_resource = NpcTemplateResource(
+                resource_id=int(data_from_post[i]["id"]),
+                npc_template_id=new_template.id,
+                quantity=random.randint(
+                    int(data_from_post[i]["quantity"]),
+                    int(data_from_post[i]["quantity"])
+                    * int(data_from_post["template_difficulty"]),
+                ),
+            )
+            new_resource.save()
+
+        for i in range(0, len(data_from_post["template_skills"])):
+            new_template_skill = NpcTemplateSkill(
+                npc_template_id=new_template.id,
+                skill_id=int(data_from_post["template_skills"][i]["id"]),
+                level=int(data_from_post["template_skills"][i]["level"])
+                * int(data_from_post["template_difficulty"]),
+            )
+            new_template_skill.save()
 
 
 class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
@@ -524,8 +588,8 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
 class NpcTemplateDeleteDataView(LoginRequiredMixin, DeleteView):
     template_name = "create_npc_template.html"
     model = NpcTemplate
-    
-    
+
+
 class NpcToSectorDataView(LoginRequiredMixin, TemplateView):
     template_name = "generate_npc_on_sector.html"
     model = Npc
@@ -539,6 +603,7 @@ class NpcToSectorUpdateDataView(LoginRequiredMixin, UpdateView):
 class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):
     template_name = "create_npc_template.html"
     model = Npc
+
 
 admin_site = CustomAdminSite()
 
@@ -662,9 +727,11 @@ class PlayerPrivateMessageAdmin(admin.ModelAdmin):
 class PlayerShipAdmin(admin.ModelAdmin):
     model = PlayerShip
 
+
 @admin.register(PlayerShipResource, site=admin_site)
 class PlayerShipResourceAdmin(admin.ModelAdmin):
     model = PlayerShipResource
+
 
 @admin.register(FactionLeader, site=admin_site)
 class FactionLeaderAdmin(admin.ModelAdmin):
@@ -706,11 +773,16 @@ class NpcrAdmin(admin.ModelAdmin):
     model = Npc
 
 
-@admin.register(NpcResource, site=admin_site)
-class SectorAdmin(admin.ModelAdmin):
-    model = NpcResource
+@admin.register(NpcTemplateResource, site=admin_site)
+class NpcTemplateResourceAdmin(admin.ModelAdmin):
+    model = NpcTemplateResource
 
 
 @admin.register(NpcTemplate, site=admin_site)
-class SectorAdmin(admin.ModelAdmin):
+class NpcTemplateAdmin(admin.ModelAdmin):
     model = NpcTemplate
+
+
+@admin.register(NpcTemplateSkill, site=admin_site)
+class NpcTemplateSkillAdmin(admin.ModelAdmin):
+    model = NpcTemplateSkill

@@ -307,9 +307,19 @@ class NpcTemplate(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+class NpcTemplateSkill(models.Model):
+    
+    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
+    skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
+    level = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.npc_template.name} - {self.skill.name} ({self.level})"
 
-class NpcResource(models.Model):
+class NpcTemplateResource(models.Model):
     
     npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)

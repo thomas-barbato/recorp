@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "django_redis",
     "recorp",
     "core.apps.CoreConfig",
-    'django_user_agents'
+    'django_user_agents',
 ]
 
 MIDDLEWARE = [

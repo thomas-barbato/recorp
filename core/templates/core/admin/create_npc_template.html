@@ -15,7 +15,8 @@
         <section class="mb-2">
             <div class="flex flex-row">
                 <div class="flex w-full flex-col">
-                    <label for="template-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Npc Template</b></label>
+                    <label for="template-select" class="block mt-1 text-sm font-bold text-gray-900 dark:text-white"><b>Npc Template</b></label>
+                    <small class="text-red-500 mb-1">chose a template to update or delete it, if you select <b>none</b> you will create new one</small>
                     <div class="flex flex-row gap-1">
                         <select id="template-select" name="template-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                             <option value="none" class="text-center" selected>None</option>
@@ -26,13 +27,13 @@
                         <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
                     </div>
                 </div>
-            </div><small class="text-red-500">chose a template to update or delete it, if you select <b>none</b> you will create new one</small>
+            </div>
         </section>
         {% include "delete_confirm_modal.html" %}
         
         <section id="template-name" class="w-full mb-1  ">
             <label for="template-name-input" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set template name <b class="text-red-600">*</b></b></label>
-            <input type="text" id="template-name-input" class="bg-gray-50 border border-gray-300 text-center text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Template's name" required />
+            <input type="text" id="template-name-input" name="template-name-input" class="bg-gray-50 border border-gray-300 text-center text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Template's name" required />
         </section>
 
         <section id="spaceship-menu" class="w-full">
@@ -49,37 +50,63 @@
         <section class="mt-1 mb-2">
             <div class="flex flex-row">
                 <div class="flex w-full flex-col">
-                    <label for="difficulty-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set difficulty</b></label>
-                    <input id="difficulty-select" type="number" min=1 max=150 default=1 class="text-center font-bold">
+                    <label for="difficulty-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set difficulty</b></label>
+                    <small class="text-red-500 mb-1">When setting difficulty, you chose which skill level this template will use. (min = 1 , max = 150, Default = 1)</small>
+                    <input id="difficulty-select" type="number" min=1 max=150 value=1 class="text-center font-bold">
                 </div>
-            </div><small class="text-red-500">When setting difficulty, you chose which skill level this template will use. (min = 1 , max = 150, Default = 1)</small>
+            </div>
         </section>
 
         <section class="mt-1 mb-2">
             <div class="flex flex-col w-full">
-                <label for="skill-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set used skills in template </b></label>
-                <div class="border grid grid-cols-2 gap-1 justify-between p-2">
+                <label for="skill-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set used skills in template </b></label>
+                <small class="text-red-500 mb-1">Chose here which skill will be used for difficulty settings, the others will stay at 0.</small>
+                <div class="border grid grid-cols-2 gap-1 justify-between p-2" id="skill-select">
                     {% for category in skill_categories%}
                     <ul class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
                         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white text-center">{{ category }}</h3>
                      {% for skill in skill_list %}
                         {% if category == skill.category %}
-                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none">
+                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" id="skill-li-{{ skill.id }}">
                             <div class="flex items-center ps-3">
-                                <input id="vue-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                <label for="vue-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" id="{{ skill.id }}">{{ skill.name }}</label>
+                                <input id="skill-input-{{ skill.id }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 skill-input">
+                                <label for="skill-input-{{ skill.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" id="{{ skill.id }}">{{ skill.name }}</label>
                             </div>
                         </li>
                         {% endif %}
                      {% endfor %}
                     </ul>
                     {% endfor %}
-                    
-
                 </div>
-            </div><small class="text-red-500">Chose here which skill will be used for difficulty settings, the others will stay at 0.</small>
+            </div>
         </section>
 
+        <section class="mt-1 mb-2">
+            <div class="flex flex-col w-full">
+                <label for="resources-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set resources</b></label>
+                <small class="text-red-500 mb-1">Chose here which resources be used for for this template min = 0 max = 300, value will be multiplied per difficulty level. </small>
+                <div class="border w-full gap-1 justify-between p-2" id="resources-select">
+                    <ul class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
+                     {% for resource in resource_list %}
+                        {% if resource.name != 'none' %}
+                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none p-2" id="resource-li-{{ resource.id }}">
+                            <div class="flex items-center ps-3">
+                                <label for="resource-input-{{ resource.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ resource.name }}</label>
+                                <input id="resource-input-{{ resource.id }}" type="number" step="1" min="0" max="300" value="0" class="w-full h-5 text-blue-600 bg-gray-100 border-gray-300 text-center rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 resources">
+                            </div>
+                        </li>
+                        {% endif %}
+                     {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class=" mt-3">
+            <div class="flex justify-center items-center gap-1">
+                <input type="button" value="submit" class="text-red-400">
+            </div>
+        </section>
         
     </div>
 </div>

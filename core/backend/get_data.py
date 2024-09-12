@@ -17,11 +17,13 @@ from core.models import (
     Sector,
     Player,
     PlayerShip,
+    PlayerShipResource,
     Ship,
+    Skill,
     Npc,
-    NpcResource,
+    NpcTemplateResource,
     NpcTemplate,
-    Skill
+    NpcTemplateSkill,
 )
 
 
@@ -126,8 +128,9 @@ class GetDataFromDB:
             "asteroid": [Asteroid, AsteroidResource],
             "station": [Station, StationResource],
             "faction": [Faction, FactionResource],
-            "player": [User, Player],
-            "npc": [Npc, NpcTemplate, NpcResource],
+            "player": [User, Player, PlayerShipResource],
+            "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
+            "resource": Resource,
             "ship": Ship,
             "security": Security,
             "sector": Sector,
