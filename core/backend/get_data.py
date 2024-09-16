@@ -24,6 +24,7 @@ from core.models import (
     NpcTemplateResource,
     NpcTemplate,
     NpcTemplateSkill,
+    Module
 )
 
 
@@ -135,6 +136,7 @@ class GetDataFromDB:
             "security": Security,
             "sector": Sector,
             "skill": Skill,
+            "module": Module,
         }[table_name]
 
     @staticmethod

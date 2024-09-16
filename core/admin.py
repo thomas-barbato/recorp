@@ -528,15 +528,33 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         skill_list = GetDataFromDB.get_table("skill").objects.values(
             "name", "id", "category"
         )
-        skill_categories = ["Steering", "Offensive", "Defensive", "Utility", "Industry"]
         resources = GetDataFromDB.get_table("resource").objects.all()
+        modules = GetDataFromDB.get_table("module").objects.all()
 
         context["npc_template"] = npc_template.objects.all()
         context["npc_resources"] = npc_resources.objects.values("id", "quantity")
         context["ship_list"] = ship_list
         context["skill_list"] = skill_list
-        context["skill_categories"] = skill_categories
+        context["skill_categories"] = [
+            "Steering",
+            "Offensive",
+            "Defensive",
+            "Utility",
+            "Industry",
+        ]
         context["resource_list"] = resources
+        context["module_list"] = modules
+        context["module_types"] = [
+            "DEFENSE",
+            "HOLD",
+            "MOVEMENT",
+            "REPAIR",
+            "GATHERING",
+            "RESEARCH",
+            "CRAFT",
+            "ELECTRONIC_WARFARE",
+            "WEAPONRY",
+        ]
         return context
 
     def post(self, request, *args, **kwargs):

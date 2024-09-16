@@ -9,26 +9,29 @@
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
 
 
-<div class="flex flex-col">
-    <div class="flex flex-col w-[90%]">
-        <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
-        <section class="mb-2">
-            <div class="flex flex-row">
-                <div class="flex w-full flex-col">
-                    <label for="template-select" class="block mt-1 text-sm font-bold text-gray-900 dark:text-white"><b>Npc Template</b></label>
-                    <small class="text-red-500 mb-1">chose a template to update or delete it, if you select <b>none</b> you will create new one</small>
-                    <div class="flex flex-row gap-1">
-                        <select id="template-select" name="template-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                            <option value="none" class="text-center" selected>None</option>
-                            {% for template in npc_template %}
-                                <option value="{{ template.id }}" class="text-center">{{ template.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
-                    </div>
-                </div>
+<input type="hidden" value="{{ csrf_token }}" id="csrf_token">
+<section class="mb-2 w-[95vw]">
+    <div class="flex flex-row">
+        <div class="flex w-full flex-col content-center">
+            <label for="template-select" class="block mt-1 text-sm font-bold text-gray-900 dark:text-white text-center"><b>Npc Template</b></label>
+            <small class="text-red-500 mb-1 text-center">chose a template to update or delete it, if you select <b>none</b> you will create new one</small>
+            <div class="flex flex-row gap-1">
+                <select id="template-select" name="template-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                    <option value="none" class="text-center" selected>None</option>
+                    {% for template in npc_template %}
+                        <option value="{{ template.id }}" class="text-center">{{ template.name }}</option>
+                    {% endfor %}
+                </select>
+                <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
+<div class="flex flex-row w-[90vw] gap-3">
+    
+    <div class="flex flex-col w-1/2">
+        
         {% include "delete_confirm_modal.html" %}
         
         <section id="template-name" class="w-full mb-1  ">
@@ -41,10 +44,19 @@
             <select id="ship-select" name="ship-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                 <option value="none" class="text-center"data-imagename="none" selected>None</option>
                 {% for ship in ship_list %}
-                    <option value="{{ ship.id }}" data-imagename="{{ ship.image }}" class="text-center">{{ ship }}</option>
+                    <option value="{{ ship.id }}" data-imagename="{{ ship.image }}" data-shipid="{{ ship.id }}" class="text-center">{{ ship }}</option>
                 {% endfor %}
             </select>
             <img src="" class="hidden object-center mx-auto w-100 mt-1" id="spaceship-img">
+            {% for ship in ship_list %}
+            <ul id="description-spaceship-{{ ship.id }}" class="w-[40%] mx-auto text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 hidden description-spaceship">
+                <li class="w-full border-b border-gray-200 dark:border-gray-600 list-none h-[5vh] text-center  dark:bg-gray-600 text-md mb-1 p-3 text-xl"><h3><b>{{ ship.name}}</b></h3></li>
+                <li class="w-full dark:border-gray-600 list-none p-2 "><b>module slot available:</b> {{ ship.module_slot_available }}</li>
+                <li class="w-full list-none text-red-500 p-2 ">You are not allowed to add more than <b>{{ ship.module_slot_available }}</b> modules with this ship.</li>
+                <li class="w-full list-none p-2 "><b>default hull points:</b> {{ ship.default_hp}}</li>
+                <li class="w-full list-none p-2 "><b>default movement points:</b> {{ship.default_movement}}</li>
+            </ul>
+            {% endfor %}
         </section>
 
         <section class="mt-1 mb-2">
@@ -69,7 +81,7 @@
                         {% if category == skill.category %}
                         <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" id="skill-li-{{ skill.id }}">
                             <div class="flex items-center ps-3">
-                                <input id="skill-input-{{ skill.id }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 skill-input">
+                                <input id="skill-input-{{ skill.id }}" type="checkbox" value="{{ skill.name }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 skill-input">
                                 <label for="skill-input-{{ skill.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" id="{{ skill.id }}">{{ skill.name }}</label>
                             </div>
                         </li>
@@ -101,15 +113,41 @@
                 </div>
             </div>
         </section>
-
-        <section class=" mt-3">
-            <div class="flex justify-center items-center gap-1">
-                <input type="button" value="submit" class="text-red-400">
+    </div>
+    
+    <div class="flex flex-col w-1/2">
+        <section class="mt-1 mb-2">
+            <div class="flex flex-col col-4 w-full">
+                <label for="skill-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set modules used in this templates </b></label>
+                <small class="text-red-500 mb-1">Choose which modules will be installed on this template.</small>
+                <div class="border gap-1 justify-between p-2" id="module-select">
+                {% for module_type in module_types%}
+                    <label for="module-{{ module_type }}" class="mb-4 font-semibold text-gray-900 dark:text-white text-center">{{ module_type }}</label>
+                    {% if module_type == "WEAPONRY" or module_type == "ELECTRONIC_WARFARE" or module_type == "DEFENSE"%}
+                        <select multiple size="6" name="module-{{ module_type }}[]" class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 module-select module-multi-select">
+                    {% else %}
+                        <select name="module-{{ module_type }}" class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 module-select">
+                        <option class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" value="None" id="module-li-none" selected>None</option>
+                    {% endif %}
+                    {% for module in module_list %}
+                        {% if module_type == module.type %}
+                        <option class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" data-moduleeffect="{{ module.effect }}" value="module-li-{{ module.id }}" id="module-li-{{ module.id }}">{{ module.name }} - {{ module.effect }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    </select>
+                {% endfor %}
+                </div>
             </div>
         </section>
-        
     </div>
 </div>
+    
+{% include "npc_create_confirm_modal.html" %}
+<section class=" mt-3 w-[95vw] content-center">
+    <div class="flex justify-center items-center gap-1">
+        <input type="button" value="submit" class="text-red-400" id="npc-creation-input-button" data-modal-target="npc-create-confirmation-modal" data-modal-toggle="npc-create-confirmation-modal">
+    </div>
+</section>
 
 <script src="{% static 'world_builder/admin/npc_templates.js' %}" type="text/javascript">
 </script>

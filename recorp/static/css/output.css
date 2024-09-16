@@ -1047,6 +1047,10 @@ video {
   height: 50px;
 }
 
+.h-\[5vh\] {
+  height: 5vh;
+}
+
 .h-\[80\%\] {
   height: 80%;
 }
@@ -1131,6 +1135,10 @@ video {
   width: 32px;
 }
 
+.w-\[40\%\] {
+  width: 40%;
+}
+
 .w-\[5\%\] {
   width: 5%;
 }
@@ -1155,6 +1163,10 @@ video {
   width: 95px;
 }
 
+.w-\[95vw\] {
+  width: 95vw;
+}
+
 .w-\[full\] {
   width: full;
 }
@@ -1173,10 +1185,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-10 {
-  width: 2.5rem;
 }
 
 .max-w-2xl {
@@ -1569,14 +1577,6 @@ video {
 
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row {
