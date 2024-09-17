@@ -46,7 +46,7 @@ jobs:
     - name: Black test
       run: |
         echo 'black testing...'
-        black .\core --line-length=99 .
+        black .\core --line-length=99 --exclude=**/migrations/*,venv, *.js, *.html
 
     - name: Linting test
       run: |
