@@ -144,9 +144,7 @@ class StoreInCache:
                         "max_hp": max_hp,
                         "current_hp": int(data["playership__current_hp"]),
                         "max_movement": max_movement,
-                        "current_movement": int(
-                            data["playership__current_movement"]
-                        ),
+                        "current_movement": int(data["playership__current_movement"]),
                         "current_ballistic_defense": data[
                             "playership__current_ballistic_defense"
                         ],
@@ -156,9 +154,7 @@ class StoreInCache:
                         "current_missile_defense": data[
                             "playership__current_missile_defense"
                         ],
-                        "current_cargo_size": data[
-                            "playership__current_cargo_size"
-                        ],
+                        "current_cargo_size": data["playership__current_cargo_size"],
                         "status": data["playership__status"],
                         "description": data["playership__ship_id__description"],
                         "module_slot_available": data[
@@ -170,9 +166,7 @@ class StoreInCache:
                         "category_description": data[
                             "playership__ship_id__ship_category__description"
                         ],
-                        "size": data[
-                            "playership__ship_id__ship_category__ship_size"
-                        ],
+                        "size": data["playership__ship_id__ship_category__ship_size"],
                         "is_reversed": data["playership__is_reversed"],
                         "modules": module_list,
                     },
@@ -189,9 +183,7 @@ class StoreInCache:
         player = player_id
 
         try:
-            found_player = next(
-                p for p in cache_data if player == p["user"]["player"]
-            )
+            found_player = next(p for p in cache_data if player == p["user"]["player"])
 
         except StopIteration:
             return
@@ -227,9 +219,7 @@ class StoreInCache:
             if player["user"]["player"] == found_player["user"]["player"]:
                 if player["user"]["coordinates"]["coord_y"] != int(
                     pos["end_y"]
-                ) or player["user"]["coordinates"]["coord_x"] != int(
-                    pos["end_x"]
-                ):
+                ) or player["user"]["coordinates"]["coord_x"] != int(pos["end_x"]):
                     player_index = player_position.index(player)
                     player_position.pop(player_index)
 
@@ -265,9 +255,7 @@ class StoreInCache:
     def delete_user(self):
         in_cache = cache.get(self.room)
         in_cache["users"] = [
-            key
-            for key in in_cache["users"]
-            if key["username"] != self.user_calling
+            key for key in in_cache["users"] if key["username"] != self.user_calling
         ]
         if not in_cache["selected_card"]["card_id"] is None:
             found_item = next(

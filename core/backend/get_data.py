@@ -71,9 +71,7 @@ class GetDataFromDB:
     @staticmethod
     def get_bg_fg_url(bg_fg_choice):
         return os.listdir(
-            os.path.join(
-                BASE_DIR, "recorp", "static", "img", "atlas", bg_fg_choice
-            )
+            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", bg_fg_choice)
         )
 
     @staticmethod

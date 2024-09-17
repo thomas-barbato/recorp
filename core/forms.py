@@ -13,7 +13,6 @@ from core.models import User
 
 
 class UploadImageForm(forms.Form):
-
     CATEGORIES = (
         ("BACKGROUND", "background"),
         ("FOREGROUND", "foreground"),

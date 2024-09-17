@@ -8,7 +8,6 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -60,9 +59,7 @@ class Migration(migrations.Migration):
                 ("data", models.JSONField(null=True)),
                 (
                     "size",
-                    models.JSONField(
-                        default=core.models.get_default_asteroid_size
-                    ),
+                    models.JSONField(default=core.models.get_default_asteroid_size),
                 ),
                 (
                     "created_at",
@@ -282,9 +279,7 @@ class Migration(migrations.Migration):
                 ("data", models.JSONField(null=True)),
                 (
                     "size",
-                    models.JSONField(
-                        default=core.models.get_default_planet_size
-                    ),
+                    models.JSONField(default=core.models.get_default_planet_size),
                 ),
                 (
                     "created_at",
@@ -593,9 +588,7 @@ class Migration(migrations.Migration):
                 ("data", models.JSONField(null=True)),
                 (
                     "size",
-                    models.JSONField(
-                        default=core.models.get_default_station_size
-                    ),
+                    models.JSONField(default=core.models.get_default_station_size),
                 ),
                 (
                     "created_at",

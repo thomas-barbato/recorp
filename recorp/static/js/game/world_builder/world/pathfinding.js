@@ -31,7 +31,7 @@ function display_pathfinding() {
             span_el.classList.remove('border', 'border-2');
             // if path is lower or equal to move_point value
             if (i < current_player.move_points_value) {
-                // if i index is lower than path - ship size x  
+                // if i index is lower than path - ship size x
                 // show teal path.
                 if (i < pathfinder_obj.path.length - 1) {
                     // Test without teal
@@ -214,7 +214,7 @@ function display_pathfinding() {
     } else {
         cleanCss();
         current_player.set_selected_cell_bool(false);
-        // redefine start_coord 
+        // redefine start_coord
         // you have to revert end_x and end_y because graph use x as y and y as x ...
         current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
         update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
@@ -303,7 +303,7 @@ function get_pathfinding(e) {
             }
 
             // we use destination_node_id to get destination coord.
-            // we add +1 to get the real coord.  
+            // we add +1 to get the real coord.
             current_player.set_end_coord(
                 parseInt(destination_node_id[1]) + 1,
                 parseInt(destination_node_id[0]) + 1

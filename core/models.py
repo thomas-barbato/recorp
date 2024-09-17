@@ -106,12 +106,8 @@ class Security(models.Model):
 
 
 class Sector(models.Model):
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Sector"
-    )
-    image = models.CharField(
-        max_length=250, null=False, blank=False, default="img.png"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     description = models.TextField(max_length=2500, blank=True)
     security = models.ForeignKey(
         Security,
@@ -162,13 +158,9 @@ class Player(models.Model):
         related_name="player_sector",
     )
     is_npc = models.BooleanField(default=False)
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Faction"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(
-        max_length=250, null=True, blank=True, default="img.png"
-    )
+    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
     faction_xp = models.PositiveIntegerField(null=False, default=0)
     archetype = models.ForeignKey(
         Archetype,
@@ -194,9 +186,7 @@ class Skill(models.Model):
         ("UTILITY", "utility"),
         ("INDUSTRY", "industry"),
     )
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Skill1"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="Skill1")
     description = models.TextField(max_length=2500, blank=True)
     category = models.CharField(
         max_length=30,
@@ -236,9 +226,7 @@ class SkillEffect(models.Model):
 
 
 class Recipe(models.Model):
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Recipe1"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     value_needed = models.FloatField(default=1.0, null=False, blank=False)
@@ -250,14 +238,10 @@ class Recipe(models.Model):
 
 
 class Research(models.Model):
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Recipe1"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
-    image = models.CharField(
-        max_length=250, null=False, blank=False, default="img.png"
-    )
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     time_to_complete = models.PositiveIntegerField(default=(60 * 60) * 24)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -304,9 +288,7 @@ class ShipCategory(models.Model):
 class Ship(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(
-        max_length=250, null=False, blank=False, default="img.png"
-    )
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     module_slot_available = models.PositiveIntegerField(default=4)
     default_hp = models.PositiveSmallIntegerField(default=100)
     default_movement = models.PositiveSmallIntegerField(default=10)
@@ -351,10 +333,7 @@ class NpcTemplate(models.Model):
 
 
 class NpcTemplateSkill(models.Model):
-
-    npc_template = models.ForeignKey(
-        NpcTemplate, on_delete=models.SET_NULL, null=True
-    )
+    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     level = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -365,19 +344,14 @@ class NpcTemplateSkill(models.Model):
 
 
 class NpcTemplateResource(models.Model):
-
-    npc_template = models.ForeignKey(
-        NpcTemplate, on_delete=models.SET_NULL, null=True
-    )
+    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (
-            f"{self.npc_template.name} - {self.resource.name} ({self.quantity})"
-        )
+        return f"{self.npc_template.name} - {self.resource.name} ({self.quantity})"
 
 
 class Npc(models.Model):
@@ -396,13 +370,9 @@ class Npc(models.Model):
         related_name="npc_sector",
     )
     is_npc = models.BooleanField(default=False)
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="npc"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="npc")
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(
-        max_length=250, null=True, blank=True, default="img.png"
-    )
+    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
     faction_xp = models.PositiveIntegerField(null=False, default=0)
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
@@ -513,7 +483,9 @@ class PlayerPrivateMessage(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
+        return (
+            f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
+        )
 
 
 class PlayerShip(models.Model):
@@ -583,9 +555,7 @@ class FactionResource(models.Model):
 
 class FactionRank(models.Model):
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Rank1"
-    )
+    name = models.CharField(max_length=30, null=False, blank=False, default="Rank1")
     description = models.TextField(max_length=2500, blank=True)
     responsibility_level = models.PositiveSmallIntegerField(default=0)
     faction_xp_required = models.PositiveIntegerField(default=0)

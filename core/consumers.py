@@ -76,14 +76,10 @@ class GameConsumer(WebsocketConsumer):
         response = {}
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
-        store = StoreInCache(
-            room_name=self.room_group_name, user_calling=self.user
-        )
+        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
         if p.get_player_id() == message["player"]:
             if (
-                p.destination_already_occupied(
-                    message["end_x"], message["end_y"]
-                )
+                p.destination_already_occupied(message["end_x"], message["end_y"])
                 is False
             ):
                 if p.move_have_been_registered(
@@ -118,9 +114,7 @@ class GameConsumer(WebsocketConsumer):
     def async_reverse_ship(self, event):
         response = {}
         message = json.loads(event["message"])
-        store = StoreInCache(
-            room_name=self.room_group_name, user_calling=self.user
-        )
+        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
 
         p = PlayerAction(self.user.id)
         p.set_reverse_ship_status()

@@ -30,9 +30,7 @@ class PlayerAction:
         return Player.objects.filter(id=player_id, user_id=self.id).exists()
 
     def get_player_id(self):
-        return Player.objects.filter(user_id=self.id).values_list(
-            "id", flat=True
-        )[0]
+        return Player.objects.filter(user_id=self.id).values_list("id", flat=True)[0]
 
     def get_player_faction(self):
         return Player.objects.filter(user_id=self.id).values_list(
@@ -50,9 +48,9 @@ class PlayerAction:
         )[0]
 
     def get_other_player_name(self, other_player_id):
-        return Player.objects.filter(id=other_player_id).values_list(
-            "name", flat=True
-        )[0]
+        return Player.objects.filter(id=other_player_id).values_list("name", flat=True)[
+            0
+        ]
 
     def get_other_player_user_id(self, other_player_id):
         return Player.objects.filter(id=other_player_id).values_list(
@@ -91,9 +89,7 @@ class PlayerAction:
         playership_reverse_status.update(
             is_reversed=(
                 True
-                if playership_reverse_status.values_list(
-                    "is_reversed", flat=True
-                )[0]
+                if playership_reverse_status.values_list("is_reversed", flat=True)[0]
                 == False
                 else False
             )

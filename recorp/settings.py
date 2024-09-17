@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "django_redis",
     "recorp",
     "core.apps.CoreConfig",
-    'django_user_agents',
+    "django_user_agents",
 ]
 
 MIDDLEWARE = [
@@ -43,9 +43,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    #"django.middleware.cache.FetchFromCacheMiddleware",
+    # "django.middleware.cache.FetchFromCacheMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    'django_user_agents.middleware.UserAgentMiddleware'
+    "django_user_agents.middleware.UserAgentMiddleware",
 ]
 
 ROOT_URLCONF = "recorp.urls"
@@ -54,9 +54,9 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 
 TEMPLATES = [
     {
@@ -64,9 +64,15 @@ TEMPLATES = [
         "DIRS": [
             os.path.join(f"{BASE_DIR}", "core", "templates", "core"),
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements"),
-            os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "panels"),
-            os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "modals"),
-            os.path.join(f"{BASE_DIR}", "core", "templates", "core", "game_elements", "game"),
+            os.path.join(
+                f"{BASE_DIR}", "core", "templates", "core", "game_elements", "panels"
+            ),
+            os.path.join(
+                f"{BASE_DIR}", "core", "templates", "core", "game_elements", "modals"
+            ),
+            os.path.join(
+                f"{BASE_DIR}", "core", "templates", "core", "game_elements", "game"
+            ),
             os.path.join(f"{BASE_DIR}", "core", "templates", "core", "admin"),
         ],
         "APP_DIRS": True,
@@ -84,7 +90,10 @@ TEMPLATES = [
     },
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://www.recorp.com", "https://ce97-82-124-180-128.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.recorp.com",
+    "https://ce97-82-124-180-128.ngrok-free.app",
+]
 
 WSGI_APPLICATION = "recorp.routing.application"
 ASGI_APPLICATION = "recorp.routing.application"
@@ -108,7 +117,7 @@ CACHES = {
     }
 }
 
-USER_AGENTS_CACHE = 'default'
+USER_AGENTS_CACHE = "default"
 
 CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS = 60 * 60
@@ -117,13 +126,13 @@ CACHE_MIDDLEWARE_KEY_PREFIX = ""
 # Don't forget to create ODBC db user in your database gestion soft (i use heidiSQL)
 DATABASES = {
     "default": {
-        'ENGINE': "mysql.connector.django",
+        "ENGINE": "mysql.connector.django",
         "NAME": os.getenv("SQL_DBNAME"),
         "USER": os.getenv("SQL_USER"),
         "PASSWORD": os.getenv("SQL_PASSWORD"),
         "HOST": os.getenv("SQL_HOST"),
         "PORT": os.getenv("SQL_PORT"),
-        'default-character-set': os.getenv("SQL_CHARSET"),
+        "default-character-set": os.getenv("SQL_CHARSET"),
     }
 }
 
@@ -145,16 +154,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 USE_TZ = True
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
-LANGUAGE_CODE = 'en-US'
+LANGUAGE_CODE = "en-US"
 USE_I18N = True
 LANGUAGES = [
-    ('es', _('Spanish')),
-    ('fr', _('French')),
-    ('en', _('English')),
+    ("es", _("Spanish")),
+    ("fr", _("French")),
+    ("en", _("English")),
 ]
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 # private
 # Static files are usually either part of your code,
@@ -168,17 +177,45 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
     ("img", os.path.join(BASE_DIR, "recorp", "static", "img")),
-    ("ux", os.path.join(BASE_DIR,  "recorp", "static", "js", "game", "assets", "ux")),
-    ("world_builder", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder")),
-    ("ships", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships")),
-    ("planets", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets")),
-    ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations")),
-    ("stations", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "asteroids")),
-    ("asteroids", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "satellites")),
-    ("stars", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stars")),
-    ("blackholes", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "blackholes")),
+    ("ux", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ux")),
+    (
+        "world_builder",
+        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder"),
+    ),
+    (
+        "ships",
+        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships"),
+    ),
+    (
+        "planets",
+        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets"),
+    ),
+    (
+        "stations",
+        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations"),
+    ),
+    (
+        "stations",
+        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "asteroids"),
+    ),
+    (
+        "asteroids",
+        os.path.join(
+            BASE_DIR, "recorp", "static", "js", "game", "assets", "satellites"
+        ),
+    ),
+    (
+        "stars",
+        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stars"),
+    ),
+    (
+        "blackholes",
+        os.path.join(
+            BASE_DIR, "recorp", "static", "js", "game", "assets", "blackholes"
+        ),
+    ),
     ("fontawesome", os.path.join(BASE_DIR, "recorp", "static", "js", "fontawesome")),
-    ("ckeditor", os.path.join(BASE_DIR, "recorp", "static", "js", "ckeditor5"))
+    ("ckeditor", os.path.join(BASE_DIR, "recorp", "static", "js", "ckeditor5")),
 ]
 
 # public
@@ -186,26 +223,26 @@ STATICFILES_DIRS = [
 # which are uploaded
 # by users or generated by your application during the life of your Django project.
 # They are typically not stored in source control.
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': f'{os.path.join(BASE_DIR, "recorp", "logs") + "debug.logs"}',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": f'{os.path.join(BASE_DIR, "recorp", "logs") + "debug.logs"}',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': True,
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": True,
         },
     },
 }

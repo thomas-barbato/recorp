@@ -229,9 +229,7 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
         ]
         selected = request.POST.get("item-type-choice-section")
         if selected in select_type:
-            fg_name = re.sub(
-                r"\W", "", request.POST.get("foreground-item-name")
-            )
+            fg_name = re.sub(r"\W", "", request.POST.get("foreground-item-name"))
             if len(fg_name) == 0:
                 fg_name = "Default value name"
             data = {
@@ -283,26 +281,25 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
         context["station_url"] = GetDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
-        context["security_data"] = GetDataFromDB.get_table(
-            "security"
-        ).objects.values("id", "name")
-        context["sector_data"] = GetDataFromDB.get_table(
-            "sector"
-        ).objects.values("id", "name")
-        context["faction_data"] = GetDataFromDB.get_table("faction")[
-            0
-        ].objects.all()
+        context["security_data"] = GetDataFromDB.get_table("security").objects.values(
+            "id", "name"
+        )
+        context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
+            "id", "name"
+        )
+        context["faction_data"] = GetDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetDataFromDB.get_size()
         return context
 
     def post(self, request):
         data_from_post = json.load(request)
         response = {"success": False}
-        data_is_missing, missing_data_response = (
-            GetDataFromDB.check_if_no_missing_entry(
-                data_from_post["map_data"],
-                data_item=data_from_post["data"],
-            )
+        (
+            data_is_missing,
+            missing_data_response,
+        ) = GetDataFromDB.check_if_no_missing_entry(
+            data_from_post["map_data"],
+            data_item=data_from_post["data"],
         )
         if data_is_missing is False:
             if Sector.objects.filter(
@@ -336,9 +333,9 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                 table, table_resource = GetDataFromDB.get_table(item_type)
                 rsrc_data_list = data_from_post["data"][item]["resource_data"]
                 for rsrc in rsrc_data_list:
-                    item_type_id = table.objects.filter(
-                        name=item_img_name
-                    ).values_list("id", flat=True)[0]
+                    item_type_id = table.objects.filter(name=item_img_name).values_list(
+                        "id", flat=True
+                    )[0]
                     resource_id = 1 if rsrc == "none" else rsrc
                     table_resource.objects.create(
                         sector_id=sector.pk,
@@ -374,9 +371,7 @@ class SectorDeleteView(LoginRequiredMixin, DeleteView):
         response = {"success": False}
         pk = json.load(request)["pk"]
         if GetDataFromDB.check_if_table_pk_exists("sector", pk):
-            sector_name = Sector.objects.filter(id=pk).values_list(
-                "name", flat=True
-            )[0]
+            sector_name = Sector.objects.filter(id=pk).values_list("name", flat=True)[0]
             Sector.objects.filter(id=pk).delete()
             response = {"success": True}
             messages.success(
@@ -393,9 +388,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations = GetDataFromDB.get_items_from_sector(
-                pk
-            )
+            planets, asteroids, stations = GetDataFromDB.get_items_from_sector(pk)
             table_set = {
                 "planet": planets,
                 "asteroid": asteroids,
@@ -469,23 +462,20 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         data_from_post = json.load(request)
         pk = data_from_post["map_data"]["sector_id"]
-        sector_name = Sector.objects.filter(id=pk).values_list(
-            "name", flat=True
-        )[0]
+        sector_name = Sector.objects.filter(id=pk).values_list("name", flat=True)[0]
         response = {"success": False}
-        data_is_missing, missing_data_response = (
-            GetDataFromDB.check_if_no_missing_entry(
-                data_from_post["map_data"],
-                data_item=data_from_post["data"],
-            )
+        (
+            data_is_missing,
+            missing_data_response,
+        ) = GetDataFromDB.check_if_no_missing_entry(
+            data_from_post["map_data"],
+            data_item=data_from_post["data"],
         )
         if data_is_missing is False:
             if GetDataFromDB.check_if_table_pk_exists("sector", pk):
                 Sector.objects.filter(id=pk).update(
                     name=data_from_post["map_data"]["sector_name"],
-                    description=data_from_post["map_data"][
-                        "sector_description"
-                    ],
+                    description=data_from_post["map_data"]["sector_description"],
                     image=data_from_post["map_data"]["sector_background"],
                     security_id=data_from_post["map_data"]["security"],
                     faction_id=data_from_post["map_data"]["faction_id"],
@@ -498,13 +488,9 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
 
                 for item, _ in data_from_post["data"].items():
                     item_type = data_from_post["data"][item]["item_type"]
-                    item_img_name = data_from_post["data"][item][
-                        "item_img_name"
-                    ]
+                    item_img_name = data_from_post["data"][item]["item_img_name"]
                     table, table_resource = GetDataFromDB.get_table(item_type)
-                    rsrc_data_list = data_from_post["data"][item][
-                        "resource_data"
-                    ]
+                    rsrc_data_list = data_from_post["data"][item]["resource_data"]
                     for rsrc in rsrc_data_list:
                         item_type_id = table.objects.filter(
                             name=item_img_name
@@ -515,15 +501,9 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                             resource_id=resource_id,
                             source_id=item_type_id,
                             data={
-                                "coord_x": data_from_post["data"][item][
-                                    "coord_x"
-                                ],
-                                "coord_y": data_from_post["data"][item][
-                                    "coord_y"
-                                ],
-                                "name": data_from_post["data"][item][
-                                    "item_name"
-                                ],
+                                "coord_x": data_from_post["data"][item]["coord_x"],
+                                "coord_y": data_from_post["data"][item]["coord_y"],
+                                "name": data_from_post["data"][item]["item_name"],
                                 "description": data_from_post["data"][item][
                                     "item_description"
                                 ],
@@ -563,9 +543,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         modules = GetDataFromDB.get_table("module").objects.all()
 
         context["npc_template"] = npc_template.objects.all()
-        context["npc_resources"] = npc_resources.objects.values(
-            "id", "quantity"
-        )
+        context["npc_resources"] = npc_resources.objects.values("id", "quantity")
         context["ship_list"] = ship_list
         context["skill_list"] = skill_list
         context["skill_categories"] = [

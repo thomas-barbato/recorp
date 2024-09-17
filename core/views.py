@@ -124,9 +124,9 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 data["sector"]["security"]["translated_name"]
             )
 
-            data["sector"]["faction"][
-                "translated_text_faction_level_starter"
-            ] = _("The faction's main planet")
+            data["sector"]["faction"]["translated_text_faction_level_starter"] = _(
+                "The faction's main planet"
+            )
 
             result_dict["actions"] = {
                 "translated_action_label_msg": _("Actions available"),
@@ -145,9 +145,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             for d in data["sector_element"]:
                 d["data"]["type_translated"] = _(d["data"]["type"])
                 d["data"]["description"] = _(d["data"]["description"])
-                d["resource"]["translated_text_resource"] = (
-                    _("Resources available"),
-                )
+                d["resource"]["translated_text_resource"] = (_("Resources available"),)
                 d["resource"]["translated_quantity_str"] = _(
                     d["resource"]["translated_quantity_str"]
                 )
@@ -159,9 +157,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             context["map_informations"] = result_dict
             return context
         else:
-            error_msg = _(
-                "Sector unknown... Contact admin to get more informations"
-            )
+            error_msg = _("Sector unknown... Contact admin to get more informations")
             messages.warning(self.request, error_msg)
             data_to_send = {"form": LoginForm}
             return redirect("/play/", data_to_send)
