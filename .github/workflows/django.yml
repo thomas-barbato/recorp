@@ -13,7 +13,7 @@ env:
 jobs:
   test-and-build:
 
-    runs-on: window-latest
+    runs-on: windows-latest
     strategy:
       max-parallel: 4
       matrix:
