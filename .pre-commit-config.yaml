@@ -1,0 +1,36 @@
+﻿# To use:
+#
+#   pre-commit run -a
+#
+# Or:
+#
+#   pre-commit install #(runs every time you commit a git)
+#
+# To update this file:
+#
+#   pre-commit auto-update
+#
+# See https://github.com/pre-commit/pre-commit
+
+repos:
+    # Standard hooks
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.4.0
+      hooks:
+        - id: check-added-large-files
+        - id: check-case-conflict
+        - id: check-merge-conflict
+        - id: check-yaml
+        - id: debug-statements
+        - id: end-of-file-fixer
+        - id: mixed-line-ending
+        - id: trailing-whitespace
+    - repo: https://github.com/psf/black
+      rev: 23.7.0
+      hooks:
+        - id: black
+          language_version: python3.10
+    - repo: https://github.com/pycqa/flake8
+      rev: 3.7.0
+      hooks:
+        - id: flake8
