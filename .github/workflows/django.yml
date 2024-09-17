@@ -45,18 +45,15 @@ jobs:
 
     - name: Black test
       run: |
-        . venv/scripts/activate
         echo 'black testing...'
         black --line-length=99 .
 
     - name: Linting test
       run: |
-        . venv/scripts/activate
         echo 'flake8 testing...'
         flake8
 
     - name: Other tests
       run: |
-        . venv/scripts/activate
         echo 'pytest testing...'
         python manage.py test
