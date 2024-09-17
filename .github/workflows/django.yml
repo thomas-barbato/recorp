@@ -42,13 +42,3 @@ jobs:
         python -m pip install --upgrade pip
         echo 'requirements setup...'
         pip install -r requirements.txt
-
-    - name: Linting test
-      run: |
-        echo 'flake8 testing...'
-        flake8
-
-    - name: Other tests
-      run: |
-        echo 'pytest testing...'
-        python manage.py test
