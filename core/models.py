@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+
 localtime = timezone.now
 
 
@@ -105,14 +106,26 @@ class Security(models.Model):
 
 
 class Sector(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
-    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Sector"
+    )
+    image = models.CharField(
+        max_length=250, null=False, blank=False, default="img.png"
+    )
     description = models.TextField(max_length=2500, blank=True)
     security = models.ForeignKey(
-        Security, on_delete=models.SET_DEFAULT, null=False, default=1, related_name="security_sector"
+        Security,
+        on_delete=models.SET_DEFAULT,
+        null=False,
+        default=1,
+        related_name="security_sector",
     )
     faction = models.ForeignKey(
-        Faction, on_delete=models.SET_DEFAULT, null=False, default=Faction.get_default_pk, related_name="faction_sector"
+        Faction,
+        on_delete=models.SET_DEFAULT,
+        null=False,
+        default=Faction.get_default_pk,
+        related_name="faction_sector",
     )
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -149,11 +162,20 @@ class Player(models.Model):
         related_name="player_sector",
     )
     is_npc = models.BooleanField(default=False)
-    name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Faction"
+    )
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
+    image = models.CharField(
+        max_length=250, null=True, blank=True, default="img.png"
+    )
     faction_xp = models.PositiveIntegerField(null=False, default=0)
-    archetype = models.ForeignKey(Archetype, on_delete=models.CASCADE, default=1, related_name="player_archetype")
+    archetype = models.ForeignKey(
+        Archetype,
+        on_delete=models.CASCADE,
+        default=1,
+        related_name="player_archetype",
+    )
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
     coordinates = models.JSONField()
@@ -163,6 +185,7 @@ class Player(models.Model):
     def __str__(self):
         return f"{self.name} - (user:{self.user.username}, {self.user}) : {self.archetype.name}"
 
+
 class Skill(models.Model):
     SKILL_CATEGORIES_CHOICES = (
         ("STEERING", "steering"),
@@ -171,7 +194,9 @@ class Skill(models.Model):
         ("UTILITY", "utility"),
         ("INDUSTRY", "industry"),
     )
-    name = models.CharField(max_length=30, null=False, blank=False, default="Skill1")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Skill1"
+    )
     description = models.TextField(max_length=2500, blank=True)
     category = models.CharField(
         max_length=30,
@@ -200,7 +225,9 @@ class SkillEffect(models.Model):
     min_level_range = models.PositiveIntegerField(default=0)
     max_level_range = models.PositiveIntegerField(default=1)
     effect = models.JSONField()
-    expertise = models.CharField(max_length=20, choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0])
+    expertise = models.CharField(
+        max_length=20, choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0]
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -209,7 +236,9 @@ class SkillEffect(models.Model):
 
 
 class Recipe(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Recipe1"
+    )
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     value_needed = models.FloatField(default=1.0, null=False, blank=False)
@@ -221,10 +250,14 @@ class Recipe(models.Model):
 
 
 class Research(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="Recipe1")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Recipe1"
+    )
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
-    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
+    image = models.CharField(
+        max_length=250, null=False, blank=False, default="img.png"
+    )
     time_to_complete = models.PositiveIntegerField(default=(60 * 60) * 24)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -271,11 +304,15 @@ class ShipCategory(models.Model):
 class Ship(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
+    image = models.CharField(
+        max_length=250, null=False, blank=False, default="img.png"
+    )
     module_slot_available = models.PositiveIntegerField(default=4)
     default_hp = models.PositiveSmallIntegerField(default=100)
     default_movement = models.PositiveSmallIntegerField(default=10)
-    ship_category = models.ForeignKey(ShipCategory, on_delete=models.SET_NULL, null=True)
+    ship_category = models.ForeignKey(
+        ShipCategory, on_delete=models.SET_NULL, null=True
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -284,8 +321,12 @@ class Ship(models.Model):
 
 
 class NpcTemplate(models.Model):
-    STATUS_CHOICES = (("FULL", "pleine forme"), ("WOUNDED", "blesse"), ("DEAD", "mort"))
-    
+    STATUS_CHOICES = (
+        ("FULL", "pleine forme"),
+        ("WOUNDED", "blesse"),
+        ("DEAD", "mort"),
+    )
+
     ship = models.ForeignKey(Ship, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=50)
     difficulty = models.SmallIntegerField(default=0)
@@ -307,10 +348,13 @@ class NpcTemplate(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-    
+
+
 class NpcTemplateSkill(models.Model):
-    
-    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
+
+    npc_template = models.ForeignKey(
+        NpcTemplate, on_delete=models.SET_NULL, null=True
+    )
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     level = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -319,16 +363,22 @@ class NpcTemplateSkill(models.Model):
     def __str__(self):
         return f"{self.npc_template.name} - {self.skill.name} ({self.level})"
 
+
 class NpcTemplateResource(models.Model):
-    
-    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
+
+    npc_template = models.ForeignKey(
+        NpcTemplate, on_delete=models.SET_NULL, null=True
+    )
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.npc_template.name} - {self.resource.name} ({self.quantity})"
+        return (
+            f"{self.npc_template.name} - {self.resource.name} ({self.quantity})"
+        )
+
 
 class Npc(models.Model):
     npc_teplate = models.ForeignKey(NpcTemplate, on_delete=models.CASCADE)
@@ -346,9 +396,13 @@ class Npc(models.Model):
         related_name="npc_sector",
     )
     is_npc = models.BooleanField(default=False)
-    name = models.CharField(max_length=30, null=False, blank=False, default="npc")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="npc"
+    )
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
+    image = models.CharField(
+        max_length=250, null=True, blank=True, default="img.png"
+    )
     faction_xp = models.PositiveIntegerField(null=False, default=0)
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
@@ -375,14 +429,16 @@ class Module(models.Model):
         ("HOLD", "hold"),
         ("COLONIZATION", "colonization"),
     )
-    
+
     name = models.CharField(
         max_length=30, null=False, blank=False, default="Light Cruiser"
     )
     description = models.TextField(max_length=2500, blank=True)
     tier = models.SmallIntegerField(null=False, blank=False, default=1)
     type = models.CharField(
-        max_length=30, choices=MODULE_TYPE_CHOICES, default=MODULE_TYPE_CHOICES[0][0]
+        max_length=30,
+        choices=MODULE_TYPE_CHOICES,
+        default=MODULE_TYPE_CHOICES[0][0],
     )
     effect = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -390,7 +446,8 @@ class Module(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.type}"
-    
+
+
 class PlayerLog(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     log = models.ForeignKey(Log, on_delete=models.CASCADE)
@@ -403,9 +460,7 @@ class PlayerLog(models.Model):
 
 class PlayerResource(models.Model):
     source = models.ForeignKey(Player, on_delete=models.CASCADE)
-    resource = models.ForeignKey(
-        Resource, on_delete=models.SET_NULL, null=True
-    )
+    resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
@@ -433,9 +488,7 @@ class PlayerSkill(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (
-            f"{self.player.name} : {self.skill.name}, level = {self.level}"
-        )
+        return f"{self.player.name} : {self.skill.name}, level = {self.level}"
 
 
 class PlayerResearch(models.Model):
@@ -460,13 +513,15 @@ class PlayerPrivateMessage(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (
-            f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
-        )
+        return f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
 
 
 class PlayerShip(models.Model):
-    STATUS_CHOICES = (("FULL", "pleine forme"), ("WOUNDED", "blesse"), ("DEAD", "mort"))
+    STATUS_CHOICES = (
+        ("FULL", "pleine forme"),
+        ("WOUNDED", "blesse"),
+        ("DEAD", "mort"),
+    )
 
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
@@ -493,9 +548,7 @@ class PlayerShip(models.Model):
 
 class PlayerShipResource(models.Model):
     source = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
-    resource = models.ForeignKey(
-        Resource, on_delete=models.CASCADE, null=True
-    )
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -514,7 +567,9 @@ class FactionLeader(models.Model):
 
 class FactionResource(models.Model):
     source = models.ForeignKey(Faction, on_delete=models.CASCADE)
-    resource = resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
+    resource = resource = models.ForeignKey(
+        Resource, on_delete=models.SET_NULL, null=True
+    )
     sector = models.ForeignKey(
         Sector, on_delete=models.CASCADE, related_name="faction_sector"
     )
@@ -528,7 +583,9 @@ class FactionResource(models.Model):
 
 class FactionRank(models.Model):
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30, null=False, blank=False, default="Rank1")
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Rank1"
+    )
     description = models.TextField(max_length=2500, blank=True)
     responsibility_level = models.PositiveSmallIntegerField(default=0)
     faction_xp_required = models.PositiveIntegerField(default=0)
@@ -541,7 +598,9 @@ class FactionRank(models.Model):
 
 class PlanetResource(models.Model):
     source = models.ForeignKey(Planet, on_delete=models.CASCADE)
-    resource = resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
+    resource = resource = models.ForeignKey(
+        Resource, on_delete=models.SET_NULL, null=True
+    )
     sector = models.ForeignKey(
         Sector, on_delete=models.CASCADE, related_name="planet_sector"
     )

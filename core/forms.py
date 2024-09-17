@@ -25,13 +25,15 @@ class UploadImageForm(forms.Form):
         ("STATION", "station"),
         ("SATELLITE", "satellite"),
         ("STAR", "star"),
-        ("BLACKHOLE", "blackhole")
+        ("BLACKHOLE", "blackhole"),
     )
 
     img_input = forms.ImageField(label="image_url", required=True)
     category = forms.ChoiceField(choices=CATEGORIES, required=True)
     type = forms.ChoiceField(choices=TYPES, required=False)
-    file_directory_name = forms.CharField(label="name directory were this map will be saved", required=True)
+    file_directory_name = forms.CharField(
+        label="name directory were this map will be saved", required=True
+    )
 
 
 class LoginForm(AuthenticationForm):
@@ -40,7 +42,7 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(
         widget=TextInput(
             attrs={
-                "label": _('Username'),
+                "label": _("Username"),
                 "class": "",
                 "placeholder": f"{_('Username')}...",
             }
@@ -50,7 +52,7 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(
         widget=PasswordInput(
             attrs={
-                "label": _('password'),
+                "label": _("password"),
                 "class": "",
                 "placeholder": f"{_('password')}...",
             }
@@ -79,7 +81,7 @@ class SignupForm(forms.ModelForm):
         widget=TextInput(
             attrs={
                 "class": "form-control text-center",
-                "placeholder": _('Username'),
+                "placeholder": _("Username"),
             }
         ),
         required=True,
@@ -91,7 +93,7 @@ class SignupForm(forms.ModelForm):
         widget=TextInput(
             attrs={
                 "class": "form-control text-center",
-                "placeholder": _('Email'),
+                "placeholder": _("Email"),
             }
         )
     )
@@ -99,7 +101,7 @@ class SignupForm(forms.ModelForm):
         widget=PasswordInput(
             attrs={
                 "class": "form-control mt-1 text-center",
-                "placeholder": _('Password'),
+                "placeholder": _("Password"),
             }
         ),
         required=True,
@@ -110,7 +112,7 @@ class SignupForm(forms.ModelForm):
         widget=PasswordInput(
             attrs={
                 "class": "form-control mt-1 text-center",
-                "placeholder": _('Confirm password'),
+                "placeholder": _("Confirm password"),
             },
         ),
         required=True,

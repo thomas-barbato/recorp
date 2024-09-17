@@ -1,4 +1,5 @@
 """import """
+
 import re
 from pathlib import Path
 
@@ -29,12 +30,14 @@ class CheckPasswordPolicy:
                 _(
                     mark_safe(
                         '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
-                        "<li><b>" + _("Your password must contain at least")+":</b></li>"
-                        "<li><b>8</b> "+_("letters") + "</li>"
-                        "<li><b>1</b> "+_("uppercase") + "</li>"
-                        "<li><b>1</b> "+_("lowercase") + "</li>"
-                        "<li><b>1</b> "+_("symbol") + "</li>"
-                        "<li><b>1</b> "+_("number") + "</li>"
+                        "<li><b>"
+                        + _("Your password must contain at least")
+                        + ":</b></li>"
+                        "<li><b>8</b> " + _("letters") + "</li>"
+                        "<li><b>1</b> " + _("uppercase") + "</li>"
+                        "<li><b>1</b> " + _("lowercase") + "</li>"
+                        "<li><b>1</b> " + _("symbol") + "</li>"
+                        "<li><b>1</b> " + _("number") + "</li>"
                         "</div>"
                     )
                 ),
@@ -46,12 +49,12 @@ class CheckPasswordPolicy:
         return _(
             '<div class="alert alert-dark" role="alert">'
             "<ul>"
-            "<li><b>" + _("Your password must contain at least")+":</b></li>"
-            "<li><b>8</b> "+_("letters") + "</li>"
-            "<li><b>1</b> "+_("uppercase") + "</li>"
-            "<li><b>1</b> "+_("lowercase") + "</li>"
-            "<li><b>1</b> "+_("symbol") + "</li>"
-            "<li><b>1</b> "+_("number") + "</li>"
+            "<li><b>" + _("Your password must contain at least") + ":</b></li>"
+            "<li><b>8</b> " + _("letters") + "</li>"
+            "<li><b>1</b> " + _("uppercase") + "</li>"
+            "<li><b>1</b> " + _("lowercase") + "</li>"
+            "<li><b>1</b> " + _("symbol") + "</li>"
+            "<li><b>1</b> " + _("number") + "</li>"
             "</ul>"
             "</div>"
         )

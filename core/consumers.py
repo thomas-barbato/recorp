@@ -7,7 +7,7 @@ from django.core.cache import cache
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 
-#logger = logging.getLogger("django")
+# logger = logging.getLogger("django")
 
 
 class GameConsumer(WebsocketConsumer):
@@ -31,7 +31,7 @@ class GameConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name,
         )
-        
+
         if self.user.is_authenticated:
             store = StoreInCache(self.room_group_name, self.user)
             store.get_or_set_cache()
@@ -45,7 +45,7 @@ class GameConsumer(WebsocketConsumer):
                 },
             )
             """
-        
+
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
@@ -71,22 +71,30 @@ class GameConsumer(WebsocketConsumer):
                 "message": message,
             },
         )
-    
+
     def async_move(self, event):
         response = {}
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
         store = StoreInCache(
-            room_name=self.room_group_name, 
-            user_calling=self.user
+            room_name=self.room_group_name, user_calling=self.user
         )
         if p.get_player_id() == message["player"]:
-            if p.destination_already_occupied(message["end_x"], message["end_y"]) is False:
-                if p.move_have_been_registered(end_x=message["end_x"],end_y=message["end_y"],move_cost=int(message["move_cost"])):
+            if (
+                p.destination_already_occupied(
+                    message["end_x"], message["end_y"]
+                )
+                is False
+            ):
+                if p.move_have_been_registered(
+                    end_x=message["end_x"],
+                    end_y=message["end_y"],
+                    move_cost=int(message["move_cost"]),
+                ):
                     store.update_player_position(message)
-        
+
         response = {
-            "type": "player_move", 
+            "type": "player_move",
             "message": {
                 "player": p.get_other_player_name(message["player"]),
                 "player_id": message["player"],
@@ -96,40 +104,40 @@ class GameConsumer(WebsocketConsumer):
                 "destination_id_array": message["destination_id_array"],
                 "end_x": message["end_x"],
                 "end_y": message["end_y"],
-                "movement_remaining": p.get_other_player_movement_remaining(message["player"]),
-                "max_movement": store.get_specific_player_data(message["player"], "pc_npc", "ship", "max_movement")
-            }   
+                "movement_remaining": p.get_other_player_movement_remaining(
+                    message["player"]
+                ),
+                "max_movement": store.get_specific_player_data(
+                    message["player"], "pc_npc", "ship", "max_movement"
+                ),
+            },
         }
-        
-        self.send(
-            text_data=json.dumps(response)
-        )
-    
+
+        self.send(text_data=json.dumps(response))
+
     def async_reverse_ship(self, event):
         response = {}
         message = json.loads(event["message"])
         store = StoreInCache(
-            room_name=self.room_group_name, 
-            user_calling=self.user
+            room_name=self.room_group_name, user_calling=self.user
         )
-        
+
         p = PlayerAction(self.user.id)
         p.set_reverse_ship_status()
-        data = store.update_ship_is_reversed(message, self.user.id, p.get_reverse_ship_status())
+        data = store.update_ship_is_reversed(
+            message, self.user.id, p.get_reverse_ship_status()
+        )
 
         response = {
-            "type": "async_reverse_ship", 
+            "type": "async_reverse_ship",
             "message": {
-                "id_array": message['id_array'],
+                "id_array": message["id_array"],
                 "is_reversed": data[0],
-                "player_id": data[1]
-            }   
+                "player_id": data[1],
+            },
         }
-        
-        self.send(
-            text_data=json.dumps(response)
-        )
-        
+
+        self.send(text_data=json.dumps(response))
 
     def send_message(self, event):
         pass

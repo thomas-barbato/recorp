@@ -24,7 +24,7 @@ from core.models import (
     NpcTemplateResource,
     NpcTemplate,
     NpcTemplateSkill,
-    Module
+    Module,
 )
 
 
@@ -58,14 +58,22 @@ class GetDataFromDB:
     def get_fg_element_url(element):
         return os.listdir(
             os.path.join(
-                BASE_DIR, "recorp", "static", "img", "atlas", "foreground", element
+                BASE_DIR,
+                "recorp",
+                "static",
+                "img",
+                "atlas",
+                "foreground",
+                element,
             )
         )
 
     @staticmethod
     def get_bg_fg_url(bg_fg_choice):
         return os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", bg_fg_choice)
+            os.path.join(
+                BASE_DIR, "recorp", "static", "img", "atlas", bg_fg_choice
+            )
         )
 
     @staticmethod
@@ -75,7 +83,7 @@ class GetDataFromDB:
     @staticmethod
     def get_map_size_range():
         return {"cols": range(40), "rows": range(40)}
-    
+
     @staticmethod
     def get_resolution_sized_map(device_type):
         return {
@@ -86,22 +94,41 @@ class GetDataFromDB:
 
     @staticmethod
     def get_fg_type():
-        return ["planet", "asteroid", "station", "blackhole", "star", "satellite"]
+        return [
+            "planet",
+            "asteroid",
+            "station",
+            "blackhole",
+            "star",
+            "satellite",
+        ]
 
     @staticmethod
     def get_animation_queryset():
         return {
             "planet_data": json.loads(
-                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "planet"}))
+                serializers.serialize(
+                    "json",
+                    Planet.objects.filter(data__contains={"type": "planet"}),
+                )
             ),
             "satellite_data": json.loads(
-                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "satellite"}))
+                serializers.serialize(
+                    "json",
+                    Planet.objects.filter(data__contains={"type": "satellite"}),
+                )
             ),
             "blackhole_data": json.loads(
-                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "blackhole"}))
+                serializers.serialize(
+                    "json",
+                    Planet.objects.filter(data__contains={"type": "blackhole"}),
+                )
             ),
             "star_data": json.loads(
-                serializers.serialize("json", Planet.objects.filter(data__contains={"type": "star"}))
+                serializers.serialize(
+                    "json",
+                    Planet.objects.filter(data__contains={"type": "star"}),
+                )
             ),
             "asteroid_data": json.loads(
                 serializers.serialize("json", Asteroid.objects.all())
@@ -179,10 +206,13 @@ class GetDataFromDB:
             sector.asteroid_sector.all(),
             sector.station_sector.all(),
         )
-        
+
     @staticmethod
     def get_pc_npc_from_sector(pk):
-        return Player.objects.filter(sector_id=pk).select_related('playershipmodule').values(
+        return (
+            Player.objects.filter(sector_id=pk)
+            .select_related("playershipmodule")
+            .values(
                 "id",
                 "name",
                 "coordinates",
@@ -216,9 +246,10 @@ class GetDataFromDB:
                 "playership__ship_id__ship_category__description",
                 "playership__ship_id__ship_category__ship_size",
             )
-        
+        )
+
     @staticmethod
-    def check_if_no_missing_entry(data, data_item = None):
+    def check_if_no_missing_entry(data, data_item=None):
         missing_data = []
         for d_key, d_value in data.items():
             if (
@@ -243,10 +274,10 @@ class GetDataFromDB:
             return True, missing_data
         else:
             return False, []
-        
+
     @staticmethod
     def get_resource_quantity_value(value, max_value):
-        result_value = 100 * (value/max_value)
+        result_value = 100 * (value / max_value)
         if max_value == value:
             result = "full"
         elif result_value >= 75.0 and result_value < 100.0:
@@ -255,7 +286,7 @@ class GetDataFromDB:
             result = "average"
         elif result_value > 25.0 and result_value < 50.0:
             result = "below average"
-        elif  result_value > 0.0 and result_value <= 25.0:
+        elif result_value > 0.0 and result_value <= 25.0:
             result = "depleted"
         elif value == 0:
             result = "empty"

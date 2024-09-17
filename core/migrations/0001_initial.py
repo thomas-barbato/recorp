@@ -34,7 +34,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -52,16 +53,22 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Asteroid-default", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Asteroid-default", max_length=30),
+                ),
                 ("data", models.JSONField(null=True)),
                 (
                     "size",
-                    models.JSONField(default=core.models.get_default_asteroid_size),
+                    models.JSONField(
+                        default=core.models.get_default_asteroid_size
+                    ),
                 ),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -93,12 +100,16 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Faction-default", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Faction-default", max_length=30),
+                ),
                 ("data", models.JSONField(null=True)),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -137,7 +148,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -155,7 +167,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Light Cruiser", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Light Cruiser", max_length=30),
+                ),
                 ("description", models.TextField(blank=True, max_length=2500)),
                 ("tier", models.SmallIntegerField(default=1)),
                 (
@@ -183,7 +198,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -207,11 +223,23 @@ class Migration(migrations.Migration):
                 ("module_id_list", models.JSONField(null=True)),
                 ("current_hp", models.SmallIntegerField(default=100)),
                 ("max_hp", models.SmallIntegerField(default=100)),
-                ("current_movement", models.PositiveSmallIntegerField(default=10)),
+                (
+                    "current_movement",
+                    models.PositiveSmallIntegerField(default=10),
+                ),
                 ("max_movement", models.PositiveSmallIntegerField(default=10)),
-                ("current_missile_defense", models.SmallIntegerField(default=0)),
-                ("current_thermal_defense", models.SmallIntegerField(default=0)),
-                ("current_ballistic_defense", models.SmallIntegerField(default=0)),
+                (
+                    "current_missile_defense",
+                    models.SmallIntegerField(default=0),
+                ),
+                (
+                    "current_thermal_defense",
+                    models.SmallIntegerField(default=0),
+                ),
+                (
+                    "current_ballistic_defense",
+                    models.SmallIntegerField(default=0),
+                ),
                 ("current_cargo_size", models.SmallIntegerField(default=2)),
                 (
                     "status",
@@ -228,7 +256,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -246,10 +275,21 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Planet-default", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Planet-default", max_length=30),
+                ),
                 ("data", models.JSONField(null=True)),
-                ("size", models.JSONField(default=core.models.get_default_planet_size)),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "size",
+                    models.JSONField(
+                        default=core.models.get_default_planet_size
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
@@ -281,7 +321,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -322,11 +363,23 @@ class Migration(migrations.Migration):
                 ("module_id_list", models.JSONField(null=True)),
                 ("current_hp", models.SmallIntegerField(default=100)),
                 ("max_hp", models.SmallIntegerField(default=100)),
-                ("current_movement", models.PositiveSmallIntegerField(default=10)),
+                (
+                    "current_movement",
+                    models.PositiveSmallIntegerField(default=10),
+                ),
                 ("max_movement", models.PositiveSmallIntegerField(default=10)),
-                ("current_missile_defense", models.SmallIntegerField(default=0)),
-                ("current_thermal_defense", models.SmallIntegerField(default=0)),
-                ("current_ballistic_defense", models.SmallIntegerField(default=0)),
+                (
+                    "current_missile_defense",
+                    models.SmallIntegerField(default=0),
+                ),
+                (
+                    "current_thermal_defense",
+                    models.SmallIntegerField(default=0),
+                ),
+                (
+                    "current_ballistic_defense",
+                    models.SmallIntegerField(default=0),
+                ),
                 ("current_cargo_size", models.SmallIntegerField(default=2)),
                 (
                     "status",
@@ -343,14 +396,16 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "player",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
             ],
@@ -367,12 +422,16 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Resource-default", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Resource-default", max_length=30),
+                ),
                 ("data", models.JSONField(null=True)),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -393,11 +452,15 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(default="Sector", max_length=30)),
                 ("image", models.CharField(default="img.png", max_length=250)),
                 ("description", models.TextField(blank=True, max_length=2500)),
-                ("is_faction_level_starter", models.BooleanField(default=False)),
+                (
+                    "is_faction_level_starter",
+                    models.BooleanField(default=False),
+                ),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -426,13 +489,20 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(max_length=30)),
                 ("description", models.TextField()),
-                ("attack_countdown", models.PositiveSmallIntegerField(default=3)),
-                ("chance_to_intervene", models.PositiveSmallIntegerField(default=100)),
+                (
+                    "attack_countdown",
+                    models.PositiveSmallIntegerField(default=3),
+                ),
+                (
+                    "chance_to_intervene",
+                    models.PositiveSmallIntegerField(default=100),
+                ),
                 ("ship_quantity", models.PositiveSmallIntegerField(default=3)),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -450,13 +520,17 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Light Cruiser", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Light Cruiser", max_length=30),
+                ),
                 ("description", models.TextField(blank=True, max_length=2500)),
                 ("ship_size", models.JSONField(null=True)),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -493,7 +567,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -511,16 +586,22 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(default="Station-default", max_length=30)),
+                (
+                    "name",
+                    models.CharField(default="Station-default", max_length=30),
+                ),
                 ("data", models.JSONField(null=True)),
                 (
                     "size",
-                    models.JSONField(default=core.models.get_default_station_size),
+                    models.JSONField(
+                        default=core.models.get_default_station_size
+                    ),
                 ),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -556,7 +637,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -579,7 +661,8 @@ class Migration(migrations.Migration):
                 (
                     "source",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.station"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.station",
                     ),
                 ),
             ],
@@ -618,14 +701,16 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "skill",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.skill"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.skill",
                     ),
                 ),
             ],
@@ -645,13 +730,20 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=30)),
                 ("description", models.TextField(blank=True, max_length=2500)),
                 ("image", models.CharField(default="img.png", max_length=250)),
-                ("module_slot_available", models.PositiveIntegerField(default=4)),
+                (
+                    "module_slot_available",
+                    models.PositiveIntegerField(default=4),
+                ),
                 ("default_hp", models.PositiveSmallIntegerField(default=100)),
-                ("default_movement", models.PositiveSmallIntegerField(default=10)),
+                (
+                    "default_movement",
+                    models.PositiveSmallIntegerField(default=10),
+                ),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -690,11 +782,15 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(default="Recipe1", max_length=30)),
                 ("description", models.TextField(blank=True, max_length=2500)),
                 ("image", models.CharField(default="img.png", max_length=250)),
-                ("time_to_complete", models.PositiveIntegerField(default=86400)),
+                (
+                    "time_to_complete",
+                    models.PositiveIntegerField(default=86400),
+                ),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -726,7 +822,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -757,14 +854,16 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "player",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
                 (
@@ -830,7 +929,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -845,7 +945,8 @@ class Migration(migrations.Migration):
                 (
                     "source",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
             ],
@@ -865,20 +966,23 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "player",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
                 (
                     "research",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.research"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.research",
                     ),
                 ),
             ],
@@ -898,20 +1002,23 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "player",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
                 (
                     "recipe",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.recipe"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.recipe",
                     ),
                 ),
             ],
@@ -932,7 +1039,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -969,20 +1077,23 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "log",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.log"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.log",
                     ),
                 ),
                 (
                     "player",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
             ],
@@ -1001,7 +1112,8 @@ class Migration(migrations.Migration):
             model_name="player",
             name="user",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
             ),
         ),
         migrations.CreateModel(
@@ -1021,7 +1133,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -1044,7 +1157,8 @@ class Migration(migrations.Migration):
                 (
                     "source",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.planet"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.planet",
                     ),
                 ),
             ],
@@ -1065,7 +1179,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -1103,7 +1218,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -1129,7 +1245,9 @@ class Migration(migrations.Migration):
             model_name="npctemplate",
             name="ship",
             field=models.ForeignKey(
-                null=True, on_delete=django.db.models.deletion.SET_NULL, to="core.ship"
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="core.ship",
             ),
         ),
         migrations.CreateModel(
@@ -1160,7 +1278,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -1207,7 +1326,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -1230,7 +1350,8 @@ class Migration(migrations.Migration):
                 (
                     "source",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.faction"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.faction",
                     ),
                 ),
             ],
@@ -1249,19 +1370,24 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(default="Rank1", max_length=30)),
                 ("description", models.TextField(blank=True, max_length=2500)),
-                ("responsibility_level", models.PositiveSmallIntegerField(default=0)),
+                (
+                    "responsibility_level",
+                    models.PositiveSmallIntegerField(default=0),
+                ),
                 ("faction_xp_required", models.PositiveIntegerField(default=0)),
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "faction",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.faction"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.faction",
                     ),
                 ),
             ],
@@ -1281,20 +1407,23 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "faction",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.faction"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.faction",
                     ),
                 ),
                 (
                     "player",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.player"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.player",
                     ),
                 ),
             ],
@@ -1316,7 +1445,8 @@ class Migration(migrations.Migration):
                 (
                     "created_at",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="creation date"
+                        default=django.utils.timezone.now,
+                        verbose_name="creation date",
                     ),
                 ),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -1339,7 +1469,8 @@ class Migration(migrations.Migration):
                 (
                     "source",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.asteroid"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.asteroid",
                     ),
                 ),
             ],

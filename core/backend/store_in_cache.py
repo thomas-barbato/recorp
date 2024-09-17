@@ -102,7 +102,7 @@ class StoreInCache:
                     "effect": module["effect"],
                     "description": module["description"],
                     "type": module["type"],
-                    "id": module["id"]
+                    "id": module["id"],
                 }
                 for module in Module.objects.filter(
                     id__in=data["playership__module_id_list"]
@@ -144,11 +144,21 @@ class StoreInCache:
                         "max_hp": max_hp,
                         "current_hp": int(data["playership__current_hp"]),
                         "max_movement": max_movement,
-                        "current_movement": int(data["playership__current_movement"]),
-                        "current_ballistic_defense": data["playership__current_ballistic_defense"],
-                        "current_thermal_defense": data["playership__current_thermal_defense"],
-                        "current_missile_defense": data["playership__current_missile_defense"],
-                        "current_cargo_size": data["playership__current_cargo_size"],
+                        "current_movement": int(
+                            data["playership__current_movement"]
+                        ),
+                        "current_ballistic_defense": data[
+                            "playership__current_ballistic_defense"
+                        ],
+                        "current_thermal_defense": data[
+                            "playership__current_thermal_defense"
+                        ],
+                        "current_missile_defense": data[
+                            "playership__current_missile_defense"
+                        ],
+                        "current_cargo_size": data[
+                            "playership__current_cargo_size"
+                        ],
                         "status": data["playership__status"],
                         "description": data["playership__ship_id__description"],
                         "module_slot_available": data[
@@ -160,7 +170,9 @@ class StoreInCache:
                         "category_description": data[
                             "playership__ship_id__ship_category__description"
                         ],
-                        "size": data["playership__ship_id__ship_category__ship_size"],
+                        "size": data[
+                            "playership__ship_id__ship_category__ship_size"
+                        ],
                         "is_reversed": data["playership__is_reversed"],
                         "modules": module_list,
                     },
@@ -168,12 +180,14 @@ class StoreInCache:
             )
 
         cache.set(self.room, sector_data)
-        
-    def get_specific_player_data(self, player_id, category="", subcategory="", search=""):
+
+    def get_specific_player_data(
+        self, player_id, category="", subcategory="", search=""
+    ):
         in_cache = cache.get(self.room)
         cache_data = in_cache[category]
         player = player_id
-        
+
         try:
             found_player = next(
                 p for p in cache_data if player == p["user"]["player"]
@@ -181,16 +195,16 @@ class StoreInCache:
 
         except StopIteration:
             return
-        
+
         found_player_index = cache_data.index(found_player)
-        
+
         return cache_data[found_player_index][subcategory][search]
 
     def update_player_position(self, pos):
         in_cache = cache.get(self.room)
         player_position = in_cache["pc_npc"]
         player = pos["player"]
-        
+
         try:
             found_player = next(
                 p for p in player_position if player == p["user"]["player"]
@@ -204,14 +218,18 @@ class StoreInCache:
             "coord_x": int(pos["end_x"]),
             "coord_y": int(pos["end_y"]),
         }
-        
-        player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
+
+        player_position[found_player_index]["ship"]["current_movement"] -= pos[
+            "move_cost"
+        ]
 
         for player in player_position:
             if player["user"]["player"] == found_player["user"]["player"]:
                 if player["user"]["coordinates"]["coord_y"] != int(
                     pos["end_y"]
-                ) or player["user"]["coordinates"]["coord_x"] != int(pos["end_x"]):
+                ) or player["user"]["coordinates"]["coord_x"] != int(
+                    pos["end_x"]
+                ):
                     player_index = player_position.index(player)
                     player_position.pop(player_index)
 
@@ -228,12 +246,10 @@ class StoreInCache:
 
         except StopIteration:
             return
-        
+
         player_index = pc_cache.index(player)
         player_id = pc_cache[player_index]["user"]["player"]
-        pc_cache[player_index]["ship"]["is_reversed"] = (
-            status
-        )
+        pc_cache[player_index]["ship"]["is_reversed"] = status
         in_cache["pc_npc"] = pc_cache
         cache.set(self.room, in_cache)
 
@@ -249,7 +265,9 @@ class StoreInCache:
     def delete_user(self):
         in_cache = cache.get(self.room)
         in_cache["users"] = [
-            key for key in in_cache["users"] if key["username"] != self.user_calling
+            key
+            for key in in_cache["users"]
+            if key["username"] != self.user_calling
         ]
         if not in_cache["selected_card"]["card_id"] is None:
             found_item = next(
@@ -262,7 +280,7 @@ class StoreInCache:
             in_cache["cards"][found_item_index]["picked_up_by"] = ""
 
         cache.set(self.room, in_cache)
-        
+
     def add_msg(self, user):
         in_cache = cache.get(self.room)
         new_msg = in_cache["messages"]
