@@ -778,6 +778,10 @@ video {
   grid-column: span 12 / span 12;
 }
 
+.row-span-2 {
+  grid-row: span 2 / span 2;
+}
+
 .float-right {
   float: right;
 }
@@ -1061,6 +1065,22 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.h-\[40vh\] {
+  height: 40vh;
+}
+
+.h-\[50vh\] {
+  height: 50vh;
+}
+
+.h-\[80vh\] {
+  height: 80vh;
+}
+
+.h-80 {
+  height: 20rem;
 }
 
 .max-h-\[40vh\] {

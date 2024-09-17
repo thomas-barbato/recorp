@@ -347,6 +347,7 @@ class NpcTemplateResource(models.Model):
     npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
+    can_be_randomized = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -382,6 +383,14 @@ class Npc(models.Model):
 
     def __str__(self):
         return f"{self.sector.name} - {self.name} : {self.coordinates}"
+    
+    
+class NpcResource(models.Model):
+    npc_template_resource = models.ForeignKey(NpcTemplateResource, on_delete=models.CASCADE)
+    npc = models.ForeignKey(Npc, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Module(models.Model):

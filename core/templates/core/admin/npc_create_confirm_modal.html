@@ -1,17 +1,43 @@
-<div id="npc-create-confirmation-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-1/2 max-w-2xl max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+<div id="npc-create-confirmation-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-full">
+    <div class="relative p-4 w-1/2 max-w-2xl h-full gap-1">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-2">
             <div class="flex text-center p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <b class="text-xl w-full text-center">New template information</b>
+                <b class="text-xl w-full text-center" id="npc-template-modal-title"></b>
             </div>
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <p class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">
-                    Are you sure you want to create this template ?
-                </p>
+            <div id="npc-template-modal-body-container" class="overflow-y-scroll h-max-[80vh]">
+                <div class="flex flex-col">
+                    <img src="" class="object-center mx-auto w-100 mt-1 hidden" id="npc-template-modal-spaceship">
+                    <p id="npc-template-modal-spaceship-warning" class="text-red-600 font-bold text-center">You must select a spaceship in order to create this template...
+                </div>
+                <div class="flex flex-col p-2">
+                    <label for="npc-template-modal-template-name" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">Name:
+                    </label >
+                    <p id="npc-template-modal-name" class="p-2 text-center">Nothing Selected</p>
+                </div>
+                <div class="flex flex-col">
+                    <label for="npc-template-modal-skills" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">Skills:
+                    </label >
+                    <ul id="npc-template-modal-skills-ul" class="w-[100%] grid grid-cols-2 row-span-2 gap-1 mx-auto bg-gray-800 text-center text-md p-2 border border-white">
+                    </ul>
+                </div>
+                <div class="flex flex-col">
+                    <label for="npc-template-modal-modules" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">Modules
+                    </label >
+                    <ul id="npc-template-modal-module-ul" class="w-[100%] mx-auto bg-gray-800 text-center text-md p-2 border border-white">
+                        <li class="text-red-600 font-bold w-[100%] list-none" id="npc-template-modal-module-warning-li">Nothing selected...</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="npc-template-modal-resource" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">Resources
+                    </label >
+                    <ul id="npc-template-modal-resource-ul" class="w-[100%] mx-auto bg-gray-800 text-center text-md p-2 border border-white">
+                        <li class="text-red-600 font-bold w-[100%] list-none" id="npc-template-modal-resource-warning-li">Nothing selected...</li>
+                    </ul>
+                </div>
             </div>
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button data-modal-hide="npc-create-confirmation-modal" id="npc-create-btn" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                <button data-modal-hide="npc-create-confirmation-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
+                <button data-modal-hide="npc-create-confirmation-modal" id="npc-cancel-btn" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
             </div>
         </div>
     </div>

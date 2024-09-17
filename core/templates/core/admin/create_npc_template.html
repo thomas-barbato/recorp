@@ -96,15 +96,19 @@
         <section class="mt-1 mb-2">
             <div class="flex flex-col w-full">
                 <label for="resources-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set resources</b></label>
-                <small class="text-red-500 mb-1">Chose here which resources be used for for this template min = 0 max = 300, value will be multiplied per difficulty level. </small>
+                <small class="text-red-500 mb-1">min = 0 max = 300 (if "can be randomized" is check, when you will create a new npc this value wille be randomized between base value and base value * difficulty). </small>
                 <div class="border w-full gap-1 justify-between p-2" id="resources-select">
                     <ul class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
                      {% for resource in resource_list %}
                         {% if resource.name != 'none' %}
                         <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none p-2" id="resource-li-{{ resource.id }}">
                             <div class="flex items-center ps-3">
-                                <label for="resource-input-{{ resource.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ resource.name }}</label>
+                                <label for="resource-input-{{ resource.id }}" id="resource-input-label-{{ resource.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ resource.name }}</label>
                                 <input id="resource-input-{{ resource.id }}" type="number" step="1" min="0" max="300" value="0" class="w-full h-5 text-blue-600 bg-gray-100 border-gray-300 text-center rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 resources">
+                            </div>
+                            <div class="flex items-center ps-3">
+                                <input id="resource-input-randomized-{{ resource.id }}" type="checkbox" name="can-be-randomized">
+                                <label for="resource-input-randomized-{{ resource.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">can be randomized</label>
                             </div>
                         </li>
                         {% endif %}
