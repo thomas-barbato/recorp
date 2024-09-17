@@ -32,7 +32,10 @@ jobs:
       run: |
         echo 'Hi, project in DEV mod'
         python -m venv venv
-        . venv/scripts/activate
+        cd venv/scripts/activate
+        .\activate
+        cd ..
+        cd ..
         echo 'requirements setup...'
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
