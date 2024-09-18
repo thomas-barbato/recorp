@@ -13,10 +13,10 @@
 <section class="mb-2 w-[95vw]">
     <div class="flex flex-row">
         <div class="flex w-full flex-col content-center">
-            <label for="template-select" class="block mt-1 text-sm font-bold text-gray-900 dark:text-white text-center"><b>Npc Template</b></label>
-            <small class="text-red-500 mb-1 text-center">chose a template to update or delete it, if you select <b>none</b> you will create new one</small>
+            <label for="template-select" class="block mt-1 text-md font-bold text-gray-900 dark:text-white text-center"><b>Npc Template</b></label>
+            <span class="text-red-500 mb-1 text-center">chose a template to update or delete it, if you select <b>none</b> you will create new one</span>
             <div class="flex flex-row gap-1">
-                <select id="template-select" name="template-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                <select id="template-select" name="template-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                     <option value="none" class="text-center" selected>None</option>
                     {% for template in npc_template %}
                         <option value="{{ template.id }}" class="text-center">{{ template.name }}</option>
@@ -35,13 +35,13 @@
         {% include "delete_confirm_modal.html" %}
 
         <section id="template-name" class="w-full mb-1  ">
-            <label for="template-name-input" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set template name <b class="text-red-600">*</b></b></label>
-            <input type="text" id="template-name-input" name="template-name-input" class="bg-gray-50 border border-gray-300 text-center text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Template's name" required />
+            <label for="template-name-input" class="block mb-2 text-md font-bold text-gray-900 dark:text-white"><b>Set template name <b class="text-red-600">*</b></b></label>
+            <input type="text" id="template-name-input" name="template-name-input" class="bg-gray-50 border border-gray-300 text-center text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Template's name" required />
         </section>
 
         <section id="spaceship-menu" class="w-full">
-            <label for="ship-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select spaceship used by this template <b class="text-red-600">*</b></b></label>
-            <select id="ship-select" name="ship-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+            <label for="ship-select" class="block mb-2 text-md font-bold text-gray-900 dark:text-white"><b>Select spaceship used by this template <b class="text-red-600">*</b></b></label>
+            <select id="ship-select" name="ship-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                 <option value="none" class="text-center"data-imagename="none" selected>None</option>
                 {% for ship in ship_list %}
                     <option value="{{ ship.id }}" data-imagename="{{ ship.image }}" data-shipid="{{ ship.id }}" class="text-center">{{ ship }}</option>
@@ -49,9 +49,9 @@
             </select>
             <img src="" class="hidden object-center mx-auto w-100 mt-1" id="spaceship-img">
             {% for ship in ship_list %}
-            <ul id="description-spaceship-{{ ship.id }}" class="w-[40%] mx-auto text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 hidden description-spaceship">
-                <li class="w-full border-b border-gray-200 dark:border-gray-600 list-none h-[5vh] text-center  dark:bg-gray-600 text-md mb-1 p-3 text-xl"><h3><b>{{ ship.name}}</b></h3></li>
-                <li class="w-full dark:border-gray-600 list-none p-2 "><b>module slot available:</b> {{ ship.module_slot_available }}</li>
+            <ul id="description-spaceship-{{ ship.id }}" class="w-[40%] mx-auto text-md font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 hidden description-spaceship">
+                <li class="w-full border-b border-gray-200 dark:border-gray-600 list-none h-[5vh] text-center  dark:bg-gray-600 text-md mb-1 p-3 text-md"><h3><b id="selected-spaceship-name">{{ ship.name}}</b></h3></li>
+                <li class="w-full dark:border-gray-600 list-none p-2 "><b>module slot available:</b> <span id="{{ ship.name }}-module-slot-available">{{ ship.module_slot_available }}</span></li>
                 <li class="w-full list-none text-red-500 p-2 ">You are not allowed to add more than <b>{{ ship.module_slot_available }}</b> modules with this ship.</li>
                 <li class="w-full list-none p-2 "><b>default hull points:</b> {{ ship.default_hp}}</li>
                 <li class="w-full list-none p-2 "><b>default movement points:</b> {{ship.default_movement}}</li>
@@ -62,8 +62,8 @@
         <section class="mt-1 mb-2">
             <div class="flex flex-row">
                 <div class="flex w-full flex-col">
-                    <label for="difficulty-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set difficulty</b></label>
-                    <small class="text-red-500 mb-1">When setting difficulty, you chose which skill level this template will use. (min = 1 , max = 150, Default = 1)</small>
+                    <label for="difficulty-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set difficulty</b></label>
+                    <span class="text-red-500 mb-1">When setting difficulty, you chose which skill level this template will use. (min = 1 , max = 150, Default = 1)</span>
                     <input id="difficulty-select" type="number" min=1 max=150 value=1 class="text-center font-bold">
                 </div>
             </div>
@@ -71,18 +71,18 @@
 
         <section class="mt-1 mb-2">
             <div class="flex flex-col w-full">
-                <label for="skill-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set used skills in template </b></label>
-                <small class="text-red-500 mb-1">Chose here which skill will be used for difficulty settings, the others will stay at 0.</small>
+                <label for="skill-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set used skills in template </b></label>
+                <span class="text-red-500 mb-1">Chose here which skill will be used for difficulty settings, the others will stay at 0.</span>
                 <div class="border grid grid-cols-2 gap-1 justify-between p-2" id="skill-select">
                     {% for category in skill_categories%}
-                    <ul class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
+                    <ul class="w-[100%] text-md text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
                         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white text-center">{{ category }}</h3>
                      {% for skill in skill_list %}
                         {% if category == skill.category %}
                         <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" id="skill-li-{{ skill.id }}">
                             <div class="flex items-center ps-3">
                                 <input id="skill-input-{{ skill.id }}" type="checkbox" value="{{ skill.name }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 skill-input">
-                                <label for="skill-input-{{ skill.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" id="{{ skill.id }}">{{ skill.name }}</label>
+                                <label for="skill-input-{{ skill.id }}" class="w-full py-3 ms-2 text-md text-gray-900 dark:text-gray-300" id="{{ skill.id }}">{{ skill.name }}</label>
                             </div>
                         </li>
                         {% endif %}
@@ -95,20 +95,20 @@
 
         <section class="mt-1 mb-2">
             <div class="flex flex-col w-full">
-                <label for="resources-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set resources</b></label>
-                <small class="text-red-500 mb-1">min = 0 max = 300 (if "can be randomized" is check, when you will create a new npc this value wille be randomized between base value and base value * difficulty). </small>
+                <label for="resources-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set resources</b></label>
+                <span class="text-red-500 mb-1">min = 0 max = 300 (if "can be randomized" is check, when you will create a new npc this value wille be randomized between base value and base value * difficulty). </span>
                 <div class="border w-full gap-1 justify-between p-2" id="resources-select">
-                    <ul class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
+                    <ul class="w-[100%] text-md font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1">
                      {% for resource in resource_list %}
                         {% if resource.name != 'none' %}
                         <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none p-2" id="resource-li-{{ resource.id }}">
                             <div class="flex items-center ps-3">
-                                <label for="resource-input-{{ resource.id }}" id="resource-input-label-{{ resource.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ resource.name }}</label>
+                                <label for="resource-input-{{ resource.id }}" id="resource-input-label-{{ resource.id }}" class="w-full py-3 ms-2 text-md font-medium text-gray-900 dark:text-gray-300">{{ resource.name }}</label>
                                 <input id="resource-input-{{ resource.id }}" type="number" step="1" min="0" max="300" value="0" class="w-full h-5 text-blue-600 bg-gray-100 border-gray-300 text-center rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 resources">
                             </div>
                             <div class="flex items-center ps-3">
                                 <input id="resource-input-randomized-{{ resource.id }}" type="checkbox" name="can-be-randomized">
-                                <label for="resource-input-randomized-{{ resource.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">can be randomized</label>
+                                <label for="resource-input-randomized-{{ resource.id }}" class="w-full py-3 ms-2 text-md font-medium text-gray-900 dark:text-gray-300">can be randomized</label>
                             </div>
                         </li>
                         {% endif %}
@@ -122,15 +122,15 @@
     <div class="flex flex-col w-1/2">
         <section class="mt-1 mb-2">
             <div class="flex flex-col col-4 w-full">
-                <label for="skill-select" class="block mt-2 text-sm font-bold text-gray-900 dark:text-white"><b>Set modules used in this templates </b></label>
-                <small class="text-red-500 mb-1">Choose which modules will be installed on this template.</small>
+                <label for="skill-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set modules used in this templates </b></label>
+                <span class="text-red-500 mb-1">Choose which modules will be installed on this template.</span>
                 <div class="border gap-1 justify-between p-2" id="module-select">
                 {% for module_type in module_types%}
                     <label for="module-{{ module_type }}" class="mb-4 font-semibold text-gray-900 dark:text-white text-center">{{ module_type }}</label>
                     {% if module_type == "WEAPONRY" or module_type == "ELECTRONIC_WARFARE" or module_type == "DEFENSE"%}
-                        <select multiple size="6" name="module-{{ module_type }}[]" class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 module-select module-multi-select">
+                        <select multiple size="6" name="module-{{ module_type }}[]" class="w-[100%] text-md font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 module-select module-multi-select">
                     {% else %}
-                        <select name="module-{{ module_type }}" class="w-[100%] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 module-select">
+                        <select name="module-{{ module_type }}" class="w-[100%] text-md font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-1 module-select">
                         <option class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" value="None" id="module-li-none" selected>None</option>
                     {% endif %}
                     {% for module in module_list %}

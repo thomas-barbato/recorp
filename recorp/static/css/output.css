@@ -1067,22 +1067,6 @@ video {
   height: 100%;
 }
 
-.h-\[40vh\] {
-  height: 40vh;
-}
-
-.h-\[50vh\] {
-  height: 50vh;
-}
-
-.h-\[80vh\] {
-  height: 80vh;
-}
-
-.h-80 {
-  height: 20rem;
-}
-
 .max-h-\[40vh\] {
   max-height: 40vh;
 }
@@ -3068,6 +3052,11 @@ video {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.text-lime-400 {
+  --tw-text-opacity: 1;
+  color: rgb(163 230 53 / var(--tw-text-opacity));
 }
 
 .text-red-400 {
