@@ -2,7 +2,7 @@
         "model": "core.shipcategory",
         "pk": 1,
         "fields": {
-            "name": "light",
+            "name": "Light",
             "description": "lorem ipsum bla bla bla",
             "ship_size": {
                 "size_x": 1,
@@ -16,7 +16,7 @@
         "model": "core.shipcategory",
         "pk": 2,
         "fields": {
-            "name": "medium",
+            "name": "Medium",
             "description": "lorem ipsum bla bla bla",
             "ship_size": {
                 "size_x": 2,
@@ -30,7 +30,7 @@
         "model": "core.shipcategory",
         "pk": 3,
         "fields": {
-            "name": "heavy",
+            "name": "Heavy",
             "description": "lorem ipsum bla bla bla",
             "ship_size": {
                 "size_x": 3,
@@ -44,7 +44,7 @@
         "model": "core.shipcategory",
         "pk": 4,
         "fields": {
-            "name": "colossal",
+            "name": "Super heavy",
             "description": "lorem ipsum bla bla bla",
             "ship_size": {
                 "size_x": 3,

@@ -356,7 +356,6 @@ class NpcTemplateResource(models.Model):
 
 
 class Npc(models.Model):
-    npc_teplate = models.ForeignKey(NpcTemplate, on_delete=models.CASCADE)
     faction = models.ForeignKey(
         Faction,
         on_delete=models.SET_DEFAULT,
@@ -397,7 +396,10 @@ class Module(models.Model):
     MODULE_TYPE_CHOICES = (
         ("NONE", "none"),
         ("WEAPONRY", "weaponry"),
-        ("DEFENSE", "defense"),
+        ("DEFENSE_BALLISTIC", "defense_ballistic"),
+        ("DEFENSE_THERMAL", "defense_thermal"),
+        ("DEFENSE_MISSILE", "defense_missile"),
+        ("HULL", "hull"),
         ("MOVEMENT", "movement"),
         ("GATHERING", "gathering"),
         ("PROBE", "probe"),

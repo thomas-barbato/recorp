@@ -550,7 +550,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     }
 
     for (let defense_module_i in data.ship.modules) {
-        if (data.ship.modules[defense_module_i]["type"] == "DEFENSE" && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
+        if (data.ship.modules[defense_module_i]["type"].includes('DEFENSE') && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
             let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase()
             let defense_value = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
 

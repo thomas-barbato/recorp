@@ -535,7 +535,9 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         _, npc_template, npc_resources, _ = GetDataFromDB.get_table("npc")
-        ship_list = GetDataFromDB.get_table("ship").objects.all()
+        ship_list = GetDataFromDB.get_table("ship").objects.values(
+            "name", "id", "image", "module_slot_available", "default_hp", "default_movement", "ship_category_id__name"
+        )
         skill_list = GetDataFromDB.get_table("skill").objects.values(
             "name", "id", "category"
         )
@@ -556,8 +558,11 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         context["resource_list"] = resources
         context["module_list"] = modules
         context["module_types"] = [
-            "DEFENSE",
+            "DEFENSE_BALLISTIC",
+            "DEFENSE_MISSILE",
+            "DEFENSE_THERMAL",
             "HOLD",
+            "HULL",
             "MOVEMENT",
             "REPAIR",
             "GATHERING",

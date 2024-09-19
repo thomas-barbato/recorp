@@ -503,8 +503,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
 
         for (let module_i in map_informations['pc_npc'][i].ship.modules) {
 
-            if (map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "DEFENSE" && !map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('hull')) {
-
+            if (map_informations['pc_npc'][i].ship.modules[module_i]["type"].includes("DEFENSE") && !map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('hull')) {
                 let defense_name = map_informations['pc_npc'][i].ship.modules[module_i]["name"].split(" ")[0].toLowerCase()
                 let defense_value = `${Math.round((map_informations['pc_npc'][i].ship["current_"+defense_name+"_defense"] * 100) / (map_informations['pc_npc'][i].ship.modules[module_i].effect.defense))}%`;
 

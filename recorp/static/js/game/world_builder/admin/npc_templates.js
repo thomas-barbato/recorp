@@ -6,8 +6,6 @@ let module_select = document.querySelectorAll('.module-multi-select');
 let spaceship_description_element = document.querySelectorAll('.description-spaceship')
 let selected_spaceship_name = "";
 let dict = [];
-
-
 let submit_button = document.querySelector('#npc-create-btn');
 let cancel_button = document.querySelector('#npc-cancel-btn');
 
@@ -88,7 +86,8 @@ npc_submit_button.addEventListener('click', function() {
                 module_info_array.push({
                     "id": selected[y].id.split("-")[2],
                     "name": selected[y].textContent,
-                    "effects": selected[y].dataset.moduleeffect
+                    "effects": selected[y].dataset.moduleeffect,
+                    "type": selected[y].dataset.moduletype
                 })
             }
         }
@@ -129,6 +128,9 @@ npc_submit_button.addEventListener('click', function() {
         let template_name_element = document.getElementById('npc-template-modal-name')
         template_name_element.textContent = template_name;
         template_name_element.classList.add('bg-gray-600', 'border', 'border-gray-800');
+        document.querySelector('#npc-template-modal-name-warning').classList.add('hidden');
+    } else {
+        document.querySelector('#npc-template-modal-name-warning').classList.remove('hidden');
     }
 
     for (let skill in skill_info_array) {
@@ -145,6 +147,8 @@ npc_submit_button.addEventListener('click', function() {
     let module_element_span_moduleCount_warningMsgValue = document.querySelector('#npc-template-modal-module-moduleCount-warning-value');
     let module_element_span_spaceship_warningMsg = document.querySelector('#npc-template-modal-module-spaceship-warning');
 
+    let module_data = []
+
     if (module_info_array.length > 0) {
         document.querySelector('#npc-template-modal-module-warning-li').classList.add('hidden');
         for (let module in module_info_array) {
@@ -159,6 +163,10 @@ npc_submit_button.addEventListener('click', function() {
             module_element_li_span_name.textContent = `${module_info_array[module].name.split(' -')[0]}`;
             module_element_li_span_effects.classList.add('text-center', 'text-shadow');
             module_element_li_span_effects.textContent = `${module_info_array[module].effects}`;
+
+            if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT") {
+                module_data[module_info_array[module].type] = module_info_array[module].effects
+            }
 
             module_element_li.classList.add('flex', 'flex-col', 'gap-1', 'text-justify', 'text-shadow');
             module_element_li.append(module_element_li_span_id);
@@ -175,7 +183,7 @@ npc_submit_button.addEventListener('click', function() {
             module_element_span_spaceship_warningMsg.classList.remove('hidden');
 
         }
-        module_element_span_moduleCount.textContent = `(${module_info_array.length} selected)`;
+        module_element_span_moduleCount.textContent = `(${module_info_array.length} / ${module_slot_available_on_ship != -1 ? module_slot_available_on_ship : 0} selected)`;
         if (module_info_array.length <= module_slot_available_on_ship) {
             module_element_span_moduleCount.classList.add('text-lime-400', 'text-shadow');
             module_element_span_moduleCount.classList.remove('text-red-600', 'text-shadow');
@@ -184,10 +192,18 @@ npc_submit_button.addEventListener('click', function() {
         } else {
             module_element_span_moduleCount.classList.remove('text-lime-400', 'text-shadow');
             module_element_span_moduleCount.classList.add('text-red-600', 'text-shadow');
-            module_element_span_moduleCount_warningMsgValue.textContent = module_slot_available_on_ship;
-            module_element_span_moduleCount_warningMsg.classList.remove('hidden');
+            module_element_span_moduleCount_warningMsgValue.textContent = module_slot_available_on_ship > -1 ? module_slot_available_on_ship : 0;
+            if (module_slot_available_on_ship == -1) {
+                module_element_span_moduleCount_warningMsg.classList.add('hidden');
+                module_element_span_spaceship_warningMsg.classList.remove('hidden');
+            } else {
+                module_element_span_moduleCount_warningMsg.classList.remove('hidden');
+                module_element_span_spaceship_warningMsg.classList.add('hidden');
+            }
             submit_button.disabled = true;
         }
+
+        console.log(module_data)
     } else {
         module_element_span_moduleCount.classList.remove('text-lime-400', 'text-shadow');
         module_element_span_moduleCount.classList.add('text-red-600', 'text-shadow');

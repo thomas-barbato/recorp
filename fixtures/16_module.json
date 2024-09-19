@@ -15,7 +15,7 @@
         "pk": 2,
         "fields": {
             "name": "Ballistic shield lv-1",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 1,
             "effect": {
                 "defense_type": "ballistic",
@@ -30,7 +30,7 @@
         "pk": 3,
         "fields": {
             "name": "Ballistic shield lv-2",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 2,
             "effect": {
                 "defense_type": "ballistic",
@@ -45,7 +45,7 @@
         "pk": 4,
         "fields": {
             "name": "Ballistic shield lv-3",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 3,
             "effect": {
                 "defense_type": "ballistic",
@@ -60,7 +60,7 @@
         "pk": 5,
         "fields": {
             "name": "Ballistic shield lv-4",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 4,
             "effect": {
                 "defense_type": "ballistic",
@@ -75,7 +75,7 @@
         "pk": 6,
         "fields": {
             "name": "Ballistic shield lv-5",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 5,
             "effect": {
                 "defense_type": "ballistic",
@@ -90,7 +90,7 @@
         "pk": 7,
         "fields": {
             "name": "Ballistic shield lv-6",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 6,
             "effect": {
                 "defense_type": "ballistic",
@@ -105,7 +105,7 @@
         "pk": 8,
         "fields": {
             "name": "Ballistic shield lv-7",
-            "type": "DEFENSE",
+            "type": "DEFENSE_BALLISTIC",
             "tier": 7,
             "effect": {
                 "defense_type": "ballistic",
@@ -120,7 +120,7 @@
         "pk": 9,
         "fields": {
             "name": "Thermal shield lv-1",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 1,
             "effect": {
                 "defense_type": "thermal",
@@ -135,7 +135,7 @@
         "pk": 10,
         "fields": {
             "name": "Thermal shield lv-1",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 2,
             "effect": {
                 "defense_type": "thermal",
@@ -150,7 +150,7 @@
         "pk": 11,
         "fields": {
             "name": "Thermal shield lv-2",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 3,
             "effect": {
                 "defense_type": "thermal",
@@ -165,7 +165,7 @@
         "pk": 12,
         "fields": {
             "name": "Thermal shield lv-3",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 4,
             "effect": {
                 "defense_type": "thermal",
@@ -180,7 +180,7 @@
         "pk": 13,
         "fields": {
             "name": "Thermal shield lv-4",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 5,
             "effect": {
                 "defense_type": "thermal",
@@ -195,7 +195,7 @@
         "pk": 14,
         "fields": {
             "name": "Thermal shield lv-5",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 6,
             "effect": {
                 "defense_type": "thermal",
@@ -210,7 +210,7 @@
         "pk": 15,
         "fields": {
             "name": "Thermal shield lv-6",
-            "type": "DEFENSE",
+            "type": "DEFENSE_THERMAL",
             "tier": 7,
             "effect": {
                 "defense_type": "thermal",
@@ -225,7 +225,7 @@
         "pk": 16,
         "fields": {
             "name": "Missile shield lv-1",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 1,
             "effect": {
                 "defense_type": "missile",
@@ -240,7 +240,7 @@
         "pk": 17,
         "fields": {
             "name": "Missile shield lv-2",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 2,
             "effect": {
                 "defense_type": "missile",
@@ -255,7 +255,7 @@
         "pk": 18,
         "fields": {
             "name": "Missile shield lv-3",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 3,
             "effect": {
                 "defense_type": "missile",
@@ -270,7 +270,7 @@
         "pk": 19,
         "fields": {
             "name": "Missile shield lv-4",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 4,
             "effect": {
                 "defense_type": "missile",
@@ -285,7 +285,7 @@
         "pk": 20,
         "fields": {
             "name": "Missile shield lv-5",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 5,
             "effect": {
                 "defense_type": "missile",
@@ -300,7 +300,7 @@
         "pk": 21,
         "fields": {
             "name": "Missile shield lv-6",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 6,
             "effect": {
                 "defense_type": "missile",
@@ -315,7 +315,7 @@
         "pk": 22,
         "fields": {
             "name": "Missile shield lv-7",
-            "type": "DEFENSE",
+            "type": "DEFENSE_MISSILE",
             "tier": 7,
             "effect": {
                 "defense_type": "missile",
@@ -526,7 +526,7 @@
         "pk": 36,
         "fields": {
             "name": "hull lv-1",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 1,
             "effect": {
                 "hull_hp": 50
@@ -540,7 +540,7 @@
         "pk": 37,
         "fields": {
             "name": "hull lv-2",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 2,
             "effect": {
                 "hull_hp": 75
@@ -554,7 +554,7 @@
         "pk": 38,
         "fields": {
             "name": "hull lv-3",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 3,
             "effect": {
                 "hull_hp": 100
@@ -568,7 +568,7 @@
         "pk": 39,
         "fields": {
             "name": "hull lv-4",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 4,
             "effect": {
                 "hull_hp": 125
@@ -582,7 +582,7 @@
         "pk": 40,
         "fields": {
             "name": "hull lv-5",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 5,
             "effect": {
                 "hull_hp": 150
@@ -596,7 +596,7 @@
         "pk": 41,
         "fields": {
             "name": "hull lv-6",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 6,
             "effect": {
                 "hull_hp": 175
@@ -610,7 +610,7 @@
         "pk": 42,
         "fields": {
             "name": "hull lv-7",
-            "type": "DEFENSE",
+            "type": "HULL",
             "tier": 7,
             "effect": {
                 "hull_hp": 200
