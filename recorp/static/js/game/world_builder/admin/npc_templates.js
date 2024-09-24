@@ -6,6 +6,7 @@ let module_select = document.querySelectorAll('.module-multi-select');
 let spaceship_description_element = document.querySelectorAll('.description-spaceship')
 let selected_spaceship_name = "";
 let dict = [];
+let skill_dict = [];
 let submit_button = document.querySelector('#npc-create-btn');
 let cancel_button = document.querySelector('#npc-cancel-btn');
 
@@ -22,9 +23,11 @@ ship_select.addEventListener('change', function() {
         for (let i = 0; i < spaceship_description_element.length; i++) {
             let element_id = spaceship_description_element[i].id.split('-')[2];
             if (element_id == select_ship_description_id) {
-                spaceship_description_element[i].classList.remove('hidden')
+                spaceship_description_element[i].classList.remove('hidden');
+                spaceship_description_element[i].classList.add('selected-spaceShip');
             } else {
-                spaceship_description_element[i].classList.add('hidden')
+                spaceship_description_element[i].classList.add('hidden');
+                spaceship_description_element[i].classList.remove('selected-spaceShip');
             }
         }
     } else {
@@ -66,8 +69,6 @@ npc_submit_button.addEventListener('click', function() {
 
     let modal_template_title = document.getElementById('npc-template-modal-title');
 
-
-
     for (let i = 0; i < skill_select.length; i++) {
         if (skill_select[i].checked) {
             skill_info_array.push({ "name": skill_select[i].value, "level": parseInt(difficulty) })
@@ -83,10 +84,18 @@ npc_submit_button.addEventListener('click', function() {
 
         for (let y = 0; y < selected.length; y++) {
             if (selected[y].id != "module-li-none") {
+                // from dataset string to obj.
+                let splitted_module_effect = selected[y].dataset.moduleeffect.split(',')
+                let json_parsed_module_effects = ""
+                if (splitted_module_effect.length > 1) {
+                    json_parsed_module_effects = JSON.parse(JSON.stringify(selected[y].dataset.moduleeffect.replace(/'/g, '"')));
+                } else {
+                    json_parsed_module_effects = JSON.parse(selected[y].dataset.moduleeffect.replace(/'/g, '"'));
+                }
                 module_info_array.push({
                     "id": selected[y].id.split("-")[2],
                     "name": selected[y].textContent,
-                    "effects": selected[y].dataset.moduleeffect,
+                    "effects": json_parsed_module_effects,
                     "type": selected[y].dataset.moduletype
                 })
             }
@@ -106,6 +115,12 @@ npc_submit_button.addEventListener('click', function() {
             })
         }
     }
+    if (ship_image && template_name && ship_image[ship_image.length - 1] != "") {
+        submit_button.disabled = false;
+    } else {
+        submit_button.disabled = true;
+    }
+
     if (template_selected_name == "none") {
         modal_template_title.textContent = "Create new template";
     } else {
@@ -116,13 +131,11 @@ npc_submit_button.addEventListener('click', function() {
         modal_spaceship.src = `/static/js/game/assets/ships/${ship_image_name}`;
         modal_spaceship.classList.remove('hidden');
         modal_spaceship_warning = document.getElementById('npc-template-modal-spaceship-warning').classList.add('hidden');
-        submit_button.disabled = false;
     } else {
         let modal_spaceship = document.getElementById('npc-template-modal-spaceship');
         modal_spaceship.src = "";
         modal_spaceship.classList.add('hidden');
         modal_spaceship_warning = document.getElementById('npc-template-modal-spaceship-warning').classList.remove('hidden');
-        submit_button.disabled = true;
     }
     if (template_name) {
         let template_name_element = document.getElementById('npc-template-modal-name')
@@ -138,7 +151,9 @@ npc_submit_button.addEventListener('click', function() {
         skill_element_li.textContent = `${skill_info_array[skill].name}: ${skill_info_array[skill].level}`;
         skill_element_li.classList.add('list-none', 'bg-gray-600', 'border', 'border-gray-800', 'delete-after-cancel', 'text-shadow');
         document.querySelector('#npc-template-modal-skills-ul').append(skill_element_li)
+        skill_dict[skill_info_array[skill].name] = skill_info_array[skill].level;
     }
+
 
     let module_slot_avaiable_on_ship_element = document.getElementById(`${selected_spaceship_name}-module-slot-available`)
     let module_slot_available_on_ship = "";
@@ -148,6 +163,23 @@ npc_submit_button.addEventListener('click', function() {
     let module_element_span_spaceship_warningMsg = document.querySelector('#npc-template-modal-module-spaceship-warning');
 
     let module_data = []
+
+    let selectedSpaceShip_element = document.querySelector('.selected-spaceShip');
+
+    let template_hp_statistics = 0;
+    let template_hp_skill_bonus = skill_dict["Repair"];
+    let template_hp_module_bonus = 0;
+    let template_move_statistics = 0;
+    let template_move_skill_bonus = skill_dict["Light"];
+    let template_move_module_bonus = 0;
+    let template_hold_statistics = 0;
+
+    if (selectedSpaceShip_element) {
+        let space_ship_id = selectedSpaceShip_element.id.split('-')[2];
+        template_hp_statistics = parseInt(document.querySelector(`#ship-${space_ship_id}-default-hp>span`).textContent);
+        template_move_statistics = parseInt(document.querySelector(`#ship-${space_ship_id}-default-move>span`).textContent);
+        template_ship_category = skill_dict[document.querySelector(`#ship-${space_ship_id}-default-category>span`).textContent];
+    }
 
     if (module_info_array.length > 0) {
         document.querySelector('#npc-template-modal-module-warning-li').classList.add('hidden');
@@ -162,10 +194,16 @@ npc_submit_button.addEventListener('click', function() {
             module_element_li_span_name.classList.add('text-center', 'text-shadow');
             module_element_li_span_name.textContent = `${module_info_array[module].name.split(' -')[0]}`;
             module_element_li_span_effects.classList.add('text-center', 'text-shadow');
-            module_element_li_span_effects.textContent = `${module_info_array[module].effects}`;
+            module_element_li_span_effects.textContent = `${module_info_array[module].name.split(' -')[1]}`;
 
-            if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT") {
-                module_data[module_info_array[module].type] = module_info_array[module].effects
+            if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT" || module_info_array[module].type == "HOLD") {
+                if (module_info_array[module].type == "HULL") {
+                    template_hp_module_bonus = module_info_array[module].effects.hull_hp;
+                } else if (module_info_array[module].type == "MOVEMENT") {
+                    template_move_module_bonus = module_info_array[module].effects.bonus_mvt;
+                } else if (module_info_array[module].type == "HOLD") {
+                    template_hold_statistics = module_info_array[module].effects.capacity;
+                }
             }
 
             module_element_li.classList.add('flex', 'flex-col', 'gap-1', 'text-justify', 'text-shadow');
@@ -174,7 +212,7 @@ npc_submit_button.addEventListener('click', function() {
             module_element_li.append(module_element_li_span_effects);
 
             module_element_li.classList.add('list-none', 'bg-gray-600', 'border', 'border-gray-800', 'delete-after-cancel');
-            document.querySelector('#npc-template-modal-module-ul').append(module_element_li)
+            document.querySelector('#npc-template-modal-module-ul').append(module_element_li);
         }
         module_slot_available_on_ship = module_slot_avaiable_on_ship_element ? parseInt(document.getElementById(`${selected_spaceship_name}-module-slot-available`).textContent) : -1;
         if (module_slot_avaiable_on_ship_element != -1) {
@@ -188,7 +226,6 @@ npc_submit_button.addEventListener('click', function() {
             module_element_span_moduleCount.classList.add('text-lime-400', 'text-shadow');
             module_element_span_moduleCount.classList.remove('text-red-600', 'text-shadow');
             module_element_span_moduleCount_warningMsg.classList.add('hidden');
-            submit_button.disabled = false;
         } else {
             module_element_span_moduleCount.classList.remove('text-lime-400', 'text-shadow');
             module_element_span_moduleCount.classList.add('text-red-600', 'text-shadow');
@@ -200,10 +237,7 @@ npc_submit_button.addEventListener('click', function() {
                 module_element_span_moduleCount_warningMsg.classList.remove('hidden');
                 module_element_span_spaceship_warningMsg.classList.add('hidden');
             }
-            submit_button.disabled = true;
         }
-
-        console.log(module_data)
     } else {
         module_element_span_moduleCount.classList.remove('text-lime-400', 'text-shadow');
         module_element_span_moduleCount.classList.add('text-red-600', 'text-shadow');
@@ -212,9 +246,21 @@ npc_submit_button.addEventListener('click', function() {
             module_element_span_spaceship_warningMsg.classList.remove('hidden');
 
         }
-        submit_button.disabled = true;
     }
 
+    let hp_value = document.querySelector('#npc-template-modal-resource-statistics-hp-li-value');
+    let move_value = document.querySelector('#npc-template-modal-resource-statistics-movement-li-value');
+    let hold_capacity_value = document.querySelector('#npc-template-modal-resource-statistics-holdCapacity-li-value');
+    hp_value.textContent = `${Math.round((template_hp_statistics + template_hp_module_bonus) + (50 * (template_hp_skill_bonus / 100)))}`;
+    move_value.textContent = `${Math.round((template_move_statistics + template_move_module_bonus) + (25 * (template_move_skill_bonus / 100)))}`;
+    hold_capacity_value.textContent = `${template_hold_statistics}`;
+    if (template_hold_statistics > 0) {
+        hold_capacity_value.classList.add('text-green-400');
+        hold_capacity_value.classList.remove('text-red-600');
+    } else {
+        hold_capacity_value.classList.add('text-red-600');
+        hold_capacity_value.classList.remove('text-green-400');
+    }
 
     if (resource_info_array.length > 0) {
         document.querySelector('#npc-template-modal-resource-warning-li').classList.add('hidden');
@@ -245,6 +291,7 @@ npc_submit_button.addEventListener('click', function() {
     }
 
 
+
     submit_button.addEventListener('click', function() {
         save_or_update_npc_template();
     })
@@ -265,13 +312,23 @@ npc_submit_button.addEventListener('click', function() {
         let resource_select = document.querySelectorAll('.resources');
         let skill_array = [];
         let resource_array = [];
+        let module_array = [];
 
         for (let i = 0; i < skill_select.length; i++) {
-            skill_array.push({ "id": skill_select[i].id.split('-')[2], "checked": skill_select[i].checked })
+            skill_array.push({ "id": skill_select[i].id.split('-')[2], "name": skill_select[i].value, "checked": skill_select[i].checked })
         }
 
         for (let i = 0; i < resource_select.length; i++) {
-            resource_array.push({ "id": resource_select[i].id.split('-')[2], "quantity": resource_select[i].value })
+            let id = resource_select[i].id.split('-')[2]
+            let can_ben_randomized = document.querySelector('#resource-input-randomized-' + id).checked
+            resource_array.push({ "id": id, "quantity": resource_select[i].value, "can_be_randomized": can_ben_randomized })
+        }
+
+        for (let i = 0; i < module_info_array.length; i++) {
+            module_array.push({
+                'id': module_info_array[i]['id'],
+                'name': module_info_array[i]['name'].split('-')[0],
+            })
         }
 
         let edit_template = false;
@@ -280,11 +337,12 @@ npc_submit_button.addEventListener('click', function() {
         }
         if (ship_selectedElement.value != "none" && ship_selectedElement.value && template_name.value) {
             let template_data = {
-                "template_name": template_name.value,
-                "template_difficulty": difficulty,
-                "template_ship": ship_selectedElement.value,
-                "template_skills": skill_array,
-                "template_resource": resource_array
+                "name": template_name.value,
+                "difficulty": difficulty,
+                "ship": ship_selectedElement.value,
+                "skills": skill_array,
+                "resource": resource_array,
+                "modules": module_array
             }
 
             const headers = new Headers({

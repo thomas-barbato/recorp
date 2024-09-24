@@ -575,11 +575,17 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         data_from_post = json.load(request)["data"]
+        module_list = data_from_post["modules"]
+        module_id_list = [e['id'] for e in module_list]
+        print(module_list)
+        print(module_id_list)
+        
         # NEED TO WORK ON MODULES IN JS / HTML.
+        """
         new_template = NpcTemplate(
-            name=data_from_post["template_name"],
-            difficulty=data_from_post["template_difficulty"],
-            ship_id=data_from_post["template_ship"],
+            name=data_from_post["name"],
+            difficulty=data_from_post["difficulty"],
+            ship_id=data_from_post["ship"],
             description="",
             module_id_list=data_from_post["module_list"],
             current_hp=data_from_post["hp"],
@@ -600,19 +606,20 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
                 quantity=random.randint(
                     int(data_from_post[i]["quantity"]),
                     int(data_from_post[i]["quantity"])
-                    * int(data_from_post["template_difficulty"]),
+                    * int(data_from_post["difficulty"]),
                 ),
             )
             new_resource.save()
 
-        for i in range(0, len(data_from_post["template_skills"])):
+        for i in range(0, len(data_from_post["skills"])):
             new_template_skill = NpcTemplateSkill(
                 npc_template_id=new_template.id,
-                skill_id=int(data_from_post["template_skills"][i]["id"]),
-                level=int(data_from_post["template_skills"][i]["level"])
-                * int(data_from_post["template_difficulty"]),
+                skill_id=int(data_from_post["skills"][i]["id"]),
+                level=int(data_from_post["skills"][i]["level"])
+                * int(data_from_post["difficulty"]),
             )
             new_template_skill.save()
+        """
 
 
 class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):

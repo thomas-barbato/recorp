@@ -53,9 +53,9 @@
                 <li class="w-full border-b border-gray-200 dark:border-gray-600 list-none h-[5vh] text-center  dark:bg-gray-600 text-md mb-1 p-3 text-md"><h3><b id="selected-spaceship-name">{{ ship.name}}</b></h3></li>
                 <li class="w-full dark:border-gray-600 list-none p-2 "><b>module slot available:</b> <span id="{{ ship.name }}-module-slot-available">{{ ship.module_slot_available }}</span></li>
                 <li class="w-full list-none text-red-500 p-2 ">You are not allowed to add more than <b>{{ ship.module_slot_available }}</b> modules with this ship.</li>
-                <li class="w-full list-none p-2 "><b>default hull points:</b> {{ ship.default_hp}}</li>
-                <li class="w-full list-none p-2 "><b>default movement points:</b> {{ship.default_movement}}</li>
-                <li class="w-full list-none p-2 "><b>ship category:</b> {{ship.ship_category_id__name}}</li>
+                <li id="ship-{{ ship.id }}-default-hp" class="w-full list-none p-2 gap-1"><b>default hull points:</b><span>{{ ship.default_hp}}</span></li>
+                <li id="ship-{{ ship.id }}-default-move" class="w-full list-none p-2 gap-1"><b>default movement points:</b><span>{{ship.default_movement}}</span></li>
+                <li id="ship-{{ ship.id }}-default-category" class="w-full list-none p-2 gap-1"><b>ship category:</b><span>{{ship.ship_category_id__name}}</span></li>
             </ul>
             {% endfor %}
         </section>

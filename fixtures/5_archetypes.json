@@ -1,97 +1,97 @@
 [{
-  "model": "core.archetype",
-  "pk": 1,
-  "fields": {
-    "name": "Soldier",
-    "description": "Fighter specialising in piloting heavy spaceships",
-    "data": {
-      "Destroyer": 10,
-      "Laser": 10,
-      "Thermal Shield": 10,
-      "Detection": 10
+        "model": "core.archetype",
+        "pk": 1,
+        "fields": {
+            "name": "Soldier",
+            "description": "Fighter specialising in piloting heavy spaceships",
+            "data": {
+                "Destroyer": 10,
+                "Laser": 10,
+                "Thermal Shield": 10,
+                "Detection": 10
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
     },
-    "created_at": "2020-02-28 12:38:15",
-    "updated_at": "2020-02-28 12:38:15"
-  }
-},
-{
-  "model": "core.archetype",
-  "pk": 2,
-  "fields": {
-    "name": "Harvester",
-    "description": "Harvester specialising in gathering resources",
-    "data": {
-      "Mining": 10,
-      "Refining": 10,
-      "Ballistic Shield": 10,
-      "Frigate": 10
+    {
+        "model": "core.archetype",
+        "pk": 2,
+        "fields": {
+            "name": "Harvester",
+            "description": "Harvester specialising in gathering resources",
+            "data": {
+                "Mining": 10,
+                "Refining": 10,
+                "Ballistic Shield": 10,
+                "Frigate": 10
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
     },
-    "created_at": "2020-02-28 12:38:15",
-    "updated_at": "2020-02-28 12:38:15"
-  }
-},
-{
-  "model": "core.archetype",
-  "pk": 3,
-  "fields": {
-    "name": "Engineer",
-    "description": "Technician specialising in research and manufacturing",
-    "data": {
-      "Research": 10,
-      "Crafting": 10,
-      "Counter Electronic Warfare": 10,
-      "Frigate": 10
+    {
+        "model": "core.archetype",
+        "pk": 3,
+        "fields": {
+            "name": "Engineer",
+            "description": "Technician specialising in research and manufacturing",
+            "data": {
+                "Research": 10,
+                "Crafting": 10,
+                "Counter Electronic Warfare": 10,
+                "Frigate": 10
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
     },
-    "created_at": "2020-02-28 12:38:15",
-    "updated_at": "2020-02-28 12:38:15"
-  }
-},
-{
-  "model": "core.archetype",
-  "pk": 4,
-  "fields": {
-    "name": "Spy",
-    "description": "Fighter specialising in piloting light spaceships and electronic warfare",
-    "data": {
-      "Electronic Warfare": 10,
-      "Evasive Maneuver": 10,
-      "Hide Signature": 10,
-      "Frigate": 10
+    {
+        "model": "core.archetype",
+        "pk": 4,
+        "fields": {
+            "name": "Spy",
+            "description": "Fighter specialising in piloting light spaceships and electronic warfare",
+            "data": {
+                "Electronic Warfare": 10,
+                "Evasive Maneuver": 10,
+                "Hide Signature": 10,
+                "Frigate": 10
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
     },
-    "created_at": "2020-02-28 12:38:15",
-    "updated_at": "2020-02-28 12:38:15"
-  }
-},
-{
-  "model": "core.archetype",
-  "pk": 5,
-  "fields": {
-    "name": "Technician",
-    "description": "Technician specialising in keeping spaceship operational",
-    "data": {
-      "Repair": 10,
-      "Shield Amelioration": 10,
-      "Counter Electronic Warfare": 10,
-      "Frigate": 10
+    {
+        "model": "core.archetype",
+        "pk": 5,
+        "fields": {
+            "name": "Technician",
+            "description": "Technician specialising in keeping spaceship operational",
+            "data": {
+                "Repair": 10,
+                "Shield Amelioration": 10,
+                "Counter Electronic Warfare": 10,
+                "Frigate": 10
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
     },
-    "created_at": "2020-02-28 12:38:15",
-    "updated_at": "2020-02-28 12:38:15"
-  }
-},
-{
-  "model": "core.archetype",
-  "pk": 6,
-  "fields": {
-    "name": "Jack-of-all-trades",
-    "description": "For those who like to explore, limited knowledge of piloting light spaceships and harvesting (more limited than those who become Harvester or Fighter)",
-    "data": {
-      "Repair": 10,
-      "Solide Weapon": 10,
-      "Mining": 10,
-      "Frigate": 10
-    },
-    "created_at": "2020-02-28 12:38:15",
-    "updated_at": "2020-02-28 12:38:15"
-  }
-}
+    {
+        "model": "core.archetype",
+        "pk": 6,
+        "fields": {
+            "name": "Jack-of-all-trades",
+            "description": "For those who like to explore, limited knowledge of piloting light spaceships and harvesting (more limited than those who become Harvester or Fighter)",
+            "data": {
+                "Repair": 10,
+                "Ballistic Weapon": 10,
+                "Mining": 10,
+                "Frigate": 10
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
+    }
 ]
