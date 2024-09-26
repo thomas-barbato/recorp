@@ -2,6 +2,7 @@ import pprint
 from random import random
 import re
 import json
+import ast
 from django.contrib import admin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import get_messages
@@ -153,7 +154,7 @@ class CustomAdminSite(admin.AdminSite):
                 name="npc_template_delete",
             ),
             re_path(
-                r"^npc/template/update$",
+                r"^npc/template/npc_template_update$",
                 self.admin_view(NpcTemplateUpdateDataView.as_view()),
                 name="npc_template_update",
             ),
@@ -574,56 +575,71 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        data_from_post = json.load(request)["data"]
-        module_list = data_from_post["modules"]
-        module_id_list = [e['id'] for e in module_list]
-        print(module_list)
-        print(module_id_list)
+        data_from_post = json.load(request)
+        module_dict = {}
+        skill_dict = {}
+        module_id_list = []
         
-        # NEED TO WORK ON MODULES IN JS / HTML.
-        """
+        for module in data_from_post["data"]["modules"]:
+            module_id_list.append(int(module['id']))
+            if isinstance(module["effects"], str):
+                module_dict[module["type"]] = ast.literal_eval(module["effects"])
+            else:
+                module_dict[module["type"]] = module["effects"]
+                
+        for skill in data_from_post["data"]["skills"]:
+            level = data_from_post["data"]["difficulty"] if skill['checked'] is True else 0
+            skill_dict[skill["name"]] = {'id': int(skill['id']), 'level': level}
+            
+        spaceship = Ship.objects.filter(id=data_from_post["data"]["ship"]).values('id','default_hp', 'default_movement', 'ship_category_id__name')[0]
+        module_bonus_hp = module_dict["HULL"]["hull_hp"] if "HULL" in module_dict else 0
+        module_bonus_move = module_dict["MOVEMENT"]["bonus_mvt"] if "MOVEMENT" in module_dict else 0
+        module_ballistic_defense = module_dict["DEFENSE_BALLISTIC"]["defense"] if "DEFENSE_BALLISTIC" in module_dict else 0
+        module_missile_defense = module_dict["DEFENSE_MISSILE"]["defense"] if "DEFENSE_MISSILE" in module_dict else 0
+        module_thermal_defense = module_dict["DEFENSE_THERMAL"]["defense"] if "DEFENSE_THERMAL" in module_dict else 0
+        module_hold_capacity = module_dict["HOLD"]["capacity"] if "HOLD" in module_dict else 0
+        hp_total = int((spaceship['default_hp'] + int(module_bonus_hp)) + (50 * (int(skill_dict["Repair"]['level']) / 100)))
+        move_total = int((spaceship['default_movement'] + int(module_bonus_move)) + (25 * (int(skill_dict[spaceship['ship_category_id__name']]['level']) / 100)))
+        
         new_template = NpcTemplate(
-            name=data_from_post["name"],
-            difficulty=data_from_post["difficulty"],
-            ship_id=data_from_post["ship"],
+            name=data_from_post["data"]["name"],
+            difficulty=data_from_post["data"]["difficulty"],
+            ship_id=spaceship['id'],
             description="",
-            module_id_list=data_from_post["module_list"],
-            current_hp=data_from_post["hp"],
-            max_hp=data_from_post["hp"],
-            current_movement=data_from_post["movement"],
-            current_missile_defense=data_from_post["missile_defense"],
-            current_thermal_defense=data_from_post["thermal_defense"],
-            current_ballistic_defense=data_from_post["ballistic_defense"],
-            current_cargo_size=data_from_post["cargo_size"],
+            module_id_list=module_id_list,
+            hp=hp_total,
+            movement=move_total,
+            missile_defense=module_missile_defense,
+            thermal_defense=module_thermal_defense,
+            ballistic_defense=module_ballistic_defense,
+            hold_capacity=module_hold_capacity,
             status="FULL",
         )
+        
         new_template.save()
-
-        for i in range(0, len(data_from_post["resource"])):
-            new_resource = NpcTemplateResource(
-                resource_id=int(data_from_post[i]["id"]),
-                npc_template_id=new_template.id,
-                quantity=random.randint(
-                    int(data_from_post[i]["quantity"]),
-                    int(data_from_post[i]["quantity"])
-                    * int(data_from_post["difficulty"]),
-                ),
+        
+        for skill in skill_dict:
+            NpcTemplateSkill.objects.create(
+                npc_template_id=new_template.pk,
+                skill_id=int(skill_dict[skill]["id"]),
+                level=int(skill_dict[skill]["level"])
             )
-            new_resource.save()
-
-        for i in range(0, len(data_from_post["skills"])):
-            new_template_skill = NpcTemplateSkill(
-                npc_template_id=new_template.id,
-                skill_id=int(data_from_post["skills"][i]["id"]),
-                level=int(data_from_post["skills"][i]["level"])
-                * int(data_from_post["difficulty"]),
+        
+        for resource in data_from_post["data"]["resource"]:
+            NpcTemplateResource.objects.create(
+                resource_id=int(resource["id"]),
+                npc_template_id=new_template.pk,
+                quantity=int(resource["quantity"]),
+                can_be_randomized=resource["can_be_randomized"]
             )
-            new_template_skill.save()
-        """
-
+        
 
 class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
     model = NpcTemplate
+
+    def post(self, request, *args, **kwargs):
+        data_from_post = json.load(request)
+        print("ok dans UPDATE POST")
 
 
 class NpcTemplateDeleteDataView(LoginRequiredMixin, DeleteView):

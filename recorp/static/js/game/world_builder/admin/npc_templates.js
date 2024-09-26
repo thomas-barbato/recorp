@@ -7,6 +7,7 @@ let spaceship_description_element = document.querySelectorAll('.description-spac
 let selected_spaceship_name = "";
 let dict = [];
 let skill_dict = [];
+let module_info_array = [];
 let submit_button = document.querySelector('#npc-create-btn');
 let cancel_button = document.querySelector('#npc-cancel-btn');
 
@@ -63,7 +64,7 @@ npc_submit_button.addEventListener('click', function() {
     let skill_select = document.querySelectorAll('.skill-input');
     let skill_info_array = [];
     let module_select = document.querySelectorAll('.module-select')
-    let module_info_array = [];
+    module_info_array = [];
     let resource_info_array = [];
     let resource_select = document.querySelectorAll('.resources')
 
@@ -251,8 +252,8 @@ npc_submit_button.addEventListener('click', function() {
     let hp_value = document.querySelector('#npc-template-modal-resource-statistics-hp-li-value');
     let move_value = document.querySelector('#npc-template-modal-resource-statistics-movement-li-value');
     let hold_capacity_value = document.querySelector('#npc-template-modal-resource-statistics-holdCapacity-li-value');
-    hp_value.textContent = `${Math.round((template_hp_statistics + template_hp_module_bonus) + (50 * (template_hp_skill_bonus / 100)))}`;
-    move_value.textContent = `${Math.round((template_move_statistics + template_move_module_bonus) + (25 * (template_move_skill_bonus / 100)))}`;
+    hp_value.textContent = `${parseInt((template_hp_statistics + template_hp_module_bonus) + (50 * (template_hp_skill_bonus / 100)))}`;
+    move_value.textContent = `${parseInt((template_move_statistics + template_move_module_bonus) + (25 * (template_move_skill_bonus / 100)))}`;
     hold_capacity_value.textContent = `${template_hold_statistics}`;
     if (template_hold_statistics > 0) {
         hold_capacity_value.classList.add('text-green-400');
@@ -289,80 +290,85 @@ npc_submit_button.addEventListener('click', function() {
     } else {
         document.querySelector('#npc-template-modal-resource-warning-li').classList.remove('hidden');
     }
-
-
-
-    submit_button.addEventListener('click', function() {
-        save_or_update_npc_template();
-    })
-
-    cancel_button.addEventListener('click', function() {
-        document.querySelectorAll('.delete-after-cancel').forEach(el => el.remove());
-    })
-
-    function save_or_update_npc_template() {
-        let template_select = document.querySelector('#template-select');
-        let template_selectedElement = template_select.options[template_select.selectedIndex];
-        let template_name = document.querySelector('#template-name-input');
-        let difficulty_input = document.querySelector('#difficulty-select');
-        let difficulty = difficulty_input.value;
-        let ship_select = document.querySelector('#ship-select');
-        let ship_selectedElement = ship_select.options[ship_select.selectedIndex];
-        let skill_select = document.querySelectorAll('.skill-input');
-        let resource_select = document.querySelectorAll('.resources');
-        let skill_array = [];
-        let resource_array = [];
-        let module_array = [];
-
-        for (let i = 0; i < skill_select.length; i++) {
-            skill_array.push({ "id": skill_select[i].id.split('-')[2], "name": skill_select[i].value, "checked": skill_select[i].checked })
-        }
-
-        for (let i = 0; i < resource_select.length; i++) {
-            let id = resource_select[i].id.split('-')[2]
-            let can_ben_randomized = document.querySelector('#resource-input-randomized-' + id).checked
-            resource_array.push({ "id": id, "quantity": resource_select[i].value, "can_be_randomized": can_ben_randomized })
-        }
-
-        for (let i = 0; i < module_info_array.length; i++) {
-            module_array.push({
-                'id': module_info_array[i]['id'],
-                'name': module_info_array[i]['name'].split('-')[0],
-            })
-        }
-
-        let edit_template = false;
-        if (template_selectedElement.value != "none") {
-            edit_template = true;
-        }
-        if (ship_selectedElement.value != "none" && ship_selectedElement.value && template_name.value) {
-            let template_data = {
-                "name": template_name.value,
-                "difficulty": difficulty,
-                "ship": ship_selectedElement.value,
-                "skills": skill_array,
-                "resource": resource_array,
-                "modules": module_array
-            }
-
-            const headers = new Headers({
-                'Content-Type': 'x-www-form-urlencoded',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': csrf_token
-            });
-            let url = 'npc_template_add'
-            fetch(url, {
-                method: 'POST',
-                headers,
-                credentials: 'include',
-                body: JSON.stringify({
-                    'data': template_data,
-                })
-            }).then(() => {
-                window.location.reload();
-            });
-        }
-
-    }
 })
+
+
+submit_button.addEventListener('click', function() {
+    save_or_update_npc_template();
+})
+
+cancel_button.addEventListener('click', function() {
+    document.querySelectorAll('.delete-after-cancel').forEach(el => el.remove());
+})
+
+function save_or_update_npc_template() {
+    let template_select = document.querySelector('#template-select');
+    let template_selectedElement = template_select.options[template_select.selectedIndex];
+    let template_name = document.querySelector('#template-name-input');
+    let difficulty_input = document.querySelector('#difficulty-select');
+    let difficulty = difficulty_input.value;
+    let ship_select = document.querySelector('#ship-select');
+    let ship_selectedElement = ship_select.options[ship_select.selectedIndex];
+    let skill_select = document.querySelectorAll('.skill-input');
+    let resource_select = document.querySelectorAll('.resources');
+    let skill_array = [];
+    let resource_array = [];
+    let module_array = [];
+
+    for (let i = 0; i < skill_select.length; i++) {
+        skill_array.push({ "id": skill_select[i].id.split('-')[2], "name": skill_select[i].value, "checked": skill_select[i].checked });
+    }
+
+    for (let i = 0; i < resource_select.length; i++) {
+        let id = resource_select[i].id.split('-')[2];
+        let can_ben_randomized = document.querySelector('#resource-input-randomized-' + id).checked;
+        resource_array.push({ "id": id, "quantity": resource_select[i].value, "can_be_randomized": can_ben_randomized });
+    }
+
+    for (let i = 0; i < module_info_array.length; i++) {
+        module_array.push({
+            'id': parseInt(module_info_array[i]['id']),
+            'type': module_info_array[i]['type'],
+            'name': module_info_array[i]['name'].split(' - ')[0],
+            'effects': module_info_array[i]['effects']
+        })
+    }
+
+    let edit_template = false;
+    if (template_selectedElement.value != "none") {
+        edit_template = true;
+    }
+    if (ship_selectedElement.value != "none" && ship_selectedElement.value && template_name.value) {
+        let template_data = {
+            "name": template_name.value,
+            "difficulty": difficulty,
+            "ship": ship_selectedElement.value,
+            "skills": skill_array,
+            "resource": resource_array,
+            "modules": module_array
+        }
+
+        const headers = new Headers({
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
+        });
+
+        let url = 'npc_template_add';
+        if (edit_template == true) {
+            url = 'npc_template_update';
+        }
+        fetch(url, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({
+                'data': template_data,
+            })
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+
+}
