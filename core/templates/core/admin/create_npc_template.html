@@ -22,7 +22,7 @@
                         <option value="{{ template.id }}" class="text-center">{{ template.name }}</option>
                     {% endfor %}
                 </select>
-                <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
+                <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer hidden" id="delete-confirmation-preview-btn" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
             </div>
         </div>
     </div>
@@ -42,9 +42,9 @@
         <section id="spaceship-menu" class="w-full">
             <label for="ship-select" class="block mb-2 text-md font-bold text-gray-900 dark:text-white"><b>Select spaceship used by this template <b class="text-red-600">*</b></b></label>
             <select id="ship-select" name="ship-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                <option value="none" class="text-center"data-imagename="none" selected>None</option>
+                <option value="none" id="spaceship-option-none" class="text-center"data-imagename="none" selected>None</option>
                 {% for ship in ship_list %}
-                    <option value="{{ ship.id }}" data-imagename="{{ ship.image }}" data-shipid="{{ ship.id }}" class="text-center">{{ ship.name }}</option>
+                    <option value="{{ ship.id }}" id="spaceship-option-{{ ship.id }}" data-imagename="{{ ship.image }}" data-shipid="{{ ship.id }}" class="text-center">{{ ship.name }}</option>
                 {% endfor %}
             </select>
             <img src="" class="hidden object-center mx-auto w-100 mt-1" id="spaceship-img">
@@ -108,7 +108,7 @@
                                 <input id="resource-input-{{ resource.id }}" type="number" step="1" min="0" max="300" value="0" class="w-full h-5 text-blue-600 bg-gray-100 border-gray-300 text-center rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 resources">
                             </div>
                             <div class="flex items-center ps-3">
-                                <input id="resource-input-randomized-{{ resource.id }}" type="checkbox" name="can-be-randomized">
+                                <input id="resource-input-randomized-{{ resource.id }}" type="checkbox" name="can-be-randomized" class="resources-checkbox">
                                 <label for="resource-input-randomized-{{ resource.id }}" class="w-full py-3 ms-2 text-md font-medium text-gray-900 dark:text-gray-300">can be randomized</label>
                             </div>
                         </li>

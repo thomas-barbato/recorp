@@ -154,6 +154,11 @@ class CustomAdminSite(admin.AdminSite):
                 name="npc_template_delete",
             ),
             re_path(
+                r"^npc/template/npc_template_select$",
+                self.admin_view(NpcTemplateSelectForUpdateDataView.as_view()),
+                name="npc_template_select",
+            ),
+            re_path(
                 r"^npc/template/npc_template_update$",
                 self.admin_view(NpcTemplateUpdateDataView.as_view()),
                 name="npc_template_update",
@@ -633,10 +638,30 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
                 can_be_randomized=resource["can_be_randomized"]
             )
         
+class NpcTemplateSelectForUpdateDataView(LoginRequiredMixin, TemplateView):
+    template_name = "create_npc_template.html"
 
+    def post(self, request, **kwargs):
+        data_from_post = json.load(request)
+        id = int(data_from_post['data'])
+        selected_template = NpcTemplate.objects.filter(id=id)
+        result_dict = dict()
+        if selected_template.exists():
+            template, skills, resources = GetDataFromDB.get_npc_template_data(id)
+            result_dict["template"] = template
+            result_dict["skills"] = skills
+            result_dict["resources"] = resources
+        else:
+            messages.error(
+                self.request,
+                f"This template is unknown...",
+            )
+        
+        return JsonResponse(json.dumps(result_dict), safe=False)
+    
+    
 class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
     model = NpcTemplate
-
     def post(self, request, *args, **kwargs):
         data_from_post = json.load(request)
         print("ok dans UPDATE POST")

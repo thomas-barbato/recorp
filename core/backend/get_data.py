@@ -247,6 +247,41 @@ class GetDataFromDB:
         )
 
     @staticmethod
+    def get_npc_template_data(pk):
+        template = [ entry for entry in NpcTemplate.objects.filter(id=pk).values(
+            'id',
+            'name',
+            'difficulty',
+            'module_id_list',
+            'hp',
+            'movement',
+            'missile_defense',
+            'thermal_defense',
+            'ballistic_defense',
+            'hold_capacity',
+            'status',
+            'ship_id',
+            'ship_id__image'
+        )]
+        skills = [ entry for entry in NpcTemplateSkill.objects.filter(npc_template_id=pk).values(
+            'skill_id',
+            'skill__name',
+            'level'
+        )]
+        resources = [ entry for entry in NpcTemplateResource.objects.filter(npc_template_id=pk).values(
+            'npc_template_id',
+            'resource_id',
+            'quantity',
+            'can_be_randomized',
+        )]
+        return (
+            template, 
+            skills, 
+            resources
+        )
+
+
+    @staticmethod
     def check_if_no_missing_entry(data, data_item=None):
         missing_data = []
         for d_key, d_value in data.items():

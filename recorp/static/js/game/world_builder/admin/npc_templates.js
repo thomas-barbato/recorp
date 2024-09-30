@@ -293,6 +293,38 @@ npc_submit_button.addEventListener('click', function() {
 })
 
 
+let template_select = document.querySelector('#template-select');
+template_select.addEventListener('change', (e) => {
+    let id = template_select.value;
+    let delete_preview_btn = document.querySelector('#delete-confirmation-preview-btn');
+    if (id != "none") {
+        delete_preview_btn.classList.remove('hidden');
+        const headers = new Headers({
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
+        });
+
+        let url = 'npc_template_select'
+        fetch(url, {
+                method: 'POST',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify({
+                    'data': id,
+                })
+            }).then(response => response.json())
+            .then(data => {
+                load_data_from_selected_template(JSON.parse(data));
+            })
+    } else {
+        delete_preview_btn.classList.add('hidden');
+        unload_template_data();
+    }
+})
+
+
 submit_button.addEventListener('click', function() {
     save_or_update_npc_template();
 })
@@ -369,6 +401,70 @@ function save_or_update_npc_template() {
         }).then(() => {
             window.location.reload();
         });
+    }
+
+}
+
+function load_data_from_selected_template(response_data) {
+    document.querySelector('#template-name-input').value = response_data.template[0].name;
+    document.querySelector(`#spaceship-option-${response_data.template[0].ship_id}`).selected = true;
+    let spaceship_img = document.querySelector('#spaceship-img')
+    spaceship_img.src = `/static/js/game/assets/ships/${response_data.template[0].ship_id__image}.png`;
+    spaceship_img.classList.remove('hidden');
+    document.querySelector(`#description-spaceship-${response_data.template[0].ship_id}`).classList.remove('hidden');
+    document.querySelector('#difficulty-select').value = response_data.template[0].difficulty;
+
+    for (let i = 0; i < response_data.skills.length; i++) {
+        if (response_data.skills[i].level != 0) {
+            document.querySelector(`#skill-input-${response_data.skills[i].skill_id}`).checked = true;
+        }
+    }
+
+    for (let i = 0; i < response_data.template[0].module_id_list.length; i++) {
+        document.querySelector(`#module-li-${response_data.template[0].module_id_list[i]}`).selected = true;
+    }
+
+    for (let i = 0; i < response_data.resources.length; i++) {
+        document.querySelector(`#resource-input-${response_data.resources[i].resource_id}`).value = response_data.resources[i].quantity;
+        document.querySelector(`#resource-input-randomized-${response_data.resources[i].resource_id}`).checked = response_data.resources[i].can_be_randomized;
+    }
+}
+
+function unload_template_data() {
+    document.querySelector('#template-name-input').value = "";
+    document.querySelector('#ship-select').value = "none";
+
+    let spaceship_selection = document.querySelectorAll('.description-spaceship')
+    for (let i = 0; i < spaceship_selection.length; i++) {
+        if (!spaceship_selection[i].classList.contains('hidden')) {
+            spaceship_selection[i].classList.add('hidden')
+        }
+    }
+
+    let spaceship_img = document.querySelector('#spaceship-img')
+    spaceship_img.src = "";
+    spaceship_img.classList.add('hidden');
+
+    document.querySelector('#difficulty-select').value = 1;
+
+    let skill_checkbox = document.querySelectorAll('.skill-input');
+    for (let i = 0; i < skill_checkbox.length; i++) {
+        skill_checkbox[i].checked = false;
+    }
+
+    let resource = document.querySelectorAll('.resources');
+    for (let i = 0; i < resource.length; i++) {
+        resource[i].value = 0;
+    }
+
+    let resource_checkbox = document.querySelectorAll('.resources-checkbox');
+    for (let i = 0; i < resource_checkbox.length; i++) {
+        resource_checkbox[i].checked = false;
+    }
+
+    let module_select = document.querySelectorAll('.module-select');
+    for (let i = 0; i < module_select.length; i++) {
+        module_select[i].value = "None";
     }
 
 }
