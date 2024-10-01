@@ -540,7 +540,7 @@
     let save_or_update_btn = document.querySelector('#save-or-update');
     save_or_update_btn.addEventListener('click', save_or_update_data);
 
-    let delete_btn = document.querySelector('#map-delete-btn');
+    let delete_btn = document.querySelector('#modal-delete-confirmation-btn');
     delete_btn.addEventListener('click', function() {
         let sector_selected = document.querySelector('#sector-select');
         if (sector_selected.value !== "none") {

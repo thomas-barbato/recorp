@@ -10,6 +10,7 @@ let skill_dict = [];
 let module_info_array = [];
 let submit_button = document.querySelector('#npc-create-btn');
 let cancel_button = document.querySelector('#npc-cancel-btn');
+let delete_button = document.querySelector('#modal-delete-confirmation-btn');
 
 // CHANGE CHARACTER IMG ZONE
 ship_select.addEventListener('change', function() {
@@ -252,6 +253,7 @@ npc_submit_button.addEventListener('click', function() {
     let hp_value = document.querySelector('#npc-template-modal-resource-statistics-hp-li-value');
     let move_value = document.querySelector('#npc-template-modal-resource-statistics-movement-li-value');
     let hold_capacity_value = document.querySelector('#npc-template-modal-resource-statistics-holdCapacity-li-value');
+
     hp_value.textContent = `${parseInt((template_hp_statistics + template_hp_module_bonus) + (50 * (template_hp_skill_bonus / 100)))}`;
     move_value.textContent = `${parseInt((template_move_statistics + template_move_module_bonus) + (25 * (template_move_skill_bonus / 100)))}`;
     hold_capacity_value.textContent = `${template_hold_statistics}`;
@@ -316,6 +318,7 @@ template_select.addEventListener('change', (e) => {
                 })
             }).then(response => response.json())
             .then(data => {
+                unload_template_data();
                 load_data_from_selected_template(JSON.parse(data));
             })
     } else {
@@ -332,6 +335,12 @@ submit_button.addEventListener('click', function() {
 cancel_button.addEventListener('click', function() {
     document.querySelectorAll('.delete-after-cancel').forEach(el => el.remove());
 })
+
+delete_button.addEventListener('click', function() {
+    delete_this_template();
+})
+
+
 
 function save_or_update_npc_template() {
     let template_select = document.querySelector('#template-select');
@@ -373,6 +382,7 @@ function save_or_update_npc_template() {
     if (ship_selectedElement.value != "none" && ship_selectedElement.value && template_name.value) {
         let template_data = {
             "name": template_name.value,
+            "template_id": template_selectedElement.value,
             "difficulty": difficulty,
             "ship": ship_selectedElement.value,
             "skills": skill_array,
@@ -407,7 +417,9 @@ function save_or_update_npc_template() {
 
 function load_data_from_selected_template(response_data) {
     document.querySelector('#template-name-input').value = response_data.template[0].name;
-    document.querySelector(`#spaceship-option-${response_data.template[0].ship_id}`).selected = true;
+    let spaceship_selected = document.querySelector(`#spaceship-option-${response_data.template[0].ship_id}`);
+    spaceship_selected.selected = true;
+    spaceship_selected.classList.add('selected-spaceShip');
     let spaceship_img = document.querySelector('#spaceship-img')
     spaceship_img.src = `/static/js/game/assets/ships/${response_data.template[0].ship_id__image}.png`;
     spaceship_img.classList.remove('hidden');
@@ -434,14 +446,19 @@ function unload_template_data() {
     document.querySelector('#template-name-input').value = "";
     document.querySelector('#ship-select').value = "none";
 
+    let delete_selected_class = document.querySelector('.spaceship_selected')
+    if (delete_selected_class) {
+        delete_selected_class.classList.remove('spaceship_selected');
+    }
+
     let spaceship_selection = document.querySelectorAll('.description-spaceship')
     for (let i = 0; i < spaceship_selection.length; i++) {
         if (!spaceship_selection[i].classList.contains('hidden')) {
-            spaceship_selection[i].classList.add('hidden')
+            spaceship_selection[i].classList.add('hidden');
         }
     }
 
-    let spaceship_img = document.querySelector('#spaceship-img')
+    let spaceship_img = document.querySelector('#spaceship-img');
     spaceship_img.src = "";
     spaceship_img.classList.add('hidden');
 
@@ -466,5 +483,32 @@ function unload_template_data() {
     for (let i = 0; i < module_select.length; i++) {
         module_select[i].value = "None";
     }
+}
 
+function delete_this_template() {
+    let template_select = document.querySelector('#template-select');
+    let template_selectedElement = template_select.options[template_select.selectedIndex];
+
+    if (template_selectedElement.value != "none") {
+
+        let template_id = template_selectedElement.value;
+
+        const headers = new Headers({
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
+        });
+        let url = 'npc_template_delete';
+        fetch(url, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({
+                'data': template_id,
+            })
+        }).then(() => {
+            window.location.reload();
+        });
+    }
 }
