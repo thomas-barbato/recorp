@@ -38,6 +38,7 @@
         "fields": {
             "data": {
                 "name": "star-1",
+                "dirname": "star_1",
                 "coord_x": "13",
                 "coord_y": "7",
                 "description": "lorem ipsum "

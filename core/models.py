@@ -303,10 +303,13 @@ class Ship(models.Model):
 
 
 class NpcTemplate(models.Model):
-    STATUS_CHOICES = (
-        ("FULL", "pleine forme"),
-        ("WOUNDED", "blesse"),
-        ("DEAD", "mort"),
+    BEHAVIOR_CHOICES = (
+        ("PASSIVE", "passive"),
+        ("CLOSE_RANGE", "close range"),
+        ("MIDDLE_RANGE", "middle range"),
+        ("LONG_RANGE", "long range"),
+        ("SUPPORT", "support"),
+        ("DEFENSIVE", "defensive"),
     )
 
     ship = models.ForeignKey(Ship, on_delete=models.SET_NULL, null=True)
@@ -314,20 +317,20 @@ class NpcTemplate(models.Model):
     difficulty = models.SmallIntegerField(default=1)
     description = models.TextField(max_length=2500, blank=True)
     module_id_list = models.JSONField(null=True)
-    hp = models.SmallIntegerField(default=100)
-    movement = models.PositiveSmallIntegerField(default=10)
-    missile_defense = models.SmallIntegerField(default=0)
-    thermal_defense = models.SmallIntegerField(default=0)
-    ballistic_defense = models.SmallIntegerField(default=0)
+    max_hp = models.SmallIntegerField(default=100)
+    max_movement = models.PositiveSmallIntegerField(default=10)
+    max_missile_defense = models.SmallIntegerField(default=0)
+    max_thermal_defense = models.SmallIntegerField(default=0)
+    max_ballistic_defense = models.SmallIntegerField(default=0)
     hold_capacity = models.SmallIntegerField(default=2)
-    status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+    behavior = models.CharField(
+        max_length=20, choices=BEHAVIOR_CHOICES, default=BEHAVIOR_CHOICES[0]
     )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} - diff : {self.difficulty}, behavior : {self.behavior}"
 
 
 class NpcTemplateSkill(models.Model):
@@ -343,6 +346,7 @@ class NpcTemplateSkill(models.Model):
 
 class NpcTemplateResource(models.Model):
     npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
+    faction_xp = models.PositiveIntegerField(null=False, default=0)
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
     can_be_randomized = models.BooleanField(default=False)
@@ -354,6 +358,11 @@ class NpcTemplateResource(models.Model):
 
 
 class Npc(models.Model):
+    STATUS_CHOICES = (
+        ("FULL", "pleine forme"),
+        ("WOUNDED", "blesse"),
+        ("DEAD", "mort"),
+    )
     faction = models.ForeignKey(
         Faction,
         on_delete=models.SET_DEFAULT,
@@ -367,23 +376,27 @@ class Npc(models.Model):
         null=True,
         related_name="npc_sector",
     )
-    is_npc = models.BooleanField(default=False)
-    name = models.CharField(max_length=30, null=False, blank=False, default="npc")
-    description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
-    faction_xp = models.PositiveIntegerField(null=False, default=0)
+    npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
+    hp = models.SmallIntegerField(default=0)
+    movement = models.PositiveSmallIntegerField(default=0)
+    missile_defense = models.SmallIntegerField(default=0)
+    thermal_defense = models.SmallIntegerField(default=0)
+    ballistic_defense = models.SmallIntegerField(default=0)
     coordinates = models.JSONField()
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+    )
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.sector.name} - {self.name} : {self.coordinates}"
-    
-    
+
+
 class NpcResource(models.Model):
-    npc_template_resource = models.ForeignKey(NpcTemplateResource, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, default=1)
     npc = models.ForeignKey(Npc, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField("creation date", default=localtime)
