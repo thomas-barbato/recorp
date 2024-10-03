@@ -165,8 +165,13 @@ class CustomAdminSite(admin.AdminSite):
             ),
             re_path(
                 r"^sector_gestion/npc$",
-                self.admin_view(NpcToSectorDataView.as_view()),
-                name="npc_assign",
+                self.admin_view(NpcToSectorView.as_view()),
+                name="npc",
+            ),
+            re_path(
+                r"^sector_gestion/npc_create$",
+                self.admin_view(NpcToSectorCreateView.as_view()),
+                name="npc_create",
             ),
             re_path(
                 r"^sector_gestion/npc/update$",
@@ -295,7 +300,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         )
         context["faction_data"] = GetDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetDataFromDB.get_size()
-        
+
         return context
 
     def post(self, request):
@@ -811,7 +816,83 @@ class NpcTemplateDeleteDataView(LoginRequiredMixin, DeleteView):
         NpcTemplate.objects.filter(id=template_id).delete()
 
 
-class NpcToSectorDataView(LoginRequiredMixin, TemplateView):
+class NpcToSectorView(LoginRequiredMixin, TemplateView):
+    template_name = "generate_npc_on_sector.html"
+    model = NpcTemplate
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["map_size_range"] = GetDataFromDB.get_map_size_range()
+        context["map_size"] = GetDataFromDB.get_map_size()
+        context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
+            "id", "name"
+        )
+        context["size"] = GetDataFromDB.get_size()
+
+        return context
+
+    def post(self, request, **kwargs):
+        pk = json.load(request)["map_id"]
+        if Sector.objects.filter(id=pk).exists():
+            sector = Sector.objects.get(id=pk)
+            planets, asteroids, stations = GetDataFromDB.get_items_from_sector(pk)
+            table_set = {
+                "planet": planets,
+                "asteroid": asteroids,
+                "station": stations,
+            }
+            result_dict = dict()
+            result_dict["sector_element"] = []
+            result_dict["sector"] = {
+                "image": sector.image,
+            }
+            for table_key, table_value in table_set.items():
+                for table in table_value:
+                    item_data = ""
+                    match table_key:
+                        case "planet":
+                            item_data = Planet.objects.filter(
+                                id=table.source_id
+                            ).values_list("name", "data", "size")[0]
+                        case "satellite":
+                            item_data = Planet.objects.filter(
+                                id=table.source_id,
+                                data__contains={"type": "satellite"},
+                            ).values_list("name", "data", "size")[0]
+                        case "blackhole":
+                            item_data = Planet.objects.filter(
+                                id=table.source_id,
+                                data__contains={"type": "blackhole"},
+                            ).values_list("name", "data", "size")[0]
+                        case "star":
+                            item_data = Planet.objects.filter(
+                                id=table.source_id,
+                                data__contains={"type": "star"},
+                            ).values_list("name", "data", "size")[0]
+                        case "asteroid":
+                            item_data = Asteroid.objects.filter(
+                                id=table.source_id
+                            ).values_list("name", "data", "size")[0]
+                        case "station":
+                            item_data = Station.objects.filter(
+                                id=table.source_id
+                            ).values_list("name", "data", "size")[0]
+                    result_dict["sector_element"].append(
+                        {
+                            "type": table_key,
+                            "item_id": table.id,
+                            "item_data": item_data,
+                            "resource_id": table.resource_id,
+                            "source_id": table.source_id,
+                            "sector_id": table.sector_id,
+                            "data": table.data,
+                        }
+                    )
+            return JsonResponse(json.dumps(result_dict), safe=False)
+        return JsonResponse(json.dumps({}), safe=False)
+
+
+class NpcToSectorCreateView(LoginRequiredMixin, TemplateView):
     template_name = "generate_npc_on_sector.html"
     model = Npc
 

@@ -7,9 +7,64 @@
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
+{{ size|json_script:"script_size" }}
 
+
+<div class="flex flex-col">
+    <div class="flex flex-col w-[90vh]">
+        <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
+        <section class="mb-2">
+            <div class="flex flex-row">
+                <div class="flex w-full flex-col">
+                    <label for="sector-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select sector</b></label>
+                    <div class="flex flex-row gap-1">
+                        <select id="sector-select" name="sector-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                            <option value="none" class="text-center" selected>None</option>
+                            {% for sector in sector_data %}
+                                <option value="{{ sector.id }}" class="text-center">{{ sector.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
+                    </div>
+                </div>
+            </div><small class="text-red-500">chose a sector to add npc on it</small>
+        </section>
+    </div>
+    {% include "delete_confirm_modal.html" %}
+    <div class="flex flex-col mt-2 self-start w-[80vw]">
+        <div id="map-background" class=" flex flex-row self-start">
+            <div class="flex xl:self-center self-start item-center">
+                <div class="grid">
+                    <table class="tabletop-view no-spacing" cellspacing="0" border="0">
+                        <tbody>
+                            {% for row in map_size_range.rows %}
+                                {% if forloop.first %}
+                                <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 text-center align-middle no-borders">0:0</td>
+                                    {% for col in map_size_range.cols %}
+                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle no-borders">{{ col }}</td>
+                                    {% endfor %}
+                                {% endif %}
+                                <tr class="rows">
+                                    <td class="bg-gray-800/40 text-emerald-300 w-[32px] h-[32px] p-0 z-5 align-middle text-center no-borders">{{ row }}</td>
+                                {% for col in map_size_range.cols %}
+                                    <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="x: {{col}}, y: {{row}}" id="{{col}}_{{row}}" style="">
+                                        <div class="relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10">
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'world_builder/admin/add_npc_to_sector.js' %}" type="text/javascript">
+</script>
 {% endblock %}
-
 <!-- hide sidebar -->
 {% block sidebar  %}
 {% endblock %}
