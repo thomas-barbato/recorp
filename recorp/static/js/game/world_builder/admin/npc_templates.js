@@ -351,6 +351,8 @@ function save_or_update_npc_template() {
     let ship_select = document.querySelector('#ship-select');
     let ship_selectedElement = ship_select.options[ship_select.selectedIndex];
     let skill_select = document.querySelectorAll('.skill-input');
+    let behavior_select = document.querySelector('#behavior-select');
+    let behavior = behavior_select.value;
     let resource_select = document.querySelectorAll('.resources');
     let skill_array = [];
     let resource_array = [];
@@ -384,6 +386,7 @@ function save_or_update_npc_template() {
             "name": template_name.value,
             "template_id": template_selectedElement.value,
             "difficulty": difficulty,
+            "behavior": behavior,
             "ship": ship_selectedElement.value,
             "skills": skill_array,
             "resource": resource_array,
@@ -425,6 +428,7 @@ function load_data_from_selected_template(response_data) {
     spaceship_img.classList.remove('hidden');
     document.querySelector(`#description-spaceship-${response_data.template[0].ship_id}`).classList.remove('hidden');
     document.querySelector('#difficulty-select').value = response_data.template[0].difficulty;
+    document.querySelector('#behavior-select').value = response_data.template[0].behavior;
 
     for (let i = 0; i < response_data.skills.length; i++) {
         if (response_data.skills[i].level != 0) {
@@ -445,6 +449,7 @@ function load_data_from_selected_template(response_data) {
 function unload_template_data() {
     document.querySelector('#template-name-input').value = "";
     document.querySelector('#ship-select').value = "none";
+    document.querySelector('#behavior-select').value = "passive";
 
     let delete_selected_class = document.querySelector('.spaceship_selected')
     if (delete_selected_class) {

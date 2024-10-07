@@ -564,6 +564,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
 
         context["npc_template"] = npc_template.objects.all()
         context["npc_resources"] = npc_resources.objects.values("id", "quantity")
+        context["npc_behavior"] = ["passive", "close_range", "middle_range", "long_range", "support", "defensive"]
         context["ship_list"] = ship_list
         context["skill_list"] = skill_list
         context["skill_categories"] = [
@@ -647,7 +648,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             )
         )
 
-        new_template = NpcTemplate(
+        new_template = NpcTemplate.objects.create(
             name=data_from_post["data"]["name"],
             difficulty=data_from_post["data"]["difficulty"],
             ship_id=spaceship["id"],
@@ -659,9 +660,9 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             max_thermal_defense=module_thermal_defense,
             max_ballistic_defense=module_ballistic_defense,
             hold_capacity=module_hold_capacity,
+            behavior=data_from_post["data"]["behavior"]
         )
-
-        new_template.save()
+        
 
         for skill in skill_dict:
             NpcTemplateSkill.objects.create(
@@ -783,6 +784,7 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
                 max_thermal_defense=module_thermal_defense,
                 max_ballistic_defense=module_ballistic_defense,
                 hold_capacity=module_hold_capacity,
+                behavior=data_from_post["data"]["behavior"]
             )
 
             NpcTemplateSkill.objects.filter(npc_template_id=template_id).delete()

@@ -77,16 +77,6 @@
     },
     {
         "model": "core.skill",
-        "fields": {
-            "name": "Sharpshooting",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Offensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
         "pk": 8,
         "fields": {
             "name": "Electronic Warfare",
@@ -246,6 +236,16 @@
             "name": "Planetary Exploitation",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Industry",
+            "created_at": "2020-03-21 12:38:15",
+            "updated_at": "2020-03-21 12:38:15"
+        }
+    }, {
+        "model": "core.skill",
+        "pk": 23,
+        "fields": {
+            "name": "Sharpshooting",
+            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
+            "category": "Offensive",
             "created_at": "2020-03-21 12:38:15",
             "updated_at": "2020-03-21 12:38:15"
         }

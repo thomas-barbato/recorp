@@ -261,7 +261,7 @@ class GetDataFromDB:
                 "max_thermal_defense",
                 "max_ballistic_defense",
                 "hold_capacity",
-                "status",
+                "behavior",
                 "ship_id",
                 "ship_id__image",
             )

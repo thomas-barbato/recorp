@@ -63,6 +63,25 @@
         <section class="mt-1 mb-2">
             <div class="flex flex-row">
                 <div class="flex w-full flex-col">
+                    <label for="behavior-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set behavior</b></label>
+                    <div class="flex flex-row gap-1">
+                        <select id="behavior-select" name="behavior-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                            {% for behavior in npc_behavior %}
+                                {% if behavior == "passive"%}
+                                    <option value="{{ behavior }}" class="text-center" selected>{{ behavior }}</option>
+                                {% else %}
+                                    <option value="{{ behavior }}" class="text-center">{{ behavior }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-1 mb-2">
+            <div class="flex flex-row">
+                <div class="flex w-full flex-col">
                     <label for="difficulty-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set difficulty</b></label>
                     <span class="text-red-500 mb-1">When setting difficulty, you chose which skill level this template will use. (min = 1 , max = 150, Default = 1)</span>
                     <input id="difficulty-select" type="number" min=1 max=150 value=1 class="text-center font-bold">
