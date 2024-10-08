@@ -829,6 +829,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
         context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
             "id", "name"
         )
+        context["npc_template"] = GetDataFromDB.get_template_data()
         context["size"] = GetDataFromDB.get_size()
 
         return context
@@ -897,7 +898,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
 class NpcToSectorCreateView(LoginRequiredMixin, TemplateView):
     template_name = "generate_npc_on_sector.html"
     model = Npc
-
+    
 
 class NpcToSectorUpdateDataView(LoginRequiredMixin, UpdateView):
     template_name = "generate_npc_on_sector.html"

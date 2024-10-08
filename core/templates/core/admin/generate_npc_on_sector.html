@@ -8,10 +8,11 @@
 <script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
 {{ size|json_script:"script_size" }}
+{{ npc_template|json_script:"script_npc_template" }}
 
 
 <div class="flex flex-col">
-    <div class="flex flex-col w-[90vh]">
+    <div class="flex flex-col w-[100vh]">
         <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
         <section class="mb-2">
             <div class="flex flex-row">
@@ -31,7 +32,7 @@
         </section>
     </div>
     {% include "delete_confirm_modal.html" %}
-    <div class="flex flex-col mt-2 self-start w-[80vw]">
+    <div class="flex flex-row mt-2 self-start w-[90vw] gap-1">
         <div id="map-background" class=" flex flex-row self-start">
             <div class="flex xl:self-center self-start item-center">
                 <div class="grid">
@@ -57,6 +58,14 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div id="npc-container flex">
+            <div class="npc-add-button" class="flex flex-col">
+                <i id="add-a-npc-container-select" class="fa-solid fa-user-plus fa-2x text-lime-400 cursor-pointer"></i>
+                <label for="add-a-npc-container-select" class="font-bold">Add a new NPC select container</label>
+            </div>
+            <div id="npc-container-content">
             </div>
         </div>
     </div>

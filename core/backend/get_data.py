@@ -326,3 +326,8 @@ class GetDataFromDB:
         elif value == 0:
             result = "empty"
         return result
+    
+    @staticmethod
+    def get_template_data():
+        return json.loads(serializers.serialize("json", NpcTemplate.objects.all()))
+        
