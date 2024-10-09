@@ -87,8 +87,8 @@ npc_submit_button.addEventListener('click', function() {
         for (let y = 0; y < selected.length; y++) {
             if (selected[y].id != "module-li-none") {
                 // from dataset string to obj.
-                let splitted_module_effect = selected[y].dataset.moduleeffect.split(',')
-                let json_parsed_module_effects = ""
+                let splitted_module_effect = selected[y].dataset.moduleeffect.split(',');
+                let json_parsed_module_effects = "";
                 if (splitted_module_effect.length > 1) {
                     json_parsed_module_effects = JSON.parse(JSON.stringify(selected[y].dataset.moduleeffect.replace(/'/g, '"')));
                 } else {

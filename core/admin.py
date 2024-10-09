@@ -169,6 +169,11 @@ class CustomAdminSite(admin.AdminSite):
                 name="npc",
             ),
             re_path(
+                r"^sector_gestion/get_ship_data$",
+                self.admin_view(NpcToSectorShipDataView.as_view()),
+                name="get_ship_data",
+            ),
+            re_path(
                 r"^sector_gestion/npc_create$",
                 self.admin_view(NpcToSectorCreateView.as_view()),
                 name="npc_create",
@@ -893,6 +898,16 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                     )
             return JsonResponse(json.dumps(result_dict), safe=False)
         return JsonResponse(json.dumps({}), safe=False)
+    
+    
+class NpcToSectorShipDataView(LoginRequiredMixin, TemplateView):
+    template_name = "generate_npc_on_sector.html"
+    model = Ship
+
+    def post(self, request, **kwargs):
+        pk = json.load(request)["template_id"]
+        result_dict = GetDataFromDB.get_selected_ship_data(pk)
+        return JsonResponse(json.dumps(result_dict), safe=False)
 
 
 class NpcToSectorCreateView(LoginRequiredMixin, TemplateView):

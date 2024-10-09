@@ -19,6 +19,7 @@ from core.models import (
     PlayerShip,
     PlayerShipResource,
     Ship,
+    ShipCategory,
     Skill,
     Npc,
     NpcTemplateResource,
@@ -330,4 +331,14 @@ class GetDataFromDB:
     @staticmethod
     def get_template_data():
         return json.loads(serializers.serialize("json", NpcTemplate.objects.all()))
+    
+    @staticmethod
+    def get_selected_ship_data(template_id):
+        ship_id = NpcTemplate.objects.filter(id=template_id).values_list("ship_id", flat=True)[0]
+        return Ship.objects.filter(id=ship_id).values(
+            'id',
+            'name',
+            'image',
+            'ship_category_id__ship_size'
+        )[0]
         
