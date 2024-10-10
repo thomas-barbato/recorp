@@ -8,6 +8,9 @@ let atlas = {
     "map_height_size": 40 * 32,
 }
 
+let spaceship_collection = [];
+let added_spaceship_count = 0;
+
 
 function clean_entire_map() {
     let tiles = document.querySelectorAll('.tile');
@@ -88,8 +91,6 @@ function load_map_data(obj) {
     let sector_bg_image = obj.sector.image;
     add_background(sector_bg_image);
     add_foreground(obj.sector_element);
-
-
 }
 
 let add_npc_select_choice_btn = document.querySelector('#add-a-npc-container-select');
@@ -112,7 +113,6 @@ add_npc_select_choice_btn.addEventListener('click', function() {
     let npc_container_content_item_input_div_subcontainer_btn = document.createElement('div');
     let npc_container_content_item_input_div_subcontainer_btn_i_delete = document.createElement('i');
 
-
     npc_container_content_item.id = `npc-container-item-${npc_container_len}`;
     npc_container_content_item.classList.add(
         "w-full",
@@ -128,7 +128,6 @@ add_npc_select_choice_btn.addEventListener('click', function() {
     );
 
     npc_container_content_item_h4.classList.add('text-center', 'font-bold');
-
 
     npc_container_content_item_select_div_container.classList.add('flex', 'flex-row');
 
@@ -156,7 +155,6 @@ add_npc_select_choice_btn.addEventListener('click', function() {
     npc_container_content_item_input_div_container.classList.add("flex", "flex-col", "items-center");
     npc_container_content_item_input_div_subcontainer.classList.add("npc-container-content-div-input", "flex", "flex-col", "gap-1", "mx-auto");
 
-
     npc_container_content_item_input_div_subcontainer_radio.classList.add("flex", "flex-row", "gap-2");
     npc_container_content_item_input_div_subcontainer_radio_label.classList.add("font-bold", "text-center");
     npc_container_content_item_input_div_subcontainer_radio_label.textContent = "Activate this template";
@@ -167,8 +165,6 @@ add_npc_select_choice_btn.addEventListener('click', function() {
 
     npc_container_content_item_input_div_subcontainer_radio.append(npc_container_content_item_input_div_subcontainer_radio_label);
     npc_container_content_item_input_div_subcontainer_radio.append(npc_container_content_item_input_div_subcontainer_radio_input);
-
-
 
     npc_container_content_item_input_div_subcontainer_btn_i_delete.classList.add('fa-solid', 'fa-trash', 'fa-2x', 'cursor-pointer', 'text-red-600', 'delete-this-select', 'mt-2', 'mx-auto');
     npc_container_content_item_input_div_subcontainer_btn_i_delete.id = `delete-${npc_container_len}`;
@@ -192,40 +188,91 @@ add_npc_select_choice_btn.addEventListener('click', function() {
     npc_container_content.append(npc_container_content_item);
 })
 
-function add_spaceship_on_map(obj) {
+function tile_already_used(obj) {
     let data = obj.data;
-    console.log(data)
-    let index_row = parseInt(obj.pos.y) + 1;
-    let index_col = parseInt(obj.pos.x) + 1;
-    let bg_url = '/static/js/game/assets/ships/' + data.image + '.png';
+    let row = parseInt(obj.pos.y) + 1;
+    let col = parseInt(obj.pos.x) + 1;
+
+    let response = false;
 
     for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__ship_size.size_y); row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
-
-            let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+            let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
             let entry_point_div = entry_point.querySelector('div');
-
-            entry_point_div.classList.add(
-                'foreground-container',
-            );
-
-            let img_div = document.createElement('div');
-            img_div.classList.add(
-                'm-auto',
-                'w-[32px]',
-                'h-[32px]',
-                'hover:w-[30px]',
-                'hover:h-[30px]',
-            );
-            img_div.style.borderStyle = "dashed solid blue";
-            img_div.style.backgroundImage = "url('" + bg_url + "')";
-            img_div.style.backgroundPositionX = `-${col_i}px`;
-            img_div.style.backgroundPositionY = `-${row_i}px`;
-            entry_point_div.append(img_div);
-            index_col++;
+            if (entry_point_div.classList.contains('foreground-container')) {
+                response = true;
+            }
+            col++;
         }
-        index_row++;
-        index_col = parseInt(obj.pos.x) + 1;
+        row++;
+        col = parseInt(obj.pos.x) + 1;
+    }
+
+    return response
+}
+
+function delete_this_ship(obj, element_identification) {
+    let this_element = document.querySelectorAll(`.${element_identification}`);
+    console.log(this_element)
+    for (let i = 0; i < this_element.length; i++) {
+        this_element[i].innerHTML = "";
+    }
+    for (let ship in spaceship_collection) {
+        if (spaceship_collection[ship] == obj) {
+            delete spaceship_collection[ship];
+            break;
+        }
+    }
+}
+
+function add_spaceship_on_map(obj) {
+
+    if (!tile_already_used(obj)) {
+
+        let data = obj.data;
+        let index_row = parseInt(obj.pos.y) + 1;
+        let index_col = parseInt(obj.pos.x) + 1;
+        let bg_url = '/static/js/game/assets/ships/' + data.image + '.png';
+
+        added_spaceship_count++;
+        spaceship_collection.push(obj);
+
+        console.log(spaceship_collection);
+
+        for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__ship_size.size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
+
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                let entry_point_div = entry_point.querySelector('div');
+
+                let spaceship_class = `spaceship-${added_spaceship_count}`;
+
+                entry_point_div.classList.add(
+                    'foreground-container',
+                    'cursor-pointer',
+                    spaceship_class
+                );
+
+                entry_point_div.addEventListener('click', function() {
+                    delete_this_ship(obj, spaceship_class)
+                })
+
+                let img_div = document.createElement('div');
+                img_div.classList.add(
+                    'm-auto',
+                    'w-[32px]',
+                    'h-[32px]',
+                );
+                img_div.style.borderStyle = "dashed solid blue";
+                img_div.style.backgroundImage = "url('" + bg_url + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_div.append(img_div);
+                index_col++;
+            }
+            index_row++;
+            index_col = parseInt(obj.pos.x) + 1;
+        }
     }
 }
 
@@ -241,12 +288,13 @@ function get_spaceship_data(tile_id) {
         let id = undefined;
         for (let i = 0; i < radio_selected.length; i++) {
             if (radio_selected[i].checked) {
-                id = radio_selected[i].id.split('-')[1]
+                id = radio_selected[i].id.split('-')[1];
+                break;
             }
         }
         let main_container = document.querySelector(`#npc-container-item-${id}`);
-        let ship_select = main_container.querySelector('select');
-        let selected_ship_id = ship_select.options[ship_select.selectedIndex].value;
+        let template_select = main_container.querySelector('select');
+        let selected_template_id = template_select.options[template_select.selectedIndex].value;
 
         let url = 'get_ship_data';
         const headers = new Headers({
@@ -259,7 +307,7 @@ function get_spaceship_data(tile_id) {
                 method: 'POST',
                 headers,
                 credentials: 'include',
-                body: JSON.stringify({ 'template_id': selected_ship_id })
+                body: JSON.stringify({ 'template_id': selected_template_id })
             }).then(response => response.json())
             .then(data => {
                 let spaceship_data = {
