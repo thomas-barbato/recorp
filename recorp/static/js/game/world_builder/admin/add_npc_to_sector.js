@@ -14,14 +14,15 @@ let added_spaceship_count = 0;
 
 function clean_entire_map() {
     let tiles = document.querySelectorAll('.tile');
-    let foreground_container = document.querySelectorAll('.foreground-container');
+    let npc_container = document.querySelector('#npc-container-content');
+    npc_container.innerHTML = "";
+    spaceship_collection = [];
     for (let i = 0; i < tiles.length; i++) {
         tiles[i].style.backgroundImage = "";
-    }
-    for (let i = 0; i < foreground_container.length; i++) {
-        let img = foreground_container[i].querySelector('div')
-        if (img) {
-            img.remove();
+        let foreground_container = tiles[i].querySelector('div');
+        if (foreground_container && foreground_container.classList.contains('foreground-container')) {
+            foreground_container.querySelector('div').remove();
+            foreground_container.classList.remove('foreground-container');
         }
     }
 }
@@ -91,12 +92,11 @@ function load_map_data(obj) {
     let sector_bg_image = obj.sector.image;
     add_background(sector_bg_image);
     add_foreground(obj.sector_element);
+    load_npc_menu();
 }
 
-let add_npc_select_choice_btn = document.querySelector('#add-a-npc-container-select');
-add_npc_select_choice_btn.addEventListener('click', function() {
+function load_npc_menu() {
     let npc_container_content = document.querySelector('#npc-container-content');
-    let npc_container_len = document.querySelectorAll(".npc-container-content-item").length;
 
     let npc_container_content_item = document.createElement('div');
     let npc_container_content_item_h4 = document.createElement('h4');
@@ -104,16 +104,11 @@ add_npc_select_choice_btn.addEventListener('click', function() {
     let npc_container_content_item_select_div_subcontainer = document.createElement('div');
     let npc_container_content_item_select_div_subcontainer_label = document.createElement('label');
     let npc_container_content_item_select_div_subcontainer_select = document.createElement('select');
-    let npc_container_content_item_input_div_container = document.createElement('div');
-    let npc_container_content_item_input_div_subcontainer = document.createElement('div');
+    let npc_container_content_item_data_div_container = document.createElement('div');
+    let spaceship_data_container = document.createElement('div');
 
-    let npc_container_content_item_input_div_subcontainer_radio = document.createElement('div');
-    let npc_container_content_item_input_div_subcontainer_radio_input = document.createElement('input');
-    let npc_container_content_item_input_div_subcontainer_radio_label = document.createElement('label');
-    let npc_container_content_item_input_div_subcontainer_btn = document.createElement('div');
-    let npc_container_content_item_input_div_subcontainer_btn_i_delete = document.createElement('i');
 
-    npc_container_content_item.id = `npc-container-item-${npc_container_len}`;
+    npc_container_content_item.id = 'npc-container';
     npc_container_content_item.classList.add(
         "w-full",
         "gap-1",
@@ -139,6 +134,19 @@ add_npc_select_choice_btn.addEventListener('click', function() {
 
     npc_container_content_item_select_div_subcontainer_select.classList.add('npc-select');
     npc_container_content_item_select_div_subcontainer_select.name = "npc-select";
+    npc_container_content_item_select_div_subcontainer_select.addEventListener('change', function() {
+        let template_selection = this
+        let selected_template_id = template_selection.options[template_selection.selectedIndex].value;
+        console.log(selected_template_id)
+        let selection_display = document.querySelectorAll('.template-selection');
+        for (let i = 0; i < selection_display.length; i++) {
+            if (selection_display[i].id != `spaceship-data-${selected_template_id}`) {
+                selection_display[i].classList.add('hidden');
+            } else {
+                selection_display[i].classList.remove('hidden');
+            }
+        }
+    })
 
     for (let i = 0; i < npc_template.length; i++) {
         let npc_container_content_item_select_div_subcontainer_select_options = document.createElement('option');
@@ -146,47 +154,59 @@ add_npc_select_choice_btn.addEventListener('click', function() {
         npc_container_content_item_select_div_subcontainer_select_options.value = npc_template[i].pk;
         npc_container_content_item_select_div_subcontainer_select_options.textContent = npc_template[i].fields.name;
         npc_container_content_item_select_div_subcontainer_select.append(npc_container_content_item_select_div_subcontainer_select_options);
+        console.log(npc_template[i])
+
+        let spaceship_data_container_li = document.createElement('li');
+        let spaceship_data_container_li_ul_hp = document.createElement('ul');
+        let spaceship_data_container_li_ul_movement = document.createElement('ul');
+        let spaceship_data_container_li_ul_difficulty = document.createElement('ul');
+        let spaceship_data_container_li_ul_missileDefense = document.createElement('ul');
+        let spaceship_data_container_li_ul_thermalDefense = document.createElement('ul');
+        let spaceship_data_container_li_ul_ballisticDefense = document.createElement('ul');
+        let spaceship_data_container_li_ul_behavior = document.createElement('ul');
+
+        spaceship_data_container_li.id = `spaceship-data-${npc_template[i].pk}`;
+
+        if (i == 0) {
+            spaceship_data_container_li.classList.add('list-none', 'template-selection');
+        } else {
+            spaceship_data_container_li.classList.add('list-none', 'hidden', 'template-selection');
+        }
+        spaceship_data_container_li_ul_hp.textContent = `HP: ${npc_template[i].fields.max_hp}`;
+        spaceship_data_container_li_ul_movement.textContent = `MOVEMENT: ${npc_template[i].fields.max_movement}`;
+        spaceship_data_container_li_ul_difficulty.textContent = `DIFFICULTY: ${npc_template[i].fields.difficulty}`;
+        spaceship_data_container_li_ul_missileDefense.textContent = `MISSILE DEF: ${npc_template[i].fields.max_missile_defense}`;
+        spaceship_data_container_li_ul_thermalDefense.textContent = `THERMAL DEF: ${npc_template[i].fields.max_thermal_defense}`;
+        spaceship_data_container_li_ul_ballisticDefense.textContent = `BALLISTIC DEF: ${npc_template[i].fields.max_ballistic_defense}`;
+        spaceship_data_container_li_ul_behavior.textContent = `BEHAVIOR: ${npc_template[i].fields.behavior}`;
+
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_hp);
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_movement);
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_difficulty);
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_missileDefense);
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_thermalDefense);
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_ballisticDefense);
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_behavior);
+
+        spaceship_data_container.append(spaceship_data_container_li);
+
     }
 
     npc_container_content_item_select_div_subcontainer.append(npc_container_content_item_select_div_subcontainer_label);
     npc_container_content_item_select_div_subcontainer.append(npc_container_content_item_select_div_subcontainer_select);
     npc_container_content_item_select_div_container.append(npc_container_content_item_select_div_subcontainer);
 
-    npc_container_content_item_input_div_container.classList.add("flex", "flex-col", "items-center");
-    npc_container_content_item_input_div_subcontainer.classList.add("npc-container-content-div-input", "flex", "flex-col", "gap-1", "mx-auto");
+    npc_container_content_item_data_div_container.classList.add("flex", "flex-col", "items-center");
+    spaceship_data_container.classList.add("npc-container-content-div-input", "flex", "flex-col", "gap-1", "mx-auto");
 
-    npc_container_content_item_input_div_subcontainer_radio.classList.add("flex", "flex-row", "gap-2");
-    npc_container_content_item_input_div_subcontainer_radio_label.classList.add("font-bold", "text-center");
-    npc_container_content_item_input_div_subcontainer_radio_label.textContent = "Activate this template";
-    npc_container_content_item_input_div_subcontainer_radio_label.for = `activate-${npc_container_len}`;
-    npc_container_content_item_input_div_subcontainer_radio_input.type = "radio";
-    npc_container_content_item_input_div_subcontainer_radio_input.id = `activate-${npc_container_len}`;
-    npc_container_content_item_input_div_subcontainer_radio_input.name = "template-activate";
-
-    npc_container_content_item_input_div_subcontainer_radio.append(npc_container_content_item_input_div_subcontainer_radio_label);
-    npc_container_content_item_input_div_subcontainer_radio.append(npc_container_content_item_input_div_subcontainer_radio_input);
-
-    npc_container_content_item_input_div_subcontainer_btn_i_delete.classList.add('fa-solid', 'fa-trash', 'fa-2x', 'cursor-pointer', 'text-red-600', 'delete-this-select', 'mt-2', 'mx-auto');
-    npc_container_content_item_input_div_subcontainer_btn_i_delete.id = `delete-${npc_container_len}`;
-    npc_container_content_item_input_div_subcontainer_btn_i_delete.addEventListener('click', function() {
-        let this_id = this.id.split('-')[1];
-        document.querySelector(`#npc-container-item-${this_id}`).remove();
-    })
-
-    npc_container_content_item_input_div_subcontainer.append(npc_container_content_item_input_div_subcontainer_radio);
-    npc_container_content_item_input_div_subcontainer.append(npc_container_content_item_input_div_subcontainer_btn_i_delete);
-
-    npc_container_content_item_input_div_subcontainer_btn.append(npc_container_content_item_input_div_subcontainer_btn_i_delete);
-
-    npc_container_content_item_input_div_container.append(npc_container_content_item_input_div_subcontainer);
-    npc_container_content_item_input_div_container.append(npc_container_content_item_input_div_subcontainer_btn);
+    npc_container_content_item_data_div_container.append(spaceship_data_container);
 
     npc_container_content_item.append(npc_container_content_item_h4);
     npc_container_content_item.append(npc_container_content_item_select_div_container);
-    npc_container_content_item.append(npc_container_content_item_input_div_container);
+    npc_container_content_item.append(npc_container_content_item_data_div_container);
 
     npc_container_content.append(npc_container_content_item);
-})
+}
 
 function tile_already_used(obj) {
     let data = obj.data;
@@ -219,7 +239,7 @@ function delete_this_ship(obj, element_identification) {
     }
     for (let ship in spaceship_collection) {
         if (spaceship_collection[ship] == obj) {
-            delete spaceship_collection[ship];
+            spaceship_collection.splice(ship, 1);
             break;
         }
     }
@@ -284,6 +304,7 @@ function get_spaceship_data(tile_id) {
 
     if (selected_sector_id != "none") {
 
+
         let radio_selected = document.getElementsByName('template-activate');
         let id = undefined;
         for (let i = 0; i < radio_selected.length; i++) {
@@ -292,7 +313,7 @@ function get_spaceship_data(tile_id) {
                 break;
             }
         }
-        let main_container = document.querySelector(`#npc-container-item-${id}`);
+        let main_container = document.querySelector('#npc-container');
         let template_select = main_container.querySelector('select');
         let selected_template_id = template_select.options[template_select.selectedIndex].value;
 
@@ -317,12 +338,12 @@ function get_spaceship_data(tile_id) {
                         y: tile_id_split[1]
                     }
                 }
+                console.log(spaceship_data)
                 add_spaceship_on_map(spaceship_data);
             })
             .catch(error => console.error(error));
     }
 }
-
 
 let sector_selection = document.querySelector('#sector-select');
 sector_selection.addEventListener('change', function() {
@@ -331,6 +352,7 @@ sector_selection.addEventListener('change', function() {
     let modal_item_title = document.querySelector('#delete-item-title');
     modal_item_title.textContent = map_name + " (" + map_id + ") ";
     if (map_id !== "none") {
+        document.querySelector('#validate-btn').classList.remove('hidden');
         let url = 'npc';
         const headers = new Headers({
             'Content-Type': 'x-www-form-urlencoded',
@@ -350,6 +372,39 @@ sector_selection.addEventListener('change', function() {
             })
             .catch(error => console.error(error));
     } else {
+
+        let validate_btn = document.querySelector('#validate-btn').classList.add('hidden');
         clean_entire_map()
+    }
+})
+
+let validate_btn = document.querySelector("#validate-btn");
+validate_btn.addEventListener('click', function() {
+    let sector_selection = document.querySelector('#sector-select');
+    let selected_sector_id = sector_selection.options[sector_selection.selectedIndex].value;
+
+    if (selected_sector_id != "none") {
+        let url = 'npc_assign_update';
+        const headers = new Headers({
+            'Content-Type': 'x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrf_token
+        });
+        fetch(url, {
+                method: 'POST',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify({
+                    'map_id': selected_sector_id,
+                    'data': spaceship_collection,
+                })
+            }).then(response => response.json())
+            .then(data => {
+                console.log("ok")
+                    //clean_entire_map()
+                    //load_map_data(JSON.parse(data));
+            })
+            .catch(error => console.error(error));
     }
 })

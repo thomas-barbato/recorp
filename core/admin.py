@@ -174,12 +174,7 @@ class CustomAdminSite(admin.AdminSite):
                 name="get_ship_data",
             ),
             re_path(
-                r"^sector_gestion/npc_create$",
-                self.admin_view(NpcToSectorCreateView.as_view()),
-                name="npc_create",
-            ),
-            re_path(
-                r"^sector_gestion/npc/update$",
+                r"^sector_gestion/npc_assign_update$",
                 self.admin_view(NpcToSectorUpdateDataView.as_view()),
                 name="npc_assign_update",
             ),
@@ -902,22 +897,41 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
     
 class NpcToSectorShipDataView(LoginRequiredMixin, TemplateView):
     template_name = "generate_npc_on_sector.html"
-    model = Ship
+    model = Npc
 
     def post(self, request, **kwargs):
         pk = json.load(request)["template_id"]
         result_dict = GetDataFromDB.get_selected_ship_data(pk)
+        result_dict["template_pk"] = pk
         return JsonResponse(json.dumps(result_dict), safe=False)
+    
 
-
-class NpcToSectorCreateView(LoginRequiredMixin, TemplateView):
+class NpcToSectorUpdateDataView(LoginRequiredMixin, TemplateView):
     template_name = "generate_npc_on_sector.html"
     model = Npc
     
-
-class NpcToSectorUpdateDataView(LoginRequiredMixin, UpdateView):
-    template_name = "generate_npc_on_sector.html"
-    model = Npc
+    def post(self, request, **kwargs):
+        recieved_data = json.load(request)
+        
+        Npc.objects.filter(sector_id=recieved_data['map_id']).delete()
+        
+        for data in recieved_data['data']:
+            template_value = NpcTemplate.objects.filter(id=data['template_pk'])
+            Npc.objects.create(
+                npc_template_id=template_value.id,
+                sector_id=recieved_data['map_id'],
+                faction_id=1,
+                current_ap=0,
+                max_ap=0,
+                hp=template_value.hp_max,
+                movement=template_value.max_movement,
+                missile_defense=template_value.max_missile_defense,
+                thermal_defense=template_value.max_thermal_defense,
+                ballistic_defense=template_value.max_ballistic_defense,
+                status="FULL",
+                coordinates=data['pos'],
+            )
+        return JsonResponse(json.dumps({}), safe=False)
 
 
 class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):

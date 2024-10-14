@@ -342,3 +342,13 @@ class GetDataFromDB:
             'ship_category_id__ship_size'
         )[0]
         
+    @staticmethod
+    def get_related_npc_on_sector_data(sector_id):
+        return Npc.objects.filter(sector_id=sector_id).values(
+            'id',
+            'coordinates',
+            'npc_template_id__name',
+            'npc_template_id__ship_id__image',
+        )
+        
+        
