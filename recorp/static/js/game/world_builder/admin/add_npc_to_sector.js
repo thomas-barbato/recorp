@@ -87,11 +87,74 @@ function add_foreground(obj) {
     }
 }
 
+function add_npc(obj) {
+    for (let obj_i in obj) {
+
+        let spaceship_obj = {
+            data: {
+                id: obj[obj_i].id,
+                image: obj[obj_i].npc_template_id__ship_id__image,
+                name: obj[obj_i].npc_template_id__ship_id__name,
+                ship_size: obj[obj_i].npc_template_id__ship_id__ship_category_id__ship_size,
+                template_pk: obj[obj_i].npc_template_id__id,
+            },
+            pos: obj[obj_i].coordinates,
+        }
+
+        spaceship_collection.push(spaceship_obj);
+
+        let index_row = parseInt(spaceship_obj.pos.y) + 1;
+        let index_col = parseInt(spaceship_obj.pos.x) + 1;
+        let bg_url = '/static/js/game/assets/ships/' + spaceship_obj.data.image + '.png';
+
+        for (let row_i = 0; row_i < (atlas.tilesize * spaceship_obj.data.ship_size.size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * spaceship_obj.data.ship_size.size_x); col_i += atlas.tilesize) {
+
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                let entry_point_div = entry_point.querySelector('div');
+
+                let spaceship_class = `spaceship-${added_spaceship_count}`;
+
+                entry_point_div.classList.add(
+                    'foreground-container',
+                    'cursor-pointer',
+                    spaceship_class
+                );
+
+                entry_point_div.addEventListener('click', function() {
+                    delete_this_ship(spaceship_obj, spaceship_class)
+                })
+
+                let img_div = document.createElement('div');
+                img_div.classList.add(
+                    'm-auto',
+                    'w-[32px]',
+                    'h-[32px]',
+                    'hover:w-[30px]',
+                    'hover:h-[30px]',
+                );
+                img_div.style.borderStyle = "dashed solid blue";
+                img_div.style.backgroundImage = "url('" + bg_url + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_div.append(img_div);
+                index_col++;
+            }
+            index_row++;
+            index_col = parseInt(spaceship_obj.pos.x) + 1;
+        }
+
+        added_spaceship_count++;
+
+    }
+}
+
 
 function load_map_data(obj) {
     let sector_bg_image = obj.sector.image;
     add_background(sector_bg_image);
     add_foreground(obj.sector_element);
+    add_npc(obj.npc);
     load_npc_menu();
 }
 
@@ -135,9 +198,8 @@ function load_npc_menu() {
     npc_container_content_item_select_div_subcontainer_select.classList.add('npc-select');
     npc_container_content_item_select_div_subcontainer_select.name = "npc-select";
     npc_container_content_item_select_div_subcontainer_select.addEventListener('change', function() {
-        let template_selection = this
+        let template_selection = this;
         let selected_template_id = template_selection.options[template_selection.selectedIndex].value;
-        console.log(selected_template_id)
         let selection_display = document.querySelectorAll('.template-selection');
         for (let i = 0; i < selection_display.length; i++) {
             if (selection_display[i].id != `spaceship-data-${selected_template_id}`) {
@@ -150,14 +212,15 @@ function load_npc_menu() {
 
     for (let i = 0; i < npc_template.length; i++) {
         let npc_container_content_item_select_div_subcontainer_select_options = document.createElement('option');
-        npc_container_content_item_select_div_subcontainer_select_options.id = `template-${npc_template[i].pk}`;
-        npc_container_content_item_select_div_subcontainer_select_options.value = npc_template[i].pk;
-        npc_container_content_item_select_div_subcontainer_select_options.textContent = npc_template[i].fields.name;
+        npc_container_content_item_select_div_subcontainer_select_options.id = `template-${npc_template[i].id}`;
+        npc_container_content_item_select_div_subcontainer_select_options.value = npc_template[i].id;
+        npc_container_content_item_select_div_subcontainer_select_options.textContent = npc_template[i].name;
         npc_container_content_item_select_div_subcontainer_select.append(npc_container_content_item_select_div_subcontainer_select_options);
-        console.log(npc_template[i])
 
         let spaceship_data_container_li = document.createElement('li');
         let spaceship_data_container_li_ul_hp = document.createElement('ul');
+        let spaceship_data_container_li_ul_img = document.createElement('ul')
+        let spaceship_data_container_li_ul_img_file = document.createElement('img')
         let spaceship_data_container_li_ul_movement = document.createElement('ul');
         let spaceship_data_container_li_ul_difficulty = document.createElement('ul');
         let spaceship_data_container_li_ul_missileDefense = document.createElement('ul');
@@ -165,21 +228,26 @@ function load_npc_menu() {
         let spaceship_data_container_li_ul_ballisticDefense = document.createElement('ul');
         let spaceship_data_container_li_ul_behavior = document.createElement('ul');
 
-        spaceship_data_container_li.id = `spaceship-data-${npc_template[i].pk}`;
+        spaceship_data_container_li.id = `spaceship-data-${npc_template[i].id}`;
 
         if (i == 0) {
             spaceship_data_container_li.classList.add('list-none', 'template-selection');
         } else {
             spaceship_data_container_li.classList.add('list-none', 'hidden', 'template-selection');
         }
-        spaceship_data_container_li_ul_hp.textContent = `HP: ${npc_template[i].fields.max_hp}`;
-        spaceship_data_container_li_ul_movement.textContent = `MOVEMENT: ${npc_template[i].fields.max_movement}`;
-        spaceship_data_container_li_ul_difficulty.textContent = `DIFFICULTY: ${npc_template[i].fields.difficulty}`;
-        spaceship_data_container_li_ul_missileDefense.textContent = `MISSILE DEF: ${npc_template[i].fields.max_missile_defense}`;
-        spaceship_data_container_li_ul_thermalDefense.textContent = `THERMAL DEF: ${npc_template[i].fields.max_thermal_defense}`;
-        spaceship_data_container_li_ul_ballisticDefense.textContent = `BALLISTIC DEF: ${npc_template[i].fields.max_ballistic_defense}`;
-        spaceship_data_container_li_ul_behavior.textContent = `BEHAVIOR: ${npc_template[i].fields.behavior}`;
 
+        spaceship_data_container_li_ul_img_file.src = '/static/js/game/assets/ships/' + npc_template[i].ship_id__image + '.png';
+        spaceship_data_container_li_ul_hp.textContent = `HP: ${npc_template[i].max_hp}`;
+        spaceship_data_container_li_ul_movement.textContent = `MOVEMENT: ${npc_template[i].max_movement}`;
+        spaceship_data_container_li_ul_difficulty.textContent = `DIFFICULTY: ${npc_template[i].difficulty}`;
+        spaceship_data_container_li_ul_missileDefense.textContent = `MISSILE DEF: ${npc_template[i].max_missile_defense}`;
+        spaceship_data_container_li_ul_thermalDefense.textContent = `THERMAL DEF: ${npc_template[i].max_thermal_defense}`;
+        spaceship_data_container_li_ul_ballisticDefense.textContent = `BALLISTIC DEF: ${npc_template[i].max_ballistic_defense}`;
+        spaceship_data_container_li_ul_behavior.textContent = `BEHAVIOR: ${npc_template[i].behavior}`;
+
+        spaceship_data_container_li_ul_img.append(spaceship_data_container_li_ul_img_file);
+
+        spaceship_data_container_li.append(spaceship_data_container_li_ul_img);
         spaceship_data_container_li.append(spaceship_data_container_li_ul_hp);
         spaceship_data_container_li.append(spaceship_data_container_li_ul_movement);
         spaceship_data_container_li.append(spaceship_data_container_li_ul_difficulty);
@@ -233,7 +301,6 @@ function tile_already_used(obj) {
 
 function delete_this_ship(obj, element_identification) {
     let this_element = document.querySelectorAll(`.${element_identification}`);
-    console.log(this_element)
     for (let i = 0; i < this_element.length; i++) {
         this_element[i].innerHTML = "";
     }
@@ -255,9 +322,8 @@ function add_spaceship_on_map(obj) {
         let bg_url = '/static/js/game/assets/ships/' + data.image + '.png';
 
         added_spaceship_count++;
+        console.log(obj)
         spaceship_collection.push(obj);
-
-        console.log(spaceship_collection);
 
         for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__ship_size.size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
@@ -304,15 +370,6 @@ function get_spaceship_data(tile_id) {
 
     if (selected_sector_id != "none") {
 
-
-        let radio_selected = document.getElementsByName('template-activate');
-        let id = undefined;
-        for (let i = 0; i < radio_selected.length; i++) {
-            if (radio_selected[i].checked) {
-                id = radio_selected[i].id.split('-')[1];
-                break;
-            }
-        }
         let main_container = document.querySelector('#npc-container');
         let template_select = main_container.querySelector('select');
         let selected_template_id = template_select.options[template_select.selectedIndex].value;
@@ -338,7 +395,6 @@ function get_spaceship_data(tile_id) {
                         y: tile_id_split[1]
                     }
                 }
-                console.log(spaceship_data)
                 add_spaceship_on_map(spaceship_data);
             })
             .catch(error => console.error(error));
@@ -368,12 +424,12 @@ sector_selection.addEventListener('change', function() {
             }).then(response => response.json())
             .then(data => {
                 clean_entire_map()
+                console.log(JSON.parse(data))
                 load_map_data(JSON.parse(data));
             })
             .catch(error => console.error(error));
     } else {
-
-        let validate_btn = document.querySelector('#validate-btn').classList.add('hidden');
+        document.querySelector('#validate-btn').classList.add('hidden');
         clean_entire_map()
     }
 })
@@ -383,6 +439,7 @@ validate_btn.addEventListener('click', function() {
     let sector_selection = document.querySelector('#sector-select');
     let selected_sector_id = sector_selection.options[sector_selection.selectedIndex].value;
 
+    console.log(spaceship_collection)
     if (selected_sector_id != "none") {
         let url = 'npc_assign_update';
         const headers = new Headers({
@@ -392,19 +449,13 @@ validate_btn.addEventListener('click', function() {
             'X-CSRFToken': csrf_token
         });
         fetch(url, {
-                method: 'POST',
-                headers,
-                credentials: 'include',
-                body: JSON.stringify({
-                    'map_id': selected_sector_id,
-                    'data': spaceship_collection,
-                })
-            }).then(response => response.json())
-            .then(data => {
-                console.log("ok")
-                    //clean_entire_map()
-                    //load_map_data(JSON.parse(data));
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({
+                'map_id': selected_sector_id,
+                'data': spaceship_collection,
             })
-            .catch(error => console.error(error));
+        })
     }
 })

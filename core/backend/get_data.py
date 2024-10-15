@@ -330,7 +330,19 @@ class GetDataFromDB:
     
     @staticmethod
     def get_template_data():
-        return json.loads(serializers.serialize("json", NpcTemplate.objects.all()))
+        # Use list to be able to use join and serialize...
+        return list(NpcTemplate.objects.values(
+            'id',
+            'name',
+            'ship_id__image',
+            'max_hp',
+            'max_movement',
+            'difficulty',
+            'max_missile_defense',
+            'max_thermal_defense',
+            'max_ballistic_defense',
+            'behavior'
+        ))
     
     @staticmethod
     def get_selected_ship_data(template_id):
@@ -344,11 +356,15 @@ class GetDataFromDB:
         
     @staticmethod
     def get_related_npc_on_sector_data(sector_id):
-        return Npc.objects.filter(sector_id=sector_id).values(
+        # Use list to be able to use join and serialize...
+        return list(Npc.objects.filter(sector_id=sector_id).values(
             'id',
             'coordinates',
+            'npc_template_id__id',
             'npc_template_id__name',
             'npc_template_id__ship_id__image',
-        )
+            'npc_template_id__ship_id__ship_category_id__ship_size',
+            'npc_template_id__ship_id__name'
+        ))
         
         

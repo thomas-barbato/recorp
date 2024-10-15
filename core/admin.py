@@ -849,6 +849,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
             result_dict["sector"] = {
                 "image": sector.image,
             }
+            result_dict["npc"] = GetDataFromDB.get_related_npc_on_sector_data(pk)
             for table_key, table_value in table_set.items():
                 for table in table_value:
                     item_data = ""
@@ -913,23 +914,33 @@ class NpcToSectorUpdateDataView(LoginRequiredMixin, TemplateView):
     def post(self, request, **kwargs):
         recieved_data = json.load(request)
         
-        Npc.objects.filter(sector_id=recieved_data['map_id']).delete()
+        npc_list = Npc.objects.filter(sector_id=recieved_data['map_id'])
+        if npc_list.exists():
+            npc_list.delete()
         
-        for data in recieved_data['data']:
-            template_value = NpcTemplate.objects.filter(id=data['template_pk'])
+        for d in recieved_data['data']:
+            npc_template = NpcTemplate.objects.filter(id=d['data']['template_pk']).values(
+                'id',
+                'max_hp',
+                'max_movement',
+                'max_missile_defense',
+                'max_thermal_defense',
+                'max_ballistic_defense'
+            )[0]
+            
             Npc.objects.create(
-                npc_template_id=template_value.id,
-                sector_id=recieved_data['map_id'],
-                faction_id=1,
-                current_ap=0,
-                max_ap=0,
-                hp=template_value.hp_max,
-                movement=template_value.max_movement,
-                missile_defense=template_value.max_missile_defense,
-                thermal_defense=template_value.max_thermal_defense,
-                ballistic_defense=template_value.max_ballistic_defense,
+                hp=npc_template['max_hp'],
+                movement=npc_template['max_movement'],
+                missile_defense=npc_template['max_missile_defense'],
+                thermal_defense=npc_template['max_thermal_defense'],
+                ballistic_defense=npc_template['max_ballistic_defense'],
+                coordinates=d['pos'],
+                current_ap=10,
+                max_ap=10,
                 status="FULL",
-                coordinates=data['pos'],
+                sector_id=recieved_data['map_id'],
+                npc_template_id=npc_template['id'],
+                faction_id=1
             )
         return JsonResponse(json.dumps({}), safe=False)
 

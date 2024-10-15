@@ -89,7 +89,7 @@ class Faction(models.Model):
         faction = cls.objects.get_or_create(
             name="none",
         )
-        return faction.pk
+        return faction.id
 
     def __str__(self):
         return f"{self.name}"
