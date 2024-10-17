@@ -20,9 +20,9 @@ function clean_entire_map() {
     for (let i = 0; i < tiles.length; i++) {
         tiles[i].style.backgroundImage = "";
         let foreground_container = tiles[i].querySelector('div');
-        if (foreground_container && foreground_container.classList.contains('foreground-container')) {
+        foreground_container.className = "relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10";
+        if (foreground_container.querySelector('div')) {
             foreground_container.querySelector('div').remove();
-            foreground_container.classList.remove('foreground-container');
         }
     }
 }
@@ -87,74 +87,12 @@ function add_foreground(obj) {
     }
 }
 
-function add_npc(obj) {
-    for (let obj_i in obj) {
-
-        let spaceship_obj = {
-            data: {
-                id: obj[obj_i].id,
-                image: obj[obj_i].npc_template_id__ship_id__image,
-                name: obj[obj_i].npc_template_id__ship_id__name,
-                ship_size: obj[obj_i].npc_template_id__ship_id__ship_category_id__ship_size,
-                template_pk: obj[obj_i].npc_template_id__id,
-            },
-            pos: obj[obj_i].coordinates,
-        }
-
-        spaceship_collection.push(spaceship_obj);
-
-        let index_row = parseInt(spaceship_obj.pos.y) + 1;
-        let index_col = parseInt(spaceship_obj.pos.x) + 1;
-        let bg_url = '/static/js/game/assets/ships/' + spaceship_obj.data.image + '.png';
-
-        for (let row_i = 0; row_i < (atlas.tilesize * spaceship_obj.data.ship_size.size_y); row_i += atlas.tilesize) {
-            for (let col_i = 0; col_i < (atlas.tilesize * spaceship_obj.data.ship_size.size_x); col_i += atlas.tilesize) {
-
-                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                let entry_point_div = entry_point.querySelector('div');
-
-                let spaceship_class = `spaceship-${added_spaceship_count}`;
-
-                entry_point_div.classList.add(
-                    'foreground-container',
-                    'cursor-pointer',
-                    spaceship_class
-                );
-
-                entry_point_div.addEventListener('click', function() {
-                    delete_this_ship(spaceship_obj, spaceship_class)
-                })
-
-                let img_div = document.createElement('div');
-                img_div.classList.add(
-                    'm-auto',
-                    'w-[32px]',
-                    'h-[32px]',
-                    'hover:w-[30px]',
-                    'hover:h-[30px]',
-                );
-                img_div.style.borderStyle = "dashed solid blue";
-                img_div.style.backgroundImage = "url('" + bg_url + "')";
-                img_div.style.backgroundPositionX = `-${col_i}px`;
-                img_div.style.backgroundPositionY = `-${row_i}px`;
-                entry_point_div.append(img_div);
-                index_col++;
-            }
-            index_row++;
-            index_col = parseInt(spaceship_obj.pos.x) + 1;
-        }
-
-        added_spaceship_count++;
-
-    }
-}
-
 
 function load_map_data(obj) {
     let sector_bg_image = obj.sector.image;
     add_background(sector_bg_image);
     add_foreground(obj.sector_element);
-    add_npc(obj.npc);
+    load_npc_on_map(obj.npc);
     load_npc_menu();
 }
 
@@ -287,6 +225,7 @@ function tile_already_used(obj) {
         for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
             let entry_point_div = entry_point.querySelector('div');
+            console.log(entry_point_div.className)
             if (entry_point_div.classList.contains('foreground-container')) {
                 response = true;
             }
@@ -296,42 +235,66 @@ function tile_already_used(obj) {
         col = parseInt(obj.pos.x) + 1;
     }
 
-    return response
+    return response;
 }
 
-function delete_this_ship(obj, element_identification) {
-    let this_element = document.querySelectorAll(`.${element_identification}`);
-    for (let i = 0; i < this_element.length; i++) {
-        this_element[i].innerHTML = "";
-    }
-    for (let ship in spaceship_collection) {
-        if (spaceship_collection[ship] == obj) {
-            spaceship_collection.splice(ship, 1);
-            break;
+function delete_this_ship_or_pass(tile_id) {
+    console.log(spaceship_collection)
+    let entry_point = document.getElementById(tile_id);
+    let entry_point_div = entry_point.querySelector('div');
+    let spaceship_tile_class = undefined;
+
+    if (entry_point_div.classList.contains('foreground-container')) {
+        if (/spaceship-/.test(entry_point_div.className)) {
+            let spaceship_tile_class = entry_point_div.className.split(" ").filter(c => c.startsWith("spaceship-"))[0];
+            let spaceship_element = document.querySelectorAll(`.${spaceship_tile_class}`);
+
+            for (let i = 0; i < spaceship_element.length; i++) {
+                spaceship_element[i].classList.remove('foreground-container', 'cursor-pointer', spaceship_tile_class);
+                spaceship_element[i].innerHTML = "";
+            }
+
+            for (let ship in spaceship_collection) {
+                if (spaceship_collection[ship].ship_id_on_map == spaceship_tile_class) {
+                    console.log(spaceship_collection[ship])
+                    spaceship_collection.splice(ship, 1);
+                    break;
+                }
+            }
         }
     }
 }
 
-function add_spaceship_on_map(obj) {
 
-    if (!tile_already_used(obj)) {
 
-        let data = obj.data;
-        let index_row = parseInt(obj.pos.y) + 1;
-        let index_col = parseInt(obj.pos.x) + 1;
-        let bg_url = '/static/js/game/assets/ships/' + data.image + '.png';
+function load_npc_on_map(obj) {
+    for (let obj_i in obj) {
 
-        added_spaceship_count++;
-        console.log(obj)
-        spaceship_collection.push(obj);
+        let spaceship_obj = {
+            data: {
+                id: obj[obj_i].id,
+                image: obj[obj_i].npc_template_id__ship_id__image,
+                name: obj[obj_i].npc_template_id__ship_id__name,
+                ship_size: obj[obj_i].npc_template_id__ship_id__ship_category_id__ship_size,
+                template_pk: obj[obj_i].npc_template_id__id,
+            },
+            pos: obj[obj_i].coordinates,
+        }
 
-        for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__ship_size.size_y); row_i += atlas.tilesize) {
-            for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
+        let spaceship_class = undefined;
+
+        let index_row = parseInt(spaceship_obj.pos.y) + 1;
+        let index_col = parseInt(spaceship_obj.pos.x) + 1;
+        let bg_url = '/static/js/game/assets/ships/' + spaceship_obj.data.image + '.png';
+
+        let id_uuid = crypto.randomUUID();
+
+        for (let row_i = 0; row_i < (atlas.tilesize * spaceship_obj.data.ship_size.size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * spaceship_obj.data.ship_size.size_x); col_i += atlas.tilesize) {
 
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                 let entry_point_div = entry_point.querySelector('div');
-
-                let spaceship_class = `spaceship-${added_spaceship_count}`;
+                spaceship_class = `spaceship-${id_uuid}`;
 
                 entry_point_div.classList.add(
                     'foreground-container',
@@ -339,15 +302,13 @@ function add_spaceship_on_map(obj) {
                     spaceship_class
                 );
 
-                entry_point_div.addEventListener('click', function() {
-                    delete_this_ship(obj, spaceship_class)
-                })
-
                 let img_div = document.createElement('div');
                 img_div.classList.add(
                     'm-auto',
                     'w-[32px]',
                     'h-[32px]',
+                    'hover:w-[30px]',
+                    'hover:h-[30px]',
                 );
                 img_div.style.borderStyle = "dashed solid blue";
                 img_div.style.backgroundImage = "url('" + bg_url + "')";
@@ -357,9 +318,56 @@ function add_spaceship_on_map(obj) {
                 index_col++;
             }
             index_row++;
-            index_col = parseInt(obj.pos.x) + 1;
+            index_col = parseInt(spaceship_obj.pos.x) + 1;
         }
+        spaceship_obj.ship_id_on_map = spaceship_class;
+        console.log(spaceship_obj.ship_id_on_map)
+        spaceship_collection.push(spaceship_obj);
     }
+}
+
+function add_spaceship_on_map(obj) {
+    let data = obj.data;
+    let index_row = parseInt(obj.pos.y) + 1;
+    let index_col = parseInt(obj.pos.x) + 1;
+    let bg_url = '/static/js/game/assets/ships/' + data.image + '.png';
+
+    let spaceship_class = undefined;
+
+    let id_uuid = crypto.randomUUID();
+
+    for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__ship_size.size_y); row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
+
+            let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+            let entry_point_div = entry_point.querySelector('div');
+
+            spaceship_class = `spaceship-${id_uuid}`;
+
+            entry_point_div.classList.add(
+                'foreground-container',
+                'cursor-pointer',
+                spaceship_class
+            );
+
+            let img_div = document.createElement('div');
+            img_div.classList.add(
+                'm-auto',
+                'w-[32px]',
+                'h-[32px]',
+            );
+            img_div.style.borderStyle = "dashed solid blue";
+            img_div.style.backgroundImage = "url('" + bg_url + "')";
+            img_div.style.backgroundPositionX = `-${col_i}px`;
+            img_div.style.backgroundPositionY = `-${row_i}px`;
+            entry_point_div.append(img_div);
+            index_col++;
+        }
+        index_row++;
+        index_col = parseInt(obj.pos.x) + 1;
+    }
+    obj.ship_id_on_map = spaceship_class;
+    spaceship_collection.push(obj);
 }
 
 function get_spaceship_data(tile_id) {
@@ -395,7 +403,13 @@ function get_spaceship_data(tile_id) {
                         y: tile_id_split[1]
                     }
                 }
-                add_spaceship_on_map(spaceship_data);
+
+                if (!tile_already_used(spaceship_data)) {
+                    add_spaceship_on_map(spaceship_data);
+                } else {
+                    delete_this_ship_or_pass(tile_id)
+                }
+
             })
             .catch(error => console.error(error));
     }
@@ -404,9 +418,6 @@ function get_spaceship_data(tile_id) {
 let sector_selection = document.querySelector('#sector-select');
 sector_selection.addEventListener('change', function() {
     let map_id = this.value;
-    let map_name = this.options[this.selectedIndex].text;
-    let modal_item_title = document.querySelector('#delete-item-title');
-    modal_item_title.textContent = map_name + " (" + map_id + ") ";
     if (map_id !== "none") {
         document.querySelector('#validate-btn').classList.remove('hidden');
         let url = 'npc';
@@ -423,14 +434,13 @@ sector_selection.addEventListener('change', function() {
                 body: JSON.stringify({ 'map_id': map_id })
             }).then(response => response.json())
             .then(data => {
-                clean_entire_map()
-                console.log(JSON.parse(data))
+                clean_entire_map();
                 load_map_data(JSON.parse(data));
             })
             .catch(error => console.error(error));
     } else {
         document.querySelector('#validate-btn').classList.add('hidden');
-        clean_entire_map()
+        clean_entire_map();
     }
 })
 
@@ -438,8 +448,6 @@ let validate_btn = document.querySelector("#validate-btn");
 validate_btn.addEventListener('click', function() {
     let sector_selection = document.querySelector('#sector-select');
     let selected_sector_id = sector_selection.options[sector_selection.selectedIndex].value;
-
-    console.log(spaceship_collection)
     if (selected_sector_id != "none") {
         let url = 'npc_assign_update';
         const headers = new Headers({
