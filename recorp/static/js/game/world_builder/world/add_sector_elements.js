@@ -18,8 +18,8 @@ function add_sector_background(background_name) {
         index_row++;
         index_col = 1;
     }
-    for (let i = 0; i < map_informations.pc_npc.length; i++) {
-        let player = map_informations.pc_npc[i];
+    for (let i = 0; i < map_informations.pc.length; i++) {
+        let player = map_informations.pc[i];
         if (player.user.user == current_user_id) {
             hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
             if (!user_is_on_mobile_device()) {
@@ -125,7 +125,7 @@ function add_sector_foreground(sector_element) {
     }
 }
 
-function add_pc_npc(data) {
+function add_pc(data) {
     let border_color = "";
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
@@ -165,7 +165,7 @@ function add_pc_npc(data) {
                     translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
                 },
             }
-            let modal = create_pc_npc_modal(`pc_npc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x);
+            let modal = create_pc_modal(`pc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x);
             document.querySelector('#modal-container').append(modal);
         }
 
@@ -184,13 +184,13 @@ function add_pc_npc(data) {
                 entry_point.setAttribute('size_y', ship_size_y);
                 entry_point_border.classList.add('border-dashed', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
-                entry_point_border.setAttribute('data-modal-target', `modal-pc_npc_${data[i].user.player}`);
-                entry_point_border.setAttribute('data-modal-toggle', `modal-pc_npc_${data[i].user.player}`);
+                entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
+                entry_point_border.setAttribute('data-modal-toggle', `modal-pc_${data[i].user.player}`);
                 if (!user_is_on_mobile_device()) {
-                    entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_npc_${data[i].user.player}` + "')");
+                    entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
                     entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
                 } else {
-                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-pc_npc_${data[i].user.player}` + "')");
+                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
                 }
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
@@ -206,25 +206,25 @@ function add_pc_npc(data) {
                 if (data[i]["user"]["user"] == current_user_id) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
-                    entry_point.classList.add("player-ship-pos");
+                    entry_point.classList.add("ship-pos");
                     if (!user_is_on_mobile_device()) {
                         entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                     } else {
                         entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
                         coordinates_array_to_disable_button.push(`${coord_y}_${coord_x}`)
                     }
-                    /* Check ship_size and set player-start-pos in the middle */
+                    /* Check ship_size and set ship-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
-                            entry_point.classList.add("player-start-pos", "border-dashed");
+                            entry_point.classList.add("ship-start-pos", "border-dashed");
                         }
                     } else if (ship_size_y == 1 && ship_size_x == 3) {
                         if (col_i == 32) {
-                            entry_point.classList.add("player-start-pos", "border-dashed");
+                            entry_point.classList.add("ship-start-pos", "border-dashed");
                         }
                     } else if (ship_size_y == 3 && ship_size_x == 3) {
                         if (row_i == 32 && col_i == 32) {
-                            entry_point.classList.add("player-start-pos", "border-dashed");
+                            entry_point.classList.add("ship-start-pos", "border-dashed");
                         }
                     }
                     space_ship.classList.add("player-ship");

@@ -56,7 +56,7 @@ function display_pathfinding() {
                             let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
                             if (td_ship_el) {
                                 // check outbound
-                                if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('player-ship-pos') || current_player.move_points == 0) {
+                                if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('ship-pos') || current_player.move_points == 0) {
                                     can_be_crossed = false;
                                 }
                                 // save id in list
@@ -101,7 +101,7 @@ function display_pathfinding() {
                             for (let index = 0; index < 9; index++) {
                                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
                                 let span_ship_el = td_ship_el.querySelector('span');
-                                if (td_ship_el.classList.contains('player-ship-pos')) {
+                                if (td_ship_el.classList.contains('ship-pos')) {
                                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
                                 }
                                 switch (index) {
@@ -144,7 +144,7 @@ function display_pathfinding() {
                             for (let index = 0; index < 3; index++) {
                                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
                                 let span_ship_el = td_ship_el.querySelector('span');
-                                if (td_ship_el.classList.contains('player-ship-pos')) {
+                                if (td_ship_el.classList.contains('ship-pos')) {
                                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
                                 }
                                 switch (index) {
@@ -169,7 +169,7 @@ function display_pathfinding() {
                             for (let index = 0; index < 2; index++) {
                                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
                                 let span_ship_el = td_ship_el.querySelector('span');
-                                if (td_ship_el.classList.contains('player-ship-pos')) {
+                                if (td_ship_el.classList.contains('ship-pos')) {
                                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
                                 }
                                 switch (index) {
@@ -219,7 +219,7 @@ function display_pathfinding() {
         current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
         update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
 
-        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
+        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
             return element.id;
         });
 
@@ -241,15 +241,15 @@ function get_pathfinding(e) {
     let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
     current_player.set_is_reversed(ship_is_reversed);
 
-    for (let i = 0; i < map_informations['pc_npc'].length; i++) {
-        if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
-            let start_node_id = document.querySelector('.player-start-pos').id.split('_');
+    for (let i = 0; i < map_informations['pc'].length; i++) {
+        if (map_informations['pc'][i]['user']['user'] == current_user_id) {
+            let start_node_id = document.querySelector('.ship-start-pos').id.split('_');
             let destination_node_id = e.parentNode.parentNode.id.split('_');
-            let ship_size = document.querySelector('.player-start-pos');
+            let ship_size = document.querySelector('.ship-start-pos');
             let grid_container = document.querySelector('tbody');
 
             current_player.set_player_id(
-                map_informations['pc_npc'][i]['user']['player']
+                map_informations['pc'][i]['user']['player']
             );
             current_player.set_ship_size(
                 parseInt(ship_size.getAttribute('size_x')),
@@ -368,7 +368,7 @@ function cleanCss() {
             'border-t'
         );
         pf_zone[i].classList.add('hover:border-2', 'hover:border');
-        if (pf_parent.classList.contains('player-ship-pos')) {
+        if (pf_parent.classList.contains('ship-pos')) {
             pf_zone[i].classList.add('border-dashed', 'border-green-300');
         }
         pf_zone[i].textContent = "";

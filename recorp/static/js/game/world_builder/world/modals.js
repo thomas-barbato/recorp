@@ -300,7 +300,7 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x) {
+function create_pc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -663,9 +663,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     ship_offensive_module_container_cat_2_div.classList.add('hidden');
     ship_offensive_module_container_cat_2_div.setAttribute('aria-labelledby', "offensive-module-heading-2");
 
-    for (let ship_i in map_informations.pc_npc) {
-        if (map_informations.pc_npc[ship_i].user.user == current_user_id) {
-            for (let module_i in map_informations.pc_npc[ship_i].ship.modules) {
+    for (let ship_i in map_informations.pc) {
+        if (map_informations.pc[ship_i].user.user == current_user_id) {
+            for (let module_i in map_informations.pc[ship_i].ship.modules) {
 
                 let module_item_content = document.createElement('div');
                 let module_item_p = document.createElement('p');
@@ -692,10 +692,10 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                     'hover:divide-gray-800',
                 );
                 module_item_p.classList.add('font-bold');
-                module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
+                module_item_p.textContent = map_informations.pc[ship_i].ship.modules[module_i]["name"];
                 module_item_content.append(module_item_p);
                 module_item_content.classList.add('module-container')
-                module_item_content.id = `module-${map_informations.pc_npc[ship_i].ship.modules[module_i]["id"]}`;
+                module_item_content.id = `module-${map_informations.pc[ship_i].ship.modules[module_i]["id"]}`;
                 module_item_content.addEventListener('click', function() {
                     check_radio_btn_and_swap_color(e.id, module_item_content.id);
                 })
@@ -703,12 +703,12 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                 let radio_btn = document.createElement('input');
                 radio_btn.type = "radio";
                 radio_btn.name = "module_choice";
-                radio_btn.value = map_informations.pc_npc[ship_i].ship.modules[module_i]["id"];
+                radio_btn.value = map_informations.pc[ship_i].ship.modules[module_i]["id"];
                 radio_btn.classList.add('hidden');
 
-                if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
+                if (map_informations.pc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
 
-                    if ("damage_type" in map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]) {
+                    if ("damage_type" in map_informations.pc[ship_i].ship.modules[module_i]["effect"]) {
                         let damage_type_span = document.createElement('span');
                         let damage_type_small = document.createElement('small');
                         let damage_type_small_value = document.createElement('small');
@@ -722,13 +722,13 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         let chance_to_hit_span = document.createElement('span');
                         let chance_to_hit_small = document.createElement('small');
                         let chance_to_hit_small_value = document.createElement('small');
-                        let damage_type_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
-                        let range_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["range"];
-                        let min_damage_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
-                        let max_damage_value = map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
-                        let user_id = `${map_informations.pc_npc[ship_i].user.coordinates.coord_y-1}_${map_informations.pc_npc[ship_i].user.coordinates.coord_x-1}`;
-                        let ship_size_y = map_informations.pc_npc[ship_i].ship.size.size_y;
-                        let ship_size_x = map_informations.pc_npc[ship_i].ship.size.size_x;
+                        let damage_type_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
+                        let range_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["range"];
+                        let min_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
+                        let max_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
+                        let user_id = `${map_informations.pc[ship_i].user.coordinates.coord_y-1}_${map_informations.pc[ship_i].user.coordinates.coord_x-1}`;
+                        let ship_size_y = map_informations.pc[ship_i].ship.size.size_y;
+                        let ship_size_x = map_informations.pc[ship_i].ship.size.size_x;
 
                         damage_type_small.textContent = "Damage type : ";
                         damage_type_small.classList.add('font-sans');
@@ -780,7 +780,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         let other_bonus_small_value = document.createElement('small');
 
                         other_bonus_small.textContent = "accuracy bonus : ";
-                        other_bonus_small_value.textContent = `${map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"]["aiming_increase"]} %`;
+                        other_bonus_small_value.textContent = `${map_informations.pc[ship_i].ship.modules[module_i]["effect"]["aiming_increase"]} %`;
                         other_bonus_small_value.classList.add('text-blue-500', 'font-bold');
 
                         module_item_content.append(radio_btn);
@@ -793,13 +793,13 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
                     ship_offensive_module_container_cat_1_div.append(module_item_content);
 
-                } else if (map_informations.pc_npc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
+                } else if (map_informations.pc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
 
-                    module_item_p.textContent = map_informations.pc_npc[ship_i].ship.modules[module_i]["name"];
+                    module_item_p.textContent = map_informations.pc[ship_i].ship.modules[module_i]["name"];
                     module_item_p.classList.add('font-bold');
                     module_item_content.append(module_item_p);
 
-                    for (const [key, value] of Object.entries(map_informations.pc_npc[ship_i].ship.modules[module_i]["effect"])) {
+                    for (const [key, value] of Object.entries(map_informations.pc[ship_i].ship.modules[module_i]["effect"])) {
                         let module_item_small_effect = document.createElement('span');
                         let module_item_small_effect_name = document.createElement('small');
                         let module_item_small_effect_value = document.createElement('small');

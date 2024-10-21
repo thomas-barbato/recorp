@@ -207,7 +207,7 @@ class GetDataFromDB:
         )
 
     @staticmethod
-    def get_pc_npc_from_sector(pk):
+    def get_pc_from_sector(pk):
         return (
             Player.objects.filter(sector_id=pk)
             .select_related("playershipmodule")
@@ -244,6 +244,32 @@ class GetDataFromDB:
                 "playership__ship_id__ship_category__name",
                 "playership__ship_id__ship_category__description",
                 "playership__ship_id__ship_category__ship_size",
+            ),
+            Npc.objects.filter(sector_id=pk).values(
+                'id',
+                'coordinates',
+                'status',
+                'hp',
+                'npc_template_id__max_hp',
+                'movement',
+                'npc_template_id__max_movement',
+                'ballistic_defense',
+                'npc_template_id__max_ballistic_defense',
+                'thermal_defense',
+                'npc_template_id__max_thermal_defense',
+                'missile_defense',
+                'npc_template_id__max_missile_defense',
+                'npc_template_id__module_id_list',
+                'npc_template_id__difficulty',
+                'npc_template_id__name',
+                'npc_template_id__id',
+                'faction_id__name',
+                'npc_template_id__ship_id__image',
+                'npc_template_id__ship_id__ship_category_id__ship_size',
+                'npc_template_id__ship_id__ship_category_id__name',
+                'npc_template_id__ship_id__ship_category_id__description',
+                'npc_template_id__ship_id__name'
+                
             )
         )
 

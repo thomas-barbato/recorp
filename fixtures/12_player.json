@@ -2,8 +2,8 @@
         "model": "core.player",
         "pk": 1,
         "fields": {
-            "user": 3,
-            "name": "pc-1",
+            "user": 1,
+            "name": "case",
             "faction": 1,
             "sector": 1,
             "archetype": 1,
@@ -23,8 +23,8 @@
         "model": "core.player",
         "pk": 2,
         "fields": {
-            "user": 4,
-            "name": "pc-2",
+            "user": 2,
+            "name": "mumu",
             "faction": 1,
             "sector": 1,
             "archetype": 2,
@@ -42,10 +42,10 @@
     },
     {
         "model": "core.player",
-        "pk": 5,
+        "pk": 3,
         "fields": {
-            "user": 5,
-            "name": "pc-3",
+            "user": 3,
+            "name": "Deirdre",
             "faction": 1,
             "sector": 1,
             "archetype": 3,
@@ -62,10 +62,10 @@
     },
     {
         "model": "core.player",
-        "pk": 6,
+        "pk": 4,
         "fields": {
-            "user": 6,
-            "name": "pc-4",
+            "user": 4,
+            "name": "Cole",
             "faction": 1,
             "sector": 1,
             "archetype": 3,
@@ -75,26 +75,6 @@
             "coordinates": {
                 "coord_x": 7,
                 "coord_y": 1
-            },
-            "created_at": "2020-02-28 12:38:15",
-            "updated_at": "2020-02-28 12:38:15"
-        }
-    },
-    {
-        "model": "core.player",
-        "pk": 7,
-        "fields": {
-            "user": 7,
-            "name": "pc-5",
-            "faction": 1,
-            "sector": 1,
-            "archetype": 4,
-            "is_npc": false,
-            "description": "lorem ipsum bla bla bla",
-            "faction_xp": 25,
-            "coordinates": {
-                "coord_x": 2,
-                "coord_y": 9
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"

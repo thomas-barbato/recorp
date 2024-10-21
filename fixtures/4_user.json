@@ -1,20 +1,6 @@
 [{
         "model": "auth.user",
-        "pk": 2,
-        "fields": {
-            "username": "npc",
-            "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
-            "last_login": null,
-            "email": "npc@npc.com",
-            "is_staff": false,
-            "is_active": true,
-            "is_superuser": false,
-            "date_joined": "2020-03-20 10:38:15"
-        }
-    },
-    {
-        "model": "auth.user",
-        "pk": 3,
+        "pk": 1,
         "fields": {
             "username": "test1",
             "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
@@ -28,23 +14,9 @@
     },
     {
         "model": "auth.user",
-        "pk": 4,
+        "pk": 2,
         "fields": {
             "username": "test2",
-            "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
-            "last_login": null,
-            "email": "test2@email.com",
-            "is_staff": false,
-            "is_active": true,
-            "is_superuser": false,
-            "date_joined": "2020-03-20 10:38:15"
-        }
-    },
-    {
-        "model": "auth.user",
-        "pk": 5,
-        "fields": {
-            "username": "test3",
             "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
             "last_login": null,
             "email": "test3@email.com",
@@ -56,9 +28,9 @@
     },
     {
         "model": "auth.user",
-        "pk": 6,
+        "pk": 3,
         "fields": {
-            "username": "test4",
+            "username": "test3",
             "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
             "last_login": null,
             "email": "test4@email.com",
@@ -70,9 +42,9 @@
     },
     {
         "model": "auth.user",
-        "pk": 7,
+        "pk": 4,
         "fields": {
-            "username": "test5",
+            "username": "test4",
             "password": "pbkdf2_sha256$600000$FifurFiDUXADSAKhXjCyM6$zNersFkSCnzwjdhsffHo8+LjkiWasDRUoFIHK6aTmyw=",
             "last_login": null,
             "email": "test4@email.com",

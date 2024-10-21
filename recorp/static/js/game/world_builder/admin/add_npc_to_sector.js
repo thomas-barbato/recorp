@@ -225,7 +225,6 @@ function tile_already_used(obj) {
         for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__ship_size.size_x); col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
             let entry_point_div = entry_point.querySelector('div');
-            console.log(entry_point_div.className)
             if (entry_point_div.classList.contains('foreground-container')) {
                 response = true;
             }
@@ -239,7 +238,6 @@ function tile_already_used(obj) {
 }
 
 function delete_this_ship_or_pass(tile_id) {
-    console.log(spaceship_collection)
     let entry_point = document.getElementById(tile_id);
     let entry_point_div = entry_point.querySelector('div');
     let spaceship_tile_class = undefined;
@@ -256,7 +254,6 @@ function delete_this_ship_or_pass(tile_id) {
 
             for (let ship in spaceship_collection) {
                 if (spaceship_collection[ship].ship_id_on_map == spaceship_tile_class) {
-                    console.log(spaceship_collection[ship])
                     spaceship_collection.splice(ship, 1);
                     break;
                 }
@@ -321,7 +318,6 @@ function load_npc_on_map(obj) {
             index_col = parseInt(spaceship_obj.pos.x) + 1;
         }
         spaceship_obj.ship_id_on_map = spaceship_class;
-        console.log(spaceship_obj.ship_id_on_map)
         spaceship_collection.push(spaceship_obj);
     }
 }
@@ -439,8 +435,7 @@ sector_selection.addEventListener('change', function() {
             })
             .catch(error => console.error(error));
     } else {
-        document.querySelector('#validate-btn').classList.add('hidden');
-        clean_entire_map();
+        window.location.reload();
     }
 })
 

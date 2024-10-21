@@ -117,7 +117,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 f"play_{player.get_player_sector()}", self.request.user
             ).get_or_set_cache()
             result_dict = dict()
-            for p in data["pc_npc"]:
+            for p in data["pc"]:
                 p["user"]["archetype_name"] = _(p["user"]["archetype_name"])
 
             data["sector"]["security"]["translated_name"] = _(
@@ -152,7 +152,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
 
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
-            result_dict["pc_npc"] = data["pc_npc"]
+            result_dict["pc"] = data["pc"]
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             return context

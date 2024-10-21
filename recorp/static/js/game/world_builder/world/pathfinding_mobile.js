@@ -47,7 +47,7 @@ function define_preview_zone(direction) {
                         }
                         if (td_ship_el.classList.contains('uncrossable')) {
                             can_be_crossed_temp_array.push(false);
-                            if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('start-player-pos')) {
+                            if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('start-player-pos')) {
                                 clear_path();
                                 cleanCss();
                             }
@@ -274,7 +274,7 @@ function unset_disabled_button_status() {
     let center_i = center.querySelector('i');
     let direction_array = document.querySelectorAll('.direction-arrow');
     let temp_direction_set = new Set();
-    let player_location = document.querySelectorAll('.player-ship-pos');
+    let player_location = document.querySelectorAll('.ship-pos');
     if (current_player.move_points_value > 0) {
 
         for (let i = 0; i < player_location.length; i++) {
@@ -393,15 +393,15 @@ function disable_button(direction_array) {
 }
 
 function define_user_values() {
-    for (let i = 0; i < map_informations['pc_npc'].length; i++) {
-        if (map_informations['pc_npc'][i]['user']['user'] == current_user_id) {
+    for (let i = 0; i < map_informations['pc'].length; i++) {
+        if (map_informations['pc'][i]['user']['user'] == current_user_id) {
 
-            let start_node_id = document.querySelector('.player-start-pos').id.split('_');
-            let ship_size = document.querySelector('.player-start-pos');
+            let start_node_id = document.querySelector('.ship-start-pos').id.split('_');
+            let ship_size = document.querySelector('.ship-start-pos');
             let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
 
             current_player.set_player_id(
-                map_informations['pc_npc'][i]['user']['player']
+                map_informations['pc'][i]['user']['player']
             );
 
             current_player.set_is_reversed(ship_is_reversed);
@@ -428,7 +428,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (span_ship_el) {
-                    if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('player-start-pos')) {
+                    if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('ship-start-pos')) {
                         span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                         span_ship_el.textContent = "";
                     }
@@ -472,7 +472,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             for (let i = 0; i < 3; i++) {
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
-                if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('player-start-pos')) {
+                if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('ship-start-pos')) {
                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = "";
                 }
@@ -492,7 +492,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
             for (let i = 0; i < 2; i++) {
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
-                if (td_ship_el.classList.contains('player-ship-pos') || td_ship_el.classList.contains('player-start-pos')) {
+                if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('ship-start-pos')) {
                     span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = "";
                 }
@@ -619,7 +619,7 @@ function mobile_movement_action() {
     let e = document.querySelector('#center');
     if (e && e.disabled == false) {
         current_player.set_fullsize_coordinates(ship_arrival_coordinates);
-        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
+        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
             return element.id;
         });
         direction_array.slice(0, -1);

@@ -32,11 +32,12 @@ class StoreInCache:
             "asteroid": asteroids,
             "station": stations,
         }
-        sector_pc_npc = GetDataFromDB.get_pc_npc_from_sector(self.sector_pk)
+        sector_pc, sector_npc = GetDataFromDB.get_pc_from_sector(self.sector_pk)
         sector = Sector.objects.get(id=pk)
         sector_data = dict()
         sector_data["sector_element"] = []
-        sector_data["pc_npc"] = []
+        sector_data["pc"] = []
+        sector_data["npc"] = []
 
         sector_data["sector"] = {
             "id": pk,
@@ -94,8 +95,65 @@ class StoreInCache:
                         "size": GetDataFromDB.get_specific_size(map_element[0]),
                     }
                 )
+                
+        for data in sector_npc:
+            module_list = [
+                {
+                    "name": module["name"],
+                    "effect": module["effect"],
+                    "description": module["description"],
+                    "type": module["type"],
+                    "id": module["id"],
+                }
+                for module in Module.objects.filter(
+                    id__in=data["npc_template_id__module_id_list"]
+                ).values("name", "description", "effect", "type", "id")
+            ]
+            
+            max_hp = int(data['npc_template_id__max_hp'])
+            max_movement = int(data['npc_template_id__max_movement'])
+            
+            sector_data["npc"].append(
+                {
+                    "npc":{
+                        "id": data['id'],
+                        "name": data["npc_template_id__name"],
+                        "coordinates": data["coordinates"],
+                    },
+                    "faction": {
+                        "name": data["faction_id__name"],
+                    },
+                    "ship": {
+                        "name": data["npc_template_id__ship_id__name"],
+                        "image": data["npc_template_id__ship_id__image"],
+                        "current_hp": int(data["hp"]),
+                        "max_hp": max_hp,
+                        "current_movement": int(data["movement"]),
+                        "max_movement": max_movement,
+                        "current_ballistic_defense": data[
+                            "ballistic_defense"
+                        ],
+                        "current_thermal_defense": data[
+                            "thermal_defense"
+                        ],
+                        "current_missile_defense": data[
+                            "missile_defense"
+                        ],
+                        "status": data["status"],
+                        "category_name": data[
+                            "npc_template_id__ship_id__ship_category_id__name"
+                        ],
+                        "category_description": data[
+                            "npc_template_id__ship_id__ship_category_id__description"
+                        ],
+                        "size": data["npc_template_id__ship_id__ship_category_id__ship_size"],
+                        "modules": module_list,
+                    },
+                }
+            )
 
-        for data in sector_pc_npc:
+        print(sector_npc)
+        for data in sector_pc:
             module_list = [
                 {
                     "name": module["name"],
@@ -119,7 +177,7 @@ class StoreInCache:
                     if isinstance(v, str) and "propulsion" in v:
                         max_movement += module["effect"]["bonus_mvt"]
 
-            sector_data["pc_npc"].append(
+            sector_data["pc"].append(
                 {
                     "user": {
                         "user": data["user_id"],
@@ -194,7 +252,7 @@ class StoreInCache:
 
     def update_player_position(self, pos):
         in_cache = cache.get(self.room)
-        player_position = in_cache["pc_npc"]
+        player_position = in_cache["pc"]
         player = pos["player"]
 
         try:
@@ -223,12 +281,12 @@ class StoreInCache:
                     player_index = player_position.index(player)
                     player_position.pop(player_index)
 
-        in_cache["pc_npc"] = player_position
+        in_cache["pc"] = player_position
         cache.set(self.room, in_cache)
 
     def update_ship_is_reversed(self, data, user_id, status):
         in_cache = cache.get(self.room)
-        pc_cache = in_cache["pc_npc"]
+        pc_cache = in_cache["pc"]
         user = data["user"]
 
         try:
@@ -240,7 +298,7 @@ class StoreInCache:
         player_index = pc_cache.index(player)
         player_id = pc_cache[player_index]["user"]["player"]
         pc_cache[player_index]["ship"]["is_reversed"] = status
-        in_cache["pc_npc"] = pc_cache
+        in_cache["pc"] = pc_cache
         cache.set(self.room, in_cache)
 
         return pc_cache[player_index]["ship"]["is_reversed"], player_id

@@ -17,7 +17,7 @@
                         </div>
                         <div class="lg:w-full w-1/2 mt-1 flex lg:items-start items-center lg:justify-center justify-start ">
                             <ul>
-                                {% for player in map_informations.pc_npc %}
+                                {% for player in map_informations.pc %}
                                     {% if player.user.user == request.user.id %}
                                         <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Name" %}:</b> {{ player.user.name }}</li>
                                         <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Archetype" %}:</b> {% translate player.user.archetype_name %}</li>

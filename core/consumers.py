@@ -104,7 +104,7 @@ class GameConsumer(WebsocketConsumer):
                     message["player"]
                 ),
                 "max_movement": store.get_specific_player_data(
-                    message["player"], "pc_npc", "ship", "max_movement"
+                    message["player"], "pc", "ship", "max_movement"
                 ),
             },
         }

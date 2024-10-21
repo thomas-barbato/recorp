@@ -17,7 +17,7 @@ function user_is_on_mobile_device() {
 }
 
 function reverse_player_ship_display() {
-    var ids = Array.prototype.slice.call(document.querySelectorAll('.player-ship-pos')).map(function(element) {
+    var ids = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
         return element.id;
     });
 
@@ -58,9 +58,11 @@ window.addEventListener('load', () => {
         }, 1000);
     };
 
+    console.log(map_informations)
+
     add_sector_background(map_informations.sector.image);
     add_sector_foreground(map_informations.sector_element);
-    add_pc_npc(map_informations.pc_npc);
+    add_pc(map_informations.pc);
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);

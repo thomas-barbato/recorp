@@ -446,27 +446,27 @@ character_other_modules_fieldset_legend.append(character_other_modules_fieldset_
 character_other_modules_fieldset.append(character_other_modules_fieldset_legend);
 
 
-for (let i = 0; i < map_informations['pc_npc'].length; i++) {
-    if (map_informations['pc_npc'][i].user.user == current_user_id) {
-        let img_src = map_informations['pc_npc'][i].user.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${map_informations['pc_npc'][i].user.player}/0.jpg`
+for (let i = 0; i < map_informations['pc'].length; i++) {
+    if (map_informations['pc'][i].user.user == current_user_id) {
+        let img_src = map_informations['pc'][i].user.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${map_informations['pc'][i].user.player}/0.jpg`
         character_basic_information_img.src = img_src;
         character_basic_information_li_name_b.textContent = "Name: ";
-        character_basic_information_li_name_span.textContent = map_informations['pc_npc'][i].user.name;
+        character_basic_information_li_name_span.textContent = map_informations['pc'][i].user.name;
         character_basic_information_li_archetype_b.textContent = "Archetype: ";
-        character_basic_information_li_archetype_span.textContent = map_informations['pc_npc'][i].user.archetype_name;
+        character_basic_information_li_archetype_span.textContent = map_informations['pc'][i].user.archetype_name;
         character_basic_information_li_faction_b.textContent = "Faction: ";
-        character_basic_information_li_faction_span.textContent = map_informations['pc_npc'][i].faction.name;
+        character_basic_information_li_faction_span.textContent = map_informations['pc'][i].faction.name;
 
-        let hp_percent = `${Math.round((map_informations['pc_npc'][i].ship.current_hp * 100) / (map_informations['pc_npc'][i].ship.max_hp))}%`;
-        let move_percent = `${Math.round((map_informations['pc_npc'][i].ship.current_movement * 100) / (map_informations['pc_npc'][i].ship.max_movement))}%`;
-        let ap_percent = `${Math.round((map_informations['pc_npc'][i].user.current_ap * 100) / (map_informations['pc_npc'][i].user.max_ap))}%`;
+        let hp_percent = `${Math.round((map_informations['pc'][i].ship.current_hp * 100) / (map_informations['pc'][i].ship.max_hp))}%`;
+        let move_percent = `${Math.round((map_informations['pc'][i].ship.current_movement * 100) / (map_informations['pc'][i].ship.max_movement))}%`;
+        let ap_percent = `${Math.round((map_informations['pc'][i].user.current_ap * 100) / (map_informations['pc'][i].user.max_ap))}%`;
 
         character_statistics_progressbar_hp_content.style.width = hp_percent;
-        character_statistics_progressbar_hp_text.textContent = `${map_informations['pc_npc'][i].ship.current_hp} / ${map_informations['pc_npc'][i].ship.max_hp}`;
+        character_statistics_progressbar_hp_text.textContent = `${map_informations['pc'][i].ship.current_hp} / ${map_informations['pc'][i].ship.max_hp}`;
         character_statistics_progressbar_move_content.style.width = move_percent;
-        character_statistics_progressbar_move_text.textContent = `${map_informations['pc_npc'][i].ship.current_movement} / ${map_informations['pc_npc'][i].ship.max_movement}`;
+        character_statistics_progressbar_move_text.textContent = `${map_informations['pc'][i].ship.current_movement} / ${map_informations['pc'][i].ship.max_movement}`;
         character_statistics_progressbar_ap_content.style.width = ap_percent;
-        character_statistics_progressbar_ap_text.textContent = `${map_informations['pc_npc'][i].user.current_ap} / ${map_informations['pc_npc'][i].user.max_ap}`;
+        character_statistics_progressbar_ap_text.textContent = `${map_informations['pc'][i].user.current_ap} / ${map_informations['pc'][i].user.max_ap}`;
 
         character_basic_information_li_name.append(character_basic_information_li_name_b);
         character_basic_information_li_name.append(character_basic_information_li_name_span);
@@ -501,18 +501,18 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
         character_main_container.append(character_basic_information_fieldset);
         character_main_container.append(character_statistics_progressbar_fieldset);
 
-        for (let module_i in map_informations['pc_npc'][i].ship.modules) {
+        for (let module_i in map_informations['pc'][i].ship.modules) {
 
-            if (map_informations['pc_npc'][i].ship.modules[module_i]["type"].includes("DEFENSE") && !map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('hull')) {
-                let defense_name = map_informations['pc_npc'][i].ship.modules[module_i]["name"].split(" ")[0].toLowerCase()
-                let defense_value = `${Math.round((map_informations['pc_npc'][i].ship["current_"+defense_name+"_defense"] * 100) / (map_informations['pc_npc'][i].ship.modules[module_i].effect.defense))}%`;
+            if (map_informations['pc'][i].ship.modules[module_i]["type"].includes("DEFENSE") && !map_informations['pc'][i].ship.modules[module_i]["name"].includes('hull')) {
+                let defense_name = map_informations['pc'][i].ship.modules[module_i]["name"].split(" ")[0].toLowerCase()
+                let defense_value = `${Math.round((map_informations['pc'][i].ship["current_"+defense_name+"_defense"] * 100) / (map_informations['pc'][i].ship.modules[module_i].effect.defense))}%`;
 
                 let defensive_module_div = document.createElement('div');
                 let defensive_module_label = document.createElement('label');
                 let defensive_module_content = document.createElement('div');
                 let defensive_module_text = document.createElement('div');
 
-                defensive_module_div.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                defensive_module_div.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 defensive_module_div.classList.add(
                     'w-full',
                     'bg-red-500',
@@ -531,7 +531,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     'hidden',
                     'module-container'
                 );
-                defensive_module_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i]["name"].toLowerCase();
+                defensive_module_label.textContent = map_informations['pc'][i].ship.modules[module_i]["name"].toLowerCase();
 
                 defensive_module_content.classList.add(
                     'bg-blue-600',
@@ -556,7 +556,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     'module-container'
                 );
 
-                defensive_module_text.textContent = `${map_informations['pc_npc'][i].ship["current_"+defense_name+"_defense"]} / ${map_informations['pc_npc'][i].ship.modules[module_i].effect.defense}`;
+                defensive_module_text.textContent = `${map_informations['pc'][i].ship["current_"+defense_name+"_defense"]} / ${map_informations['pc'][i].ship.modules[module_i].effect.defense}`;
                 defensive_module_content.style.width = defense_value;
 
                 defensive_module_div.append(defensive_module_content);
@@ -566,17 +566,17 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 character_defensive_modules_fieldset.append(defensive_module_div);
                 character_main_container.append(character_defensive_modules_fieldset);
 
-            } else if (map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "WEAPONRY") {
+            } else if (map_informations['pc'][i].ship.modules[module_i]["type"] == "WEAPONRY") {
 
                 let offensive_module_container = document.createElement('div');
                 let offensive_module_name_label = document.createElement('label');
 
-                offensive_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                offensive_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 offensive_module_container.classList.add('hidden', 'module-container', 'mb-1');
-                offensive_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
+                offensive_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name;
                 offensive_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
-                if ("damage_type" in map_informations['pc_npc'][i].ship.modules[module_i]["effect"]) {
+                if ("damage_type" in map_informations['pc'][i].ship.modules[module_i]["effect"]) {
                     let weapon_damage_type_span = document.createElement('span');
                     let weapon_damage_type_small = document.createElement('small');
                     let weapon_damage_type_small_value = document.createElement('small');
@@ -596,19 +596,19 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     weapon_range_small.classList.add('font-shadow', 'text-white', 'text-sm');
 
                     weapon_damage_type_small.textContent = "Damage type: ";
-                    weapon_damage_type_small_value.textContent = map_informations['pc_npc'][i].ship.modules[module_i].effect.damage_type;
+                    weapon_damage_type_small_value.textContent = map_informations['pc'][i].ship.modules[module_i].effect.damage_type;
                     weapon_damage_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
                     weapon_damage_type_span.append(weapon_damage_type_small);
                     weapon_damage_type_span.append(weapon_damage_type_small_value);
 
                     weapon_damage_small.textContent = "Damages: ";
-                    weapon_damage_small_value.textContent = ` ${map_informations['pc_npc'][i].ship.modules[module_i].effect.min_damage}-${map_informations['pc_npc'][i].ship.modules[module_i].effect.max_damage}`;
+                    weapon_damage_small_value.textContent = ` ${map_informations['pc'][i].ship.modules[module_i].effect.min_damage}-${map_informations['pc'][i].ship.modules[module_i].effect.max_damage}`;
                     weapon_damage_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
                     weapon_damage_span.append(weapon_damage_small);
                     weapon_damage_span.append(weapon_damage_small_value);
 
                     weapon_range_small.textContent = "Range: ";
-                    weapon_range_small_value.textContent = ` ${map_informations['pc_npc'][i].ship.modules[module_i].effect.range}`;
+                    weapon_range_small_value.textContent = ` ${map_informations['pc'][i].ship.modules[module_i].effect.range}`;
                     weapon_range_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
                     weapon_range_span.append(weapon_range_small);
                     weapon_range_span.append(weapon_range_small_value);
@@ -623,7 +623,7 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
 
                     let offensive_module_span = document.createElement('span');
 
-                    for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
+                    for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
 
                         let offensive_module_type_small = document.createElement('small');
                         let offensive_module_type_small_value = document.createElement('small');
@@ -652,18 +652,18 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     }
 
                 }
-            } else if (map_informations['pc_npc'][i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
+            } else if (map_informations['pc'][i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
 
                 let electronicWarfare_module_container = document.createElement('div');
                 let electronicWarfare_module_name_label = document.createElement('label');
                 let electronicWarfare_module_span = document.createElement('span');
 
-                electronicWarfare_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                electronicWarfare_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 electronicWarfare_module_container.classList.add('hidden', 'module-container', 'mb-1');
-                electronicWarfare_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
+                electronicWarfare_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name;
                 electronicWarfare_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
-                for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
+                for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
 
 
                     let electronicWarfare_module_type_small = document.createElement('small');
@@ -698,12 +698,12 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                 let other_module_name_label = document.createElement('label');
                 let other_module_span = document.createElement('span');
 
-                other_module_container.id = `module-${map_informations['pc_npc'][i].ship.modules[module_i]["id"]}`;
+                other_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 other_module_container.classList.add('hidden', 'module-container', 'mb-1');
-                other_module_name_label.textContent = map_informations['pc_npc'][i].ship.modules[module_i].name;
+                other_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name;
                 other_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
-                for (const [key, value] of Object.entries(map_informations['pc_npc'][i].ship.modules[module_i].effect)) {
+                for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
 
                     let other_module_type_small = document.createElement('small');
                     let other_module_type_small_value = document.createElement('small');
@@ -722,9 +722,9 @@ for (let i = 0; i < map_informations['pc_npc'].length; i++) {
                     if (typeof value == 'boolean') {
                         content_value = value;
                     } else {
-                        if (map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('hull')) {
+                        if (map_informations['pc'][i].ship.modules[module_i]["name"].includes('hull')) {
                             content_value = `+${ value } hp`;
-                        } else if (map_informations['pc_npc'][i].ship.modules[module_i]["name"].includes('propulsion')) {
+                        } else if (map_informations['pc'][i].ship.modules[module_i]["name"].includes('propulsion')) {
                             content_value = `+${ value } `;
                         } else {
                             content_value = value;

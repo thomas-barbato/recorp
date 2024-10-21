@@ -41,7 +41,7 @@ function update_player_coord(data) {
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
-            end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_npc_${target_user_id}` + ')');
+            end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_${target_user_id}` + ')');
 
             let movement_remaining_div = document.getElementById(`movement-container-${target_player_id}`);
             let movement_progress_bar_size = movement_remaining_div.querySelector('div');
@@ -57,9 +57,9 @@ function update_player_coord(data) {
 }
 
 function update_player_coord_in_cache_array(player_name, coord) {
-    for (let i = 0; i < map_informations.pc_npc.length; i++) {
-        if (map_informations.pc_npc[i].user.name == player_name) {
-            map_informations.pc_npc[i].user.coordinates = coord
+    for (let i = 0; i < map_informations.pc.length; i++) {
+        if (map_informations.pc[i].user.name == player_name) {
+            map_informations.pc[i].user.coordinates = coord
         }
     }
 }
@@ -95,9 +95,9 @@ function reverse_ship(data) {
 }
 
 function update_reverse_ship_in_cache_array(player_id, status) {
-    for (let i = 0; i < map_informations.pc_npc.length; i++) {
-        if (map_informations.pc_npc[i].user.player == player_id) {
-            map_informations.pc_npc[i].ship.is_reversed = status;
+    for (let i = 0; i < map_informations.pc.length; i++) {
+        if (map_informations.pc[i].user.player == player_id) {
+            map_informations.pc[i].ship.is_reversed = status;
         }
     }
 }
