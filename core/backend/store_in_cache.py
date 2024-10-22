@@ -152,7 +152,6 @@ class StoreInCache:
                 }
             )
 
-        print(sector_npc)
         for data in sector_pc:
             module_list = [
                 {

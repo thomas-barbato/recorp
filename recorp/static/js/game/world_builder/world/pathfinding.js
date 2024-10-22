@@ -12,9 +12,12 @@ let pathfinding_path_before_preview_zone_len = 1;
 function set_pathfinding_event() {
     let pf = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf.length; i++) {
-        if (!pf[i].parentNode.parentNode.classList.contains('uncrossable')) {
+        if (!pf[i].parentNode.parentNode.classList.contains('uncrossable') || !pf[i].parentNode.parentNode.classList.contains('hidden')) {
             pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
             pf[i].setAttribute('onclick', 'display_pathfinding()');
+        }else{
+            pf[i].removeAttribute('onmouseover', 'get_pathfinding(this)');
+            pf[i].removeAttribute('onclick', 'display_pathfinding()');
         }
     }
 }
@@ -206,7 +209,7 @@ function display_pathfinding() {
                     pathfinding_path_before_preview_zone_len = 1;
                 }
             } else {
-                span_el.classList.add('bg-red-600/50', 'border-red-600', 'text-white', 'font-bold', 'text-center')
+                span_el.classList.add('bg-red-600/50', 'border-red-600', 'text-white', 'font-bold', 'text-center');
                 span_el.textContent = `${i + 1}`;
             }
         }
@@ -225,8 +228,8 @@ function display_pathfinding() {
 
         async_move({
             player: current_player.player,
-            end_y: current_player.coord.end_x,
-            end_x: current_player.coord.end_y,
+            end_y: current_player.coord.end_x - 1,
+            end_x: current_player.coord.end_y - 1,
             is_reversed: current_player.reversed_ship_status,
             start_id_array: player_coord_array,
             move_cost: current_player.player_move_cost,
@@ -240,108 +243,102 @@ function get_pathfinding(e) {
 
     let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
     current_player.set_is_reversed(ship_is_reversed);
+    let player_obj = map_informations['pc'].find((a) => a['user']['user'] === current_user_id);
+    let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
+    let destination_node_id = e.parentNode.parentNode.id.split('_');
+    let ship_size = document.querySelector('.player-ship-start-pos');
+    let grid_container = document.querySelector('tbody');
 
-    for (let i = 0; i < map_informations['pc'].length; i++) {
-        if (map_informations['pc'][i]['user']['user'] == current_user_id) {
-            let start_node_id = document.querySelector('.ship-start-pos').id.split('_');
-            let destination_node_id = e.parentNode.parentNode.id.split('_');
-            let ship_size = document.querySelector('.ship-start-pos');
-            let grid_container = document.querySelector('tbody');
+    current_player.set_player_id(
+        player_obj['user']['player']
+    );
+    current_player.set_ship_size(
+        parseInt(ship_size.getAttribute('size_x')),
+        parseInt(ship_size.getAttribute('size_y'))
+    );
 
-            current_player.set_player_id(
-                map_informations['pc'][i]['user']['player']
+    // we use start_node_id to get destination coord.
+    // we check ship size to define itterator.
+    if (current_player.s_size.x == 1 && current_player.s_size.y == 1) {
+        current_player.set_start_coord(
+            parseInt(start_node_id[1]) + 1,
+            parseInt(start_node_id[0]) + 1,
+        );
+    } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
+        if (current_player.reversed_ship_status == true) {
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]) + 1,
+                parseInt(start_node_id[0]) + 1,
             );
-            current_player.set_ship_size(
-                parseInt(ship_size.getAttribute('size_x')),
-                parseInt(ship_size.getAttribute('size_y'))
+        } else {
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]) + 2,
+                parseInt(start_node_id[0]) + 1,
             );
-
-            // we use start_node_id to get destination coord.
-            // we check ship size to define itterator.
-            if (current_player.s_size.x == 1 && current_player.s_size.y == 1) {
-                current_player.set_start_coord(
-                    parseInt(start_node_id[1]) + 1,
-                    parseInt(start_node_id[0]) + 1,
-                );
-            } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 1,
-                        parseInt(start_node_id[0]) + 1,
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
-                        parseInt(start_node_id[0]) + 1,
-                    );
-                }
-            } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]),
-                        parseInt(start_node_id[0]) + 1,
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
-                        parseInt(start_node_id[0]) + 1,
-                    );
-                }
-            } else if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
-                if (current_player.reversed_ship_status == true) {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]),
-                        parseInt(start_node_id[0]) + 1,
-                    );
-                } else {
-                    current_player.set_start_coord(
-                        parseInt(start_node_id[1]) + 2,
-                        parseInt(start_node_id[0]) + 1,
-                    );
-
-                }
-            }
-
-            // we use destination_node_id to get destination coord.
-            // we add +1 to get the real coord.
-            current_player.set_end_coord(
-                parseInt(destination_node_id[1]) + 1,
-                parseInt(destination_node_id[0]) + 1
+        }
+    } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
+        if (current_player.reversed_ship_status == true) {
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]),
+                parseInt(start_node_id[0]) + 1,
             );
-
-            current_player.set_selected_cell_bool(false);
-
-            let opts = {
-                grid_size: { cols: atlas.col, rows: atlas.row },
-                grid_start: {
-                    y: current_player.coord.start_y,
-                    x: current_player.coord.start_x,
-                },
-                grid_goal: {
-                    y: current_player.coord.end_y,
-                    x: current_player.coord.end_x
-                },
-                css: {
-                    start: "start-player-pos",
-                    finish: "finish",
-                    wall: "uncrossable",
-                    active: "active"
-                },
-                debug: false,
-                closest: true
-            };
-
-            let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
-            if (grid.classList.contains(opts.css.wall)) {
-                return;
-            }
-
-            pathfinding(grid_container, opts);
+        } else {
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]) + 2,
+                parseInt(start_node_id[0]) + 1,
+            );
+        }
+    } else if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
+        if (current_player.reversed_ship_status == true) {
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]),
+                parseInt(start_node_id[0]) + 1,
+            );
+        } else {
+            current_player.set_start_coord(
+                parseInt(start_node_id[1]) + 2,
+                parseInt(start_node_id[0]) + 1,
+            );
 
         }
     }
-}
 
+    // we use destination_node_id to get destination coord.
+    // we add +1 to get the real coord.
+    current_player.set_end_coord(
+        parseInt(destination_node_id[1]) + 1,
+        parseInt(destination_node_id[0]) + 1
+    );
+
+    current_player.set_selected_cell_bool(false);
+
+    let opts = {
+        grid_size: { cols: atlas.col, rows: atlas.row },
+        grid_start: {
+            y: current_player.coord.start_y,
+            x: current_player.coord.start_x,
+        },
+        grid_goal: {
+            y: current_player.coord.end_y,
+            x: current_player.coord.end_x
+        },
+        css: {
+            start: "start-player-pos",
+            finish: "finish",
+            wall: "uncrossable",
+            active: "active"
+        },
+        debug: false,
+        closest: true
+    };
+
+    let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
+    if (grid.classList.contains(opts.css.wall) || grid.classList.contains('hidden')) {
+        return;
+    }
+
+    pathfinding(grid_container, opts);
+}
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf_zone.length; i++) {

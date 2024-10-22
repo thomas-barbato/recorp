@@ -300,7 +300,7 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function create_pc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x) {
+function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x, is_npc) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -524,8 +524,7 @@ function create_pc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_s
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption);
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
 
-    if (!data.player.is_npc) {
-        console.log(data)
+    if (!is_npc) {
         let target_img = document.createElement('img');
         target_img.src = data.player.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${player_id}/0.jpg`
         target_img.style.width = "30%";

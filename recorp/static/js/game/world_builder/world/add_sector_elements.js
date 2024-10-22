@@ -1,7 +1,7 @@
-function add_sector_background(background_name) {
+function add_background(data) {
     let index_row = 1;
     let index_col = 1;
-    let bg_url = '/static/img/atlas/background/' + background_name + '/' + '0.gif';
+    let bg_url = '/static/img/atlas/background/' + data + '/' + '0.gif';
     for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -31,29 +31,29 @@ function add_sector_background(background_name) {
     }
 }
 
-function add_sector_foreground(sector_element) {
-    for (let sector_i = 0; sector_i < sector_element.length; sector_i++) {
-        element_type = sector_element[sector_i]["animations"][0];
-        element_type_translated = sector_element[sector_i]["type_translated"];
-        element_data = sector_element[sector_i]["data"];
-        folder_name = sector_element[sector_i]["animations"][1];
+function add_foreground(data){
+    for (let sector_i = 0; sector_i < data.length; sector_i++) {
+        element_type = data[sector_i]["animations"][0];
+        element_type_translated = data[sector_i]["type_translated"];
+        element_data = data[sector_i]["data"];
+        folder_name = data[sector_i]["animations"][1];
         modal_data = {
-            type: sector_element[sector_i].data.type,
-            translated_type: sector_element[sector_i].data.type_translated,
+            type: data[sector_i].data.type,
+            translated_type: data[sector_i].data.type_translated,
             animation: {
-                dir: sector_element[sector_i]["animations"][0],
-                img: sector_element[sector_i]["animations"][1],
+                dir: data[sector_i]["animations"][0],
+                img: data[sector_i]["animations"][1],
             },
-            name: sector_element[sector_i].data.name,
-            description: sector_element[sector_i].data.description,
+            name: data[sector_i].data.name,
+            description: data[sector_i].data.description,
             resources: {
-                id: sector_element[sector_i].resource.id,
-                name: sector_element[sector_i].resource.name,
-                quantity_str: sector_element[sector_i].resource.quantity_str,
-                quantity: sector_element[sector_i].resource.quantity,
-                translated_text_resource: sector_element[sector_i].resource.translated_text_resource,
-                translated_quantity_str: sector_element[sector_i].resource.translated_quantity_str,
-                translated_scan_msg_str: sector_element[sector_i].resource.translated_scan_msg_str,
+                id: data[sector_i].resource.id,
+                name: data[sector_i].resource.name,
+                quantity_str: data[sector_i].resource.quantity_str,
+                quantity: data[sector_i].resource.quantity,
+                translated_text_resource: data[sector_i].resource.translated_text_resource,
+                translated_quantity_str: data[sector_i].resource.translated_quantity_str,
+                translated_scan_msg_str: data[sector_i].resource.translated_scan_msg_str,
             },
             faction: {
                 starter: map_informations.sector.faction.is_faction_level_starter,
@@ -66,8 +66,8 @@ function add_sector_foreground(sector_element) {
                 player_in_same_faction: map_informations.actions.player_is_same_faction,
             },
             coord: {
-                x: sector_element[sector_i].data.coord_x,
-                y: sector_element[sector_i].data.coord_y
+                x: data[sector_i].data.coord_x,
+                y: data[sector_i].data.coord_y
             }
         }
         let modal = create_foreground_modal(
@@ -76,10 +76,10 @@ function add_sector_foreground(sector_element) {
         );
 
         document.querySelector('#modal-container').append(modal);
-        let index_row = sector_element[sector_i]['data']['coord_y'];
-        let index_col = sector_element[sector_i]['data']['coord_x'];
-        let size_x = sector_element[sector_i]['size']["size_x"];
-        let size_y = sector_element[sector_i]['size']["size_y"];
+        let index_row = data[sector_i]['data']['coord_y'];
+        let index_col = data[sector_i]['data']['coord_x'];
+        let size_x = data[sector_i]['size']["size_x"];
+        let size_y = data[sector_i]['size']["size_y"];
         let bg_url = '/static/img/atlas/foreground/' + element_type + '/' + folder_name + '/' + '0.gif';
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
@@ -120,8 +120,107 @@ function add_sector_foreground(sector_element) {
                 index_col++;
             }
             index_row++;
-            index_col = sector_element[sector_i]['data']['coord_x'];
+            index_col = data[sector_i]['data']['coord_x'];
         }
+    }
+}
+
+function add_npc(data){
+    let coordinates_array_to_disable_button = [];
+    for (let i = 0; i < data.length; i++) {
+        let coord_x = parseInt(data[i]["npc"]["coordinates"].x) + 1;
+        let coord_y = parseInt(data[i]["npc"]["coordinates"].y) + 1;
+        let ship_size_x = data[i]["ship"]['size'].size_x;
+        let ship_size_y = data[i]["ship"]['size'].size_y;
+
+        modal_data = {
+            player: {
+                name: data[i].npc.name,
+                image: data[i].npc.image,
+                faction_name: data[i].faction.name
+            },
+            ship: {
+                name: data[i].ship.name,
+                category: data[i].ship.category_name,
+                description: data[i].ship.category_description,
+                max_hp: data[i].ship.max_hp,
+                current_hp: data[i].ship.current_hp,
+                current_thermal_defense: data[i].ship.current_thermal_defense,
+                current_missile_defense: data[i].ship.current_missile_defense,
+                current_ballistic_defense: data[i].ship.current_ballistic_defense,
+                max_movement: data[i].ship.max_movement,
+                current_movement: data[i].ship.current_movement,
+                status: data[i].ship.status,
+                modules: data[i].ship.modules,
+            },
+            actions: {
+                action_label: map_informations.actions.translated_action_label_msg,
+                close: map_informations.actions.translated_close_msg,
+                player_in_same_faction: map_informations.actions.player_is_same_faction,
+                translated_statistics_label: map_informations.actions.translated_statistics_msg_label,
+                translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
+            },
+        }
+        let modal = create_pc_npc_modal(`npc_${data[i].npc.id}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x, true);
+        document.querySelector('#modal-container').append(modal);
+
+        for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
+                let entry_point_border = entry_point.querySelector('span');
+                let div = entry_point.querySelector('div');
+                let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
+                let space_ship = document.createElement('div');
+                let space_ship_reversed = document.createElement('div');
+
+                entry_point.classList.add('uncrossable');
+                entry_point.setAttribute('size_x', ship_size_x);
+                entry_point.setAttribute('size_y', ship_size_y);
+                entry_point_border.classList.add('border-dashed', 'cursor-pointer');
+                entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]}`);
+                entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
+                entry_point_border.setAttribute('data-modal-toggle', `modal-npc_${data[i].npc.id}`);
+                if (!user_is_on_mobile_device()) {
+                    entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
+                    entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+                } else {
+                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
+                }
+
+                space_ship.style.backgroundImage = "url('" + bg_url + "')";
+                space_ship.classList.add('ship');
+                space_ship.style.backgroundPositionX = `-${col_i}px`;
+                space_ship.style.backgroundPositionY = `-${row_i}px`;
+
+                /* Check ship_size and set ship-start-pos in the middle */
+                if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
+                    if (col_i == 0) {
+                        entry_point.classList.add("ship-start-pos", "border-dashed");
+                    }
+                } else if (ship_size_y == 1 && ship_size_x == 3) {
+                    if (col_i == 32) {
+                        entry_point.classList.add("ship-start-pos", "border-dashed");
+                    }
+                } else if (ship_size_y == 3 && ship_size_x == 3) {
+                    if (row_i == 32 && col_i == 32) {
+                        entry_point.classList.add("ship-start-pos", "border-dashed");
+                    }
+                }
+
+                entry_point_border.classList.add("border-red-600");
+                entry_point.classList.add("npc");
+                space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
+                space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
+                div.append(space_ship);
+
+                coord_x++;
+            }
+            coord_y++;
+            coord_x = parseInt(data[i]["npc"]["coordinates"].x) + 1;
+        }
+    }
+    if (user_is_on_mobile_device()) {
+        disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
 }
 
@@ -129,8 +228,8 @@ function add_pc(data) {
     let border_color = "";
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
-        let coord_x = (data[i]["user"]["coordinates"].coord_x);
-        let coord_y = (data[i]["user"]["coordinates"].coord_y);
+        let coord_x = parseInt(data[i]["user"]["coordinates"].coord_x) + 1;
+        let coord_y = (data[i]["user"]["coordinates"].coord_y) + 1;
         let ship_size_x = data[i]["ship"]['size'].size_x;
         let ship_size_y = data[i]["ship"]['size'].size_y;
         let is_reversed = data[i]["ship"]["is_reversed"];
@@ -165,7 +264,7 @@ function add_pc(data) {
                     translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
                 },
             }
-            let modal = create_pc_modal(`pc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x);
+            let modal = create_pc_npc_modal(`pc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x, false);
             document.querySelector('#modal-container').append(modal);
         }
 
@@ -216,15 +315,15 @@ function add_pc(data) {
                     /* Check ship_size and set ship-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
-                            entry_point.classList.add("ship-start-pos", "border-dashed");
+                            entry_point.classList.add("player-ship-start-pos", "border-dashed");
                         }
                     } else if (ship_size_y == 1 && ship_size_x == 3) {
                         if (col_i == 32) {
-                            entry_point.classList.add("ship-start-pos", "border-dashed");
+                            entry_point.classList.add("player-ship-start-pos", "border-dashed");
                         }
                     } else if (ship_size_y == 3 && ship_size_x == 3) {
                         if (row_i == 32 && col_i == 32) {
-                            entry_point.classList.add("ship-start-pos", "border-dashed");
+                            entry_point.classList.add("player-ship-start-pos", "border-dashed");
                         }
                     }
                     space_ship.classList.add("player-ship");
@@ -239,9 +338,7 @@ function add_pc(data) {
 
                 let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc";
 
-                if (data[i]["user"]["is_npc"]) {
-                    border_color = "border-red-700";
-                } else if (data[i]["user"]["user"] != current_user_id && !data[i]["user"]["is_npc"]) {
+                if (data[i]["user"]["user"] != current_user_id) {
                     border_color = "border-cyan-400";
                 }
 
@@ -263,12 +360,19 @@ function add_pc(data) {
                 coord_x++;
             }
             coord_y++;
-            coord_x = data[i]["user"]["coordinates"]["coord_x"];
+            coord_x = parseInt(data[i]["user"]["coordinates"].coord_x) + 1
         }
     }
     if (user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
+}
+
+function generate_sector(background, sector, npc, pc) {
+    add_background(background)
+    add_foreground(sector)
+    add_npc(npc);
+    add_pc(pc);
 }
 
 function hide_sector_overflow(coord_x, coord_y) {

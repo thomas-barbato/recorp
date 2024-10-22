@@ -269,7 +269,6 @@ class GetDataFromDB:
                 'npc_template_id__ship_id__ship_category_id__name',
                 'npc_template_id__ship_id__ship_category_id__description',
                 'npc_template_id__ship_id__name'
-                
             )
         )
 

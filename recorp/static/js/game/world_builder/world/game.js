@@ -58,11 +58,12 @@ window.addEventListener('load', () => {
         }, 1000);
     };
 
-    console.log(map_informations)
-
-    add_sector_background(map_informations.sector.image);
-    add_sector_foreground(map_informations.sector_element);
-    add_pc(map_informations.pc);
+    generate_sector(
+        map_informations.sector.image,
+        map_informations.sector_element, 
+        map_informations.npc, 
+        map_informations.pc
+    );
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);

@@ -47,7 +47,7 @@ function define_preview_zone(direction) {
                         }
                         if (td_ship_el.classList.contains('uncrossable')) {
                             can_be_crossed_temp_array.push(false);
-                            if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('start-player-pos')) {
+                            if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('player-ship-start-pos')) {
                                 clear_path();
                                 cleanCss();
                             }
@@ -396,8 +396,8 @@ function define_user_values() {
     for (let i = 0; i < map_informations['pc'].length; i++) {
         if (map_informations['pc'][i]['user']['user'] == current_user_id) {
 
-            let start_node_id = document.querySelector('.ship-start-pos').id.split('_');
-            let ship_size = document.querySelector('.ship-start-pos');
+            let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
+            let ship_size = document.querySelector('.player-ship-start-pos');
             let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
 
             current_player.set_player_id(
@@ -625,8 +625,8 @@ function mobile_movement_action() {
         direction_array.slice(0, -1);
         async_move({
             player: current_player.player,
-            end_x: current_player.coord.end_x,
-            end_y: current_player.coord.end_y,
+            end_x: current_player.coord.end_x - 1,
+            end_y: current_player.coord.end_y - 1,
             is_reversed: current_player.reversed_ship_status,
             start_id_array: player_coord_array,
             move_cost: current_player.player_move_cost,

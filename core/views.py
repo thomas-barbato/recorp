@@ -153,6 +153,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
+            result_dict["npc"] = data["npc"]
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             return context

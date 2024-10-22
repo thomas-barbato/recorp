@@ -9,7 +9,6 @@ from core.backend.player_actions import PlayerAction
 
 # logger = logging.getLogger("django")
 
-
 class GameConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
