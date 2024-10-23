@@ -89,11 +89,14 @@ function display_pathfinding() {
                         current_player.set_selected_cell_bool(true);
                     } else {
                         for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i-1]}`);
-                            let uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
-                            uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed', 'teal-zone');
-                            uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse', 'text-white', 'font-bold', 'text-center');
-                            uncrossable_span_ship_el.textContent = "";
+                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
+                            let uncrossable_span_ship_el = undefined;
+                            if(uncrossable_td_ship_el){
+                                uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
+                                uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed', 'teal-zone');
+                                uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse', 'text-white', 'font-bold', 'text-center');
+                                uncrossable_span_ship_el.textContent = "";
+                            }
                         }
                         current_player.set_selected_cell_bool(false);
                     }
@@ -252,6 +255,7 @@ function get_pathfinding(e) {
     current_player.set_player_id(
         player_obj['user']['player']
     );
+
     current_player.set_ship_size(
         parseInt(ship_size.getAttribute('size_x')),
         parseInt(ship_size.getAttribute('size_y'))
@@ -299,7 +303,6 @@ function get_pathfinding(e) {
                 parseInt(start_node_id[1]) + 2,
                 parseInt(start_node_id[0]) + 1,
             );
-
         }
     }
 
@@ -333,7 +336,7 @@ function get_pathfinding(e) {
     };
 
     let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
-    if (grid.classList.contains(opts.css.wall) || grid.classList.contains('hidden')) {
+    if (grid.classList.contains(opts.css.wall)) {
         return;
     }
 

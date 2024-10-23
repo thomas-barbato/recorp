@@ -50,7 +50,7 @@ function update_player_coord(data) {
             movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
             movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
 
-        } else {
+        if (current_user_id == target_user_id) {
             window.location.reload();
         }
     }
