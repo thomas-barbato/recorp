@@ -76,7 +76,7 @@ class GameConsumer(WebsocketConsumer):
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        cache_data = None
+        response = {}
         if p.get_player_id() == message["player"]:
             if (
                 p.destination_already_occupied(message["end_x"], message["end_y"])
@@ -88,28 +88,34 @@ class GameConsumer(WebsocketConsumer):
                     move_cost=int(message["move_cost"]),
                 ):
                     store.update_player_position(message)
-                    cache_data = store.get_or_set_cache()
-
-        response = {
-            "type": "player_move",
-            "message": {
-                "player": p.get_other_player_name(message["player"]),
-                "player_id": message["player"],
-                "user_id": p.get_other_player_user_id(message["player"]),
-                "is_reversed": message["is_reversed"],
-                "start_id_array": message["start_id_array"],
-                "destination_id_array": message["destination_id_array"],
-                "end_x": message["end_x"],
-                "end_y": message["end_y"],
-                "movement_remaining": p.get_other_player_movement_remaining(
-                    message["player"]
-                ),
-                "max_movement": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "max_movement"
-                ),
-                "cache_data":cache_data
-            },
-        }
+                    response = {
+                        "type": "player_move",
+                        "message":{
+                            "user_id": p.get_other_player_user_id(message["player"]),
+                            "player" : store.get_specific_player_data(p.get_player_id(), "pc"),
+                            "sector": store.get_specific_sector_data("sector")
+                        }
+                    }
+        else:
+            response = {
+                "type": "player_move",
+                "message": {
+                    "player": p.get_other_player_name(message["player"]),
+                    "player_id": message["player"],
+                    "user_id": p.get_other_player_user_id(message["player"]),
+                    "is_reversed": message["is_reversed"],
+                    "start_id_array": message["start_id_array"],
+                    "destination_id_array": message["destination_id_array"],
+                    "end_x": message["end_x"],
+                    "end_y": message["end_y"],
+                    "movement_remaining": p.get_other_player_movement_remaining(
+                        message["player"]
+                    ),
+                    "max_movement": store.get_specific_player_data(
+                        message["player"], "pc", "ship", "max_movement"
+                    ),
+                },
+            }
 
         self.send(text_data=json.dumps(response))
 

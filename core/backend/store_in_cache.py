@@ -249,6 +249,11 @@ class StoreInCache:
         if subcategory != "" and search != "":
             return cache_data[found_player_index][subcategory][search]
         return cache_data[found_player_index] 
+    
+    def get_specific_sector_data(self, search_item):
+        if not cache.get(self.room):
+            self.set_sector_data(self.sector_pk)
+        return cache.get(self.room)[search_item]
 
     def update_player_position(self, pos):
         in_cache = cache.get(self.room)

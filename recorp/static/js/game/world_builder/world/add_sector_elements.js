@@ -267,7 +267,6 @@ function add_pc(data) {
             let modal = create_pc_npc_modal(`pc_${data[i].user.player}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x, false);
             document.querySelector('#modal-container').append(modal);
         }
-
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
@@ -285,6 +284,7 @@ function add_pc(data) {
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 entry_point_border.setAttribute('data-modal-toggle', `modal-pc_${data[i].user.player}`);
+                
                 if (!user_is_on_mobile_device()) {
                     entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
                     entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
@@ -336,7 +336,7 @@ function add_pc(data) {
                     current_player.set_remaining_move_points(data[i]["ship"]["current_movement"]);
                 }
 
-                let pc_or_npc_class = data[i]["user"]["is_npc"] == true ? "npc" : "pc";
+                let pc_or_npc_class = "pc";
 
                 if (data[i]["user"]["user"] != current_user_id) {
                     border_color = "border-cyan-400";
