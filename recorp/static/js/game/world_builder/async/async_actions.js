@@ -19,14 +19,14 @@ function async_move(pos) {
 function update_player_coord(data) {
     clear_path();
     let target_user_id = data["user_id"];
-    console.log(target_user_id,  current_user_id);
 
     if (current_user_id != target_user_id) {
         let target_player_id = data["player_id"];
         let start_pos_array = data["start_id_array"];
         let end_pos_array = data["destination_id_array"];
         let movement_remaining = parseInt(data["movement_remaining"]);
-        let player_name = data["player"];
+        console.log(target_player_id)
+        console.log(movement_remaining)
         let max_movement = parseInt(data["max_movement"]);
         for (let i = 0; i < start_pos_array.length; i++) {
 
@@ -42,16 +42,17 @@ function update_player_coord(data) {
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
-            end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_${target_user_id}` + ')');
-
-            let movement_remaining_div = document.getElementById(`movement-container-${target_player_id}`);
-            let movement_progress_bar_size = movement_remaining_div.querySelector('div');
-            let movement_progress_bar_text = movement_remaining_div.querySelector('span');
-
-            movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
-            movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+            end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_${target_player_id}` + ')');
 
         }
+
+        let movement_remaining_div = document.getElementById(`modal-pc_${target_player_id}`);
+        let movement_progress_bar_size = movement_remaining_div.getElementsByTagName('div');
+        let movement_progress_bar_text = movement_remaining_div.getElementsByTagName('span');
+        console.log(`${Math.round((movement_remaining * 100) / (max_movement))}%`)
+        movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
+        movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+
     }else{
         update_player_pos_display_after_move(data)
     }
@@ -111,8 +112,8 @@ function update_player_pos_display_after_move(data){
     let ship_size_y = data.player.ship.size.size_y;
     let ship_size_x = data.player.ship.size.size_x;
     let is_reversed = data.player.ship.is_reversed;
+    let coordinates_array_to_disable_button = [];   
 
-    console.log(coord_x, coord_y, ship_size_x, ship_size_y, atlas)
 
     for(let i = 0; i < current_player_ship.length; i++){
         current_player_ship[i].removeAttribute("onclick");
@@ -199,7 +200,7 @@ function update_player_pos_display_after_move(data){
             space_ship.classList.add("player-ship");
             space_ship_reversed.classList.add("player-ship-reversed");
             if (user_is_on_mobile_device()) {
-                if (data[i]["ship"]["current_movement"] <= 0) {
+                if (data.player.ship.current_movement <= 0) {
                     disable_button(["top", "bottom", "right", "left", "center"])
                 }
             }
@@ -223,6 +224,13 @@ function update_player_pos_display_after_move(data){
         }
         coord_y++;
         coord_x = parseInt(data.player.user.coordinates.coord_x) + 1
+        
+        let remaining_movement = document.querySelector('#remaining-movement-div');
+        let remaining_movement_div = remaining_movement.querySelector('div');
+        let remaining_movement_span = remaining_movement.querySelector('span');
+        remaining_movement_div.style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
+        remaining_movement_span.textContent = `${data.player.ship.current_movement} / ${data.player.ship.max_movement}`;
+
     }
     if (user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
