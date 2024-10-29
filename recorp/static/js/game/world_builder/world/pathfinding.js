@@ -10,6 +10,7 @@ let current_player = new Player(
 let pathfinding_path_before_preview_zone_len = 1;
 
 function set_pathfinding_event() {
+    /*
     let pf = document.querySelectorAll('.pathfinding-zone');
     for (let i = 0; i < pf.length; i++) {
         if (!pf[i].parentNode.parentNode.classList.contains('uncrossable') || !pf[i].parentNode.parentNode.classList.contains('hidden')) {
@@ -20,6 +21,18 @@ function set_pathfinding_event() {
             pf[i].removeAttribute('onclick', 'display_pathfinding()');
         }
     }
+    */
+    let pf = document.querySelectorAll('.pathfinding-zone');
+    for (let i = 0; i < pf.length; i++) {
+        if(!pf[i].parentElement.parentElement.classList.contains('uncrossable') && !pf[i].parentElement.parentElement.classList.contains('hidden')){
+            pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
+            pf[i].setAttribute('onclick', 'display_pathfinding()');
+        }else{
+            pf[i].removeAttribute('onmouseover', 'get_pathfinding(this)');
+            pf[i].removeAttribute('onclick', 'display_pathfinding()');
+        }
+    }
+
 }
 
 function display_pathfinding() {

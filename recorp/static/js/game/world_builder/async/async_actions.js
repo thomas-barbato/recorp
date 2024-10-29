@@ -25,8 +25,7 @@ function update_player_coord(data) {
         let start_pos_array = data["start_id_array"];
         let end_pos_array = data["destination_id_array"];
         let movement_remaining = parseInt(data["movement_remaining"]);
-        console.log(target_player_id)
-        console.log(movement_remaining)
+        
         let max_movement = parseInt(data["max_movement"]);
         for (let i = 0; i < start_pos_array.length; i++) {
 
@@ -156,13 +155,9 @@ function update_player_pos_display_after_move(data){
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
             entry_point_border.setAttribute('data-modal-toggle', `modal-pc_${data.player.user.player}`);
-            
-            if (!user_is_on_mobile_device()) {
-                entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_${data.player.user.player}` + "')");
-                entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-            } else {
-                entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-pc_${data.player.user.player}` + "')");
-            }
+
+            entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+            entry_point_border.removeAttribute('onmouseclick', 'display_pathfinding()');
 
             space_ship.style.backgroundImage = "url('" + bg_url + "')";
             space_ship.classList.add('ship');

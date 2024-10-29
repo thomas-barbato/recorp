@@ -65,6 +65,18 @@ window.addEventListener('load', () => {
         map_informations.pc
     );
 
+    for (let i = 0; i < map_informations.pc.length; i++) {
+        let player = map_informations.pc[i];
+        if (player.user.user == current_user_id) {
+            hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
+            if (!user_is_on_mobile_device()) {
+                set_pathfinding_event();
+            }
+            document.querySelector('.tabletop-view').classList.remove('invisible')
+            break;
+        }
+}
+
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         switch (data.type) {
