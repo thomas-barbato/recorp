@@ -57,13 +57,6 @@ function update_player_coord(data) {
     }
 }
 
-function update_player_coord_in_cache_array(player_name, coord) {
-    for (let i = 0; i < map_informations.pc.length; i++) {
-        if (map_informations.pc[i].user.name == player_name) {
-            map_informations.pc[i].user.coordinates = coord
-        }
-    }
-}
 
 function async_reverse_ship(data) {
     clear_path();

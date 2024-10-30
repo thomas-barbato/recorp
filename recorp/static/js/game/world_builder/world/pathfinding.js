@@ -10,29 +10,19 @@ let current_player = new Player(
 let pathfinding_path_before_preview_zone_len = 1;
 
 function set_pathfinding_event() {
-    /*
-    let pf = document.querySelectorAll('.pathfinding-zone');
-    for (let i = 0; i < pf.length; i++) {
-        if (!pf[i].parentNode.parentNode.classList.contains('uncrossable') || !pf[i].parentNode.parentNode.classList.contains('hidden')) {
-            pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
-            pf[i].setAttribute('onclick', 'display_pathfinding()');
-        }else{
-            pf[i].removeAttribute('onmouseover', 'get_pathfinding(this)');
-            pf[i].removeAttribute('onclick', 'display_pathfinding()');
+    let pf = document.querySelectorAll(".tile:not(.hidden),.tile:not(.uncrossable)");
+    for (let i = 0; i < pf.length; i++){
+        let pf_child = pf[i].querySelector('.pathfinding-zone');
+        if(pf_child){
+            if(!pf[i].classList.contains('uncrossable') && !pf[i].classList.contains('hidden')){
+                pf_child.setAttribute('onmouseover', 'get_pathfinding(this)');
+                pf_child.setAttribute('onclick', 'display_pathfinding()');
+            }else{
+                pf_child.removeAttribute('onmouseover', 'get_pathfinding(this)');
+                pf_child.removeAttribute('onclick', 'display_pathfinding()');
+            }
         }
     }
-    */
-    let pf = document.querySelectorAll('.pathfinding-zone');
-    for (let i = 0; i < pf.length; i++) {
-        if(!pf[i].parentElement.parentElement.classList.contains('uncrossable') && !pf[i].parentElement.parentElement.classList.contains('hidden')){
-            pf[i].setAttribute('onmouseover', 'get_pathfinding(this)');
-            pf[i].setAttribute('onclick', 'display_pathfinding()');
-        }else{
-            pf[i].removeAttribute('onmouseover', 'get_pathfinding(this)');
-            pf[i].removeAttribute('onclick', 'display_pathfinding()');
-        }
-    }
-
 }
 
 function display_pathfinding() {
@@ -349,7 +339,8 @@ function get_pathfinding(e) {
     };
 
     let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
-    if (grid.classList.contains(opts.css.wall)) {
+
+    if (grid && grid.classList.contains(opts.css.wall)) {
         return;
     }
 
@@ -357,34 +348,44 @@ function get_pathfinding(e) {
 }
 function cleanCss() {
     let pf_zone = document.querySelectorAll('.pathfinding-zone');
+
     for (let i = 0; i < pf_zone.length; i++) {
-        let pf_parent = pf_zone[i].parentNode.parentNode;
-        pf_zone[i].classList.remove(
-            'teal-zone',
-            'bg-teal-500/30',
-            'bg-red-600/30',
-            'bg-red-600/50',
-            'animate-pulse',
-            'bg-amber-400/30',
-            'bg-amber-400/50',
-            'border-amber-400',
-            'border-red-600',
-            'finish', 'box-border',
-            'border-2',
-            'border',
-            'text-white',
-            'font-bold',
-            'text-center',
-            'border-l',
-            'border-r',
-            'border-b',
-            'border-t'
-        );
-        pf_zone[i].classList.add('hover:border-2', 'hover:border');
-        if (pf_parent.classList.contains('ship-pos')) {
-            pf_zone[i].classList.add('border-dashed', 'border-green-300');
+        let pf_zone_parent = pf_zone[i].parentElement.parentElement;
+        if(!pf_zone_parent.classList.contains('hidden')){
+            pf_zone[i].classList.remove(
+                'teal-zone',
+                'bg-teal-500/30',
+                'bg-red-600/30',
+                'bg-red-600/50',
+                'animate-pulse',
+                'bg-amber-400/30',
+                'bg-amber-400/50',
+                'border-amber-400',
+                'border-red-600',
+                'finish', 'box-border',
+                'border-2',
+                'border',
+                'text-white',
+                'font-bold',
+                'text-center',
+                'border-l',
+                'border-r',
+                'border-b',
+                'border-t'
+            );
+           
+            pf_zone[i].classList.add('hover:border-2', 'hover:border');
+            console.log(pf_zone_parent.className)
+            if (pf_zone_parent.classList.contains('ship-pos')) {
+                pf_zone_parent.classList.add('border-dashed', 'border-green-300');
+            }else if(pf_zone_parent.classList.contains('pc')){
+                pf_zone_parent.classList.add('border-dashed', 'border-blue-400');
+            }else if(pf_zone_parent.classList.contains('npc')){
+                pf_zone_parent.classList.add('border-dashed', 'border-red-600');
+            }
+            pf_zone[i].textContent = "";
         }
-        pf_zone[i].textContent = "";
+        
     }
 }
 
