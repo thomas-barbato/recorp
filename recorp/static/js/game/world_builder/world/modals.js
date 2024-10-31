@@ -1,5 +1,4 @@
 function open_close_modal(id) {
-    console.log("ok ok ok ok ok ok")
     let e = document.querySelector('#' + id);
     if (e) {
         e.classList.contains('hidden') == true ? e.classList.remove('hidden') : e.classList.add('hidden');

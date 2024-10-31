@@ -14,12 +14,9 @@ function set_pathfinding_event() {
     for (let i = 0; i < pf.length; i++){
         let pf_child = pf[i].querySelector('.pathfinding-zone');
         if(pf_child){
-            if(!pf[i].classList.contains('uncrossable') && !pf[i].classList.contains('hidden')){
+            if(!pf[i].classList.contains('uncrossable') && !pf[i].classList.contains('hidden') && !pf[i].classList.contains('pc') && !pf[i].classList.contains('npc')){
                 pf_child.setAttribute('onmouseover', 'get_pathfinding(this)');
                 pf_child.setAttribute('onclick', 'display_pathfinding()');
-            }else{
-                pf_child.removeAttribute('onmouseover', 'get_pathfinding(this)');
-                pf_child.removeAttribute('onclick', 'display_pathfinding()');
             }
         }
     }
@@ -355,14 +352,13 @@ function cleanCss() {
             pf_zone[i].classList.remove(
                 'teal-zone',
                 'bg-teal-500/30',
-                'bg-red-600/30',
                 'bg-red-600/50',
                 'animate-pulse',
-                'bg-amber-400/30',
                 'bg-amber-400/50',
                 'border-amber-400',
                 'border-red-600',
-                'finish', 'box-border',
+                'finish', 
+                'box-border',
                 'border-2',
                 'border',
                 'text-white',
@@ -373,17 +369,16 @@ function cleanCss() {
                 'border-b',
                 'border-t'
             );
+            pf_zone[i].textContent = "";
            
             pf_zone[i].classList.add('hover:border-2', 'hover:border');
-            console.log(pf_zone_parent.className)
             if (pf_zone_parent.classList.contains('ship-pos')) {
-                pf_zone_parent.classList.add('border-dashed', 'border-green-300');
+                pf_zone[i].classList.add('border-dashed', 'border-green-300');
             }else if(pf_zone_parent.classList.contains('pc')){
-                pf_zone_parent.classList.add('border-dashed', 'border-blue-400');
+                pf_zone[i].classList.add('border-dashed', 'border-blue-400');
             }else if(pf_zone_parent.classList.contains('npc')){
-                pf_zone_parent.classList.add('border-dashed', 'border-red-600');
+                pf_zone[i].classList.add('border-dashed', 'border-red-600');
             }
-            pf_zone[i].textContent = "";
         }
         
     }
@@ -674,7 +669,7 @@ function GridNode(x, y, weight) {
 }
 
 GridNode.prototype.toString = function() {
-    return "[" + this.x + " " + this.y + "]";
+    return `[${this.x} ${this.y}]`;
 };
 
 GridNode.prototype.getCost = function(fromNeighbor) {
