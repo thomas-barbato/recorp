@@ -54,7 +54,7 @@ function create_foreground_modal(id, data) {
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    footer_close_button.classList.add('inline-block', 'justify-end', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
     
     header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
@@ -341,7 +341,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let footer_container_div = document.createElement('div');
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    footer_close_button.classList.add('inline-block', 'justify-end', 'align-left', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
     
 
     let close_button_url = '/static/js/game/assets/ux/close.svg';
