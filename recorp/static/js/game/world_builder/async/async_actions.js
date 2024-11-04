@@ -41,14 +41,14 @@ function update_player_coord(data) {
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
-            end_point.setAttribute('onclick', 'open_close_modal( ' + `modal-pc_${target_player_id}` + ')');
+            end_point.setAttribute(action_listener_touch_click, 'open_close_modal( ' + `modal-pc_${target_player_id}` + ')');
 
         }
 
         let movement_remaining_div = document.getElementById(`modal-pc_${target_player_id}`);
         let movement_progress_bar_size = movement_remaining_div.getElementsByTagName('div');
         let movement_progress_bar_text = movement_remaining_div.getElementsByTagName('span');
-        console.log(`${Math.round((movement_remaining * 100) / (max_movement))}%`)
+
         movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
         movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
 
@@ -127,7 +127,7 @@ function update_player_pos_display_after_move(data){
     }
 
     hide_sector_overflow(data.player.user.coordinates.coord_x, data.player.user.coordinates.coord_y);
-    if (!user_is_on_mobile_device()) {
+    if (!is_user_is_on_mobile_device()) {
         set_pathfinding_event();
     }
 
@@ -136,8 +136,8 @@ function update_player_pos_display_after_move(data){
             let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
             let entry_point_border = entry_point.querySelector('span');
             let div = entry_point.querySelector('div');
-            let bg_url = "/static/js/game/assets/ships/" + data.player.ship.image + '.png';
-            let bg_url_reversed_img = "/static/js/game/assets/ships/" + data.player.ship.image + '-reversed.png';
+            let ship_url = "/static/js/game/assets/ships/" + data.player.ship.image + '.png';
+            let ship_url_reversed_img = "/static/js/game/assets/ships/" + data.player.ship.image + '-reversed.png';
             let space_ship = document.createElement('div');
             let space_ship_reversed = document.createElement('div');
 
@@ -147,17 +147,16 @@ function update_player_pos_display_after_move(data){
             entry_point_border.classList.add('border-dashed', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
-            entry_point_border.setAttribute('data-modal-toggle', `modal-pc_${data.player.user.player}`);
 
-            entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-            entry_point_border.removeAttribute('onmouseclick', 'display_pathfinding()');
+            entry_point_border.removeAttribute(action_listener_touch_mouseover, 'get_pathfinding(this)');
+            entry_point_border.removeAttribute(action_listener_touch_click, 'display_pathfinding()');
 
-            space_ship.style.backgroundImage = "url('" + bg_url + "')";
+            space_ship.style.backgroundImage = "url('" + ship_url + "')";
             space_ship.classList.add('ship');
             space_ship.style.backgroundPositionX = `-${col_i}px`;
             space_ship.style.backgroundPositionY = `-${row_i}px`;
 
-            space_ship_reversed.style.backgroundImage = "url('" + bg_url_reversed_img + "')";
+            space_ship_reversed.style.backgroundImage = "url('" + ship_url_reversed_img + "')";
             space_ship_reversed.classList.add('ship-reversed');
             space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
             space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
@@ -165,7 +164,7 @@ function update_player_pos_display_after_move(data){
             update_user_coord_display(data.player.user.coordinates.coord_x, data.player.user.coordinates.coord_y);
             border_color = "border-green-300";
             entry_point.classList.add("ship-pos");
-            if (!user_is_on_mobile_device()) {
+            if (!is_user_is_on_mobile_device()) {
                 entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
             } else {
                 entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
@@ -187,7 +186,7 @@ function update_player_pos_display_after_move(data){
             }
             space_ship.classList.add("player-ship");
             space_ship_reversed.classList.add("player-ship-reversed");
-            if (user_is_on_mobile_device()) {
+            if (is_user_is_on_mobile_device()) {
                 if (data.player.ship.current_movement <= 0) {
                     disable_button(["top", "bottom", "right", "left", "center"])
                 }
@@ -220,7 +219,7 @@ function update_player_pos_display_after_move(data){
         remaining_movement_span.textContent = `${data.player.ship.current_movement} / ${data.player.ship.max_movement}`;
 
     }
-    if (user_is_on_mobile_device()) {
+    if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
 }

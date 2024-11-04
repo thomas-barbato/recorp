@@ -51,14 +51,13 @@ function create_foreground_modal(id, data) {
     header_close_button.src = close_button_url;
     header_close_button.title = `${data.actions.close}`;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
-    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
     footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    
+    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
@@ -323,8 +322,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         'bg-black/20',
         'border-1',
     );
-    let player_id = id.split('_')[2]
-
+    let player_id = id.split('_')[1];
 
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "bg-black/70");
@@ -344,8 +342,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
     footer_close_button.classList.add('inline-block', 'justify-center', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
-    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    footer_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
+    
 
     let close_button_url = '/static/js/game/assets/ux/close.svg';
 
@@ -353,8 +350,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     header_close_button.src = close_button_url;
     header_close_button.title = ``;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
+    
     header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    header_close_button.setAttribute('touchstart', "open_close_modal('" + e.id + "')");
+    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
@@ -376,7 +374,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let hp_progress_bar_container_text = document.createElement('span');
     let hp_progress_bar_container_label = document.createElement('label');
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
-    hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
+    hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'relative');
     hp_progress_bar_container_label.textContent = "Hull points:"
     hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
     hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
@@ -392,7 +390,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let movement_progress_bar_container_text = document.createElement('span');
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
-    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'dark:bg-gray-700', 'relative');
+    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'relative');
     movement_progress_bar_container_div.id = `movement-container-${player_id}`;
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
@@ -525,6 +523,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
 
     if (!is_npc) {
+
         let target_img = document.createElement('img');
         target_img.src = data.player.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${player_id}/0.jpg`
         target_img.style.width = "30%";
@@ -560,7 +559,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
             module_content_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
             module_content_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
-            module_element.classList.add('w-full', 'bg-gray-200', 'dark:bg-gray-700', 'relative');
+            module_element.classList.add('w-full', 'bg-gray-200', 'relative');
             module_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
             module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center', 'p-0.5');
             module_content_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;

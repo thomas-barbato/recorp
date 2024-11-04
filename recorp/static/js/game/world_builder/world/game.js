@@ -10,7 +10,10 @@ let atlas = {
     "map_height_size": 40 * 32,
 }
 
-function user_is_on_mobile_device() {
+let action_listener_touch_mouseover = is_user_is_on_mobile_device() === true ? 'touchstart' : 'mouseover';
+let action_listener_touch_click = is_user_is_on_mobile_device() === true ? 'touchstart' : 'onclick';
+
+function is_user_is_on_mobile_device() {
     return (
         /\b(BlackBerry|webOS|iPhone|IEMobile|Android|Windows Phone|iPad|iPod|KFAPWI)\b/i.test(window.navigator.userAgent)
     );
@@ -47,7 +50,7 @@ window.addEventListener('load', () => {
         console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 1s...");
         setTimeout(function() {
             console.log("Reconnecting...");
-            var gameSocket = new WebSocket(
+            gameSocket = new WebSocket(
                 ws_scheme +
                 '://' +
                 window.location.host +
@@ -64,18 +67,6 @@ window.addEventListener('load', () => {
         map_informations.npc, 
         map_informations.pc
     );
-
-    for (let i = 0; i < map_informations.pc.length; i++) {
-        let player = map_informations.pc[i];
-        if (player.user.user == current_user_id) {
-            hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
-            if (!user_is_on_mobile_device()) {
-                set_pathfinding_event();
-            }
-            document.querySelector('.tabletop-view').classList.remove('invisible')
-            break;
-        }
-}
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
@@ -101,7 +92,3 @@ window.addEventListener('load', () => {
     };
 
 });
-
-window.addEventListener('DOMContentLoaded', () => {
-    update_target_coord_display();
-})

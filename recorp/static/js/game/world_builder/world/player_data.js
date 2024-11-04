@@ -75,8 +75,7 @@ character_basic_information_fieldset_legend.classList.add(
     "text-start",
     "font-shadow",
     "font-bold",
-    "text-gray-900",
-    "dark:text-white",
+    "text-white",
     "p-1"
 );
 
@@ -138,8 +137,7 @@ character_statistics_progressbar_fieldset_legend.classList.add(
     "text-center",
     "font-shadow",
     "font-bold",
-    "text-gray-900",
-    "dark:text-white",
+    "text-white",
 )
 character_statistics_progressbar_fieldset_legend.textContent = "Statistics";
 character_statistics_progressbar_fieldset.append(character_statistics_progressbar_fieldset_legend);
@@ -261,8 +259,7 @@ character_defensive_modules_fieldset_legend.classList.add(
     "text-start",
     "font-shadow",
     "font-bold",
-    "text-gray-900",
-    "dark:text-white",
+    "text-white",
     "cursor-pointer",
     "p-1"
 );
@@ -283,7 +280,7 @@ character_defensive_modules_fieldset_legend_svg.append(character_defensive_modul
 let character_defensive_modules_fieldset_legend_span = document.createElement('span');
 character_defensive_modules_fieldset_legend_span.textContent = "Shield";
 
-character_defensive_modules_fieldset_legend.classList.add('flex', 'flex-row');
+character_defensive_modules_fieldset_legend.classList.add('flex', 'flex-row', 'text-white');
 
 character_defensive_modules_fieldset_legend.append(character_defensive_modules_fieldset_legend_span);
 character_defensive_modules_fieldset_legend.append(character_defensive_modules_fieldset_legend_svg);
@@ -310,8 +307,7 @@ character_offensive_modules_fieldset_legend.classList.add(
     "text-start",
     "font-shadow",
     "font-bold",
-    "text-gray-900",
-    "dark:text-white",
+    "text-white",
     "cursor-pointer",
     "p-1"
 );
@@ -333,7 +329,7 @@ character_offensive_modules_fieldset_legend_svg.append(character_offensive_modul
 let character_offensive_modules_fieldset_legend_span = document.createElement('span');
 character_offensive_modules_fieldset_legend_span.textContent = "Weaponry";
 
-character_offensive_modules_fieldset_legend.classList.add('flex', 'flex-row')
+character_offensive_modules_fieldset_legend_span.classList.add('flex', 'flex-row', 'text-white');
 
 character_offensive_modules_fieldset_legend.append(character_offensive_modules_fieldset_legend_span)
 character_offensive_modules_fieldset_legend.append(character_offensive_modules_fieldset_legend_svg)
@@ -363,8 +359,7 @@ character_electronicWarfare_modules_fieldset_legend.classList.add(
     "text-center",
     "font-shadow",
     "font-bold",
-    "text-gray-900",
-    "dark:text-white",
+    "text-white",
     "cursor-pointer",
     "p-1"
 );
@@ -416,8 +411,7 @@ character_other_modules_fieldset_legend.classList.add(
     "text-center",
     "font-shadow",
     "font-bold",
-    "text-gray-900",
-    "dark:text-white",
+    "text-white",
     "cursor-pointer",
     "p-1"
 );
@@ -439,7 +433,7 @@ character_other_modules_fieldset_legend_svg.append(character_other_modules_field
 let character_other_modules_fieldset_legend_span = document.createElement('span');
 character_other_modules_fieldset_legend_span.textContent = "Utility";
 
-character_other_modules_fieldset_legend.classList.add('flex', 'flex-row');
+character_other_modules_fieldset_legend.classList.add('flex', 'flex-row', 'text-white');
 
 character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_span);
 character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_svg);

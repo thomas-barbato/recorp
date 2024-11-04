@@ -12,6 +12,9 @@ function add_background(data) {
             entry_point.style.backgroundPositionY = `-${row_i}px`;
             entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col - 1)}; y = ${parseInt(index_row - 1)}]`);
+            entry_point.addEventListener(action_listener_touch_mouseover, function(){
+                update_target_coord_display(entry_point);
+            })
 
             index_col++;
         }
@@ -22,7 +25,7 @@ function add_background(data) {
         let player = map_informations.pc[i];
         if (player.user.user == current_user_id) {
             hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
-            if (!user_is_on_mobile_device()) {
+            if (!is_user_is_on_mobile_device()) {
                 set_pathfinding_event();
             }
             document.querySelector('.tabletop-view').classList.remove('invisible')
@@ -95,12 +98,8 @@ function add_foreground(data){
                 entry_point_border.classList.add('hover:border-dashed', 'border-amber-500', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
-                entry_point_border.setAttribute('data-modal-toggle', "modal-" + element_data["name"]);
-                if (!user_is_on_mobile_device()) {
-                    entry_point_border.setAttribute('onclick', "open_close_modal('" + "modal-" + element_data["name"] + "')");
-                } else {
-                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + "modal-" + element_data["name"] + "')");
-                }
+                entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                
 
                 img_div.classList.add(
                     'relative',
@@ -179,13 +178,9 @@ function add_npc(data){
                 entry_point_border.classList.add('border-dashed', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
-                entry_point_border.setAttribute('data-modal-toggle', `modal-npc_${data[i].npc.id}`);
-                if (!user_is_on_mobile_device()) {
-                    entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
-                    entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-                } else {
-                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
-                }
+                entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
+                entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+                
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.classList.add('ship');
@@ -219,7 +214,7 @@ function add_npc(data){
             coord_x = parseInt(data[i]["npc"]["coordinates"].x) + 1;
         }
     }
-    if (user_is_on_mobile_device()) {
+    if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
 }
@@ -283,13 +278,9 @@ function add_pc(data) {
                 entry_point_border.classList.add('border-dashed', 'cursor-pointer');
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
-                entry_point_border.setAttribute('data-modal-toggle', `modal-pc_${data[i].user.player}`);
                 
-                if (!user_is_on_mobile_device()) {
-                    entry_point_border.setAttribute('onclick', "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
-                    entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-                } else {
-                    entry_point_border.setAttribute('ontouchstart', "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
+                if(!is_user_is_on_mobile_device() == true){
+                    entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
                 }
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
@@ -306,12 +297,7 @@ function add_pc(data) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
                     entry_point.classList.add("ship-pos");
-                    if (!user_is_on_mobile_device()) {
-                        entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
-                    } else {
-                        entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
-                        coordinates_array_to_disable_button.push(`${coord_y}_${coord_x}`)
-                    }
+
                     /* Check ship_size and set ship-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
@@ -328,7 +314,7 @@ function add_pc(data) {
                     }
                     space_ship.classList.add("player-ship");
                     space_ship_reversed.classList.add("player-ship-reversed");
-                    if (user_is_on_mobile_device()) {
+                    if (is_user_is_on_mobile_device()) {
                         if (data[i]["ship"]["current_movement"] <= 0) {
                             disable_button(["top", "bottom", "right", "left", "center"])
                         }
@@ -336,14 +322,12 @@ function add_pc(data) {
                     current_player.set_remaining_move_points(data[i]["ship"]["current_movement"]);
                 }
 
-                let pc_or_npc_class = "pc";
-
                 if (data[i]["user"]["user"] != current_user_id) {
                     border_color = "border-cyan-400";
                 }
 
+                entry_point.classList.add("pc");
                 entry_point_border.classList.add(border_color);
-                entry_point.classList.add(pc_or_npc_class);
                 space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 if (is_reversed) {
@@ -363,7 +347,7 @@ function add_pc(data) {
             coord_x = parseInt(data[i]["user"]["coordinates"].coord_x) + 1
         }
     }
-    if (user_is_on_mobile_device()) {
+    if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
 }
@@ -417,7 +401,7 @@ function hide_sector_overflow(coord_x, coord_y) {
             }
         }
     }
-    if (user_is_on_mobile_device()) {
+    if (is_user_is_on_mobile_device()) {
         document.getElementById('Y_X').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y) : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x) : display_map_start_x}`
     } else {
         document.getElementById('Y_X').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
@@ -430,17 +414,20 @@ function update_user_coord_display(x, y) {
     document.querySelector('#player-coord-y').textContent = `y = ${y}`;
 }
 
-function update_target_coord_display() {
-    let selected_tile = document.querySelectorAll('.tile')
-    for (let i = 0; i < selected_tile.length; i++) {
-        selected_tile[i].addEventListener('mouseover', function() {
-            let target_name = this.querySelector('span').title.split(' ')[0];
-            let coord_name = document.querySelector('#target-coord-name');
-            let coord_x = document.querySelector('#target-coord-x');
-            let coord_y = document.querySelector('#target-coord-y');
-            coord_name.textContent = target_name;
-            coord_x.textContent = `x = ${this.cellIndex - 1}`;
-            coord_y.textContent = `y = ${this.parentNode.rowIndex - 1}`;
-        })
+function update_target_coord_display(element) {
+    target_name = element.querySelector('span').title.split(' ')[0];
+    coord_name = document.querySelector('#target-coord-name');
+    coord_x = document.querySelector('#target-coord-x');
+    coord_y = document.querySelector('#target-coord-y');
+    coord_name.textContent = target_name;
+    coord_x.textContent = `x = ${element.cellIndex - 1}`;
+    coord_y.textContent = `y = ${element.parentNode.rowIndex - 1}`;
+    if(is_user_is_on_mobile_device() == true){
+        let e = element.querySelector('span');
+        if(element.classList.contains('ship-pos')){
+            reverse_player_ship_display()
+        }else if(element.classList.contains('uncrossable')){
+            open_close_modal(e.dataset.modalTarget);
+        }
     }
 }
