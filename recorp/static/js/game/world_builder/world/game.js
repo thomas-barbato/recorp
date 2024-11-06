@@ -13,12 +13,6 @@ let atlas = {
 let action_listener_touch_mouseover = is_user_is_on_mobile_device() === true ? 'touchstart' : 'mouseover';
 let action_listener_touch_click = is_user_is_on_mobile_device() === true ? 'touchstart' : 'onclick';
 
-function is_user_is_on_mobile_device() {
-    return (
-        /\b(BlackBerry|webOS|iPhone|IEMobile|Android|Windows Phone|iPad|iPod|KFAPWI)\b/i.test(window.navigator.userAgent)
-    );
-}
-
 function reverse_player_ship_display() {
     var ids = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
         return element.id;

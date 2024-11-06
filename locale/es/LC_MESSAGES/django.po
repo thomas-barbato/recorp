@@ -185,35 +185,32 @@ msgstr "Enviar un mensaje"
 msgid "Inventory"
 msgstr "inventario"
 
-msgid "You are now in the sector"
-msgstr "Usted se encuentra en el sector"
+msgid "Owned by"
+msgstr "Pertenece a"
 
-msgid "This sector is owned by"
-msgstr "Este sector pertenece a"
+msgid "Security"
+msgstr "Seguridad"
 
-msgid "Security level"
-msgstr "Grado de seguridad"
-
-msgid "null security"
-msgstr "seguridad nula"
+msgid "null"
+msgstr "nula"
 
 msgid "Beware, you are in an unsafe area. You could be attacked at any time, you're on your own."
 msgstr "Cuidado, estás en una zona insegura. Podrían atacarte en cualquier momento, estás solo."
 
-msgid "low security"
-msgstr "seguridad baja"
+msgid "low"
+msgstr "baja"
 
 msgid "Be careful, security is poor in this area and the authorities will find it difficult to defend you."
 msgstr "Ten cuidado, la seguridad es escasa en esta zona y a las autoridades les resultará difícil defenderte."
 
-msgid "intermediate security"
-msgstr "seguridad intermedia"
+msgid "intermediate"
+msgstr "intermedia"
 
 msgid "It's not a highly secure area, but it's not a lawless one either, so just be careful."
 msgstr "No es una zona muy segura, pero tampoco sin ley, así que ten cuidado."
 
-msgid "high security"
-msgstr "seguridad elevada"
+msgid "high"
+msgstr "elevada"
 
 msgid "Here you are safe and secure, with security forces on call at all times and at very short notice."
 msgstr "Aquí estará seguro y protegido, con fuerzas de seguridad de guardia en todo momento y con muy poca antelación."
@@ -227,8 +224,8 @@ msgstr "asteroide"
 msgid "station"
 msgstr "estación"
 
-msgid "Nothing selected for now"
-msgstr "Nada seleccionado por ahora"
+msgid "Nothing selected"
+msgstr "Nada seleccionado"
 
 msgid "Resources available"
 msgstr "Recursos disponibles"

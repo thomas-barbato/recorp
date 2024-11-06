@@ -2,7 +2,7 @@
   "model": "core.security",
   "pk": 1,
   "fields": {
-    "name": "null security",
+    "name": "null",
     "description": "Beware, you are in an unsafe area. You could be attacked at any time, you're on your own.",
     "attack_countdown": 0,
     "chance_to_intervene": 0,
@@ -15,7 +15,7 @@
     "model": "core.security",
     "pk": 2,
     "fields": {
-      "name": "low security",
+      "name": "low",
       "description": "Be careful, security is poor in this area and the authorities will find it difficult to defend you.",
       "attack_countdown": 3,
       "chance_to_intervene": 33,
@@ -28,7 +28,7 @@
     "model": "core.security",
     "pk": 3,
     "fields": {
-      "name": "intermediate security",
+      "name": "intermediate",
       "description": "It's not a highly secure area, but it's not a lawless one either, so just be careful.",
       "attack_countdown": 2,
       "chance_to_intervene": 66,
@@ -41,7 +41,7 @@
     "model": "core.security",
     "pk": 4,
     "fields": {
-      "name": "high security",
+      "name": "high",
       "description": "Here you are safe and secure, with security forces on call at all times and at very short notice.",
       "attack_countdown": 1,
       "chance_to_intervene": 100,

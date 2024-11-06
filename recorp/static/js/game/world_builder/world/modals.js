@@ -39,7 +39,7 @@ function create_foreground_modal(id, data) {
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
 
     let header_div = document.createElement('h3');
     header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-white', 'p-1', 'flex', 'w-[95%]', 'justify-center');
@@ -52,9 +52,10 @@ function create_foreground_modal(id, data) {
     header_close_button.title = `${data.actions.close}`;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
 
+
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'justify-end', 'align-center', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    footer_close_button.classList.add('inline-block', 'cursor-pointer', 'hover:animate-pulse', 'p-2', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
     
     header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
@@ -339,9 +340,11 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
+
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'justify-end', 'align-left', 'mx-auto', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    footer_close_button.classList.add('inline-block', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
     
 
     let close_button_url = '/static/js/game/assets/ux/close.svg';

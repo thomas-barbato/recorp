@@ -402,16 +402,18 @@ function hide_sector_overflow(coord_x, coord_y) {
         }
     }
     if (is_user_is_on_mobile_device()) {
-        document.getElementById('Y_X').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y) : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x) : display_map_start_x}`
+        document.getElementById('Y_X_y').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y) : display_map_start_y}`;
+        document.getElementById('Y_X_x').textContent = `${display_map_start_x > 0 ? parseInt(display_map_start_x) : display_map_start_x}`;
     } else {
-        document.getElementById('Y_X').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}:${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`
+        document.getElementById('Y_X_y').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}`;
+        document.getElementById('Y_X_x').textContent = `${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`;
     }
 
 }
 
 function update_user_coord_display(x, y) {
-    document.querySelector('#player-coord-x').textContent = `x = ${x}`;
-    document.querySelector('#player-coord-y').textContent = `y = ${y}`;
+    document.querySelector('#player-coord-x').textContent = x;
+    document.querySelector('#player-coord-y').textContent = y;
 }
 
 function update_target_coord_display(element) {
@@ -420,8 +422,8 @@ function update_target_coord_display(element) {
     coord_x = document.querySelector('#target-coord-x');
     coord_y = document.querySelector('#target-coord-y');
     coord_name.textContent = target_name;
-    coord_x.textContent = `x = ${element.cellIndex - 1}`;
-    coord_y.textContent = `y = ${element.parentNode.rowIndex - 1}`;
+    coord_x.textContent = `${element.cellIndex - 1}`;
+    coord_y.textContent = `${element.parentNode.rowIndex - 1}`;
     if(is_user_is_on_mobile_device() == true){
         let e = element.querySelector('span');
         if(element.classList.contains('ship-pos')){
