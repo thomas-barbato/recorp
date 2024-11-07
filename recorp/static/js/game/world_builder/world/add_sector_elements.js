@@ -421,8 +421,8 @@ function update_target_coord_display(element) {
     coord_name = document.querySelector('#target-coord-name');
     coord_x = document.querySelector('#target-coord-x');
     coord_y = document.querySelector('#target-coord-y');
-    coord_x.classList.remove('hidden');
-    coord_y.classList.remove('hidden');
+    coord_x.classList.remove('invisible');
+    coord_y.classList.remove('invisible');
     coord_name.textContent = target_name;
     coord_x.textContent = `${element.cellIndex - 1}`;
     coord_y.textContent = `${element.parentNode.rowIndex - 1}`;

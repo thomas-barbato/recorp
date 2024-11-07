@@ -188,6 +188,19 @@ if(is_user_is_on_mobile_device() == true){
         
             character_main_container.append(character_statistics_progressbar_fieldset);
             character_main.append(character_main_container)
+
+            let container_height = document.querySelector('#mobile-info-player-container').offsetHeight;
+
+            let character_info_container = document.querySelector('#info-sector-container');
+            character_info_container.classList.add(
+                `h-[${container_height}px]`,
+                'bg-gray-600/40',
+                'border',
+                'border-slate-600',
+                'rounded-md',
+                'items-start',
+                'justify-center',
+            )
         }
     }
     
