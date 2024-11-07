@@ -15,6 +15,8 @@ if(is_user_is_on_mobile_device() == true){
     let character_statistics_progressbar_ap_label = document.createElement('label');
     let character_statistics_progressbar_ap_content = document.createElement('div');
     let character_statistics_progressbar_ap_text = document.createElement('span');
+    let character_statistic_fulldisplay_button_i = document.createElement('i');
+
 
     character_main_container.classList.add(
         'w-[full]',
@@ -28,7 +30,7 @@ if(is_user_is_on_mobile_device() == true){
     character_statistics_progressbar_fieldset.classList.add(
         'flex',
         'w-[100%]',
-        'p-2',
+        'p-1',
         'items-start',
         'justify-center',
         'gap-1',
@@ -60,7 +62,7 @@ if(is_user_is_on_mobile_device() == true){
         'text-white',
         'text-xs',
     );
-    character_statistics_progressbar_hp_label.textContent = "HULL POINTS:"
+    character_statistics_progressbar_hp_label.textContent = "Hull points:"
     character_statistics_progressbar_hp_content.classList.add(
         'bg-blue-600',
         'leading-none',
@@ -93,7 +95,7 @@ if(is_user_is_on_mobile_device() == true){
         'text-white',
         'text-xs',
     )
-    character_statistics_progressbar_move_label.textContent = "MOVEMENT POINTS:"
+    character_statistics_progressbar_move_label.textContent = "Movement points:"
     character_statistics_progressbar_move_content.classList.add(
         'bg-blue-600',
         'leading-none',
@@ -125,7 +127,7 @@ if(is_user_is_on_mobile_device() == true){
         'text-white',
         'text-xs',
     );
-    character_statistics_progressbar_ap_label.textContent = "ACTION POINTS:"
+    character_statistics_progressbar_ap_label.textContent = "Action points:"
     character_statistics_progressbar_ap_content.classList.add(
         'bg-blue-600',
         'leading-none',
@@ -143,6 +145,15 @@ if(is_user_is_on_mobile_device() == true){
         'text-blue-100',
         'text-center',
     );
+    
+    character_statistic_fulldisplay_button_i.classList.add(
+        "fa-solid", 
+        "fa-id-badge",
+        "fa-2x",
+        "mx-auto",
+        "text-emerald-400"
+    );
+
 
     for (let i = 0; i < map_informations['pc'].length; i++) {
         if (map_informations['pc'][i].user.user == current_user_id) {
@@ -173,6 +184,7 @@ if(is_user_is_on_mobile_device() == true){
             character_statistics_progressbar_fieldset.append(character_statistics_progressbar_move_div);
             character_statistics_progressbar_fieldset.append(character_statistics_progressbar_ap_label);
             character_statistics_progressbar_fieldset.append(character_statistics_progressbar_ap_div);
+            character_statistics_progressbar_fieldset.append(character_statistic_fulldisplay_button_i);
         
             character_main_container.append(character_statistics_progressbar_fieldset);
             character_main.append(character_main_container)

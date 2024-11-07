@@ -3,7 +3,7 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="map-background" class="lg:w-6/12 w-full 2xl:mx-0 xl:mx-2 2xl:mb-0 mx-0 order-2 2xl:h-[75vh] xl:h-[80%] flex item-center justify-center 2xl:bg-[url('/static/js/game/assets/ux/border-container-withbg-wide.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center lg:mb-0">
+<div id="map-background" class="lg:w-6/12 w-full order-2 flex place-content-center 2xl:bg-[url('/static/js/game/assets/ux/border-container-withbg-wide.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center lg:mb-0">
     <div class="flex self-center item-center">
         <div class="grid">
             <table class="tabletop-view invisible">
@@ -32,21 +32,23 @@
     </div>
     <div id="modal-container"></div>
 </div>
-<div class="w-full flex justify-center lg:hidden lg:order-99 order-3 mb-1 mt-1" dir="ltr" id="mobile-cross">
-    <div class="w-[75px] h-[150px] flex flex-col">
-        <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[47px] h-[25px] inset-center"/></button>
-        <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left"><i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-        <button type='button' class="flex-1 w-full pb-5 relative" id="top-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
-    </div>
-    <div class="w-[75px] h-[150px] flex flex-col" dir="ltr">
-        <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top"><i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-        <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center"><i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon"></i></button>
-        <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom"><i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-    </div>
-    <div class="w-[75px] h-[150px] flex flex-col" dir="rtl">
-        <button type='button' class="flex-1 w-full pb-5 relative"><i class="text-emerald-400 absolute top-0" id="bottom-left"></i></button>
-        <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right"><i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-        <button type='button' class="flex-1 w-full pb-5 relative" id="bottom-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
+<div class="w-full flex place-content-center lg:hidden lg:order-99 order-3 mb-2 mt-2 gap-1 " dir="ltr" id="mobile-cross">
+    <div class="flex w-2/4 justify-end lg:hidden lg:order-99 order-3 mb-2 mt-2">
+        <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded ">
+            <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/></button>
+            <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left"><i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+            <button type='button' class="flex-1 w-full pb-5 relative" id="top-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
+        </div>
+        <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="ltr">
+            <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top"><i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+            <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center"><i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon"></i></button>
+            <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom"><i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+        </div>
+        <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="rtl">
+            <button type='button' class="flex-1 w-full pb-5 relative"><i class="text-emerald-400 absolute top-0" id="bottom-left"></i></button>
+            <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right"><i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+            <button type='button' class="flex-1 w-full pb-5 relative" id="bottom-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
+        </div>
     </div>
 </div>
 

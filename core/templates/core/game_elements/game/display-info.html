@@ -1,27 +1,32 @@
 {% load static %}
 {% load i18n %}
-<div class="w-full overflow-hidden flex flex-row order-1 p-1 mx-auto min-[2000px]:text-xl 2xl:text-base text-sm 2xl:mb-2 mb-1 bg-gray-800/40 2xl:h-auto text-white 2xl:border-b border-b border-solid border-slate-600 2xl:border-slate-600/0">
+<div class="w-full overflow-hidden flex flex-row order-1 p-1 mx-auto min-[2000px]:text-xl 2xl:text-base md:text-sm text-xs 2xl:mb-2 mb-1 bg-gray-800/40 2xl:h-auto text-white 2xl:border-b border-b border-solid border-slate-600 2xl:border-slate-600/0">
+  
+  <div id="mobile-info-player-container" class="flex flex-col w-1/2 lg:item-center item-end lg:hidden inline gap-1 m-1">
+    
+  </div>
+
   <div id="info-sector-container" class="flex flex-col lg:w-full w-1/2 lg:text-center item-start m-1">
-    <div class="lg:p-0 p-2 lg:gap-0 gap-2 lg:bg-gray-800/0 bg-gray-600/40 lg:border-0 border border-slate-600 rounded-md">
-      <p class="font-shadow lg:text-md text-sm"><b>{% translate "Sector" %}:</b> {{ map_informations.sector.name }}</p>
-      <p class="font-shadow lg:text-md text-sm"><b>{% translate "Owned by" %}:</b> {{ map_informations.sector.faction.name }}</p>
-      <p class="font-shadow lg:text-md text-sm"><b>{% translate "Security" %}:</b> {{ map_informations.sector.security.translated_name }}</p>
-      <div class="w-full mx-auto flex lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1">
+    <div class="lg:p-0 p-2 lg:gap-0 gap-2">
+      <p class="font-shadow lg:text-sm text-xs"><b>{% translate "Sector" %}:</b> {{ map_informations.sector.name }}</p>
+      <p class="font-shadow lg:text-sm text-xs"><b>{% translate "Owned by" %}:</b> {{ map_informations.sector.faction.name }}</p>
+      <p class="font-shadow lg:text-sm text-xs"><b>{% translate "Security" %}:</b> {{ map_informations.sector.security.translated_name }}</p>
+      <div class="w-full mx-auto flex lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1 mt-1">
         <span class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
-          <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye lg:p-2 p-0.5"></i></label>
-          <span id="player-coord-y" class="bg-neutral-400 lg:text-md text-sm font-bold p-0.5"></span>
-          <span id="player-coord-x" class="bg-emerald-400 lg:text-md text-sm font-bold p-0.5 rounded-r"></span>
+          <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye p-0.5"></i></label>
+          <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
+          <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
         </span>
-        <span class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex justify-center items-center">
-          <label for="target-coord-name"><i class="fa-solid fa-satellite-dish lg:p-2 p-0.5"></i></label>
-          <span id="target-coord-name" class="font-bold lg:text-md text-sm bg-neutral-600 p-0.5 gap-1 font-shadow">{% translate 'Nothing selected' %}</span>
-          <span id="target-coord-y" class="bg-neutral-400 lg:text-md text-sm font-bold p-0.5"></span>
-          <span id="target-coord-x" class="bg-emerald-400 lg:text-md text-sm font-bold p-0.5 rounded-r"></span>
+        <span class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-stretch lg:w-auto w-full">
+          <label for="target-coord-name"><i class="fa-solid fa-satellite-dish p-1"></i></label>
+          <span id="target-coord-name" class="font-bold bg-neutral-600 px-1.5 py-1 gap-1 font-shadow truncate">{% translate 'Nothing selected' %}</span>
+          <span id="target-coord-y" class=" bg-neutral-400 font-bold px-1.5 py-1 justify-self-end hidden"></span>
+          <span id="target-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 justify-self-end rounded-r hidden"></span>
+        </span>
+        <span class="flex mx-auto mt-1 lg:hidden">
+          <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400"></i>
         </span>
       </div>
     </div>
-  </div>
-  <div id="mobile-info-player-container" class="flex flex-col w-1/2 lg:item-center item-end lg:hidden inline gap-2 m-1">
-    
   </div>
 </div>
