@@ -420,7 +420,7 @@ if(!is_user_is_on_mobile_device() == true){
         "p-1"
     );
 
-    character_other_modules_fieldset_legend_svg.id = "electronicWarfare-module-menu";
+    character_other_modules_fieldset_legend_svg.id = "otherModules-module-menu";
     character_other_modules_fieldset_legend.addEventListener('click', function() {
         hide_display_modules(this);
     })

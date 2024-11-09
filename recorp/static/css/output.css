@@ -722,6 +722,10 @@ video {
   top: 2.5rem;
 }
 
+.top-40 {
+  top: 10rem;
+}
+
 .isolate {
   isolation: isolate;
 }
@@ -877,6 +881,10 @@ video {
 
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mt-\[40px\] {
+  margin-top: 40px;
 }
 
 .box-border {
@@ -1146,6 +1154,10 @@ video {
   width: 40px;
 }
 
+.w-\[40vw\] {
+  width: 40vw;
+}
+
 .w-\[5\%\] {
   width: 5%;
 }
@@ -1190,112 +1202,8 @@ video {
   width: 100%;
 }
 
-.w-\[80\] {
-  width: 80;
-}
-
-.w-\[80\%\] {
-  width: 80%;
-}
-
-.w-\[60\%\] {
-  width: 60%;
-}
-
-.w-\[65\%\] {
-  width: 65%;
-}
-
-.w-\[85\%\] {
-  width: 85%;
-}
-
-.w-\[70\%\] {
-  width: 70%;
-}
-
-.w-\[1250\] {
-  width: 1250;
-}
-
-.w-\[1250px\] {
-  width: 1250px;
-}
-
-.w-\[125px\] {
-  width: 125px;
-}
-
-.w-\[50px\] {
-  width: 50px;
-}
-
-.w-\[150px\] {
-  width: 150px;
-}
-
-.w-\[180px\] {
-  width: 180px;
-}
-
-.w-\[18vw\] {
-  width: 18vw;
-}
-
-.w-\[10vw\] {
-  width: 10vw;
-}
-
-.w-\[15vw\] {
-  width: 15vw;
-}
-
-.w-\[100vw\] {
-  width: 100vw;
-}
-
-.w-\[30vw\] {
-  width: 30vw;
-}
-
-.w-\[40vw\] {
-  width: 40vw;
-}
-
 .max-w-2xl {
   max-width: 42rem;
-}
-
-.max-w-\[90\%\] {
-  max-width: 90%;
-}
-
-.max-w-\[80\%\] {
-  max-width: 80%;
-}
-
-.max-w-\[50\%\] {
-  max-width: 50%;
-}
-
-.max-w-\[100\%\] {
-  max-width: 100%;
-}
-
-.max-w-\[85\%\] {
-  max-width: 85%;
-}
-
-.max-w-\[60\%\] {
-  max-width: 60%;
-}
-
-.max-w-\[65\%\] {
-  max-width: 65%;
-}
-
-.max-w-\[70\%\] {
-  max-width: 70%;
 }
 
 .flex-1 {
@@ -2625,6 +2533,11 @@ video {
   background-color: rgb(9 9 11 / 0.7);
 }
 
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -2847,6 +2760,16 @@ video {
   padding-right: 1.5rem;
 }
 
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -2870,16 +2793,6 @@ video {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-.py-0 {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-.py-0\.5 {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
 }
 
 .pb-5 {
