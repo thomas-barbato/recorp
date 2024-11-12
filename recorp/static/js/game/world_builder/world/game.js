@@ -62,6 +62,10 @@ window.addEventListener('load', () => {
         map_informations.pc
     );
 
+    if(is_user_is_on_mobile_device() === true){
+        create_chat_modal(map_informations.chat_messages);
+    }
+
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         switch (data.type) {

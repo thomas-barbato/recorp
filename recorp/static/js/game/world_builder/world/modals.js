@@ -1,4 +1,5 @@
 function open_close_modal(id) {
+    console.log("ok")
     let e = document.querySelector('#' + id);
     if (e) {
         e.classList.contains('hidden') == true ? e.classList.remove('hidden') : e.classList.add('hidden');
@@ -1004,4 +1005,55 @@ function check_radio_btn_and_swap_color(id, module_id) {
 
         }
     }
+}
+
+function create_chat_modal(data){
+    let modal_container = document.querySelector("#modal-container");
+    let modal_open_button = document.querySelector('#chat-btn');
+    modal_open_button.addEventListener('touchstart', function(){
+        open_close_modal('modal-chat')
+    })
+    let e = document.createElement('div');
+    e.id = "modal-chat";
+    e.setAttribute('aria-hidden', true);
+    e.setAttribute('tabindex', -1);
+    e.classList.add(
+        'hidden',
+        'overflow-y-auto',
+        'overflow-x-hidden',
+        'fixed',
+        'top-0',
+        'right-0',
+        'left-0',
+        'z-50',
+        'justify-center',
+        'items-center',
+        'w-full',
+        'h-full',
+        'md:inset-0',
+        'backdrop-blur-sm',
+        'bg-black/20',
+        'border-1',
+    );
+    
+    let container_div = document.createElement('div');
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+
+    let header_container_div = document.createElement('div');
+    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
+    header_container_div.textContent = "ok test chat"
+
+    let content_div = document.createElement('div');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
+
+    let footer_container_div = document.createElement('div');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
+
+    container_div.append(header_container_div);
+    container_div.append(content_div);
+    container_div.append(footer_container_div);
+
+    e.append(container_div);
+
+    modal_container.append(e)
 }

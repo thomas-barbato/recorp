@@ -38,6 +38,7 @@ class StoreInCache:
         sector_data["sector_element"] = []
         sector_data["pc"] = []
         sector_data["npc"] = []
+        sector_data["messages"] = []
 
         sector_data["sector"] = {
             "id": pk,

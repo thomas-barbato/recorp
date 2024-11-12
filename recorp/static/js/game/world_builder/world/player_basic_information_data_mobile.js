@@ -28,7 +28,7 @@ if(is_user_is_on_mobile_device() == true){
 
     character_statistics_progressbar_fieldset.classList.add(
         'flex',
-        'w-[100%]',
+        'w-full',
         'p-1',
         'items-start',
         'justify-center',
@@ -213,6 +213,12 @@ if(is_user_is_on_mobile_device() == true){
 
             let player_modal_container_body_otherModule_module_fieldset = document.createElement('fieldset');
             let player_modal_container_body_otherModule_module_fieldset_legend = document.createElement('legend');
+
+            player_modal_container.classList.add(
+                'w-[80vw]',
+                'h-[100vh]',
+                'overflow-hidden'
+            )
 
             character_statistics_progressbar_hp_content.style.width = hp_percent;
             character_statistics_progressbar_hp_text.textContent = `${map_informations['pc'][i].ship.current_hp} / ${map_informations['pc'][i].ship.max_hp}`;
@@ -896,21 +902,6 @@ if(is_user_is_on_mobile_device() == true){
             player_modal_container.append(player_modal_container_content_div)
             player_modal.append(player_modal_container);
             character_modal.append(player_modal);
-        }
-    }
-
-    function hide_display_modules(e) {
-        let parent_element = e.parentNode;
-        let element_legend_svg = parent_element.querySelector('.legend-svg');
-        let element = parent_element.querySelectorAll('.module-container');
-        for (let i = 0; i < element.length; i++) {
-            if (element[i].classList.contains("hidden")) {
-                element[i].classList.remove('hidden');
-                element_legend_svg.classList.remove('rotate-180');
-            } else {
-                element[i].classList.add('hidden');
-                element_legend_svg.classList.add('rotate-180');
-            }
         }
     }
 }

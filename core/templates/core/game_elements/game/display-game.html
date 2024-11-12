@@ -32,7 +32,7 @@
     </div>
     <div id="modal-container"></div>
 </div>
-<div class="w-full flex place-content-center lg:hidden lg:order-99 order-3 mb-2 mt-2 gap-1 " dir="ltr" id="mobile-cross">
+<div class="w-full flex place-content-center lg:hidden lg:order-99 order-3 gap-1 " dir="ltr" id="mobile-cross">
     <div class="flex w-2/4 justify-end lg:hidden lg:order-99 order-3 mb-2 mt-2">
         <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded ">
             <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/></button>
@@ -53,8 +53,8 @@
 </div>
 
 <script src="{% static 'world_builder/world/game.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/world/player_data.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/world/player_data_mobile.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/world/player_basic_information_data.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/world/player_basic_information_data_mobile.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/classes/player.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/modals.js'%}" type='text/javascript'></script>

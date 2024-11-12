@@ -280,7 +280,11 @@ function add_pc(data) {
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 
                 if(!is_user_is_on_mobile_device() == true){
-                    entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
+                    if (data[i].user.user != current_user_id) {
+                        entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
+                    } else {
+                        entry_point_border.setAttribute(action_listener_touch_click, "reverse_player_ship_display()");
+                    }
                 }
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
