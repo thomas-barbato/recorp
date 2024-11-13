@@ -93,7 +93,8 @@ class GameConsumer(WebsocketConsumer):
                         "message":{
                             "user_id": p.get_other_player_user_id(message["player"]),
                             "player" : store.get_specific_player_data(p.get_player_id(), "pc"),
-                            "sector": store.get_specific_sector_data("sector")
+                            "sector": store.get_specific_sector_data("sector"),
+                            "move_cost": message["move_cost"]
                         }
                     }
         else:

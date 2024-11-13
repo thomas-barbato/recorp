@@ -104,7 +104,8 @@ function update_player_pos_display_after_move(data){
     let ship_size_y = data.player.ship.size.size_y;
     let ship_size_x = data.player.ship.size.size_x;
     let is_reversed = data.player.ship.is_reversed;
-    let coordinates_array_to_disable_button = [];   
+    let coordinates_array_to_disable_button = [];
+    let current_player_ship_tooltip = "";
 
 
     for(let i = 0; i < current_player_ship.length; i++){
@@ -114,6 +115,13 @@ function update_player_pos_display_after_move(data){
         current_player_ship[i].querySelector('.ship').remove();
         current_player_ship[i].querySelector('.ship-reversed').remove();
         current_player_ship[i].querySelector('span').remove();
+
+        
+
+        if(current_player_ship[i].querySelector('ul')){
+            current_player_ship_tooltip = current_player_ship[i].querySelector('ul');
+            current_player_ship[i].querySelector('ul').innerHTML = "";
+        }
 
         let old_pos_id_split = current_player_ship[i].id.split('_')
 
@@ -141,6 +149,10 @@ function update_player_pos_display_after_move(data){
             let space_ship = document.createElement('div');
             let space_ship_reversed = document.createElement('div');
 
+            if(row_i == 0 && col_i == 0){
+                entry_point.append(current_player_ship_tooltip)
+            }
+
             entry_point.classList.add('uncrossable');
             entry_point.setAttribute('size_x', ship_size_x);
             entry_point.setAttribute('size_y', ship_size_y);
@@ -155,6 +167,7 @@ function update_player_pos_display_after_move(data){
             space_ship.classList.add('ship');
             space_ship.style.backgroundPositionX = `-${col_i}px`;
             space_ship.style.backgroundPositionY = `-${row_i}px`;
+            
 
             space_ship_reversed.style.backgroundImage = "url('" + ship_url_reversed_img + "')";
             space_ship_reversed.classList.add('ship-reversed');
@@ -219,7 +232,39 @@ function update_player_pos_display_after_move(data){
         remaining_movement_span.textContent = `${data.player.ship.current_movement} / ${data.player.ship.max_movement}`;
 
     }
+
+    console.log(data)
+    occured_event_display_on_map("movement", false, data.player.user.player, value=data.move_cost)
     if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
+    }
+}
+
+function occured_event_display_on_map(event_type, is_using_timer, user_id, value=0){ 
+    
+    if(event_type == "movement"){
+        
+        let element = document.querySelector(`#tooltip-pc_${user_id}`);
+        if(element){
+            let movement_li = document.createElement('li');
+            let movement_li_icon = document.createElement('img');
+            let movement_li_value = document.createElement('span');
+
+            movement_li.classList.add('flex', 'flex-row', 'gap-1');
+
+            movement_li_icon.src = '/static/js/game/assets/ux/movement-icon.svg';
+            movement_li_icon.classList.add(
+                'w-[2vw]',
+                'h-[2vh]',
+            )
+            
+            movement_li_value.classList.add('text-teal-300', 'p-1', 'w-full', 'font-shadow')
+            movement_li_value.textContent = `-${value}`;
+
+            movement_li.append(movement_li_value);
+            movement_li.append(movement_li_icon);
+
+            element.append(movement_li);
+        }
     }
 }

@@ -409,6 +409,7 @@ if(!is_user_is_on_mobile_device() == true){
         'border-slate-600',
         'rounded-md'
     );
+    
     character_other_modules_fieldset_legend.classList.add(
         "text-md",
         "md:text-start",
