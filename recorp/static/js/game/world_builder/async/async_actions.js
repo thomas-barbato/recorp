@@ -106,7 +106,7 @@ function update_player_pos_display_after_move(data){
     let is_reversed = data.player.ship.is_reversed;
     let coordinates_array_to_disable_button = [];
     let current_player_ship_tooltip = "";
-
+    let current_player_ship_tooltip_movement = "";
 
     for(let i = 0; i < current_player_ship.length; i++){
         current_player_ship[i].removeAttribute("onclick");
@@ -120,7 +120,10 @@ function update_player_pos_display_after_move(data){
 
         if(current_player_ship[i].querySelector('ul')){
             current_player_ship_tooltip = current_player_ship[i].querySelector('ul');
-            current_player_ship[i].querySelector('ul').innerHTML = "";
+            if(current_player_ship_tooltip.querySelector("li#movement-information-display")){
+                console.log("FINDED")
+            }
+            current_player_ship[i].querySelector('ul').remove();
         }
 
         let old_pos_id_split = current_player_ship[i].id.split('_')
@@ -141,17 +144,22 @@ function update_player_pos_display_after_move(data){
 
     for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
+            
             let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
             let entry_point_border = entry_point.querySelector('span');
+
+            if(row_i == ((atlas.tilesize * ship_size_y) - atlas.tilesize) && col_i == 0){
+                if(current_player_ship_tooltip.querySelector('li#movement-information-display')){
+                    current_player_ship_tooltip.querySelector('li#movement-information-display').remove();
+                }
+                entry_point.append(current_player_ship_tooltip);
+            }
+
             let div = entry_point.querySelector('div');
             let ship_url = "/static/js/game/assets/ships/" + data.player.ship.image + '.png';
             let ship_url_reversed_img = "/static/js/game/assets/ships/" + data.player.ship.image + '-reversed.png';
             let space_ship = document.createElement('div');
             let space_ship_reversed = document.createElement('div');
-
-            if(row_i == 0 && col_i == 0){
-                entry_point.append(current_player_ship_tooltip)
-            }
 
             entry_point.classList.add('uncrossable');
             entry_point.setAttribute('size_x', ship_size_x);
@@ -233,7 +241,6 @@ function update_player_pos_display_after_move(data){
 
     }
 
-    console.log(data)
     occured_event_display_on_map("movement", false, data.player.user.player, value=data.move_cost)
     if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
@@ -251,11 +258,14 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
             let movement_li_value = document.createElement('span');
 
             movement_li.classList.add('flex', 'flex-row', 'gap-1');
+            movement_li.id = "movement-information-display";
 
             movement_li_icon.src = '/static/js/game/assets/ux/movement-icon.svg';
             movement_li_icon.classList.add(
-                'w-[2vw]',
-                'h-[2vh]',
+                'lg:w-[2vw]',
+                'lg:h-[2vh]',
+                'w-[4vw]',
+                'h-[4vh]'
             )
             
             movement_li_value.classList.add('text-teal-300', 'p-1', 'w-full', 'font-shadow')
@@ -265,6 +275,7 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
             movement_li.append(movement_li_icon);
 
             element.append(movement_li);
+            fade_effect(element.querySelector("#movement-information-display"), 300)
         }
     }
 }

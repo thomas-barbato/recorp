@@ -24,6 +24,23 @@ function reverse_player_ship_display() {
     });
 }
 
+function fade_effect(target, timer) {
+    console.log(target)
+    var fadeTarget = target;
+    var fadeEffect = setInterval(function () {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+        }
+        if (fadeTarget.style.opacity > 0) {
+            fadeTarget.style.opacity -= 0.1;
+        } else {
+            clearInterval(fadeEffect);
+            fadeTarget.remove();
+        }
+    }, timer);
+
+}
+
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
     let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
@@ -37,7 +54,7 @@ window.addEventListener('load', () => {
     );
 
     gameSocket.onopen = function() {
-        console.log("connected");
+        console.log("You are now connected");
     };
 
     gameSocket.onclose = function() {

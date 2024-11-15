@@ -99,7 +99,6 @@ function add_foreground(data){
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + "modal-" + element_data["name"] + "')");
-                
 
                 img_div.classList.add(
                     'relative',
@@ -265,7 +264,7 @@ function add_pc(data) {
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
-                if(row_i == 0 && col_i == 0){
+                if(row_i == ((atlas.tilesize * ship_size_y) - atlas.tilesize) && col_i == 0){
                     let entry_point_tooltip_container_ul = document.createElement('ul')
                     entry_point_tooltip_container_ul.id = `tooltip-pc_${data[i].user.player}`;
                     entry_point_tooltip_container_ul.classList.add(
@@ -283,11 +282,13 @@ function add_pc(data) {
                         'list-none',
                         'text-justify',
                         'border-1',
-                        'bg-neutral-600/40',
                         'm-w-[100%]',
                         'tooltip'
                     );
-                    
+                    if(entry_point_tooltip_container_ul.length >= 3){
+                        let tooltip_container = entry_point.querySelectorAll('ul');
+                        tooltip_container[0].remove();
+                    }
                     entry_point.append(entry_point_tooltip_container_ul);
                 }
                 let entry_point_border = entry_point.querySelector('span');
