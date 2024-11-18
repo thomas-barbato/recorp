@@ -161,8 +161,6 @@ if(is_user_is_on_mobile_device() == true){
             let move_percent = `${Math.round((map_informations['pc'][i].ship.current_movement * 100) / (map_informations['pc'][i].ship.max_movement))}%`;
             let ap_percent = `${Math.round((map_informations['pc'][i].user.current_ap * 100) / (map_informations['pc'][i].user.max_ap))}%`;
 
-            
-
             character_statistic_fulldisplay_button_i.addEventListener('touchstart', function(){
                 open_close_modal("player-modal");
             })
@@ -324,7 +322,7 @@ if(is_user_is_on_mobile_device() == true){
             player_modal_container_header_close_button.title = `close`;
             player_modal_container_header_close_button.classList.add('inline-block', 'w-[20px]', 'h-[20px]', 'absolute', 'top-10', 'right-0', 'mt-2', 'pr-2');
             player_modal_container_header_close_button.addEventListener('touchstart', function(){
-               open_close_modal('player-modal');
+                open_close_modal('player-modal');
             });
             player_modal_container_header_img.id = "user-avatar";
             player_modal_container_header_img.classList.add(

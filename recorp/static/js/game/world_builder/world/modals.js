@@ -1,5 +1,4 @@
 function open_close_modal(id) {
-    console.log("ok")
     let e = document.querySelector('#' + id);
     if (e) {
         e.classList.contains('hidden') == true ? e.classList.remove('hidden') : e.classList.add('hidden');
@@ -885,73 +884,6 @@ let display_attack_options = function(e_id, element) {
         other_option_svg.classList.contains('rotate-180') === true ? other_option_svg.classList.add('rotate-180') : other_option_svg.classList.remove('rotate-180');
     }
 }
-
-function set_range_finding(target_id, player_id, max_range, ship_size_y, ship_size_x, other_ship_size_y, other_ship_size_x) {
-    let player = player_id.split('_');
-    let target = target_id.split('_');
-
-    let player_y = parseInt(player[0]);
-    let player_x = parseInt(player[1]);
-    let target_y = parseInt(target[0]);
-    let target_x = parseInt(target[1]);
-    let can_be_attacked = false;
-    let ship_gap_x_right = 1;
-    let ship_gap_x_left = 1;
-    let ship_gap_y_top = 1;
-    let ship_gap_y_bottom = 1;
-    let other_ship_start_x = 0;
-    let other_ship_end_x = 0;
-    let other_ship_start_y = 0;
-    let other_ship_end_y = 0;
-
-    if (ship_size_x == 3 && ship_size_y == 3) {
-        ship_gap_x_right = 3;
-        ship_gap_y_bottom = 3;
-    } else if (ship_size_x == 3 && ship_size_y == 1) {
-        ship_gap_x_right = 3;
-    } else if (ship_size_x == 2 && ship_size_y == 1) {
-        ship_gap_x_right = 2;
-    }
-
-    let target_zone = []
-
-    if (other_ship_size_y == 1 && other_ship_size_x == 1) {
-        target_zone.push(`${target_y}_${target_x}`)
-    } else {
-        if (other_ship_size_x == 3 && other_ship_size_y == 3) {
-            other_ship_end_x = 3;
-            other_ship_end_y = 3;
-        } else if (other_ship_size_x == 3 && other_ship_size_y == 1) {
-            other_ship_end_x = 3;
-            other_ship_end_y = 1;
-        } else if (other_ship_size_x == 2 && other_ship_size_y == 1) {
-            other_ship_end_x = 2;
-            other_ship_end_y = 1;
-        }
-        for (let y = (target_y - other_ship_start_y); y < (target_y + other_ship_end_y); y++) {
-            for (let x = (target_x - other_ship_start_x); x < (target_x + other_ship_end_x); x++) {
-                target_zone.push(`${y}_${x}`)
-            }
-        }
-    }
-
-    let start_y = (player_y - max_range - ship_gap_y_top) + 1 > 0 ? (player_y - max_range - ship_gap_y_top) + 1 : 0;
-    let end_y = (player_y + max_range + ship_gap_y_bottom) < atlas.row ? (player_y + max_range + ship_gap_y_bottom) : atlas.row;
-    let start_x = (player_x - max_range - ship_gap_x_left) + 1 > 0 ? (player_x - max_range - ship_gap_x_left) + 1 : 0;
-    let end_x = (player_x + max_range + ship_gap_x_right) < atlas.col ? (player_x + max_range + ship_gap_x_right) : atlas.col;
-
-    for (let y = start_y; y < end_y; y++) {
-        for (let x = start_x; x < end_x; x++) {
-            let coord = `${y}_${x}`;
-            if (target_zone.includes(coord)) {
-                can_be_attacked = true;
-                break;
-            }
-        }
-    }
-    return can_be_attacked;
-}
-
 
 function check_radio_btn_and_swap_color(id, module_id) {
     let element = document.querySelector('#' + id);

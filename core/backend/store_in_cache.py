@@ -16,7 +16,7 @@ class StoreInCache:
     def __init__(self, room_name, user_calling):
         self.room = room_name
         self.sector_pk = self.room.split("_")[1]
-        self.user_calling = user_calling
+        self.user_calling = user_calling    
 
     def get_or_set_cache(self):
         if not cache.get(self.room):
@@ -176,7 +176,7 @@ class StoreInCache:
                         max_hp += module["effect"]["hull_hp"]
                     if isinstance(v, str) and "propulsion" in v:
                         max_movement += module["effect"]["bonus_mvt"]
-
+            GetDataFromDB.is_in_range(self.user_calling, data["id"], "pc")
             sector_data["pc"].append(
                 {
                     "user": {
@@ -192,6 +192,7 @@ class StoreInCache:
                         "archetype_name": data["archetype_id__name"],
                         "archetype_data": data["archetype_id__data"],
                         "sector_name": data["sector_id__name"],
+                        "is_reacheable_by_player" : None
                     },
                     "faction": {
                         "name": data["faction_id__name"],

@@ -3,6 +3,7 @@ import os
 from django.core import serializers
 from recorp.settings import BASE_DIR
 from django.contrib.auth.models import User
+from django.db.models import Q
 from core.models import (
     Planet,
     Asteroid,
@@ -246,30 +247,30 @@ class GetDataFromDB:
                 "playership__ship_id__ship_category__ship_size",
             ),
             Npc.objects.filter(sector_id=pk).values(
-                'id',
-                'coordinates',
-                'status',
-                'hp',
-                'npc_template_id__max_hp',
-                'movement',
-                'npc_template_id__max_movement',
-                'ballistic_defense',
-                'npc_template_id__max_ballistic_defense',
-                'thermal_defense',
-                'npc_template_id__max_thermal_defense',
-                'missile_defense',
-                'npc_template_id__max_missile_defense',
-                'npc_template_id__module_id_list',
-                'npc_template_id__difficulty',
-                'npc_template_id__name',
-                'npc_template_id__id',
-                'faction_id__name',
-                'npc_template_id__ship_id__image',
-                'npc_template_id__ship_id__ship_category_id__ship_size',
-                'npc_template_id__ship_id__ship_category_id__name',
-                'npc_template_id__ship_id__ship_category_id__description',
-                'npc_template_id__ship_id__name'
-            )
+                "id",
+                "coordinates",
+                "status",
+                "hp",
+                "npc_template_id__max_hp",
+                "movement",
+                "npc_template_id__max_movement",
+                "ballistic_defense",
+                "npc_template_id__max_ballistic_defense",
+                "thermal_defense",
+                "npc_template_id__max_thermal_defense",
+                "missile_defense",
+                "npc_template_id__max_missile_defense",
+                "npc_template_id__module_id_list",
+                "npc_template_id__difficulty",
+                "npc_template_id__name",
+                "npc_template_id__id",
+                "faction_id__name",
+                "npc_template_id__ship_id__image",
+                "npc_template_id__ship_id__ship_category_id__ship_size",
+                "npc_template_id__ship_id__ship_category_id__name",
+                "npc_template_id__ship_id__ship_category_id__description",
+                "npc_template_id__ship_id__name",
+            ),
         )
 
     @staticmethod
@@ -352,44 +353,88 @@ class GetDataFromDB:
         elif value == 0:
             result = "empty"
         return result
-    
+
     @staticmethod
     def get_template_data():
         # Use list to be able to use join and serialize...
-        return list(NpcTemplate.objects.values(
-            'id',
-            'name',
-            'ship_id__image',
-            'max_hp',
-            'max_movement',
-            'difficulty',
-            'max_missile_defense',
-            'max_thermal_defense',
-            'max_ballistic_defense',
-            'behavior'
-        ))
-    
+        return list(
+            NpcTemplate.objects.values(
+                "id",
+                "name",
+                "ship_id__image",
+                "max_hp",
+                "max_movement",
+                "difficulty",
+                "max_missile_defense",
+                "max_thermal_defense",
+                "max_ballistic_defense",
+                "behavior",
+            )
+        )
+
     @staticmethod
     def get_selected_ship_data(template_id):
-        ship_id = NpcTemplate.objects.filter(id=template_id).values_list("ship_id", flat=True)[0]
-        return Ship.objects.filter(id=ship_id).values(
-            'id',
-            'name',
-            'image',
-            'ship_category_id__ship_size'
+        ship_id = NpcTemplate.objects.filter(id=template_id).values_list(
+            "ship_id", flat=True
         )[0]
-        
+        return Ship.objects.filter(id=ship_id).values(
+            "id", "name", "image", "ship_category_id__ship_size"
+        )[0]
+
     @staticmethod
     def get_related_npc_on_sector_data(sector_id):
         # Use list to be able to use join and serialize...
-        return list(Npc.objects.filter(sector_id=sector_id).values(
-            'id',
-            'coordinates',
-            'npc_template_id__id',
-            'npc_template_id__name',
-            'npc_template_id__ship_id__image',
-            'npc_template_id__ship_id__ship_category_id__ship_size',
-            'npc_template_id__ship_id__name'
-        ))
-        
-        
+        return list(
+            Npc.objects.filter(sector_id=sector_id).values(
+                "id",
+                "coordinates",
+                "npc_template_id__id",
+                "npc_template_id__name",
+                "npc_template_id__ship_id__image",
+                "npc_template_id__ship_id__ship_category_id__ship_size",
+                "npc_template_id__ship_id__name",
+            )
+        )
+
+    @staticmethod
+    def is_in_range(id, target_id, target_type):
+
+        print(target_id)
+        player_id = Player.objects.filter(user_id=id).values_list("id", flat=True)[0]
+
+        if player_id == target_id:
+            return None
+
+        data = ""
+        in_range = False
+
+        player_data = PlayerShip.objects.filter(
+            player_id=player_id, is_current_ship=True
+        ).values(
+            "player_id__coordinates",
+            "ship_id__ship_category_id__ship_size",
+            "module_id_list",
+        )[0]
+
+        player_module_list = Module.objects.filter(
+            (Q(type="ELECTRONIC_WARFARE") | Q(type="WEAPONRY"))
+            & Q(id__in=player_data["module_id_list"])
+        ).all()
+
+        if target_type == "npc":
+            data = Npc.objects.filter(id=target_id).values(
+                "coordinates", 
+                "npc_template_id__ship_id__ship_category_id__ship_size"
+            )[0]
+
+        elif target_type == "pc":
+            data = PlayerShip.objects.filter(
+                player_id=target_id, is_current_ship=True
+            ).values(
+                "player_id__coordinates", 
+                "ship_id__ship_category_id__ship_size"
+                )[0]
+
+        print(player_data)
+        print("========")
+        print(data)
