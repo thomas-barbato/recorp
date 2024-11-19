@@ -1034,7 +1034,8 @@
             "tier": 1,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 15
+                "aiming_discrease": 15,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1049,7 +1050,8 @@
             "tier": 2,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 20
+                "aiming_discrease": 20,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1064,7 +1066,8 @@
             "tier": 3,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 25
+                "aiming_discrease": 25,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1079,7 +1082,8 @@
             "tier": 4,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 30
+                "aiming_discrease": 30,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1094,7 +1098,8 @@
             "tier": 5,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 35
+                "aiming_discrease": 35,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1109,7 +1114,8 @@
             "tier": 6,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 40
+                "aiming_discrease": 40,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1124,7 +1130,8 @@
             "tier": 7,
             "effect": {
                 "disabled_targeting": true,
-                "aiming_discrease": 45
+                "aiming_discrease": 45,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1250,7 +1257,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 1,
             "effect": {
-                "movement_discrease": 5
+                "movement_discrease": 5,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1264,7 +1272,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 2,
             "effect": {
-                "movement_discrease": 10
+                "movement_discrease": 10,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1278,7 +1287,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 3,
             "effect": {
-                "movement_discrease": 15
+                "movement_discrease": 15,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1292,7 +1302,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 4,
             "effect": {
-                "movement_discrease": 20
+                "movement_discrease": 20,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1306,7 +1317,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 5,
             "effect": {
-                "movement_discrease": 25
+                "movement_discrease": 25,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1320,7 +1332,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 6,
             "effect": {
-                "movement_discrease": 30
+                "movement_discrease": 30,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1334,7 +1347,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 7,
             "effect": {
-                "movement_discrease": 30
+                "movement_discrease": 30,
+                "range": 5
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1348,7 +1362,8 @@
             "type": "ELECTRONIC_WARFARE",
             "tier": 1,
             "effect": {
-                "display_ship_data": true
+                "display_ship_data": true,
+                "range": 50
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"

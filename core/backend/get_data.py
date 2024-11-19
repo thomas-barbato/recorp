@@ -397,44 +397,115 @@ class GetDataFromDB:
         )
 
     @staticmethod
-    def is_in_range(id, target_id, target_type):
+    def is_in_range(sector_id, current_user_id):
 
-        print(target_id)
-        player_id = Player.objects.filter(user_id=id).values_list("id", flat=True)[0]
-
-        if player_id == target_id:
-            return None
-
-        data = ""
-        in_range = False
-
-        player_data = PlayerShip.objects.filter(
-            player_id=player_id, is_current_ship=True
-        ).values(
-            "player_id__coordinates",
-            "ship_id__ship_category_id__ship_size",
-            "module_id_list",
-        )[0]
-
-        player_module_list = Module.objects.filter(
-            (Q(type="ELECTRONIC_WARFARE") | Q(type="WEAPONRY"))
-            & Q(id__in=player_data["module_id_list"])
-        ).all()
-
-        if target_type == "npc":
-            data = Npc.objects.filter(id=target_id).values(
-                "coordinates", 
-                "npc_template_id__ship_id__ship_category_id__ship_size"
-            )[0]
-
-        elif target_type == "pc":
-            data = PlayerShip.objects.filter(
-                player_id=target_id, is_current_ship=True
+        current_player = list(
+            PlayerShip.objects.filter(
+                player_id__user_id=current_user_id, is_current_ship=True
             ).values(
-                "player_id__coordinates", 
-                "ship_id__ship_category_id__ship_size"
-                )[0]
+                "id", 
+                "module_id_list", 
+                "ship_id__ship_category_id__ship_size",
+                "player_id__coordinates"
+            )
+        )[0]
+        
+        current_player_module = (
+            Module.objects.filter(
+                (
+                    (Q(type="ELECTRONIC_WARFARE") | Q(type="WEAPONRY"))
+                    & Q(id__in=current_player["module_id_list"])
+                )
+            ).all(),
+        )
 
-        print(player_data)
-        print("========")
-        print(data)
+        sector_element_dict = {
+            "pc": list(
+                PlayerShip.objects.filter(
+                    player_id__sector_id=sector_id, is_current_ship=True
+                )
+                .exclude(player_id__user_id=current_user_id)
+                .values(
+                    "id",
+                    "player_id__coordinates",
+                    "ship_id__ship_category_id__ship_size",
+                )
+            ),
+            "npc": Npc.objects.filter(sector_id=sector_id).values(
+                "coordinates", "npc_template_id__ship_id__ship_category_id__ship_size"
+            ),
+            "asteroid": AsteroidResource.objects.filter(sector_id=sector_id).values(
+                "id", "data", "source_id__size"
+            ),
+            "station": StationResource.objects.filter(sector_id=sector_id).values(
+                "id", "data", "source_id__size"
+            ),
+            "other_element": PlanetResource.objects.filter(sector_id=sector_id).values(
+                "id", "data", "source_id__size"
+            ),
+        }
+
+        sector_element_data_key = {
+            "pc": {
+                "size": {
+                    "index": "ship_id__ship_category_id__ship_size",
+                    "x": "size_x",
+                    "y": "size_y",
+                },
+                "coord": {
+                    "index": "player_id__coordinates",
+                    "x": "coord_x",
+                    "y": "coord_y"
+                }
+            },
+            "npc":{
+                "size":{
+                    "index": "npc_template_id__ship_id__ship_category_id__ship_size",
+                    "x": "size_x",
+                    "y": "size_y",
+                    
+                },
+                "coord": {
+                    "index": "coordinates",
+                    "x": "x",
+                    "y": "y"
+                }
+            },
+            "other_element": {
+                "size":{
+                    "index": "source_id__size",
+                    "x": "size_x",
+                    "y": "size_y",
+                    
+                },
+                "coord": {
+                    "index": "data",
+                    "x": "coord_x",
+                    "y": "coord_y"
+                }
+                
+            }
+        }
+
+        for index, value in sector_element_dict.items():
+            
+            element = None
+                
+            current_player_size_x = current_player["ship_id__ship_category_id__ship_size"]["size_x"]
+            current_player_size_y = current_player["ship_id__ship_category_id__ship_size"]["size_y"]
+                
+            current_player_x = current_player["player_id__coordinates"]["coord_x"]
+            current_player_y = current_player["player_id__coordinates"]["coord_y"]
+            
+            if index == "asteroid" or index == "station" or index == "other_element":
+                element = sector_element_data_key["other_element"]
+            else:
+                element = sector_element_data_key[index]
+            
+            for item in value:
+                
+                element_size_x = item[element["size"]["index"]][element["size"]["x"]]
+                element_size_y = item[element["size"]["index"]][element["size"]["y"]]
+                
+                element_coord_x = item[element["coord"]["index"]][element["coord"]["x"]]
+                element_coord_y = item[element["coord"]["index"]][element["coord"]["y"]]

@@ -628,7 +628,7 @@ if(!is_user_is_on_mobile_device() == true){
                             let offensive_module_type_small_value = document.createElement('small');
                             let offensive_module_type_small_container = document.createElement('div');
 
-                            offensive_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'py-1');
+                            offensive_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'py-1', 'gap-1');
 
                             offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
                             offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
@@ -669,7 +669,7 @@ if(!is_user_is_on_mobile_device() == true){
                         let electronicWarfare_module_type_small_value = document.createElement('small');
                         let electronicWarfare_module_type_small_container = document.createElement('div');
 
-                        electronicWarfare_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2');
+                        electronicWarfare_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
 
                         electronicWarfare_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
                         electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
@@ -678,7 +678,14 @@ if(!is_user_is_on_mobile_device() == true){
                         electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small_value);
 
                         let content_keys = key.replace('_', ' ');
-                        let content_value = typeof value == 'boolean' ? value : value + '%';
+                        let content_value = undefined;
+
+                        if(content_keys == "range"){
+                            content_value = value;
+                        }else{
+                            content_value = typeof value == 'boolean' ? value : value + '%';
+                        }
+
                         electronicWarfare_module_type_small.textContent = `${content_keys}: `;
                         electronicWarfare_module_type_small_value.textContent = `${content_value}`;
 

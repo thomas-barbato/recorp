@@ -176,7 +176,6 @@ class StoreInCache:
                         max_hp += module["effect"]["hull_hp"]
                     if isinstance(v, str) and "propulsion" in v:
                         max_movement += module["effect"]["bonus_mvt"]
-            GetDataFromDB.is_in_range(self.user_calling, data["id"], "pc")
             sector_data["pc"].append(
                 {
                     "user": {
@@ -231,7 +230,8 @@ class StoreInCache:
                     },
                 }
             )
-
+        
+        GetDataFromDB.is_in_range(self.sector_pk, self.user_calling)
         cache.set(self.room, sector_data)
 
     def get_specific_player_data(
