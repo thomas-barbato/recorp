@@ -725,7 +725,8 @@
             "type": "GATHERING",
             "tier": 1,
             "effect": {
-                "gathering_amount": 15
+                "gathering_amount": 15,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -739,7 +740,8 @@
             "type": "GATHERING",
             "tier": 2,
             "effect": {
-                "gathering_amount": 30
+                "gathering_amount": 30,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -753,7 +755,8 @@
             "type": "GATHERING",
             "tier": 3,
             "effect": {
-                "gathering_amount": 45
+                "gathering_amount": 45,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -767,7 +770,8 @@
             "type": "GATHERING",
             "tier": 4,
             "effect": {
-                "gathering_amount": 60
+                "gathering_amount": 60,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -781,7 +785,8 @@
             "type": "GATHERING",
             "tier": 5,
             "effect": {
-                "gathering_amount": 75
+                "gathering_amount": 75,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -795,7 +800,8 @@
             "type": "GATHERING",
             "tier": 6,
             "effect": {
-                "gathering_amount": 90
+                "gathering_amount": 90,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -809,7 +815,8 @@
             "type": "GATHERING",
             "tier": 7,
             "effect": {
-                "gathering_amount": 105
+                "gathering_amount": 105,
+                "range": 1
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"
@@ -1377,7 +1384,8 @@
             "type": "GATHERING",
             "tier": 1,
             "effect": {
-                "display_mineral_data": true
+                "display_mineral_data": true,
+                "range": 10
             },
             "created_at": "2024-06-04 12:38:15",
             "updated_at": "2024-06-04 12:38:15"

@@ -403,20 +403,25 @@ class GetDataFromDB:
             PlayerShip.objects.filter(
                 player_id__user_id=current_user_id, is_current_ship=True
             ).values(
-                "id", 
-                "module_id_list", 
+                "id",
+                "module_id_list",
                 "ship_id__ship_category_id__ship_size",
-                "player_id__coordinates"
+                "player_id__coordinates",
             )
         )[0]
-        
-        current_player_module = (
+
+        current_player_module = list(
             Module.objects.filter(
                 (
-                    (Q(type="ELECTRONIC_WARFARE") | Q(type="WEAPONRY"))
+                    (
+                        Q(type="ELECTRONIC_WARFARE")
+                        | Q(type="WEAPONRY")
+                        | Q(type="GATHERING")
+                    )
                     & Q(id__in=current_player["module_id_list"])
+                    & Q(effect__has_key="range")
                 )
-            ).all(),
+            ).values("id", "effect"),
         )
 
         sector_element_dict = {
@@ -432,7 +437,9 @@ class GetDataFromDB:
                 )
             ),
             "npc": Npc.objects.filter(sector_id=sector_id).values(
-                "coordinates", "npc_template_id__ship_id__ship_category_id__ship_size"
+                "id",
+                "coordinates",
+                "npc_template_id__ship_id__ship_category_id__ship_size",
             ),
             "asteroid": AsteroidResource.objects.filter(sector_id=sector_id).values(
                 "id", "data", "source_id__size"
@@ -445,6 +452,8 @@ class GetDataFromDB:
             ),
         }
 
+        result_dict = {}
+
         sector_element_data_key = {
             "pc": {
                 "size": {
@@ -455,57 +464,134 @@ class GetDataFromDB:
                 "coord": {
                     "index": "player_id__coordinates",
                     "x": "coord_x",
-                    "y": "coord_y"
-                }
+                    "y": "coord_y",
+                },
             },
-            "npc":{
-                "size":{
+            "npc": {
+                "size": {
                     "index": "npc_template_id__ship_id__ship_category_id__ship_size",
                     "x": "size_x",
                     "y": "size_y",
-                    
                 },
-                "coord": {
-                    "index": "coordinates",
-                    "x": "x",
-                    "y": "y"
-                }
+                "coord": {"index": "coordinates", "x": "x", "y": "y"},
             },
             "other_element": {
-                "size":{
+                "size": {
                     "index": "source_id__size",
                     "x": "size_x",
                     "y": "size_y",
-                    
                 },
-                "coord": {
-                    "index": "data",
-                    "x": "coord_x",
-                    "y": "coord_y"
-                }
-                
-            }
+                "coord": {"index": "data", "x": "coord_x", "y": "coord_y"},
+            },
         }
 
+        current_player_size_x = int(
+            current_player["ship_id__ship_category_id__ship_size"]["size_x"]
+        )
+        current_player_size_y = int(
+            current_player["ship_id__ship_category_id__ship_size"]["size_y"]
+        )
+
+        current_player_x = int(current_player["player_id__coordinates"]["coord_x"])
+        current_player_y = int(current_player["player_id__coordinates"]["coord_y"])
+
         for index, value in sector_element_dict.items():
-            
+
             element = None
-                
-            current_player_size_x = current_player["ship_id__ship_category_id__ship_size"]["size_x"]
-            current_player_size_y = current_player["ship_id__ship_category_id__ship_size"]["size_y"]
-                
-            current_player_x = current_player["player_id__coordinates"]["coord_x"]
-            current_player_y = current_player["player_id__coordinates"]["coord_y"]
-            
+            result_dict[index] = {}
+
             if index == "asteroid" or index == "station" or index == "other_element":
                 element = sector_element_data_key["other_element"]
             else:
                 element = sector_element_data_key[index]
-            
+
             for item in value:
-                
-                element_size_x = item[element["size"]["index"]][element["size"]["x"]]
-                element_size_y = item[element["size"]["index"]][element["size"]["y"]]
-                
-                element_coord_x = item[element["coord"]["index"]][element["coord"]["x"]]
-                element_coord_y = item[element["coord"]["index"]][element["coord"]["y"]]
+
+                result_dict[index][item["id"]] = []
+                element_entire_pos = []
+
+                element_size_x = int(
+                    item[element["size"]["index"]][element["size"]["x"]]
+                )
+                element_size_y = int(
+                    item[element["size"]["index"]][element["size"]["y"]]
+                )
+
+                element_coord_x = int(
+                    item[element["coord"]["index"]][element["coord"]["x"]]
+                )
+                element_coord_y = int(
+                    item[element["coord"]["index"]][element["coord"]["y"]]
+                )
+
+                element_start_y = (
+                    (element_coord_y - element_size_y) + 1
+                    if (element_coord_y - element_size_y) + 1 > 0
+                    else 0
+                )
+                element_end_y = (
+                    (element_coord_y + element_size_y) + 1
+                    if (element_coord_y + element_size_y) + 1 < 40
+                    else 40
+                )
+                element_start_x = (
+                    (element_coord_x - element_size_x) + 1
+                    if (element_coord_x - element_size_x) + 1 > 0
+                    else 0
+                )
+                element_end_x = (
+                    (element_coord_x + element_size_x) + 1
+                    if (element_coord_x + element_size_x) + 1 < 40
+                    else 40
+                )
+
+                for y in range(element_start_y, element_end_y, 1):
+                    for x in range(element_start_x, element_end_x, 1):
+                        element_entire_pos.append(f"{y}_{x}")
+
+                for module in current_player_module:
+
+                    module_id = module["id"]
+                    module_range = int(module["effect"]["range"])
+                    module_effect_is_in_range = False
+
+                    current_player_start_y = (
+                        (current_player_y - module_range - current_player_size_y) + 1
+                        if (current_player_y - module_range - current_player_size_y) + 1
+                        > 0
+                        else 0
+                    )
+                    current_player_end_y = (
+                        (current_player_y + module_range + current_player_size_y) + 1
+                        if (current_player_y + module_range + current_player_size_y) + 1
+                        < 40
+                        else 40
+                    )
+                    current_player_start_x = (
+                        (current_player_x - module_range - current_player_size_x) + 1
+                        if (current_player_x - module_range - current_player_size_x) + 1
+                        > 0
+                        else 0
+                    )
+                    current_player_end_x = (
+                        (current_player_x + module_range + current_player_size_x) + 1
+                        if (current_player_x + module_range + current_player_size_x) + 1
+                        < 40
+                        else 40
+                    )
+
+                    for y in range(current_player_start_y, current_player_end_y, 1):
+                        for x in range(current_player_start_x, current_player_end_x, 1):
+                            if f"{y}_{x}" in element_entire_pos:
+                                module_effect_is_in_range = True
+                                break
+
+                    result_dict[index][item["id"]].append(
+                        {
+                            "type": index,
+                            "module_id": module_id,
+                            "is_in_range": module_effect_is_in_range,
+                        }
+                    )
+
+        return result_dict

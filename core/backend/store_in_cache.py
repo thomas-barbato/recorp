@@ -16,7 +16,7 @@ class StoreInCache:
     def __init__(self, room_name, user_calling):
         self.room = room_name
         self.sector_pk = self.room.split("_")[1]
-        self.user_calling = user_calling    
+        self.user_calling = user_calling
 
     def get_or_set_cache(self):
         if not cache.get(self.room):
@@ -96,7 +96,7 @@ class StoreInCache:
                         "size": GetDataFromDB.get_specific_size(map_element[0]),
                     }
                 )
-                
+
         for data in sector_npc:
             module_list = [
                 {
@@ -110,14 +110,14 @@ class StoreInCache:
                     id__in=data["npc_template_id__module_id_list"]
                 ).values("name", "description", "effect", "type", "id")
             ]
-            
-            max_hp = int(data['npc_template_id__max_hp'])
-            max_movement = int(data['npc_template_id__max_movement'])
-            
+
+            max_hp = int(data["npc_template_id__max_hp"])
+            max_movement = int(data["npc_template_id__max_movement"])
+
             sector_data["npc"].append(
                 {
-                    "npc":{
-                        "id": data['id'],
+                    "npc": {
+                        "id": data["id"],
                         "name": data["npc_template_id__name"],
                         "coordinates": data["coordinates"],
                     },
@@ -131,15 +131,9 @@ class StoreInCache:
                         "max_hp": max_hp,
                         "current_movement": int(data["movement"]),
                         "max_movement": max_movement,
-                        "current_ballistic_defense": data[
-                            "ballistic_defense"
-                        ],
-                        "current_thermal_defense": data[
-                            "thermal_defense"
-                        ],
-                        "current_missile_defense": data[
-                            "missile_defense"
-                        ],
+                        "current_ballistic_defense": data["ballistic_defense"],
+                        "current_thermal_defense": data["thermal_defense"],
+                        "current_missile_defense": data["missile_defense"],
                         "status": data["status"],
                         "category_name": data[
                             "npc_template_id__ship_id__ship_category_id__name"
@@ -147,7 +141,9 @@ class StoreInCache:
                         "category_description": data[
                             "npc_template_id__ship_id__ship_category_id__description"
                         ],
-                        "size": data["npc_template_id__ship_id__ship_category_id__ship_size"],
+                        "size": data[
+                            "npc_template_id__ship_id__ship_category_id__ship_size"
+                        ],
                         "modules": module_list,
                     },
                 }
@@ -191,7 +187,6 @@ class StoreInCache:
                         "archetype_name": data["archetype_id__name"],
                         "archetype_data": data["archetype_id__data"],
                         "sector_name": data["sector_id__name"],
-                        "is_reacheable_by_player" : None
                     },
                     "faction": {
                         "name": data["faction_id__name"],
@@ -218,6 +213,10 @@ class StoreInCache:
                         "module_slot_available": data[
                             "playership__ship_id__module_slot_available"
                         ],
+                        "modules": module_list,
+                        "modules_range": GetDataFromDB.is_in_range(
+                            sector_data["sector"]["id"], data["user_id"]
+                        ),
                         "category_name": data[
                             "playership__ship_id__ship_category__name"
                         ],
@@ -226,12 +225,9 @@ class StoreInCache:
                         ],
                         "size": data["playership__ship_id__ship_category__ship_size"],
                         "is_reversed": data["playership__is_reversed"],
-                        "modules": module_list,
                     },
                 }
             )
-        
-        GetDataFromDB.is_in_range(self.sector_pk, self.user_calling)
         cache.set(self.room, sector_data)
 
     def get_specific_player_data(
@@ -250,8 +246,8 @@ class StoreInCache:
         found_player_index = cache_data.index(found_player)
         if subcategory != "" and search != "":
             return cache_data[found_player_index][subcategory][search]
-        return cache_data[found_player_index] 
-    
+        return cache_data[found_player_index]
+
     def get_specific_sector_data(self, search_item):
         if not cache.get(self.room):
             self.set_sector_data(self.sector_pk)
