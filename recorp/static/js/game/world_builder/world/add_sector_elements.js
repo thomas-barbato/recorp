@@ -130,7 +130,6 @@ function add_npc(data){
         let coord_y = parseInt(data[i]["npc"]["coordinates"].y) + 1;
         let ship_size_x = data[i]["ship"]['size'].size_x;
         let ship_size_y = data[i]["ship"]['size'].size_y;
-
         modal_data = {
             player: {
                 name: data[i].npc.name,
@@ -150,6 +149,7 @@ function add_npc(data){
                 current_movement: data[i].ship.current_movement,
                 status: data[i].ship.status,
                 modules: data[i].ship.modules,
+                modules_range: data[i].ship.modules_range,
             },
             actions: {
                 action_label: map_informations.actions.translated_action_label_msg,
@@ -249,6 +249,7 @@ function add_pc(data) {
                     current_movement: data[i].ship.current_movement,
                     status: data[i].ship.status,
                     modules: data[i].ship.modules,
+                    modules_range: data[i].ship.modules_range,
                 },
                 actions: {
                     action_label: map_informations.actions.translated_action_label_msg,

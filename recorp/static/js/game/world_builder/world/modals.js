@@ -666,8 +666,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     for (let ship_i in map_informations.pc) {
         if (map_informations.pc[ship_i].user.user == current_user_id) {
-            for (let module_i in map_informations.pc[ship_i].ship.modules) {
 
+            for (let module_i in map_informations.pc[ship_i].ship.modules) {
+                console.log(map_informations.pc[ship_i].ship.modules)
                 let module_item_content = document.createElement('div');
                 let module_item_p = document.createElement('p');
 
@@ -727,9 +728,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         let range_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["range"];
                         let min_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
                         let max_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
-                        let user_id = `${map_informations.pc[ship_i].user.coordinates.coord_y-1}_${map_informations.pc[ship_i].user.coordinates.coord_x-1}`;
-                        let ship_size_y = map_informations.pc[ship_i].ship.size.size_y;
-                        let ship_size_x = map_informations.pc[ship_i].ship.size.size_x;
 
                         damage_type_small.textContent = "Damage type : ";
                         damage_type_small.classList.add('font-sans');
@@ -761,8 +759,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
-
-                        let target_in_range = set_range_finding(this_ship_id, user_id, range_value, ship_size_y, ship_size_x, other_ship_size_y, other_ship_size_x);
+                        console.log(module_count)
+                        console.log(map_informations.pc[ship_i].ship.modules_range.pc[module_count])
+                        let target_in_range = set_range_finding(id, map_informations.pc[ship_i].ship.modules_range.pc[module_count]);
                         if (target_in_range) {
                             range_finder_span.classList.add('hidden');
                         }

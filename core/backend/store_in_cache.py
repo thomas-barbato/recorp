@@ -145,6 +145,9 @@ class StoreInCache:
                             "npc_template_id__ship_id__ship_category_id__ship_size"
                         ],
                         "modules": module_list,
+                        "modules_range": GetDataFromDB.is_in_range(
+                            sector_data["sector"]["id"], data["id"], is_npc=True
+                        ),
                     },
                 }
             )
@@ -172,6 +175,7 @@ class StoreInCache:
                         max_hp += module["effect"]["hull_hp"]
                     if isinstance(v, str) and "propulsion" in v:
                         max_movement += module["effect"]["bonus_mvt"]
+                        
             sector_data["pc"].append(
                 {
                     "user": {
@@ -215,7 +219,7 @@ class StoreInCache:
                         ],
                         "modules": module_list,
                         "modules_range": GetDataFromDB.is_in_range(
-                            sector_data["sector"]["id"], data["user_id"]
+                            sector_data["sector"]["id"], data["user_id"], is_npc=False
                         ),
                         "category_name": data[
                             "playership__ship_id__ship_category__name"
