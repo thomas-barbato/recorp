@@ -668,7 +668,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         if (map_informations.pc[ship_i].user.user == current_user_id) {
 
             for (let module_i in map_informations.pc[ship_i].ship.modules) {
-                console.log(map_informations.pc[ship_i].ship.modules)
                 let module_item_content = document.createElement('div');
                 let module_item_p = document.createElement('p');
 
@@ -728,6 +727,10 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         let range_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["range"];
                         let min_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
                         let max_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
+                        
+                        let id_splitted = id.split('_');
+                        let target_id = id_splitted[1];
+                        let target_type = id_splitted[0];
 
                         damage_type_small.textContent = "Damage type : ";
                         damage_type_small.classList.add('font-sans');
@@ -759,9 +762,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                        console.log(module_count)
-                        console.log(map_informations.pc[ship_i].ship.modules_range.pc[module_count])
-                        let target_in_range = set_range_finding(id, map_informations.pc[ship_i].ship.modules_range.pc[module_count]);
+
+                        let target_in_range = set_range_finding(map_informations.pc[ship_i].ship.modules_range[target_type][target_id][0]);
                         if (target_in_range) {
                             range_finder_span.classList.add('hidden');
                         }

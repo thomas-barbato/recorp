@@ -156,7 +156,6 @@ if(is_user_is_on_mobile_device() == true){
 
     for (let i = 0; i < map_informations['pc'].length; i++) {
         if (map_informations['pc'][i].user.user == current_user_id) {
-            console.log(map_informations['pc'][i])
             let hp_percent = `${Math.round((map_informations['pc'][i].ship.current_hp * 100) / (map_informations['pc'][i].ship.max_hp))}%`;
             let move_percent = `${Math.round((map_informations['pc'][i].ship.current_movement * 100) / (map_informations['pc'][i].ship.max_movement))}%`;
             let ap_percent = `${Math.round((map_informations['pc'][i].user.current_ap * 100) / (map_informations['pc'][i].user.max_ap))}%`;

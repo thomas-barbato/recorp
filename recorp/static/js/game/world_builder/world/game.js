@@ -57,6 +57,20 @@ window.addEventListener('load', () => {
         console.log("You are now connected");
     };
 
+    const terminationEvent = 'onpagehide' in self ? 'pagehide' : 'unload';
+    window.addEventListener(terminationEvent, (event) => {
+        e.preventDefault();
+        if (event.persisted === false) {
+            gameSocket.send(JSON.stringify({
+                type: 'user_leave',
+                message: same_player,
+                user: current_user_id,
+            }));
+            socket.onclose = function () { };
+            socket.close();
+        }
+    });
+
     gameSocket.onclose = function() {
         console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 1s...");
         setTimeout(function() {

@@ -276,14 +276,6 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
 }
 
 
-function set_range_finding(target_id, data) {
-    let target_id_splitted = target_id.split('_');
-    let this_target_category = target_id_splitted[0];
-    let this_target_id = target_id_splitted[1];
-    let can_be_attacked = false;
-    console.log(data)
-    /*if(data[this_target_category][this_target_id][0]['is_in_range']){
-         can_be_attacked = true;
-    }*/
-    return can_be_attacked;
+function set_range_finding(data) {
+    return data['is_in_range'] ? true : false;
 }
