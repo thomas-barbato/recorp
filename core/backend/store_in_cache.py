@@ -290,6 +290,29 @@ class StoreInCache:
 
         in_cache["pc"] = player_position
         cache.set(self.room, in_cache)
+        
+        
+    def update_player_range_finding(self):
+        in_cache = cache.get(self.room)
+        player_position = in_cache["pc"]
+        player = PlayerAction(self.user_calling)
+
+        try:
+            found_player = next(
+                p for p in player_position if player.get_player_id() == p["user"]["player"]
+            )
+
+        except StopIteration:
+            return
+        
+        found_player_index = player_position.index(found_player)
+        player_position[found_player_index]["ship"]["modules_range"] = GetDataFromDB.is_in_range(
+            player.get_player_sector(), self.user_calling, is_npc=False
+        )
+        
+        in_cache["pc"] = player_position
+        cache.set(self.room, in_cache)
+        
 
     def update_ship_is_reversed(self, data, user_id, status):
         in_cache = cache.get(self.room)

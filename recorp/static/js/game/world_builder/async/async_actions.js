@@ -17,6 +17,8 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
+    console.log(data)
+    console.log("========")
     clear_path();
     let target_user_id = data["user_id"];
 
@@ -42,7 +44,6 @@ function update_player_coord(data) {
             end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
             end_point.setAttribute(action_listener_touch_click, 'open_close_modal( ' + `modal-pc_${target_player_id}` + ')');
-
         }
 
         let movement_remaining_div = document.getElementById(`modal-pc_${target_player_id}`);
@@ -55,8 +56,9 @@ function update_player_coord(data) {
     }else{
         update_player_pos_display_after_move(data)
     }
+    
+    update_player_range_in_modal(data.player.ship.modules_range);
 }
-
 
 function async_reverse_ship(data) {
     clear_path();
@@ -278,4 +280,30 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
 
 function set_range_finding(data) {
     return data['is_in_range'] ? true : false;
+}
+
+function update_player_range_in_modal(data){
+    let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
+
+    for(node in pc_npc_nodeList){
+        if(pc_npc_nodeList[node].id){
+            console.log(pc_npc_nodeList[node].id)
+            let modal_split = pc_npc_nodeList[node].id.split('-')
+            let splitted_id = modal_split[1].split('_');
+            let node_type = splitted_id[0];
+            let node_id = splitted_id[1];
+            let element = document.querySelector(`#${pc_npc_nodeList[node].id}`);
+
+            for(module in data[0][node_type][node_id]){
+                let module_element = element.querySelector(`#module-${data[0][node_type][node_id][module].module_id}`);
+                let is_in_range = set_range_finding(data[0][node_type][node_id][module]);
+                if(is_in_range){
+                    module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
+                }else{
+                    module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
+                }
+            }
+        }
+        
+    }
 }

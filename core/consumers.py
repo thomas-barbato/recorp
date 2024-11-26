@@ -76,6 +76,7 @@ class GameConsumer(WebsocketConsumer):
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+        store.update_player_range_finding()
         response = {}
         if p.get_player_id() == message["player"]:
             if (
@@ -94,7 +95,8 @@ class GameConsumer(WebsocketConsumer):
                             "user_id": p.get_other_player_user_id(message["player"]),
                             "player" : store.get_specific_player_data(p.get_player_id(), "pc"),
                             "sector": store.get_specific_sector_data("sector"),
-                            "move_cost": message["move_cost"]
+                            "move_cost": message["move_cost"],
+                            "module_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
                         }
                     }
         else:
@@ -115,9 +117,15 @@ class GameConsumer(WebsocketConsumer):
                     "max_movement": store.get_specific_player_data(
                         message["player"], "pc", "ship", "max_movement"
                     ),
+                    "module_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
                 },
             }
 
+        print("==================")
+        
+        print(store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"))
+        
+        print("====================")
         self.send(text_data=json.dumps(response))
 
     def async_reverse_ship(self, event):

@@ -52,7 +52,6 @@ function create_foreground_modal(id, data) {
     header_close_button.title = `${data.actions.close}`;
     header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
 
-
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
     footer_close_button.classList.add('inline-block', 'cursor-pointer', 'hover:animate-pulse', 'p-2', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
@@ -757,16 +756,31 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         chance_to_hit_small.classList.add('font-sans');
                         chance_to_hit_small_value.textContent = "100%";
                         chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                        chance_to_hit_span.append(chance_to_hit_small);
+                        chance_to_hit_span.append(chance_to_hit_small); 
                         chance_to_hit_span.append(chance_to_hit_small_value);
 
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
+                        range_finder_span.id = "range-finder-warning-msg";
 
-                        let target_in_range = set_range_finding(map_informations.pc[ship_i].ship.modules_range[target_type][target_id][0]);
-                        if (target_in_range) {
-                            range_finder_span.classList.add('hidden');
+                        let module_path = "";
+                        if(map_informations.pc[ship_i].ship.modules_range[0]){
+                            module_path = map_informations.pc[ship_i].ship.modules_range[0];
+                        }else{
+                            module_path = map_informations.pc[ship_i].ship.modules_range[target_type];
                         }
+
+                        for(let i = 0 ; i < module_path.length ; i++){
+                            if(map_informations.pc[ship_i].ship.modules[module_i].id == module_path[target_id][i].module_id){
+                                let target_in_range = set_range_finding(module_path[target_id][i]);
+                                if (target_in_range) {
+                                    range_finder_span.classList.add('hidden');
+                                }else{
+                                    range_finder_span.classList.remove('hidden');
+                                }
+                            }
+                        }
+                        
 
                         module_item_content.append(radio_btn);
                         module_item_content.append(damage_type_span);
