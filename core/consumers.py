@@ -121,11 +121,6 @@ class GameConsumer(WebsocketConsumer):
                 },
             }
 
-        print("==================")
-        
-        print(store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"))
-        
-        print("====================")
         self.send(text_data=json.dumps(response))
 
     def async_reverse_ship(self, event):

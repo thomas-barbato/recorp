@@ -17,18 +17,17 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
-    console.log(data)
-    console.log("========")
     clear_path();
     let target_user_id = data["user_id"];
 
     if (current_user_id != target_user_id) {
+        
         let target_player_id = data["player_id"];
         let start_pos_array = data["start_id_array"];
         let end_pos_array = data["destination_id_array"];
         let movement_remaining = parseInt(data["movement_remaining"]);
-        
         let max_movement = parseInt(data["max_movement"]);
+
         for (let i = 0; i < start_pos_array.length; i++) {
 
             let entry_point = document.getElementById(start_pos_array[i]);
@@ -52,12 +51,12 @@ function update_player_coord(data) {
 
         movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
         movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+        update_player_range_in_modal(data.player.ship.modules_range);
 
     }else{
-        update_player_pos_display_after_move(data)
+        update_player_pos_display_after_move(data);
     }
     
-    update_player_range_in_modal(data.player.ship.modules_range);
 }
 
 function async_reverse_ship(data) {
@@ -239,6 +238,8 @@ function update_player_pos_display_after_move(data){
     }
 
     occured_event_display_on_map("movement", false, data.player.user.player, value=data.move_cost)
+    update_player_range_in_modal(data.player.ship.modules_range);
+
     if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
     }
@@ -279,15 +280,16 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
 
 
 function set_range_finding(data) {
-    return data['is_in_range'] ? true : false;
+    return data['is_in_range'] == true ? true : false;
 }
 
 function update_player_range_in_modal(data){
     let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
+    console.log("dedans")
 
     for(node in pc_npc_nodeList){
         if(pc_npc_nodeList[node].id){
-            console.log(pc_npc_nodeList[node].id)
+            
             let modal_split = pc_npc_nodeList[node].id.split('-')
             let splitted_id = modal_split[1].split('_');
             let node_type = splitted_id[0];
@@ -304,6 +306,5 @@ function update_player_range_in_modal(data){
                 }
             }
         }
-        
     }
 }

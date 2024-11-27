@@ -544,24 +544,24 @@ class GetDataFromDB:
                 )
 
                 element_start_y = (
-                    (element_coord_y - element_size_y) + 1
-                    if (element_coord_y - element_size_y) + 1 > 0
+                    (element_coord_y - element_size_y)
+                    if (element_coord_y - element_size_y) > 0
                     else 0
                 )
                 element_end_y = (
-                    (element_coord_y + element_size_y) + 1
-                    if (element_coord_y + element_size_y) + 1 < 40
-                    else 40
+                    (element_coord_y + element_size_y)
+                    if (element_coord_y + element_size_y) <= 39
+                    else 39
                 )
                 element_start_x = (
-                    (element_coord_x - element_size_x) + 1
-                    if (element_coord_x - element_size_x) + 1 > 0
+                    (element_coord_x - element_size_x)
+                    if (element_coord_x - element_size_x) > 0
                     else 0
                 )
                 element_end_x = (
-                    (element_coord_x + element_size_x) + 1
-                    if (element_coord_x + element_size_x) + 1 < 40
-                    else 40
+                    (element_coord_x + element_size_x)
+                    if (element_coord_x + element_size_x) <= 39
+                    else 39
                 )
 
                 for y in range(element_start_y, element_end_y, 1):
@@ -576,28 +576,28 @@ class GetDataFromDB:
                     module_type = module["type"]
 
                     current_player_start_y = (
-                        (current_player_y - module_range - current_player_size_y) + 1
-                        if (current_player_y - module_range - current_player_size_y) + 1
+                        (current_player_y - module_range - current_player_size_y)
+                        if (current_player_y - module_range - current_player_size_y)
                         > 0
                         else 0
                     )
                     current_player_end_y = (
-                        (current_player_y + module_range + current_player_size_y) + 1
-                        if (current_player_y + module_range + current_player_size_y) + 1
-                        < 40
-                        else 40
+                        (current_player_y + module_range + current_player_size_y)
+                        if (current_player_y + module_range + current_player_size_y)
+                        <= 39
+                        else 39
                     )
                     current_player_start_x = (
-                        (current_player_x - module_range - current_player_size_x) + 1
-                        if (current_player_x - module_range - current_player_size_x) + 1
+                        (current_player_x - module_range - current_player_size_x)
+                        if (current_player_x - module_range - current_player_size_x)
                         > 0
                         else 0
                     )
                     current_player_end_x = (
-                        (current_player_x + module_range + current_player_size_x) + 1
-                        if (current_player_x + module_range + current_player_size_x) + 1
-                        < 40
-                        else 40
+                        (current_player_x + module_range + current_player_size_x)
+                        if (current_player_x + module_range + current_player_size_x)
+                        <= 39
+                        else 39
                     )
 
                     for y in range(current_player_start_y, current_player_end_y, 1):
@@ -614,12 +614,12 @@ class GetDataFromDB:
                     else:
                         if module_type == "WEAPONRY" or module_type == "ELECTRONIC_WARFARE":
                             can_be_added_to_dict = True
-                            
-                    if can_be_added_to_dict:
                         
+                    if can_be_added_to_dict:
                         result_dict[index][item["id"]] = []
                         result_dict[index][item["id"]].append(
                             {
+                                "target_id": item["id"],
                                 "module_id": module_id,
                                 "type": module_type,
                                 "is_in_range": module_effect_is_in_range,

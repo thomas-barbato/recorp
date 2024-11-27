@@ -764,23 +764,18 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         range_finder_span.id = "range-finder-warning-msg";
 
                         let module_path = "";
-                        if(map_informations.pc[ship_i].ship.modules_range[0]){
-                            module_path = map_informations.pc[ship_i].ship.modules_range[0];
-                        }else{
-                            module_path = map_informations.pc[ship_i].ship.modules_range[target_type];
-                        }
-
-                        for(let i = 0 ; i < module_path.length ; i++){
-                            if(map_informations.pc[ship_i].ship.modules[module_i].id == module_path[target_id][i].module_id){
-                                let target_in_range = set_range_finding(module_path[target_id][i]);
-                                if (target_in_range) {
-                                    range_finder_span.classList.add('hidden');
-                                }else{
-                                    range_finder_span.classList.remove('hidden');
-                                }
+                        
+                        module_path = map_informations.pc[ship_i].ship.modules_range[target_type][target_id];
+                            
+                        for(let module_container in module_path){
+                            console.log(module_path[module_container])
+                            let target_in_range = set_range_finding(module_path[module_container]);
+                            if (target_in_range) {
+                                range_finder_span.classList.add('hidden');
+                            }else{
+                                range_finder_span.classList.remove('hidden');
                             }
                         }
-                        
 
                         module_item_content.append(radio_btn);
                         module_item_content.append(damage_type_span);
@@ -810,9 +805,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                     ship_offensive_module_container_cat_1_div.append(module_item_content);
 
                 } else if (map_informations.pc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
-
                     module_item_p.textContent = map_informations.pc[ship_i].ship.modules[module_i]["name"];
                     module_item_p.classList.add('font-bold');
+                    module_item_p.id = `module-${map_informations.pc[ship_i].ship.modules[module_i]["id"]}`;
                     module_item_content.append(module_item_p);
 
                     for (const [key, value] of Object.entries(map_informations.pc[ship_i].ship.modules[module_i]["effect"])) {
@@ -829,6 +824,29 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         module_item_small_effect.append(module_item_small_effect_value);
                         module_item_content.append(module_item_small_effect);
                     }
+                        
+                    let id_splitted = id.split('_');
+                    let target_id = id_splitted[1];
+                    let target_type = id_splitted[0];
+                        
+                    let module_item_small_effect_range_finder_span = document.createElement('span');
+                    module_item_small_effect_range_finder_span.textContent = "Your target is out of range";
+                    module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
+                    module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
+                    let module_path = "";
+                    
+                    module_path = map_informations.pc[ship_i].ship.modules_range[target_type][target_id];
+                        
+                    for(let module_container in module_path){
+                        let target_in_range = set_range_finding(module_path[module_container]);
+                        if (target_in_range) {
+                            module_item_small_effect_range_finder_span.classList.add('hidden');
+                        }else{
+                            module_item_small_effect_range_finder_span.classList.remove('hidden');
+                        }
+                    }
+
+                    module_item_content.append(module_item_small_effect_range_finder_span)
 
                     ship_offensive_module_container_cat_2_div.append(module_item_content);
 
