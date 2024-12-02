@@ -420,10 +420,11 @@ class GetDataFromDB:
             )
             current_player_size_x = int(
                 current_player["ship_id__ship_category_id__ship_size"]["size_x"]
-            )
+            ) if int(current_player["ship_id__ship_category_id__ship_size"]["size_x"]) - 1 > 1 else 0
             current_player_size_y = int(
                 current_player["ship_id__ship_category_id__ship_size"]["size_y"]
-            )
+            ) if int(current_player["ship_id__ship_category_id__ship_size"]["size_y"]) - 1 > 1 else 0
+            
             current_player_x = int(current_player["player_id__coordinates"]["coord_x"])
             current_player_y = int(current_player["player_id__coordinates"]["coord_y"])
             
@@ -448,10 +449,12 @@ class GetDataFromDB:
             )
             current_player_size_x = int(
                 current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_x"]
-            )
+            ) if int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_x"]) - 1 > 1 else 0
+            
             current_player_size_y = int(
                 current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"]
-            )
+            ) if int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"]) - 1 > 1 else 0
+            
             current_player_x = int(current_player["coordinates"]["x"])
             current_player_y = int(current_player["coordinates"]["y"])
 
@@ -532,6 +535,7 @@ class GetDataFromDB:
                 element_size_x = int(
                     item[element["size"]["index"]][element["size"]["x"]]
                 )
+                
                 element_size_y = int(
                     item[element["size"]["index"]][element["size"]["y"]]
                 )
@@ -542,39 +546,21 @@ class GetDataFromDB:
                 element_coord_y = int(
                     item[element["coord"]["index"]][element["coord"]["y"]]
                 )
-
-                element_start_y = (
-                    (element_coord_y - element_size_y)
-                    if (element_coord_y - element_size_y) > 0
-                    else 0
-                )
-                element_end_y = (
-                    (element_coord_y + element_size_y)
-                    if (element_coord_y + element_size_y) <= 39
-                    else 39
-                )
-                element_start_x = (
-                    (element_coord_x - element_size_x)
-                    if (element_coord_x - element_size_x) > 0
-                    else 0
-                )
-                element_end_x = (
-                    (element_coord_x + element_size_x)
-                    if (element_coord_x + element_size_x) <= 39
-                    else 39
-                )
-
-                for y in range(element_start_y, element_end_y, 1):
-                    for x in range(element_start_x, element_end_x, 1):
-                        element_entire_pos.append(f"{y}_{x}")
-
+                
+                if element_size_x == 1 and element_size_y == 1:
+                    element_entire_pos.append(f"{element_coord_y}_{element_coord_x}")
+                else:
+                    for y in range(element_coord_y, (element_coord_y + element_size_y)):
+                        for x in range(element_coord_x, (element_coord_x + element_size_x)):
+                            element_entire_pos.append(f"{y}_{x}")
+                            
                 for module in current_player_module:
 
                     module_id = module["id"]
                     module_range = int(module["effect"]["range"])
                     module_effect_is_in_range = False
                     module_type = module["type"]
-
+                    
                     current_player_start_y = (
                         (current_player_y - module_range - current_player_size_y)
                         if (current_player_y - module_range - current_player_size_y)
@@ -625,5 +611,5 @@ class GetDataFromDB:
                                 "is_in_range": module_effect_is_in_range,
                             }
                         )
-
+                        
         return result_dict

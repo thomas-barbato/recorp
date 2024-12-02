@@ -764,11 +764,14 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         range_finder_span.id = "range-finder-warning-msg";
 
                         let module_path = "";
-                        
+                        console.log("=========")
+                        console.log("ELECTRONIC WARFARE")
+                        console.log(target_id)
                         module_path = map_informations.pc[ship_i].ship.modules_range[target_type][target_id];
+                        console.log(module_path)
+                        console.log("=========")
                             
                         for(let module_container in module_path){
-                            console.log(module_path[module_container])
                             let target_in_range = set_range_finding(module_path[module_container]);
                             if (target_in_range) {
                                 range_finder_span.classList.add('hidden');
@@ -834,11 +837,15 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                     module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
                     module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
                     let module_path = "";
-                    
+                    console.log("=========")
+                    console.log("ELECTRONIC WARFARE")
+                    console.log(target_id)
                     module_path = map_informations.pc[ship_i].ship.modules_range[target_type][target_id];
-                        
+                    console.log(module_path)
+                    console.log("=========")
                     for(let module_container in module_path){
                         let target_in_range = set_range_finding(module_path[module_container]);
+                        console.log(target_in_range)
                         if (target_in_range) {
                             module_item_small_effect_range_finder_span.classList.add('hidden');
                         }else{

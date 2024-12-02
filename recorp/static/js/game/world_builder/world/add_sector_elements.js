@@ -87,7 +87,7 @@ function add_foreground(data){
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
-                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row) + 1].cells[parseInt(index_col) + 1];
+                let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row)].cells[parseInt(index_col)];
                 let entry_point_div = entry_point.querySelector('div');
                 let entry_point_border = entry_point_div.querySelector('span');
                 let img_div = document.createElement('div');
