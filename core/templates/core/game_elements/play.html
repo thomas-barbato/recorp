@@ -15,15 +15,15 @@
 {% include "option-modal.html" %}
 {% include "research-modal.html" %}
 {% include "task-modal.html" %}
-<div class="w-full lg:flex lg:mx-auto lg:items-stretch grid main-info-container">
+<div class="flex w-full lg:mx-auto main-info-container">
     {% include "display-info.html" %}
 </div>
-<div class="lg:flex lg:mx-auto lg:items-stretch grid xl:gap-3 main-game-container">
+<div class="flex lg:mx-auto xl:gap-3 main-game-container">
     {% include "display-char-infos.html" %}
     {% include "display-game.html" %}
     {% include "display-chat.html" %}
 </div>
-<div class="flex items-baseline lg:mx-auto main-info-container">
+<div class="flex items-baseline main-info-container">
     {% include "display_disclaimer.html" %}
 </div>
 {% endblock %}

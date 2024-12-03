@@ -1,3 +1,4 @@
+document.querySelector('#player-container').classList.remove('hidden');
 
 let login_policy = document.querySelector('.login-policy');
 login_policy.style.display = "none";

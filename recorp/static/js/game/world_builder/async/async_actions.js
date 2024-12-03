@@ -100,6 +100,7 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 function update_player_pos_display_after_move(data){
 
     let current_player_ship = document.querySelectorAll('.ship-pos');
+    console.log(current_player_ship)
     let coord_x = parseInt(data.player.user.coordinates.coord_x) + 1;
     let coord_y = parseInt(data.player.user.coordinates.coord_y) + 1;
     let ship_size_y = data.player.ship.size.size_y;
@@ -116,7 +117,7 @@ function update_player_pos_display_after_move(data){
         current_player_ship[i].querySelector('.ship').remove();
         current_player_ship[i].querySelector('.ship-reversed').remove();
         current_player_ship[i].querySelector('span').remove();
-
+        
         if(current_player_ship[i].querySelector('ul')){
             current_player_ship_tooltip = current_player_ship[i].querySelector('ul');
             current_player_ship[i].querySelector('ul').remove();
@@ -126,7 +127,8 @@ function update_player_pos_display_after_move(data){
 
         let span_container = current_player_ship[i].querySelector('div');
         let span = document.createElement('span');
-        span.className = "absolute hover:box-border hover:border-2 hover:border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+        //span.className = "absolute hover:box-border hover:border-2 hover:border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+        span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
         span.title = `${data.sector.name} [y: ${old_pos_id_split[0]} ; x: ${old_pos_id_split[1]}]`;
         span_container.append(span);
 
@@ -285,8 +287,6 @@ function set_range_finding(data) {
 
 function update_player_range_in_modal(data){
     let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
-    console.log("dedans")
-
     for(node in pc_npc_nodeList){
         if(pc_npc_nodeList[node].id){
             
@@ -295,10 +295,9 @@ function update_player_range_in_modal(data){
             let node_type = splitted_id[0];
             let node_id = splitted_id[1];
             let element = document.querySelector(`#${pc_npc_nodeList[node].id}`);
-
-            for(module in data[0][node_type][node_id]){
-                let module_element = element.querySelector(`#module-${data[0][node_type][node_id][module].module_id}`);
-                let is_in_range = set_range_finding(data[0][node_type][node_id][module]);
+            for(module in data[node_type][node_id]){
+                let module_element = element.querySelector(`#module-${data[node_type][node_id][module].module_id}`);
+                let is_in_range = set_range_finding(data[node_type][node_id][module]);
                 if(is_in_range){
                     module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
                 }else{

@@ -478,7 +478,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 }
                 if (i == 0) {
                     span_ship_el.classList.add('border-t', 'border-l', 'border-b');
-                    span_ship_el.classList.remove('hover:border-2', 'hover:border');
+                    span_ship_el.classList.remove('hover:border-2', 'hover:border', "border-t-2", "border-r-2", "border-b-2", "border-l-2");
                 } else if (i == 1) {
                     span_ship_el.classList.add('border-t', 'border-b', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = `${movement_array.length}`;
@@ -566,9 +566,13 @@ function clean_previous_preview_position(ship_arrival_coordinates) {
         e_span.classList.remove(
             'border',
             'border-t',
+            'border-t-2',
             'border-b',
+            'border-b-2',
             'border-l',
+            'border-l-2',
             'border-r',
+            'border-r-2',
             'border-red-600',
             'border-amber-400',
             'bg-red-600/50',

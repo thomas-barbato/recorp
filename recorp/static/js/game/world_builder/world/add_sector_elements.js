@@ -28,7 +28,7 @@ function add_background(data) {
             if (!is_user_is_on_mobile_device()) {
                 set_pathfinding_event();
             }
-            document.querySelector('.tabletop-view').classList.remove('invisible')
+            document.querySelector('#player-container').classList.remove('hidden')
             break;
         }
     }
@@ -87,6 +87,7 @@ function add_foreground(data){
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
+
                 let entry_point = document.querySelector('.tabletop-view').rows[parseInt(index_row)].cells[parseInt(index_col)];
                 let entry_point_div = entry_point.querySelector('div');
                 let entry_point_border = entry_point_div.querySelector('span');
@@ -95,10 +96,16 @@ function add_foreground(data){
                 entry_point.classList.add('uncrossable');
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
-                entry_point_border.classList.add('hover:border-dashed', 'border-amber-500', 'cursor-pointer');
+                entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500";
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
                 entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                entry_point_border.addEventListener("mouseover", function(){
+                    generate_border(size_y, size_x, parseInt(data[sector_i]['data']['coord_y']), parseInt(data[sector_i]['data']['coord_x']));
+                });
+                entry_point_border.addEventListener("mouseout", function(){
+                    remove_border(size_y, size_x, parseInt(data[sector_i]['data']['coord_y']), parseInt(data[sector_i]['data']['coord_x']), 'border-amber-500');
+                });
 
                 img_div.classList.add(
                     'relative',
@@ -174,12 +181,17 @@ function add_npc(data){
                 entry_point.classList.add('uncrossable');
                 entry_point.setAttribute('size_x', ship_size_x);
                 entry_point.setAttribute('size_y', ship_size_y);
-                entry_point_border.classList.add('border-dashed', 'cursor-pointer');
+                entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-red-600";
                 entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
                 entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
                 entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-                
+                entry_point_border.addEventListener("mouseover", function(){
+                    generate_border(ship_size_y, ship_size_x, parseInt(data[i]["npc"]["coordinates"].y) + 1, parseInt(data[i]["npc"]["coordinates"].x) + 1);
+                });
+                entry_point_border.addEventListener("mouseout", function(){
+                    remove_border(ship_size_y, ship_size_x, parseInt(data[i]["npc"]["coordinates"].y) + 1, parseInt(data[i]["npc"]["coordinates"].x) + 1, 'border-red-600');
+                });
 
                 space_ship.style.backgroundImage = "url('" + bg_url + "')";
                 space_ship.classList.add('ship');
@@ -201,7 +213,6 @@ function add_npc(data){
                     }
                 }
 
-                entry_point_border.classList.add("border-red-600");
                 entry_point.classList.add("npc");
                 space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
@@ -282,7 +293,6 @@ function add_pc(data) {
                         'text-center',
                         'list-none',
                         'text-justify',
-                        'border-1',
                         'm-w-[100%]',
                         'tooltip'
                     );
@@ -290,7 +300,7 @@ function add_pc(data) {
                         let tooltip_container = entry_point.querySelectorAll('ul');
                         tooltip_container[0].remove();
                     }
-                    entry_point.append(entry_point_tooltip_container_ul);
+                    entry_point.append(entry_point_tooltip_container_ul)
                 }
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
@@ -299,18 +309,13 @@ function add_pc(data) {
                 let space_ship = document.createElement('div');
                 let space_ship_reversed = document.createElement('div');
 
-                entry_point.classList.add('uncrossable');
-                entry_point.setAttribute('size_x', ship_size_x);
-                entry_point.setAttribute('size_y', ship_size_y);
-                entry_point_border.classList.add('border-dashed', 'cursor-pointer');
-                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
-                entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 
                 if(!is_user_is_on_mobile_device() == true){
                     if (data[i].user.user != current_user_id) {
                         entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
                     } else {
                         entry_point_border.setAttribute(action_listener_touch_click, "reverse_player_ship_display()");
+                        
                     }
                 }
 
@@ -358,7 +363,10 @@ function add_pc(data) {
                 }
 
                 entry_point.classList.add("pc");
-                entry_point_border.classList.add(border_color);
+                entry_point.classList.add('uncrossable');
+                entry_point.setAttribute('size_x', ship_size_x);
+                entry_point.setAttribute('size_y', ship_size_y);
+                
                 space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 if (is_reversed) {
@@ -368,6 +376,15 @@ function add_pc(data) {
                     space_ship.style.display = "block";
                     space_ship_reversed.style.display = "none";
                 }
+
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
+                entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
+                entry_point_border.addEventListener("mouseover", function(){
+                    remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1);
+                });
+                entry_point_border.addEventListener("mouseout", function(){
+                    remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1, border_color);
+                });
 
                 div.append(space_ship);
                 div.append(space_ship_reversed);
@@ -463,6 +480,122 @@ function update_target_coord_display(element) {
             reverse_player_ship_display()
         }else if(element.classList.contains('uncrossable')){
             open_close_modal(e.dataset.modalTarget);
+        }
+    }
+}
+
+
+function generate_border_className(size_y, size_x){
+    switch(size_y){
+        case 1:
+            if(size_x == 1){
+                return {
+                    0: ["border-2", "border-dashed"]
+                };
+            }else if(size_x == 2){
+                return {
+                    0: ["border-l-2", "border-t-2", "border-b-2", "border-dashed"], 
+                    1: ["border-r-2", "border-t-2", "border-b-2", "border-dashed"]
+                };
+            }else if(size_x == 3){
+                return {
+                    0: ["border-l-2", "border-t-2", "border-b-2", "border-dashed"], 
+                    2: ["border-t-2", "border-b-2", "border-dashed"],
+                    3: ["border-r-2", "border-t-2", "border-b-2", "border-dashed"],
+                };
+            }
+            break;
+        case 2:
+            if(size_x == 2){
+                return {
+                    0: ["border-l-2", "border-t-2", "border-dashed"], 
+                    1: ["border-r-2", "border-t-2", "border-dashed"],
+                    2: ["border-l-2", "border-b-2", "border-dashed"],
+                    3: ["border-r-2", "border-b-2", "border-dashed"]
+                };
+            }
+            break;
+        case 3:
+            if(size_x == 3){
+                return {
+                    0: ["border-l-2", "border-t-2", "border-dashed"],
+                    1: ["border-t-2", "border-dashed"], 
+                    2: ["border-r-2", "border-t-2", "border-dashed"],
+                    3: ["border-l-2", "border-dashed"],
+                    4: ["none"],
+                    5: ["border-r-2", "border-dashed"],
+                    6: ["border-l-2", "border-b-2", "border-dashed"],
+                    7: ["border-b-2", "border-dashed"],
+                    8: ["border-r-2", "border-b-2", "border-dashed"]
+                };
+            }
+            break;
+        case 4:
+            if(size_x == 4){
+                return {
+                    0: ["border-l-2", "border-t-2", "border-dashed"],
+                    1: ["border-t-2", "border-dashed"], 
+                    2: ["border-t-2", "border-dashed"], 
+                    3: ["border-r-2", "border-t-2", "border-dashed"],
+                    4: ["border-l-2", "border-dashed"],
+                    5: ["none"],
+                    6: ["none"],
+                    7: ["border-r-2", "border-dashed"],
+                    8: ["border-l-2", "border-dashed"],
+                    9: ["none"],
+                    10: ["none"],
+                    11: ["border-r-2", "border-dashed"],
+                    12: ["border-l-2","border-b-2", "border-dashed"],
+                    13: ["border-b-2", "border-dashed"],
+                    14: ["border-b-2", "border-dashed"],
+                    15: ["border-r-2", "border-b-2", "border-dashed"],
+                };
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+function remove_border(size_y, size_x, coord_y, coord_x, color_class){
+    let c_y = coord_y;
+    let c_x = coord_x;
+
+    for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
+            let parent_e = document.querySelector('.tabletop-view').rows[c_y].cells[c_x];
+            let child_e = parent_e.querySelector('span');
+            console.log(color_class)
+            child_e.className = `absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer ${color_class}`;
+            c_x++;
+        }
+        c_y++;
+        c_x = coord_x;
+    }
+}
+
+function generate_border(size_y, size_x, coord_y, coord_x){
+    let c_y = coord_y;
+    let c_x = coord_x;
+    let classList = generate_border_className(size_y, size_x);
+    let element_list = [];
+
+    for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
+            let parent_e = document.querySelector('.tabletop-view').rows[c_y].cells[c_x];
+            element_list.push(parent_e);
+            c_x++;
+        }
+        c_y++;
+        c_x = coord_x;
+    }
+
+    for(index = 0 ; index < element_list.length; index++){
+        let child_e = element_list[index].querySelector('span');
+        for(border_class in classList[index]){
+            if(classList[index][border_class] != "none"){
+                child_e.classList.add(classList[index][border_class])
+            }
         }
     }
 }
