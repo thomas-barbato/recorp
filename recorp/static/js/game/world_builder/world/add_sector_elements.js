@@ -178,10 +178,9 @@ function add_npc(data){
                 let space_ship = document.createElement('div');
                 let space_ship_reversed = document.createElement('div');
 
-                entry_point.classList.add('uncrossable');
+                entry_point.classList.add("npc", "uncrossable");
                 entry_point.setAttribute('size_x', ship_size_x);
                 entry_point.setAttribute('size_y', ship_size_y);
-                entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-red-600";
                 entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
                 entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
@@ -213,7 +212,6 @@ function add_npc(data){
                     }
                 }
 
-                entry_point.classList.add("npc");
                 space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
                 div.append(space_ship);
@@ -302,6 +300,7 @@ function add_pc(data) {
                     }
                     entry_point.append(entry_point_tooltip_container_ul)
                 }
+
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
@@ -328,11 +327,13 @@ function add_pc(data) {
                 space_ship_reversed.classList.add('ship-reversed');
                 space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
 
                 if (data[i]["user"]["user"] == current_user_id) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
                     entry_point.classList.add("ship-pos");
+                    entry_point_border.classList.add(border_color);
 
                     /* Check ship_size and set ship-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
@@ -360,10 +361,10 @@ function add_pc(data) {
 
                 if (data[i]["user"]["user"] != current_user_id) {
                     border_color = "border-cyan-400";
+                    entry_point_border.classList.add(border_color);
                 }
 
-                entry_point.classList.add("pc");
-                entry_point.classList.add('uncrossable');
+                entry_point.classList.add("pc", "uncrossable");
                 entry_point.setAttribute('size_x', ship_size_x);
                 entry_point.setAttribute('size_y', ship_size_y);
                 
@@ -380,7 +381,7 @@ function add_pc(data) {
                 entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 entry_point_border.addEventListener("mouseover", function(){
-                    remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1);
+                    generate_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1);
                 });
                 entry_point_border.addEventListener("mouseout", function(){
                     remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1, border_color);
