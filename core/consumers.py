@@ -96,7 +96,7 @@ class GameConsumer(WebsocketConsumer):
                             "player" : store.get_specific_player_data(p.get_player_id(), "pc"),
                             "sector": store.get_specific_sector_data("sector"),
                             "move_cost": message["move_cost"],
-                            "module_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
+                            "modules_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
                         }
                     }
         else:
@@ -117,7 +117,7 @@ class GameConsumer(WebsocketConsumer):
                     "max_movement": store.get_specific_player_data(
                         message["player"], "pc", "ship", "max_movement"
                     ),
-                    "module_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
+                    "modules_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
                 },
             }
 

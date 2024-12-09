@@ -566,7 +566,6 @@ function remove_border(size_y, size_x, coord_y, coord_x, color_class){
         for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
             let parent_e = document.querySelector('.tabletop-view').rows[c_y].cells[c_x];
             let child_e = parent_e.querySelector('span');
-            console.log(color_class)
             child_e.className = `absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer ${color_class}`;
             c_x++;
         }

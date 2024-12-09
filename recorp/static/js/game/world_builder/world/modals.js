@@ -25,12 +25,12 @@ function create_foreground_modal(id, data) {
         'h-full',
         'md:inset-0',
         'backdrop-blur-sm',
-        'bg-black/20',
+        'backdrop-brightness-50',
         'border-1',
     );
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]");
 
     let content_div = document.createElement('div');
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
@@ -325,7 +325,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let player_id = id.split('_')[1];
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "bg-black/70");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70");
 
     let content_div = document.createElement('div');
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
@@ -393,7 +393,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
     movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'relative');
-    movement_progress_bar_container_div.id = `movement-container-${player_id}`;
+    movement_progress_bar_container_div.id = "movement-container";
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]')
@@ -767,7 +767,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                             
                         for(let module_container in module_path){
                             let target_in_range = set_range_finding(module_path[module_container]);
-                            if (target_in_range) {
+                            console.log(map_informations.pc[ship_i].user.user, target_id, target_in_range)
+                            if (target_in_range == true) {
                                 range_finder_span.classList.add('hidden');
                             }else{
                                 range_finder_span.classList.remove('hidden');
@@ -998,7 +999,7 @@ function create_chat_modal(data){
     );
     
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[calc(100%-1rem)]", "max-h-full");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]");
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');

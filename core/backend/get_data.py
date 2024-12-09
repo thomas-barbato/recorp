@@ -397,13 +397,14 @@ class GetDataFromDB:
         )
 
     @staticmethod
-    def is_in_range(sector_id, current_user_id, is_npc = False):
+    def is_in_range(sector_id, current_user_id, is_npc=False):
 
         result_dict = {}
         current_player_pos = []
-        
+        current_player_size = None
+
         if is_npc is False:
-            
+
             current_player = list(
                 PlayerShip.objects.filter(
                     player_id__user_id=current_user_id, is_current_ship=True
@@ -417,17 +418,37 @@ class GetDataFromDB:
             current_player_module = list(
                 Module.objects.filter(
                     (
-                        Q(id__in=current_player["module_id_list"]) & Q(effect__has_key="range")
+                        Q(id__in=current_player["module_id_list"])
+                        & Q(effect__has_key="range")
                     )
                 ).values("id", "effect", "type"),
             )
-            
+
+            current_player_size = {
+                "x": (
+                    int(
+                        current_player["ship_id__ship_category_id__ship_size"]["size_x"]
+                    )
+                    - 1
+                    if current_player["ship_id__ship_category_id__ship_size"]["size_x"]
+                    > 1
+                    else 0
+                ),
+                "y": (
+                    int(
+                        current_player["ship_id__ship_category_id__ship_size"]["size_y"]
+                    )
+                    - 1
+                    if current_player["ship_id__ship_category_id__ship_size"]["size_x"]
+                    > 1
+                    else 0
+                ),
+            }
+
         else:
-            
+
             current_player = list(
-                Npc.objects.filter(
-                    id=current_user_id
-                ).values(
+                Npc.objects.filter(id=current_user_id).values(
                     "id",
                     "npc_template_id__module_id_list",
                     "npc_template_id__ship_id__ship_category_id__ship_size",
@@ -437,47 +458,74 @@ class GetDataFromDB:
             current_player_module = list(
                 Module.objects.filter(
                     (
-                        Q(id__in=current_player["npc_template_id__module_id_list"]) & Q(effect__has_key="range")
+                        Q(id__in=current_player["npc_template_id__module_id_list"])
+                        & Q(effect__has_key="range")
                     )
                 ).values("id", "effect", "type"),
             )
-            
-        current_player_x = int(current_player["coordinates"]["x"]) if is_npc is True else int(current_player["player_id__coordinates"]["coord_x"])
-        current_player_y = int(current_player["coordinates"]["y"]) if is_npc is True else int(current_player["player_id__coordinates"]["coord_x"])
-        
+
+            current_player_size = {
+                "x": (
+                    int(
+                        current_player[
+                            "npc_template_id__ship_id__ship_category_id__ship_size"
+                        ]["size_x"]
+                    )
+                    - 1
+                    if current_player[
+                        "npc_template_id__ship_id__ship_category_id__ship_size"
+                    ]["size_x"]
+                    > 1
+                    else 0
+                ),
+                "y": (
+                    int(
+                        current_player[
+                            "npc_template_id__ship_id__ship_category_id__ship_size"
+                        ]["size_y"]
+                    )
+                    - 1
+                    if current_player[
+                        "npc_template_id__ship_id__ship_category_id__ship_size"
+                    ]["size_x"]
+                    > 1
+                    else 0
+                ),
+            }
+
+        current_player_x = (
+            int(current_player["coordinates"]["x"])
+            if is_npc is True
+            else int(current_player["player_id__coordinates"]["coord_x"])
+        )
+        current_player_y = (
+            int(current_player["coordinates"]["y"])
+            if is_npc is True
+            else int(current_player["player_id__coordinates"]["coord_x"])
+        )
+
         for module in current_player_module:
 
             module_id = module["id"]
             module_range = int(module["effect"]["range"])
             module_effect_is_in_range = False
             module_type = module["type"]
-            
-            current_player_start_y = (
-                (current_player_y - module_range)
-                if (current_player_y - module_range)
-                > 0
-                else 0
-            )
-            current_player_end_y = (
-                (current_player_y + module_range)
-                if (current_player_y + module_range)
-                <= 39
-                else 39
-            )
-            current_player_start_x = (
-                (current_player_x - module_range)
-                if (current_player_x - module_range)
-                > 0
-                else 0
-            )
-            current_player_end_x = (
-                (current_player_x + module_range)
-                if (current_player_x + module_range)
-                <= 39
-                else 39
-            )
 
-            current_player_pos = [f"{y}_{x}" for y in range(current_player_start_y, current_player_end_y, 1) for x in range(current_player_start_x, current_player_end_x, 1)]
+            current_player_start_y = current_player_y - module_range - current_player_size["y"]
+            current_player_end_y = current_player_y + module_range + current_player_size["y"]
+            current_player_start_x = current_player_x - module_range - current_player_size["x"]
+            current_player_end_x = current_player_x + module_range + current_player_size["x"]
+
+            current_player_pos = [
+                f"{y}_{x}"
+                for y in range(current_player_start_y, current_player_end_y, 1)
+                for x in range(current_player_start_x, current_player_end_x, 1)
+                if (y >= 0 and y <= 39) and (x >= 0 and x <= 39)
+            ]
+            
+            print(current_player["id"])
+            print(current_player_pos)
+            print("===========")
 
         sector_element_dict = {
             "pc": list(
@@ -551,12 +599,15 @@ class GetDataFromDB:
             for item in value:
                 element_entire_pos = []
 
-                element_size_x = int(
-                    item[element["size"]["index"]][element["size"]["x"]]
+                element_size_x = (int(item[element["size"]["index"]][element["size"]["x"]]) - 1
+                    if int(item[element["size"]["index"]][element["size"]["x"]]) > 1
+                    else 0
                 )
-                
-                element_size_y = int(
-                    item[element["size"]["index"]][element["size"]["y"]]
+
+                element_size_y = (
+                    int(item[element["size"]["index"]][element["size"]["y"]]) - 1
+                    if int(item[element["size"]["index"]][element["size"]["y"]]) > 1
+                    else 0
                 )
 
                 element_coord_x = int(
@@ -565,25 +616,35 @@ class GetDataFromDB:
                 element_coord_y = int(
                     item[element["coord"]["index"]][element["coord"]["y"]]
                 )
-                
-                if element_size_x == 1 and element_size_y == 1:
-                    element_entire_pos.append(f"{element_coord_y}_{element_coord_x}")
+
+                if element_size_x == 0 and element_size_y == 0:
+                    if f"{element_coord_y}_{element_coord_x}" in current_player_pos:
+                        module_effect_is_in_range = True
                 else:
                     for y in range(element_coord_y, (element_coord_y + element_size_y)):
-                        for x in range(element_coord_x, (element_coord_x + element_size_x)):
+                        for x in range(
+                            element_coord_x, (element_coord_x + element_size_x)
+                        ):
                             if f"{y}_{x}" in current_player_pos:
                                 module_effect_is_in_range = True
                                 break
-                    
+
                 can_be_added_to_dict = False
-                
-                if index == "asteroid" or index == "station" or index == "other_element":
-                    if module_type != "WEAPONRY" and module_type != "ELECTRONIC_WARFARE":
+
+                if (
+                    index == "asteroid"
+                    or index == "station"
+                    or index == "other_element"
+                ):
+                    if (
+                        module_type != "WEAPONRY"
+                        and module_type != "ELECTRONIC_WARFARE"
+                    ):
                         can_be_added_to_dict = True
                 else:
                     if module_type == "WEAPONRY" or module_type == "ELECTRONIC_WARFARE":
                         can_be_added_to_dict = True
-                    
+
                 if can_be_added_to_dict:
                     result_dict[index][item["id"]] = []
                     result_dict[index][item["id"]].append(
@@ -594,5 +655,5 @@ class GetDataFromDB:
                             "is_in_range": module_effect_is_in_range,
                         }
                     )
-                        
+
         return result_dict

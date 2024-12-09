@@ -55,6 +55,7 @@ if(!is_user_is_on_mobile_device() == true){
         'items-center',
         'justify-center',
         'flex-col',
+        
     );
 
     character_basic_information_fieldset.classList.add(
@@ -166,7 +167,7 @@ if(!is_user_is_on_mobile_device() == true){
     character_statistics_progressbar_hp_text.classList.add(
         'w-full',
         'absolute',
-        'z-10',
+        '"z-100"',
         'text-center',
         'text-sm',
         'font-bold',
@@ -199,7 +200,7 @@ if(!is_user_is_on_mobile_device() == true){
     character_statistics_progressbar_move_text.classList.add(
         'w-full',
         'absolute',
-        'z-10',
+        '"z-100"',
         'text-center',
         'text-sm',
         'font-bold',
@@ -231,7 +232,7 @@ if(!is_user_is_on_mobile_device() == true){
     character_statistics_progressbar_ap_text.classList.add(
         'w-full',
         'absolute',
-        'z-10',
+        '"z-100"',
         'text-center',
         'text-sm',
         'font-bold',
@@ -544,7 +545,7 @@ if(!is_user_is_on_mobile_device() == true){
                     defensive_module_text.classList.add(
                         'w-full',
                         'absolute',
-                        'z-10',
+                        '"z-100"',
                         'text-center',
                         'text-sm',
                         'font-bold',

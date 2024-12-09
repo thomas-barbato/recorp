@@ -4,7 +4,7 @@
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
 <div id="map-background" class="lg:w-6/12 w-full order-2 flex justify-center 2xl:bg-[url('/static/js/game/assets/ux/border-container-withbg-wide.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center lg:mb-0">
-    <div class="flex self-center item-center">
+    <div class="flex self-center item-center z-100">
         <div class="grid">
             <table class="tabletop-view">
                 <tbody>
@@ -30,9 +30,9 @@
             </table>
         </div>
     </div>
-    <div id="modal-container"></div>
+    <div id="modal-container" class=" z-90"></div>
 </div>
-<div class="w-full flex place-content-center z-1055 lg:hidden lg:order-99 order-3 gap-1 " dir="ltr" id="mobile-cross">
+<div class="w-full flex place-content-center z-100 lg:hidden lg:order-99 order-3 gap-1 " dir="ltr" id="mobile-cross">
     <div class="flex w-2/4 justify-end lg:hidden lg:order-99 order-3 mb-2 mt-2">
         <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded ">
             <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/></button>
