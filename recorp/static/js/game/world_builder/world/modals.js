@@ -767,7 +767,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                             
                         for(let module_container in module_path){
                             let target_in_range = set_range_finding(module_path[module_container]);
-                            console.log(map_informations.pc[ship_i].user.user, target_id, target_in_range)
                             if (target_in_range == true) {
                                 range_finder_span.classList.add('hidden');
                             }else{

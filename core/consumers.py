@@ -6,6 +6,7 @@ from django.core.cache import cache
 
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
+from core.backend.get_data import GetDataFromDB
 
 # logger = logging.getLogger("django")
 
@@ -76,7 +77,6 @@ class GameConsumer(WebsocketConsumer):
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        store.update_player_range_finding()
         response = {}
         if p.get_player_id() == message["player"]:
             if (
@@ -89,6 +89,7 @@ class GameConsumer(WebsocketConsumer):
                     move_cost=int(message["move_cost"]),
                 ):
                     store.update_player_position(message)
+                    store.update_player_range_finding()
                     response = {
                         "type": "player_move",
                         "message":{
@@ -96,10 +97,13 @@ class GameConsumer(WebsocketConsumer):
                             "player" : store.get_specific_player_data(p.get_player_id(), "pc"),
                             "sector": store.get_specific_sector_data("sector"),
                             "move_cost": message["move_cost"],
-                            "modules_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
+                            "modules_range": store.get_specific_player_data(
+                                message["player"], "pc", "ship", "modules_range"
+                            ),
                         }
                     }
         else:
+            store.update_player_range_finding()
             response = {
                 "type": "player_move",
                 "message": {
@@ -117,7 +121,9 @@ class GameConsumer(WebsocketConsumer):
                     "max_movement": store.get_specific_player_data(
                         message["player"], "pc", "ship", "max_movement"
                     ),
-                    "modules_range": store.get_specific_player_data(message["player"], "pc", "ship", "modules_range"),
+                    "modules_range": store.get_specific_player_data(
+                        message["player"], "pc", "ship", "modules_range"
+                    ),
                 },
             }
 

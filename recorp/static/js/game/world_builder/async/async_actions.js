@@ -108,7 +108,6 @@ function update_player_pos_display_after_move(data){
     let is_reversed = data.player.ship.is_reversed;
     let coordinates_array_to_disable_button = [];
     let current_player_ship_tooltip = "";
-    let current_player_ship_tooltip_movement = "";
 
     for(let i = 0; i < current_player_ship.length; i++){
         current_player_ship[i].removeAttribute("onclick");
@@ -127,7 +126,6 @@ function update_player_pos_display_after_move(data){
 
         let span_container = current_player_ship[i].querySelector('div');
         let span = document.createElement('span');
-        //span.className = "absolute hover:box-border hover:border-2 hover:border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
         span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
         span.title = `${data.sector.name} [y: ${old_pos_id_split[0]} ; x: ${old_pos_id_split[1]}]`;
         span_container.append(span);
@@ -301,7 +299,9 @@ function update_player_range_in_modal(data){
             let splitted_id = modal_split[1].split('_');
             let node_type = splitted_id[0];
             let node_id = splitted_id[1];
+            
             let element = document.querySelector(`#${pc_npc_nodeList[node].id}`);
+
             for(module in data[node_type][node_id]){
                 let module_element = element.querySelector(`#module-${data[node_type][node_id][module].module_id}`);
                 let is_in_range = set_range_finding(data[node_type][node_id][module]);
@@ -314,33 +314,3 @@ function update_player_range_in_modal(data){
         }
     }
 }
-/*
-function update_player_range_in_modal(data){
-    
-    let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
-    for(node in pc_npc_nodeList){
-        let element = document.querySelector(`#${pc_npc_nodeList[node].id}`);
-        if(element){
-            let modal_split = pc_npc_nodeList[node].id.split('-')
-            let splitted_id = modal_split[1].split('_');
-            let node_type = splitted_id[0]; 
-            let node_id = splitted_id[1];
-            console.log(element)
-            console.log(data[node_type][node_id])
-            console.log("==============")
-            for(module in data[node_type][node_id]){
-                console.log(data[node_type][node_id][module].module_id)
-                console.log("....")
-                
-                let module_element = element.querySelector('#module-' + data[node_type][node_id][module].module_id);
-                let is_in_range = set_range_finding(data[node_type][node_id][module]);
-                if(is_in_range){
-                    module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
-                }else{
-                    module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
-                }
-                
-            }
-        }
-    }
-}*/
