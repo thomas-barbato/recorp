@@ -453,26 +453,13 @@ class GetDataFromDB:
                     )
                 ).values("id", "effect", "type"),
             )
+            
+            player_size_x = int(current_player["ship_id__ship_category_id__ship_size"]["size_x"])
+            player_size_y = int(current_player["ship_id__ship_category_id__ship_size"]["size_y"])
 
             current_player_size = {
-                "x": (
-                    int(
-                        current_player["ship_id__ship_category_id__ship_size"]["size_x"]
-                    )
-                    - 1
-                    if current_player["ship_id__ship_category_id__ship_size"]["size_x"]
-                    > 1
-                    else 0
-                ),
-                "y": (
-                    int(
-                        current_player["ship_id__ship_category_id__ship_size"]["size_y"]
-                    )
-                    - 1
-                    if current_player["ship_id__ship_category_id__ship_size"]["size_y"]
-                    > 1
-                    else 0
-                ),
+                "x": player_size_x - 1 if player_size_x > 1 else player_size_x,
+                "y": player_size_y - 1 if player_size_y > 1 else player_size_y,
             }
 
         else:
@@ -493,34 +480,13 @@ class GetDataFromDB:
                     )
                 ).values("id", "effect", "type"),
             )
-
+            
+            npc_size_x = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_x"])
+            npc_size_y = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"])
+            
             current_player_size = {
-                "x": (
-                    int(
-                        current_player[
-                            "npc_template_id__ship_id__ship_category_id__ship_size"
-                        ]["size_x"]
-                    )
-                    - 1
-                    if current_player[
-                        "npc_template_id__ship_id__ship_category_id__ship_size"
-                    ]["size_x"]
-                    > 1
-                    else 1
-                ),
-                "y": (
-                    int(
-                        current_player[
-                            "npc_template_id__ship_id__ship_category_id__ship_size"
-                        ]["size_y"]
-                    )
-                    - 1
-                    if current_player[
-                        "npc_template_id__ship_id__ship_category_id__ship_size"
-                    ]["size_y"]
-                    > 1
-                    else 1
-                ),
+                "x": npc_size_x - 1 if npc_size_x > 1 else npc_size_x,
+                "y": npc_size_y - 1 if npc_size_y > 1 else npc_size_x,
             }
 
         current_player_x = (
@@ -584,7 +550,6 @@ class GetDataFromDB:
                     module_type = module["type"]
                     can_be_added_to_dict = False
                     module_effect_is_in_range = False
-
                     current_player_start_y = current_player_y - module_range - current_player_size["y"]
                     current_player_end_y = current_player_y + module_range + current_player_size["y"]
                     current_player_start_x = current_player_x - module_range - current_player_size["x"]

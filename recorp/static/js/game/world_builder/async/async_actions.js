@@ -17,6 +17,8 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
+    
+    console.log(data)
     clear_path();
     let target_user_id = data["user_id"];
 
@@ -232,6 +234,7 @@ function update_player_pos_display_after_move(data){
 
             coord_x++;
         }
+
         coord_y++;
         coord_x = parseInt(data.player.user.coordinates.coord_x) + 1
         
@@ -244,7 +247,7 @@ function update_player_pos_display_after_move(data){
     }
 
     occured_event_display_on_map("movement", false, data.player.user.player, value=data.move_cost)
-    update_player_range_in_modal(data.player.ship.modules_range);
+    update_player_range_in_modal(data.modules_range);
 
     if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinates_array_to_disable_button));
@@ -290,7 +293,7 @@ function set_range_finding(data) {
 }
 
 function update_player_range_in_modal(data){
-    console.log(data)
+    
     let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
     for(node in pc_npc_nodeList){
         if(pc_npc_nodeList[node].id){

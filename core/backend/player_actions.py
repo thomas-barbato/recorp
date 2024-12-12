@@ -81,7 +81,7 @@ class PlayerAction:
         return PlayerShip.objects.filter(
             player_id=other_player_id, is_current_ship=True
         ).values_list("current_movement", flat=True)[0]
-
+    
     def set_reverse_ship_status(self):
         playership_reverse_status = PlayerShip.objects.filter(
             player_id=self.player_id, is_current_ship=True

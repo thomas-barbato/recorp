@@ -77,8 +77,9 @@ class GameConsumer(WebsocketConsumer):
         message = json.loads(event["message"])
         p = PlayerAction(self.user.id)
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+        player_id = p.get_player_id()
         response = {}
-        if p.get_player_id() == message["player"]:
+        if player_id == message["player"]:
             if (
                 p.destination_already_occupied(message["end_x"], message["end_y"])
                 is False
@@ -98,7 +99,7 @@ class GameConsumer(WebsocketConsumer):
                             "sector": store.get_specific_sector_data("sector"),
                             "move_cost": message["move_cost"],
                             "modules_range": store.get_specific_player_data(
-                                message["player"], "pc", "ship", "modules_range"
+                                player_id, "pc", "ship", "modules_range"
                             ),
                         }
                     }
@@ -122,7 +123,7 @@ class GameConsumer(WebsocketConsumer):
                         message["player"], "pc", "ship", "max_movement"
                     ),
                     "modules_range": store.get_specific_player_data(
-                        message["player"], "pc", "ship", "modules_range"
+                        player_id, "pc", "ship", "modules_range"
                     ),
                 },
             }
