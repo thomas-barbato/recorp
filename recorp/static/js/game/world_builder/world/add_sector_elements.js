@@ -575,6 +575,7 @@ function remove_border(size_y, size_x, coord_y, coord_x, color_class){
 }
 
 function generate_border(size_y, size_x, coord_y, coord_x){
+    console.log(size_x, size_y, coord_x, coord_y)
     let c_y = coord_y;
     let c_x = coord_x;
     let classList = generate_border_className(size_y, size_x);

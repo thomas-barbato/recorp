@@ -17,9 +17,15 @@ function async_move(pos) {
 }
 
 function update_player_coord(data) {
-    
-    console.log(data)
+
     clear_path();
+
+    console.log(data)
+    
+    let ship_size = {
+        "y" : parseInt(data["ship_size"]["size_y"]),
+        "x" : parseInt(data["ship_size"]["size_x"]),
+    }
     let target_user_id = data["user_id"];
 
     if (current_user_id != target_user_id) {
@@ -35,16 +41,25 @@ function update_player_coord(data) {
             let entry_point = document.getElementById(start_pos_array[i]);
             let temp_point = document.getElementById(end_pos_array[i]).innerHTML;
             let end_point = document.getElementById(end_pos_array[i]);
-
             let get_start_coord = start_pos_array[i].split('_');
 
             end_point.innerHTML = entry_point.innerHTML;
             entry_point.innerHTML = temp_point;
 
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
-            end_point.classList.add('pc', 'uncrossable');
             entry_point.classList.remove('pc', 'uncrossable');
-            end_point.setAttribute(action_listener_touch_click, 'open_close_modal( ' + `modal-pc_${target_player_id}` + ')');
+            end_point.classList.add('pc', 'uncrossable');
+            end_point.addEventListener(action_listener_touch_click, function(){
+                open_close(`modal-pc_${target_player_id}`);
+            })
+            let end_point_border = end_point.querySelector('span');
+            end_point_border.addEventListener("mouseover", function(){
+                generate_border(ship_size["y"], ship_size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1));
+            });
+            end_point_border.addEventListener("mouseout", function(){
+                remove_border(ship_size["y"], ship_size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1), 'border-cyan-400');
+            });
+
         }
 
         let modal_div = document.getElementById(`modal-pc_${target_player_id}`);
@@ -101,7 +116,7 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 }
 
 function update_player_pos_display_after_move(data){
-
+    console.log(data)
     let current_player_ship = document.querySelectorAll('.ship-pos');
     let coord_x = parseInt(data.player.user.coordinates.coord_x) + 1;
     let coord_y = parseInt(data.player.user.coordinates.coord_y) + 1;
@@ -174,7 +189,6 @@ function update_player_pos_display_after_move(data){
             space_ship.style.backgroundPositionX = `-${col_i}px`;
             space_ship.style.backgroundPositionY = `-${row_i}px`;
             
-
             space_ship_reversed.style.backgroundImage = "url('" + ship_url_reversed_img + "')";
             space_ship_reversed.classList.add('ship-reversed');
             space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
@@ -183,14 +197,17 @@ function update_player_pos_display_after_move(data){
             update_user_coord_display(data.player.user.coordinates.coord_x, data.player.user.coordinates.coord_y);
             border_color = "border-green-300";
             entry_point.classList.add("ship-pos");
+
             if (!is_user_is_on_mobile_device()) {
+
                 entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                 entry_point_border.addEventListener("mouseover", function(){
-                    generate_border(ship_size_y, ship_size_x, parseInt(coord_y), parseInt(coord_x));
+                    generate_border(ship_size_y, ship_size_x, parseInt(data.player.user.coordinates.coord_y) + 1, parseInt(data.player.user.coordinates.coord_x) + 1);
                 });
                 entry_point_border.addEventListener("mouseout", function(){
-                    remove_border(ship_size_y, ship_size_x, parseInt(coord_y), parseInt(coord_x), 'border-amber-500');
+                    remove_border(ship_size_y, ship_size_x, parseInt(data.player.user.coordinates.coord_y) + 1, parseInt(data.player.user.coordinates.coord_x) + 1, border_color);
                 });
+
             } else {
                 entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
                 coordinates_array_to_disable_button.push(`${coord_y}_${coord_x}`)

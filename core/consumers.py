@@ -101,6 +101,9 @@ class GameConsumer(WebsocketConsumer):
                             "modules_range": store.get_specific_player_data(
                                 player_id, "pc", "ship", "modules_range"
                             ),
+                            "ship_size":store.get_specific_player_data(
+                                player_id, "pc", "ship", "size"
+                            ),
                         }
                     }
         else:
@@ -124,6 +127,9 @@ class GameConsumer(WebsocketConsumer):
                     ),
                     "modules_range": store.get_specific_player_data(
                         player_id, "pc", "ship", "modules_range"
+                    ),
+                    "ship_size":store.get_specific_player_data(
+                        message["player"], "pc", "ship", "size"
                     ),
                 },
             }
