@@ -458,8 +458,8 @@ class GetDataFromDB:
             player_size_y = int(current_player["ship_id__ship_category_id__ship_size"]["size_y"])
 
             current_player_size = {
-                "x": player_size_x - 1 if player_size_x > 1 else player_size_x,
-                "y": player_size_y - 1 if player_size_y > 1 else player_size_y,
+                "x": player_size_x,
+                "y": player_size_y,
             }
 
         else:
@@ -550,28 +550,31 @@ class GetDataFromDB:
                     module_type = module["type"]
                     can_be_added_to_dict = False
                     module_effect_is_in_range = False
-                    current_player_start_y = current_player_y - module_range - current_player_size["y"]
-                    current_player_end_y = current_player_y + module_range + current_player_size["y"]
-                    current_player_start_x = current_player_x - module_range - current_player_size["x"]
-                    current_player_end_x = current_player_x + module_range + current_player_size["x"]
+                    
+                    if int(item[element["size"]["index"]][element["size"]["x"]]) > 1:
+                        current_player_start_x = current_player_x - module_range
+                        current_player_end_x = current_player_x + module_range + current_player_size["x"]
+                    else:
+                        current_player_start_x = current_player_x - module_range
+                        current_player_end_x = current_player_x + module_range
+                        
+                    if int(item[element["size"]["index"]][element["size"]["y"]]) > 1:
+                        current_player_start_y = current_player_y - module_range
+                        current_player_end_y = current_player_y + module_range + current_player_size["y"]
+                    else:
+                        current_player_start_y = current_player_y - module_range
+                        current_player_end_y = current_player_y + module_range
+                        
 
                     player_zone_range = [
                         f"{y}_{x}"
                         for y in range(current_player_start_y, current_player_end_y)
                         for x in range(current_player_start_x, current_player_end_x)
-                        if (y >= 0 and y <= 39) and (x >= 0 and x <= 39)
                     ]
 
-                    element_size_x = (int(item[element["size"]["index"]][element["size"]["x"]]) - 1
-                        if int(item[element["size"]["index"]][element["size"]["x"]]) > 1
-                        else 1
-                    )
+                    element_size_x = int(item[element["size"]["index"]][element["size"]["x"]])
 
-                    element_size_y = (
-                        int(item[element["size"]["index"]][element["size"]["y"]]) - 1
-                        if int(item[element["size"]["index"]][element["size"]["y"]]) > 1
-                        else 1
-                    )
+                    element_size_y = int(item[element["size"]["index"]][element["size"]["y"]])
 
                     element_coord_x = int(
                         item[element["coord"]["index"]][element["coord"]["x"]]
@@ -580,7 +583,7 @@ class GetDataFromDB:
                         item[element["coord"]["index"]][element["coord"]["y"]]
                     )
 
-                    if element_size_x == 1 and element_size_y == 1:
+                    if element_size_y == 1 and element_size_x == 1:
                         if f"{element_coord_y}_{element_coord_x}" in player_zone_range:
                             module_effect_is_in_range = True
                     else:
