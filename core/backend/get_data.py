@@ -485,8 +485,8 @@ class GetDataFromDB:
             npc_size_y = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"])
             
             current_player_size = {
-                "x": npc_size_x - 1 if npc_size_x > 1 else npc_size_x,
-                "y": npc_size_y - 1 if npc_size_y > 1 else npc_size_x,
+                "x": npc_size_x,
+                "y": npc_size_y,
             }
 
         current_player_x = (
@@ -551,19 +551,19 @@ class GetDataFromDB:
                     can_be_added_to_dict = False
                     module_effect_is_in_range = False
                     
-                    if int(item[element["size"]["index"]][element["size"]["x"]]) > 1:
+                    if current_player_size["x"] > 1:
                         current_player_start_x = current_player_x - module_range
                         current_player_end_x = current_player_x + module_range + current_player_size["x"]
                     else:
                         current_player_start_x = current_player_x - module_range
-                        current_player_end_x = current_player_x + module_range
+                        current_player_end_x = current_player_x + module_range + 1
                         
-                    if int(item[element["size"]["index"]][element["size"]["y"]]) > 1:
+                    if current_player_size["y"] > 1:
                         current_player_start_y = current_player_y - module_range
                         current_player_end_y = current_player_y + module_range + current_player_size["y"]
                     else:
                         current_player_start_y = current_player_y - module_range
-                        current_player_end_y = current_player_y + module_range
+                        current_player_end_y = current_player_y + module_range + 1 
                         
 
                     player_zone_range = [
@@ -573,7 +573,6 @@ class GetDataFromDB:
                     ]
 
                     element_size_x = int(item[element["size"]["index"]][element["size"]["x"]])
-
                     element_size_y = int(item[element["size"]["index"]][element["size"]["y"]])
 
                     element_coord_x = int(
