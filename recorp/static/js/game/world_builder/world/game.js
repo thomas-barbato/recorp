@@ -10,8 +10,11 @@ let atlas = {
     "map_height_size": 40 * 32,
 }
 
-let action_listener_touch_mouseover = is_user_is_on_mobile_device() === true ? 'touchstart' : 'mouseover';
-let action_listener_touch_click = is_user_is_on_mobile_device() === true ? 'touchstart' : 'onclick';
+let user_is_on_mobile_bool = is_user_is_on_mobile_device()
+
+let attribute_touch_touch_mouseover = user_is_on_mobile_bool === true ? 'touchstart' : 'mouseover';
+let attribute_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'onclick';
+let action_listener_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'click';
 
 function reverse_player_ship_display() {
     var ids = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
@@ -57,20 +60,6 @@ window.addEventListener('load', () => {
         console.log("You are now connected");
     };
 
-    /*
-    const terminationEvent = 'onpagehide' in self ? 'pagehide' : 'unload';
-    window.addEventListener(terminationEvent, (event) => {
-        e.preventDefault();
-        gameSocket.send(JSON.stringify({
-            type: 'user_leave',
-            message: same_player,
-            user: current_user_id,
-        }));
-        socket.onclose = function () { };
-        socket.close();
-    });
-    */
-
     gameSocket.onclose = function() {
         console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 1s...");
         setTimeout(function() {
@@ -92,6 +81,16 @@ window.addEventListener('load', () => {
         map_informations.npc, 
         map_informations.pc
     );
+
+    window.onresize = function(event) {
+        let user_id = document.querySelector('.player-ship-start-pos').id.split('_');
+        setTimeout(() => {
+            hide_sector_overflow(user_id[1], user_id[0]);
+            if (!is_user_is_on_mobile_device()) {
+                set_pathfinding_event();
+            }
+        }, "300");
+    };
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);

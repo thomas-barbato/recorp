@@ -12,7 +12,7 @@ function add_background(data) {
             entry_point.style.backgroundPositionY = `-${row_i}px`;
             entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col - 1)}; y = ${parseInt(index_row - 1)}]`);
-            entry_point.addEventListener(action_listener_touch_mouseover, function(){
+            entry_point.addEventListener(attribute_touch_touch_mouseover, function(){
                 update_target_coord_display(entry_point);
             })
 
@@ -99,7 +99,7 @@ function add_foreground(data){
                 entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500";
                 entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
-                entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + "modal-" + element_data["name"] + "')");
                 entry_point_border.addEventListener("mouseover", function(){
                     generate_border(size_y, size_x, parseInt(data[sector_i]['data']['coord_y']), parseInt(data[sector_i]['data']['coord_x']));
                 });
@@ -183,7 +183,7 @@ function add_npc(data){
                 entry_point.setAttribute('size_y', ship_size_y);
                 entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]}`);
                 entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
-                entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
+                entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
                 entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
                 entry_point_border.addEventListener("mouseover", function(){
                     generate_border(ship_size_y, ship_size_x, parseInt(data[i]["npc"]["coordinates"].y) + 1, parseInt(data[i]["npc"]["coordinates"].x) + 1);
@@ -311,9 +311,9 @@ function add_pc(data) {
                 
                 if(!is_user_is_on_mobile_device() == true){
                     if (data[i].user.user != current_user_id) {
-                        entry_point_border.setAttribute(action_listener_touch_click, "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
+                        entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + `modal-pc_${data[i].user.player}` + "')");
                     } else {
-                        entry_point_border.setAttribute(action_listener_touch_click, "reverse_player_ship_display()");
+                        entry_point_border.setAttribute(attribute_touch_click, "reverse_player_ship_display()");
                         
                     }
                 }
@@ -415,8 +415,30 @@ function hide_sector_overflow(coord_x, coord_y) {
         y: parseInt(coord_y)
     };
 
-    let limite_x = map_informations.screen_sized_map["col"];
-    let limite_y = map_informations.screen_sized_map["row"];
+    let limite_x;
+    let limite_y;
+
+    if(user_is_on_mobile_bool == true){
+        limite_x = map_informations.screen_sized_map["col"];
+        limite_y = map_informations.screen_sized_map["row"];
+    }else{
+        let window_height = window.innerHeight;
+        let window_width = window.innerWidth;
+
+        if(window_width >= 1920 && window_height >= 1080 || window_width > 1366 && window_height > 768){
+            limite_x = map_informations.screen_sized_map["col"];
+            limite_y = map_informations.screen_sized_map["row"];
+        }else if(window_width == 1366 && window_height == 768){
+            limite_x = 16;
+            limite_y = 14;
+        }else if(window_width >= 1280 && window_height >= 1024){
+            limite_x = 18;
+            limite_y = 17;
+        }else{
+            limite_x = 15;
+            limite_y = 15;
+        }
+    }
 
     let camera_limite_y = limite_y / 2;
     let camera_limite_x = limite_x / 2;
@@ -425,7 +447,6 @@ function hide_sector_overflow(coord_x, coord_y) {
     let display_map_start_y = (position_on_map.y - camera_limite_y) > 0 ? position_on_map.y - camera_limite_y : 0;
     let display_map_end_x = (position_on_map.x + camera_limite_x) < atlas.col ? position_on_map.x + camera_limite_x : atlas.col;
     let display_map_end_y = (position_on_map.y + camera_limite_y) < atlas.row ? position_on_map.y + camera_limite_y : atlas.row;
-
 
     if (display_map_start_x == 0) {
         display_map_end_x = limite_x + 1;
@@ -438,7 +459,6 @@ function hide_sector_overflow(coord_x, coord_y) {
     } else if (display_map_end_y == atlas.row) {
         display_map_start_y = atlas.row - (limite_y + 1);
     }
-
 
     for (let y = 0; y <= atlas.row; y++) {
         for (let x = 0; x <= atlas.col; x++) {
@@ -575,7 +595,6 @@ function remove_border(size_y, size_x, coord_y, coord_x, color_class){
 }
 
 function generate_border(size_y, size_x, coord_y, coord_x){
-    console.log(size_x, size_y, coord_x, coord_y)
     let c_y = coord_y;
     let c_x = coord_x;
     let classList = generate_border_className(size_y, size_x);

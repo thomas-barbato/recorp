@@ -3,7 +3,7 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="map-background" class="lg:w-6/12 w-full order-2 flex justify-center 2xl:bg-[url('/static/js/game/assets/ux/border-container-withbg-wide.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center lg:mb-0">
+<div id="map-background" class="2xl:w-8/12 w-full order-2 flex lg:flex-row flex-col justify-center 2xl:bg-[url('/static/js/game/assets/ux/border-container-withbg-wide.svg')] 2xl:bg-no-repeat 2xl:bg-contain md:bg-center lg:mb-0">
     <div class="flex self-center item-center z-100">
         <div class="grid">
             <table class="tabletop-view">
@@ -31,26 +31,31 @@
         </div>
     </div>
     <div id="modal-container" class=" z-90"></div>
-</div>
-<div class="w-full flex place-content-center z-100 lg:hidden lg:order-99 order-3 gap-1 " dir="ltr" id="mobile-cross">
-    <div class="flex w-2/4 justify-end lg:hidden lg:order-99 order-3 mb-2 mt-2">
-        <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded ">
-            <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/></button>
-            <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left"><i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-            <button type='button' class="flex-1 w-full pb-5 relative" id="top-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
-        </div>
-        <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="ltr">
-            <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top"><i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-            <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center"><i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon"></i></button>
-            <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom"><i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-        </div>
-        <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="rtl">
-            <button type='button' class="flex-1 w-full pb-5 relative"><i class="text-emerald-400 absolute top-0" id="bottom-left"></i></button>
-            <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right"><i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
-            <button type='button' class="flex-1 w-full pb-5 relative" id="bottom-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
+    {% if request.user_agent.is_tablet or request.user_agent.is_mobile %}
+    <div class="w-full flex place-content-center z-100 lg:order-99 order-3 gap-1 " dir="ltr" id="mobile-cross">
+    {% else %}
+    <div class="w-full hidden flex place-content-center z-100 lg:order-99 order-3 gap-1 " dir="ltr" id="mobile-cross">
+    {% endif %}
+        <div class="flex w-2/4 justify-end lg:hidden lg:order-99 order-3 mb-2 mt-2">
+            <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded ">
+                <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left"><img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/></button>
+                <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left"><i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+                <button type='button' class="flex-1 w-full pb-5 relative" id="top-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
+            </div>
+            <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="ltr">
+                <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top"><i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+                <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center"><i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon"></i></button>
+                <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom"><i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+            </div>
+            <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="rtl">
+                <button type='button' class="flex-1 w-full pb-5 relative"><i class="text-emerald-400 absolute top-0" id="bottom-left"></i></button>
+                <button type='button' class="flex-1 w-full pb-5 relative active:bg-[#25482D] bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right"><i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i></button>
+                <button type='button' class="flex-1 w-full pb-5 relative" id="bottom-right"><i class="text-emerald-400 absolute bottom-0"></i></button>
+            </div>
         </div>
     </div>
 </div>
+
 
 <script src="{% static 'world_builder/world/game.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/player_basic_information_data.js'%}" type='text/javascript'></script>

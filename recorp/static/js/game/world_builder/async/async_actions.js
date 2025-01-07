@@ -49,7 +49,7 @@ function update_player_coord(data) {
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             entry_point.classList.remove('pc', 'uncrossable');
             end_point.classList.add('pc', 'uncrossable');
-            end_point.addEventListener(action_listener_touch_click, function(){
+            end_point.addEventListener(attribute_touch_click, function(){
                 open_close(`modal-pc_${target_player_id}`);
             })
             let end_point_border = end_point.querySelector('span');
@@ -181,8 +181,8 @@ function update_player_pos_display_after_move(data){
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
 
-            entry_point_border.removeAttribute(action_listener_touch_mouseover, 'get_pathfinding(this)');
-            entry_point_border.removeAttribute(action_listener_touch_click, 'display_pathfinding()');
+            entry_point_border.removeAttribute(attribute_touch_touch_mouseover, 'get_pathfinding(this)');
+            entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
 
             space_ship.style.backgroundImage = "url('" + ship_url + "')";
             space_ship.classList.add('ship');

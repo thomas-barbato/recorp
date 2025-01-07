@@ -392,7 +392,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let movement_progress_bar_container_text = document.createElement('span');
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
-    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'relative');
+    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'relative');
     movement_progress_bar_container_div.id = "movement-container";
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
