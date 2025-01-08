@@ -4,8 +4,8 @@
 {% load i18n %}
 
 {% block content %}
+
 {{ description|json_script:"description" }}
-{% include "top-panel.html" %}
 {% include "character-modal.html" %}
 {% include "inventory-modal.html" %}
 {% include "faction-modal.html" %}
@@ -15,15 +15,32 @@
 {% include "option-modal.html" %}
 {% include "research-modal.html" %}
 {% include "task-modal.html" %}
-<div class="flex w-full lg:mx-auto main-info-container">
-    {% include "display-info.html" %}
-</div>
-<div class="flex lg:mx-auto xl:gap-3 main-game-container">
-    {% include "display-char-infos.html" %}
-    {% include "display-game.html" %}
-    {% include "display-chat.html" %}
-</div>
-<div class="flex items-baseline main-info-container">
-    {% include "display_disclaimer.html" %}
-</div>
+
+{% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+{% include "top-panel.html" %}
+    <header class="flex w-full main-info-container m-0 flex-col">
+        {% include "display-info.html" %}
+    </header>
+    <main class="flex main-game-container flex-row  m-0">
+        {% include "display-game.html" %}
+        {% include "display-char-infos.html" %}
+        {% include "display-chat.html" %}
+    </main>
+    <footer class="flex disclaimer-container m-0">
+        {% include "display_disclaimer.html" %}
+    </footer>
+{% else %}
+    <header class="flex w-full main-info-container m-0">
+        {% include "display-info.html" %}
+    </header>
+    <main class="flex main-game-container m-0 flex-row">
+        {% include "side-panel.html" %}
+        {% include "display-game.html" %}
+        {% include "display-char-infos.html" %}
+        {% include "display-chat.html" %}
+    </main>
+    <footer class="flex disclaimer-container m-0">
+        {% include "display_disclaimer.html" %}
+    </footer>
+{% endif %}
 {% endblock %}
