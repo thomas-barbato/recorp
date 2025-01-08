@@ -1,4 +1,3 @@
-
 let character_main = document.querySelector('#player-info-item-container');
 let character_main_container = document.createElement('div');
 let character_basic_information_fieldset = document.createElement('fieldset');
