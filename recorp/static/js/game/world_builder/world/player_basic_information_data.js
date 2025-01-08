@@ -49,39 +49,46 @@ let character_module_progressbar_container = document.createElement('div');
 
 
 character_main_container.classList.add(
-    'w-[full]',
+    'w-full',
     'flex',
     'flex-wrap',
     'items-center',
     'justify-center',
     'flex-col',
-    'lg:block',
-    
+    'md:block',
+    'm-0',
+    'p-1'
 );
 
 character_basic_information_fieldset.classList.add(
-    'px-2',
     'flex',
-    '2xl:w-[80%]',
-    'xl:w-[90%]',
-    'lg:w-[80%]',
+    'py-1',
+    'xl:p-2',
+    '2xl:text-sm',
+    'text-xs',
     'items-center',
     'justify-center',
     'mx-auto',
-    'gap-2',
-    'flex-row',
+    '2xl:gap-3',
+    'xl:gap-2',
+    'gap-1',
+    'w-auto',
+    '2xl:flex-row',
+    'text-center',
+    'flex-col',
     'border',
     'border-slate-600',
     'rounded-md',
     'bg-gray-600/40',
 );
 character_basic_information_fieldset_legend.classList.add(
-    "text-md",
+    "text-sm",
     "text-start",
     "font-shadow",
     "font-bold",
     "text-white",
-    "p-1"
+    "p-1",
+    "truncate"
 );
 
 character_basic_information_fieldset_legend.textContent = "Your informations";
@@ -89,7 +96,8 @@ character_basic_information_fieldset.append(character_basic_information_fieldset
 
 character_basic_information_img.id = "user-avatar";
 character_basic_information_img.classList.add(
-    'w-24',
+    'xl:w-[100px]',
+    'w-[75px]',
     'box-content',
     'mb-1',
 );
@@ -122,11 +130,9 @@ character_basic_information_li_faction_span.classList.add(
 
 character_statistics_progressbar_fieldset.classList.add(
     'flex',
-    '2xl:w-[80%]',
-    'xl:w-[90%]',
-    'lg:w-[80%]',
     'w-[100%]',
     'px-2',
+    'py-1',
     'items-start',
     'justify-center',
     'gap-2',
@@ -138,7 +144,7 @@ character_statistics_progressbar_fieldset.classList.add(
     'mx-auto',
 );
 character_statistics_progressbar_fieldset_legend.classList.add(
-    "text-md",
+    "text-sm",
     "md:text-start",
     "text-center",
     "font-shadow",
@@ -158,7 +164,8 @@ character_statistics_progressbar_hp_label.classList.add(
     'font-bold',
     'font-shadow',
     'text-white',
-    'text-sm',
+    '2xl:text-sm',
+'text-xs',
 );
 character_statistics_progressbar_hp_label.textContent = "HULL POINTS:"
 character_statistics_progressbar_hp_content.classList.add(
@@ -172,7 +179,8 @@ character_statistics_progressbar_hp_text.classList.add(
     'absolute',
     '"z-100"',
     'text-center',
-    'text-sm',
+    '2xl:text-sm',
+'text-xs',
     'font-bold',
     'font-shadow',
     'text-blue-100',
@@ -191,7 +199,8 @@ character_statistics_progressbar_move_label.classList.add(
     'font-bold',
     'font-shadow',
     'text-white',
-    'text-sm',
+    '2xl:text-sm',
+'text-xs',
 )
 character_statistics_progressbar_move_label.textContent = "MOVEMENT POINTS:"
 character_statistics_progressbar_move_content.classList.add(
@@ -205,7 +214,8 @@ character_statistics_progressbar_move_text.classList.add(
     'absolute',
     '"z-100"',
     'text-center',
-    'text-sm',
+    '2xl:text-sm',
+'text-xs',
     'font-bold',
     'font-shadow',
     'text-blue-100',
@@ -223,7 +233,8 @@ character_statistics_progressbar_ap_label.classList.add(
     'font-bold',
     'font-shadow',
     'text-white',
-    'text-sm',
+    '2xl:text-sm',
+'text-xs',
 );
 character_statistics_progressbar_ap_label.textContent = "ACTION POINTS:"
 character_statistics_progressbar_ap_content.classList.add(
@@ -237,7 +248,8 @@ character_statistics_progressbar_ap_text.classList.add(
     'absolute',
     '"z-100"',
     'text-center',
-    'text-sm',
+    '2xl:text-sm',
+'text-xs',
     'font-bold',
     'font-shadow',
     'text-blue-100',
@@ -248,7 +260,7 @@ character_defensive_modules_fieldset.classList.add(
     'flex',
     '2xl:w-[80%]',
     'xl:w-[90%]',
-    'lg:w-[80%]',
+    'lg:w-[100%]',
     'w-[100%]',
     'px-2',
     'items-start',
@@ -262,13 +274,14 @@ character_defensive_modules_fieldset.classList.add(
     'mx-auto'
 );
 character_defensive_modules_fieldset_legend.classList.add(
-    "text-md",
+    "text-sm",
     "text-start",
     "font-shadow",
     "font-bold",
     "text-white",
     "cursor-pointer",
-    "p-1"
+    "p-1",
+    "truncate"
 );
 character_defensive_modules_fieldset_legend_svg.id = "defensive-module-menu";
 character_defensive_modules_fieldset_legend.addEventListener('click', function() {
@@ -311,7 +324,7 @@ character_offensive_modules_fieldset.classList.add(
     'mx-auto'
 );
 character_offensive_modules_fieldset_legend.classList.add(
-    "text-md",
+    "text-sm",
     "text-start",
     "font-shadow",
     "font-bold",
@@ -319,7 +332,8 @@ character_offensive_modules_fieldset_legend.classList.add(
     "cursor-pointer",
     "flex",
     "flex-row",
-    "p-1"
+    "p-1",
+    "truncate"
 );
 
 character_offensive_modules_fieldset_legend_svg.id = "offensive-module-menu";
@@ -355,9 +369,8 @@ character_electronicWarfare_modules_fieldset.classList.add(
     'lg:w-[80%]',
     'w-[100%]',
     'gap-2',
-    'lg:flex-col',
     'flex-col',
-    'flex-col',
+    'items-start',
     'bg-gray-600/40',
     'border',
     'border-slate-600',
@@ -365,14 +378,13 @@ character_electronicWarfare_modules_fieldset.classList.add(
     'mx-auto'
 );
 character_electronicWarfare_modules_fieldset_legend.classList.add(
-    "text-md",
-    "md:text-start",
-    "text-center",
+    "text-sm",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-white",
     "cursor-pointer",
-    "p-1"
+    "p-1",
 );
 
 
@@ -391,9 +403,10 @@ character_electronicWarfare_modules_fieldset_legend_svg_path.setAttribute("d", "
 character_electronicWarfare_modules_fieldset_legend_svg.append(character_electronicWarfare_modules_fieldset_legend_svg_path);
 
 let character_electronicWarfare_modules_fieldset_legend_span = document.createElement('span');
-character_electronicWarfare_modules_fieldset_legend_span.textContent = "Electronic warfare";
+character_electronicWarfare_modules_fieldset_legend_span.textContent = "Electronic";
 
 character_electronicWarfare_modules_fieldset_legend.classList.add('flex', 'flex-row');
+character_electronicWarfare_modules_fieldset_legend_span.classList.add('truncate');
 
 character_electronicWarfare_modules_fieldset_legend.append(character_electronicWarfare_modules_fieldset_legend_span);
 character_electronicWarfare_modules_fieldset_legend.append(character_electronicWarfare_modules_fieldset_legend_svg);
@@ -419,14 +432,15 @@ character_other_modules_fieldset.classList.add(
 );
 
 character_other_modules_fieldset_legend.classList.add(
-    "text-md",
+    "text-sm",
     "md:text-start",
     "text-center",
     "font-shadow",
     "font-bold",
     "text-white",
     "cursor-pointer",
-    "p-1"
+    "p-1",
+    "truncate"
 );
 
 character_other_modules_fieldset_legend_svg.id = "otherModules-module-menu";
@@ -446,7 +460,7 @@ character_other_modules_fieldset_legend_svg.append(character_other_modules_field
 let character_other_modules_fieldset_legend_span = document.createElement('span');
 character_other_modules_fieldset_legend_span.textContent = "Utility";
 
-character_other_modules_fieldset_legend.classList.add('flex', 'flex-row', 'text-white');
+character_other_modules_fieldset_legend.classList.add('flex', 'flex-row', 'text-white', 'truncate');
 
 character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_span);
 character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_svg);
@@ -534,7 +548,8 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     'font-bold',
                     'font-shadow',
                     'text-white',
-                    'text-sm',
+                    '2xl:text-sm',
+                    'text-xs',
                     'hidden',
                     'module-container'
                 );
@@ -554,7 +569,8 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     'absolute',
                     '"z-100"',
                     'text-center',
-                    'text-sm',
+                    '2xl:text-sm',
+                    'text-xs',
                     'font-bold',
                     'font-shadow',
                     'text-blue-100',
@@ -580,7 +596,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
                 offensive_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 offensive_module_container.classList.add('hidden', 'module-container', 'mb-1');
-                offensive_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name;
+                offensive_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
                 offensive_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
                 if ("damage_type" in map_informations['pc'][i].ship.modules[module_i]["effect"]) {
@@ -604,19 +620,19 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
                     weapon_damage_type_small.textContent = "Damage type: ";
                     weapon_damage_type_small_value.textContent = map_informations['pc'][i].ship.modules[module_i].effect.damage_type;
-                    weapon_damage_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+                    weapon_damage_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-sm', 'text-xs', 'font-bold');
                     weapon_damage_type_span.append(weapon_damage_type_small);
                     weapon_damage_type_span.append(weapon_damage_type_small_value);
 
                     weapon_damage_small.textContent = "Damages: ";
                     weapon_damage_small_value.textContent = ` ${map_informations['pc'][i].ship.modules[module_i].effect.min_damage}-${map_informations['pc'][i].ship.modules[module_i].effect.max_damage}`;
-                    weapon_damage_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+                    weapon_damage_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-sm', 'text-xs', 'font-bold');
                     weapon_damage_span.append(weapon_damage_small);
                     weapon_damage_span.append(weapon_damage_small_value);
 
                     weapon_range_small.textContent = "Range: ";
                     weapon_range_small_value.textContent = ` ${map_informations['pc'][i].ship.modules[module_i].effect.range}`;
-                    weapon_range_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+                    weapon_range_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-sm', 'text-xs', 'font-bold');
                     weapon_range_span.append(weapon_range_small);
                     weapon_range_span.append(weapon_range_small_value);
 
@@ -639,7 +655,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                         offensive_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'py-1', 'gap-1');
 
                         offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
-                        offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+                        offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-sm', 'text-xs', 'font-bold');
 
                         offensive_module_type_small_container.append(offensive_module_type_small);
                         offensive_module_type_small_container.append(offensive_module_type_small_value);
@@ -667,7 +683,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
                 electronicWarfare_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 electronicWarfare_module_container.classList.add('hidden', 'module-container', 'mb-1');
-                electronicWarfare_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name;
+                electronicWarfare_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
                 electronicWarfare_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
                 for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
@@ -680,7 +696,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     electronicWarfare_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
 
                     electronicWarfare_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
-                    electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold');
+                    electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-sm', 'text-xs', 'font-bold');
 
                     electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small);
                     electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small_value);
@@ -714,7 +730,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
                 other_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 other_module_container.classList.add('hidden', 'module-container', 'mb-1');
-                other_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name;
+                other_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
                 other_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm');
 
                 for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
@@ -726,7 +742,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     other_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
 
                     other_module_type_small.classList.add('font-shadow', 'text-white', 'text-sm');
-                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', 'text-sm', 'font-bold', 'text-justify');
+                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-sm', 'text-xs', 'font-bold', 'text-justify');
 
                     other_module_type_small_container.append(other_module_type_small);
                     other_module_type_small_container.append(other_module_type_small_value);

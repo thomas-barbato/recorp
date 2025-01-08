@@ -1070,6 +1070,18 @@ video {
   height: 100%;
 }
 
+.h-\[100\%\] {
+  height: 100%;
+}
+
+.h-\[80vh\] {
+  height: 80vh;
+}
+
+.h-\[75vh\] {
+  height: 75vh;
+}
+
 .max-h-\[40vh\] {
   max-height: 40vh;
 }
@@ -1170,6 +1182,10 @@ video {
   width: 5%;
 }
 
+.w-\[75px\] {
+  width: 75px;
+}
+
 .w-\[80vw\] {
   width: 80vw;
 }
@@ -1206,12 +1222,12 @@ video {
   width: weird-and-invalid;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-auto {
   width: auto;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .max-w-2xl {
@@ -2573,6 +2589,11 @@ video {
 
 .bg-zinc-950\/70 {
   background-color: rgb(9 9 11 / 0.7);
+}
+
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-b {
@@ -4275,8 +4296,8 @@ select {
     margin-top: 0.5rem;
   }
 
-  .md\:inline {
-    display: inline;
+  .md\:block {
+    display: block;
   }
 
   .md\:h-\[60\%\] {
@@ -4380,6 +4401,10 @@ select {
     margin-top: 5vh;
   }
 
+  .lg\:mt-\[10vh\] {
+    margin-top: 10vh;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -4430,6 +4455,10 @@ select {
 
   .lg\:w-3\/4 {
     width: 75%;
+  }
+
+  .lg\:w-\[100\%\] {
+    width: 100%;
   }
 
   .lg\:w-\[2vw\] {
@@ -4536,8 +4565,16 @@ select {
     height: 75.5vh;
   }
 
+  .xl\:w-\[100px\] {
+    width: 100px;
+  }
+
   .xl\:w-\[90\%\] {
     width: 90%;
+  }
+
+  .xl\:gap-2 {
+    gap: 0.5rem;
   }
 
   .xl\:gap-3 {
@@ -4550,6 +4587,10 @@ select {
 
   .xl\:p-0 {
     padding: 0px;
+  }
+
+  .xl\:p-2 {
+    padding: 0.5rem;
   }
 
   .xl\:px-2 {
@@ -4597,8 +4638,8 @@ select {
     height: auto;
   }
 
-  .\32xl\:w-6\/12 {
-    width: 50%;
+  .\32xl\:w-8\/12 {
+    width: 66.666667%;
   }
 
   .\32xl\:w-\[100\%\] {
@@ -4609,8 +4650,12 @@ select {
     width: 80%;
   }
 
-  .\32xl\:w-8\/12 {
-    width: 66.666667%;
+  .\32xl\:flex-row {
+    flex-direction: row;
+  }
+
+  .\32xl\:gap-3 {
+    gap: 0.75rem;
   }
 
   .\32xl\:border {
@@ -4674,6 +4719,11 @@ select {
   .\32xl\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
+  }
+
+  .\32xl\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .\32xl\:text-xl {
