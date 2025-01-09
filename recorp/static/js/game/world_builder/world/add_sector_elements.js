@@ -426,8 +426,10 @@ function hide_sector_overflow(coord_x, coord_y) {
         let window_width = window.innerWidth;
 
         if(window_width >= 1920 && window_height >= 1080 || window_width > 1366 && window_height > 768){
-            limite_x = map_informations.screen_sized_map["col"];
-            limite_y = map_informations.screen_sized_map["row"];
+            limite_x = 40;
+            limite_y = 25;
+            //limite_x = map_informations.screen_sized_map["col"];
+            //limite_y = map_informations.screen_sized_map["row"];
         }else if(window_width == 1366 && window_height == 768){
             limite_x = 16;
             limite_y = 14;

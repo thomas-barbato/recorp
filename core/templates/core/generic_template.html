@@ -27,14 +27,8 @@
             .opacity-95 {opacity: .95;}
         </style>
     </head>
-    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-    <body class="flex h-screen w-screen flex-col font-mono hidden" id="player-container">
-    {% else %}
-    <body class="flex h-screen w-screen flex-col font-mono hidden justify-between" id="player-container">
-    {% endif %}
-        {% block content %}
-        {% endblock %}
-        {% block js %}
-        {% endblock %}
+    <body class="flex flex-col font-mono hidden" id="player-container">
+    {% block content %}
+    {% endblock %}
     </body>
 </html>
