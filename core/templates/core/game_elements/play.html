@@ -17,13 +17,12 @@
 {% include "task-modal.html" %}
 
 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-{% include "top-panel.html" %}
+    {% include "top-panel.html" %}
     <header class="flex w-full main-info-container m-0 flex-col">
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container flex-row  m-0">
+    <main class="flex main-game-container flex-row w-full">
         {% include "display-game.html" %}
-        {% include "display-char-infos.html" %}
         {% include "display-chat.html" %}
     </main>
     <footer class="flex disclaimer-container m-0">
@@ -33,14 +32,13 @@
     <header class="flex w-full main-info-container m-0">
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container m-0 flex-row">
-        {% include "side-panel.html" %}
+    <main class="flex main-game-container w-full flex-row justify-between gap-1">
         {% include "display-game.html" %}
-        {% include "display-char-infos.html" %}
-        {% include "display-chat.html" %}
     </main>
-    <footer class="flex disclaimer-container m-0">
+    <footer class="fixed bottom-0 disclaimer-container m-0">
         {% include "display_disclaimer.html" %}
     </footer>
 {% endif %}
+{% endblock %}
+{% block js %}
 {% endblock %}

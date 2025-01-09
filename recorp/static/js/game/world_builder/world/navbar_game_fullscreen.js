@@ -15,17 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     nav_items.forEach(index => {
-        console.log("dedans ok ok ok")
         index.addEventListener('mouseover', () => {
             for(let i = 0; i < nav_items.length; i++){
-                nav_items[i] !== index ? nav_items[i].classList.add('blur-sm') : index.classList.remove('blur-sm');
+                nav_items[i] !== index ? nav_items[i].querySelector('.side-panel-item-name').classList.add('hidden') : nav_items[i].querySelector('.side-panel-item-name').classList.remove('hidden');
             }
         }
         );
     });
-
-
-    document.querySelector('.ul-nav').addEventListener('mouseleave', () => {
-        nav_items.forEach(index => index.classList.remove('blur-sm'));
-    })
 });
