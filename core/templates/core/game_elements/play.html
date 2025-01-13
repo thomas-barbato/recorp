@@ -29,10 +29,11 @@
         {% include "display_disclaimer.html" %}
     </footer>
 {% else %}
-    <header class="flex w-full main-info-container m-0">
+    <header class="flex w-full flex-col main-info-container m-0">
+        {% include "top-panel.html" %}
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container w-full flex-row justify-between gap-1">
+    <main class="flex main-game-container w-full flex-row justify-around">
         {% include "display-game.html" %}
     </main>
     <footer class="fixed bottom-0 disclaimer-container m-0">

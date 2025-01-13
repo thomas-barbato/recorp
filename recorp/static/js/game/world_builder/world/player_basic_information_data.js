@@ -131,10 +131,8 @@ character_statistics_progressbar_fieldset.classList.add(
     'flex',
     'w-[100%]',
     'px-2',
-    'py-1',
     'items-start',
     'justify-center',
-    'gap-2',
     'flex-col',
     'bg-gray-600/40',
     'border',
@@ -164,14 +162,16 @@ character_statistics_progressbar_hp_label.classList.add(
     'font-shadow',
     'text-white',
     '2xl:text-sm',
-'text-xs',
+    'text-xs',
 );
-character_statistics_progressbar_hp_label.textContent = "HULL POINTS:"
+character_statistics_progressbar_hp_label.textContent = "Hull Points:"
 character_statistics_progressbar_hp_content.classList.add(
     'bg-blue-600',
     'leading-none',
     'h-[20px]',
-    'absolute'
+    'absolute',
+    'font-shadow',
+    'text-xs'
 );
 character_statistics_progressbar_hp_text.classList.add(
     'w-full',
@@ -199,14 +199,16 @@ character_statistics_progressbar_move_label.classList.add(
     'font-shadow',
     'text-white',
     '2xl:text-sm',
-'text-xs',
+    'text-xs',
 )
-character_statistics_progressbar_move_label.textContent = "MOVEMENT POINTS:"
+character_statistics_progressbar_move_label.textContent = "Movement Points:"
 character_statistics_progressbar_move_content.classList.add(
     'bg-blue-600',
     'leading-none',
     'h-[20px]',
-    'absolute'
+    'absolute',
+    'font-shadow',
+    'text-xs'
 );
 character_statistics_progressbar_move_text.classList.add(
     'w-full',
@@ -233,14 +235,16 @@ character_statistics_progressbar_ap_label.classList.add(
     'font-shadow',
     'text-white',
     '2xl:text-sm',
-'text-xs',
+    'text-xs',
 );
-character_statistics_progressbar_ap_label.textContent = "ACTION POINTS:"
+character_statistics_progressbar_ap_label.textContent = "Action Points:"
 character_statistics_progressbar_ap_content.classList.add(
     'bg-blue-600',
     'leading-none',
     'h-[20px]',
-    'absolute'
+    'absolute',
+    'font-shadow',
+    'text-xs',
 );
 character_statistics_progressbar_ap_text.classList.add(
     'w-full',
