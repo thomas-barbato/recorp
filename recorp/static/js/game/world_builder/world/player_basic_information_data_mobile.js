@@ -62,7 +62,7 @@ character_statistics_progressbar_hp_label_mobile.classList.add(
     'text-white',
     'text-xs',
 );
-character_statistics_progressbar_hp_label_mobile.textContent = "Hull points:"
+character_statistics_progressbar_hp_label_mobile.textContent = "Hull points"
 character_statistics_progressbar_hp_content_mobile.classList.add(
     'bg-blue-600',
     'leading-none',
@@ -95,7 +95,7 @@ character_statistics_progressbar_move_label_mobile.classList.add(
     'text-white',
     'text-xs',
 )
-character_statistics_progressbar_move_label_mobile.textContent = "Movement points:"
+character_statistics_progressbar_move_label_mobile.textContent = "Movement points"
 character_statistics_progressbar_move_content_mobile.classList.add(
     'bg-blue-600',
     'leading-none',
@@ -127,7 +127,7 @@ character_statistics_progressbar_ap_label_mobile.classList.add(
     'text-white',
     'text-xs',
 );
-character_statistics_progressbar_ap_label_mobile.textContent = "Action points:"
+character_statistics_progressbar_ap_label_mobile.textContent = "Action points"
 character_statistics_progressbar_ap_content_mobile.classList.add(
     'bg-blue-600',
     'leading-none',
@@ -422,7 +422,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'text-white',
             'text-xs',
         );
-        player_modal_container_body_hp_label.textContent = "HULL POINTS:"
+        player_modal_container_body_hp_label.textContent = "HULL POINTS"
         player_modal_container_body_hp_content.classList.add(
             'bg-blue-600',
             'leading-none',
@@ -456,7 +456,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'text-white',
             'text-xs',
         )
-        player_modal_container_body_move_label.textContent = "MOVEMENT POINTS:";
+        player_modal_container_body_move_label.textContent = "MOVEMENT POINTS";
         player_modal_container_body_move_content.classList.add(
             'bg-blue-600',
             'leading-none',
@@ -488,7 +488,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'text-white',
             'text-xs',
         );
-        player_modal_container_body_ap_label.textContent = "ACTION POINTS:"
+        player_modal_container_body_ap_label.textContent = "ACTION POINTS"
         player_modal_container_body_ap_content.classList.add(
             'bg-blue-600',
             'leading-none',

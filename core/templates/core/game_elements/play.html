@@ -33,10 +33,10 @@
         {% include "top-panel.html" %}
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container w-full flex-row justify-around">
+    <main class="flex main-game-container w-full flex-row justify-stretch">
         {% include "display-game.html" %}
     </main>
-    <footer class="fixed bottom-0 disclaimer-container m-0">
+    <footer class="flex bottom-0 w-full lg:h-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0">
         {% include "display_disclaimer.html" %}
     </footer>
 {% endif %}

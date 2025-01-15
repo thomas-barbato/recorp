@@ -3,92 +3,113 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="side-panel" class="flex z-20 lg:inline-block order-1 w-1/12 hidden">
-    <ul class="flex flex-col items-center justify-center ul-nav gap-3 h-full">
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="character-modal" data-modal-toggle="character-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-user fa-xl"></i>
-                <span class="side-panel-item-name text-white hidden">{% translate "Character" %}</span>
-            </span>
+<div id="side-panel" class="flex z-20 lg:inline order-1 w-1/12 hidden bg-zinc-950/70">
+    <ul class="flex flex-col justify-center ul-nav gap-3 h-full w-full">
+        <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Character" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-user fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Inventory" %}</span>
-            </span>
+        <li data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-box"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Inventory" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-people-group fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Faction" %}</span>
-                </span>
+        <li data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-people-group"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Faction" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="research-modal" data-modal-toggle="research-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-brain fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Research" %}</span>
-            </span>
+        <li data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Research" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="map-modal" data-modal-toggle="map-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-map fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Map" %}</span>
-            </span>
+        <li data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-map"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Map" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="task-modal" data-modal-toggle="task-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-list-check fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Tasks" %}</span>
-            </span>
+        <li data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Tasks" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="event-modal" data-modal-toggle="event-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-mobile-screen-button fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Events" %}</span>
-            </span>
+        <li data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Events" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="message-modal" data-modal-toggle="message-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-envelope fa-xl"></i> 
-                <span class="side-panel-item-name text-white bg-emerald-900/40   hidden">{% translate "Forum" %}</span>
-            </span>
+        <li data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Message" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <a href="#" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-comments fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Forum" %}</span>
+        <li class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <a href="#" class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-comments"></i>
             </a>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Forum" %}
+            </div>
         </li>
-        <li class="flex flex-row hover:bg-emerald-900/40 cursor-pointer rounded-md py-1.5 px-1">
-            <span data-modal-target="option-modal" data-modal-toggle="option-modal" class="inline-block text-emerald-400 hover:text-white text-left md:text-base text-sm font-bold font-shadow gap-1 nav-item-fullscreen">
-                <i class="fa-solid fa-gear fa-xl"></i> 
-                <span class="side-panel-item-name text-white hidden">{% translate "Settings" %}</span>
-            </span>
+        <li data-modal-target="option-modal" data-modal-toggle="option-modal" class="flex hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+            <div class="w-20 flex justify-center items-center">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
+                {% translate "Settings" %}
+            </div>
         </li>
     </ul>
 </div>
-<div id="map-background" class="flex lg:w-8/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0">
+<div id="map-background" class="flex lg:w-9/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0 items-center">
     <div class="flex z-100 mx-auto">
         <div class="grid">
             <table class="tabletop-view">
                 <tbody>
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
-                        <td id="Y_X" class="text-center 2xl:bg-gray-800/0 bg-gray-800/40 text-neutral-400 font-shadow font-bold w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs uncrossable">
-                            <span class="bg-neutral-400 text-white py-0.5" id="Y_X_y">0</span><span class="bg-emerald-400 text-white py-0.5" id="Y_X_x">0</span>
+                        <td id="Y_X" class="flex text-center text-neutral-400 text-shadow font-bold w-[32px] h-[32px] text-xs uncrossable flex-row m-0">
+                            <span class="flex bg-neutral-400 text-white text-shadow p-1 h-full justify-center items-center" id="Y_X_y">0</span>
+                            <span class="flex bg-emerald-400 text-white text-shadow p-1 h-full justify-center items-center" id="Y_X_x">0</span>
                         </td>
                         {% for col in map_size_range.cols %}
-                            <td id="X_{{ col }}" class="text-center font-shadow 2xl:bg-gray-800/0 bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 md:text-sm text-xs uncrossable">
+                            <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] p-1 text-xs p-1 uncrossable">
                                 {{ col }}
                             </td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
-                        <td id="Y_{{ row }}" class="text-center text-white font-bold border-gray-950 border-dotted w-[32px] h-[32px] p-0 m-0 md:text-sm text-xs uncrossable">{{ row }}</td>
+                        <td id="Y_{{ row }}" class="text-center text-white font-bold border border-slate-600 bg-gray-600/40 text-shadow w-[32px] h-[32px] p-1 text-xs uncrossable">{{ row }}</td>
                         {% for col in map_size_range.cols %}
                             <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row}}_{{ col }}">
                                 <div class="relative w-[32px] h-[32px] coord-zone-div">
-                                    <span class="absolute hover:box-border hover:border-2 hover:border inline-block z-10 w-[32px] h-[32px]"></span>
+                                    <span class="absolute hover:box-border hover:border-2 hover:border inline-block w-[32px] h-[32px]"></span>
                                 </div>
                             </td>
                         {% endfor %}
@@ -109,7 +130,7 @@
                 <button type='button' class="flex-1 w-full pb-5 relative" ontouchstart="clear_path()" id="top-left">
                     <img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/>
                 </button>
-                <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-900/40 bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left">
+                <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-400/40 bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left">
                     <i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 relative" id="top-right">
@@ -117,13 +138,13 @@
                 </button>
             </div>
             <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="ltr">
-                <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-900/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top">
+                <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-400/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top">
                     <i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center">
                     <i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon"></i>
                 </button>
-                <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-emerald-900/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom">
+                <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-emerald-400/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom">
                     <i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
                 </button>
             </div>
@@ -131,7 +152,7 @@
                 <button type='button' class="flex-1 w-full pb-5 relative">
                     <i class="text-emerald-400 absolute top-0" id="bottom-left"></i>
                 </button>
-                <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-900/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right">
+                <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-400/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right">
                     <i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 relative" id="bottom-right">
@@ -141,14 +162,14 @@
         </div>
     </div>
 </div>
-<div class="flex w-2/12 flex-col h-[90vh] order-3 lg:inline-block hidden m-0 overflow-hidden p-1" id="chat-and-player-infos">
-    <div id="player-info-item-container" class="inline-block mx-auto text-center text-justify text-white flex-wrap thin-semi-transparent-scrollbar mx-auto bg-gray-800/0">
+<div class="flex w-2/12 flex-col h-[90vh] order-3 lg:inline-block m-0 bg-zinc-950/70 p-1 gap-1" id="chat-and-player-infos">
+    <div id="player-info-item-container" class="flex mx-auto text-center text-white flex-wrap thin-semi-transparent-scrollbar bg-gray-800/0">
     </div>
-    <div class="inline-block md:mx-auto h-[25%] text-center text-white text-sm overflow-y-scroll no-scrollbar border-content border border-gray-300" id="chat-item-container">
+    <div class="inline-block md:mx-auto h-[25%] text-center text-white text-sm overflow-y-scroll no-scrollbar border-content border border-gray-300 mt-1" id="chat-item-container">
     {% for i in loop %}
         <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start border border-slate-600 rounded-md bg-slate-600/50 p-1">
             <strong class="text-emerald-400 text-sm">Username (D/M/Y - H/M/S):</strong>
-            <p class="text-white text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <p class="text-white text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
         </div>
     {% endfor %}
     </div>

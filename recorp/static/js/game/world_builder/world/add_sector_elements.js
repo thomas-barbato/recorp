@@ -425,20 +425,32 @@ function hide_sector_overflow(coord_x, coord_y) {
         let window_height = window.innerHeight;
         let window_width = window.innerWidth;
 
-        if(window_width >= 1920 && window_height >= 1080 || window_width > 1366 && window_height > 768){
+        if(window_width >= 1920){
             limite_x = 40;
-            limite_y = 25;
-            //limite_x = map_informations.screen_sized_map["col"];
-            //limite_y = map_informations.screen_sized_map["row"];
-        }else if(window_width == 1366 && window_height == 768){
-            limite_x = 16;
-            limite_y = 14;
-        }else if(window_width >= 1280 && window_height >= 1024){
-            limite_x = 18;
-            limite_y = 17;
+        }else if(window_width >= 1800){
+            limite_x = 36;
+        }else if(window_width >= 1680){
+            limite_x = 32;
+        }else if(window_width >= 1560){
+            limite_x = 28;
+        }else if(window_width >= 1280){
+            limite_x = 24;
+        }else if(window_width >= 768){
+            limite_x = 20;
+        }else if(window_width >= 640){
+            limite_x = 20;
         }else{
-            limite_x = 15;
-            limite_y = 15;
+            limite_x = 11;
+        }
+
+        if(window_height >= 965){
+            limite_y = 25;
+        }else if(window_height >= 840){
+            limite_y = 20;
+        }else if(window_height >= 680){
+            limite_y = 16;
+        }else{
+            limite_y = 11;
         }
     }
 

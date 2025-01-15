@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         );
     });
-
+    /*
     side_nav_items.forEach(index => {
         if(side_nav_items){
             index.addEventListener('mouseover', () => {
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-
+    */
     document.querySelector('.ul-nav').addEventListener('mouseleave', () => {
         nav_items.forEach(index => index.classList.remove('blur-sm'));
     })
