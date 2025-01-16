@@ -60,7 +60,7 @@ character_basic_information_fieldset.classList.add(
     '2xl:gap-3',
     'xl:gap-2',
     'gap-1',
-    'w-auto',
+    'w-full',
     '2xl:flex-row',
     'text-center',
     'flex-col',
@@ -145,9 +145,9 @@ character_statistics_progressbar_fieldset.append(character_statistics_progressba
 
 character_statistics_progressbar_hp_div.classList.add(
     'w-full',
-    'bg-red-500',
+    'bg-red-600',
     'relative',
-    'h-[20px]',
+    'h-[15px]',
     'text-start'
 );
 character_statistics_progressbar_hp_label.classList.add(
@@ -160,7 +160,7 @@ character_statistics_progressbar_hp_label.textContent = "Hull Points"
 character_statistics_progressbar_hp_content.classList.add(
     'bg-blue-600',
     'leading-none',
-    'h-[20px]',
+    'h-[15px]',
     'absolute'
 );
 character_statistics_progressbar_hp_text.classList.add(
@@ -177,9 +177,9 @@ character_statistics_progressbar_hp_text.classList.add(
 
 character_statistics_progressbar_move_div.classList.add(
     'w-full',
-    'bg-red-500',
+    'bg-red-600',
     'relative',
-    'h-[20px]',
+    'h-[15px]',
     'text-start'
 );
 character_statistics_progressbar_move_div.id = "remaining-movement-div";
@@ -194,7 +194,7 @@ character_statistics_progressbar_move_label.textContent = "Movement Points"
 character_statistics_progressbar_move_content.classList.add(
     'bg-blue-600',
     'leading-none',
-    'h-[20px]',
+    'h-[15px]',
     'absolute',
     'font-shadow',
     'text-xs'
@@ -212,9 +212,9 @@ character_statistics_progressbar_move_text.classList.add(
 
 character_statistics_progressbar_ap_div.classList.add(
     'w-full',
-    'bg-red-500',
+    'bg-red-600',
     'relative',
-    'h-[20px]',
+    'h-[15px]',
     'text-start'
 );
 character_statistics_progressbar_ap_label.classList.add(
@@ -227,7 +227,7 @@ character_statistics_progressbar_ap_label.textContent = "Action Points"
 character_statistics_progressbar_ap_content.classList.add(
     'bg-blue-600',
     'leading-none',
-    'h-[20px]',
+    'h-[15px]',
     'absolute',
     'font-shadow',
     'text-xs',
@@ -237,7 +237,6 @@ character_statistics_progressbar_ap_text.classList.add(
     'absolute',
     'z-100',
     'text-center',
-    '2xl:text-xs',
     'text-xs',
     'font-bold',
     'font-shadow',
@@ -249,7 +248,7 @@ character_module_fieldset.classList.add(
     'relative',
     'flex-col',
     'text-xs',
-    'p-1',
+    'mx-auto',
     'w-auto',
     'text-start',
     'border',
@@ -258,6 +257,8 @@ character_module_fieldset.classList.add(
     'bg-gray-600/40',
     'h-[30vh]',
     'overflow-y-scroll',
+    'thin-semi-transparent-scrollbar',
+    'thin-semi-transparent-scrollbar:hover'
 )
 character_module_fieldset_legend.classList.add(
     "text-xs",
@@ -272,7 +273,7 @@ character_defensive_modules_fieldset.classList.add(
     'flex',
     'p-2',
     'gap-2',
-    'w-full',
+    'w-[80%]',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -307,7 +308,7 @@ character_offensive_modules_fieldset.classList.add(
     'mt-1',
     'flex',
     'gap-2',
-    'w-full',
+    'w-[80%]',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -341,7 +342,7 @@ character_electronicWarfare_modules_fieldset.classList.add(
     'mt-1',
     'flex',
     'gap-2',
-    'w-full',
+    'w-[80%]',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -376,7 +377,7 @@ character_other_modules_fieldset.classList.add(
     'mt-1',
     'flex',
     'gap-2',
-    'w-full',
+    'w-[80%]',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -476,7 +477,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                 defensive_module_div.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 defensive_module_div.classList.add(
                     'w-full',
-                    'bg-red-500',
+                    'bg-red-600',
                     'relative',
                     'h-[15px]',
                     'module-container',
@@ -495,7 +496,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                 defensive_module_content.classList.add(
                     'bg-blue-600',
                     'leading-none',
-                    'h-[20px]',
+                    'h-[15px]',
                     'absolute',
                     'module-container'
                 );
@@ -554,19 +555,19 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
                     weapon_damage_type_small.textContent = "Damage type: ";
                     weapon_damage_type_small_value.textContent = map_informations['pc'][i].ship.modules[module_i].effect.damage_type;
-                    weapon_damage_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-xs', 'text-xs', 'font-bold');
+                    weapon_damage_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
                     weapon_damage_type_span.append(weapon_damage_type_small);
                     weapon_damage_type_span.append(weapon_damage_type_small_value);
 
                     weapon_damage_small.textContent = "Damages: ";
                     weapon_damage_small_value.textContent = ` ${map_informations['pc'][i].ship.modules[module_i].effect.min_damage}-${map_informations['pc'][i].ship.modules[module_i].effect.max_damage}`;
-                    weapon_damage_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-xs', 'text-xs', 'font-bold');
+                    weapon_damage_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
                     weapon_damage_span.append(weapon_damage_small);
                     weapon_damage_span.append(weapon_damage_small_value);
 
                     weapon_range_small.textContent = "Range: ";
                     weapon_range_small_value.textContent = ` ${map_informations['pc'][i].ship.modules[module_i].effect.range}`;
-                    weapon_range_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-xs', 'text-xs', 'font-bold');
+                    weapon_range_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
                     weapon_range_span.append(weapon_range_small);
                     weapon_range_span.append(weapon_range_small_value);
 
@@ -589,7 +590,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                         offensive_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'py-1', 'gap-1');
 
                         offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
-                        offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-xs', 'text-xs', 'font-bold');
+                        offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
 
                         offensive_module_type_small_container.append(offensive_module_type_small);
                         offensive_module_type_small_container.append(offensive_module_type_small_value);
@@ -630,7 +631,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     electronicWarfare_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
 
                     electronicWarfare_module_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
-                    electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-xs', 'text-xs', 'font-bold');
+                    electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
 
                     electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small);
                     electronicWarfare_module_type_small_container.append(electronicWarfare_module_type_small_value);
@@ -676,7 +677,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     other_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
 
                     other_module_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
-                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400', '2xl:text-xs', 'text-xs', 'font-bold', 'text-justify');
+                    other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold', 'text-justify');
 
                     other_module_type_small_container.append(other_module_type_small);
                     other_module_type_small_container.append(other_module_type_small_value);

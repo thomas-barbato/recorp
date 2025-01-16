@@ -376,11 +376,11 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let hp_progress_bar_container_text = document.createElement('span');
     let hp_progress_bar_container_label = document.createElement('label');
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
-    hp_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'relative');
+    hp_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
     hp_progress_bar_container_label.textContent = "Hull points:"
     hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
-    hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
-    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center', 'p-0.5');
+    hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
+    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
     hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
     hp_progress_bar_container_content.style.width = hp_percent;
 
@@ -392,12 +392,12 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let movement_progress_bar_container_text = document.createElement('span');
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
-    movement_progress_bar_container_div.classList.add('w-full', 'bg-gray-200', 'relative');
+    movement_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
     movement_progress_bar_container_div.id = "movement-container";
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
-    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]')
-    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center', 'p-0.5');
+    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]')
+    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
     movement_progress_bar_container_content.style.width = move_percent;
 
@@ -561,9 +561,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
             module_content_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
             module_content_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
-            module_element.classList.add('w-full', 'bg-gray-200', 'relative');
-            module_content.classList.add('bg-blue-600', 'leading-none', 'h-[20px]');
-            module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center', 'p-0.5');
+            module_element.classList.add('w-full', 'bg-red-600', 'relative');
+            module_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
+            module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
             module_content_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
             module_content.style.width = defense_value;
 

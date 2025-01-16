@@ -52,7 +52,7 @@ character_statistics_progressbar_fieldset_mobile.append(character_statistics_pro
 
 character_statistics_progressbar_hp_div_mobile.classList.add(
     'w-full',
-    'bg-red-500',
+    'bg-red-600',
     'relative',
     'h-[15px]'
 );
@@ -83,7 +83,7 @@ character_statistics_progressbar_hp_text_mobile.classList.add(
 
 character_statistics_progressbar_move_div_mobile.classList.add(
     'w-full',
-    'bg-red-500',
+    'bg-red-600',
     'relative',
     'h-[15px]'
 );
@@ -116,7 +116,7 @@ character_statistics_progressbar_move_text_mobile.classList.add(
 
 character_statistics_progressbar_ap_div_mobile.classList.add(
     'w-full',
-    'bg-red-500',
+    'bg-red-600',
     'relative',
     'h-[15px]',
     'mb-1'
@@ -321,7 +321,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         let close_button_url = '/static/js/game/assets/ux/close.svg';
         player_modal_container_header_close_button.src = close_button_url;
         player_modal_container_header_close_button.title = `close`;
-        player_modal_container_header_close_button.classList.add('inline-block', 'w-[20px]', 'h-[20px]', 'absolute', 'top-10', 'right-0', 'mt-2', 'pr-2');
+        player_modal_container_header_close_button.classList.add('inline-block', 'w-[20px]', 'h-[15px]', 'absolute', 'top-10', 'right-0', 'mt-2', 'pr-2');
         player_modal_container_header_close_button.addEventListener(action_listener_touch_click, function(){
             open_close_modal('player-modal');
         });
@@ -412,9 +412,9 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
         player_modal_container_body_hp_div.classList.add(
             'w-full',
-            'bg-red-500',
+            'bg-red-600',
             'relative',
-            'h-[20px]'
+            'h-[15px]'
         );
         player_modal_container_body_hp_label.classList.add(
             'font-bold',
@@ -426,7 +426,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         player_modal_container_body_hp_content.classList.add(
             'bg-blue-600',
             'leading-none',
-            'h-[20px]',
+            'h-[15px]',
             'absolute'
         );
 
@@ -444,9 +444,9 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
         player_modal_container_body_move_div.classList.add(
             'w-full',
-            'bg-red-500',
+            'bg-red-600',
             'relative',
-            'h-[20px]'
+            'h-[15px]'
         );
         player_modal_container_body_move_div.id = "remaining-movement-div";
 
@@ -460,7 +460,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         player_modal_container_body_move_content.classList.add(
             'bg-blue-600',
             'leading-none',
-            'h-[20px]',
+            'h-[15px]',
             'absolute'
         );
         player_modal_container_body_move_text.classList.add(
@@ -477,9 +477,9 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
         player_modal_container_body_ap_div.classList.add(
             'w-full',
-            'bg-red-500',
+            'bg-red-600',
             'relative',
-            'h-[20px]',
+            'h-[15px]',
             'mb-1'
         );
         player_modal_container_body_ap_label.classList.add(
@@ -492,7 +492,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         player_modal_container_body_ap_content.classList.add(
             'bg-blue-600',
             'leading-none',
-            'h-[20px]',
+            'h-[15px]',
             'absolute'
         );
         player_modal_container_body_ap_text.classList.add(
@@ -664,9 +664,9 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                 defensive_module_div.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 defensive_module_div.classList.add(
                     'w-full',
-                    'bg-red-500',
+                    'bg-red-600',
                     'relative',
-                    'h-[20px]',
+                    'h-[15px]',
                     'module-container',
                     'mb-1'
                 )
@@ -683,7 +683,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                 defensive_module_content.classList.add(
                     'bg-blue-600',
                     'leading-none',
-                    'h-[20px]',
+                    'h-[15px]',
                     'absolute',
                     'module-container'
                 );

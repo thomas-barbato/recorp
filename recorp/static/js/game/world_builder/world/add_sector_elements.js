@@ -450,7 +450,7 @@ function hide_sector_overflow(coord_x, coord_y) {
         }else if(window_height >= 680){
             limite_y = 16;
         }else{
-            limite_y = 11;
+            limite_y = 10;
         }
     }
 
