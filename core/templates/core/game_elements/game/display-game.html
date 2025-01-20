@@ -5,7 +5,7 @@
 {{ request.user.id|json_script:"script_user_id" }}
 <div id="side-panel" class="flex z-20 lg:inline order-1 w-1/12 hidden bg-zinc-950/70">
     <ul class="flex flex-col justify-center ul-nav gap-3 h-full w-full">
-        <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex xl:flex-row flex-col text-center hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex xl:flex-row flex-col text-center hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="xl:w-20 w-full flex justify-center items-center">
                 <i class="fa-solid fa-user"></i>
             </div>
@@ -13,7 +13,7 @@
                 {% translate "Character" %}
             </div>
         </li>
-        <li data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-box"></i>
             </div>
@@ -21,7 +21,7 @@
                 {% translate "Inventory" %}
             </div>
         </li>
-        <li data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-people-group"></i>
             </div>
@@ -29,7 +29,7 @@
                 {% translate "Faction" %}
             </div>
         </li>
-        <li data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-brain"></i>
             </div>
@@ -37,7 +37,7 @@
                 {% translate "Research" %}
             </div>
         </li>
-        <li data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-map"></i>
             </div>
@@ -45,7 +45,7 @@
                 {% translate "Map" %}
             </div>
         </li>
-        <li data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-list-check"></i>
             </div>
@@ -53,7 +53,7 @@
                 {% translate "Tasks" %}
             </div>
         </li>
-        <li data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-mobile-screen-button"></i>
             </div>
@@ -61,7 +61,7 @@
                 {% translate "Events" %}
             </div>
         </li>
-        <li data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-envelope"></i>
             </div>
@@ -69,7 +69,7 @@
                 {% translate "Message" %}
             </div>
         </li>
-        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <a href="#" class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-comments"></i>
             </a>
@@ -77,7 +77,7 @@
                 {% translate "Forum" %}
             </div>
         </li>
-        <li data-modal-target="option-modal" data-modal-toggle="option-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded space-x-1 p-1.5 text-emerald-400 hover:text-white ">
+        <li data-modal-target="option-modal" data-modal-toggle="option-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-gear"></i>
             </div>
@@ -186,8 +186,8 @@
 <script src="{% static 'world_builder/world/navbar_game.js'%}"  type="text/javascript"></script>
 <script src="{% static 'world_builder/world/player_basic_information_data.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/player_basic_information_data_mobile.js'%}" type='text/javascript'></script>
-    <script src="{% static 'world_builder/classes/player.js'%}" type='text/javascript'></script>
-    <script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/classes/player.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/modals.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding_mobile.js'%}" type='text/javascript'></script>

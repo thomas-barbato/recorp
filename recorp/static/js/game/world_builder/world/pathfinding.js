@@ -372,10 +372,10 @@ function cleanCss() {
             pf_zone[i].textContent = "";
            
             pf_zone[i].classList.add('hover:border-2', 'hover:border');
-            if (pf_zone_parent.classList.contains('ship-pos')) {
+            if (pf_zone_parent.classList.contains('player-ship-start-pos') || pf_zone_parent.classList.contains('ship-pos')) {
                 pf_zone[i].classList.add('border-dashed', 'border-green-300');
             }else if(pf_zone_parent.classList.contains('pc')){
-                pf_zone[i].classList.add('border-dashed', 'border-blue-400');
+                pf_zone[i].classList.add('border-dashed', 'border-cyan-400');
             }else if(pf_zone_parent.classList.contains('npc')){
                 pf_zone[i].classList.add('border-dashed', 'border-red-600');
             }

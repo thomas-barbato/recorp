@@ -401,7 +401,7 @@ class GetDataFromDB:
 
         result_dict = {}
         player_zone_range = []
-        current_player_size = None
+        current_size = None
         sector_element_data_key = {
             "pc": {
                 "size": {
@@ -457,7 +457,7 @@ class GetDataFromDB:
             player_size_x = int(current_player["ship_id__ship_category_id__ship_size"]["size_x"])
             player_size_y = int(current_player["ship_id__ship_category_id__ship_size"]["size_y"])
 
-            current_player_size = {
+            current_size = {
                 "x": player_size_x,
                 "y": player_size_y,
             }
@@ -480,11 +480,12 @@ class GetDataFromDB:
                     )
                 ).values("id", "effect", "type"),
             )
+            print(current_player_module)
             
             npc_size_x = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_x"])
             npc_size_y = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"])
             
-            current_player_size = {
+            current_size = {
                 "x": npc_size_x,
                 "y": npc_size_y,
             }
@@ -551,16 +552,16 @@ class GetDataFromDB:
                     can_be_added_to_dict = False
                     module_effect_is_in_range = False
                     
-                    if current_player_size["x"] > 1:
+                    if current_size["x"] > 1:
                         current_player_start_x = current_player_x - module_range
-                        current_player_end_x = current_player_x + module_range + current_player_size["x"]
+                        current_player_end_x = current_player_x + module_range + current_size["x"]
                     else:
                         current_player_start_x = current_player_x - module_range
                         current_player_end_x = current_player_x + module_range + 1
                         
-                    if current_player_size["y"] > 1:
+                    if current_size["y"] > 1:
                         current_player_start_y = current_player_y - module_range
-                        current_player_end_y = current_player_y + module_range + current_player_size["y"]
+                        current_player_end_y = current_player_y + module_range + current_size["y"]
                     else:
                         current_player_start_y = current_player_y - module_range
                         current_player_end_y = current_player_y + module_range + 1 

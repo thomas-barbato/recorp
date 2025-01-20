@@ -328,7 +328,6 @@ function add_pc(data) {
                 space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
                 entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-
                 if (data[i]["user"]["user"] == current_user_id) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
@@ -357,14 +356,13 @@ function add_pc(data) {
                         }
                     }
                     current_player.set_remaining_move_points(data[i]["ship"]["current_movement"]);
-                }
 
-                if (data[i]["user"]["user"] != current_user_id) {
+                }else{
                     border_color = "border-cyan-400";
-                    entry_point_border.classList.add(border_color);
+                    entry_point.classList.add("pc", border_color);
                 }
 
-                entry_point.classList.add("pc", "uncrossable");
+                entry_point.classList.add("uncrossable");
                 entry_point.setAttribute('size_x', ship_size_x);
                 entry_point.setAttribute('size_y', ship_size_y);
                 

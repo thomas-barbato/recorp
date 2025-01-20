@@ -1019,8 +1019,8 @@ video {
   height: 20vh;
 }
 
-.h-\[25\%\] {
-  height: 25%;
+.h-\[25vh\] {
+  height: 25vh;
 }
 
 .h-\[30px\] {
@@ -1075,28 +1075,12 @@ video {
   height: 100vh;
 }
 
-.h-\[30\%\] {
-  height: 30%;
-}
-
-.h-\[25vh\] {
-  height: 25vh;
-}
-
-.h-\[50\%\] {
-  height: 50%;
-}
-
 .max-h-\[40vh\] {
   max-height: 40vh;
 }
 
 .max-h-full {
   max-height: 100%;
-}
-
-.max-h-\[25vh\] {
-  max-height: 25vh;
 }
 
 .w-1\/12 {
@@ -1856,12 +1840,6 @@ video {
   gap: 1rem;
 }
 
-.space-x-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -2229,16 +2207,6 @@ video {
   border-top-right-radius: 0.5rem;
 }
 
-.rounded-b-md {
-  border-bottom-right-radius: 0.375rem;
-  border-bottom-left-radius: 0.375rem;
-}
-
-.rounded-b-xl {
-  border-bottom-right-radius: 0.75rem;
-  border-bottom-left-radius: 0.75rem;
-}
-
 .rounded-bl {
   border-bottom-left-radius: 0.25rem;
 }
@@ -2370,11 +2338,6 @@ video {
 .border-amber-500 {
   --tw-border-opacity: 1;
   border-color: rgb(245 158 11 / var(--tw-border-opacity));
-}
-
-.border-blue-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(96 165 250 / var(--tw-border-opacity));
 }
 
 .border-blue-600 {
@@ -2772,10 +2735,6 @@ video {
 
 .p-1 {
   padding: 0.25rem;
-}
-
-.p-1\.5 {
-  padding: 0.375rem;
 }
 
 .p-2 {
@@ -4564,12 +4523,12 @@ select {
     width: 100px;
   }
 
-  .xl\:flex-row {
-    flex-direction: row;
+  .xl\:w-full {
+    width: 100%;
   }
 
-  .xl\:gap-2 {
-    gap: 0.5rem;
+  .xl\:flex-row {
+    flex-direction: row;
   }
 
   .xl\:self-center {
@@ -4602,12 +4561,12 @@ select {
     width: 100%;
   }
 
-  .\32xl\:flex-row {
-    flex-direction: row;
+  .\32xl\:w-full {
+    width: 100%;
   }
 
-  .\32xl\:gap-3 {
-    gap: 0.75rem;
+  .\32xl\:flex-row {
+    flex-direction: row;
   }
 
   .\32xl\:border-b {
@@ -4620,6 +4579,10 @@ select {
 
   .\32xl\:p-3 {
     padding: 0.75rem;
+  }
+
+  .\32xl\:p-2 {
+    padding: 0.5rem;
   }
 }
 
