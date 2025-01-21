@@ -3,85 +3,88 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="side-panel" class="flex z-20 lg:inline order-1 w-1/12 hidden bg-zinc-950/70">
-    <ul class="flex flex-col justify-center ul-nav gap-3 h-full w-full">
-        <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex xl:flex-row flex-col text-center hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+<div id="side-panel" class="flex z-20 lg:inline order-1 w-1/12 hidden">
+    <ul class="flex flex-col ul-nav h-full gap-3 bg-zinc-950/70">
+        <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="xl:w-20 w-full flex justify-center items-center">
                 <i class="fa-solid fa-user"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Character" %}
             </div>
         </li>
-        <li data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
-            <div class="w-20 flex justify-center items-center">
-                <i class="fa-solid fa-box"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Inventory" %}
-            </div>
+        <li data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
+            <span class="flex flex-row">
+
+                <div class="w-20 flex justify-center items-center">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+                <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
+                    {% translate "Inventory" %}
+                </div>
+            </span>
         </li>
-        <li data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-people-group"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Faction" %}
             </div>
         </li>
-        <li data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-brain"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Research" %}
             </div>
         </li>
-        <li data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-map"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Map" %}
             </div>
         </li>
-        <li data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-list-check"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Tasks" %}
             </div>
         </li>
-        <li data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-mobile-screen-button"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Events" %}
             </div>
         </li>
-        <li data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-envelope"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Message" %}
             </div>
         </li>
-        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <a href="#" class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-comments"></i>
             </a>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Forum" %}
             </div>
         </li>
-        <li data-modal-target="option-modal" data-modal-toggle="option-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer rounded p-2 text-emerald-400 hover:text-white ">
+        <li data-modal-target="option-modal" data-modal-toggle="option-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-gear"></i>
             </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
+            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
                 {% translate "Settings" %}
             </div>
         </li>
@@ -119,7 +122,7 @@
             </table>
         </div>
     </div>
-    <div id="modal-container" class="z-90"></div>
+    <div id="modal-container" class="z-[100]"></div>
     {% if request.user_agent.is_tablet or request.user_agent.is_mobile %}
     <div class="w-full flex place-content-center z-100 lg:order-99 order-3 gap-1" dir="ltr" id="mobile-cross">
     {% else %}

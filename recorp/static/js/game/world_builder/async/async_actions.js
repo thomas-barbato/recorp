@@ -19,8 +19,6 @@ function async_move(pos) {
 function update_player_coord(data) {
 
     clear_path();
-
-    console.log(data)
     
     let ship_size = {
         "y" : parseInt(data["ship_size"]["size_y"]),
@@ -116,7 +114,6 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 }
 
 function update_player_pos_display_after_move(data){
-    console.log(data)
     let current_player_ship = document.querySelectorAll('.ship-pos');
     let coord_x = parseInt(data.player.user.coordinates.coord_x) + 1;
     let coord_y = parseInt(data.player.user.coordinates.coord_y) + 1;
@@ -133,6 +130,9 @@ function update_player_pos_display_after_move(data){
         current_player_ship[i].querySelector('.ship').remove();
         current_player_ship[i].querySelector('.ship-reversed').remove();
         current_player_ship[i].querySelector('span').remove();
+        
+        let current_player_ship_background = current_player_ship[i].querySelector('div');
+        current_player_ship_background.className = "relative w-[32px] h-[32px] coord-zone-div";
         
         if(current_player_ship[i].querySelector('ul')){
             current_player_ship_tooltip = current_player_ship[i].querySelector('ul');
@@ -168,7 +168,7 @@ function update_player_pos_display_after_move(data){
                 entry_point.append(current_player_ship_tooltip);
             }
 
-            let div = entry_point.querySelector('div');
+            let entry_point_div = entry_point.querySelector('div');
             let ship_url = "/static/js/game/assets/ships/" + data.player.ship.image + '.png';
             let ship_url_reversed_img = "/static/js/game/assets/ships/" + data.player.ship.image + '-reversed.png';
             let space_ship = document.createElement('div');
@@ -180,6 +180,8 @@ function update_player_pos_display_after_move(data){
             entry_point_border.classList.add('border-dashed', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
+
+            entry_point_div.classList.add('bg-green-300/10');
 
             entry_point_border.removeAttribute(attribute_touch_touch_mouseover, 'get_pathfinding(this)');
             entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
@@ -246,8 +248,8 @@ function update_player_pos_display_after_move(data){
                 space_ship_reversed.style.display = "none";
             }
 
-            div.append(space_ship);
-            div.append(space_ship_reversed);
+            entry_point_div.append(space_ship);
+            entry_point_div.append(space_ship_reversed);
 
             coord_x++;
         }
@@ -255,6 +257,12 @@ function update_player_pos_display_after_move(data){
         coord_y++;
         coord_x = parseInt(data.player.user.coordinates.coord_x) + 1
         
+        let remaining_movement_mobile = document.querySelector('#remaining-movement-div-mobile');
+        let remaining_movement_div_mobile = remaining_movement_mobile.querySelector('div');
+        let remaining_movement_span_mobile = remaining_movement_mobile.querySelector('span');
+        remaining_movement_div_mobile.style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
+        remaining_movement_span_mobile.textContent = `${data.player.ship.current_movement} / ${data.player.ship.max_movement}`;
+
         let remaining_movement = document.querySelector('#remaining-movement-div');
         let remaining_movement_div = remaining_movement.querySelector('div');
         let remaining_movement_span = remaining_movement.querySelector('span');

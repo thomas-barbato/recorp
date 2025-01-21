@@ -480,7 +480,6 @@ class GetDataFromDB:
                     )
                 ).values("id", "effect", "type"),
             )
-            print(current_player_module)
             
             npc_size_x = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_x"])
             npc_size_y = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"])

@@ -29,14 +29,14 @@
         {% include "display_disclaimer.html" %}
     </footer>
 {% else %}
-    <header class="flex w-full flex-col main-info-container m-0">
+    <header class="flex w-full flex-col main-info-container m-0 lg:blur-none">
         {% include "top-panel.html" %}
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container w-full flex-row justify-stretch">
+    <main class="flex main-game-container w-full flex-row justify-stretch lg:blur-none">
         {% include "display-game.html" %}
     </main>
-    <footer class="flex bottom-0 w-full lg:h-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0">
+    <footer class="flex bottom-0 w-full lg:h-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none">
         {% include "display_disclaimer.html" %}
     </footer>
 {% endif %}

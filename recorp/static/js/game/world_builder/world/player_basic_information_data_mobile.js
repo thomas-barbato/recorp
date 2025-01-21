@@ -87,7 +87,7 @@ character_statistics_progressbar_move_div_mobile.classList.add(
     'relative',
     'h-[15px]'
 );
-character_statistics_progressbar_move_div_mobile.id = "remaining-movement-div";
+character_statistics_progressbar_move_div_mobile.id = "remaining-movement-div-mobile";
 
 character_statistics_progressbar_move_label_mobile.classList.add(
     'font-bold',
@@ -448,7 +448,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'relative',
             'h-[15px]'
         );
-        player_modal_container_body_move_div.id = "remaining-movement-div";
+        player_modal_container_body_move_div.id = "remaining-movement-div-mobile";
 
         player_modal_container_body_move_label.classList.add(
             'font-bold',

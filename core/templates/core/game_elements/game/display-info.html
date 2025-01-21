@@ -1,12 +1,11 @@
 {% load static %}
 {% load i18n %}
-<div class="flex flex-row w-full overflow-hiddenmx-auto order-1 p-1 mx-auto text-xs items-center bg-zinc-950/70 text-white 2xl:border-b border-b border-solid border-slate-600 2xl:border-slate-600/0">
+<div class="flex flex-row w-full overflow-hidden lg:blur-none mx-auto order-1 p-1 mx-auto text-xs items-center bg-zinc-950/70 text-white 2xl:border-b border-solid border-slate-600 2xl:border-slate-600/0" id="info-container">
   
-  <div id="mobile-info-player-container" class="flex flex-col w-1/2 item-center justify-end lg:hidden inline gap-1 m-1">
-    
+  <div id="mobile-info-player-container" class="flex flex-col w-1/2 item-center justify-end lg:hidden inline gap-1 m-1 z-30">
   </div>
 
-  <div id="info-sector-container" class="flex flex-col lg:w-full w-1/2 lg:text-center item-start m-1">
+  <div id="info-sector-container" class="flex flex-col lg:w-full w-1/2 lg:text-center item-start m-1 z-20">
     <div class="lg:p-0 p-2 gap-1 flex lg:flex-row flex-col">
       <p class="font-shadow text-xs w-auto"><b>{% translate "Sector" %}</b> {{ map_informations.sector.name }}</p>
       <p class="font-shadow text-xs w-auto"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>

@@ -35,16 +35,6 @@ class GameConsumer(WebsocketConsumer):
         if self.user.is_authenticated:
             store = StoreInCache(self.room_group_name, self.user)
             store.get_or_set_cache()
-            """
-            store.add_user()
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    "type": "user_join",
-                    "user": store.get_user()[0],
-                },
-            )
-            """
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(

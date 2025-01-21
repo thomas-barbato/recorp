@@ -302,7 +302,7 @@ function add_pc(data) {
                 }
 
                 let entry_point_border = entry_point.querySelector('span');
-                let div = entry_point.querySelector('div');
+                let entry_point_div = entry_point.querySelector('div');
                 let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
                 let bg_url_reversed_img = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '-reversed.png';
                 let space_ship = document.createElement('div');
@@ -332,6 +332,7 @@ function add_pc(data) {
                     update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
                     border_color = "border-green-300";
                     entry_point.classList.add("ship-pos");
+                    entry_point_div.classList.add("bg-green-300/10");
                     entry_point_border.classList.add(border_color);
 
                     /* Check ship_size and set ship-start-pos in the middle */
@@ -385,8 +386,8 @@ function add_pc(data) {
                     remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1, border_color);
                 });
 
-                div.append(space_ship);
-                div.append(space_ship_reversed);
+                entry_point_div.append(space_ship);
+                entry_point_div.append(space_ship_reversed);
 
                 coord_x++;
             }
