@@ -12,17 +12,17 @@
       <p class="font-shadow text-xs w-auto"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
       </span>
       <div class="w-full mx-auto flex lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1">
-        <span class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
+        <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
           <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
           <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
           <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
-        </span>
-        <span class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-stretch lg:w-auto w-[40vw]">
-            <label for="target-coord-name"><i class="fa-solid fa-satellite-dish px-1.5 py-0.5"></i></label>
-            <span id="target-coord-name" class="font-bold bg-neutral-600 px-1.5 py-1 font-shadow truncate">{% translate 'Nothing selected' %}</span>
-            <span id="target-coord-y" class="flex bg-neutral-400 font-bold px-1.5 py-1 items-end invisible">0</span>
-            <span id="target-coord-x" class="flex bg-emerald-400 font-bold px-1.5 py-1 items-end rounded-r invisible">0</span>
-        </span>
+        </div>
+        <div class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-between lg:w-auto lg:w-[10vw] w-[25vw]">
+            <label for="target-coord-name"><i class="fa-solid fa-satellite-dish px-1.5 py-1"></i></label>
+              <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[10vw] w-[30vw] px-1.5 py-1 font-shadow truncate">{% translate 'Nothing selected' %}</span>
+              <span id="target-coord-y" class="flex bg-neutral-400 font-bold px-1.5 py-1 invisible">00</span>
+              <span id="target-coord-x" class="flex bg-emerald-400 font-bold px-1.5 py-1 rounded-r invisible">00</span>
+        </div>
       </div>
       <span class="flex mx-auto lg:hidden justify-center item-center">
         <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400" id="chat-btn"></span></i>

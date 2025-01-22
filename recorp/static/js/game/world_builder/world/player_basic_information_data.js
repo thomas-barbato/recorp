@@ -181,6 +181,7 @@ character_statistics_progressbar_move_div.classList.add(
     'h-[15px]',
     'text-start'
 );
+
 character_statistics_progressbar_move_div.id = "remaining-movement-div";
 
 character_statistics_progressbar_move_label.classList.add(
@@ -273,8 +274,7 @@ character_defensive_modules_fieldset.classList.add(
     'flex',
     'p-2',
     'gap-1',
-    '2xl:w-full',
-    'w-[80%]',
+    'w-full',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -309,8 +309,7 @@ character_offensive_modules_fieldset.classList.add(
     'mt-1',
     'flex',
     'gap-1',
-    'xl:w-full',
-    'w-[80%]',
+    'w-full',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -344,8 +343,7 @@ character_electronicWarfare_modules_fieldset.classList.add(
     'mt-1',
     'flex',
     'gap-2',
-    'xl:w-full',
-    'w-[80%]',
+    'w-full',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -380,8 +378,7 @@ character_other_modules_fieldset.classList.add(
     'mt-1',
     'flex',
     'gap-2',
-    'xl:w-full',
-    'w-[80%]',
+    'w-full',
     'flex-col',
     'items-start',
     'bg-gray-600/40',
@@ -532,11 +529,16 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
                 let offensive_module_container = document.createElement('div');
                 let offensive_module_name_label = document.createElement('label');
+                let offensive_module_container_name_label_dot = document.createElement('span')
+                let offensive_module_container_name_label_value = document.createElement('span')
 
                 offensive_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 offensive_module_container.classList.add('module-container', 'mb-1');
-                offensive_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
-                offensive_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs');
+                offensive_module_container_name_label_dot.classList.add('flex', 'w-2', 'h-2', 'bg-emerald-400', 'rounded-full');
+                offensive_module_container_name_label_value.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase()
+                offensive_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'flex', 'flex-row', 'gap-1', 'items-center');
+                offensive_module_name_label.append(offensive_module_container_name_label_dot);
+                offensive_module_name_label.append(offensive_module_container_name_label_value);
 
                 if ("damage_type" in map_informations['pc'][i].ship.modules[module_i]["effect"]) {
                     let weapon_damage_type_span = document.createElement('span');
@@ -549,9 +551,9 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     let weapon_range_small = document.createElement('small');
                     let weapon_range_small_value = document.createElement('small');
 
-                    weapon_damage_type_span.classList.add('flex', 'flex-row', 'gap-1', 'pl-2');
-                    weapon_damage_span.classList.add('flex', 'flex-row', 'gap-1', 'pl-2');
-                    weapon_range_span.classList.add('flex', 'flex-row', 'gap-1', 'pl-2');
+                    weapon_damage_type_span.classList.add('flex', 'xl:flex-row', 'flex-col', 'px-4', 'gap-1');
+                    weapon_damage_span.classList.add('flex', 'xl:flex-row', 'flex-col', 'px-4', 'gap-1');
+                    weapon_range_span.classList.add('flex', 'xl:flex-row', 'flex-col', 'px-4', 'gap-1');
 
                     weapon_damage_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
                     weapon_damage_small.classList.add('font-shadow', 'text-white', 'text-xs');
@@ -591,7 +593,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                         let offensive_module_type_small_value = document.createElement('small');
                         let offensive_module_type_small_container = document.createElement('div');
 
-                        offensive_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'py-1', 'gap-1');
+                        offensive_module_type_small_container.classList.add('flex', 'xl:flex-row', 'flex-col', 'px-4', 'gap-1');
 
                         offensive_module_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
                         offensive_module_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
@@ -619,11 +621,17 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                 let electronicWarfare_module_container = document.createElement('div');
                 let electronicWarfare_module_name_label = document.createElement('label');
                 let electronicWarfare_module_span = document.createElement('span');
+                let electronicWarfare_module_container_name_label_dot = document.createElement('span')
+                let electronicWarfare_module_container_name_label_value = document.createElement('span')
 
                 electronicWarfare_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 electronicWarfare_module_container.classList.add('module-container', 'mb-1');
-                electronicWarfare_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
                 electronicWarfare_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs');
+                electronicWarfare_module_container_name_label_dot.classList.add('flex', 'w-2', 'h-2', 'bg-emerald-400', 'rounded-full');
+                electronicWarfare_module_container_name_label_value.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase()
+                electronicWarfare_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'flex', 'flex-row', 'gap-1', 'items-center');
+                electronicWarfare_module_name_label.append(electronicWarfare_module_container_name_label_dot);
+                electronicWarfare_module_name_label.append(electronicWarfare_module_container_name_label_value);
 
                 for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
 
@@ -632,7 +640,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     let electronicWarfare_module_type_small_value = document.createElement('small');
                     let electronicWarfare_module_type_small_container = document.createElement('div');
 
-                    electronicWarfare_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
+                    electronicWarfare_module_type_small_container.classList.add('flex', 'xl:flex-row', 'flex-col', 'px-4', 'gap-1');
 
                     electronicWarfare_module_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
                     electronicWarfare_module_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold');
@@ -666,11 +674,18 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                 let other_module_container = document.createElement('div');
                 let other_module_name_label = document.createElement('label');
                 let other_module_span = document.createElement('span');
+                let other_module_container_name_label_dot = document.createElement('span')
+                let other_module_container_name_label_value = document.createElement('span')
+                
 
                 other_module_container.id = `module-${map_informations['pc'][i].ship.modules[module_i]["id"]}`;
                 other_module_container.classList.add('module-container', 'mb-1');
-                other_module_name_label.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
                 other_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs');
+                other_module_container_name_label_dot.classList.add('flex', 'w-2', 'h-2', 'bg-emerald-400', 'rounded-full');
+                other_module_container_name_label_value.textContent = map_informations['pc'][i].ship.modules[module_i].name.toLowerCase();
+                other_module_name_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'flex', 'flex-row', 'gap-1', 'items-center');
+                other_module_name_label.append(other_module_container_name_label_dot);
+                other_module_name_label.append(other_module_container_name_label_value);
 
                 for (const [key, value] of Object.entries(map_informations['pc'][i].ship.modules[module_i].effect)) {
 
@@ -678,7 +693,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     let other_module_type_small_value = document.createElement('small');
                     let other_module_type_small_container = document.createElement('div');
 
-                    other_module_type_small_container.classList.add('flex', 'flex-row', 'pl-2', 'gap-1');
+                    other_module_type_small_container.classList.add('flex', 'xl:flex-row', 'flex-col', 'px-4', 'gap-1');
 
                     other_module_type_small.classList.add('font-shadow', 'text-white', 'text-xs');
                     other_module_type_small_value.classList.add('font-shadow', 'text-emerald-400',  'text-xs', 'font-bold', 'text-justify');
