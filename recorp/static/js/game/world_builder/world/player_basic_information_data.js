@@ -40,7 +40,6 @@ let character_statistics_progressbar_ap_content = document.createElement('div');
 let character_statistics_progressbar_ap_text = document.createElement('span');
 let character_module_progressbar_container = document.createElement('div');
 
-
 character_main_container.classList.add(
     'w-full',
     'flex',

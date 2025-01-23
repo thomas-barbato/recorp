@@ -18,9 +18,13 @@ class StoreInCache:
         self.sector_pk = self.room.split("_")[1]
         self.user_calling = user_calling
 
-    def get_or_set_cache(self):
-        if not cache.get(self.room):
-            self.set_sector_data(self.sector_pk)
+    def get_or_set_cache(self, need_to_be_recreated=False):
+        if need_to_be_recreated:
+            cache.set(self.room, [])
+            self.set_sector_data(self.sector_pk) 
+        else:           
+            if not cache.get(self.room):
+                self.set_sector_data(self.sector_pk)
         return cache.get(self.room)
 
     def set_sector_data(self, pk):
