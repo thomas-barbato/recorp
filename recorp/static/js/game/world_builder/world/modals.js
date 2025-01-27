@@ -54,7 +54,7 @@ function create_foreground_modal(id, data) {
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'cursor-pointer', 'hover:animate-pulse', 'p-2', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    footer_close_button.classList.add('inline-block', 'cursor-pointer', 'hover:animate-pulse', 'p-2', 'text-white', 'text-xs', 'font-bold', 'font-shadow');
     
     header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
@@ -72,7 +72,7 @@ function create_foreground_modal(id, data) {
     item_content_div.classList.add('flex', 'flex-col');
 
     let item_description_p = document.createElement('p');
-    item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'md:text-base', 'text-sm');
+    item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'text-xs');
     item_description_p.textContent = data.description;
 
     let item_action_container = document.createElement("div");
@@ -82,17 +82,17 @@ function create_foreground_modal(id, data) {
     let item_action_container_label = document.createElement("label");
     item_action_container_label.htmlFor = "item-action-container";
     item_action_container_label.textContent = `${data.actions.action_label}: `;
-    item_action_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1');
+    item_action_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-xs', 'mt-2', 'p-2', 'lg:p-1');
 
     let item_action_container_div = document.createElement('figure');
-    item_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'gap-3');
+    item_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'flex-wrap', 'gap-3');
     item_action_container_div.setAttribute('role', 'group');
 
     if (data.type !== "planet") {
         let item_resource_label = document.createElement('label');
         item_resource_label.htmlFor = "resources";
         item_resource_label.textContent = `${data.resources.translated_text_resource} :`
-        item_resource_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
+        item_resource_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-xs', 'mt-2', 'p-2', 'lg:p-1')
 
         let item_resource_content = document.createElement('div');
         item_resource_content.classList.add('flex', 'flex-col');
@@ -102,14 +102,14 @@ function create_foreground_modal(id, data) {
         item_resource_content_span.classList.add('flex', 'flex-row');
 
         let item_resource_content_p_resource = document.createElement('p');
-        item_resource_content_p_resource.classList.add('text-white', 'font-shadow', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
+        item_resource_content_p_resource.classList.add('text-white', 'font-shadow', 'text-justify', 'text-xs', 'p-2', 'lg:p-1');
         item_resource_content_p_resource.id = "resource-name";
         item_resource_content_p_resource.textContent = `${data.resources.name}`;
         item_resource_content_p_resource.style.display = "none";
 
 
         let item_resource_content_p_quantity = document.createElement('p');
-        item_resource_content_p_quantity.classList.add('font-bold', 'font-shadow', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1');
+        item_resource_content_p_quantity.classList.add('font-bold', 'font-shadow', 'text-justify', 'text-xs', 'p-2', 'lg:p-1');
         if (data.resources.quantity == "empty") {
             item_resource_content_p_quantity.classList.add('text-red-600', 'animate-pulse', 'font-shadow');
         } else {
@@ -120,7 +120,7 @@ function create_foreground_modal(id, data) {
         item_resource_content_p_quantity.style.display = "none";
 
         let item_resource_content_p_scan_msg = document.createElement('p');
-        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'md:text-base', 'text-sm', 'p-2', 'lg:p-1', 'animate-pulse', 'font-bold', 'font-shadow');
+        item_resource_content_p_scan_msg.classList.add('text-red-600', 'text-justify', 'text-xs', 'p-2', 'lg:p-1', 'animate-pulse', 'font-bold', 'font-shadow');
         item_resource_content_p_scan_msg.id = "resource-scan-msg";
         item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`;
 
@@ -136,11 +136,11 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_scan_figcaption = document.createElement('figcaption');
         item_action_container_img_scan_figcaption.textContent = "Scan";
-        item_action_container_img_scan_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'md:text-sm');
+        item_action_container_img_scan_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
 
         let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
         item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
-        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'md:text-sm');
+        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
 
         let item_action_container_img_gather = document.createElement('img');
         item_action_container_img_gather.src = '/static/js/game/assets/ux/gather_icon.svg';
@@ -180,7 +180,7 @@ function create_foreground_modal(id, data) {
             let item_faction_label = document.createElement('label');
             item_faction_label.htmlFor = "faction";
             item_faction_label.textContent = `${data.faction.translated_str} ${data.faction.name}`;
-            item_faction_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'md:text-base', 'text-sm', 'mt-2', 'p-2', 'lg:p-1')
+            item_faction_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-xs', 'mt-2', 'p-2', 'lg:p-1')
 
             let item_faction_content = document.createElement('div');
             item_faction_content.classList.add('flex', 'flex-row');
@@ -213,7 +213,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_setNewStartLoc_figcaption = document.createElement('figcaption');
         item_action_container_img_setNewStartLoc_figcaption.textContent = "New Home";
-        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
         let item_action_container_joinFaction_img = document.createElement('img');
         item_action_container_joinFaction_img.src = '/static/js/game/assets/ux/join_faction.svg';
@@ -221,7 +221,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_joinFaction_figcaption = document.createElement('figcaption');
         item_action_container_img_joinFaction_figcaption.textContent = `Join ${data.faction.name}`;
-        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
         let item_action_container_opendock_img = document.createElement('img');
         item_action_container_opendock_img.src = '/static/js/game/assets/ux/dock.svg';
@@ -229,7 +229,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_opendock_figcaption = document.createElement('figcaption');
         item_action_container_img_opendock_figcaption.textContent = "dock";
-        item_action_container_img_opendock_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_opendock_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
         let item_action_container_openmarket_img = document.createElement('img');
         item_action_container_openmarket_img.src = '/static/js/game/assets/ux/market.svg';
@@ -237,7 +237,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_openmarket_figcaption = document.createElement('figcaption');
         item_action_container_img_openmarket_figcaption.textContent = "market";
-        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
         let item_action_container_gettask_img = document.createElement('img');
         item_action_container_gettask_img.src = '/static/js/game/assets/ux/task.svg';
@@ -245,7 +245,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_gettask_figcaption = document.createElement('figcaption');
         item_action_container_img_gettask_figcaption.textContent = "task";
-        item_action_container_img_gettask_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_gettask_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
         let item_action_container_invade_img = document.createElement('img');
         item_action_container_invade_img.src = '/static/js/game/assets/ux/invade.svg';
@@ -253,7 +253,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_invade_figcaption = document.createElement('figcaption');
         item_action_container_img_invade_figcaption.textContent = "invade";
-        item_action_container_img_invade_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+        item_action_container_img_invade_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
         if (data.actions.player_in_same_faction == true) {
             item_action_container_img_setNewStartLoc_container.append(item_action_container_setNewStartLoc_img);
             item_action_container_img_setNewStartLoc_container.append(item_action_container_img_setNewStartLoc_figcaption);
@@ -325,10 +325,10 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let player_id = id.split('_')[1];
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'gap-2');
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
@@ -343,7 +343,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'md:text-base', 'text-sm', 'font-bold', 'font-shadow');
+    footer_close_button.classList.add('inline-block', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'text-xs', 'font-bold', 'font-shadow');
     
 
     let close_button_url = '/static/js/game/assets/ux/close.svg';
@@ -359,17 +359,19 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
 
-    let ship_statistics_container_div = document.createElement('div');
     let ship_statistics_container_label = document.createElement("label");
-    ship_statistics_container_div.classList.add('hidden');
-    ship_statistics_container_div.id = "ship-statistics";
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
     ship_statistics_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base', 'mt-5');
 
-    let ship_statistics_warning_msg_container_p = document.createElement('p');
-    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'font-shadow', 'md:text-base', 'text-sm', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold', 'font-shadow');
-    ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
-    ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str} `;
+    // START SIMPLE STATS
+    let ship_statistics_container_div = document.createElement('div');
+    ship_statistics_container_div.id = "ship-statistics";
+    let hp_container = document.createElement('div');
+    // END SIMPLE STATS
+
+    // START DETAILED STATS
+    let ship_detailed_statistics_container_div = document.createElement('div');
+    ship_detailed_statistics_container_div.id = "ship-statistics-detailed";
 
     let hp_progress_bar_container_div = document.createElement('div');
     let hp_progress_bar_container_content = document.createElement('div');
@@ -378,7 +380,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
     hp_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
     hp_progress_bar_container_label.textContent = "Hull points:"
-    hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
+    hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
     hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
     hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
@@ -395,8 +397,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     movement_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
     movement_progress_bar_container_div.id = "movement-container";
     movement_progress_bar_container_label.textContent = "Movement left:"
-    movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
-    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]')
+    movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
+    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
     movement_progress_bar_container_content.style.width = move_percent;
@@ -404,11 +406,16 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
 
+    ship_detailed_statistics_container_div.append(hp_progress_bar_container_label);
+    ship_detailed_statistics_container_div.append(hp_progress_bar_container_div);
+    ship_detailed_statistics_container_div.append(movement_progress_bar_container_label);
+    ship_detailed_statistics_container_div.append(movement_progress_bar_container_div);
+    // END DETAILED STATS
 
-    ship_statistics_container_div.append(hp_progress_bar_container_label);
-    ship_statistics_container_div.append(hp_progress_bar_container_div);
-    ship_statistics_container_div.append(movement_progress_bar_container_label);
-    ship_statistics_container_div.append(movement_progress_bar_container_div);
+    let ship_statistics_warning_msg_container_p = document.createElement('p');
+    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'font-shadow', 'text-xs', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold', 'font-shadow');
+    ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
+    ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str} `;
 
     let ship_action_container = document.createElement("div");
     ship_action_container.classList.add('mt-3');
@@ -420,18 +427,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     ship_action_container_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
 
     let ship_action_container_div = document.createElement('figure');
-    ship_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'gap-3');
+    ship_action_container_div.classList.add('flex', 'items-center', 'justify-center', 'flex-wrap', 'gap-8');
     ship_action_container_div.setAttribute('role', 'group');
-
-    let item_action_container_img_scan_container = document.createElement('div');
-    item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-    item_action_container_img_scan_container.addEventListener('click', function() {
-        let element = document.querySelector('#' + e.id);
-        let ship_statistics = element.querySelector('#ship-statistics');
-        let alert_message = element.querySelector('#statistics-warning-msg');
-        ship_statistics.classList.remove('hidden');
-        alert_message.classList.add('hidden');
-    })
 
     let item_action_container_img_attack_container = document.createElement('div');
     item_action_container_img_attack_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
@@ -447,22 +444,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let item_action_container_img_repaire_container = document.createElement('div');
     item_action_container_img_repaire_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
 
-
     let item_action_container_img_attack_btn_container = document.createElement('div');
     item_action_container_img_attack_btn_container.id = "action-btn";
     item_action_container_img_attack_btn_container.classList.add('w-full', 'hidden');
-
-    let item_action_container_img_scan = document.createElement('img');
-    item_action_container_img_scan.src = '/static/js/game/assets/ux/scan_resource_icon.svg';
-    item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_scan_figcaption = document.createElement('figcaption');
-    item_action_container_img_scan_figcaption.textContent = "Scan";
-    item_action_container_img_scan_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
-
-    let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
 
     let item_action_container_img_attack = document.createElement('img');
     item_action_container_img_attack.src = '/static/js/game/assets/ux/target_icon.svg';
@@ -470,12 +454,11 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let item_action_container_img_attack_figcaption = document.createElement('figcaption');
     item_action_container_img_attack_figcaption.textContent = "Attack";
-    item_action_container_img_attack_figcaption.classList.add('text-white', 'font-shadow', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
-
+    item_action_container_img_attack_figcaption.classList.add('text-white', 'font-shadow', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
     let item_action_container_img_attack_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_attack_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_attack_figcaption_ap.textContent = "1 AP";
+    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
     let item_action_container_img_contact = document.createElement('img');
     item_action_container_img_contact.src = '/static/js/game/assets/ux/contact_icon.svg';
@@ -483,11 +466,11 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let item_action_container_img_contact_figcaption = document.createElement('figcaption');
     item_action_container_img_contact_figcaption.textContent = "Contact";
-    item_action_container_img_contact_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_contact_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
     let item_action_container_img_contact_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_contact_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs', 'invisible');
 
     let item_action_container_img_repaire = document.createElement('img');
     item_action_container_img_repaire.src = '/static/js/game/assets/ux/repaire_icon.svg';
@@ -495,11 +478,11 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let item_action_container_img_repaire_figcaption = document.createElement('figcaption');
     item_action_container_img_repaire_figcaption.textContent = "Repaire";
-    item_action_container_img_repaire_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_repaire_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
     let item_action_container_img_repaire_figcaption_ap = document.createElement('figcaption');
     item_action_container_img_repaire_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'md:text-sm');
+    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
 
     let item_action_container_img_attack_btn_img = document.createElement('img');
     item_action_container_img_attack_btn_img.src = '/static/js/game/assets/ux/target_icon.svg';
@@ -507,10 +490,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_attack_btn_img.addEventListener('click', function() {
         check_radio_btn_and_swap_color(e.id, module_item_content.id);
     })
-
-    item_action_container_img_scan_container.append(item_action_container_img_scan);
-    item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
-    item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption_ap);
 
     item_action_container_img_attack_container.append(item_action_container_img_attack);
     item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption);
@@ -536,7 +515,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         content_div.classList.add('bg-gradient-to-b', 'from-cyan-400/70', 'to-black/70');
 
         body_container_div.append(target_img);
-        ship_action_container_div.append(item_action_container_img_scan_container);
         ship_action_container_div.append(item_action_container_img_attack_container);
         ship_action_container_div.append(item_action_container_img_contact_container);
         ship_action_container_div.append(item_action_container_img_repaire_container);
@@ -545,33 +523,49 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
         header_div.textContent = `${data.player.name.toUpperCase()}`;
         content_div.classList.add('bg-gradient-to-b', 'from-red-600/70', 'to-black/70');
-        ship_action_container_div.append(item_action_container_img_scan_container);
         ship_action_container_div.append(item_action_container_img_attack_container);
     }
 
     for (let defense_module_i in data.ship.modules) {
         if (data.ship.modules[defense_module_i]["type"].includes('DEFENSE') && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
-            let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase()
-            let defense_value = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
+            let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase();
+            // START SIMPLE STATS
+            let module_status_color = color_per_percent(data.ship["current_"+defense_name+"_defense"], data.ship.modules[defense_module_i].effect.defense);
+            let module_content_container = document.createElement('div')
+            let module_content_label = document.createElement('label');
+            let module_content_text = document.createElement('p');
 
-            let module_element = document.createElement('div');
-            let module_content_label = document.createElement("label");
-            let module_content = document.createElement('div');
-            let module_content_text = document.createElement('span');
+            module_content_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'mt-2', 'flex', 'flex-row', 'gap-1');
+            module_content_text.classList.add(module_status_color.color);
+            module_content_label.textContent = `${data.ship.modules[defense_module_i].effect.defense_type}:`;
+            module_content_text.textContent = `${module_status_color.status}`;
 
-            module_content_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
-            module_content_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-sm', 'mt-2');
-            module_element.classList.add('w-full', 'bg-red-600', 'relative');
-            module_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-            module_content_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
-            module_content_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
-            module_content.style.width = defense_value;
+            module_content_container.append(module_content_label);
+            module_content_container.append(module_content_text);
+            ship_statistics_container_div.append(module_content_container);
+            // END SIMPLE STATS
+            
+            // START DETAILED STATS
+            let defense_value_detailed = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
+            let module_element_detailed = document.createElement('div');
+            let module_content_detailed_label = document.createElement("label");
+            let module_content_detailed = document.createElement('div');
+            let module_content_detailed_text = document.createElement('span');
 
-            module_element.append(module_content_text);
-            module_element.append(module_content);
+            module_content_detailed_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
+            module_content_detailed_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
+            module_element_detailed.classList.add('w-full', 'bg-red-600', 'relative');
+            module_content_detailed.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
+            module_content_detailed_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
+            module_content_detailed_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
+            module_content_detailed.style.width = defense_value_detailed;
 
-            ship_statistics_container_div.append(module_content_label);
-            ship_statistics_container_div.append(module_element);
+            module_element_detailed.append(module_content_detailed_text);
+            module_element_detailed.append(module_content_detailed);
+
+            ship_detailed_statistics_container_div.append(module_content_detailed_label);
+            ship_detailed_statistics_container_div.append(module_element_detailed);
+            // END DETAILED STATS
         }
     }
 
@@ -665,6 +659,16 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     for (let ship_i in map_informations.pc) {
         if (map_informations.pc[ship_i].user.user == current_user_id) {
+
+            if(map_informations.pc[ship_i].ship.ship_scanning_module_available){
+                ship_statistics_container_div.classList.add('hidden');
+                ship_detailed_statistics_container_div.classList.remove('hidden');
+                ship_statistics_warning_msg_container_p.classList.add('hidden');
+            }else{
+                ship_statistics_container_div.classList.remove('hidden');
+                ship_detailed_statistics_container_div.classList.add('hidden');
+                ship_statistics_warning_msg_container_p.classList.remove('hidden');
+            }
 
             for (let module_i in map_informations.pc[ship_i].ship.modules) {
                 let module_item_content = document.createElement('div');
@@ -873,8 +877,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     footer_container_div.append(footer_close_button);
 
     body_container_div.append(ship_statistics_container_label);
-    body_container_div.append(ship_statistics_warning_msg_container_p);
     body_container_div.append(ship_statistics_container_div);
+    body_container_div.append(ship_statistics_warning_msg_container_p);
+    body_container_div.append(ship_detailed_statistics_container_div);
     body_container_div.append(ship_action_container_label);
     body_container_div.append(ship_action_container_div);
     body_container_div.append(ship_offensive_module_container);

@@ -1847,6 +1847,10 @@ video {
   gap: 1rem;
 }
 
+.gap-8 {
+  gap: 2rem;
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -2768,6 +2772,10 @@ video {
   padding: 1.25rem;
 }
 
+.p-0\.5 {
+  padding: 0.125rem;
+}
+
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -3134,6 +3142,11 @@ video {
   color: rgb(74 222 128 / var(--tw-text-opacity));
 }
 
+.text-lime-300 {
+  --tw-text-opacity: 1;
+  color: rgb(190 242 100 / var(--tw-text-opacity));
+}
+
 .text-lime-400 {
   --tw-text-opacity: 1;
   color: rgb(163 230 53 / var(--tw-text-opacity));
@@ -3142,6 +3155,11 @@ video {
 .text-neutral-400 {
   --tw-text-opacity: 1;
   color: rgb(163 163 163 / var(--tw-text-opacity));
+}
+
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity));
 }
 
 .text-red-400 {
@@ -3177,6 +3195,11 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-yellow-400 {
+  --tw-text-opacity: 1;
+  color: rgb(250 204 21 / var(--tw-text-opacity));
 }
 
 .text-yellow-800 {
@@ -4345,11 +4368,6 @@ select {
   .md\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
-  }
-
-  .md\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
   }
 }
 

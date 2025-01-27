@@ -231,6 +231,7 @@ function add_pc(data) {
     let border_color = "";
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
+
         let coord_x = parseInt(data[i]["user"]["coordinates"].coord_x) + 1;
         let coord_y = (data[i]["user"]["coordinates"].coord_y) + 1;
         let ship_size_x = data[i]["ship"]['size'].size_x;
@@ -483,6 +484,7 @@ function hide_sector_overflow(coord_x, coord_y) {
             }
         }
     }
+    
     if (is_user_is_on_mobile_device()) {
         document.getElementById('Y_X_y').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y) : display_map_start_y}`;
         document.getElementById('Y_X_x').textContent = `${display_map_start_x > 0 ? parseInt(display_map_start_x) : display_map_start_x}`;

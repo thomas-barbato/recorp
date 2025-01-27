@@ -179,7 +179,6 @@ class StoreInCache:
                         max_hp += module["effect"]["hull_hp"]
                     if isinstance(v, str) and "propulsion" in v:
                         max_movement += module["effect"]["bonus_mvt"]
-                        
             sector_data["pc"].append(
                 {
                     "user": {
@@ -225,6 +224,7 @@ class StoreInCache:
                         "modules_range": GetDataFromDB.is_in_range(
                             sector_data["sector"]["id"], data["user_id"], is_npc=False
                         ),
+                        "ship_scanning_module_available": True if len([e['name'] for e in module_list if e['name'] == "spaceship probe"]) > 0 else False,
                         "category_name": data[
                             "playership__ship_id__ship_category__name"
                         ],

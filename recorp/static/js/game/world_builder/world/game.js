@@ -16,16 +16,6 @@ let attribute_touch_touch_mouseover = user_is_on_mobile_bool === true ? 'touchst
 let attribute_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'onclick';
 let action_listener_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'click';
 
-function reverse_player_ship_display() {
-    var ids = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
-        return element.id;
-    });
-
-    return async_reverse_ship({
-        user: current_user_id,
-        id_array: ids,
-    });
-}
 
 function fade_effect(target, timer) {
     var fadeTarget = target;
@@ -42,7 +32,48 @@ function fade_effect(target, timer) {
     }, timer);
 }
 
+function color_per_percent(current_val, max_val){
+    
+    let current_percent =`${Math.round((current_val * 100) / (max_val))}`;
 
+    let status = "";
+
+    if(current_percent == 100){
+        status = "FULL";
+    }else if(current_percent < 100 && current_percent >= 75){
+        status = "ALMOST FULL";
+    }else if(current_percent < 75 && current_percent >= 50){
+        status = "AVERAGE";
+    }else if(current_percent < 50 && current_percent >= 25){
+        status = "BELOW AVERAGE";
+    }else{
+        status = "LOW";
+    }
+
+    let actual_stat = {
+        "FULL": "text-emerald-400",
+        "ALMOST FULL": "text-lime-300",
+        "AVERAGE": "text-yellow-400",
+        "BELOW AVERAGE": "text-orange-400",
+        "LOW": "text-red-600"
+    };
+
+    return { 
+        "status": status, 
+        "color": actual_stat[status]
+    }
+}
+
+function reverse_player_ship_display() {
+    var ids = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
+        return element.id;
+    });
+
+    return async_reverse_ship({
+        user: current_user_id,
+        id_array: ids,
+    });
+}
 
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
