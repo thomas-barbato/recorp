@@ -484,15 +484,6 @@ function hide_sector_overflow(coord_x, coord_y) {
             }
         }
     }
-    
-    if (is_user_is_on_mobile_device()) {
-        document.getElementById('Y_X_y').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y) : display_map_start_y}`;
-        document.getElementById('Y_X_x').textContent = `${display_map_start_x > 0 ? parseInt(display_map_start_x) : display_map_start_x}`;
-    } else {
-        document.getElementById('Y_X_y').textContent = `${display_map_start_y > 0 ? parseInt(display_map_start_y)-1 : display_map_start_y}`;
-        document.getElementById('Y_X_x').textContent = `${display_map_start_x > 0 ? parseInt(display_map_start_x)-1 : display_map_start_x}`;
-    }
-
 }
 
 function update_user_coord_display(x, y) {

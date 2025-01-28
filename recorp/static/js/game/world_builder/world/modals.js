@@ -12,8 +12,7 @@ function create_foreground_modal(id, data) {
     e.setAttribute('tabindex', -1);
     e.classList.add(
         'hidden',
-        'overflow-y-auto',
-        'overflow-x-hidden',
+        'overflow-hidden',
         'fixed',
         'top-0',
         'right-0',
@@ -306,8 +305,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     e.setAttribute('tabindex', -1);
     e.classList.add(
         'hidden',
-        'overflow-y-auto',
-        'overflow-x-hidden',
+        'overflow-hidden',
         'fixed',
         'top-0',
         'right-0',
@@ -366,7 +364,43 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     // START SIMPLE STATS
     let ship_statistics_container_div = document.createElement('div');
     ship_statistics_container_div.id = "ship-statistics";
+
+    let hp = color_per_percent(data.ship.current_hp, data.ship.max_hp);
+    let movement = color_per_percent(data.ship.current_movement, data.ship.max_movement);
+
     let hp_container = document.createElement('div');
+    let hp_container_text = document.createElement('p');
+    let hp_container_label = document.createElement('label');
+
+    let movement_container = document.createElement('div');
+    let movement_container_text = document.createElement('p');
+    let movement_container_label = document.createElement('label');
+
+    hp_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
+    hp_container_label.classList.add('text-xs', 'font-bold');
+    hp_container_text.classList.add('text-xs');
+    hp_container_label.textContent = "Hull points:";
+    hp_container_text.textContent = `${hp.status}`
+    hp_container_label.classList.add('text-white');
+    hp_container_text.classList.add(hp.color);
+
+    hp_container.append(hp_container_label);
+    hp_container.append(hp_container_text);
+
+    movement_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
+    movement_container.id = "movement-container";
+    movement_container_label.classList.add('text-xs', 'font-bold');
+    movement_container_text.classList.add('text-xs', movement.color, 'font-shadow');
+    movement_container_label.textContent = "Movement points:";
+    movement_container_text.textContent = `${movement.status}`;
+    movement_container_label.classList.add('text-white');
+
+    movement_container.append(movement_container_label);
+    movement_container.append(movement_container_text);
+
+    ship_statistics_container_div.append(hp_container);
+    ship_statistics_container_div.append(movement_container);
+
     // END SIMPLE STATS
 
     // START DETAILED STATS
@@ -394,8 +428,9 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     let movement_progress_bar_container_text = document.createElement('span');
     let movement_progress_bar_container_label = document.createElement('label');
     let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
+
     movement_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
-    movement_progress_bar_container_div.id = "movement-container";
+    movement_progress_bar_container_div.id = "movement-container-detailed";
     movement_progress_bar_container_label.textContent = "Movement left:"
     movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
@@ -529,23 +564,24 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     for (let defense_module_i in data.ship.modules) {
         if (data.ship.modules[defense_module_i]["type"].includes('DEFENSE') && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
             let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase();
-            // START SIMPLE STATS
+            // START SIMPLE DEFENSE MODULE
             let module_status_color = color_per_percent(data.ship["current_"+defense_name+"_defense"], data.ship.modules[defense_module_i].effect.defense);
             let module_content_container = document.createElement('div')
             let module_content_label = document.createElement('label');
             let module_content_text = document.createElement('p');
 
-            module_content_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'mt-2', 'flex', 'flex-row', 'gap-1');
+            module_content_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
             module_content_text.classList.add(module_status_color.color);
+            module_content_label.classList.add('text-white');
             module_content_label.textContent = `${data.ship.modules[defense_module_i].effect.defense_type}:`;
             module_content_text.textContent = `${module_status_color.status}`;
 
             module_content_container.append(module_content_label);
             module_content_container.append(module_content_text);
             ship_statistics_container_div.append(module_content_container);
-            // END SIMPLE STATS
+            // END SIMPLE DEFENSE MODULE
             
-            // START DETAILED STATS
+            // START DETAILED DEFENSE MODULE
             let defense_value_detailed = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
             let module_element_detailed = document.createElement('div');
             let module_content_detailed_label = document.createElement("label");
@@ -565,7 +601,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
             ship_detailed_statistics_container_div.append(module_content_detailed_label);
             ship_detailed_statistics_container_div.append(module_element_detailed);
-            // END DETAILED STATS
+            // END DETAILED DEFENSE MODULE
         }
     }
 

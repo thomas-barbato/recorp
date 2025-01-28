@@ -97,9 +97,8 @@
                 <tbody>
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
-                        <td id="Y_X" class="flex text-center text-neutral-400 text-shadow font-bold w-[32px] h-[32px] uncrossable flex-row m-0">
-                            <span class="flex bg-neutral-400 text-white text-shadow py-1 text-xs h-full justify-center items-center flex-wrap" id="Y_X_y">00</span>
-                            <span class="flex bg-emerald-400 text-white text-shadow py-1 text-xs h-full justify-center items-center flex-wrap" id="Y_X_x">00</span>
+                        <td id="Y_X" class="flex text-center text-neutral-400 text-shadow font-bold w-[32px] h-[32px] uncrossable flex-row">
+                            <span class="flex w-[32px] hidden" id="Y_X_y"></span>
                         </td>
                         {% for col in map_size_range.cols %}
                             <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] p-1 text-xs p-1 uncrossable">

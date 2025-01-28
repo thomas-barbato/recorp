@@ -61,18 +61,25 @@ function update_player_coord(data) {
         }
 
         let modal_div = document.getElementById(`modal-pc_${target_player_id}`);
-        let movement_remaining_div = modal_div.querySelector('#movement-container');
-        let movement_progress_bar_size = movement_remaining_div.querySelector('div');
-        let movement_progress_bar_text = movement_remaining_div.querySelector('span');
+        let detailed_movement_remaining_div = modal_div.querySelector('#movement-container-detailed');
+        let detailed_movement_progress_bar_size = detailed_movement_remaining_div.querySelector('div');
+        let detailed_movement_progress_bar_text = detailed_movement_remaining_div.querySelector('span');
 
-        movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
-        movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+        detailed_movement_progress_bar_size.style.width = `${Math.round((movement_remaining * 100) / (max_movement))}%`;
+        detailed_movement_progress_bar_text.textContent = `${movement_remaining} / ${max_movement}`;
+
+        let movement_value = color_per_percent(movement_remaining, max_movement);
+        let movement_remaining_div = modal_div.querySelector('#movement-container');
+        let movement_remaining_div_text = movement_remaining_div.querySelector('p');
+
+        movement_remaining_div_text.className = `text-xs ${movement_value.color} font-shadow`;
+        movement_remaining_div_text.textContent = movement_value.status;
+
         update_player_range_in_modal(data.modules_range);
 
     }else{
         update_player_pos_display_after_move(data);
     }
-    
 }
 
 function async_reverse_ship(data) {
