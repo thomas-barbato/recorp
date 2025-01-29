@@ -137,7 +137,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                     "In order to display resource you must scan it"
                 ),
                 "translated_statistics_msg_str": _(
-                    "In order to display spaceship statistics you must scan it"
+                    "Equip your spaceship with the ‘spaceship probe’ module to access detailed statistics"
                 ),
                 "translated_statistics_msg_label": _("statistics"),
             }

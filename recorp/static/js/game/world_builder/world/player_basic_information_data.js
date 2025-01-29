@@ -1,7 +1,7 @@
 let character_main = document.querySelector('#player-info-item-container');
 let character_main_container = document.createElement('div');
-let character_basic_information_fieldset = document.createElement('fieldset');
-let character_basic_information_fieldset_legend = document.createElement('legend');
+let character_currentEffects_fieldset = document.createElement('fieldset'); 
+let character_currentEffects_fieldset_legend = document.createElement('legend');
 let character_module_fieldset = document.createElement('fieldset');
 let character_module_fieldset_legend = document.createElement('legend');
 let character_defensive_modules_fieldset = document.createElement('fieldset');
@@ -12,17 +12,6 @@ let character_electronicWarfare_modules_fieldset = document.createElement('field
 let character_electronicWarfare_modules_fieldset_legend = document.createElement('legend');
 let character_other_modules_fieldset = document.createElement('fieldset');
 let character_other_modules_fieldset_legend = document.createElement('legend');
-let character_basic_information_img = document.createElement('img');
-let character_basic_information_ul = document.createElement('ul');
-let character_basic_information_li_name = document.createElement('li');
-let character_basic_information_li_name_b = document.createElement('b');
-let character_basic_information_li_name_span = document.createElement('span');
-let character_basic_information_li_archetype = document.createElement('li')
-let character_basic_information_li_archetype_b = document.createElement('b');
-let character_basic_information_li_archetype_span = document.createElement('span');
-let character_basic_information_li_faction = document.createElement('li');
-let character_basic_information_li_faction_b = document.createElement('b');
-let character_basic_information_li_faction_span = document.createElement('span');
 let character_status_container = document.createElement('div');
 let character_statistics_progressbar_fieldset = document.createElement('fieldset');
 let character_statistics_progressbar_fieldset_legend = document.createElement('legend');
@@ -50,70 +39,6 @@ character_main_container.classList.add(
     'md:block',
 );
 
-character_basic_information_fieldset.classList.add(
-    'flex',
-    'text-xs',
-    'items-center',
-    'justify-center',
-    'mx-auto',
-    'gap-1',
-    'w-full',
-    '2xl:flex-row',
-    'text-center',
-    'flex-col',
-    'border',
-    'border-slate-600',
-    'rounded',
-    'bg-gray-600/40',
-    'p-2'
-);
-
-character_basic_information_fieldset_legend.classList.add(
-    "text-xs",
-    "text-start",
-    "font-shadow",
-    "font-bold",
-    "text-white",
-    "truncate"
-);
-
-character_basic_information_fieldset_legend.textContent = "Your informations";
-character_basic_information_fieldset.append(character_basic_information_fieldset_legend)
-
-character_basic_information_img.id = "user-avatar";
-character_basic_information_img.classList.add(
-    'xl:w-[100px]',
-    'w-[75px]',
-    'box-content',
-    'mb-1',
-);
-
-character_basic_information_li_name.classList.add(
-    'text-justify',
-    'text-center'
-);
-
-character_basic_information_li_name_b.id = "player-name-label";
-character_basic_information_li_name_span.id = "player-name-span";
-character_basic_information_li_archetype.classList.add(
-    'text-justify',
-    'text-center'
-);
-
-character_basic_information_li_archetype_b.id = "player-archetype-label";
-character_basic_information_li_archetype_span.id = "player-archetype-span";
-character_basic_information_li_faction.classList.add(
-    'text-justify',
-    'text-center'
-);
-
-character_basic_information_li_faction_b.id = "player-faction-label";
-character_basic_information_li_faction_span.id = "player-faction-span";
-character_basic_information_li_faction_span.classList.add(
-    'text-justify',
-    'text-center'
-);
-
 character_statistics_progressbar_fieldset.classList.add(
     'flex',
     'text-xs',
@@ -130,6 +55,7 @@ character_statistics_progressbar_fieldset.classList.add(
     'rounded',
     'bg-gray-600/40',
 );
+
 character_statistics_progressbar_fieldset_legend.classList.add(
     "text-xs",
     "text-start",
@@ -138,8 +64,41 @@ character_statistics_progressbar_fieldset_legend.classList.add(
     "text-white",
     "truncate"
 )
+
 character_statistics_progressbar_fieldset_legend.textContent = "Statistics";
 character_statistics_progressbar_fieldset.append(character_statistics_progressbar_fieldset_legend);
+
+character_currentEffects_fieldset.classList.add(
+    'flex',
+    'text-xs',
+    'items-start',
+    'justify-center',
+    'mx-auto',
+    'gap-1',
+    'h-[25px]',
+    'p-2',
+    'w-auto',
+    'text-start',
+    'flex-col',
+    'border',
+    'border-slate-600',
+    'rounded',
+    'bg-gray-600/40',
+);
+
+character_currentEffects_fieldset_legend.classList.add(
+    "text-xs",
+    "text-start",
+    "font-shadow",
+    "font-bold",
+    "text-white",
+    "truncate"
+)
+
+character_currentEffects_fieldset.id = "current-effects";
+character_currentEffects_fieldset_legend.textContent = "Current effects";
+character_currentEffects_fieldset.append(character_currentEffects_fieldset_legend)
+
 
 character_statistics_progressbar_hp_div.classList.add(
     'w-full',
@@ -222,7 +181,7 @@ character_statistics_progressbar_ap_label.classList.add(
     'text-white',
     'text-xs',
 );
-character_statistics_progressbar_ap_label.textContent = "Action Points"
+character_statistics_progressbar_ap_label.textContent = "Action Points";
 character_statistics_progressbar_ap_content.classList.add(
     'bg-blue-600',
     'leading-none',
@@ -410,14 +369,6 @@ character_other_modules_fieldset.append(character_other_modules_fieldset_legend)
 
 for (let i = 0; i < map_informations['pc'].length; i++) {
     if (map_informations['pc'][i].user.user == current_user_id) {
-        let img_src = map_informations['pc'][i].user.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${map_informations['pc'][i].user.player}/0.jpg`
-        character_basic_information_img.src = img_src;
-        character_basic_information_li_name_b.textContent = "Name: ";
-        character_basic_information_li_name_span.textContent = map_informations['pc'][i].user.name;
-        character_basic_information_li_archetype_b.textContent = "Archetype: ";
-        character_basic_information_li_archetype_span.textContent = map_informations['pc'][i].user.archetype_name;
-        character_basic_information_li_faction_b.textContent = "Faction: ";
-        character_basic_information_li_faction_span.textContent = map_informations['pc'][i].faction.name;
 
         let hp_percent = `${Math.round((map_informations['pc'][i].ship.current_hp * 100) / (map_informations['pc'][i].ship.max_hp))}%`;
         let move_percent = `${Math.round((map_informations['pc'][i].ship.current_movement * 100) / (map_informations['pc'][i].ship.max_movement))}%`;
@@ -429,20 +380,6 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         character_statistics_progressbar_move_text.textContent = `${map_informations['pc'][i].ship.current_movement} / ${map_informations['pc'][i].ship.max_movement}`;
         character_statistics_progressbar_ap_content.style.width = ap_percent;
         character_statistics_progressbar_ap_text.textContent = `${map_informations['pc'][i].user.current_ap} / ${map_informations['pc'][i].user.max_ap}`;
-
-        character_basic_information_li_name.append(character_basic_information_li_name_b);
-        character_basic_information_li_name.append(character_basic_information_li_name_span);
-        character_basic_information_li_archetype.append(character_basic_information_li_archetype_b);
-        character_basic_information_li_archetype.append(character_basic_information_li_archetype_span);
-        character_basic_information_li_faction.append(character_basic_information_li_faction_b);
-        character_basic_information_li_faction.append(character_basic_information_li_faction_span);
-
-        character_basic_information_ul.append(character_basic_information_li_name);
-        character_basic_information_ul.append(character_basic_information_li_archetype);
-        character_basic_information_ul.append(character_basic_information_li_faction);
-
-        character_basic_information_fieldset.append(character_basic_information_img);
-        character_basic_information_fieldset.append(character_basic_information_ul);
 
         character_statistics_progressbar_hp_div.append(character_statistics_progressbar_hp_content);
         character_statistics_progressbar_hp_div.append(character_statistics_progressbar_hp_text);
@@ -460,8 +397,8 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         character_statistics_progressbar_fieldset.append(character_statistics_progressbar_ap_label);
         character_statistics_progressbar_fieldset.append(character_statistics_progressbar_ap_div);
     
-        character_main_container.append(character_basic_information_fieldset);
         character_main_container.append(character_statistics_progressbar_fieldset);
+        character_main_container.append(character_currentEffects_fieldset);
 
         for (let module_i in map_informations['pc'][i].ship.modules) {
 

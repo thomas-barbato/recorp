@@ -260,6 +260,9 @@ msgstr "vide"
 msgid "The faction's main planet"
 msgstr "Planète mère de la faction"
 
+msgid "Equip your spaceship with the «spaceship probe» module to access detailed statistics"
+msgstr "Equipez votre vaisseau du module «spaceship probe» pour acceder à des statistiques détaillées"
+
 msgid "In order to display spaceship statistics you must scan it"
 msgstr "Pour afficher les statistiques de ce vaisseau spatial, vous devez le scanner"
 

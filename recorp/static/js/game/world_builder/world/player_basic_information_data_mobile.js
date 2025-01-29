@@ -16,6 +16,8 @@ let character_statistics_progressbar_ap_label_mobile = document.createElement('l
 let character_statistics_progressbar_ap_content_mobile = document.createElement('div');
 let character_statistics_progressbar_ap_text_mobile = document.createElement('span');
 let character_statistic_fulldisplay_button_i_mobile = document.createElement('i');
+let character_currentEffects_fieldset_mobile = document.createElement('fieldset'); 
+let character_currentEffects_fieldset_legend_mobile = document.createElement('legend');
 
 character_main_container_mobile.classList.add(
     'w-[full]',
@@ -24,7 +26,7 @@ character_main_container_mobile.classList.add(
     'items-center',
     'justify-center',
     'flex-col',
-    'lg:hidden'
+    'lg:hidden',
 );
 
 character_statistics_progressbar_fieldset_mobile.classList.add(
@@ -155,6 +157,10 @@ character_statistic_fulldisplay_button_i_mobile.classList.add(
 );
 character_statistic_fulldisplay_button_i_mobile.id = "character-full-info-btn";
 
+character_currentEffects_fieldset_mobile.id = "current-effects-mobile";
+character_currentEffects_fieldset_legend_mobile.textContent = "Current effects";
+character_currentEffects_fieldset_mobile.append(character_currentEffects_fieldset_legend_mobile)
+
 for (let i = 0; i < map_informations['pc'].length; i++) {
     if (map_informations['pc'][i].user.user == current_user_id) {
         let hp_percent = `${Math.round((map_informations['pc'][i].ship.current_hp * 100) / (map_informations['pc'][i].ship.max_hp))}%`;
@@ -243,6 +249,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         
         character_main_container_mobile.append(character_statistics_progressbar_fieldset_mobile);
         character_main_mobile.append(character_main_container_mobile)
+        character_main_mobile.append(character_currentEffects_fieldset_mobile);
 
         let container_height = document.querySelector('#mobile-info-player-container').offsetHeight;
 

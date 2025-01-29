@@ -251,8 +251,11 @@ msgstr "vacía"
 msgid "The faction's main planet"
 msgstr "El planeta principal de la facción"
 
+msgid "Equip your spaceship with the «spaceship probe» module to access detailed statistics"
+msgstr "Equipa tu nave espacial con el módulo «spaceship probe» para acceder a estadísticas detalladas"
+
 msgid "In order to display spaceship statistics you must scan it"
-msgstr "PPara mostrar las estadísticas de la nave espacial debes escanearla"
+msgstr "Para mostrar las estadísticas de la nave espacial debes escanearla"
 
 msgid "In order to display resource you must scan it"
 msgstr "Para visualizar el recurso debe escanearlo"
