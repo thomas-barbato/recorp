@@ -18,7 +18,7 @@
 
 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
     {% include "top-panel.html" %}
-    <header class="flex w-full main-info-container m-0 flex-col">
+    <header class="flex w-full main-info-container flex-col">
         {% include "display-info.html" %}
     </header>
     <main class="flex main-game-container flex-row w-full">
@@ -29,7 +29,7 @@
         {% include "display_disclaimer.html" %}
     </footer>
 {% else %}
-    <header class="flex w-full flex-col main-info-container m-0 lg:blur-none">
+    <header class="flex w-full flex-col main-info-container lg:blur-none">
         {% include "top-panel.html" %}
         {% include "display-info.html" %}
     </header>

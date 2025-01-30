@@ -113,6 +113,8 @@ window.addEventListener('load', () => {
         map_informations.pc
     );
 
+    
+
     window.onresize = function(event) {
         let user_id = document.querySelector('.player-ship-start-pos').id.split('_');
         setTimeout(() => {

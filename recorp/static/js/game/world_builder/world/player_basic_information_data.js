@@ -1,4 +1,5 @@
 let character_main = document.querySelector('#player-info-item-container');
+let info_container = document.querySelector('#current-effects-mobile')
 let character_main_container = document.createElement('div');
 let character_currentEffects_fieldset = document.createElement('fieldset'); 
 let character_currentEffects_fieldset_legend = document.createElement('legend');
@@ -77,7 +78,7 @@ character_currentEffects_fieldset.classList.add(
     'gap-1',
     'h-[25px]',
     'p-2',
-    'w-auto',
+    'w-full',
     'text-start',
     'flex-col',
     'border',
@@ -92,7 +93,7 @@ character_currentEffects_fieldset_legend.classList.add(
     "font-shadow",
     "font-bold",
     "text-white",
-    "truncate"
+    "truncate",
 )
 
 character_currentEffects_fieldset.id = "current-effects";
@@ -365,6 +366,7 @@ character_other_modules_fieldset_legend.classList.add('flex', 'flex-row', 'text-
 
 character_other_modules_fieldset_legend.append(character_other_modules_fieldset_legend_span);
 character_other_modules_fieldset.append(character_other_modules_fieldset_legend);
+
 
 
 for (let i = 0; i < map_informations['pc'].length; i++) {

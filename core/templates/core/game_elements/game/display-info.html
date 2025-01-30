@@ -1,32 +1,40 @@
 {% load static %}
 {% load i18n %}
-<div class="flex flex-row w-full overflow-hidden lg:blur-none mx-auto order-1 p-1 mx-auto text-xs items-center bg-zinc-950/70 text-white 2xl:border-b border-solid border-slate-600 2xl:border-slate-600/0" id="info-container">
+<div class="flex w-full flex-col overflow-hidden lg:blur-none mx-auto order-1 text-xs lg:items-center items-start bg-zinc-950/70 text-white 2xl:border-b border-solid border-slate-600 2xl:border-slate-600/0" id="info-container">
   
-  <div id="mobile-info-player-container" class="flex flex-col w-1/2 item-center justify-end lg:hidden inline gap-1 m-1 z-30">
-  </div>
+  <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-1 p-1">
 
-  <div id="info-sector-container" class="flex flex-col lg:w-full w-1/2 lg:text-center item-start m-1 z-20">
-    <div class="lg:p-0 p-2 gap-1 flex lg:flex-row flex-col">
-      <p class="font-shadow text-xs w-auto"><b>{% translate "Sector" %}</b> {{ map_informations.sector.name }}</p>
-      <p class="font-shadow text-xs w-auto"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
-      <p class="font-shadow text-xs w-auto"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
-      </span>
-      <div class="w-full mx-auto flex lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1">
-        <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
-          <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
-          <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
-          <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
-        </div>
-        <div class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-between lg:w-auto lg:w-[10vw] w-[25vw]">
-            <label for="target-coord-name"><i class="fa-solid fa-satellite-dish px-1.5 py-1"></i></label>
-              <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[10vw] w-[30vw] px-1.5 py-1 font-shadow truncate">{% translate 'Nothing selected' %}</span>
-              <span id="target-coord-y" class="flex bg-neutral-400 font-bold px-1.5 py-1 invisible">00</span>
-              <span id="target-coord-x" class="flex bg-emerald-400 font-bold px-1.5 py-1 rounded-r invisible">00</span>
-        </div>
-      </div>
-      <span class="flex mx-auto lg:hidden justify-center item-center">
-        <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400" id="chat-btn"></span></i>
-      </span>
+    <div id="mobile-info-player-container" class="flex flex-col w-full item-center justify-end lg:hidden inline gap-1 z-30">
     </div>
+
+    <div id="info-sector-container" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20">
+      <div class="flex lg:p-0 p-2 gap-1 lg:flex-row flex-col">
+        <p class="font-shadow text-xs w-auto"><b>{% translate "Sector" %}</b> {{ map_informations.sector.name }}</p>
+        <p class="font-shadow text-xs w-auto"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
+        <p class="font-shadow text-xs w-auto"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
+        </span>
+        <div class="flex w-full mx-auto lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1">
+          <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
+            <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
+            <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
+            <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
+          </div>
+          <div class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-between lg:w-auto lg:w-[10vw] w-[25vw]">
+              <label for="target-coord-name"><i class="fa-solid fa-satellite-dish px-1.5 py-1"></i></label>
+                <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[10vw] w-[30vw] px-1.5 py-1 font-shadow truncate">{% translate 'Nothing selected' %}</span>
+                <span id="target-coord-y" class="flex bg-neutral-400 font-bold px-1.5 py-1 invisible">00</span>
+                <span id="target-coord-x" class="flex bg-emerald-400 font-bold px-1.5 py-1 rounded-r invisible">00</span>
+          </div>
+        </div>
+        <span class="flex mx-auto lg:hidden justify-center item-center">
+          <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400" id="chat-btn"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-row w-full lg:hidden justify-center item-start mb-1 px-2" id="current-effects-mobile">
+    <fieldset class="flex text-xs items-start justify-center mx-auto gap-1 h-[25px] p-2 w-full text-start flex-col border border-slate-600 rounded bg-gray-600/40">
+      <legend class="text-xs text-start font-shadow font-bold text-white truncate">Current effects</legend>
+    </fieldset>
   </div>
 </div>

@@ -402,10 +402,12 @@ function add_pc(data) {
 }
 
 function generate_sector(background, sector, npc, pc) {
+    document.querySelector('html').classList.add('hidden');
     add_background(background)
     add_foreground(sector)
     add_npc(npc);
     add_pc(pc);
+    document.querySelector('html').classList.remove('hidden');
 }
 
 function hide_sector_overflow(coord_x, coord_y) {

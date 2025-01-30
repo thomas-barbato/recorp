@@ -1,4 +1,5 @@
 
+let info_container_mobile = document.querySelector('#current-effects-mobile');
 let character_main_mobile = document.querySelector('#mobile-info-player-container');
 let character_main_container_mobile = document.createElement('div');
 let character_statistics_progressbar_fieldset_mobile = document.createElement('fieldset');
@@ -32,7 +33,7 @@ character_main_container_mobile.classList.add(
 character_statistics_progressbar_fieldset_mobile.classList.add(
     'flex',
     'w-full',
-    'p-1',
+    'p-2',
     'items-start',
     'justify-center',
     'gap-1',
@@ -42,6 +43,7 @@ character_statistics_progressbar_fieldset_mobile.classList.add(
     'border-slate-600',
     'rounded-md'
 );
+
 character_statistics_progressbar_fieldset_legend_mobile.classList.add(
     "text-xs",
     "md:text-start",
@@ -49,7 +51,8 @@ character_statistics_progressbar_fieldset_legend_mobile.classList.add(
     "font-shadow",
     "font-bold",
     "text-white",
-)
+);
+
 character_statistics_progressbar_fieldset_mobile.append(character_statistics_progressbar_fieldset_legend_mobile);
 
 character_statistics_progressbar_hp_div_mobile.classList.add(
@@ -158,8 +161,32 @@ character_statistic_fulldisplay_button_i_mobile.classList.add(
 character_statistic_fulldisplay_button_i_mobile.id = "character-full-info-btn";
 
 character_currentEffects_fieldset_mobile.id = "current-effects-mobile";
+character_currentEffects_fieldset_mobile.classList.add(
+    'flex',
+    'text-xs',
+    'items-start',
+    'justify-center',
+    'mx-auto',
+    'h-[35px]',
+    'text-start',
+    'flex-row',
+    'w-full',
+    'border',
+    'border-slate-600',
+    'rounded',
+    'bg-gray-600/40',
+);
+
 character_currentEffects_fieldset_legend_mobile.textContent = "Current effects";
-character_currentEffects_fieldset_mobile.append(character_currentEffects_fieldset_legend_mobile)
+character_currentEffects_fieldset_legend_mobile.classList.add(
+    "text-xs",
+    "text-start",
+    "font-shadow",
+    "font-bold",
+    "text-white",
+    "truncate",
+)
+character_currentEffects_fieldset_mobile.append(character_currentEffects_fieldset_legend_mobile);
 
 for (let i = 0; i < map_informations['pc'].length; i++) {
     if (map_informations['pc'][i].user.user == current_user_id) {
@@ -246,16 +273,11 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         character_statistics_progressbar_fieldset_mobile.append(character_statistics_progressbar_ap_label_mobile);
         character_statistics_progressbar_fieldset_mobile.append(character_statistics_progressbar_ap_div_mobile);
         character_statistics_progressbar_fieldset_mobile.append(character_statistic_fulldisplay_button_i_mobile);
-        
         character_main_container_mobile.append(character_statistics_progressbar_fieldset_mobile);
-        character_main_mobile.append(character_main_container_mobile)
-        character_main_mobile.append(character_currentEffects_fieldset_mobile);
-
-        let container_height = document.querySelector('#mobile-info-player-container').offsetHeight;
+        character_main_mobile.append(character_main_container_mobile);
 
         let character_info_container = document.querySelector('#info-sector-container');
         character_info_container.classList.add(
-            `h-[${container_height}px]`,
             'lg:bg-gray-600/0',
             'lg:border-slate-600/0',
             'lg:items-center',
@@ -264,6 +286,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'border',
             'border-slate-600',
             'rounded-md',
+            
         )
         
         player_modal.id = "player-modal";
