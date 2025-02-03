@@ -16,6 +16,9 @@ def get_default_station_size():
 def get_default_asteroid_size():
     return {"size_x": 1, "size_y": 1}
 
+def get_default_warzone_size():
+    return {"size_x": 2, "size_y": 3}
+
 
 class CashShop(models.Model):
     pass
@@ -129,7 +132,22 @@ class Sector(models.Model):
 
     def __str__(self):
         return f"{self.name} : {self.faction.name}, is_faction_level_starter : {self.is_faction_level_starter}"
-
+    
+class Warp(models.Model):
+    name = models.CharField(max_length=30, null=False, blank=False, default="Warp")
+    data = models.JSONField(null=True)
+    size = models.JSONField(default=get_default_warzone_size)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+class SectorWarp(models.Model):
+    name = models.CharField(max_length=30, null=False, blank=False, default="SectorWarp")
+    data = models.JSONField(null=True)
+    warp = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)
+    warp_home = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_home")
+    warp_destination = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_destination")
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Archetype(models.Model):
     name = models.CharField(max_length=30)

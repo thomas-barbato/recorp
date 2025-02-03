@@ -1,7 +1,7 @@
 function add_background(data) {
     let index_row = 1;
     let index_col = 1;
-    let bg_url = '/static/img/atlas/background/' + data + '/' + '0.gif';
+    let bg_url = '/static/img/background/' + data + '/' + '0.gif';
     for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -83,7 +83,7 @@ function add_foreground(data){
         let index_col = data[sector_i]['data']['coord_x'];
         let size_x = data[sector_i]['size']["size_x"];
         let size_y = data[sector_i]['size']["size_y"];
-        let bg_url = '/static/img/atlas/foreground/' + element_type + '/' + folder_name + '/' + '0.gif';
+        let bg_url = '/static/img/foreground/' + element_type + '/' + folder_name + '/' + '0.gif';
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
@@ -174,7 +174,7 @@ function add_npc(data){
                 let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
                 let entry_point_border = entry_point.querySelector('span');
                 let div = entry_point.querySelector('div');
-                let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
+                let bg_url = "/static/img/foreground/SHIPS/" + data[i]["ship"]['image'] + '.png';
                 let space_ship = document.createElement('div');
                 let space_ship_reversed = document.createElement('div');
 
@@ -304,8 +304,8 @@ function add_pc(data) {
 
                 let entry_point_border = entry_point.querySelector('span');
                 let entry_point_div = entry_point.querySelector('div');
-                let bg_url = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '.png';
-                let bg_url_reversed_img = "/static/js/game/assets/ships/" + data[i]["ship"]['image'] + '-reversed.png';
+                let bg_url = "/static/img/foreground/SHIPS/" + data[i]["ship"]['image'] + '.png';
+                let bg_url_reversed_img = "/static/img/foreground/SHIPS/" + data[i]["ship"]['image'] + '-reversed.png';
                 let space_ship = document.createElement('div');
                 let space_ship_reversed = document.createElement('div');
 

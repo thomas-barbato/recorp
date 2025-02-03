@@ -19,7 +19,7 @@
         "model": "core.planet",
         "pk": 2,
         "fields": {
-            "name": "moon-1",
+            "name": "moon_1",
             "data": {
                 "animation": "moon_1",
                 "type": "satellite"
@@ -36,7 +36,7 @@
         "model": "core.planet",
         "pk": 3,
         "fields": {
-            "name": "star-1",
+            "name": "star_1",
             "data": {
                 "animation": "star_1",
                 "type": "star"
@@ -44,6 +44,40 @@
             "size": {
                 "size_x": 2,
                 "size_y": 2
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
+    },
+    {
+        "model": "core.planet",
+        "pk": 4,
+        "fields": {
+            "name": "planete_2",
+            "data": {
+                "animation": "planete_2",
+                "type": "planet"
+            },
+            "size": {
+                "size_x": 4,
+                "size_y": 4
+            },
+            "created_at": "2020-02-28 12:38:15",
+            "updated_at": "2020-02-28 12:38:15"
+        }
+    },
+    {
+        "model": "core.planet",
+        "pk": 5,
+        "fields": {
+            "name": "planete_3",
+            "data": {
+                "animation": "planete_3",
+                "type": "planet"
+            },
+            "size": {
+                "size_x": 4,
+                "size_y": 4
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"

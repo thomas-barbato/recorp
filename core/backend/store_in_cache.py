@@ -28,13 +28,14 @@ class StoreInCache:
         return cache.get(self.room)
 
     def set_sector_data(self, pk):
-        planets, asteroids, stations = GetDataFromDB.get_items_from_sector(
+        planets, asteroids, stations, warpzones = GetDataFromDB.get_items_from_sector(
             self.sector_pk
         )
         foreground_table_set = {
             "planet": planets,
             "asteroid": asteroids,
             "station": stations,
+            "warpzone": warpzones,
         }
         sector_pc, sector_npc = GetDataFromDB.get_pc_from_sector(self.sector_pk)
         sector = Sector.objects.get(id=pk)

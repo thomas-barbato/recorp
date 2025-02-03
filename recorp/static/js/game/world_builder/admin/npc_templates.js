@@ -20,7 +20,7 @@ ship_select.addEventListener('change', function() {
 
     if (selected_element.value != "none") {
         let img_name = `${selected_element.dataset.imagename}.png`;
-        ship_img.src = `/static/js/game/assets/ships/${img_name}`;
+        ship_img.src = `/static/img/foreground/SHIPS/${img_name}`;
         ship_img.classList.remove('hidden')
         for (let i = 0; i < spaceship_description_element.length; i++) {
             let element_id = spaceship_description_element[i].id.split('-')[2];
@@ -130,7 +130,7 @@ npc_submit_button.addEventListener('click', function() {
     }
     if (ship_image_name) {
         let modal_spaceship = document.getElementById('npc-template-modal-spaceship');
-        modal_spaceship.src = `/static/js/game/assets/ships/${ship_image_name}`;
+        modal_spaceship.src = `/static/img/foreground/SHIPS/${ship_image_name}`;
         modal_spaceship.classList.remove('hidden');
         modal_spaceship_warning = document.getElementById('npc-template-modal-spaceship-warning').classList.add('hidden');
     } else {
@@ -424,7 +424,7 @@ function load_data_from_selected_template(response_data) {
     spaceship_selected.selected = true;
     spaceship_selected.classList.add('selected-spaceShip');
     let spaceship_img = document.querySelector('#spaceship-img')
-    spaceship_img.src = `/static/js/game/assets/ships/${response_data.template[0].ship_id__image}.png`;
+    spaceship_img.src = `/static/img/foreground/SHIPS/${response_data.template[0].ship_id__image}.png`;
     spaceship_img.classList.remove('hidden');
     document.querySelector(`#description-spaceship-${response_data.template[0].ship_id}`).classList.remove('hidden');
     document.querySelector('#difficulty-select').value = response_data.template[0].difficulty;

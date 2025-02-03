@@ -1,4 +1,3 @@
-import pprint
 from random import random
 import re
 import json
@@ -23,6 +22,8 @@ from core.models import (
     Asteroid,
     Faction,
     Player,
+    Warp,
+    SectorWarp,
     Skill,
     SkillEffect,
     Recipe,
@@ -219,6 +220,7 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
             "satellite",
             "star",
             "blackhole",
+            "warpzone",
         ]
         context["planet_url"] = GetDataFromDB.get_fg_element_url("planet")
         context["station_url"] = GetDataFromDB.get_fg_element_url("station")
@@ -226,6 +228,7 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
         context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
         context["star_url"] = GetDataFromDB.get_fg_element_url("star")
         context["blackhole_url"] = GetDataFromDB.get_fg_element_url("blackhole")
+        context["warpzone_url"] = GetDataFromDB.get_fg_element_url("warpzone")
         context["size"] = GetDataFromDB.get_size()
         return context
 
@@ -237,6 +240,7 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
             "satellite",
             "star",
             "blackhole",
+            "warpzone",
         ]
         selected = request.POST.get("item-type-choice-section")
         if selected in select_type:
@@ -266,6 +270,9 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
                 case "station":
                     size = {"size_x": 3, "size_y": 3}
                     Station.objects.create(name=fg_name, data=data, size=size)
+                case "warpzone":
+                    size = {"size_x": 2, "size_y": 3}
+                    Station.objects.create(name=fg_name, data=data, size=size)
                 case _:
                     pass
             messages.success(
@@ -292,6 +299,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
         context["station_url"] = GetDataFromDB.get_fg_element_url("station")
         context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
+        context["warpzone_url"] = GetDataFromDB.get_fg_element_url("warpzone")
         context["security_data"] = GetDataFromDB.get_table("security").objects.values(
             "id", "name"
         )
@@ -400,11 +408,12 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations = GetDataFromDB.get_items_from_sector(pk)
+            planets, asteroids, stations, warpzones = GetDataFromDB.get_items_from_sector(pk)
             table_set = {
                 "planet": planets,
                 "asteroid": asteroids,
                 "station": stations,
+                "warpzone": warpzones
             }
             result_dict = dict()
             result_dict["sector_element"] = []
@@ -450,6 +459,10 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                             ).values_list("name", flat=True)[0]
                         case "station":
                             item_name = Station.objects.filter(
+                                id=table.source_id
+                            ).values_list("name", flat=True)[0]
+                        case "warpzone":
+                            item_name = Warp.objects.filter(
                                 id=table.source_id
                             ).values_list("name", flat=True)[0]
                     result_dict["sector_element"].append(
@@ -879,6 +892,10 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                             ).values_list("name", "data", "size")[0]
                         case "station":
                             item_data = Station.objects.filter(
+                                id=table.source_id
+                            ).values_list("name", "data", "size")[0]
+                        case "warpzone":
+                            item_data = Warp.objects.filter(
                                 id=table.source_id
                             ).values_list("name", "data", "size")[0]
                     result_dict["sector_element"].append(

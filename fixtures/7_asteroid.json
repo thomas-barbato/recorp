@@ -14,4 +14,39 @@
         "created_at": "2020-02-28 12:38:15",
         "updated_at": "2020-02-28 12:38:15"
     }
-}]
+},
+{
+    "model": "core.asteroid",
+    "pk": 2,
+    "fields": {
+        "name": "asteroid_2",
+        "data": {
+            "animation": "asteroid_2",
+            "type": "asteroid"
+        },
+        "size": {
+            "size_x": 1,
+            "size_y": 1
+        },
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.asteroid",
+    "pk": 3,
+    "fields": {
+        "name": "asteroid_3",
+        "data": {
+            "animation": "asteroid_3",
+            "type": "asteroid"
+        },
+        "size": {
+            "size_x": 1,
+            "size_y": 1
+        },
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}
+]

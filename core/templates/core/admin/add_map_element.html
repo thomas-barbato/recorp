@@ -11,7 +11,7 @@
       {% csrf_token %}
       <img id="img-preview" src="">
       {% for item in form %}
-         {% if not "image_url" in item.label%}
+         {% if not "image_url" in item.label %}
             <div class="mt-2 w-full font-bold">
                {{ item.label }}
             </div>

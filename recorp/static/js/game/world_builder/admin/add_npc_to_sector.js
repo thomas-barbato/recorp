@@ -31,7 +31,7 @@ function add_background(folder_name) {
     let tile_map = document.querySelectorAll('.tile');
     let index_row = 1;
     let index_col = 1;
-    let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.gif';
+    let bg_url = '/static/img/background/' + folder_name + '/' + '0.gif';
     for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -55,7 +55,7 @@ function add_foreground(obj) {
     for (let obj_i in obj) {
         let index_row = parseInt(obj[obj_i].data.coord_y);
         let index_col = parseInt(obj[obj_i].data.coord_x);
-        let bg_url = '/static/img/atlas/foreground/' + obj[obj_i].item_data[1].type + '/' + obj[obj_i].item_data[1].animation + '/' + '0.gif';
+        let bg_url = '/static/img/foreground/' + obj[obj_i].item_data[1].type + '/' + obj[obj_i].item_data[1].animation + '/' + '0.gif';
         for (let row_i = 0; row_i < (atlas.tilesize * obj[obj_i].item_data[2].size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * obj[obj_i].item_data[2].size_x); col_i += atlas.tilesize) {
 
@@ -174,7 +174,7 @@ function load_npc_menu() {
             spaceship_data_container_li.classList.add('list-none', 'hidden', 'template-selection');
         }
 
-        spaceship_data_container_li_ul_img_file.src = '/static/js/game/assets/ships/' + npc_template[i].ship_id__image + '.png';
+        spaceship_data_container_li_ul_img_file.src = '/static/img/foreground/SHIPS/' + npc_template[i].ship_id__image + '.png';
         spaceship_data_container_li_ul_hp.textContent = `HP: ${npc_template[i].max_hp}`;
         spaceship_data_container_li_ul_movement.textContent = `MOVEMENT: ${npc_template[i].max_movement}`;
         spaceship_data_container_li_ul_difficulty.textContent = `DIFFICULTY: ${npc_template[i].difficulty}`;
@@ -282,7 +282,7 @@ function load_npc_on_map(obj) {
 
         let index_row = parseInt(spaceship_obj.pos.y) + 1;
         let index_col = parseInt(spaceship_obj.pos.x) + 1;
-        let bg_url = '/static/js/game/assets/ships/' + spaceship_obj.data.image + '.png';
+        let bg_url = '/static/img/foreground/SHIPS/' + spaceship_obj.data.image + '.png';
 
         let id_uuid = crypto.randomUUID();
 
@@ -326,7 +326,7 @@ function add_spaceship_on_map(obj) {
     let data = obj.data;
     let index_row = parseInt(obj.pos.y) + 1;
     let index_col = parseInt(obj.pos.x) + 1;
-    let bg_url = '/static/js/game/assets/ships/' + data.image + '.png';
+    let bg_url = '/static/img/foreground/SHIPS/' + data.image + '.png';
 
     let spaceship_class = undefined;
 

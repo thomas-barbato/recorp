@@ -176,8 +176,8 @@ function update_player_pos_display_after_move(data){
             }
 
             let entry_point_div = entry_point.querySelector('div');
-            let ship_url = "/static/js/game/assets/ships/" + data.player.ship.image + '.png';
-            let ship_url_reversed_img = "/static/js/game/assets/ships/" + data.player.ship.image + '-reversed.png';
+            let ship_url = "/static/img/foreground/SHIPS/" + data.player.ship.image + '.png';
+            let ship_url_reversed_img = "/static/img/foreground/SHIPS/" + data.player.ship.image + '-reversed.png';
             let space_ship = document.createElement('div');
             let space_ship_reversed = document.createElement('div');
 
@@ -299,7 +299,7 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
             movement_li.classList.add('flex', 'flex-row', 'gap-1');
             movement_li.id = "movement-information-display";
 
-            movement_li_icon.src = '/static/js/game/assets/ux/movement-icon.svg';
+            movement_li_icon.src = '/static/img/ux/movement-icon.svg';
             movement_li_icon.classList.add(
                 'lg:w-[2vw]',
                 'lg:h-[2vh]',

@@ -17,7 +17,6 @@ class UploadThisImage:
                     "recorp",
                     "static",
                     "img",
-                    "atlas",
                     self.category,
                     self.type,
                 )
@@ -25,7 +24,7 @@ class UploadThisImage:
         else:
             self.parent_path = Path(
                 os.path.join(
-                    BASE_DIR, "recorp", "static", "img", "atlas", self.category
+                    BASE_DIR, "recorp", "static", "img", self.category
                 )
             )
 

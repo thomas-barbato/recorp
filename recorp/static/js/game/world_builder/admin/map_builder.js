@@ -315,7 +315,7 @@
             if (anim_array[animation_i][1] !== "none") {
                 let index_row = 0;
                 let index_col = 0;
-                let img_url = '/static/img/atlas/foreground/' + dir_category + '/' + anim_array[1][1] + '/' + '0.gif';
+                let img_url = '/static/img/foreground/' + dir_category + '/' + anim_array[1][1] + '/' + '0.gif';
                 for (let row_i = 0; row_i < preview_height_size; row_i += preview_tile_size) {
                     for (let col_i = 0; col_i < preview_width_size; col_i += preview_tile_size) {
                         let img_div = document.createElement('div');
@@ -380,7 +380,7 @@
     function add_background(folder_name) {
         let index_row = 1;
         let index_col = 1;
-        let bg_url = '/static/img/atlas/background/' + folder_name + '/' + '0.gif';
+        let bg_url = '/static/img/background/' + folder_name + '/' + '0.gif';
         for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -401,7 +401,7 @@
             dict_value = dict[dict_i]["animations"][0];
             let index_row = dict[dict_i]['coord_y'] + 1;
             let index_col = dict[dict_i]['coord_x'] + 1;
-            let bg_url = '/static/img/atlas/foreground/' + dict_value["type"] + '/' + dict_value["animation"] + '/' + '0.gif';
+            let bg_url = '/static/img/foreground/' + dict_value["type"] + '/' + dict_value["animation"] + '/' + '0.gif';
             for (let row_i = 0; row_i < (atlas.tilesize * dict[dict_i]["size_y"]); row_i += atlas.tilesize) {
                 for (let col_i = 0; col_i < (atlas.tilesize * dict[dict_i]["size_x"]); col_i += atlas.tilesize) {
 

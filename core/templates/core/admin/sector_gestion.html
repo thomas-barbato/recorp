@@ -16,6 +16,8 @@
 {{ station_url|json_script:"script_station_url" }}
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
+{{ warpzone_url|json_script:"script_warpzone_url" }}
+
 <div class="flex flex-col">
     <div class="flex flex-col w-[90%]">
         <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
@@ -138,6 +140,10 @@
                                 {% elif item == "station" %}
                                     {% for station in animations_data.stations_data %}
                                     <option name="foreground-choice" value="{{ item }}_data">{{station.fields.name}}</option>
+                                    {% endfor %}
+                                {% elif item == "warpzone" %}
+                                    {% for warp in animations_data.warpzone_data %}
+                                    <option name="foreground-choice" value="{{ item }}_data">{{warp.fields.name}}</option>
                                     {% endfor %}
                                 {% endif %}
                             {% endfor %}

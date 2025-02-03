@@ -30,7 +30,6 @@ def admin_index(request):
     context = RequestContext(request, {})
     return HttpResponse(template.render(context))
 
-
 class IndexView(TemplateView):
     form_class = LoginForm
     template_name = "index.html"

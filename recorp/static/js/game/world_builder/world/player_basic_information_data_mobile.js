@@ -348,7 +348,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'mx-auto'
         );
 
-        let close_button_url = '/static/js/game/assets/ux/close.svg';
+        let close_button_url = '/static/img/ux/close.svg';
         player_modal_container_header_close_button.src = close_button_url;
         player_modal_container_header_close_button.title = `close`;
         player_modal_container_header_close_button.classList.add('inline-block', 'w-[20px]', 'h-[15px]', 'absolute', 'top-10', 'right-0', 'mt-2', 'pr-2');
@@ -655,7 +655,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         player_modal_container_body_otherModule_module_fieldset_legend.append(player_modal_container_body_otherModule_module_fieldset_legend_span);
         player_modal_container_body_otherModule_module_fieldset.append(player_modal_container_body_otherModule_module_fieldset_legend);
 
-        let img_src = map_informations['pc'][i].user.image == "img.png" ? `/static/js/game/assets/ux/default-user.svg` : `/static/js/game/assets/users/${map_informations['pc'][i].user.player}/0.jpg`
+        let img_src = map_informations['pc'][i].user.image == "img.png" ? `/static/img/ux/default-user.svg` : `/static/img/users/${map_informations['pc'][i].user.player}/0.jpg`
 
         player_modal_container_header_img.src = img_src;
         player_modal_container_header_li_name_b.textContent = "Name: ";

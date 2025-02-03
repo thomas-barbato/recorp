@@ -25,6 +25,7 @@ class UploadImageForm(forms.Form):
         ("SATELLITE", "satellite"),
         ("STAR", "star"),
         ("BLACKHOLE", "blackhole"),
+        ("WARPZONE", "warpzone"),
     )
 
     img_input = forms.ImageField(label="image_url", required=True)

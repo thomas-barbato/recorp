@@ -5,6 +5,7 @@ const asteroid_url = JSON.parse(document.getElementById('script_asteroid_url').t
 const star_url = JSON.parse(document.getElementById('script_star_url').textContent);
 const blackhole_url = JSON.parse(document.getElementById('script_blackhole_url').textContent);
 const satellite_url = JSON.parse(document.getElementById('script_satellite_url').textContent);
+const warpzone_url = JSON.parse(document.getElementById('script_warpzone_url').textContent);
 let fg_item_choice = document.querySelectorAll('input[name=item-type-choice-section]');
 let animation_selection = document.querySelectorAll('.animation-selection');
 let animation_array = []
@@ -46,6 +47,11 @@ let display_animation_file_choice = function() {
             atlas.col = atlas.row = size[5]["star_data"]["size_x"];
             append_select_field(star_url);
             break;
+        case "warpzone":
+            atlas.col = atlas.row = size[6]["warpzone_data"]["size_x"];
+            atlas.row = atlas.row = size[6]["warpzone_data"]["size_y"];
+            append_select_field(warpzone_url);
+            break;
         default:
             break;
     }
@@ -62,11 +68,11 @@ let display_animation_preview = function(e) {
     document.querySelector('#preview').innerHTML = "";
 
     if (directory !== "none") {
-        let image_name = 0
+        let image_name = '0.gif';
         let tr = "";
         let td = "";
         let table = "";
-        let bg_url = '/static/img/atlas/foreground/' + fg_item + '/' + directory + '/' + '0.gif';
+        let bg_url = `/static/img/foreground/${fg_item}/${directory}/${image_name}`;
         let index = 0;
 
         for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tile_size) {

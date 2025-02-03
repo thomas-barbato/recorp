@@ -8,6 +8,8 @@ from core.models import (
     Planet,
     Asteroid,
     Station,
+    Warp,
+    SectorWarp,
     Resource,
     PlanetResource,
     AsteroidResource,
@@ -43,6 +45,7 @@ class GetDataFromDB:
             {"satellite_data": {"size_x": 3, "size_y": 3}},
             {"blackhole_data": {"size_x": 5, "size_y": 3}},
             {"star_data": {"size_x": 2, "size_y": 2}},
+            {"warpzone_data": {"size_x": 2, "size_y": 3}},
         ]
 
     @staticmethod
@@ -54,6 +57,7 @@ class GetDataFromDB:
             "satellite": {"size_x": 3, "size_y": 3},
             "blackhole": {"size_x": 5, "size_y": 3},
             "star": {"size_x": 2, "size_y": 2},
+            "warpzone": {"size_x": 2, "size_y": 3},
         }[element]
 
     @staticmethod
@@ -64,7 +68,6 @@ class GetDataFromDB:
                 "recorp",
                 "static",
                 "img",
-                "atlas",
                 "foreground",
                 element,
             )
@@ -73,7 +76,7 @@ class GetDataFromDB:
     @staticmethod
     def get_bg_fg_url(bg_fg_choice):
         return os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", "atlas", bg_fg_choice)
+            os.path.join(BASE_DIR, "recorp", "static", "img", bg_fg_choice)
         )
 
     @staticmethod
@@ -101,6 +104,7 @@ class GetDataFromDB:
             "blackhole",
             "star",
             "satellite",
+            "warpzone",
         ]
 
     @staticmethod
@@ -136,6 +140,9 @@ class GetDataFromDB:
             "stations_data": json.loads(
                 serializers.serialize("json", Station.objects.all())
             ),
+            "warpzone_data": json.loads(
+                serializers.serialize("json", Warp.objects.all())
+            )
         }
 
     @staticmethod
@@ -158,6 +165,7 @@ class GetDataFromDB:
             "faction": [Faction, FactionResource],
             "player": [User, Player, PlayerShipResource],
             "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
+            "warpzone": [Warp, SectorWarp],
             "resource": Resource,
             "ship": Ship,
             "security": Security,
@@ -190,6 +198,7 @@ class GetDataFromDB:
     @staticmethod
     def remove_map(map_pk):
         Sector.objects.filter(id=map_pk).delete()
+        Npc.objects.filter(Sector=map_pk).delete()
 
     @staticmethod
     def delete_items_from_sector(pk):
@@ -197,6 +206,7 @@ class GetDataFromDB:
         sector.planet_sector.all().delete()
         sector.asteroid_sector.all().delete()
         sector.station_sector.all().delete()
+        SectorWarp.objects.filter(Q(warp_home=sector.id) | Q(warp_destination=sector.id)).delete()
 
     @staticmethod
     def get_items_from_sector(pk):
@@ -205,6 +215,7 @@ class GetDataFromDB:
             sector.planet_sector.all(),
             sector.asteroid_sector.all(),
             sector.station_sector.all(),
+            SectorWarp.objects.filter(warp_home=sector.id).all(),
         )
 
     @staticmethod

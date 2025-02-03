@@ -1,0 +1,18 @@
+[{
+    "model": "core.warp",
+    "pk": 1,
+    "fields": {
+        "name": "warpzone_1",
+        "data":{
+            "type": "warpzone", 
+            "animation": "warpzone_1"
+        },
+        "size": {
+            "size_x": 2,
+            "size_y": 3
+        },
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}
+]

@@ -177,41 +177,41 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
     ("img", os.path.join(BASE_DIR, "recorp", "static", "img")),
-    ("ux", os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ux")),
+    ("ux", os.path.join(BASE_DIR, "recorp", "static", "img", "ux")),
     (
         "world_builder",
         os.path.join(BASE_DIR, "recorp", "static", "js", "game", "world_builder"),
     ),
     (
         "ships",
-        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "ships"),
+        os.path.join(BASE_DIR, "recorp", "static", "img", "foreground", "ships"),
     ),
     (
-        "planets",
-        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "planets"),
+        "planet",
+        os.path.join(BASE_DIR, "recorp", "static", "img", "foreground", "planet"),
     ),
     (
-        "stations",
-        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stations"),
+        "station",
+        os.path.join(BASE_DIR, "recorp", "static", "img", "foreground", "station"),
     ),
     (
-        "stations",
-        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "asteroids"),
+        "asteroid",
+        os.path.join(BASE_DIR, "recorp", "static", "img", "foreground", "asteroid"),
     ),
     (
-        "asteroids",
+        "satellite",
         os.path.join(
-            BASE_DIR, "recorp", "static", "js", "game", "assets", "satellites"
+            BASE_DIR, "recorp", "static", "img", "foreground", "satellite"
         ),
     ),
     (
-        "stars",
-        os.path.join(BASE_DIR, "recorp", "static", "js", "game", "assets", "stars"),
+        "star",
+        os.path.join(BASE_DIR, "recorp", "static", "img", "foreground", "star"),
     ),
     (
-        "blackholes",
+        "blackhole",
         os.path.join(
-            BASE_DIR, "recorp", "static", "js", "game", "assets", "blackholes"
+            BASE_DIR, "recorp", "static", "img", "foreground", "blackhole"
         ),
     ),
     ("fontawesome", os.path.join(BASE_DIR, "recorp", "static", "js", "fontawesome")),
