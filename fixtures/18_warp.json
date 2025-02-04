@@ -14,5 +14,22 @@
         "created_at": "2020-02-28 12:38:15",
         "updated_at": "2020-02-28 12:38:15"
     }
+},
+{
+    "model": "core.warp",
+    "pk": 2,
+    "fields": {
+        "name": "warpzone_2",
+        "data":{
+            "type": "warpzone", 
+            "animation": "warpzone_2"
+        },
+        "size": {
+            "size_x": 2,
+            "size_y": 3
+        },
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
 }
 ]
