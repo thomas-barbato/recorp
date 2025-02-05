@@ -5,7 +5,9 @@
 
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
-<script src="{% static 'fontawesome/fontawesome.js' %}" crossorigin="anonymous"></script>
+<link href="{% static 'fontawesome/css/fontawesome.css' %}" rel="stylesheet"/>
+<link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
+<link href="{% static 'fontawesome/css/solid.css' %}"  rel="stylesheet"/>
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
 {{ foreground|json_script:"script_foreground" }}
 {{ size|json_script:"script_size" }}
@@ -17,7 +19,9 @@
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
 {{ warpzone_url|json_script:"script_warpzone_url" }}
-
+<div id="message-list" class="hidden p-2 text-center bg-blue-50 dark:bg-gray-800 w-[100%] h-25" role="alert">
+    <p class="text-red-600 font-bold text-justify"></p>
+</div>
 <div class="flex flex-col">
     <div class="flex flex-col w-[90%]">
         <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
@@ -99,7 +103,7 @@
                         <label for="coord-radio-button">Get coordinate</label>
                         <input class="mt-1 coord-radio-button text-center" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
                     </span>
-                    <div class="flex gap-2 flex-col items-start mt-1 mb-1 coord_size">
+                    <div class="flex flex-col items-start mt-1 mb-1 coord_size">
                         <section class="flex w-1/2 gap-1 coord">
                             <div class="flex flex-col coord-x w-">
                                 <label for="coord-x" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Coord X :</b></label>
@@ -111,7 +115,7 @@
                             </div>
                         </section>
                     </div>
-                    <div class="lex gap-2 flex-col items-center mx-auto p-2 mt-1 mb-1 w-full">
+                    <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full">
                         <label for="fg-item-selector-1" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Item to add on map :</b></label>
                         <select id="fg-item-selector-1" class="fg-item-selector" name="item-type" required>
                             <option class="text-white" selected>none</option>
@@ -150,10 +154,19 @@
                         </select>
                     </div>
                     <input type="hidden" name="item-id" value="">
+                    <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full hidden" id="fg-warp-sector">
+                        <label for="fg-warp-sector-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Link to sector :</b></label>
+                        <select id="fg-warp-sector-selector" class="fg-warp-sector-selector" name="item-warpzone-destination">
+                            <option name="warp-sector-choice" value="none" selected>None</option>
+                            {% for sector in sector_data %}
+                            <option name="warp-sector-choice" value="{{sector.id}}">{{sector.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="flex gap-2 items-center mx-auto mt-1 mb-1 animations">
                         <section class="flex animations-section gap-1">
                             <div class="flex  animation-items">
-                                 <div id="preview-animation-1" class=" flex flex-row self-start">
+                                <div id="preview-animation-1" class=" flex flex-row self-start">
                                     <div class="flex self-start item-center">
                                         <div class="grid">
                                             <table class="no-borders" cellspacing="0" border="0">
@@ -162,7 +175,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                 </div>
+                                </div>
                             </div>
                         </section>
                     </div>

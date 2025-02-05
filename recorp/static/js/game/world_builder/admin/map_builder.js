@@ -101,7 +101,7 @@
         let map_name = this.options[this.selectedIndex].text;
         let modal_item_title = document.querySelector('#delete-item-title');
         modal_item_title.textContent = map_name + " (" + map_id + ") ";
-        let trash_element = document.querySelector('.fa-trash')
+        let trash_element = document.querySelector('.fa-trash');
         if (map_id !== "none") {
             trash_element.style.display = "block";
             let url = 'sector_data'
@@ -153,11 +153,21 @@
             clone_coord_y.id = "coord-y-" + next_id_value;
             clone_coord_y.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
 
+            let clone_warp_sector = clone.querySelector('#fg-warp-sector');
+            if(typeof pre_existing_data == 'undefined' || pre_existing_data["type"] != "warpzone"){
+                clone_warp_sector.classList.add('hidden');
+            }else{
+                clone_warp_sector.value = pre_existing_data['item_id'];
+            }
+
             let fg_item_selector = clone.querySelector(".fg-item-selector");
             fg_item_selector.id = "fg-item-selector-" + next_id_value;
             fg_item_selector.addEventListener("change", function() {
                 let text = this.options[this.selectedIndex].text;
                 let value = this.options[this.selectedIndex].value;
+                let parent = fg_item_selector.parentNode.parentNode;
+                let fg_warp_element = parent.querySelector('#fg-warp-sector');
+                value == "warpzone_data" ? fg_warp_element.classList.remove('hidden') : fg_warp_element.classList.add('hidden');
                 display_select_animation_preview(text, value, fg_item_selector.id);
                 let item_id = clone.querySelector('input[name=item-id]')
                 item_id.value = text;
@@ -220,8 +230,11 @@
     fg_item_selector.addEventListener("change", function() {
         let text = this.options[this.selectedIndex].text;
         let value = this.options[this.selectedIndex].value;
-        let item_id = element.querySelector('input[name=item-id]')
+        let item_id = element.querySelector('input[name=item-id]');
+        let parent = fg_item_selector.parentNode.parentNode;
         item_id.value = text;
+        let fg_warp_element = parent.querySelector('#fg-warp-sector');
+        value == "warpzone_data" ? fg_warp_element.classList.remove('hidden') : fg_warp_element.classList.add('hidden');
         display_select_animation_preview(text, value, fg_item_selector.id);
     });
 
@@ -380,7 +393,7 @@
     function add_background(folder_name) {
         let index_row = 1;
         let index_col = 1;
-        let bg_url = '/static/img/background/' + folder_name + '/' + '0.gif';
+        let bg_url = `/static/img/background/${folder_name}/0.gif`;
         for (let row_i = 0; row_i < atlas.map_height_size; row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < atlas.map_width_size; col_i += atlas.tilesize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -479,19 +492,41 @@
         for (let i = 0; i < element.length; i++) {
             const resource_data = Array.from(element[i].querySelectorAll("select[name=resource-data] option:checked"), e => e.value);
             item_id_element = element[i].querySelector('input[name=item-id]');
+            let coord_x = element[i].querySelector('input[name=coord-x]').value;
+            let coord_y = element[i].querySelector('input[name=coord-y]').value;
+            let item_type = element[i].querySelector('select[name=item-type]').value.split('_')[0];
             let item_id = typeof item_id_element !== 'undefined' && item_id_element !== null ? item_id_element.value : null;
-            data_entry[i] = {
-                'coord_x': element[i].querySelector('input[name=coord-x]').value,
-                'coord_y': element[i].querySelector('input[name=coord-y]').value,
-                'item_type': element[i].querySelector('select[name=item-type]').value.split('_')[0],
-                'item_id': item_id,
-                'item_img_name': element[i].querySelector('select[name=item-type]').querySelector(':checked').textContent,
-                'item_name': element[i].querySelector('input[name=item-name]').value,
-                'item_description': element[i].querySelector('.item-description').value,
-                'resource_data': resource_data,
+            let item_img_name = element[i].querySelector('select[name=item-type]').querySelector(':checked').textContent; 
+            let item_name = element[i].querySelector('input[name=item-name]').value;
+            let item_description = element[i].querySelector('.item-description').value;
+            if(item_type == "warpzone"){
+                let item_warpzone_destination = element[i].querySelector('select[name=item-warpzone-destination]').value;
+                if(item_warpzone_destination != "none"){
+                    data_entry[i] = {
+                        'coord_x': coord_x,
+                        'coord_y': coord_y,
+                        'item_type': item_type,
+                        'item_id': item_id,
+                        'item_img_name': item_img_name,
+                        'item_name': item_name,
+                        'item_description': item_description,
+                        'item_warpzone_destination': item_warpzone_destination,
+                        'resource_data': resource_data,
+                    }
+                }
+            }else{
+                data_entry[i] = {
+                    'coord_x': coord_x,
+                    'coord_y': coord_y,
+                    'item_type': item_type,
+                    'item_id': item_id,
+                    'item_img_name': item_img_name,
+                    'item_name': item_name,
+                    'item_description': item_description,
+                    'resource_data': resource_data,
+                }
             }
         }
-
         let sector_selection_id = document.querySelector('#sector-select');
         let url = window.location.href;
         if (sector_selection_id.value !== "none") {
@@ -517,7 +552,7 @@
                 'is_owned_by_faction': is_owned_by_faction.checked,
             };
         }
-
+        
         const headers = new Headers({
             'Content-Type': 'x-www-form-urlencoded',
             'Accept': 'application/json',
@@ -532,8 +567,17 @@
                 'data': data_entry,
                 'map_data': map_data,
             })
-        }).then(() => {
-            window.location.reload();
+        }).then(response => response.json())
+        .then(data => {
+            let d = JSON.parse(data)
+            if(d.success){
+                window.location.reload();
+            }else{
+                let messages = document.querySelector('#message-list');
+                let message_list = messages.querySelector('p');
+                message_list.textContent = d.errors;
+                messages.classList.remove('hidden');
+            }
         });
     }
 

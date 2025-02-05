@@ -139,6 +139,9 @@ class Warp(models.Model):
     size = models.JSONField(default=get_default_warzone_size)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"
     
 class SectorWarp(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="SectorWarp")
@@ -148,6 +151,9 @@ class SectorWarp(models.Model):
     warp_destination = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_destination")
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}: sector_src = {self.warp_home}, sector_dst = {self.warp_destination.name}, warp_img_name = {self.warp.name}"
 
 class Archetype(models.Model):
     name = models.CharField(max_length=30)

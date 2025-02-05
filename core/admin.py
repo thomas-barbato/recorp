@@ -272,7 +272,7 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
                     Station.objects.create(name=fg_name, data=data, size=size)
                 case "warpzone":
                     size = {"size_x": 2, "size_y": 3}
-                    Station.objects.create(name=fg_name, data=data, size=size)
+                    Warp.objects.create(name=fg_name, data=data, size=size)
                 case _:
                     pass
             messages.success(
@@ -352,15 +352,13 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                 item_img_name = data_from_post["data"][item]["item_img_name"]
                 table, table_resource = GetDataFromDB.get_table(item_type)
                 rsrc_data_list = data_from_post["data"][item]["resource_data"]
-                for rsrc in rsrc_data_list:
-                    item_type_id = table.objects.filter(name=item_img_name).values_list(
-                        "id", flat=True
-                    )[0]
-                    resource_id = 1 if rsrc == "none" else rsrc
+                if item_type == "warpzone":
+                    warp_id = table.objects.filter(name=data_from_post["data"][item]["item_id"]).values('id')
                     table_resource.objects.create(
-                        sector_id=sector.pk,
-                        resource_id=resource_id,
-                        source_id=item_type_id,
+                        name=data_from_post["data"][item]["item_name"],
+                        warp_home_id = sector.pk,
+                        warp_destination_id = data_from_post["data"][item]["item_warpzone_destination"],
+                        warp_id = warp_id,
                         data={
                             "coord_x": data_from_post["data"][item]["coord_x"],
                             "coord_y": data_from_post["data"][item]["coord_y"],
@@ -368,18 +366,37 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                             "description": data_from_post["data"][item][
                                 "item_description"
                             ],
-                        },
+                        }
                     )
+                else:
+                    for rsrc in rsrc_data_list:
+                        item_type_id = table.objects.filter(name=item_img_name).values_list(
+                            "id", flat=True
+                        )[0]
+                        resource_id = 1 if rsrc == "none" else rsrc
+                        table_resource.objects.create(
+                            sector_id=sector.pk,
+                            resource_id=resource_id,
+                            source_id=item_type_id,
+                            data={
+                                "coord_x": data_from_post["data"][item]["coord_x"],
+                                "coord_y": data_from_post["data"][item]["coord_y"],
+                                "name": data_from_post["data"][item]["item_name"],
+                                "description": data_from_post["data"][item][
+                                    "item_description"
+                                ],
+                            },
+                        )
             messages.success(
                 self.request,
                 f'Sector with name {data_from_post["map_data"]["sector_name"]} created with success',
             )
             response = {"success": True}
         else:
-            messages.error(
-                self.request,
-                f'Error, missing : {", ".join(missing_data_response)}',
-            )
+            response = {
+                "success": False,
+                "errors": f'Error, missing : {", ".join(missing_data_response)}'
+            }
         return JsonResponse(json.dumps(response), safe=False)
 
 
@@ -432,6 +449,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
 
             for table_key, table_value in table_set.items():
                 for table in table_value:
+                    print(table)
                     item_name = ""
                     match table_key:
                         case "planet":
@@ -462,20 +480,33 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 id=table.source_id
                             ).values_list("name", flat=True)[0]
                         case "warpzone":
-                            item_name = Warp.objects.filter(
-                                id=table.source_id
+                            item_name = SectorWarp.objects.filter(
+                                id=table.id
                             ).values_list("name", flat=True)[0]
-                    result_dict["sector_element"].append(
-                        {
-                            "type": table_key,
-                            "item_id": table.id,
-                            "item_name": item_name,
-                            "resource_id": table.resource_id,
-                            "source_id": table.source_id,
-                            "sector_id": table.sector_id,
-                            "data": table.data,
-                        }
-                    )
+                    if table_key == "warpzone":
+                        result_dict["sector_element"].append(
+                            {
+                                "type": table_key,
+                                "item_id": table.id,
+                                "item_name": item_name,
+                                "source_id": table.warp_id,
+                                "sector_id": table.warp_home_id,
+                                "warp_destination": table.warp_destination_id,
+                                "data": table.data,
+                            }
+                        )
+                    else:
+                        result_dict["sector_element"].append(
+                            {
+                                "type": table_key,
+                                "item_id": table.id,
+                                "item_name": item_name,
+                                "resource_id": table.resource_id,
+                                "source_id": table.source_id,
+                                "sector_id": table.sector_id,
+                                "data": table.data,
+                            }
+                        )
 
             return JsonResponse(json.dumps(result_dict), safe=False)
         return JsonResponse({}, safe=False)
@@ -498,6 +529,7 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
         )
         if data_is_missing is False:
             if GetDataFromDB.check_if_table_pk_exists("sector", pk):
+                print(data_from_post["map_data"])
                 Sector.objects.filter(id=pk).update(
                     name=data_from_post["map_data"]["sector_name"],
                     description=data_from_post["map_data"]["sector_description"],
