@@ -55,40 +55,46 @@ function add_foreground(obj) {
     for (let obj_i in obj) {
         let index_row = parseInt(obj[obj_i].data.coord_y);
         let index_col = parseInt(obj[obj_i].data.coord_x);
-        let bg_url = '/static/img/foreground/' + obj[obj_i].item_data[1].type + '/' + obj[obj_i].item_data[1].animation + '/' + '0.gif';
-        for (let row_i = 0; row_i < (atlas.tilesize * obj[obj_i].item_data[2].size_y); row_i += atlas.tilesize) {
-            for (let col_i = 0; col_i < (atlas.tilesize * obj[obj_i].item_data[2].size_x); col_i += atlas.tilesize) {
+        let item_type = obj[obj_i].type == "warpzone" ? "warpzone" : obj[obj_i].item_data[1].type;
+        let item_animation = item_type == "warpzone" ? obj[obj_i].item_data.animation : obj[obj_i].item_data[1].animation;
+        let size_x = item_type == "warpzone" ? obj[obj_i].item_data.size.size_x : obj[obj_i].item_data[2].size_x;
+        let size_y = item_type == "warpzone" ? obj[obj_i].item_data.size.size_y : obj[obj_i].item_data[2].size_y;
+        
+        let bg_url = `/static/img/foreground/${item_type}/${item_animation}/0.gif`;
+        for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
+            for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
 
-                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                let entry_point_div = entry_point.querySelector('div');
+            let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+            let entry_point_div = entry_point.querySelector('div');
 
-                entry_point_div.classList.add(
-                    'foreground-container',
-                );
+            entry_point_div.classList.add(
+                'foreground-container',
+            );
 
-                let img_div = document.createElement('div');
-                img_div.classList.add(
-                    'm-auto',
-                    'w-[32px]',
-                    'h-[32px]',
-                    'hover:w-[30px]',
-                    'hover:h-[30px]',
-                );
-                img_div.style.borderStyle = "dashed solid blue";
-                img_div.style.backgroundImage = "url('" + bg_url + "')";
-                img_div.style.backgroundPositionX = `-${col_i}px`;
-                img_div.style.backgroundPositionY = `-${row_i}px`;
-                entry_point_div.append(img_div);
-                index_col++;
-            }
-            index_row++;
-            index_col = parseInt(obj[obj_i].data.coord_x);
+            let img_div = document.createElement('div');
+            img_div.classList.add(
+                'm-auto',
+                'w-[32px]',
+                'h-[32px]',
+                'hover:w-[30px]',
+                'hover:h-[30px]',
+            );
+            img_div.style.borderStyle = "dashed solid blue";
+            img_div.style.backgroundImage = "url('" + bg_url + "')";
+            img_div.style.backgroundPositionX = `-${col_i}px`;
+            img_div.style.backgroundPositionY = `-${row_i}px`;
+            entry_point_div.append(img_div);
+            index_col++;
+        }
+        index_row++;
+        index_col = parseInt(obj[obj_i].data.coord_x);
         }
     }
 }
 
 
 function load_map_data(obj) {
+    console.log(obj)
     let sector_bg_image = obj.sector.image;
     add_background(sector_bg_image);
     add_foreground(obj.sector_element);

@@ -154,10 +154,16 @@
             clone_coord_y.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
 
             let clone_warp_sector = clone.querySelector('#fg-warp-sector');
-            if(typeof pre_existing_data == 'undefined' || pre_existing_data["type"] != "warpzone"){
+
+            if(typeof pre_existing_data == 'undefined'){
                 clone_warp_sector.classList.add('hidden');
             }else{
-                clone_warp_sector.value = pre_existing_data['item_id'];
+                if(pre_existing_data["type"] == "warpzone"){
+                    clone_warp_sector.value = pre_existing_data['item_id'];
+                }else{
+                    clone_warp_sector.classList.add('hidden');
+                    clone_warp_sector.value = pre_existing_data['none'];
+                }
             }
 
             let fg_item_selector = clone.querySelector(".fg-item-selector");
