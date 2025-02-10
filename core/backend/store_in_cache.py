@@ -64,43 +64,83 @@ class StoreInCache:
         }
         for table_key, table_value in foreground_table_set.items():
             for table in table_value:
-                element, _ = GetDataFromDB.get_table(table_key)
-                map_element = [
-                    v
-                    for k, v in element.objects.filter(name=table.source.name)
-                    .values_list("data", flat=True)[0]
-                    .items()
-                    if v != "none"
-                ]
+                element, elementResource = GetDataFromDB.get_table(table_key)
+                
+                if table_key == "warpzone":
+                    
+                    map_element = elementResource.objects.filter(warp_home_id=self.sector_pk).values(
+                        "id",
+                        "name", 
+                        "data", 
+                        "warp_destination_id",
+                        "warp_home_id",
+                        "warp_id",
+                        "warp_id__name",
+                        "warp_id__size",
+                        "warp_id__data",
+                        "warp_destination_id__name",
+                    )[0]
+                    
+                    sector_data["sector_element"].append(
+                        {
+                            "item_id": map_element["id"],
+                            "item_name": map_element['warp_id__name'],
+                            "source_id": map_element['warp_id'],
+                            "sector_id": map_element['warp_home_id'],
+                            "animations": ["warpzone", map_element['warp_id__data']['animation']],
+                            "data": {
+                                "type": "warpzone",
+                                "name": map_element["name"],
+                                "coord_x": map_element['data']["coord_x"],
+                                "coord_y": map_element['data']["coord_y"],
+                                "description": map_element['data']["description"],
+                                "destination_id": map_element['warp_destination_id'],
+                                "destination_name": map_element['warp_destination_id__name'],
+                            },
+                            "size": map_element['warp_id__size'],
+                        }
+                    )
+                    
+                else:
+                    
+                    map_element = [
+                        v
+                        for k, v in element.objects.filter(name=table.source.name)
+                        .values_list("data", flat=True)[0]
+                        .items()
+                        if v != "none"
+                    ]
+                    
+                    
 
-                resource_quantity = GetDataFromDB.get_resource_quantity_value(
-                    table.quantity, 100
-                )
+                    resource_quantity = GetDataFromDB.get_resource_quantity_value(
+                        table.quantity, 100
+                    )
 
-                sector_data["sector_element"].append(
-                    {
-                        "item_id": table.id,
-                        "item_name": table.data["name"],
-                        "resource": {
-                            "id": table.resource_id,
-                            "name": table.resource.name,
-                            "quantity": table.quantity,
-                            "quantity_str": resource_quantity,
-                            "translated_quantity_str": resource_quantity,
-                        },
-                        "source_id": table.source_id,
-                        "sector_id": table.sector_id,
-                        "animations": map_element,
-                        "data": {
-                            "type": map_element[0],
-                            "name": table.data["name"],
-                            "coord_x": table.data["coord_x"],
-                            "coord_y": table.data["coord_y"],
-                            "description": table.data["description"],
-                        },
-                        "size": GetDataFromDB.get_specific_size(map_element[0]),
-                    }
-                )
+                    sector_data["sector_element"].append(
+                        {
+                            "item_id": table.id,
+                            "item_name": table.data["name"],
+                            "resource": {
+                                "id": table.resource_id,
+                                "name": table.resource.name,
+                                "quantity": table.quantity,
+                                "quantity_str": resource_quantity,
+                                "translated_quantity_str": resource_quantity,
+                            },
+                            "source_id": table.source_id,
+                            "sector_id": table.sector_id,
+                            "animations": map_element,
+                            "data": {
+                                "type": map_element[0],
+                                "name": table.data["name"],
+                                "coord_x": table.data["coord_x"],
+                                "coord_y": table.data["coord_y"],
+                                "description": table.data["description"],
+                            },
+                            "size": GetDataFromDB.get_specific_size(map_element[0]),
+                        }
+                    )
 
         for data in sector_npc:
             module_list = [

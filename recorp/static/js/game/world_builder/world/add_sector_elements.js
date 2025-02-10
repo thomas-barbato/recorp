@@ -36,54 +36,73 @@ function add_background(data) {
 
 function add_foreground(data){
     for (let sector_i = 0; sector_i < data.length; sector_i++) {
-        element_type = data[sector_i]["animations"][0];
-        element_type_translated = data[sector_i]["type_translated"];
-        element_data = data[sector_i]["data"];
-        folder_name = data[sector_i]["animations"][1];
+
+        let element_data = data[sector_i]["data"];
+        let element_type = data[sector_i]["animations"][0];
+        let translated_element_type = data[sector_i].data.type_translated ? data[sector_i].data.type_translated : null;
+        let animation_name = data[sector_i]["animations"][1];
+        let element_name = data[sector_i].data.name;
+        let element_description = data[sector_i].data.description;
+        let faction_starter = map_informations.sector.faction.is_faction_level_starter;
+        let faction_name = map_informations.sector.faction.name;
+        let translated_faction_txt = map_informations.sector.faction.translated_text_faction_level_starter;
+        let resource_id = data[sector_i].resource ? data[sector_i].resource.id : null;
+        let resource_name = data[sector_i].resource ? data[sector_i].resource.name : null;
+        let resource_quantity_str = data[sector_i].resource ? data[sector_i].resource.quantity_str : null;
+        let resource_quantity = data[sector_i].resource ? data[sector_i].resource.quantity : null;
+        let resource_translated = data[sector_i].resource ? data[sector_i].resource.translated_text_resource : null;
+        let resource_translated_quantity_str = data[sector_i].resource ? data[sector_i].resource.translated_quantity_str : null;
+        let resource_translated_scan_msg = data[sector_i].resource ? data[sector_i].resource.translated_scan_msg_str : null;
+        let action_label = map_informations.actions.translated_action_label_msg;
+        let action_close = map_informations.actions.translated_close_msg;
+        let player_in_same_faction = map_informations.actions.player_is_same_faction;
+        let coord_x = data[sector_i].data.coord_x;
+        let coord_y = data[sector_i].data.coord_y;
+        let size_x = data[sector_i]['size']["size_x"];
+        let size_y = data[sector_i]['size']["size_y"]
+
         modal_data = {
-            type: data[sector_i].data.type,
-            translated_type: data[sector_i].data.type_translated,
+            type: element_type,
+            translated_type: translated_element_type,
             animation: {
-                dir: data[sector_i]["animations"][0],
-                img: data[sector_i]["animations"][1],
+                dir: element_type,
+                img: animation_name,
             },
-            name: data[sector_i].data.name,
-            description: data[sector_i].data.description,
+            name: element_name,
+            description: element_description,
             resources: {
-                id: data[sector_i].resource.id,
-                name: data[sector_i].resource.name,
-                quantity_str: data[sector_i].resource.quantity_str,
-                quantity: data[sector_i].resource.quantity,
-                translated_text_resource: data[sector_i].resource.translated_text_resource,
-                translated_quantity_str: data[sector_i].resource.translated_quantity_str,
-                translated_scan_msg_str: data[sector_i].resource.translated_scan_msg_str,
+                id: resource_id,
+                name: resource_name,
+                quantity_str: resource_quantity_str,
+                quantity: resource_quantity,
+                translated_text_resource: resource_translated,
+                translated_quantity_str: resource_translated_quantity_str,
+                translated_scan_msg_str: resource_translated_scan_msg,
             },
             faction: {
-                starter: map_informations.sector.faction.is_faction_level_starter,
-                name: map_informations.sector.faction.name,
-                translated_str: map_informations.sector.faction.translated_text_faction_level_starter,
+                starter: faction_starter,
+                name: faction_name,
+                translated_str: translated_faction_txt,
             },
             actions: {
-                action_label: map_informations.actions.translated_action_label_msg,
-                close: map_informations.actions.translated_close_msg,
-                player_in_same_faction: map_informations.actions.player_is_same_faction,
+                action_label: action_label,
+                close: action_close,
+                player_in_same_faction: player_in_same_faction,
             },
             coord: {
-                x: data[sector_i].data.coord_x,
-                y: data[sector_i].data.coord_y
+                x: coord_x,
+                y: coord_y
             }
         }
         let modal = create_foreground_modal(
-            element_data["name"],
+            element_name,
             modal_data
         );
 
         document.querySelector('#modal-container').append(modal);
-        let index_row = data[sector_i]['data']['coord_y'];
-        let index_col = data[sector_i]['data']['coord_x'];
-        let size_x = data[sector_i]['size']["size_x"];
-        let size_y = data[sector_i]['size']["size_y"];
-        let bg_url = '/static/img/foreground/' + element_type + '/' + folder_name + '/' + '0.gif';
+        let index_row = coord_y;
+        let index_col = coord_x;
+        let bg_url = '/static/img/foreground/' + element_type + '/' + animation_name + '/' + '0.gif';
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
@@ -97,14 +116,14 @@ function add_foreground(data){
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
                 entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500";
-                entry_point_border.setAttribute('title', `${element_data["name"]} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
-                entry_point_border.setAttribute('data-modal-target', "modal-" + element_data["name"]);
-                entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + "modal-" + element_data["name"] + "')");
+                entry_point_border.setAttribute('title', `${element_name} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                entry_point_border.setAttribute('data-modal-target', "modal-" + element_name);
+                entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + "modal-" + element_name + "')");
                 entry_point_border.addEventListener("mouseover", function(){
-                    generate_border(size_y, size_x, parseInt(data[sector_i]['data']['coord_y']), parseInt(data[sector_i]['data']['coord_x']));
+                    generate_border(size_y, size_x, parseInt(coord_y), parseInt(coord_x));
                 });
                 entry_point_border.addEventListener("mouseout", function(){
-                    remove_border(size_y, size_x, parseInt(data[sector_i]['data']['coord_y']), parseInt(data[sector_i]['data']['coord_x']), 'border-amber-500');
+                    remove_border(size_y, size_x, parseInt(coord_y), parseInt(coord_x), 'border-amber-500');
                 });
 
                 img_div.classList.add(
@@ -117,7 +136,7 @@ function add_foreground(data){
                     'h-[32px]',
                     'z-1'
                 );
-                img_div.setAttribute('title', `${element_data["name"]} [y: ${parseInt(index_row) - 1}; x: ${parseInt(index_col) - 1}]`);
+                img_div.setAttribute('title', `${element_name} [y: ${parseInt(index_row) - 1}; x: ${parseInt(index_col) - 1}]`);
                 img_div.style.backgroundImage = "url('" + bg_url + "')";
                 img_div.style.backgroundPositionX = `-${col_i}px`;
                 img_div.style.backgroundPositionY = `-${row_i}px`;
@@ -125,7 +144,7 @@ function add_foreground(data){
                 index_col++;
             }
             index_row++;
-            index_col = data[sector_i]['data']['coord_x'];
+            index_col = coord_x;
         }
     }
 }
@@ -545,6 +564,16 @@ function generate_border_className(size_y, size_x){
             }
             break;
         case 3:
+            if(size_x == 2){
+                return {
+                    0: ["border-l-2", "border-t-2", "border-dashed"], 
+                    1: ["border-r-2", "border-t-2", "border-dashed"],
+                    2: ["border-l-2", "border-dashed"],
+                    3: ["border-r-2", "border-dashed"],
+                    4: ["border-l-2", "border-b-2", "border-dashed"],
+                    5: ["border-r-2", "border-b-2", "border-dashed"]
+                };
+            }
             if(size_x == 3){
                 return {
                     0: ["border-l-2", "border-t-2", "border-dashed"],

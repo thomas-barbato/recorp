@@ -153,7 +153,7 @@ class SectorWarp(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}: sector_src = {self.warp_home}, sector_dst = {self.warp_destination.name}, warp_img_name = {self.warp.name}"
+        return f"name: {self.name}, sector_src = {self.warp_home.name }, sector_dst = {self.warp_destination.name}, warp_img_name = {self.warp.name}"
 
 class Archetype(models.Model):
     name = models.CharField(max_length=30)

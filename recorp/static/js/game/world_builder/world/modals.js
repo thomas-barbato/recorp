@@ -70,9 +70,9 @@ function create_foreground_modal(id, data) {
     let item_content_div = document.createElement('div');
     item_content_div.classList.add('flex', 'flex-col');
 
-    let item_description_p = document.createElement('p');
-    item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'text-xs');
-    item_description_p.textContent = data.description;
+    let item_otherdescription_p = document.createElement('p');
+    item_otherdescription_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'p-2', 'lg:p-1', 'text-xs');
+    item_otherdescription_p.textContent = data.description;
 
     let item_action_container = document.createElement("div");
     item_action_container.classList.add('mt-2');
@@ -87,7 +87,7 @@ function create_foreground_modal(id, data) {
     item_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'flex-wrap', 'gap-3');
     item_action_container_div.setAttribute('role', 'group');
 
-    if (data.type !== "planet") {
+    if (data.type !== "planet" && data.type !== "warpzone") {
         let item_resource_label = document.createElement('label');
         item_resource_label.htmlFor = "resources";
         item_resource_label.textContent = `${data.resources.translated_text_resource} :`
@@ -171,6 +171,31 @@ function create_foreground_modal(id, data) {
 
         item_content_div.append(item_resource_label);
         item_content_div.append(item_resource_content);
+
+        item_action_container.append(item_action_container_div);
+        
+    } else if(data.type == "warpzone"){
+
+        let item_action_container_img_warpzone_container = document.createElement('div');
+        item_action_container_img_warpzone_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+
+        let item_action_container_img_warpzone = document.createElement('img');
+        item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
+        item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
+
+        let item_action_container_img_warpzone_figcaption = document.createElement('figcaption');
+        item_action_container_img_warpzone_figcaption.textContent = "Travel";
+        item_action_container_img_warpzone_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
+
+        let item_action_container_img_warpzone_figcaption_ap = document.createElement('figcaption');
+        item_action_container_img_warpzone_figcaption_ap.textContent = "0 AP";
+        item_action_container_img_warpzone_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
+
+        item_action_container_img_warpzone_container.append(item_action_container_img_warpzone);
+        item_action_container_img_warpzone_container.append(item_action_container_img_warpzone_figcaption);
+        item_action_container_img_warpzone_container.append(item_action_container_img_warpzone_figcaption_ap);
+
+        item_action_container_div.append(item_action_container_img_warpzone_container);
 
         item_action_container.append(item_action_container_div);
 
@@ -282,7 +307,6 @@ function create_foreground_modal(id, data) {
     footer_container_div.append(footer_close_button);
 
     body_container_div.append(item_img);
-    body_container_div.append(item_description_p);
     body_container_div.append(item_content_div);
     body_container_div.append(item_action_container_label);
     body_container_div.append(item_action_container);

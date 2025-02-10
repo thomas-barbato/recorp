@@ -207,7 +207,7 @@ character_module_fieldset.classList.add(
     'relative',
     'flex-col',
     'text-xs',
-    'p-2',
+    'px-2',
     'mx-auto',
     'w-auto',
     'text-start',
@@ -265,7 +265,6 @@ character_defensive_modules_fieldset.append(character_defensive_modules_fieldset
 character_offensive_modules_fieldset.classList.add(
     'flex',
     'px-2',
-    'mt-1',
     'flex',
     'gap-1',
     'w-full',

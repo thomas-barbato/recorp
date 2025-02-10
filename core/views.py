@@ -144,10 +144,11 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             for d in data["sector_element"]:
                 d["data"]["type_translated"] = _(d["data"]["type"])
                 d["data"]["description"] = _(d["data"]["description"])
-                d["resource"]["translated_text_resource"] = (_("Resources available"),)
-                d["resource"]["translated_quantity_str"] = _(
-                    d["resource"]["translated_quantity_str"]
-                )
+                if d["data"]["type"] != "warpzone":
+                    d["resource"]["translated_text_resource"] = (_("Resources available"),)
+                    d["resource"]["translated_quantity_str"] = _(
+                        d["resource"]["translated_quantity_str"]
+                    )
 
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
