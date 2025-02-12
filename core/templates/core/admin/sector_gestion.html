@@ -96,8 +96,8 @@
         </section>
 
         <section id="foreground-menu" class="mt-1 lg:w-[40vw] w-full">
-            <div id="foreground-menu-container-1" class="w-full flex lg:flex-row flex-col bg-gray-600 border border-white gap-1 mb-1 foreground-menu-container">
-                <div class="flex flex-col mb-1 p-2 foreground-menu-item lg:w-2/3 w-full" id="foreground-menu-1">
+            <div id="foreground-menu-container-1" class="lg:w-3/3 p-1 flex lg:flex-row flex-col bg-gray-600 border border-white gap-1 mb-1 foreground-menu-container">
+                <div class="flex flex-col mb-1 p-2 foreground-menu-item w-full" id="foreground-menu-1">
                     <p class="flex justify-center text-center text-2xl font-bold text-[#B4B86E]" id="item-nb">ITEM #1</p>
                     <span class="foreground-menu-title text-center text-sm flex flex-col" id="foreground-menu-title-1"><b>New Foreground item <i id="trash-1" class="fa-solid fa-trash fa-xl cursor-pointer trash-it"></i></b>
                         <label for="coord-radio-button">Get coordinate</label>
@@ -156,10 +156,10 @@
                     <input type="hidden" name="item-id" value="">
                     <div class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full hidden" id="fg-warp-sector">
                         <label for="fg-warp-sector-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Link to sector :</b></label>
-                        <select id="fg-warp-sector-selector" class="fg-warp-sector-selector" name="item-warpzone-destination">
-                            <option name="warp-sector-choice" value="none" selected>None</option>
-                            {% for sector in sector_data %}
-                            <option name="warp-sector-choice" value="{{sector.id}}">{{sector.name}}</option>
+                        <select id="fg-warp-sector-selector" class="fg-warp-sector-selector w-[50%]" name="item-warpzone-destination">
+                            <option name="warp-sector-choice" value="none-selected" selected>None-selected</option>
+                            {% for warpzone in warpzone_data %}
+                            <option name="warp-sector-choice" value="{{warpzone.id}}">{{warpzone.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -194,7 +194,7 @@
                                 {% endif %}
                             {% endfor %}
                         </select>
-                        <section class="w-full mt-1">
+                        <section class="w-full mt-1" id="item-description-container">
                             <label for="sector-description" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Item description:</b></label>
                             <textarea id="item-description-1" rows="4" name="item-description" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 item-description" placeholder="item description here..."></textarea>
                         </section>

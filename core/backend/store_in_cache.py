@@ -3,6 +3,7 @@ import json
 import logging
 from django.core.cache import cache
 from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
 from core.backend.get_data import GetDataFromDB
 from core.backend.player_actions import PlayerAction
 from core.models import (
@@ -64,44 +65,50 @@ class StoreInCache:
         }
         for table_key, table_value in foreground_table_set.items():
             for table in table_value:
-                element, elementResource = GetDataFromDB.get_table(table_key)
                 
                 if table_key == "warpzone":
+                    element, elementResource, elementZone = GetDataFromDB.get_table(table_key)
                     
-                    map_element = elementResource.objects.filter(warp_home_id=self.sector_pk).values(
+                    map_element = elementResource.objects.filter(sector_id=self.sector_pk).values(
                         "id",
                         "name", 
                         "data", 
-                        "warp_destination_id",
-                        "warp_home_id",
+                        "sector_id",
                         "warp_id",
                         "warp_id__name",
                         "warp_id__size",
                         "warp_id__data",
-                        "warp_destination_id__name",
                     )[0]
+                    
+                    map_element_destination = elementZone.objects.filter(warp_home_id=map_element["id"]).values(
+                        "warp_destination_id",
+                        "warp_destination_id__name"
+                    )[0]
+                    
                     
                     sector_data["sector_element"].append(
                         {
                             "item_id": map_element["id"],
                             "item_name": map_element['warp_id__name'],
                             "source_id": map_element['warp_id'],
-                            "sector_id": map_element['warp_home_id'],
+                            "sector_id": map_element['sector_id'],
                             "animations": ["warpzone", map_element['warp_id__data']['animation']],
                             "data": {
                                 "type": "warpzone",
                                 "name": map_element["name"],
                                 "coord_x": map_element['data']["coord_x"],
                                 "coord_y": map_element['data']["coord_y"],
-                                "description": map_element['data']["description"],
-                                "destination_id": map_element['warp_destination_id'],
-                                "destination_name": map_element['warp_destination_id__name'],
+                                "description": _(map_element['data']["description"]),
+                                "destination_id": map_element_destination['warp_destination_id'],
+                                "destination_name": map_element_destination['warp_destination_id__name'],
                             },
                             "size": map_element['warp_id__size'],
                         }
                     )
                     
                 else:
+                    
+                    element, elementResource = GetDataFromDB.get_table(table_key)
                     
                     map_element = [
                         v
@@ -136,7 +143,7 @@ class StoreInCache:
                                 "name": table.data["name"],
                                 "coord_x": table.data["coord_x"],
                                 "coord_y": table.data["coord_y"],
-                                "description": table.data["description"],
+                                "description": _(table.data["description"]),
                             },
                             "size": GetDataFromDB.get_specific_size(map_element[0]),
                         }

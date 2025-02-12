@@ -143,17 +143,25 @@ class Warp(models.Model):
     def __str__(self):
         return f"{self.name}"
     
-class SectorWarp(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False, default="SectorWarp")
+class WarpZone(models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False, default="SectorWarp")
     data = models.JSONField(null=True)
     warp = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)
-    warp_home = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_home")
-    warp_destination = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_destination")
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"name: {self.name}, sector_src = {self.sector.name }, warp_img_name = {self.warp.name}"
+    
+class SectorWarpZone(models.Model):
+    warp_home = models.ForeignKey(WarpZone, on_delete=models.CASCADE, related_name="warp_home")
+    warp_destination = models.ForeignKey(WarpZone, on_delete=models.CASCADE, related_name="warp_destination")
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"name: {self.name}, sector_src = {self.warp_home.name }, sector_dst = {self.warp_destination.name}, warp_img_name = {self.warp.name}"
+        return f"from {self.warp_home.name } ({ self.warp_home.sector.name }) to {self.warp_destination.name} ({self.warp_destination.sector.name})"
 
 class Archetype(models.Model):
     name = models.CharField(max_length=30)

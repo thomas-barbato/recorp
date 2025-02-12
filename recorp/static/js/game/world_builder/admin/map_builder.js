@@ -88,7 +88,7 @@
         }
 
         let fg_container = document.querySelectorAll('.foreground-container');
-        if (fg_container.length > 0) { clear_foreground() };
+        if (fg_container) { clear_foreground() };
         for (let obj_fg in object['sector_element']) {
             append_foreground_menu(element, pre_existing_data = object['sector_element'][obj_fg]);
         }
@@ -155,11 +155,20 @@
 
             let clone_warp_sector = clone.querySelector('#fg-warp-sector');
 
+            let clone_description = clone.querySelector('#item-description-container');
+            clone_description.classList.remove('hidden');
+
+
             if(typeof pre_existing_data == 'undefined'){
                 clone_warp_sector.classList.add('hidden');
             }else{
                 if(pre_existing_data["type"] == "warpzone"){
                     clone_warp_sector.value = pre_existing_data['item_id'];
+                    let fg_destination_selector = clone.querySelector("#fg-warp-sector-selector");
+                    fg_destination_selector.selectedIndex = [...fg_destination_selector.options].findIndex(option => option.text === pre_existing_data['warp_destination']['warp_destination_id']);
+                    fg_destination_selector.value = pre_existing_data['warp_destination']['warp_destination_id'];
+                    clone_description.classList.add('hidden');
+                    clone_warp_sector.classList.remove('hidden');
                 }else{
                     clone_warp_sector.classList.add('hidden');
                     clone_warp_sector.value = pre_existing_data['none'];
@@ -173,7 +182,11 @@
                 let value = this.options[this.selectedIndex].value;
                 let parent = fg_item_selector.parentNode.parentNode;
                 let fg_warp_element = parent.querySelector('#fg-warp-sector');
+                let description_element_parent = fg_item_selector.parentNode.parentNode.parentNode;
+                let fg_warp_description_element = description_element_parent.querySelector('#item-description-container');
                 value == "warpzone_data" ? fg_warp_element.classList.remove('hidden') : fg_warp_element.classList.add('hidden');
+                value == "warpzone_data" ? fg_warp_description_element.classList.add('hidden') : fg_warp_description_element.classList.remove('hidden');
+                value == "warpzone_data" ? fg_warp_destination_element.classList.remove('hidden') : fg_warp_destination_element.classList.add('hidden');
                 display_select_animation_preview(text, value, fg_item_selector.id);
                 let item_id = clone.querySelector('input[name=item-id]')
                 item_id.value = text;
@@ -220,9 +233,17 @@
             let fg_item_selector = element.querySelector(".fg-item-selector");
             document.querySelector('#foreground-menu').appendChild(element)
             if (typeof pre_existing_data !== "undefined") {
+                if(pre_existing_data["type"] == "warpzone"){
+                    let fg_destination_selector = element.querySelector("#fg-warp-sector-selector");
+                    fg_destination_selector.selectedIndex = [...fg_destination_selector.options].findIndex(option => option.text === pre_existing_data['warp_destination']['warp_destination_id']);
+                    element.querySelector('#fg-warp-sector-selector').value = pre_existing_data['warp_destination']['warp_destination_id'];
+                    element.querySelector('#fg-warp-sector').classList.remove('hidden')
+                    element.querySelector('#item-description-container').classList.add('hidden');
+                }
                 fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex(option => option.text === pre_existing_data['item_name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
                 let value = fg_item_selector.options[fg_item_selector.selectedIndex].value;
+
                 display_select_animation_preview(text, value, fg_item_selector.id);
             } else {
                 fg_item_selector.value = "none";
@@ -237,10 +258,15 @@
         let text = this.options[this.selectedIndex].text;
         let value = this.options[this.selectedIndex].value;
         let item_id = element.querySelector('input[name=item-id]');
-        let parent = fg_item_selector.parentNode.parentNode;
+        let fg_item_selector_parent = fg_item_selector.parentNode.parentNode;
+        let description_element_parent = fg_item_selector.parentNode.parentNode.parentNode;
         item_id.value = text;
-        let fg_warp_element = parent.querySelector('#fg-warp-sector');
+        let fg_warp_element = fg_item_selector_parent.querySelector('#fg-warp-sector');
+        let fg_warp_description_element = description_element_parent.querySelector('#item-description-container');
+        let fg_warp_destination_element = fg_item_selector_parent.querySelector('#fg-warp-sector-selector');
         value == "warpzone_data" ? fg_warp_element.classList.remove('hidden') : fg_warp_element.classList.add('hidden');
+        value == "warpzone_data" ? fg_warp_description_element.classList.add('hidden') : fg_warp_description_element.classList.remove('hidden');
+        value == "warpzone_data" ? fg_warp_destination_element.classList.remove('hidden') : fg_warp_destination_element.classList.add('hidden');
         display_select_animation_preview(text, value, fg_item_selector.id);
     });
 
@@ -460,7 +486,7 @@
         let fg_container = document.querySelectorAll('.foreground-container');
         if (fg_container.length > 0) {
             for (let i = 0; i < fg_container.length; i++) {
-                let div = fg_container[i].closest('div');
+                let div = fg_container[i];
                 div.innerHTML = "";
             }
         }
@@ -504,23 +530,21 @@
             let item_id = typeof item_id_element !== 'undefined' && item_id_element !== null ? item_id_element.value : null;
             let item_img_name = element[i].querySelector('select[name=item-type]').querySelector(':checked').textContent; 
             let item_name = element[i].querySelector('input[name=item-name]').value;
-            let item_description = element[i].querySelector('.item-description').value;
+            
             if(item_type == "warpzone"){
                 let item_warpzone_destination = element[i].querySelector('select[name=item-warpzone-destination]').value;
-                if(item_warpzone_destination != "none"){
-                    data_entry[i] = {
-                        'coord_x': coord_x,
-                        'coord_y': coord_y,
-                        'item_type': item_type,
-                        'item_id': item_id,
-                        'item_img_name': item_img_name,
-                        'item_name': item_name,
-                        'item_description': item_description,
-                        'item_warpzone_destination': item_warpzone_destination,
-                        'resource_data': resource_data,
-                    }
+                data_entry[i] = {
+                    'coord_x': coord_x,
+                    'coord_y': coord_y,
+                    'item_type': item_type,
+                    'item_id': item_id,
+                    'item_img_name': item_img_name,
+                    'item_name': item_name,
+                    'item_warpzone_destination': item_warpzone_destination,
+                    'resource_data': resource_data,
                 }
             }else{
+                let item_description = element[i].querySelector('.item-description').value;
                 data_entry[i] = {
                     'coord_x': coord_x,
                     'coord_y': coord_y,

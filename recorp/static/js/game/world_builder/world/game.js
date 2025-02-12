@@ -137,6 +137,8 @@ window.addEventListener('load', () => {
             case "player_attack":
                 update_ship_after_attack(data.message);
                 break;
+            case "player_use_warpzone":
+                break;
             case "send_message":
                 //sendMessage(data);
                 break;

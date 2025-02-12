@@ -9,7 +9,8 @@ from core.models import (
     Asteroid,
     Station,
     Warp,
-    SectorWarp,
+    WarpZone,
+    SectorWarpZone,
     Resource,
     PlanetResource,
     AsteroidResource,
@@ -165,7 +166,8 @@ class GetDataFromDB:
             "faction": [Faction, FactionResource],
             "player": [User, Player, PlayerShipResource],
             "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
-            "warpzone": [Warp, SectorWarp],
+            "warpzone": [Warp, WarpZone, SectorWarpZone],
+            "warpzone_only": WarpZone,
             "resource": Resource,
             "ship": Ship,
             "security": Security,
@@ -197,7 +199,7 @@ class GetDataFromDB:
 
     @staticmethod
     def remove_map(map_pk):
-        Sector.objects.filter(id=map_pk).delete()
+        Sector.objects.filter(id=map_pk).delete()   
         Npc.objects.filter(Sector=map_pk).delete()
 
     @staticmethod
@@ -206,7 +208,7 @@ class GetDataFromDB:
         sector.planet_sector.all().delete()
         sector.asteroid_sector.all().delete()
         sector.station_sector.all().delete()
-        SectorWarp.objects.filter(Q(warp_home=sector.id) | Q(warp_destination=sector.id)).delete()
+        WarpZone.objects.filter(sector_id=sector.id).delete()
 
     @staticmethod
     def get_items_from_sector(pk):
@@ -215,7 +217,7 @@ class GetDataFromDB:
             sector.planet_sector.all(),
             sector.asteroid_sector.all(),
             sector.station_sector.all(),
-            SectorWarp.objects.filter(warp_home=sector.id).all(),
+            WarpZone.objects.filter(sector_id=sector.id).all(),
         )
 
     @staticmethod
@@ -328,11 +330,9 @@ class GetDataFromDB:
             if (
                 not d_value
                 and d_value is not False
-                or d_value == "none"
                 or d_value == ""
             ):
                 missing_data.append(d_key)
-
         if data_item:
             for i in data_item:
                 for d_key, d_value in data_item[i].items():

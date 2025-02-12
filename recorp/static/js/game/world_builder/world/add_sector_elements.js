@@ -37,7 +37,6 @@ function add_background(data) {
 function add_foreground(data){
     for (let sector_i = 0; sector_i < data.length; sector_i++) {
 
-        let element_data = data[sector_i]["data"];
         let element_type = data[sector_i]["animations"][0];
         let translated_element_type = data[sector_i].data.type_translated ? data[sector_i].data.type_translated : null;
         let animation_name = data[sector_i]["animations"][1];
@@ -59,41 +58,94 @@ function add_foreground(data){
         let coord_x = data[sector_i].data.coord_x;
         let coord_y = data[sector_i].data.coord_y;
         let size_x = data[sector_i]['size']["size_x"];
-        let size_y = data[sector_i]['size']["size_y"]
+        let size_y = data[sector_i]['size']["size_y"];
 
-        modal_data = {
-            type: element_type,
-            translated_type: translated_element_type,
-            animation: {
-                dir: element_type,
-                img: animation_name,
-            },
-            name: element_name,
-            description: element_description,
-            resources: {
-                id: resource_id,
-                name: resource_name,
-                quantity_str: resource_quantity_str,
-                quantity: resource_quantity,
-                translated_text_resource: resource_translated,
-                translated_quantity_str: resource_translated_quantity_str,
-                translated_scan_msg_str: resource_translated_scan_msg,
-            },
-            faction: {
-                starter: faction_starter,
-                name: faction_name,
-                translated_str: translated_faction_txt,
-            },
-            actions: {
-                action_label: action_label,
-                close: action_close,
-                player_in_same_faction: player_in_same_faction,
-            },
-            coord: {
-                x: coord_x,
-                y: coord_y
-            }
+        switch (element_type){
+            case "warpzone":
+                modal_data = {
+                    type: element_type,
+                    translated_type: translated_element_type,
+                    animation: {
+                        dir: element_type,
+                        img: animation_name,
+                    },
+                    name: element_name,
+                    description: element_description,
+                    destination: {
+                        id : data[sector_i].data.destination_id,
+                        name : data[sector_i].data.destination_name.replaceAll('-',' ').replaceAll('_',' '),
+                    },
+                    coord: {
+                        x: coord_x,
+                        y: coord_y
+                    },
+                    actions: {
+                        close: action_close,
+                        action_label: action_label,
+                    },
+                }
+                break;
+            case "asteroid":
+                modal_data = {
+                    type: element_type,
+                    translated_type: translated_element_type,
+                    animation: {
+                        dir: element_type,
+                        img: animation_name,
+                    },
+                    name: element_name,
+                    description: element_description,
+                    resources: {
+                        id: resource_id,
+                        name: resource_name,
+                        quantity_str: resource_quantity_str,
+                        quantity: resource_quantity,
+                        translated_text_resource: resource_translated,
+                        translated_quantity_str: resource_translated_quantity_str,
+                        translated_scan_msg_str: resource_translated_scan_msg,
+                    },
+                    actions: {
+                        action_label: action_label,
+                        close: action_close,
+                        player_in_same_faction: player_in_same_faction,
+                    },
+                    coord: {
+                        x: coord_x,
+                        y: coord_y
+                    }
+                }
+                break;
+            case "planet":
+            case "station":
+                modal_data = {
+                    type: element_type,
+                    translated_type: translated_element_type,
+                    animation: {
+                        dir: element_type,
+                        img: animation_name,
+                    },
+                    name: element_name,
+                    description: element_description,
+                    faction: {
+                        starter: faction_starter,
+                        name: faction_name,
+                        translated_str: translated_faction_txt,
+                    },
+                    actions: {
+                        action_label: action_label,
+                        close: action_close,
+                        player_in_same_faction: player_in_same_faction,
+                    },
+                    coord: {
+                        x: coord_x,
+                        y: coord_y
+                    }
+                }
+                break;
+            default:
+                break
         }
+        
         let modal = create_foreground_modal(
             element_name,
             modal_data

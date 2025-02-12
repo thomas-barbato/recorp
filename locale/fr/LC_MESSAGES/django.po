@@ -272,6 +272,9 @@ msgstr "Pour afficher une ressource, vous devez utiliser votre scanner"
 msgid "statistics"
 msgstr "statistiques"
 
+msgid "A portal that lets you travel to"
+msgstr "Un portail vous permettant de voyager vers "
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""

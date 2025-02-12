@@ -2,9 +2,12 @@ from random import random
 import re
 import json
 import ast
+import random
 from django.contrib import admin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
+from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from core.backend.tiles import UploadThisImage
@@ -23,7 +26,8 @@ from core.models import (
     Faction,
     Player,
     Warp,
-    SectorWarp,
+    WarpZone,
+    SectorWarpZone,
     Skill,
     SkillEffect,
     Recipe,
@@ -306,9 +310,12 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
         context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
             "id", "name"
         )
+        context["warpzone_data"] = GetDataFromDB.get_table("warpzone_only").objects.values(
+            "id", "name"
+        )
         context["faction_data"] = GetDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetDataFromDB.get_size()
-
+        
         return context
 
     def post(self, request):
@@ -350,25 +357,45 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
             for item, _ in data_from_post["data"].items():
                 item_type = data_from_post["data"][item]["item_type"]
                 item_img_name = data_from_post["data"][item]["item_img_name"]
-                table, table_resource = GetDataFromDB.get_table(item_type)
-                rsrc_data_list = data_from_post["data"][item]["resource_data"]
+                item_name = data_from_post["data"][item]["item_name"]
+                table_item_name = data_from_post["data"][item]["item_id"]
+                coord_x = data_from_post["data"][item]["coord_x"]
+                coord_y = data_from_post["data"][item]["coord_y"]
+                
+                
                 if item_type == "warpzone":
-                    warp_id = table.objects.filter(name=data_from_post["data"][item]["item_id"]).values('id')
+                    
+                    table, table_resource, table_zone = GetDataFromDB.get_table(item_type)
+                    warp_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
+                    
+                    if table_resource.objects.filter(name=item_name).exists():
+                        item_name = f'{item_name}-{random.randint(1,999999)}'
+                    
                     table_resource.objects.create(
-                        name=data_from_post["data"][item]["item_name"],
-                        warp_home_id = sector.pk,
-                        warp_destination_id = data_from_post["data"][item]["item_warpzone_destination"],
+                        name=item_name,
+                        sector_id = sector.pk,
                         warp_id = warp_id,
                         data={
-                            "coord_x": data_from_post["data"][item]["coord_x"],
-                            "coord_y": data_from_post["data"][item]["coord_y"],
-                            "name": data_from_post["data"][item]["item_name"],
-                            "description": data_from_post["data"][item][
-                                "item_description"
-                            ],
+                            "coord_x": coord_x,
+                            "coord_y": coord_y,
+                            "name": item_name,
+                            "description": "A portal that lets you travel to",
                         }
                     )
+                    
+                    warpzone_id = table_resource.objects.filter(name=item_name).values('id')[0]['id']
+                    
+                    if data_from_post["data"][item]["item_warpzone_destination"] != "none-selected":
+                        table_zone.objects.create(
+                            warp_home_id = warpzone_id,
+                            warp_destination_id = data_from_post["data"][item]["item_warpzone_destination"]
+                        )
+                        if table_zone.objects.filter(warp_home_id=data_from_post["data"][item]["item_warpzone_destination"],warp_destination_id = warpzone_id).exists() is False:
+                            table_zone.objects.create(warp_home_id=data_from_post["data"][item]["item_warpzone_destination"],warp_destination_id = warpzone_id)
+                            
                 else:
+                    rsrc_data_list = data_from_post["data"][item]["resource_data"]
+                    table, table_resource = GetDataFromDB.get_table(item_type)
                     for rsrc in rsrc_data_list:
                         item_type_id = table.objects.filter(name=item_img_name).values_list(
                             "id", flat=True
@@ -479,18 +506,19 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 id=table.source_id
                             ).values_list("name", flat=True)[0]
                         case "warpzone":
-                            item_name = SectorWarp.objects.filter(
+                            item_name = WarpZone.objects.filter(
                                 id=table.id
                             ).values_list("warp__name", flat=True)[0]
                     if table_key == "warpzone":
+                        sector_warp_zone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')[0]
                         result_dict["sector_element"].append(
                             {
                                 "type": table_key,
                                 "item_id": table.id,
                                 "item_name": item_name,
                                 "source_id": table.warp_id,
-                                "sector_id": table.warp_home_id,
-                                "warp_destination": table.warp_destination_id,
+                                "sector_id": table.sector_id,
+                                "warp_destination": sector_warp_zone_destination if sector_warp_zone_destination else "none-selected",
                                 "data": table.data,
                             }
                         )
@@ -506,7 +534,6 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "data": table.data,
                             }
                         )
-
             return JsonResponse(json.dumps(result_dict), safe=False)
         return JsonResponse({}, safe=False)
 
@@ -538,35 +565,54 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                         "is_faction_starter"
                     ],
                 )
-
+                
                 GetDataFromDB.delete_items_from_sector(pk)
 
                 for item, _ in data_from_post["data"].items():
                     item_type = data_from_post["data"][item]["item_type"]
                     item_img_name = data_from_post["data"][item]["item_img_name"]
-                    table, table_resource = GetDataFromDB.get_table(item_type)
-                    rsrc_data_list = data_from_post["data"][item]["resource_data"]
+                    item_name = data_from_post["data"][item]["item_name"]
+                    table_item_name = data_from_post["data"][item]["item_id"]
+                    coord_x = data_from_post["data"][item]["coord_x"]
+                    coord_y = data_from_post["data"][item]["coord_y"]
+                    
                     if item_type == "warpzone":
-                        warp_id = table.objects.filter(name=data_from_post["data"][item]["item_id"]).values('id')
+                    
+                        table, table_resource, table_zone = GetDataFromDB.get_table(item_type)
+                        warp_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
+                        
+                        if table_resource.objects.filter(name=item_name).exists():
+                            item_name = f'{item_name}-{random.randint(1,999999)}'
+                        
                         table_resource.objects.create(
-                            name=data_from_post["data"][item]["item_name"],
-                            warp_home_id = pk,
-                            warp_destination_id = data_from_post["data"][item]["item_warpzone_destination"],
+                            name=item_name,
+                            sector_id = pk,
                             warp_id = warp_id,
                             data={
-                                "coord_x": data_from_post["data"][item]["coord_x"],
-                                "coord_y": data_from_post["data"][item]["coord_y"],
-                                "name": data_from_post["data"][item]["item_name"],
-                                "description": data_from_post["data"][item][
-                                    "item_description"
-                                ],
+                                "coord_x": coord_x,
+                                "coord_y": coord_y,
+                                "name": item_name,
+                                "description": "A portal that lets you travel to",
                             }
                         )
+                        
+                        warpzone_id = table_resource.objects.filter(name=item_name).values('id')[0]['id']
+                        
+                        if data_from_post["data"][item]["item_warpzone_destination"] != "none-selected":
+                            table_zone.objects.create(
+                                warp_home_id = warpzone_id,
+                                warp_destination_id = data_from_post["data"][item]["item_warpzone_destination"]
+                            )
+                            if table_zone.objects.filter(warp_home_id=data_from_post["data"][item]["item_warpzone_destination"],warp_destination_id = warpzone_id).exists() is False:
+                                table_zone.objects.create(warp_home_id=data_from_post["data"][item]["item_warpzone_destination"],warp_destination_id = warpzone_id)
+                                
                     else:
+                        rsrc_data_list = data_from_post["data"][item]["resource_data"]
+                        table, table_resource = GetDataFromDB.get_table(item_type)
                         for rsrc in rsrc_data_list:
-                            item_type_id = table.objects.filter(
-                                name=item_img_name
-                            ).values_list("id", flat=True)[0]
+                            item_type_id = table.objects.filter(name=item_img_name).values_list(
+                                "id", flat=True
+                            )[0]
                             resource_id = 1 if rsrc == "none" else rsrc
                             table_resource.objects.create(
                                 sector_id=pk,
@@ -581,7 +627,6 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                                     ],
                                 },
                             )
-
                 messages.success(
                     self.request,
                     f'Sector with name {data_from_post["map_data"]["sector_name"]} edited with success',
@@ -943,7 +988,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                                 id=table.source_id
                             ).values_list("name", "data", "size")[0]
                         case "warpzone":
-                            data = SectorWarp.objects.filter(
+                            data = WarpZone.objects.filter(
                                 id=table.id
                             ).values("warp_id__name", "data", "warp_id__size", "warp_id__data")[0]
                             item_data = {
@@ -953,19 +998,20 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                                 "animation": data['warp_id__data']['animation']
                             }
                     if table_key == "warpzone":
+                        sector_warpzone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')[0]['warp_destination_id']
                         result_dict["sector_element"].append(
                             {
                                 "type": table_key,
                                 "item_id": table.id,
                                 "item_data": item_data,
                                 "source_id": table.warp_id,
-                                "sector_id": table.warp_home_id,
-                                "warp_destination": table.warp_destination_id,
+                                "sector_id": table.sector_id,
+                                "warp_destination": sector_warpzone_destination,
                                 "data": {
                                     'name': item_data['name'],
                                     'coord_x': item_data['data']['coord_x'],
                                     'coord_y': item_data['data']['coord_y'],
-                                    'description': item_data['data']['description']
+                                    'description': _(item_data['data']['description'])
                                 },
                             }
                         )
