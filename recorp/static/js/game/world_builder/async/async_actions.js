@@ -349,3 +349,13 @@ function update_player_range_in_modal(data){
         }
     }
 }
+
+function async_travel(id, user_id){
+    gameSocket.send(JSON.stringify({
+        message: JSON.stringify({
+            "player": user_id,
+            "warp_id": id,
+        }),
+        type: "async_travel"
+    }));
+}

@@ -139,6 +139,8 @@ window.addEventListener('load', () => {
                 break;
             case "player_use_warpzone":
                 break;
+            case "async_travel":
+                console.log("travel !")
             case "send_message":
                 //sendMessage(data);
                 break;

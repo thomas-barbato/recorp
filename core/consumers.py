@@ -147,6 +147,22 @@ class GameConsumer(WebsocketConsumer):
         }
 
         self.send(text_data=json.dumps(response))
+        
+    def async_travel(self, event):
+        response = {}
+        message = json.loads(event["message"])
+        if message['player'] == self.user.id:
+            
+            response = {
+                "type": "async_travel",
+                "message": {
+                    "default_msg": "ok default msg"
+                },
+            }
+            self.send(text_data=json.dumps(response))
+            
+        else:
+            pass
 
     def send_message(self, event):
         pass

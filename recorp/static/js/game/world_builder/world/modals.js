@@ -179,7 +179,6 @@ function create_foreground_modal(id, data) {
         
     } else if(data.type == "warpzone"){
 
-
         item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'text-xs', 'my-1', 'py-1');
         item_description_p.innerHTML = `${data.description} <b>${data.destination.name}</b>`;
 
@@ -188,6 +187,7 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_warpzone = document.createElement('img');
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
+        item_action_container_img_warpzone.setAttribute(attribute_touch_click, "async_travel(" + data.home_sector + ",  " + current_user_id + ")");
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_warpzone_figcaption = document.createElement('figcaption');

@@ -71,6 +71,7 @@ function add_foreground(data){
                     },
                     name: element_name,
                     description: element_description,
+                    home_sector : data[sector_i].data.warp_home_id,
                     destination: {
                         id : data[sector_i].data.destination_id,
                         name : data[sector_i].data.destination_name.replaceAll('-',' ').replaceAll('_',' '),
