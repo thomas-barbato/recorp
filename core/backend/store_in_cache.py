@@ -74,10 +74,10 @@ class StoreInCache:
                         "name", 
                         "data", 
                         "sector_id",
-                        "warp_id",
-                        "warp_id__name",
-                        "warp_id__size",
-                        "warp_id__data",
+                        "source_id",
+                        "source_id__name",
+                        "source_id__size",
+                        "source_id__data",
                     )[0]
                     
                     map_element_destination = elementZone.objects.filter(warp_home_id=map_element["id"]).values(
@@ -89,10 +89,10 @@ class StoreInCache:
                     sector_data["sector_element"].append(
                         {
                             "item_id": map_element["id"],
-                            "item_name": map_element['warp_id__name'],
-                            "source_id": map_element['warp_id'],
+                            "item_name": map_element['source_id__name'],
+                            "source_id": map_element['source_id'],
                             "sector_id": map_element['sector_id'],
-                            "animations": ["warpzone", map_element['warp_id__data']['animation']],
+                            "animations": ["warpzone", map_element['source_id__data']['animation']],
                             "data": {
                                 "type": "warpzone",
                                 "name": map_element["name"],
@@ -103,7 +103,7 @@ class StoreInCache:
                                 "destination_id": map_element_destination['warp_destination_id'],
                                 "destination_name": map_element_destination['warp_destination_id__name'],
                             },
-                            "size": map_element['warp_id__size'],
+                            "size": map_element['source_id__size'],
                         }
                     )
                     

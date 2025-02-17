@@ -208,16 +208,58 @@ class GetDataFromDB:
         sector.planet_sector.all().delete()
         sector.asteroid_sector.all().delete()
         sector.station_sector.all().delete()
-        WarpZone.objects.filter(sector_id=sector.id).delete()
+        sector.warp_sector.all().delete()
+        sector.npc_sector.all().delete()
 
     @staticmethod
-    def get_items_from_sector(pk):
+    def get_items_from_sector(pk, with_npc=False, only_size_coord=False):
         sector = Sector.objects.get(id=pk)
+        if with_npc:
+            if only_size_coord:
+                player_id_list = Player.objects.filter(sector_id=pk).values('id')
+                return (
+                    sector.planet_sector.values(
+                        'source_id__size',
+                        'data'
+                    ),
+                    sector.asteroid_sector.values(
+                        'source_id__size',
+                        'data'
+                    ),
+                    sector.station_sector.values(
+                        'source_id__size',
+                        'data'
+                    ),
+                    sector.warp_sector.values(
+                        'source_id__size',
+                        'data'
+                    ),
+                    sector.npc_sector.values(
+                        'npc_template_id__ship_id__ship_category_id__ship_size',
+                        'coordinates'
+                    ),
+                    PlayerShip.objects.filter(
+                        player_id__in=player_id_list, 
+                        is_current_ship=True,
+                    ).values(
+                        'ship_id__ship_category_id__ship_size',
+                        'player_id__coordinates',
+                        
+                    )
+                )
+            return (
+            sector.planet_sector.all(),
+            sector.asteroid_sector.all(),
+            sector.station_sector.all(),
+            sector.warp_sector.all(),
+            sector.npc_sector.all()
+            )
+            
         return (
             sector.planet_sector.all(),
             sector.asteroid_sector.all(),
             sector.station_sector.all(),
-            WarpZone.objects.filter(sector_id=sector.id).all(),
+            sector.warp_sector.all(),
         )
 
     @staticmethod

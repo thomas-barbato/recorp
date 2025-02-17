@@ -350,11 +350,12 @@ function update_player_range_in_modal(data){
     }
 }
 
-function async_travel(id, user_id){
+function async_travel(id, user_id, warpzone_name){
     gameSocket.send(JSON.stringify({
         message: JSON.stringify({
             "player": user_id,
-            "warp_id": id,
+            "source_id": id,
+            "warpzone_name": warpzone_name,
         }),
         type: "async_travel"
     }));

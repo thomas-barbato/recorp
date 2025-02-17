@@ -81,5 +81,26 @@
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
+    },
+    {
+        "model": "core.playership",
+        "pk": 5,
+        "fields": {
+            "ship": 3,
+            "player": 5,
+            "current_hp": 125,
+            "max_hp": 125,
+            "current_movement": 15,
+            "max_movement": 15,
+            "current_ballistic_defense": 10,
+            "current_thermal_defense": 10,
+            "current_missile_defense": 10,
+            "current_cargo_size": 8,
+            "status": "FULL",
+            "is_current_ship": true,
+            "module_id_list": [2, 9, 16, 24, 30, 37, 57, 65, 102, 108],
+            "created_at": "2020-04-22 12:38:15",
+            "updated_at": "2020-04-22 12:38:15"
+        }
     }
 ]

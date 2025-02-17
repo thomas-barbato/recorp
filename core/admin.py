@@ -366,7 +366,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                 if item_type == "warpzone":
                     
                     table, table_resource, table_zone = GetDataFromDB.get_table(item_type)
-                    warp_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
+                    source_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
                     
                     if table_resource.objects.filter(name=item_name).exists():
                         item_name = f'{item_name}-{random.randint(1,999999)}'
@@ -374,7 +374,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                     table_resource.objects.create(
                         name=item_name,
                         sector_id = sector.pk,
-                        warp_id = warp_id,
+                        source_id = source_id,
                         data={
                             "coord_x": coord_x,
                             "coord_y": coord_y,
@@ -516,7 +516,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "type": table_key,
                                 "item_id": table.id,
                                 "item_name": item_name,
-                                "source_id": table.warp_id,
+                                "source_id": table.source_id,
                                 "sector_id": table.sector_id,
                                 "warp_destination": sector_warp_zone_destination if sector_warp_zone_destination else "none-selected",
                                 "data": table.data,
@@ -579,7 +579,7 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                     if item_type == "warpzone":
                     
                         table, table_resource, table_zone = GetDataFromDB.get_table(item_type)
-                        warp_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
+                        source_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
                         
                         if table_resource.objects.filter(name=item_name).exists():
                             item_name = f'{item_name}-{random.randint(1,999999)}'
@@ -587,7 +587,7 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                         table_resource.objects.create(
                             name=item_name,
                             sector_id = pk,
-                            warp_id = warp_id,
+                            source_id = source_id,
                             data={
                                 "coord_x": coord_x,
                                 "coord_y": coord_y,
@@ -990,12 +990,12 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                         case "warpzone":
                             data = WarpZone.objects.filter(
                                 id=table.id
-                            ).values("warp_id__name", "data", "warp_id__size", "warp_id__data")[0]
+                            ).values("source_id__name", "data", "source_id__size", "source_id__data")[0]
                             item_data = {
-                                "name": data['warp_id__name'],
+                                "name": data['source_id__name'],
                                 "data": data['data'],
-                                "size": data['warp_id__size'],
-                                "animation": data['warp_id__data']['animation']
+                                "size": data['source_id__size'],
+                                "animation": data['source_id__data']['animation']
                             }
                     if table_key == "warpzone":
                         sector_warpzone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')[0]['warp_destination_id']
@@ -1004,7 +1004,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                                 "type": table_key,
                                 "item_id": table.id,
                                 "item_data": item_data,
-                                "source_id": table.warp_id,
+                                "source_id": table.source_id,
                                 "sector_id": table.sector_id,
                                 "warp_destination": sector_warpzone_destination,
                                 "data": {

@@ -3,6 +3,7 @@ import os
 from django.core import serializers
 from recorp.settings import BASE_DIR
 from django.contrib.auth.models import User
+from core.backend.get_data import GetDataFromDB
 from core.models import (
     Planet,
     Asteroid,
@@ -17,6 +18,9 @@ from core.models import (
     Sector,
     Player,
     PlayerShip,
+    Warp,
+    WarpZone,
+    SectorWarpZone,
 )
 
 
@@ -30,22 +34,19 @@ class PlayerAction:
         return Player.objects.filter(id=player_id, user_id=self.id).exists()
 
     def get_player_id(self):
-        return Player.objects.filter(user_id=self.id).values_list("id", flat=True)[0]
+        return self.player.values_list("id", flat=True)[0]
+    
+    def get_player_sector_id(self):
+        return self.player.values_list("sector_id", flat=True)[0]
 
     def get_player_faction(self):
-        return Player.objects.filter(user_id=self.id).values_list(
-            "faction_id", flat=True
-        )[0]
+        return self.player.values_list("faction_id", flat=True)[0]
 
     def get_player_sector(self):
-        return Player.objects.filter(user_id=self.id).values_list(
-            "sector_id", flat=True
-        )[0]
+        return self.player.values_list("sector_id", flat=True)[0]
 
     def get_coord(self):
-        return Player.objects.filter(user_id=self.id).values_list(
-            "coordinates", flat=True
-        )[0]
+        return self.player.values_list("coordinates", flat=True)[0]
 
     def get_other_player_name(self, other_player_id):
         return Player.objects.filter(id=other_player_id).values_list("name", flat=True)[
@@ -71,6 +72,13 @@ class PlayerAction:
         return PlayerShip.objects.filter(
             player_id=self.player_id, is_current_ship=True
         ).values_list("is_reversed", flat=True)[0]
+
+    def get_player_ship_size(self):
+        return PlayerShip.objects.filter(
+            player_id=self.player_id, is_current_ship=True
+        ).values(
+            "ship_id__ship_category_id__ship_size",
+        )[0]
 
     def get_other_player_movement(self, other_player_id):
         return PlayerShip.objects.filter(
@@ -117,4 +125,113 @@ class PlayerAction:
                 coordinates={"coord_x": end_x, "coord_y": end_y}
             )
             return True
+    
+    def player_travel_to_destination(self, warpzone_home_name, warpzone_home_id):
+        warpzone_home = SectorWarpZone.objects.filter(
+            warp_home_id=warpzone_home_id,
+            warp_home_id__name=warpzone_home_name,
+            warp_home_id__sector_id=self.get_player_sector_id()
+        )
+        if warpzone_home.exists():
+            
+            destination_sector_id = warpzone_home.values('warp_destination_id__sector_id')[0]['warp_destination_id__sector_id']
+            destination_source_id = warpzone_home.values('warp_destination_id')[0]['warp_destination_id']
+            
+            # get data 
+            warpzone_destination = WarpZone.objects.filter(id=destination_source_id).values(
+                'data',
+                'source_id__size'
+            )[0]
+            
+            wz_coord_y = int(warpzone_destination['data']['coord_y'])
+            wz_coord_x = int(warpzone_destination['data']['coord_x'])
+            wz_size_y = int(warpzone_destination['source_id__size']['size_y'])
+            wz_size_x = int(warpzone_destination['source_id__size']['size_x'])
+
+            # define "square" zone where user can be tp
+            start_x = wz_coord_x - 10 if wz_coord_x - 10 > 0 else 0
+            end_x = (wz_coord_x + wz_size_x + 10) if (wz_coord_x + wz_size_x + 10) <= 39 else 39 
+            start_y = wz_coord_y - 10 if wz_coord_y - 10 > 0 else 0
+            end_y = (wz_coord_y + wz_size_y + 10) if (wz_coord_y + wz_size_y + 10) <= 39 else 39 
+            
+            player_spaceship = self.get_player_ship_size()
+            
+            planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
+                destination_sector_id, with_npc=True, only_size_coord=True
+            )
+            
+            foreground_table_set = {
+                "planet": planets,
+                "asteroid": asteroids,
+                "station": stations,
+                "warpzone": warpzones,
+                "npc": npcs,
+                "pc": pcs,
+            }
+            
+            # define where we stock all coord from all fg item on the map
+            select_warpzone_coord_array = [{"y":c_y, "x":c_x} for c_y in range(wz_coord_y, wz_coord_y + wz_size_y) for c_x in range(wz_coord_x, wz_coord_x + wz_size_x)]
+            player_spaceship_coord_array = []
+            space_item_coord_array = []
+            # define where we check first to find empty zone
+            zone_range_coordinate_to_travel = []
+            arrival_zone_has_been_finded = False
+            arrival_zone = []
+            
+            for table_key, table_value in foreground_table_set.items():
+                if table_key == "npc" or table_key == "pc":
+                    for pc_npc in table_value:
+                        
+                        size = pc_npc['npc_template_id__ship_id__ship_category_id__ship_size'] if table_key == "npc" else pc_npc['ship_id__ship_category_id__ship_size']
+                        coord = pc_npc['coordinates'] if table_key == "npc" else pc_npc['player_id__coordinates']
+                        coord_y = int(coord['y']) if table_key == "npc" else int(coord['coord_y'])
+                        coord_x = int(coord['x']) if table_key == "npc" else int(coord['coord_x'])
+                        size_y = int(size['size_y'])
+                        size_x = int(size['size_x'])
+                        
+                        if size_x > 1:
+                            for c_y in range(coord_y, coord_y + size_y):
+                                for c_x in range(coord_x, coord_x + size_x):
+                                    space_item_coord_array.append({"y":c_y, "x":c_x})
+                        else:
+                            space_item_coord_array.append({"y":coord_y, "x":coord_x})
+                else:
+                    for fg_item in table_value:
+                        
+                        size = fg_item['source_id__size']
+                        coord = fg_item['data']
+                        coord_y = int(coord['coord_y'])
+                        coord_x = int(coord['coord_x'])
+                        size_y = int(size['size_y'])
+                        size_x = int(size['size_x'])
+                        
+                        if size_x > 1:
+                            for c_y in range(coord_y, coord_y + size_y):
+                                for c_x in range(coord_x, coord_x + size_x):
+                                    space_item_coord_array.append({"y": c_y, "x": c_x})
+                        else:
+                            space_item_coord_array.append({"y": coord_y, "x": coord_x})
+            
+            for y in range(start_y, end_y):
+                for x in range(start_x, end_x):
+                    zone_range_coordinate_to_travel.append({"y": y, "x": x})
+                    
+            if player_spaceship['ship_id__ship_category_id__ship_size']['size_x'] == 1:
+                for cell in zone_range_coordinate_to_travel:
+                    if cell not in space_item_coord_array and cell not in select_warpzone_coord_array:
+                        arrival_zone_has_been_finded = True
+                        arrival_zone.append(cell)
+                        break
+            else:
+                # spaceship greater than 1x1 size
+                pass
+            
+            if arrival_zone_has_been_finded is False:
+                # here, if all place are taken...
+                # take all the map ? or ... unallow move ?
+                pass
+                        
+        
+    def set_spaceship_statistics_with_module(self):
+        pass
         

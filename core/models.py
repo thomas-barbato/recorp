@@ -146,13 +146,13 @@ class Warp(models.Model):
 class WarpZone(models.Model):
     name = models.CharField(max_length=50, null=False, blank=False, default="SectorWarp")
     data = models.JSONField(null=True)
-    warp = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    source = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_sector")
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"name: {self.name}, sector_src = {self.sector.name }, warp_img_name = {self.warp.name}"
+        return f"name: {self.name}, sector_src = {self.sector.name }, warp_img_name = {self.source.name}"
     
 class SectorWarpZone(models.Model):
     warp_home = models.ForeignKey(WarpZone, on_delete=models.CASCADE, related_name="warp_home")
@@ -424,7 +424,7 @@ class Npc(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.sector.name} - {self.name} : {self.coordinates}"
+        return f"{self.sector.name} - {self.npc_template.name} : {self.coordinates}"
 
 
 class NpcResource(models.Model):

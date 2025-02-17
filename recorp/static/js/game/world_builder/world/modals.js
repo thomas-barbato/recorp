@@ -41,7 +41,7 @@ function create_foreground_modal(id, data) {
     footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'text-white', 'p-1', 'flex', 'w-[95%]', 'justify-center');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
     header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
 
     let close_button_url = '/static/img/ux/close.svg';
@@ -187,7 +187,9 @@ function create_foreground_modal(id, data) {
 
         let item_action_container_img_warpzone = document.createElement('img');
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
-        item_action_container_img_warpzone.setAttribute(attribute_touch_click, "async_travel(" + data.home_sector + ",  " + current_user_id + ")");
+        let modal_name = e.id; 
+        console.log(modal_name)
+        item_action_container_img_warpzone.setAttribute(attribute_touch_click, "async_travel(" + data.home_sector + ",  " + current_user_id + ", '" + id + "')");
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_warpzone_figcaption = document.createElement('figcaption');
