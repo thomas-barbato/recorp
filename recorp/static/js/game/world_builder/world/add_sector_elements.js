@@ -11,7 +11,7 @@ function add_background(data) {
             entry_point.style.backgroundPositionX = `-${col_i}px`;
             entry_point.style.backgroundPositionY = `-${row_i}px`;
             entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
-            entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [x = ${parseInt(index_col - 1)}; y = ${parseInt(index_row - 1)}]`);
+            entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(index_row - 1)}; x = ${parseInt(index_col - 1)}]`);
             entry_point.addEventListener(attribute_touch_touch_mouseover, function(){
                 update_target_coord_display(entry_point);
             })
@@ -169,7 +169,7 @@ function add_foreground(data){
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
                 entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500";
-                entry_point_border.setAttribute('title', `${element_name} [x: ${parseInt(index_col)}; y: ${parseInt(index_row)}]`);
+                entry_point_border.setAttribute('title', `${element_name} [y: ${parseInt(index_row)-1}, x: ${parseInt(index_col)-1}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_name);
                 entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + "modal-" + element_name + "')");
                 entry_point_border.addEventListener("mouseover", function(){

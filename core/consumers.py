@@ -154,7 +154,7 @@ class GameConsumer(WebsocketConsumer):
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
         print(self.room_group_name)
         if message['player'] == self.user.id:
-            p = PlayerAction(self.user.id).player_travel_to_destination(message['warpzone_name'], message['source_id'])
+            print(PlayerAction(self.user.id).player_travel_to_destination(message['warpzone_name'], message['source_id']))
             response = {
                 "type": "async_travel",
                 "message": {

@@ -147,14 +147,10 @@ class PlayerAction:
             wz_coord_x = int(warpzone_destination['data']['coord_x'])
             wz_size_y = int(warpzone_destination['source_id__size']['size_y'])
             wz_size_x = int(warpzone_destination['source_id__size']['size_x'])
-
-            # define "square" zone where user can be tp
-            start_x = wz_coord_x - 10 if wz_coord_x - 10 > 0 else 0
-            end_x = (wz_coord_x + wz_size_x + 10) if (wz_coord_x + wz_size_x + 10) <= 39 else 39 
-            start_y = wz_coord_y - 10 if wz_coord_y - 10 > 0 else 0
-            end_y = (wz_coord_y + wz_size_y + 10) if (wz_coord_y + wz_size_y + 10) <= 39 else 39 
             
             player_spaceship = self.get_player_ship_size()
+            spaceship_size_x = player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
+            spaceship_size_y = player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
             
             planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
                 destination_sector_id, with_npc=True, only_size_coord=True
@@ -170,13 +166,10 @@ class PlayerAction:
             }
             
             # define where we stock all coord from all fg item on the map
-            select_warpzone_coord_array = [{"y":c_y, "x":c_x} for c_y in range(wz_coord_y, wz_coord_y + wz_size_y) for c_x in range(wz_coord_x, wz_coord_x + wz_size_x)]
-            player_spaceship_coord_array = []
-            space_item_coord_array = []
+            space_item_coord_array = [{"y":c_y, "x":c_x} for c_y in range(wz_coord_y, wz_coord_y + wz_size_y) for c_x in range(wz_coord_x, wz_coord_x + wz_size_x)]
             # define where we check first to find empty zone
             zone_range_coordinate_to_travel = []
             arrival_zone_has_been_finded = False
-            arrival_zone = []
             
             for table_key, table_value in foreground_table_set.items():
                 if table_key == "npc" or table_key == "pc":
@@ -211,27 +204,45 @@ class PlayerAction:
                                     space_item_coord_array.append({"y": c_y, "x": c_x})
                         else:
                             space_item_coord_array.append({"y": coord_y, "x": coord_x})
-            
-            for y in range(start_y, end_y):
-                for x in range(start_x, end_x):
-                    zone_range_coordinate_to_travel.append({"y": y, "x": x})
-                    
-            if player_spaceship['ship_id__ship_category_id__ship_size']['size_x'] == 1:
-                for cell in zone_range_coordinate_to_travel:
-                    if cell not in space_item_coord_array and cell not in select_warpzone_coord_array:
+                            
+            while arrival_zone_has_been_finded is False:
+                # define "square" zone where user can be tp
+                # this square grow up when space can't be filled.
+                start_x = wz_coord_x - 6 if wz_coord_x - 6 > 0 else 0
+                end_x = (wz_coord_x + wz_size_x + 6) if (wz_coord_x + wz_size_x + 6) <= 39 else 39 
+                start_y = wz_coord_y - 6 if wz_coord_y - 6 > 0 else 0
+                end_y = (wz_coord_y + wz_size_y + 6) if (wz_coord_y + wz_size_y + 6) <= 39 else 39 
+                arrival_zone = []
+                
+                zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x)]
+                
+                if spaceship_size_x == 1 and spaceship_size_y == 1:
+                    for cell in zone_range_coordinate_to_travel:
+                        print(cell)
+                        if cell not in space_item_coord_array:
+                            arrival_zone.append(cell)
+                            return arrival_zone
+                else:
+                    for cell in zone_range_coordinate_to_travel:
+                        cell_y = int(cell["y"])
+                        cell_x = int(cell["x"])
+                        if not {"y": cell_y, "x": cell_x} in space_item_coord_array:
+                            arrival_zone_has_been_finded = True
+                            for y in range(cell_y, cell_y + spaceship_size_y):
+                                for x in range(cell_x, cell_x + spaceship_size_x):
+                                    coord = {"y": y, "x": x}
+                                    if coord not in space_item_coord_array:
+                                        arrival_zone.append(coord)
+                                    elif len(arrival_zone) > 0 and coord in space_item_coord_array:
+                                        print("dedans")
+                                        break
+                    if len(arrival_zone) == (spaceship_size_x * spaceship_size_y):
                         arrival_zone_has_been_finded = True
-                        arrival_zone.append(cell)
-                        break
-            else:
-                # spaceship greater than 1x1 size
-                pass
-            
-            if arrival_zone_has_been_finded is False:
-                # here, if all place are taken...
-                # take all the map ? or ... unallow move ?
-                pass
+                        return arrival_zone
+                        
+                wz_size_x += player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
+                wz_size_y += player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
                         
         
     def set_spaceship_statistics_with_module(self):
         pass
-        
