@@ -62,6 +62,15 @@ class PlayerAction:
         return Player.objects.filter(id=other_player_id).values_list(
             "coordinates", flat=True
         )[0]
+        
+    def get_spaceship_coord_and_size(self, other_player_id):
+        return PlayerShip.objects.filter(
+            player_id=other_player_id,
+            is_current_ship=True
+        ).values(
+            'player_id__coordinates',
+            'ship_id__ship_category_id__ship_size'
+        )[0]
 
     def destination_already_occupied(self, end_x, end_y):
         return Player.objects.filter(
@@ -89,6 +98,14 @@ class PlayerAction:
         return PlayerShip.objects.filter(
             player_id=other_player_id, is_current_ship=True
         ).values_list("current_movement", flat=True)[0]
+        
+    def set_player_sector(self, sector_id, coordinates):
+        Player.objects.filter(
+            id=self.player_id
+        ).update(
+            sector_id=sector_id,
+            coordinates=coordinates
+        )
     
     def set_reverse_ship_status(self):
         playership_reverse_status = PlayerShip.objects.filter(
@@ -125,6 +142,9 @@ class PlayerAction:
                 coordinates={"coord_x": end_x, "coord_y": end_y}
             )
             return True
+        
+    def __coord_exists(self, target_list, y, x):
+        print([i for i in target_list if i['y'] == y and i['x'] == x])
     
     def player_travel_to_destination(self, warpzone_home_name, warpzone_home_id):
         warpzone_home = SectorWarpZone.objects.filter(
@@ -185,9 +205,11 @@ class PlayerAction:
                         if size_x > 1:
                             for c_y in range(coord_y, coord_y + size_y):
                                 for c_x in range(coord_x, coord_x + size_x):
-                                    space_item_coord_array.append({"y":c_y, "x":c_x})
+                                    if {"y":c_y, "x":c_x} not in space_item_coord_array:
+                                        space_item_coord_array.append({"y":c_y, "x":c_x})
                         else:
-                            space_item_coord_array.append({"y":coord_y, "x":coord_x})
+                            if {"y":coord_y, "x":coord_x} not in space_item_coord_array:
+                                space_item_coord_array.append({"y":coord_y, "x":coord_x})
                 else:
                     for fg_item in table_value:
                         
@@ -201,47 +223,52 @@ class PlayerAction:
                         if size_x > 1:
                             for c_y in range(coord_y, coord_y + size_y):
                                 for c_x in range(coord_x, coord_x + size_x):
-                                    space_item_coord_array.append({"y": c_y, "x": c_x})
+                                    if {"y": c_y, "x": c_x} not in space_item_coord_array:
+                                        space_item_coord_array.append({"y": c_y, "x": c_x})
                         else:
                             space_item_coord_array.append({"y": coord_y, "x": coord_x})
+                            
+            placeholder_size_x = player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
+            placeholder_size_y = player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
                             
             while arrival_zone_has_been_finded is False:
                 # define "square" zone where user can be tp
                 # this square grow up when space can't be filled.
-                start_x = wz_coord_x - 6 if wz_coord_x - 6 > 0 else 0
-                end_x = (wz_coord_x + wz_size_x + 6) if (wz_coord_x + wz_size_x + 6) <= 39 else 39 
-                start_y = wz_coord_y - 6 if wz_coord_y - 6 > 0 else 0
-                end_y = (wz_coord_y + wz_size_y + 6) if (wz_coord_y + wz_size_y + 6) <= 39 else 39 
+                start_x = wz_coord_x - placeholder_size_x if wz_coord_x - placeholder_size_x > 0 else 0
+                end_x = (wz_coord_x + wz_size_x + placeholder_size_x) if (wz_coord_x + wz_size_x + placeholder_size_x) <= 39 else 39 
+                start_y = wz_coord_y - placeholder_size_y if wz_coord_y - placeholder_size_y > 0 else 0
+                end_y = (wz_coord_y + wz_size_y + placeholder_size_y) if (wz_coord_y + wz_size_y + placeholder_size_y) <= 39 else 39 
                 arrival_zone = []
                 
                 zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x)]
                 
                 if spaceship_size_x == 1 and spaceship_size_y == 1:
                     for cell in zone_range_coordinate_to_travel:
-                        print(cell)
                         if cell not in space_item_coord_array:
-                            arrival_zone.append(cell)
-                            return arrival_zone
+                            arrival_zone_has_been_finded = True
+                            return destination_sector_id, cell
+                        arrival_zone_has_been_finded = False
                 else:
                     for cell in zone_range_coordinate_to_travel:
                         cell_y = int(cell["y"])
                         cell_x = int(cell["x"])
                         if not {"y": cell_y, "x": cell_x} in space_item_coord_array:
-                            arrival_zone_has_been_finded = True
+                            already_contains_element = False
                             for y in range(cell_y, cell_y + spaceship_size_y):
                                 for x in range(cell_x, cell_x + spaceship_size_x):
                                     coord = {"y": y, "x": x}
-                                    if coord not in space_item_coord_array:
-                                        arrival_zone.append(coord)
-                                    elif len(arrival_zone) > 0 and coord in space_item_coord_array:
-                                        print("dedans")
-                                        break
-                    if len(arrival_zone) == (spaceship_size_x * spaceship_size_y):
-                        arrival_zone_has_been_finded = True
-                        return arrival_zone
+                                    if coord in space_item_coord_array:
+                                        already_contains_element = True
+                                    else:
+                                        arrival_zone.append({"coord_x" : cell_x, "coord_y": cell_y})
+                            if already_contains_element is False:
+                                arrival_zone_has_been_finded = True
+                                return destination_sector_id, arrival_zone[0]
+                            else:
+                                arrival_zone = []
                         
-                wz_size_x += player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
-                wz_size_y += player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
+                placeholder_size_x += player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
+                placeholder_size_y += player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
                         
         
     def set_spaceship_statistics_with_module(self):

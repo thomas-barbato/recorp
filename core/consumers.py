@@ -152,19 +152,31 @@ class GameConsumer(WebsocketConsumer):
         response = {}
         message = json.loads(event["message"])
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        print(self.room_group_name)
+        ship_pos = PlayerAction(self.user.id).get_spaceship_coord_and_size(message['player'])
         if message['player'] == self.user.id:
-            print(PlayerAction(self.user.id).player_travel_to_destination(message['warpzone_name'], message['source_id']))
+            destination_sector_id, new_coordinates = PlayerAction(self.user.id).player_travel_to_destination(message['warpzone_name'], message['source_id'])
+            store.transfert_player_to_other_cache(destination_sector_id, new_coordinates)
             response = {
                 "type": "async_travel",
                 "message": {
-                    "default_msg": "ok default msg"
+                    "user_can_travel": True
                 },
             }
-            self.send(text_data=json.dumps(response))
             
         else:
-            pass
+            
+            store.delete_user(message['player'])
+            response = {
+                "type": "async_travel",
+                "message": {
+                    "user_must_be_deleted": True,
+                    "player": message['player'],
+                    "position": ship_pos['player_id__coordinates'],
+                    "ship_size": ship_pos['ship_id__ship_category_id__ship_size']
+                },
+            }
+            
+        self.send(text_data=json.dumps(response))
 
     def send_message(self, event):
         pass

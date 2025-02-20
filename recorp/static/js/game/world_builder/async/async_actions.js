@@ -360,3 +360,37 @@ function async_travel(id, user_id, warpzone_name){
         type: "async_travel"
     }));
 }
+
+function player_travel(data){
+    if(data.user_can_travel){
+
+        window.location.reload();
+
+    }else{
+
+        let coord_x = data.coordinates.coord_x;
+        let coord_y = data.coordinates.coord_y;
+        let ship_size = {
+            "y" : data.ship_size.size_y,
+            "x" : data.ship_size.size_x,
+        };
+
+        let id_array = [];
+
+        for(c_y = coord_y ; c_y < coord_y + ship_size.y ; c_y++){
+            for(c_x = coord_x ; c_x < coord_x + ship_size.x ; c_x++){
+                id_array.append(`${c_y}_${c_x}`);
+            }
+        }
+
+        for(let i = 0; i < id_array.length(); i++){
+            let element = document.querySelector("#" + id_array[i]);
+            element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
+            element.removeAttribute("size_x");
+            element.removeAttribute("size_y");
+            element.querySelector('div').replaceChildren();
+        }
+
+
+    }
+}

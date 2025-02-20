@@ -169,7 +169,7 @@ function add_foreground(data){
                 entry_point.setAttribute('size_x', size_x);
                 entry_point.setAttribute('size_y', size_y);
                 entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500";
-                entry_point_border.setAttribute('title', `${element_name} [y: ${parseInt(index_row)-1}, x: ${parseInt(index_col)-1}]`);
+                entry_point_border.setAttribute('title', `${element_name} [y: ${parseInt(coord_y)-1}, x: ${parseInt(coord_x)-1}]`);
                 entry_point_border.setAttribute('data-modal-target', "modal-" + element_name);
                 entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + "modal-" + element_name + "')");
                 entry_point_border.addEventListener("mouseover", function(){
@@ -253,7 +253,7 @@ function add_npc(data){
                 entry_point.classList.add("npc", "uncrossable");
                 entry_point.setAttribute('size_x', ship_size_x);
                 entry_point.setAttribute('size_y', ship_size_y);
-                entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]}`);
+                entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]} [x : ${parseInt(data[i]["npc"]["coordinates"].y)}, y: ${parseInt(data[i]["npc"]["coordinates"].x)})]`);
                 entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
                 entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
                 entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
@@ -450,7 +450,7 @@ function add_pc(data) {
                     space_ship_reversed.style.display = "none";
                 }
 
-                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]}`);
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x : ${parseInt(data[i]["user"]["coordinates"].coord_y)}, y: ${parseInt(data[i]["user"]["coordinates"].coord_x )})]`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 entry_point_border.addEventListener("mouseover", function(){
                     generate_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1);

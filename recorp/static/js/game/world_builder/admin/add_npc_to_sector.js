@@ -94,7 +94,6 @@ function add_foreground(obj) {
 
 
 function load_map_data(obj) {
-    console.log(obj)
     let sector_bg_image = obj.sector.image;
     add_background(sector_bg_image);
     add_foreground(obj.sector_element);

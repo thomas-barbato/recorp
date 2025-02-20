@@ -18,6 +18,7 @@ class StoreInCache:
         self.room = room_name
         self.sector_pk = self.room.split("_")[1]
         self.user_calling = user_calling
+        self.user_calling_id = user_calling.id
 
     def get_or_set_cache(self, need_to_be_recreated=False):
         if need_to_be_recreated:
@@ -85,7 +86,6 @@ class StoreInCache:
                         "warp_destination_id__name"
                     )[0]
                     
-                    
                     sector_data["sector_element"].append(
                         {
                             "item_id": map_element["id"],
@@ -119,8 +119,6 @@ class StoreInCache:
                         if v != "none"
                     ]
                     
-                    
-
                     resource_quantity = GetDataFromDB.get_resource_quantity_value(
                         table.quantity, 100
                     )
@@ -387,28 +385,32 @@ class StoreInCache:
 
         return pc_cache[player_index]["ship"]["is_reversed"], player_id
 
-    def get_user(self):
-        user_array = []
-        for key in cache.get(self.room)["users"]:
-            if key["username"] == self.user_calling:
-                user_array.append(key)
-        return user_array
-
-    def delete_user(self):
+    def get_user_index(self, player_id):
         in_cache = cache.get(self.room)
-        in_cache["users"] = [
-            key for key in in_cache["users"] if key["username"] != self.user_calling
-        ]
-        if not in_cache["selected_card"]["card_id"] is None:
-            found_item = next(
-                item
-                for item in in_cache["cards"]
-                if item["id"] == in_cache["selected_card"]["card_id"]
-            )
-            found_item_index = in_cache["cards"].index(found_item)
-            in_cache["cards"][found_item_index]["is_displayed"] = False
-            in_cache["cards"][found_item_index]["picked_up_by"] = ""
+        player_data = in_cache["pc"]
+        player = player_id
 
+        try:
+            found_player = next(
+                p for p in player_data if player == p["user"]["player"]
+            )
+        except StopIteration:
+            return
+
+        found_player_index = player_data.index(found_player)
+        return found_player_index
+    
+    def transfert_player_to_other_cache(self, destination_sector, new_coordinates):
+        PlayerAction(self.user_calling_id).set_player_sector(
+            destination_sector, 
+            new_coordinates
+        )
+
+    def delete_user(self, player_id):
+        in_cache = cache.get(self.room)
+        in_cache["pc"] = [
+            key for key in in_cache["user"] if key["player"] != player_id
+        ]
         cache.set(self.room, in_cache)
 
     def add_msg(self, user):
@@ -432,3 +434,4 @@ class StoreInCache:
 
     def get_datetime_json(self, date_time):
         return json.dumps(date_time, indent=4, sort_keys=True, default=str)
+    
