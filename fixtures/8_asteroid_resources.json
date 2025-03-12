@@ -4,9 +4,11 @@
         "fields": {
             "data": {
                 "name": "a-1",
-                "coord_x": "7",
-                "coord_y": "6",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 7,
+                "y": 6
             },
             "resource_id": 1,
             "sector_id": 1,
@@ -21,9 +23,11 @@
         "fields": {
             "data": {
                 "name": "a-2",
-                "coord_x": "6",
-                "coord_y": "6",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 6,
+                "y": 6
             },
             "resource_id": 1,
             "sector_id": 1,
@@ -38,9 +42,11 @@
         "fields": {
             "data": {
                 "name": "a-3",
-                "coord_x": "6",
-                "coord_y": "7",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 6,
+                "y": 7
             },
             "resource_id": 1,
             "sector_id": 1,
@@ -55,9 +61,11 @@
         "fields": {
             "data": {
                 "name": "a-4",
-                "coord_x": "7",
-                "coord_y": "7",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 7,
+                "y": 7
             },
             "resource_id": 1,
             "sector_id": 1,

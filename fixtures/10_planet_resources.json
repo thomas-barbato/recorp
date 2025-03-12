@@ -4,9 +4,11 @@
         "fields": {
             "data": {
                 "name": "p-1",
-                "coord_x": "1",
-                "coord_y": "1",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 1,
+                "y": 1
             },
             "resource_id": 1,
             "sector_id": 1,
@@ -21,9 +23,11 @@
         "fields": {
             "data": {
                 "name": "moon-1",
-                "coord_x": "18",
-                "coord_y": "10",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 18,
+                "y": 10
             },
             "resource_id": 1,
             "sector_id": 1,
@@ -39,9 +43,11 @@
             "data": {
                 "name": "star-1",
                 "dirname": "star_1",
-                "coord_x": "13",
-                "coord_y": "7",
                 "description": "lorem ipsum "
+            },
+            "coordinates":{
+                "x": 13,
+                "y": 7
             },
             "resource_id": 1,
             "sector_id": 1,

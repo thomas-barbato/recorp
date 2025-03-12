@@ -23,32 +23,32 @@ let display_animation_file_choice = function() {
     fg_item = this.value;
     switch (fg_item) {
         case "planet":
-            atlas.col = atlas.row = size[0]["planet_data"]["size_x"];
+            atlas.col = atlas.row = size[0]["planet_data"]["size"]["x"];
             append_select_field(planet_url);
             break;
         case "station":
-            atlas.col = atlas.row = size[1]["station_data"]["size_x"];
+            atlas.col = atlas.row = size[1]["station_data"]["size"]["x"];
             append_select_field(station_url);
             break;
         case "asteroid":
-            atlas.col = atlas.row = size[2]["asteroid_data"]["size_x"];
+            atlas.col = atlas.row = size[2]["asteroid_data"]["size"]["x"];
             append_select_field(asteroid_url);
             break;
         case "satellite":
-            atlas.col = atlas.row = size[3]["satellite_data"]["size_x"];
+            atlas.col = atlas.row = size[3]["satellite_data"]["size"]["x"];
             append_select_field(satellite_url);
             break;
         case "blackhole":
-            atlas.col = size[4]["blackhole_data"]["size_x"];
+            atlas.col = size[4]["blackhole_data"]["size"]["x"];
             atlas.row = size[4]["blackhole_data"]["size_y"];
             append_select_field(blackhole_url);
             break;
         case "star":
-            atlas.col = atlas.row = size[5]["star_data"]["size_x"];
+            atlas.col = atlas.row = size[5]["star_data"]["size"]["x"];
             append_select_field(star_url);
             break;
         case "warpzone":
-            atlas.col = atlas.row = size[6]["warpzone_data"]["size_x"];
+            atlas.col = atlas.row = size[6]["warpzone_data"]["size"]["x"];
             atlas.row = atlas.row = size[6]["warpzone_data"]["size_y"];
             append_select_field(warpzone_url);
             break;

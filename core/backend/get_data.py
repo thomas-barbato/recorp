@@ -40,25 +40,25 @@ class GetDataFromDB:
     @staticmethod
     def get_size():
         return [
-            {"planet_data": {"size_x": 4, "size_y": 4}},
-            {"station_data": {"size_x": 3, "size_y": 3}},
-            {"asteroid_data": {"size_x": 1, "size_y": 1}},
-            {"satellite_data": {"size_x": 3, "size_y": 3}},
-            {"blackhole_data": {"size_x": 5, "size_y": 3}},
-            {"star_data": {"size_x": 2, "size_y": 2}},
-            {"warpzone_data": {"size_x": 2, "size_y": 3}},
+            {"planet_data": {"x": 4, "y": 4}},
+            {"station_data": {"x": 3, "y": 3}},
+            {"asteroid_data": {"x": 1, "y": 1}},
+            {"satellite_data": {"x": 3, "y": 3}},
+            {"blackhole_data": {"x": 5, "y": 3}},
+            {"star_data": {"x": 2, "y": 2}},
+            {"warpzone_data": {"x": 2, "y": 3}},
         ]
 
     @staticmethod
     def get_specific_size(element):
         return {
-            "planet": {"size_x": 4, "size_y": 4},
-            "station": {"size_x": 3, "size_y": 3},
-            "asteroid": {"size_x": 1, "size_y": 1},
-            "satellite": {"size_x": 3, "size_y": 3},
-            "blackhole": {"size_x": 5, "size_y": 3},
-            "star": {"size_x": 2, "size_y": 2},
-            "warpzone": {"size_x": 2, "size_y": 3},
+            "planet": {"x": 4, "y": 4},
+            "station": {"x": 3, "y": 3},
+            "asteroid": {"x": 1, "y": 1},
+            "satellite": {"x": 3, "y": 3},
+            "blackhole": {"x": 5, "y": 3},
+            "star": {"x": 2, "y": 2},
+            "warpzone": {"x": 2, "y": 3},
         }[element]
 
     @staticmethod
@@ -220,29 +220,33 @@ class GetDataFromDB:
                 return (
                     sector.planet_sector.values(
                         'source_id__size',
-                        'data'
+                        'data',
+                        'size'
                     ),
                     sector.asteroid_sector.values(
                         'source_id__size',
-                        'data'
+                        'data',
+                        'size'
                     ),
                     sector.station_sector.values(
                         'source_id__size',
-                        'data'
+                        'data',
+                        'size'
                     ),
                     sector.warp_sector.values(
                         'source_id__size',
-                        'data'
+                        'data',
+                        'size'
                     ),
                     sector.npc_sector.values(
-                        'npc_template_id__ship_id__ship_category_id__ship_size',
+                        'npc_template_id__ship_id__ship_category_id__size',
                         'coordinates'
                     ),
                     PlayerShip.objects.filter(
                         player_id__in=player_id_list, 
                         is_current_ship=True,
                     ).values(
-                        'ship_id__ship_category_id__ship_size',
+                        'ship_id__ship_category_id__size',
                         'player_id__coordinates',
                         
                     )
@@ -299,7 +303,7 @@ class GetDataFromDB:
                 "playership__ship_id__module_slot_available",
                 "playership__ship_id__ship_category__name",
                 "playership__ship_id__ship_category__description",
-                "playership__ship_id__ship_category__ship_size",
+                "playership__ship_id__ship_category__size",
             ),
             Npc.objects.filter(sector_id=pk).values(
                 "id",
@@ -321,7 +325,7 @@ class GetDataFromDB:
                 "npc_template_id__id",
                 "faction_id__name",
                 "npc_template_id__ship_id__image",
-                "npc_template_id__ship_id__ship_category_id__ship_size",
+                "npc_template_id__ship_id__ship_category_id__size",
                 "npc_template_id__ship_id__ship_category_id__name",
                 "npc_template_id__ship_id__ship_category_id__description",
                 "npc_template_id__ship_id__name",
@@ -431,7 +435,7 @@ class GetDataFromDB:
             "ship_id", flat=True
         )[0]
         return Ship.objects.filter(id=ship_id).values(
-            "id", "name", "image", "ship_category_id__ship_size"
+            "id", "name", "image", "ship_category_id__size"
         )[0]
 
     @staticmethod
@@ -444,7 +448,7 @@ class GetDataFromDB:
                 "npc_template_id__id",
                 "npc_template_id__name",
                 "npc_template_id__ship_id__image",
-                "npc_template_id__ship_id__ship_category_id__ship_size",
+                "npc_template_id__ship_id__ship_category_id__size",
                 "npc_template_id__ship_id__name",
             )
         )
@@ -458,34 +462,45 @@ class GetDataFromDB:
         sector_element_data_key = {
             "pc": {
                 "size": {
-                    "index": "ship_id__ship_category_id__ship_size",
-                    "x": "size_x",
-                    "y": "size_y",
+                    "index": "ship_id__ship_category_id__size",
+                    "x": "x",
+                    "y": "y",
                 },
                 "coord": {
                     "index": "player_id__coordinates",
-                    "x": "coord_x",
-                    "y": "coord_y",
+                    "x": "x",
+                    "y": "y",
                 },
             },
             "npc": {
                 "size": {
-                    "index": "npc_template_id__ship_id__ship_category_id__ship_size",
-                    "x": "size_x",
-                    "y": "size_y",
+                    "index": "npc_template_id__ship_id__ship_category_id__size",
+                    "x": "x",
+                    "y": "y",
                 },
-                "coord": {"index": "coordinates", "x": "x", "y": "y"},
+                "coord": {
+                    "index": "coordinates", 
+                    "x": "x", 
+                    "y": "y"
+                },
             },
             "other_element": {
                 "size": {
                     "index": "source_id__size",
-                    "x": "size_x",
-                    "y": "size_y",
+                    "x": "x",
+                    "y": "y",
                 },
-                "coord": {"index": "data", "x": "coord_x", "y": "coord_y"},
+                "coord": {
+                    "index": "data", 
+                    "x": "x", 
+                    "y": "y"
+                },
             },
         }
-
+        
+        current_player_x = 0
+        current_player_y = 0
+        
         if is_npc is False:
 
             current_player = list(
@@ -494,7 +509,7 @@ class GetDataFromDB:
                 ).values(
                     "id",
                     "module_id_list",
-                    "ship_id__ship_category_id__ship_size",
+                    "ship_id__ship_category_id__size",
                     "player_id__coordinates",
                 )
             )[0]
@@ -507,13 +522,23 @@ class GetDataFromDB:
                 ).values("id", "effect", "type"),
             )
             
-            player_size_x = int(current_player["ship_id__ship_category_id__ship_size"]["size_x"])
-            player_size_y = int(current_player["ship_id__ship_category_id__ship_size"]["size_y"])
+            player_size_x = int(current_player["ship_id__ship_category_id__size"]["x"])
+            player_size_y = int(current_player["ship_id__ship_category_id__size"]["y"])
 
             current_size = {
                 "x": player_size_x,
                 "y": player_size_y,
             }
+            
+            if current_player.get("player_id__coordinates"):
+                # a npc
+                if current_player["player_id__coordinates"].get('x'):
+                    current_player_x = int(current_player["player_id__coordinates"]["x"])
+                    current_player_y = int(current_player["player_id__coordinates"]["y"])
+                else:
+                    # not a player or a npc
+                    current_player_x = int(current_player["player_id__coordinates"]["x"])
+                    current_player_y = int(current_player["player_id__coordinates"]["y"])
 
         else:
 
@@ -521,7 +546,7 @@ class GetDataFromDB:
                 Npc.objects.filter(id=current_user_id).values(
                     "id",
                     "npc_template_id__module_id_list",
-                    "npc_template_id__ship_id__ship_category_id__ship_size",
+                    "npc_template_id__ship_id__ship_category_id__size",
                     "coordinates",
                 )
             )[0]
@@ -534,24 +559,16 @@ class GetDataFromDB:
                 ).values("id", "effect", "type"),
             )
             
-            npc_size_x = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_x"])
-            npc_size_y = int(current_player["npc_template_id__ship_id__ship_category_id__ship_size"]["size_y"])
+            npc_size_x = int(current_player["npc_template_id__ship_id__ship_category_id__size"]["x"])
+            npc_size_y = int(current_player["npc_template_id__ship_id__ship_category_id__size"]["y"])
             
             current_size = {
                 "x": npc_size_x,
                 "y": npc_size_y,
             }
-
-        current_player_x = (
-            int(current_player["coordinates"]["x"])
-            if is_npc is True
-            else int(current_player["player_id__coordinates"]["coord_x"])
-        )
-        current_player_y = (
-            int(current_player["coordinates"]["y"])
-            if is_npc is True
-            else int(current_player["player_id__coordinates"]["coord_y"])
-        )
+            
+            current_player_x = int(current_player["coordinates"]["x"])
+            current_player_y = int(current_player["coordinates"]["y"])
         
 
         sector_element_dict = {
@@ -563,13 +580,13 @@ class GetDataFromDB:
                 .values(
                     "id",
                     "player_id__coordinates",
-                    "ship_id__ship_category_id__ship_size",
+                    "ship_id__ship_category_id__size",
                 )
             ),
             "npc": Npc.objects.filter(sector_id=sector_id).values(
                 "id",
                 "coordinates",
-                "npc_template_id__ship_id__ship_category_id__ship_size",
+                "npc_template_id__ship_id__ship_category_id__size",
             ),
             "asteroid": AsteroidResource.objects.filter(sector_id=sector_id).values(
                 "id", "data", "source_id__size"
@@ -593,6 +610,8 @@ class GetDataFromDB:
                 element = sector_element_data_key["other_element"]
             else:
                 element = sector_element_data_key[index]
+                
+                
 
             for item in value:
                 
@@ -624,22 +643,27 @@ class GetDataFromDB:
                         for y in range(current_player_start_y, current_player_end_y)
                         for x in range(current_player_start_x, current_player_end_x)
                     ]
-
-                    element_size_x = int(item[element["size"]["index"]][element["size"]["x"]])
-                    element_size_y = int(item[element["size"]["index"]][element["size"]["y"]])
-
-                    element_coord_x = int(
-                        item[element["coord"]["index"]][element["coord"]["x"]]
-                    )
-                    element_coord_y = int(
-                        item[element["coord"]["index"]][element["coord"]["y"]]
-                    )
-
+                    
+                    
+                    element_size = item
+                    
+                    if index == "npc":
+                        element_size_x =int(element_size['npc_template_id__ship_id__ship_category_id__size']['x'])
+                        element_size_y =int(element_size['npc_template_id__ship_id__ship_category_id__size']['y'])
+                    
+                    elif index == "pc":
+                        element_size_x =int(element_size['ship_id__ship_category_id__size']['x'])
+                        element_size_y =int(element_size['ship_id__ship_category_id__size']['y'])
+                    else:
+                        element_size_x = int(element_size['size']['x'])
+                        element_size_y = int(element_size['size']['y'])
+                        
+                        
                     if element_size_y == 1 and element_size_x == 1:
-                        if f"{element_coord_y}_{element_coord_x}" in player_zone_range:
+                        if f"{current_player_start_y}_{current_player_start_x}" in player_zone_range:
                             module_effect_is_in_range = True
                     else:
-                        element_zone_range = [f"{y}_{x}" for y in range(element_coord_y, element_coord_y + element_size_y) for x in range(element_coord_x, element_coord_x + element_size_x)]
+                        element_zone_range = [f"{y}_{x}" for y in range(current_player_start_y, current_player_start_y + element_size_y) for x in range(current_player_start_x, current_player_start_x + element_size_x)]
                         if len(set(player_zone_range).intersection(element_zone_range)) > 0:
                             module_effect_is_in_range = True
 

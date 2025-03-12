@@ -12,7 +12,7 @@ function add_background(data) {
             entry_point.style.backgroundPositionY = `-${row_i}px`;
             entry_point_border.classList.add('pathfinding-zone', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(index_row - 1)}; x = ${parseInt(index_col - 1)}]`);
-            entry_point.addEventListener(attribute_touch_touch_mouseover, function(){
+            entry_point.addEventListener(attribute_touch_mouseover, function(){
                 update_target_coord_display(entry_point);
             })
 
@@ -24,7 +24,7 @@ function add_background(data) {
     for (let i = 0; i < map_informations.pc.length; i++) {
         let player = map_informations.pc[i];
         if (player.user.user == current_user_id) {
-            hide_sector_overflow(player.user.coordinates.coord_x, player.user.coordinates.coord_y);
+            hide_sector_overflow(player.user.coordinates.x, player.user.coordinates.y);
             if (!is_user_is_on_mobile_device()) {
                 set_pathfinding_event();
             }
@@ -55,8 +55,8 @@ function add_foreground(data){
         let action_label = map_informations.actions.translated_action_label_msg;
         let action_close = map_informations.actions.translated_close_msg;
         let player_in_same_faction = map_informations.actions.player_is_same_faction;
-        let coord_x = data[sector_i].data.coord_x;
-        let coord_y = data[sector_i].data.coord_y;
+        let coord_x = data[sector_i].data.x;
+        let coord_y = data[sector_i].data.y;
         let size_x = data[sector_i]['size']["size_x"];
         let size_y = data[sector_i]['size']["size_y"];
 
@@ -205,10 +205,18 @@ function add_foreground(data){
 function add_npc(data){
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
-        let coord_x = parseInt(data[i]["npc"]["coordinates"].x) + 1;
-        let coord_y = parseInt(data[i]["npc"]["coordinates"].y) + 1;
-        let ship_size_x = data[i]["ship"]['size'].size_x;
-        let ship_size_y = data[i]["ship"]['size'].size_y;
+        let coord_x = 0;
+        let coord_y = 0;
+        if(data[i]["npc"]["coordinates"].x){
+            coord_x = parseInt(data[i]["npc"]["coordinates"].x) + 1;
+            coord_y = parseInt(data[i]["npc"]["coordinates"].y) + 1;
+        }else{
+            coord_x = parseInt(data[i]["npc"]["coordinates"].x) + 1;
+            coord_y = parseInt(data[i]["npc"]["coordinates"].y) + 1;
+        }
+        console.log(coord_y, coord_x)
+        let ship_size_x = data[i]["ship"]['size'].x;
+        let ship_size_y = data[i]["ship"]['size'].y;
         modal_data = {
             player: {
                 name: data[i].npc.name,
@@ -269,7 +277,7 @@ function add_npc(data){
                 space_ship.style.backgroundPositionX = `-${col_i}px`;
                 space_ship.style.backgroundPositionY = `-${row_i}px`;
 
-                /* Check ship_size and set ship-start-pos in the middle */
+                /* Check size and set ship-start-pos in the middle */
                 if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                     if (col_i == 0) {
                         entry_point.classList.add("ship-start-pos", "border-dashed");
@@ -303,11 +311,18 @@ function add_pc(data) {
     let border_color = "";
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
-
-        let coord_x = parseInt(data[i]["user"]["coordinates"].coord_x) + 1;
-        let coord_y = (data[i]["user"]["coordinates"].coord_y) + 1;
-        let ship_size_x = data[i]["ship"]['size'].size_x;
-        let ship_size_y = data[i]["ship"]['size'].size_y;
+        let coord = data[i]["user"]["coordinates"]
+        let coord_x;
+        let coord_y;
+        if(coord.x){
+            coord_x = parseInt(coord.x) + 1;
+            coord_y = parseInt(coord.y) + 1;
+        }else{
+            coord_x = parseInt(coord.x) + 1;
+            coord_y = parseInt(coord.y) + 1;
+        }
+        let ship_size_x = data[i]["ship"]['size'].x;
+        let ship_size_y = data[i]["ship"]['size'].y;
         let is_reversed = data[i]["ship"]["is_reversed"];
 
         if (data[i].user.user != current_user_id) {
@@ -346,6 +361,7 @@ function add_pc(data) {
         }
         for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
+
                 let entry_point = document.querySelector('.tabletop-view').rows[coord_y].cells[coord_x];
                 if(row_i == ((atlas.tilesize * ship_size_y) - atlas.tilesize) && col_i == 0){
                     let entry_point_tooltip_container_ul = document.createElement('ul')
@@ -402,13 +418,13 @@ function add_pc(data) {
                 space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
                 entry_point_border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
                 if (data[i]["user"]["user"] == current_user_id) {
-                    update_user_coord_display(data[i]["user"]["coordinates"].coord_x, data[i]["user"]["coordinates"].coord_y);
+                    update_user_coord_display(data[i]["user"]["coordinates"].x, data[i]["user"]["coordinates"].y);
                     border_color = "border-green-300";
                     entry_point.classList.add("ship-pos");
                     entry_point_div.classList.add("bg-green-300/10");
                     entry_point_border.classList.add(border_color);
 
-                    /* Check ship_size and set ship-start-pos in the middle */
+                    /* Check size and set ship-start-pos in the middle */
                     if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                         if (col_i == 0) {
                             entry_point.classList.add("player-ship-start-pos", "border-dashed");
@@ -450,13 +466,13 @@ function add_pc(data) {
                     space_ship_reversed.style.display = "none";
                 }
 
-                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x : ${parseInt(data[i]["user"]["coordinates"].coord_y)}, y: ${parseInt(data[i]["user"]["coordinates"].coord_x )})]`);
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x : ${parseInt(data[i]["user"]["coordinates"].y)}, y: ${parseInt(data[i]["user"]["coordinates"].x )})]`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 entry_point_border.addEventListener("mouseover", function(){
-                    generate_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1);
+                    generate_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].y) + 1, parseInt(data[i]["user"]["coordinates"].x) + 1);
                 });
                 entry_point_border.addEventListener("mouseout", function(){
-                    remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].coord_y) + 1, parseInt(data[i]["user"]["coordinates"].coord_x) + 1, border_color);
+                    remove_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].y) + 1, parseInt(data[i]["user"]["coordinates"].x) + 1, border_color);
                 });
 
                 entry_point_div.append(space_ship);
@@ -465,7 +481,7 @@ function add_pc(data) {
                 coord_x++;
             }
             coord_y++;
-            coord_x = parseInt(data[i]["user"]["coordinates"].coord_x) + 1
+            coord_x = parseInt(data[i]["user"]["coordinates"].x) + 1
         }
     }
     if (is_user_is_on_mobile_device()) {
@@ -687,6 +703,7 @@ function remove_border(size_y, size_x, coord_y, coord_x, color_class){
 function generate_border(size_y, size_x, coord_y, coord_x){
     let c_y = coord_y;
     let c_x = coord_x;
+    console.log(c_y, c_x)
     let classList = generate_border_className(size_y, size_x);
     let element_list = [];
 

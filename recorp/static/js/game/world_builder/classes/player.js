@@ -5,8 +5,8 @@ class Player {
         this.start_y = start_y;
         this.end_x = 0;
         this.end_y = 0;
-        this.ship_size_x = 0;
-        this.ship_size_y = 0;
+        this.size_x = 0;
+        this.size_y = 0;
         this.move_cost = 0;
         this.fullsize_coordinates_array = [];
         this.move_points = 0;
@@ -40,8 +40,8 @@ class Player {
     }
 
     set_ship_size(size_x, size_y) {
-        this.ship_size_x = size_x;
-        this.ship_size_y = size_y;
+        this.size_x = size_x;
+        this.size_y = size_y;
     }
 
     set_fullsize_coordinates(id_array) {
@@ -62,8 +62,8 @@ class Player {
 
     get s_size() {
         return {
-            "x": this.ship_size_x,
-            "y": this.ship_size_y,
+            "x": this.size_x,
+            "y": this.size_y,
         }
     }
 

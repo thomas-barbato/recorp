@@ -20,9 +20,9 @@ function update_player_coord(data) {
 
     clear_path();
     
-    let ship_size = {
-        "y" : parseInt(data["ship_size"]["size_y"]),
-        "x" : parseInt(data["ship_size"]["size_x"]),
+    let size = {
+        "y" : parseInt(data["size"]["size_y"]),
+        "x" : parseInt(data["size"]["size"]["x"]),
     }
     let target_user_id = data["user_id"];
 
@@ -52,10 +52,10 @@ function update_player_coord(data) {
             })
             let end_point_border = end_point.querySelector('span');
             end_point_border.addEventListener("mouseover", function(){
-                generate_border(ship_size["y"], ship_size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1));
+                generate_border(size["y"], size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1));
             });
             end_point_border.addEventListener("mouseout", function(){
-                remove_border(ship_size["y"], ship_size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1), 'border-cyan-400');
+                remove_border(size["y"], size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1), 'border-cyan-400');
             });
 
         }
@@ -122,10 +122,10 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 
 function update_player_pos_display_after_move(data){
     let current_player_ship = document.querySelectorAll('.ship-pos');
-    let coord_x = parseInt(data.player.user.coordinates.coord_x) + 1;
-    let coord_y = parseInt(data.player.user.coordinates.coord_y) + 1;
-    let ship_size_y = data.player.ship.size.size_y;
-    let ship_size_x = data.player.ship.size.size_x;
+    let coord_x = parseInt(data.player.user.coordinates.x) + 1;
+    let coord_y = parseInt(data.player.user.coordinates.y) + 1;
+    let ship_size_y = data.player.ship.size.y;
+    let ship_size_x = data.player.ship.size.x;
     let is_reversed = data.player.ship.is_reversed;
     let coordinates_array_to_disable_button = [];
     let current_player_ship_tooltip = "";
@@ -157,7 +157,7 @@ function update_player_pos_display_after_move(data){
         current_player_ship[i].className = "relative w-[32px] h-[32px] m-0 p-0 tile";
     }
 
-    hide_sector_overflow(data.player.user.coordinates.coord_x, data.player.user.coordinates.coord_y);
+    hide_sector_overflow(data.player.user.coordinates.x, data.player.user.coordinates.y);
     if (!is_user_is_on_mobile_device()) {
         set_pathfinding_event();
     }
@@ -190,7 +190,7 @@ function update_player_pos_display_after_move(data){
 
             entry_point_div.classList.add('bg-green-300/10');
 
-            entry_point_border.removeAttribute(attribute_touch_touch_mouseover, 'get_pathfinding(this)');
+            entry_point_border.removeAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
             entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
 
             space_ship.style.backgroundImage = "url('" + ship_url + "')";
@@ -203,7 +203,7 @@ function update_player_pos_display_after_move(data){
             space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
             space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
-            update_user_coord_display(data.player.user.coordinates.coord_x, data.player.user.coordinates.coord_y);
+            update_user_coord_display(data.player.user.coordinates.x, data.player.user.coordinates.y);
             border_color = "border-green-300";
             entry_point.classList.add("ship-pos");
 
@@ -211,17 +211,17 @@ function update_player_pos_display_after_move(data){
 
                 entry_point.setAttribute('onclick', 'reverse_player_ship_display()');
                 entry_point_border.addEventListener("mouseover", function(){
-                    generate_border(ship_size_y, ship_size_x, parseInt(data.player.user.coordinates.coord_y) + 1, parseInt(data.player.user.coordinates.coord_x) + 1);
+                    generate_border(ship_size_y, ship_size_x, parseInt(data.player.user.coordinates.y) + 1, parseInt(data.player.user.coordinates.x) + 1);
                 });
                 entry_point_border.addEventListener("mouseout", function(){
-                    remove_border(ship_size_y, ship_size_x, parseInt(data.player.user.coordinates.coord_y) + 1, parseInt(data.player.user.coordinates.coord_x) + 1, border_color);
+                    remove_border(ship_size_y, ship_size_x, parseInt(data.player.user.coordinates.y) + 1, parseInt(data.player.user.coordinates.x) + 1, border_color);
                 });
 
             } else {
                 entry_point.setAttribute('ontouchstart', 'reverse_player_ship_display()');
                 coordinates_array_to_disable_button.push(`${coord_y}_${coord_x}`)
             }
-            /* Check ship_size and set ship-start-pos in the middle */
+            /* Check size and set ship-start-pos in the middle */
             if (ship_size_y == 1 && ship_size_x == 1 || ship_size_y == 1 && ship_size_x == 2) {
                 if (col_i == 0) {
                     entry_point.classList.add("player-ship-start-pos");
@@ -262,7 +262,7 @@ function update_player_pos_display_after_move(data){
         }
 
         coord_y++;
-        coord_x = parseInt(data.player.user.coordinates.coord_x) + 1
+        coord_x = parseInt(data.player.user.coordinates.x) + 1
         
         let remaining_movement_mobile = document.querySelector('#remaining-movement-div-mobile');
         let remaining_movement_div_mobile = remaining_movement_mobile.querySelector('div');
@@ -368,29 +368,35 @@ function player_travel(data){
 
     }else{
 
-        let coord_x = data.coordinates.coord_x;
-        let coord_y = data.coordinates.coord_y;
-        let ship_size = {
-            "y" : data.ship_size.size_y,
-            "x" : data.ship_size.size_x,
+        let coord_x = data.coordinates.x;
+        let coord_y = data.coordinates.y;
+        let size = {
+            "y" : data.size.size_y,
+            "x" : data.size.size_x,
         };
 
-        let id_array = [];
+        for(c_y = coord_y ; c_y < coord_y + size.y ; c_y++){
+            for(c_x = coord_x ; c_x < coord_x + size.x ; c_x++){
+                let element = document.querySelector("#" + `${c_y}_${c_x}`);
+                element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
+                element.removeAttribute("size_x");
+                element.removeAttribute("size_y");
+                element.querySelector('div').replaceChildren();
 
-        for(c_y = coord_y ; c_y < coord_y + ship_size.y ; c_y++){
-            for(c_x = coord_x ; c_x < coord_x + ship_size.x ; c_x++){
-                id_array.append(`${c_y}_${c_x}`);
+                let sector_name = document.querySelector("#sector-name").textContent;
+                let element_span = createElement('span');
+
+                element_span.className = "absolute hover:box-border hover:border-2 hover:border inline-block w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+                element_span.setAttribute('title', `${sector_name} [y = ${parseInt(c_y)}; x = ${parseInt(c_x)}]`);
+                element.addEventListener(attribute_touch_mouseover, function(){
+                    update_target_coord_display(entry_point);
+                })
+                element.append(element_span);
             }
         }
-
-        for(let i = 0; i < id_array.length(); i++){
-            let element = document.querySelector("#" + id_array[i]);
-            element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
-            element.removeAttribute("size_x");
-            element.removeAttribute("size_y");
-            element.querySelector('div').replaceChildren();
-        }
-
-
     }
+}
+
+function remove_player_from_the_sector(data){
+
 }

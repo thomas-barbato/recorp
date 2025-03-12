@@ -278,7 +278,7 @@ class StoreInCache:
                         "category_description": data[
                             "playership__ship_id__ship_category__description"
                         ],
-                        "size": data["playership__ship_id__ship_category__ship_size"],
+                        "size": data["playership__ship_id__ship_category__size"],
                         "is_reversed": data["playership__is_reversed"],
                     },
                 }

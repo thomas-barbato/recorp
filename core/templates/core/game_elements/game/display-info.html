@@ -9,7 +9,7 @@
 
     <div id="info-sector-container" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20">
       <div class="flex lg:p-0 p-2 gap-1 lg:flex-row flex-col">
-        <p class="font-shadow text-xs w-auto"><b>{% translate "Sector" %}</b> {{ map_informations.sector.name }}</p>
+        <p class="font-shadow text-xs w-auto"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
         <p class="font-shadow text-xs w-auto"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
         <p class="font-shadow text-xs w-auto"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
         </span>

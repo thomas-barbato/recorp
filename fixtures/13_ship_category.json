@@ -4,9 +4,9 @@
         "fields": {
             "name": "Light",
             "description": "lorem ipsum bla bla bla",
-            "ship_size": {
-                "size_x": 1,
-                "size_y": 1
+            "size": {
+                "x": 1,
+                "y": 1
             },
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -18,9 +18,9 @@
         "fields": {
             "name": "Medium",
             "description": "lorem ipsum bla bla bla",
-            "ship_size": {
-                "size_x": 2,
-                "size_y": 1
+            "size": {
+                "x": 2,
+                "y": 1
             },
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -32,9 +32,9 @@
         "fields": {
             "name": "Heavy",
             "description": "lorem ipsum bla bla bla",
-            "ship_size": {
-                "size_x": 3,
-                "size_y": 1
+            "size": {
+                "x": 3,
+                "y": 1
             },
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
@@ -46,9 +46,9 @@
         "fields": {
             "name": "Super heavy",
             "description": "lorem ipsum bla bla bla",
-            "ship_size": {
-                "size_x": 3,
-                "size_y": 3
+            "size": {
+                "x": 3,
+                "y": 3
             },
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"

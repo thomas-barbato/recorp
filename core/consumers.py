@@ -5,10 +5,12 @@ from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 
 from core.backend.store_in_cache import StoreInCache
+from core.backend.inter_channel_groups import send_message_to_group
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 
 # logger = logging.getLogger("django")
+
 
 class GameConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -83,18 +85,20 @@ class GameConsumer(WebsocketConsumer):
                     store.update_player_range_finding()
                     response = {
                         "type": "player_move",
-                        "message":{
+                        "message": {
                             "user_id": p.get_other_player_user_id(message["player"]),
-                            "player" : store.get_specific_player_data(p.get_player_id(), "pc"),
+                            "player": store.get_specific_player_data(
+                                p.get_player_id(), "pc"
+                            ),
                             "sector": store.get_specific_sector_data("sector"),
                             "move_cost": message["move_cost"],
                             "modules_range": store.get_specific_player_data(
                                 player_id, "pc", "ship", "modules_range"
                             ),
-                            "ship_size":store.get_specific_player_data(
+                            "size": store.get_specific_player_data(
                                 player_id, "pc", "ship", "size"
                             ),
-                        }
+                        },
                     }
         else:
             store.update_player_range_finding()
@@ -118,7 +122,7 @@ class GameConsumer(WebsocketConsumer):
                     "modules_range": store.get_specific_player_data(
                         player_id, "pc", "ship", "modules_range"
                     ),
-                    "ship_size":store.get_specific_player_data(
+                    "size": store.get_specific_player_data(
                         message["player"], "pc", "ship", "size"
                     ),
                 },
@@ -147,36 +151,46 @@ class GameConsumer(WebsocketConsumer):
         }
 
         self.send(text_data=json.dumps(response))
-        
+
     def async_travel(self, event):
         response = {}
         message = json.loads(event["message"])
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        ship_pos = PlayerAction(self.user.id).get_spaceship_coord_and_size(message['player'])
-        if message['player'] == self.user.id:
-            destination_sector_id, new_coordinates = PlayerAction(self.user.id).player_travel_to_destination(message['warpzone_name'], message['source_id'])
-            store.transfert_player_to_other_cache(destination_sector_id, new_coordinates)
+        ship_pos = PlayerAction(self.user.id).get_spaceship_coord_and_size(
+            message["player"]
+        )
+        if message["player"] == self.user.id:
+            destination_sector_id, new_coordinates = PlayerAction(
+                self.user.id
+            ).player_travel_to_destination(
+                message["warpzone_name"], message["source_id"]
+            )
+            store.transfert_player_to_other_cache(
+                destination_sector_id, new_coordinates
+            )
             response = {
                 "type": "async_travel",
-                "message": {
-                    "user_can_travel": True
-                },
+                "message": {"user_can_travel": True},
             }
-            
+
         else:
-            
-            store.delete_user(message['player'])
+
+            store.delete_user(message["player"])
             response = {
                 "type": "async_travel",
                 "message": {
                     "user_must_be_deleted": True,
-                    "player": message['player'],
-                    "position": ship_pos['player_id__coordinates'],
-                    "ship_size": ship_pos['ship_id__ship_category_id__ship_size']
+                    "player": message["player"],
+                    "position": ship_pos["player_id__coordinates"],
+                    "size": ship_pos["ship_id__ship_category_id__size"],
                 },
             }
-            
+
         self.send(text_data=json.dumps(response))
+
+    def async_player_enter_in_sector(self, event):
+        response = {}
+        message = json.loads(event["message"])
 
     def send_message(self, event):
         pass

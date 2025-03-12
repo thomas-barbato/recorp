@@ -12,8 +12,8 @@
             "description": "lorem ipsum bla bla bla",
             "faction_xp": 10,
             "coordinates": {
-                "coord_x": 6,
-                "coord_y": 11
+                "x": 6,
+                "y": 11
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
@@ -33,8 +33,8 @@
             "description": "lorem ipsum bla bla bla",
             "faction_xp": 25,
             "coordinates": {
-                "coord_x": 9,
-                "coord_y": 11
+                "x": 9,
+                "y": 11
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
@@ -53,8 +53,8 @@
             "description": "lorem ipsum bla bla bla",
             "faction_xp": 25,
             "coordinates": {
-                "coord_x": 15,
-                "coord_y": 5
+                "x": 15,
+                "y": 5
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
@@ -73,8 +73,8 @@
             "description": "lorem ipsum bla bla bla",
             "faction_xp": 25,
             "coordinates": {
-                "coord_x": 7,
-                "coord_y": 1
+                "x": 7,
+                "y": 1
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
@@ -87,14 +87,14 @@
             "user": 5,
             "name": "Billy",
             "faction": 1,
-            "sector": 13,
+            "sector": 1,
             "archetype": 4,
             "is_npc": false,
             "description": "lorem ipsum bla bla bla",
             "faction_xp": 25,
             "coordinates": {
-                "coord_x": 7,
-                "coord_y": 1
+                "x": 7,
+                "y": 1
             },
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"

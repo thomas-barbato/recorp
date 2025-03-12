@@ -397,7 +397,7 @@ function define_user_values() {
         if (map_informations['pc'][i]['user']['user'] == current_user_id) {
 
             let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
-            let ship_size = document.querySelector('.player-ship-start-pos');
+            let size = document.querySelector('.player-ship-start-pos');
             let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
 
             current_player.set_player_id(
@@ -406,8 +406,8 @@ function define_user_values() {
 
             current_player.set_is_reversed(ship_is_reversed);
             current_player.set_ship_size(
-                parseInt(ship_size.getAttribute('size_x')),
-                parseInt(ship_size.getAttribute('size_y'))
+                parseInt(size.getAttribute('size_x')),
+                parseInt(size.getAttribute('size_y'))
             );
 
             // we use start_node_id to get destination coord.

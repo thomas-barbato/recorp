@@ -69,7 +69,7 @@ class PlayerAction:
             is_current_ship=True
         ).values(
             'player_id__coordinates',
-            'ship_id__ship_category_id__ship_size'
+            'ship_id__ship_category_id__size'
         )[0]
 
     def destination_already_occupied(self, end_x, end_y):
@@ -86,7 +86,7 @@ class PlayerAction:
         return PlayerShip.objects.filter(
             player_id=self.player_id, is_current_ship=True
         ).values(
-            "ship_id__ship_category_id__ship_size",
+            "ship_id__ship_category_id__size",
         )[0]
 
     def get_other_player_movement(self, other_player_id):
@@ -160,17 +160,19 @@ class PlayerAction:
             # get data 
             warpzone_destination = WarpZone.objects.filter(id=destination_source_id).values(
                 'data',
+                'coordinates',
                 'source_id__size'
             )[0]
             
-            wz_coord_y = int(warpzone_destination['data']['coord_y'])
-            wz_coord_x = int(warpzone_destination['data']['coord_x'])
-            wz_size_y = int(warpzone_destination['source_id__size']['size_y'])
-            wz_size_x = int(warpzone_destination['source_id__size']['size_x'])
+            # warpzone
+            wz_coord_y = int(warpzone_destination['coordinates']['y'])
+            wz_coord_x = int(warpzone_destination['coordinates']['x'])
+            wz_size_y = int(warpzone_destination['source_id__size']['y'])
+            wz_size_x = int(warpzone_destination['source_id__size']['x'])
             
             player_spaceship = self.get_player_ship_size()
-            spaceship_size_x = player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
-            spaceship_size_y = player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
+            spaceship_size_x = player_spaceship['ship_id__ship_category_id__size']['x']
+            spaceship_size_y = player_spaceship['ship_id__ship_category_id__size']['y']
             
             planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
                 destination_sector_id, with_npc=True, only_size_coord=True
@@ -195,12 +197,12 @@ class PlayerAction:
                 if table_key == "npc" or table_key == "pc":
                     for pc_npc in table_value:
                         
-                        size = pc_npc['npc_template_id__ship_id__ship_category_id__ship_size'] if table_key == "npc" else pc_npc['ship_id__ship_category_id__ship_size']
+                        size = pc_npc['npc_template_id__ship_id__ship_category_id__size'] if table_key == "npc" else pc_npc['ship_id__ship_category_id__size']
                         coord = pc_npc['coordinates'] if table_key == "npc" else pc_npc['player_id__coordinates']
-                        coord_y = int(coord['y']) if table_key == "npc" else int(coord['coord_y'])
-                        coord_x = int(coord['x']) if table_key == "npc" else int(coord['coord_x'])
-                        size_y = int(size['size_y'])
-                        size_x = int(size['size_x'])
+                        coord_y = int(coord['y']) if coord.get('y') else int(coord['y'])
+                        coord_x = int(coord['x']) if coord.get('x') else int(coord['x'])
+                        size_y = int(size['y'])
+                        size_x = int(size['x'])
                         
                         if size_x > 1:
                             for c_y in range(coord_y, coord_y + size_y):
@@ -208,17 +210,17 @@ class PlayerAction:
                                     if {"y":c_y, "x":c_x} not in space_item_coord_array:
                                         space_item_coord_array.append({"y":c_y, "x":c_x})
                         else:
-                            if {"y":coord_y, "x":coord_x} not in space_item_coord_array:
+                            if {'y':coord_y, 'x':coord_x} not in space_item_coord_array:
                                 space_item_coord_array.append({"y":coord_y, "x":coord_x})
                 else:
                     for fg_item in table_value:
                         
                         size = fg_item['source_id__size']
                         coord = fg_item['data']
-                        coord_y = int(coord['coord_y'])
-                        coord_x = int(coord['coord_x'])
-                        size_y = int(size['size_y'])
-                        size_x = int(size['size_x'])
+                        coord_y = int(coord['y'])
+                        coord_x = int(coord['x'])
+                        size_y = int(size['y'])
+                        size_x = int(size['x'])
                         
                         if size_x > 1:
                             for c_y in range(coord_y, coord_y + size_y):
@@ -228,8 +230,8 @@ class PlayerAction:
                         else:
                             space_item_coord_array.append({"y": coord_y, "x": coord_x})
                             
-            placeholder_size_x = player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
-            placeholder_size_y = player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
+            placeholder_size_x = player_spaceship['ship_id__ship_category_id__size']['x']
+            placeholder_size_y = player_spaceship['ship_id__ship_category_id__ship_size']['y']
                             
             while arrival_zone_has_been_finded is False:
                 # define "square" zone where user can be tp
@@ -244,12 +246,14 @@ class PlayerAction:
                 
                 if spaceship_size_x == 1 and spaceship_size_y == 1:
                     for cell in zone_range_coordinate_to_travel:
+                        print(cell)
                         if cell not in space_item_coord_array:
                             arrival_zone_has_been_finded = True
                             return destination_sector_id, cell
                         arrival_zone_has_been_finded = False
                 else:
                     for cell in zone_range_coordinate_to_travel:
+                        print(cell)
                         cell_y = int(cell["y"])
                         cell_x = int(cell["x"])
                         if not {"y": cell_y, "x": cell_x} in space_item_coord_array:
@@ -267,8 +271,8 @@ class PlayerAction:
                             else:
                                 arrival_zone = []
                         
-                placeholder_size_x += player_spaceship['ship_id__ship_category_id__ship_size']['size_x']
-                placeholder_size_y += player_spaceship['ship_id__ship_category_id__ship_size']['size_y']
+                placeholder_size_x += player_spaceship['ship_id__ship_category_id__ship_size']['x']
+                placeholder_size_y += player_spaceship['ship_id__ship_category_id__ship_size']['y']
                         
         
     def set_spaceship_statistics_with_module(self):

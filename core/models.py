@@ -6,18 +6,18 @@ localtime = timezone.now
 
 
 def get_default_planet_size():
-    return {"size_x": 4, "size_y": 4}
+    return {"x": 4, "y": 4}
 
 
 def get_default_station_size():
-    return {"size_x": 3, "size_y": 3}
+    return {"x": 3, "y": 3}
 
 
 def get_default_asteroid_size():
-    return {"size_x": 1, "size_y": 1}
+    return {"x": 1, "y": 1}
 
 def get_default_warzone_size():
-    return {"size_x": 2, "size_y": 3}
+    return {"x": 2, "y": 3}
 
 
 class CashShop(models.Model):
@@ -146,6 +146,7 @@ class Warp(models.Model):
 class WarpZone(models.Model):
     name = models.CharField(max_length=50, null=False, blank=False, default="SectorWarp")
     data = models.JSONField(null=True)
+    coordinates = models.JSONField(null=True)
     source = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_sector")
     created_at = models.DateTimeField("creation date", default=localtime)
@@ -309,7 +310,7 @@ class ShipCategory(models.Model):
         max_length=30, null=False, blank=False, default="Light Cruiser"
     )
     description = models.TextField(max_length=2500, blank=True)
-    ship_size = models.JSONField(null=True)
+    size = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -630,6 +631,7 @@ class PlanetResource(models.Model):
     )
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
+    coordinates = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -645,6 +647,7 @@ class AsteroidResource(models.Model):
     )
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
+    coordinates = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -659,6 +662,7 @@ class StationResource(models.Model):
         Sector, on_delete=models.CASCADE, related_name="station_sector"
     )
     data = models.JSONField(null=True)
+    coordinates = models.JSONField(null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 

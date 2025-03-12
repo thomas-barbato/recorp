@@ -12,7 +12,7 @@ let atlas = {
 
 let user_is_on_mobile_bool = is_user_is_on_mobile_device()
 
-let attribute_touch_touch_mouseover = user_is_on_mobile_bool === true ? 'touchstart' : 'mouseover';
+let attribute_touch_mouseover = user_is_on_mobile_bool === true ? 'touchstart' : 'mouseover';
 let attribute_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'onclick';
 let action_listener_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'click';
 

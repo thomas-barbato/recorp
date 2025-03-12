@@ -147,11 +147,11 @@
 
             let clone_coord_x = clone.querySelector('.coord-x > input');
             clone_coord_x.id = "coord-x-" + next_id_value;
-            clone_coord_x.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
+            clone_coord_x.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data.coordinates.x : 0;
 
             let clone_coord_y = clone.querySelector('.coord-y > input');
             clone_coord_y.id = "coord-y-" + next_id_value;
-            clone_coord_y.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
+            clone_coord_y.value = typeof pre_existing_data !== 'undefined' ? pre_existing_data.coordinates.y : 0;
 
             let clone_warp_sector = clone.querySelector('#fg-warp-sector');
 
@@ -226,8 +226,8 @@
         } else {
             dict = [];
             element.querySelector('#item-name-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['name'] : "";
-            element.querySelector('#coord-x-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_x'] : 0;
-            element.querySelector('#coord-y-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['coord_y'] : 0;
+            element.querySelector('#coord-x-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data.coordinates.x : 0;
+            element.querySelector('#coord-y-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data.coordinates.y : 0;
             element.querySelector('#item-description-1').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['data']['description'] : "";
             element.querySelector('input[type=hidden]').value = typeof pre_existing_data !== 'undefined' ? pre_existing_data['item_id'] : 0;
             let fg_item_selector = element.querySelector(".fg-item-selector");
@@ -302,8 +302,8 @@
 
     function display_select_animation_preview(select_text, select_value, element_id) {
         for (var [index_key, value] in animations_json[select_value]) {
-            let col = animations_json[select_value][index_key]['fields']['size']['size_x'];
-            let row = animations_json[select_value][index_key]['fields']['size']['size_y'];
+            let col = animations_json[select_value][index_key]['fields']['size']['x'];
+            let row = animations_json[select_value][index_key]['fields']['size']['x'];
             let id = element_id.split('-')[3];
             create_table(col, row, id);
             display_animation_preview(col, row, id, select_value, select_text);
@@ -404,8 +404,8 @@
                 coord_x = parseInt(fg_data[i].querySelector('input#coord-x-' + id).value);
                 coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value);
                 for (var [i_key, value] in animations_json[animation_data_direname]) {
-                    s_x = animations_json[animation_data_direname][i_key]['fields']['size']['size_x'];
-                    s_y = animations_json[animation_data_direname][i_key]['fields']['size']['size_y'];
+                    s_x = animations_json[animation_data_direname][i_key]['fields']['size']['x'];
+                    s_y = animations_json[animation_data_direname][i_key]['fields']['size']['x'];
                 }
                 dict[i] = {
                     coord_x: coord_x,
@@ -444,11 +444,11 @@
         let animation_container_i = 1;
         for (let dict_i = 0; dict_i < dict.length; dict_i++) {
             dict_value = dict[dict_i]["animations"][0];
-            let index_row = dict[dict_i]['coord_y'] + 1;
-            let index_col = dict[dict_i]['coord_x'] + 1;
+            let index_row = dict[dict_i].coord_y;
+            let index_col = dict[dict_i].coord_x;
             let bg_url = '/static/img/foreground/' + dict_value["type"] + '/' + dict_value["animation"] + '/' + '0.gif';
-            for (let row_i = 0; row_i < (atlas.tilesize * dict[dict_i]["size_y"]); row_i += atlas.tilesize) {
-                for (let col_i = 0; col_i < (atlas.tilesize * dict[dict_i]["size_x"]); col_i += atlas.tilesize) {
+            for (let row_i = 0; row_i < (atlas.tilesize * dict[dict_i].size_y); row_i += atlas.tilesize) {
+                for (let col_i = 0; col_i < (atlas.tilesize * dict[dict_i].size_x); col_i += atlas.tilesize) {
 
                     let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                     let entry_point_div = entry_point.querySelector('div');
@@ -474,7 +474,7 @@
                     index_col++;
                 }
                 index_row++;
-                index_col = dict[dict_i]['coord_x'] + 1;
+                index_col = dict[dict_i].coord_x;
             }
             animation_container_i++;
             animation_i++;
@@ -518,6 +518,8 @@
         let is_owned_by_faction = document.querySelector('#owned-by-faction');
         let faction_id = "none";
         let item_id_element = null;
+        let coord_x = 0;
+        let coord_y = 0;
         if (document.querySelector('#faction-select').style.display === "block") {
             faction_id = document.querySelector('#faction-choice').querySelector(':checked').value;
         }
@@ -534,8 +536,10 @@
             if(item_type == "warpzone"){
                 let item_warpzone_destination = element[i].querySelector('select[name=item-warpzone-destination]').value;
                 data_entry[i] = {
-                    'coord_x': coord_x,
-                    'coord_y': coord_y,
+                    'coordinates':{
+                        'x': coord_x,
+                        'y': coord_y
+                    },
                     'item_type': item_type,
                     'item_id': item_id,
                     'item_img_name': item_img_name,
@@ -546,8 +550,10 @@
             }else{
                 let item_description = element[i].querySelector('.item-description').value;
                 data_entry[i] = {
-                    'coord_x': coord_x,
-                    'coord_y': coord_y,
+                    'coordinates':{
+                        'x': coord_x,
+                        'y': coord_y
+                    },
                     'item_type': item_type,
                     'item_id': item_id,
                     'item_img_name': item_img_name,

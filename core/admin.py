@@ -257,25 +257,25 @@ class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
             }
             match selected:
                 case "satellite":
-                    size = {"size_x": 3, "size_y": 3}
+                    size = {"x": 3, "y": 3}
                     Planet.objects.create(name=fg_name, data=data, size=size)
                 case "star":
-                    size = {"size_x": 2, "size_y": 2}
+                    size = {"x": 2, "y": 2}
                     Planet.objects.create(name=fg_name, data=data, size=size)
                 case "blackhole":
-                    size = {"size_x": 3, "size_y": 5}
+                    size = {"x": 3, "y": 5}
                     Planet.objects.create(name=fg_name, data=data, size=size)
                 case "planet":
-                    size = {"size_x": 4, "size_y": 4}
+                    size = {"x": 4, "y": 4}
                     Planet.objects.create(name=fg_name, data=data, size=size)
                 case "asteroid":
-                    size = {"size_x": 1, "size_y": 1}
+                    size = {"x": 1, "y": 1}
                     Asteroid.objects.create(name=fg_name, data=data, size=size)
                 case "station":
-                    size = {"size_x": 3, "size_y": 3}
+                    size = {"x": 3, "y": 3}
                     Station.objects.create(name=fg_name, data=data, size=size)
                 case "warpzone":
-                    size = {"size_x": 2, "size_y": 3}
+                    size = {"x": 2, "y": 3}
                     Warp.objects.create(name=fg_name, data=data, size=size)
                 case _:
                     pass
@@ -359,8 +359,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                 item_img_name = data_from_post["data"][item]["item_img_name"]
                 item_name = data_from_post["data"][item]["item_name"]
                 table_item_name = data_from_post["data"][item]["item_id"]
-                coord_x = data_from_post["data"][item]["coord_x"]
-                coord_y = data_from_post["data"][item]["coord_y"]
+                coordinates = data_from_post["coordinates"]
                 
                 
                 if item_type == "warpzone":
@@ -376,11 +375,10 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                         sector_id = sector.pk,
                         source_id = source_id,
                         data={
-                            "coord_x": coord_x,
-                            "coord_y": coord_y,
                             "name": item_name,
                             "description": "A portal that lets you travel to",
-                        }
+                        },
+                        coordinates=coordinates
                     )
                     
                     warpzone_id = table_resource.objects.filter(name=item_name).values('id')[0]['id']
@@ -406,13 +404,12 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                             resource_id=resource_id,
                             source_id=item_type_id,
                             data={
-                                "coord_x": data_from_post["data"][item]["coord_x"],
-                                "coord_y": data_from_post["data"][item]["coord_y"],
                                 "name": data_from_post["data"][item]["item_name"],
                                 "description": data_from_post["data"][item][
                                     "item_description"
                                 ],
                             },
+                            coordinates=coordinates
                         )
             messages.success(
                 self.request,
@@ -520,6 +517,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "sector_id": table.sector_id,
                                 "warp_destination": sector_warp_zone_destination if sector_warp_zone_destination else "none-selected",
                                 "data": table.data,
+                                "coordinates": table.coordinates
                             }
                         )
                     else:
@@ -532,6 +530,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "source_id": table.source_id,
                                 "sector_id": table.sector_id,
                                 "data": table.data,
+                                "coordinates": table.coordinates,
                             }
                         )
             return JsonResponse(json.dumps(result_dict), safe=False)
@@ -569,12 +568,12 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                 GetDataFromDB.delete_items_from_sector(pk)
 
                 for item, _ in data_from_post["data"].items():
+                    print(data_from_post)
                     item_type = data_from_post["data"][item]["item_type"]
                     item_img_name = data_from_post["data"][item]["item_img_name"]
                     item_name = data_from_post["data"][item]["item_name"]
                     table_item_name = data_from_post["data"][item]["item_id"]
-                    coord_x = data_from_post["data"][item]["coord_x"]
-                    coord_y = data_from_post["data"][item]["coord_y"]
+                    coordinates = data_from_post["data"][item]["coordinates"]
                     
                     if item_type == "warpzone":
                     
@@ -589,11 +588,10 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                             sector_id = pk,
                             source_id = source_id,
                             data={
-                                "coord_x": coord_x,
-                                "coord_y": coord_y,
                                 "name": item_name,
                                 "description": "A portal that lets you travel to",
-                            }
+                            },
+                            coordinates=coordinates
                         )
                         
                         warpzone_id = table_resource.objects.filter(name=item_name).values('id')[0]['id']
@@ -619,13 +617,12 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                                 resource_id=resource_id,
                                 source_id=item_type_id,
                                 data={
-                                    "coord_x": data_from_post["data"][item]["coord_x"],
-                                    "coord_y": data_from_post["data"][item]["coord_y"],
                                     "name": data_from_post["data"][item]["item_name"],
                                     "description": data_from_post["data"][item][
                                         "item_description"
                                     ],
                                 },
+                                coordinates=coordinates
                             )
                 messages.success(
                     self.request,
@@ -1009,10 +1006,12 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                                 "warp_destination": sector_warpzone_destination,
                                 "data": {
                                     'name': item_data['name'],
-                                    'coord_x': item_data['data']['coord_x'],
-                                    'coord_y': item_data['data']['coord_y'],
                                     'description': _(item_data['data']['description'])
                                 },
+                                "coordinates":{
+                                    'x': item_data['coordinates']['x'],
+                                    'y': item_data['coordinates']['y'],
+                                }
                             }
                         )
                     else:
