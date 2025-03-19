@@ -813,10 +813,6 @@ video {
   margin: auto;
 }
 
-.m-2 {
-  margin: 0.5rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -1204,6 +1200,10 @@ video {
 
 .w-\[5\%\] {
   width: 5%;
+}
+
+.w-\[50\%\] {
+  width: 50%;
 }
 
 .w-\[80vw\] {
@@ -4452,10 +4452,6 @@ select {
 
   .lg\:w-2\/12 {
     width: 16.666667%;
-  }
-
-  .lg\:w-2\/3 {
-    width: 66.666667%;
   }
 
   .lg\:w-3\/4 {

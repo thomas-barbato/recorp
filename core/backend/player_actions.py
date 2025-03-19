@@ -74,7 +74,7 @@ class PlayerAction:
 
     def destination_already_occupied(self, end_x, end_y):
         return Player.objects.filter(
-            coordinates__contains={"coord_x": end_x, "coord_y": end_y}
+            coordinates__contains={"x": end_x, "y": end_y}
         ).exists()
 
     def get_reverse_ship_status(self):
@@ -139,7 +139,7 @@ class PlayerAction:
     def move_have_been_registered(self, end_x, end_y, move_cost):
         if self.__check_if_player_can_move_and_update(move_cost) is True:
             Player.objects.filter(user_id=self.id).update(
-                coordinates={"coord_x": end_x, "coord_y": end_y}
+                coordinates={"x": end_x, "y": end_y}
             )
             return True
         
@@ -214,9 +214,8 @@ class PlayerAction:
                                 space_item_coord_array.append({"y":coord_y, "x":coord_x})
                 else:
                     for fg_item in table_value:
-                        
                         size = fg_item['source_id__size']
-                        coord = fg_item['data']
+                        coord = fg_item['data']['coordinates']
                         coord_y = int(coord['y'])
                         coord_x = int(coord['x'])
                         size_y = int(size['y'])
@@ -246,14 +245,12 @@ class PlayerAction:
                 
                 if spaceship_size_x == 1 and spaceship_size_y == 1:
                     for cell in zone_range_coordinate_to_travel:
-                        print(cell)
                         if cell not in space_item_coord_array:
                             arrival_zone_has_been_finded = True
                             return destination_sector_id, cell
                         arrival_zone_has_been_finded = False
                 else:
                     for cell in zone_range_coordinate_to_travel:
-                        print(cell)
                         cell_y = int(cell["y"])
                         cell_x = int(cell["x"])
                         if not {"y": cell_y, "x": cell_x} in space_item_coord_array:
@@ -264,7 +261,7 @@ class PlayerAction:
                                     if coord in space_item_coord_array:
                                         already_contains_element = True
                                     else:
-                                        arrival_zone.append({"coord_x" : cell_x, "coord_y": cell_y})
+                                        arrival_zone.append({"x" : cell_x, "y": cell_y})
                             if already_contains_element is False:
                                 arrival_zone_has_been_finded = True
                                 return destination_sector_id, arrival_zone[0]

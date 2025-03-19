@@ -1,4 +1,5 @@
 function add_background(data) {
+    console.log(data)
     let index_row = 1;
     let index_col = 1;
     let bg_url = '/static/img/background/' + data + '/' + '0.gif';
@@ -35,11 +36,12 @@ function add_background(data) {
 }
 
 function add_foreground(data){
+    console.log(data)
     for (let sector_i = 0; sector_i < data.length; sector_i++) {
 
-        let element_type = data[sector_i]["animations"][0];
+        let element_type = data[sector_i].data.type;
         let translated_element_type = data[sector_i].data.type_translated ? data[sector_i].data.type_translated : null;
-        let animation_name = data[sector_i]["animations"][1];
+        let animation_name = data[sector_i].animations;
         let element_name = data[sector_i].data.name;
         let element_description = data[sector_i].data.description;
         let faction_starter = map_informations.sector.faction.is_faction_level_starter;
@@ -55,11 +57,11 @@ function add_foreground(data){
         let action_label = map_informations.actions.translated_action_label_msg;
         let action_close = map_informations.actions.translated_close_msg;
         let player_in_same_faction = map_informations.actions.player_is_same_faction;
-        let coord_x = data[sector_i].data.x;
-        let coord_y = data[sector_i].data.y;
-        let size_x = data[sector_i]['size']["size_x"];
-        let size_y = data[sector_i]['size']["size_y"];
-
+        let coord_x = data[sector_i].data.coordinates.x;
+        let coord_y = data[sector_i].data.coordinates.y;
+        let size_x = data[sector_i].size.x;
+        let size_y = data[sector_i].size.y;
+        console.log(element_type)
         switch (element_type){
             case "warpzone":
                 modal_data = {
@@ -146,7 +148,7 @@ function add_foreground(data){
             default:
                 break
         }
-        
+        console.log(modal_data)
         let modal = create_foreground_modal(
             element_name,
             modal_data
@@ -155,6 +157,7 @@ function add_foreground(data){
         document.querySelector('#modal-container').append(modal);
         let index_row = coord_y;
         let index_col = coord_x;
+        console.log(element_type, element_name)
         let bg_url = '/static/img/foreground/' + element_type + '/' + animation_name + '/' + '0.gif';
 
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
@@ -217,6 +220,7 @@ function add_npc(data){
         console.log(coord_y, coord_x)
         let ship_size_x = data[i]["ship"]['size'].x;
         let ship_size_y = data[i]["ship"]['size'].y;
+        
         modal_data = {
             player: {
                 name: data[i].npc.name,

@@ -21,8 +21,8 @@ function update_player_coord(data) {
     clear_path();
     
     let size = {
-        "y" : parseInt(data["size"]["size_y"]),
-        "x" : parseInt(data["size"]["size"]["x"]),
+        "y" : parseInt(data.size.y),
+        "x" : parseInt(data.size.x),
     }
     let target_user_id = data["user_id"];
 
@@ -74,7 +74,6 @@ function update_player_coord(data) {
 
         movement_remaining_div_text.className = `text-xs ${movement_value.color} font-shadow`;
         movement_remaining_div_text.textContent = movement_value.status;
-
         update_player_range_in_modal(data.modules_range);
 
     }else{
@@ -321,6 +320,7 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
 
 
 function set_range_finding(data) {
+    console.log(data.is_in_range)
     return data['is_in_range'] == true ? true : false;
 }
 

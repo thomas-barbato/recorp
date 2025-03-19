@@ -13,17 +13,18 @@ let added_spaceship_count = 0;
 
 
 function clean_entire_map() {
+
     let tiles = document.querySelectorAll('.tile');
     let npc_container = document.querySelector('#npc-container-content');
     npc_container.innerHTML = "";
     spaceship_collection = [];
+
     for (let i = 0; i < tiles.length; i++) {
         tiles[i].style.backgroundImage = "";
-        let foreground_container = tiles[i].querySelector('div');
-        foreground_container.className = "relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10";
-        if (foreground_container.querySelector('div')) {
-            foreground_container.querySelector('div').remove();
-        }
+        tiles[i].innerHTML = "";
+        new_div = document.createElement('div')
+        new_div.classList = "relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10";
+        tiles[i].append(new_div)
     }
 }
 
@@ -53,12 +54,12 @@ function add_background(folder_name) {
 
 function add_foreground(obj) {
     for (let obj_i in obj) {
-        let index_row = parseInt(obj[obj_i].data.y);
-        let index_col = parseInt(obj[obj_i].data.x);
-        let item_type = obj[obj_i].type == "warpzone" ? "warpzone" : obj[obj_i].item_data[1].type;
-        let item_animation = item_type == "warpzone" ? obj[obj_i].item_data.animation : obj[obj_i].item_data[1].animation;
-        let size_x = item_type == "warpzone" ? obj[obj_i].item_data.size.x : obj[obj_i].item_data[2].x;
-        let size_y = item_type == "warpzone" ? obj[obj_i].item_data.size.size_y : obj[obj_i].item_data[2].size_y;
+        let index_row = parseInt(obj[obj_i].coordinates.y);
+        let index_col = parseInt(obj[obj_i].coordinates.x);
+        let item_type = obj[obj_i].type == "warpzone" ? obj[obj_i].animation.dir : obj[obj_i].item_data.source_id__data.type;
+        let item_animation = item_type == "warpzone" ? obj[obj_i].animation.animation : obj[obj_i].item_data.source_id__data.animation;
+        let size_x = item_type == "warpzone" ? obj[obj_i].item_data.size.x : obj[obj_i].item_data.source_id__size.x;
+        let size_y = item_type == "warpzone" ? obj[obj_i].item_data.size.y : obj[obj_i].item_data.source_id__size.y;
         
         let bg_url = `/static/img/foreground/${item_type}/${item_animation}/0.gif`;
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
@@ -87,7 +88,7 @@ function add_foreground(obj) {
             index_col++;
         }
         index_row++;
-        index_col = parseInt(obj[obj_i].data.x);
+        index_col = parseInt(obj[obj_i].coordinates.x);
         }
     }
 }
@@ -225,12 +226,12 @@ function tile_already_used(obj) {
     let col = parseInt(obj.pos.x) + 1;
 
     let response = false;
-
-    for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__size.size_y); row_i += atlas.tilesize) {
-        for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__size.size_x); col_i += atlas.tilesize) {
+    for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__size.y); row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__size.x); col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
-            let entry_point_div = entry_point.querySelector('div');
-            if (entry_point_div.classList.contains('foreground-container')) {
+            let entry_point_border = entry_point.querySelector('div');
+            let entry_point_div = entry_point_border.querySelector('div')
+            if (entry_point_div) {
                 response = true;
             }
             col++;
@@ -246,10 +247,9 @@ function delete_this_ship_or_pass(tile_id) {
     let entry_point = document.getElementById(tile_id);
     let entry_point_div = entry_point.querySelector('div');
     let spaceship_tile_class = undefined;
-
     if (entry_point_div.classList.contains('foreground-container')) {
         if (/spaceship-/.test(entry_point_div.className)) {
-            let spaceship_tile_class = entry_point_div.className.split(" ").filter(c => c.startsWith("spaceship-"))[0];
+            spaceship_tile_class = entry_point_div.className.split(" ").filter(c => c.startsWith("spaceship-"))[0];
             let spaceship_element = document.querySelectorAll(`.${spaceship_tile_class}`);
 
             for (let i = 0; i < spaceship_element.length; i++) {
@@ -266,8 +266,6 @@ function delete_this_ship_or_pass(tile_id) {
         }
     }
 }
-
-
 
 function load_npc_on_map(obj) {
     for (let obj_i in obj) {
@@ -291,7 +289,7 @@ function load_npc_on_map(obj) {
 
         let id_uuid = crypto.randomUUID();
 
-        for (let row_i = 0; row_i < (atlas.tilesize * spaceship_obj.data.size.size_y); row_i += atlas.tilesize) {
+        for (let row_i = 0; row_i < (atlas.tilesize * spaceship_obj.data.size.y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * spaceship_obj.data.size.x); col_i += atlas.tilesize) {
 
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
@@ -304,19 +302,36 @@ function load_npc_on_map(obj) {
                     spaceship_class
                 );
 
-                let img_div = document.createElement('div');
-                img_div.classList.add(
-                    'm-auto',
-                    'w-[32px]',
-                    'h-[32px]',
-                    'hover:w-[30px]',
-                    'hover:h-[30px]',
-                );
-                img_div.style.borderStyle = "dashed solid blue";
-                img_div.style.backgroundImage = "url('" + bg_url + "')";
-                img_div.style.backgroundPositionX = `-${col_i}px`;
-                img_div.style.backgroundPositionY = `-${row_i}px`;
-                entry_point_div.append(img_div);
+                
+                if(entry_point_div.querySelector('div')){
+                    let img_div = entry_point_div.querySelector('div')
+                    img_div.classList.add(
+                        'm-auto',
+                        'w-[32px]',
+                        'h-[32px]',
+                        'hover:w-[30px]',
+                        'hover:h-[30px]',
+                    );
+                    img_div.style.borderStyle = "dashed solid blue";
+                    img_div.style.backgroundImage = "url('" + bg_url + "')";
+                    img_div.style.backgroundPositionX = `-${col_i}px`;
+                    img_div.style.backgroundPositionY = `-${row_i}px`;
+
+                }else{
+                    let img_div = document.createElement('div');
+                    img_div.classList.add(
+                        'm-auto',
+                        'w-[32px]',
+                        'h-[32px]',
+                        'hover:w-[30px]',
+                        'hover:h-[30px]',
+                    );
+                    img_div.style.borderStyle = "dashed solid blue";
+                    img_div.style.backgroundImage = "url('" + bg_url + "')";
+                    img_div.style.backgroundPositionX = `-${col_i}px`;
+                    img_div.style.backgroundPositionY = `-${row_i}px`;
+                    entry_point_div.append(img_div);
+                }
                 index_col++;
             }
             index_row++;
@@ -336,13 +351,10 @@ function add_spaceship_on_map(obj) {
     let spaceship_class = undefined;
 
     let id_uuid = crypto.randomUUID();
-
-    for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__size.size_y); row_i += atlas.tilesize) {
+    for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__size.y); row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__size.x); col_i += atlas.tilesize) {
-
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
             let entry_point_div = entry_point.querySelector('div');
-
             spaceship_class = `spaceship-${id_uuid}`;
 
             entry_point_div.classList.add(
@@ -350,18 +362,36 @@ function add_spaceship_on_map(obj) {
                 'cursor-pointer',
                 spaceship_class
             );
+            if(entry_point_div.querySelector('div')){
+                let img_div = entry_point_div.querySelector('div')
+                img_div.classList.add(
+                    'm-auto',
+                    'w-[32px]',
+                    'h-[32px]',
+                    'hover:w-[30px]',
+                    'hover:h-[30px]',
+                );
+                img_div.style.borderStyle = "dashed solid blue";
+                img_div.style.backgroundImage = "url('" + bg_url + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
 
-            let img_div = document.createElement('div');
-            img_div.classList.add(
-                'm-auto',
-                'w-[32px]',
-                'h-[32px]',
-            );
-            img_div.style.borderStyle = "dashed solid blue";
-            img_div.style.backgroundImage = "url('" + bg_url + "')";
-            img_div.style.backgroundPositionX = `-${col_i}px`;
-            img_div.style.backgroundPositionY = `-${row_i}px`;
-            entry_point_div.append(img_div);
+            }else{
+                let img_div = document.createElement('div');
+                img_div.classList.add(
+                    'm-auto',
+                    'w-[32px]',
+                    'h-[32px]',
+                    'hover:w-[30px]',
+                    'hover:h-[30px]',
+                );
+                img_div.style.borderStyle = "dashed solid blue";
+                img_div.style.backgroundImage = "url('" + bg_url + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_div.append(img_div);
+            }
+
             index_col++;
         }
         index_row++;
@@ -372,13 +402,11 @@ function add_spaceship_on_map(obj) {
 }
 
 function get_spaceship_data(tile_id) {
-
     let tile_id_split = tile_id.split('_')
     let sector_selection = document.querySelector('#sector-select');
     let selected_sector_id = sector_selection.options[sector_selection.selectedIndex].value;
 
     if (selected_sector_id != "none") {
-
         let main_container = document.querySelector('#npc-container');
         let template_select = main_container.querySelector('select');
         let selected_template_id = template_select.options[template_select.selectedIndex].value;
@@ -404,7 +432,6 @@ function get_spaceship_data(tile_id) {
                         y: tile_id_split[1]
                     }
                 }
-
                 if (!tile_already_used(spaceship_data)) {
                     add_spaceship_on_map(spaceship_data);
                 } else {
@@ -418,7 +445,10 @@ function get_spaceship_data(tile_id) {
 
 let sector_selection = document.querySelector('#sector-select');
 sector_selection.addEventListener('change', function() {
+    clean_entire_map();
     let map_id = this.value;
+    spaceship_collection = [];
+    added_spaceship_count = 0;
     if (map_id !== "none") {
         document.querySelector('#validate-btn').classList.remove('hidden');
         let url = 'npc';
@@ -435,7 +465,6 @@ sector_selection.addEventListener('change', function() {
                 body: JSON.stringify({ 'map_id': map_id })
             }).then(response => response.json())
             .then(data => {
-                clean_entire_map();
                 load_map_data(JSON.parse(data));
             })
             .catch(error => console.error(error));

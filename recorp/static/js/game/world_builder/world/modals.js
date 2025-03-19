@@ -118,7 +118,7 @@ function create_foreground_modal(id, data) {
         item_resource_content_p_quantity.textContent = `${data.resources.translated_quantity_str.toUpperCase()}`
         item_resource_content_p_quantity.style.display = "none";
 
-        item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'my-1', 'py-1', 'text-xs');
+        item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'my-1', 'py-1', 'text-xs');
         item_description_p.textContent = data.description;
 
         let item_resource_content_p_scan_msg = document.createElement('p');
@@ -179,7 +179,7 @@ function create_foreground_modal(id, data) {
         
     } else if(data.type == "warpzone"){
 
-        item_description_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'text-xs', 'my-1', 'py-1');
+        item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'text-xs', 'my-1', 'py-1');
         item_description_p.innerHTML = `${data.description} <b>${data.destination.name}</b>`;
 
         let item_action_container_img_warpzone_container = document.createElement('div');
@@ -188,7 +188,7 @@ function create_foreground_modal(id, data) {
         let item_action_container_img_warpzone = document.createElement('img');
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
         let modal_name = e.id; 
-        console.log(modal_name)
+
         item_action_container_img_warpzone.setAttribute(attribute_touch_click, "async_travel(" + data.home_sector + ",  " + current_user_id + ", '" + id + "')");
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 
@@ -837,10 +837,16 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
                         range_finder_span.id = "range-finder-warning-msg";
 
-                        module_path = map_informations.pc[ship_i].ship.modules_range[target_type][target_id];
+                        let array_module = Array.from(map_informations.pc[ship_i].ship.modules_range[target_type])
+                        module_path = array_module.filter(function (module, index) {
+                            if(module.target_id == target_id){
+                                return module
+                            }
+                        });
                             
                         for(let module_container in module_path){
                             let target_in_range = set_range_finding(module_path[module_container]);
+                            console.log(target_in_range)
                             if (target_in_range == true) {
                                 range_finder_span.classList.add('hidden');
                             }else{

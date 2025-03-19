@@ -359,7 +359,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
                 item_img_name = data_from_post["data"][item]["item_img_name"]
                 item_name = data_from_post["data"][item]["item_name"]
                 table_item_name = data_from_post["data"][item]["item_id"]
-                coordinates = data_from_post["coordinates"]
+                coordinates = data_from_post["data"][item]["coordinates"]
                 
                 
                 if item_type == "warpzone":
@@ -505,9 +505,9 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                         case "warpzone":
                             item_name = WarpZone.objects.filter(
                                 id=table.id
-                            ).values_list("warp__name", flat=True)[0]
+                            ).values_list("source_id__name", flat=True)[0]
                     if table_key == "warpzone":
-                        sector_warp_zone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')[0]
+                        sector_warp_zone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')
                         result_dict["sector_element"].append(
                             {
                                 "type": table_key,
@@ -515,7 +515,7 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "item_name": item_name,
                                 "source_id": table.source_id,
                                 "sector_id": table.sector_id,
-                                "warp_destination": sector_warp_zone_destination if sector_warp_zone_destination else "none-selected",
+                                "warp_destination": sector_warp_zone_destination[0] if len(sector_warp_zone_destination)>0 else "none-selected",
                                 "data": table.data,
                                 "coordinates": table.coordinates
                             }
@@ -568,7 +568,6 @@ class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
                 GetDataFromDB.delete_items_from_sector(pk)
 
                 for item, _ in data_from_post["data"].items():
-                    print(data_from_post)
                     item_type = data_from_post["data"][item]["item_type"]
                     item_img_name = data_from_post["data"][item]["item_img_name"]
                     item_name = data_from_post["data"][item]["item_name"]
@@ -958,42 +957,44 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                     item_data = ""
                     match table_key:
                         case "planet":
-                            item_data = Planet.objects.filter(
-                                id=table.source_id
-                            ).values_list("name", "data", "size")[0]
+                            item_data = PlanetResource.objects.filter(
+                                source_id=table.source_id
+                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
                         case "satellite":
-                            item_data = Planet.objects.filter(
-                                id=table.source_id,
-                                data__contains={"type": "satellite"},
-                            ).values_list("name", "data", "size")[0]
+                            item_data = PlanetResource.objects.filter(
+                                source_id=table.source_id,
+                                source_id__data__contains={"type": "satellite"},
+                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
                         case "blackhole":
-                            item_data = Planet.objects.filter(
-                                id=table.source_id,
-                                data__contains={"type": "blackhole"},
-                            ).values_list("name", "data", "size")[0]
+                            item_data = PlanetResource.objects.filter(
+                                source_id=table.source_id,
+                                source_id__data__contains={"type": "blackhole"},
+                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
                         case "star":
-                            item_data = Planet.objects.filter(
-                                id=table.source_id,
-                                data__contains={"type": "star"},
-                            ).values_list("name", "data", "size")[0]
+                            item_data = PlanetResource.objects.filter(
+                                source_id=table.source_id,
+                                source_id__data__contains={"type": "star"},
+                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
                         case "asteroid":
-                            item_data = Asteroid.objects.filter(
-                                id=table.source_id
-                            ).values_list("name", "data", "size")[0]
+                            item_data = AsteroidResource.objects.filter(
+                                source_id=table.source_id
+                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
                         case "station":
-                            item_data = Station.objects.filter(
-                                id=table.source_id
-                            ).values_list("name", "data", "size")[0]
+                            item_data = StationResource.objects.filter(
+                                source_id=table.source_id
+                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
                         case "warpzone":
                             data = WarpZone.objects.filter(
                                 id=table.id
-                            ).values("source_id__name", "data", "source_id__size", "source_id__data")[0]
+                            ).values("source_id__name", "data", "source_id__size", "source_id__data", "coordinates")[0]
                             item_data = {
                                 "name": data['source_id__name'],
                                 "data": data['data'],
                                 "size": data['source_id__size'],
-                                "animation": data['source_id__data']['animation']
+                                "animation": data['source_id__data']['animation'],
+                                "coordinates": data['coordinates']
                             }
+                            
                     if table_key == "warpzone":
                         sector_warpzone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')[0]['warp_destination_id']
                         result_dict["sector_element"].append(
@@ -1024,6 +1025,10 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                                 "source_id": table.source_id,
                                 "sector_id": table.sector_id,
                                 "data": table.data,
+                                "coordinates":{
+                                    'x': item_data['coordinates']['x'],
+                                    'y': item_data['coordinates']['y'],
+                                }
                             }
                         )
             return JsonResponse(json.dumps(result_dict), safe=False)

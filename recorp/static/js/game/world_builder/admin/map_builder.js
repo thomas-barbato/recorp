@@ -169,6 +169,7 @@
                     fg_destination_selector.value = pre_existing_data['warp_destination']['warp_destination_id'];
                     clone_description.classList.add('hidden');
                     clone_warp_sector.classList.remove('hidden');
+                    clone_warp_sector.selectedIndex = [...fg_destination_selector.options].findIndex(option => option.value === pre_existing_data['warp_destination']);
                 }else{
                     clone_warp_sector.classList.add('hidden');
                     clone_warp_sector.value = pre_existing_data['none'];
@@ -184,6 +185,7 @@
                 let fg_warp_element = parent.querySelector('#fg-warp-sector');
                 let description_element_parent = fg_item_selector.parentNode.parentNode.parentNode;
                 let fg_warp_description_element = description_element_parent.querySelector('#item-description-container');
+                let fg_warp_destination_element = parent.querySelector('#fg-warp-sector-selector');
                 value == "warpzone_data" ? fg_warp_element.classList.remove('hidden') : fg_warp_element.classList.add('hidden');
                 value == "warpzone_data" ? fg_warp_description_element.classList.add('hidden') : fg_warp_description_element.classList.remove('hidden');
                 value == "warpzone_data" ? fg_warp_destination_element.classList.remove('hidden') : fg_warp_destination_element.classList.add('hidden');
@@ -235,9 +237,12 @@
             if (typeof pre_existing_data !== "undefined") {
                 if(pre_existing_data["type"] == "warpzone"){
                     let fg_destination_selector = element.querySelector("#fg-warp-sector-selector");
+                    let fg_warp_sector = element.querySelector('#fg-warp-sector');
                     fg_destination_selector.selectedIndex = [...fg_destination_selector.options].findIndex(option => option.text === pre_existing_data['warp_destination']['warp_destination_id']);
                     element.querySelector('#fg-warp-sector-selector').value = pre_existing_data['warp_destination']['warp_destination_id'];
-                    element.querySelector('#fg-warp-sector').classList.remove('hidden')
+                    fg_warp_sector.classList.remove('hidden')
+                    fg_warp_sector.selectedIndex = [...fg_warp_sector.options].findIndex(option => option.value === pre_existing_data['warp_destination']);
+                    fg_warp_sector.options.value = pre_existing_data['warp_destination']
                     element.querySelector('#item-description-container').classList.add('hidden');
                 }
                 fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex(option => option.text === pre_existing_data['item_name']);
@@ -303,7 +308,7 @@
     function display_select_animation_preview(select_text, select_value, element_id) {
         for (var [index_key, value] in animations_json[select_value]) {
             let col = animations_json[select_value][index_key]['fields']['size']['x'];
-            let row = animations_json[select_value][index_key]['fields']['size']['x'];
+            let row = animations_json[select_value][index_key]['fields']['size']['y'];
             let id = element_id.split('-')[3];
             create_table(col, row, id);
             display_animation_preview(col, row, id, select_value, select_text);
@@ -405,7 +410,7 @@
                 coord_y = parseInt(fg_data[i].querySelector('input#coord-y-' + id).value);
                 for (var [i_key, value] in animations_json[animation_data_direname]) {
                     s_x = animations_json[animation_data_direname][i_key]['fields']['size']['x'];
-                    s_y = animations_json[animation_data_direname][i_key]['fields']['size']['x'];
+                    s_y = animations_json[animation_data_direname][i_key]['fields']['size']['y'];
                 }
                 dict[i] = {
                     coord_x: coord_x,

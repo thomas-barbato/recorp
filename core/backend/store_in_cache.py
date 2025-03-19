@@ -66,9 +66,8 @@ class StoreInCache:
         }
         for table_key, table_value in foreground_table_set.items():
             for table in table_value:
-                
                 if table_key == "warpzone":
-                    element, elementResource, elementZone = GetDataFromDB.get_table(table_key)
+                    _, elementResource, elementZone = GetDataFromDB.get_table(table_key)
                     
                     map_element = elementResource.objects.filter(sector_id=self.sector_pk).values(
                         "id",
@@ -79,11 +78,13 @@ class StoreInCache:
                         "source_id__name",
                         "source_id__size",
                         "source_id__data",
+                        "coordinates",
                     )[0]
                     
                     map_element_destination = elementZone.objects.filter(warp_home_id=map_element["id"]).values(
                         "warp_destination_id",
-                        "warp_destination_id__name"
+                        "warp_destination_id__name",
+                        "warp_home_id"
                     )[0]
                     
                     sector_data["sector_element"].append(
@@ -92,14 +93,14 @@ class StoreInCache:
                             "item_name": map_element['source_id__name'],
                             "source_id": map_element['source_id'],
                             "sector_id": map_element['sector_id'],
-                            "animations": ["warpzone", map_element['source_id__data']['animation']],
+                            "animations": map_element['source_id__data']['animation'],
                             "data": {
                                 "type": "warpzone",
                                 "name": map_element["name"],
-                                "coord_x": map_element['data']["coord_x"],
-                                "coord_y": map_element['data']["coord_y"],
-                                "description": _(map_element['data']["description"]),
-                                "warp_home_id": map_element["id"],
+                                "coordinates": map_element['coordinates'],
+                                "size": map_element['source_id__size'],
+                                "description": map_element['data']["description"],
+                                "warp_home_id": map_element_destination["warp_home_id"],
                                 "destination_id": map_element_destination['warp_destination_id'],
                                 "destination_name": map_element_destination['warp_destination_id__name'],
                             },
@@ -109,42 +110,44 @@ class StoreInCache:
                     
                 else:
                     
-                    element, elementResource = GetDataFromDB.get_table(table_key)
-                    
-                    map_element = [
-                        v
-                        for k, v in element.objects.filter(name=table.source.name)
-                        .values_list("data", flat=True)[0]
-                        .items()
-                        if v != "none"
-                    ]
+                    _, elementResource = GetDataFromDB.get_table(table_key)
+                    resource = elementResource.objects.filter(sector_id=self.sector_pk).values(
+                        'id',
+                        'data',
+                        'coordinates',
+                        'quantity',
+                        'source_id',
+                        'sector_id',
+                        'source_id__size',
+                        'source_id__name',
+                        'source_id__data',
+                    )[0]
                     
                     resource_quantity = GetDataFromDB.get_resource_quantity_value(
-                        table.quantity, 100
+                        resource["quantity"], 100
                     )
-
+                    
                     sector_data["sector_element"].append(
                         {
-                            "item_id": table.id,
-                            "item_name": table.data["name"],
+                            "item_id": resource["id"] ,
+                            "item_name": resource["data"]["name"],
                             "resource": {
-                                "id": table.resource_id,
-                                "name": table.resource.name,
-                                "quantity": table.quantity,
+                                "id": resource["source_id"],
+                                "name": resource["source_id__name"],
+                                "quantity": resource["quantity"],
                                 "quantity_str": resource_quantity,
                                 "translated_quantity_str": resource_quantity,
                             },
-                            "source_id": table.source_id,
-                            "sector_id": table.sector_id,
-                            "animations": map_element,
+                            "source_id": resource["source_id"],
+                            "sector_id": resource["sector_id"],
+                            "animations": resource["source_id__data"]["animation"],
                             "data": {
-                                "type": map_element[0],
-                                "name": table.data["name"],
-                                "coord_x": table.data["coord_x"],
-                                "coord_y": table.data["coord_y"],
-                                "description": _(table.data["description"]),
+                                "type": resource["source_id__data"]["type"],
+                                "name": resource["data"]["name"],
+                                "coordinates": resource["coordinates"],
+                                "description": resource["data"]["description"],
                             },
-                            "size": GetDataFromDB.get_specific_size(map_element[0]),
+                            "size": resource["source_id__size"],
                         }
                     )
 
@@ -193,7 +196,7 @@ class StoreInCache:
                             "npc_template_id__ship_id__ship_category_id__description"
                         ],
                         "size": data[
-                            "npc_template_id__ship_id__ship_category_id__ship_size"
+                            "npc_template_id__ship_id__ship_category_id__size"
                         ],
                         "modules": module_list,
                         "modules_range": GetDataFromDB.is_in_range(
@@ -324,8 +327,8 @@ class StoreInCache:
 
         found_player_index = player_position.index(found_player)
         player_position[found_player_index]["user"]["coordinates"] = {
-            "coord_x": int(pos["end_x"]),
-            "coord_y": int(pos["end_y"]),
+            "x": int(pos["end_x"]),
+            "y": int(pos["end_y"]),
         }
 
         player_position[found_player_index]["ship"]["current_movement"] -= pos[
@@ -334,9 +337,9 @@ class StoreInCache:
 
         for player in player_position:
             if player["user"]["player"] == found_player["user"]["player"]:
-                if player["user"]["coordinates"]["coord_y"] != int(
+                if player["user"]["coordinates"]["y"] != int(
                     pos["end_y"]
-                ) or player["user"]["coordinates"]["coord_x"] != int(pos["end_x"]):
+                ) or player["user"]["coordinates"]["x"] != int(pos["end_x"]):
                     player_index = player_position.index(player)
                     player_position.pop(player_index)
 
@@ -409,7 +412,7 @@ class StoreInCache:
     def delete_user(self, player_id):
         in_cache = cache.get(self.room)
         in_cache["pc"] = [
-            key for key in in_cache["user"] if key["player"] != player_id
+            key for key in in_cache['pc'] if key["user"]["player"] != player_id
         ]
         cache.set(self.room, in_cache)
 
