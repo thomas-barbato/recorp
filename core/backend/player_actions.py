@@ -167,7 +167,7 @@ class PlayerAction:
             wz_size_x = int(warpzone_destination['source_id__size']['x'])
             
             planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
-                destination_sector_id, with_npc=True, only_size_coord=True
+                destination_sector_id, with_npc=True
             )
             
             foreground_table_set = {
@@ -271,7 +271,7 @@ class PlayerAction:
     def __calculate_destination_coord(self, destination_sector_id, destination_destination_id):
         
         planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
-            destination_sector_id, with_npc=True, only_size_coord=True
+            destination_sector_id, with_npc=True
         )
             
         foreground_table_set = {
@@ -306,8 +306,7 @@ class PlayerAction:
                 size_y = int(size['y'])
                 size_x = int(size['x'])
                 
-                if table_key == "warpzone" and value["id"] == destination_destination_id:
-                    warpzone_destination_coord_zone.append({'y': coord_y, 'x': coord_x})
+                if table_key == "warpzone" and value.get('id'):
                     wz_coord_start_y = coord_y
                     wz_coord_end_y = coord_y + size_y
                     wz_coord_start_x = coord_x
@@ -320,14 +319,17 @@ class PlayerAction:
                                 
                 else:
                     all_forgeround_item_coord.append({'y': coord_y, 'x': coord_x})
-                    
+        
+        print(all_forgeround_item_coord)
+        print("==============================================")
         zone_has_been_finded = False
+        arrival_zone = []
+        
+        padding_w = spaceship_size_x
+        padding_h = spaceship_size_y
+        zone_range_coordinate_to_travel = []
+        
         while zone_has_been_finded is False:
-            
-            padding_w = spaceship_size_x
-            padding_h = spaceship_size_y
-                
-            arrival_zone = []
             
             # define "square" zone where user can be tp
             # this square grow up when space can't be filled.
@@ -336,19 +338,19 @@ class PlayerAction:
             start_y = wz_coord_start_y - padding_h if wz_coord_start_y - padding_h > 0 else 0
             end_y = wz_coord_end_y if wz_coord_end_y <= 39 else 39 
             
-            zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x)]
+            zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x) if {"y": y, "x": x}]
             
             for cell in zone_range_coordinate_to_travel:
                 if spaceship_size_x == 1 and spaceship_size_y == 1:
+                    cell_x = cell['x']
+                    cell_y = cell['y']
                     if cell not in all_forgeround_item_coord:
-                        print(f"pas dedans et donc ok {cell}")
-                        zone_has_been_finded = True
                         return cell
                     else:
                         zone_has_been_finded = False
-            
+        
             padding_w = padding_w + 1
             padding_h = padding_h + 1
-                        
+
     def set_spaceship_statistics_with_module(self):
         pass

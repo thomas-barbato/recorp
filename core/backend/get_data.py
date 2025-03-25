@@ -213,63 +213,39 @@ class GetDataFromDB:
         sector.npc_sector.all().delete()
 
     @staticmethod
-    def get_items_from_sector(pk, with_npc=False, only_size_coord=False):
+    def get_items_from_sector(pk, with_npc=False):
         sector = Sector.objects.get(id=pk)
         if with_npc:
-            if only_size_coord is False:
-                player_id_list = Player.objects.filter(sector_id=pk).values("id")
-                return (
-                    sector.planet_sector.values(
-                        "source_id__size", "data", "coordinates"
-                    ),
-                    sector.asteroid_sector.values(
-                        "source_id__size", "data", "coordinates"
-                    ),
-                    sector.station_sector.values(
-                        "source_id__size", "data", "coordinates"
-                    ),
-                    sector.warp_sector.values("source_id__size", "data", "coordinates"),
-                    sector.npc_sector.values(
-                        "npc_template_id__ship_id__ship_category_id__size",
-                        "coordinates"
-                    ),
-                    PlayerShip.objects.filter(
-                        player_id__in=player_id_list,
-                        is_current_ship=True,
-                    ).values(
-                        "ship_id__ship_category_id__size",
-                        "player_id__coordinates",
-                    )
+            player_id_list = Player.objects.filter(sector_id=pk).values("id")
+            return (
+                sector.planet_sector.values(
+                    "source_id__size", "data", "coordinates", "id", "source_id", "source_id__data__type"
+                ),
+                sector.asteroid_sector.values(
+                    "source_id__size", "data", "coordinates", "id", "source_id", "source_id__data__type"
+                ),
+                sector.station_sector.values(
+                    "source_id__size", "data", "coordinates", "id", "source_id", "source_id__data__type"
+                ),
+                sector.warp_sector.values(
+                    "source_id__size", "data", "coordinates", "source_id", "id", "sector_id"
+                ),
+                sector.npc_sector.values(
+                    "id",
+                    "npc_template_id__ship_id__ship_category_id__size",
+                    "npc_template_id__ship_id__image",
+                    "npc_template_id__ship_id__name",
+                    "npc_template_id__ship_id__id",
+                    "coordinates", 
+                ),
+                PlayerShip.objects.filter(
+                    player_id__in=player_id_list,
+                    is_current_ship=True,
+                ).values(
+                    "ship_id__ship_category_id__size",
+                    "player_id__coordinates",
                 )
-            else:
-                player_id_list = Player.objects.filter(sector_id=pk).values("id")
-                return (
-                    sector.planet_sector.values(
-                        "source_id__size", "coordinates"
-                    ),
-                    sector.asteroid_sector.values(
-                        "source_id__size", "coordinates"
-                    ),
-                    sector.station_sector.values(
-                        "source_id__size", "coordinates"
-                    ),
-                    sector.warp_sector.values(
-                        # id to differenciate potential
-                        # multiple station on same sector
-                        "source_id__size", "coordinates", "id"
-                    ),
-                    sector.npc_sector.values(
-                        "npc_template_id__ship_id__ship_category_id__size",
-                        "coordinates"
-                    ),
-                    PlayerShip.objects.filter(
-                        player_id__in=player_id_list,
-                        is_current_ship=True,
-                    ).values(
-                        "ship_id__ship_category_id__size",
-                        "player_id__coordinates",
-                    )
-                )
+            )
 
         return (
             sector.planet_sector.all(),

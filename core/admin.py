@@ -939,100 +939,109 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations, warpzones = GetDataFromDB.get_items_from_sector(pk)
+            planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
+                pk, with_npc=True
+            )
             table_set = {
                 "planet": planets,
                 "asteroid": asteroids,
                 "station": stations,
                 "warpzone": warpzones,
+                "npc": npcs,
             }
             result_dict = dict()
             result_dict["sector_element"] = []
-            result_dict["sector"] = {
-                "image": sector.image,
+            result_dict["npc"] = []
+            result_dict["faction"] = {
+                "name": sector.faction_sector.name,
+                "faction_id": sector.faction_id,
+                "is_faction_level_starter": sector.is_faction_level_starter,
             }
-            result_dict["npc"] = GetDataFromDB.get_related_npc_on_sector_data(pk)
+            result_dict["sector"] = {
+                "id": pk,
+                "name": sector.name,
+                "description": sector.description,
+                "image": sector.image,
+                "security_id": sector.security_id,
+            }
+
             for table_key, table_value in table_set.items():
                 for table in table_value:
-                    item_data = ""
+                    item_name = ""
                     match table_key:
                         case "planet":
-                            item_data = PlanetResource.objects.filter(
-                                source_id=table.source_id
-                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
+                            item_name = Planet.objects.filter(
+                                id=table["source_id"],
+                            ).values_list("name", flat=True)[0]
                         case "satellite":
-                            item_data = PlanetResource.objects.filter(
-                                source_id=table.source_id,
-                                source_id__data__contains={"type": "satellite"},
-                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
+                            item_name = Planet.objects.filter(
+                                id=table["source_id"],
+                                data__contains={"type": "satellite"},
+                            ).values_list("name", flat=True)[0]
                         case "blackhole":
-                            item_data = PlanetResource.objects.filter(
-                                source_id=table.source_id,
-                                source_id__data__contains={"type": "blackhole"},
-                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
+                            item_name = Planet.objects.filter(
+                                id=table["source_id"],
+                                data__contains={"type": "blackhole"},
+                            ).values_list("name", flat=True)[0]
                         case "star":
-                            item_data = PlanetResource.objects.filter(
-                                source_id=table.source_id,
-                                source_id__data__contains={"type": "star"},
-                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
+                            item_name = Planet.objects.filter(
+                                id=table["source_id"],
+                                data__contains={"type": "star"},
+                            ).values_list("name", flat=True)[0]
                         case "asteroid":
-                            item_data = AsteroidResource.objects.filter(
-                                source_id=table.source_id
-                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
+                            item_name = Asteroid.objects.filter(
+                                id=table["source_id"]
+                            ).values_list("name", flat=True)[0]
                         case "station":
-                            item_data = StationResource.objects.filter(
-                                source_id=table.source_id
-                            ).values("source_id__name", "source_id__data", "source_id__size", "coordinates")[0]
+                            item_name = Station.objects.filter(
+                                id=table["source_id"]
+                            ).values_list("name", flat=True)[0]
                         case "warpzone":
-                            data = WarpZone.objects.filter(
-                                id=table.id
-                            ).values("source_id__name", "data", "source_id__size", "source_id__data", "coordinates")[0]
-                            item_data = {
-                                "name": data['source_id__name'],
-                                "data": data['data'],
-                                "size": data['source_id__size'],
-                                "animation": data['source_id__data']['animation'],
-                                "coordinates": data['coordinates']
-                            }
-                            
+                            item_name = WarpZone.objects.filter(
+                                id=table["source_id"]
+                            ).values_list("source_id__name", flat=True)[0]
                     if table_key == "warpzone":
-                        sector_warpzone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')[0]['warp_destination_id']
+                        sector_warp_zone_destination = SectorWarpZone.objects.filter(warp_home_id=table["id"]).values('warp_destination_id')
                         result_dict["sector_element"].append(
                             {
                                 "type": table_key,
-                                "item_id": table.id,
-                                "item_data": item_data,
-                                "source_id": table.source_id,
-                                "sector_id": table.sector_id,
-                                "warp_destination": sector_warpzone_destination,
-                                "data": {
-                                    'name': item_data['name'],
-                                    'description': _(item_data['data']['description'])
-                                },
-                                "coordinates":{
-                                    'x': item_data['coordinates']['x'],
-                                    'y': item_data['coordinates']['y'],
-                                }
+                                "item_id": table["id"],
+                                "item_name": item_name,
+                                "size": table["source_id__size"],
+                                "source_id": table["source_id"] if table.get("source_id") else None,
+                                "sector_id": table["sector_id"],
+                                "warp_destination": sector_warp_zone_destination[0] if len(sector_warp_zone_destination)>0 else "none-selected",
+                                "data": table["data"] if table.get("data") else None,
+                                "coordinates": table["coordinates"],
+                            }
+                        )
+                    elif table_key == "npc":
+                        result_dict["npc"].append(
+                            {   
+                                "id": table["id"],
+                                "name": table["npc_template_id__ship_id__name"],
+                                "image": table["npc_template_id__ship_id__image"],
+                                "size": table["npc_template_id__ship_id__ship_category_id__size"],
+                                "template_pk": table["npc_template_id__ship_id__id"],
+                                "coordinates": table["coordinates"],
                             }
                         )
                     else:
                         result_dict["sector_element"].append(
                             {
                                 "type": table_key,
-                                "item_id": table.id,
-                                "item_data": item_data,
-                                "resource_id": table.resource_id,
-                                "source_id": table.source_id,
-                                "sector_id": table.sector_id,
-                                "data": table.data,
-                                "coordinates":{
-                                    'x': item_data['coordinates']['x'],
-                                    'y': item_data['coordinates']['y'],
-                                }
+                                "item_id": table["id"],
+                                "item_name": item_name,
+                                "source_id": table["source_id"] if table.get("source_id") else None,
+                                "data": table["data"] if table.get("data") else None,
+                                "type": table["source_id__data__type"],
+                                "coordinates": table["coordinates"],
+                                "size": table["source_id__size"],
+                                "coordinates": table["coordinates"],
                             }
                         )
             return JsonResponse(json.dumps(result_dict), safe=False)
-        return JsonResponse(json.dumps({}), safe=False)
+        return JsonResponse({}, safe=False)
     
     
 class NpcToSectorShipDataView(LoginRequiredMixin, TemplateView):

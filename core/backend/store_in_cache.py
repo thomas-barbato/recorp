@@ -79,34 +79,36 @@ class StoreInCache:
                         "source_id__size",
                         "source_id__data",
                         "coordinates",
-                    )[0]
-                    
-                    map_element_destination = elementZone.objects.filter(warp_home_id=map_element["id"]).values(
-                        "warp_destination_id",
-                        "warp_destination_id__name",
-                        "warp_home_id"
-                    )[0]
-                    
-                    sector_data["sector_element"].append(
-                        {
-                            "item_id": map_element["id"],
-                            "item_name": map_element['source_id__name'],
-                            "source_id": map_element['source_id'],
-                            "sector_id": map_element['sector_id'],
-                            "animations": map_element['source_id__data']['animation'],
-                            "data": {
-                                "type": "warpzone",
-                                "name": map_element["name"],
-                                "coordinates": map_element['coordinates'],
-                                "size": map_element['source_id__size'],
-                                "description": map_element['data']["description"],
-                                "warp_home_id": map_element_destination["warp_home_id"],
-                                "destination_id": map_element_destination['warp_destination_id'],
-                                "destination_name": map_element_destination['warp_destination_id__name'],
-                            },
-                            "size": map_element['source_id__size'],
-                        }
                     )
+                    
+                    for m in map_element:
+                    
+                        map_element_destination = elementZone.objects.filter(warp_home_id=m["id"]).values(
+                            "warp_destination_id",
+                            "warp_destination_id__name",
+                            "warp_home_id"
+                        )[0]
+                        
+                        sector_data["sector_element"].append(
+                            {
+                                "item_id": m["id"],
+                                "item_name": m['source_id__name'],
+                                "source_id": m['source_id'],
+                                "sector_id": m['sector_id'],
+                                "animations": m['source_id__data']['animation'],
+                                "data": {
+                                    "type": "warpzone",
+                                    "name": m["name"],
+                                    "coordinates": m['coordinates'],
+                                    "size": m['source_id__size'],
+                                    "description": m['data']["description"],
+                                    "warp_home_id": map_element_destination["warp_home_id"],
+                                    "destination_id": map_element_destination['warp_destination_id'],
+                                    "destination_name": map_element_destination['warp_destination_id__name'],
+                                },
+                                "size": m['source_id__size'],
+                            }
+                        )
                     
                 else:
                     
@@ -121,35 +123,34 @@ class StoreInCache:
                         'source_id__size',
                         'source_id__name',
                         'source_id__data',
-                    )[0]
-                    
-                    resource_quantity = GetDataFromDB.get_resource_quantity_value(
-                        resource["quantity"], 100
                     )
-                    
-                    sector_data["sector_element"].append(
-                        {
-                            "item_id": resource["id"] ,
-                            "item_name": resource["data"]["name"],
-                            "resource": {
-                                "id": resource["source_id"],
-                                "name": resource["source_id__name"],
-                                "quantity": resource["quantity"],
-                                "quantity_str": resource_quantity,
-                                "translated_quantity_str": resource_quantity,
-                            },
-                            "source_id": resource["source_id"],
-                            "sector_id": resource["sector_id"],
-                            "animations": resource["source_id__data"]["animation"],
-                            "data": {
-                                "type": resource["source_id__data"]["type"],
-                                "name": resource["data"]["name"],
-                                "coordinates": resource["coordinates"],
-                                "description": resource["data"]["description"],
-                            },
-                            "size": resource["source_id__size"],
-                        }
-                    )
+                    for r in resource:
+                        resource_quantity = GetDataFromDB.get_resource_quantity_value(
+                            r["quantity"], 100
+                        )
+                        sector_data["sector_element"].append(
+                            {
+                                "item_id": r["id"] ,
+                                "item_name": r["data"]["name"],
+                                "resource": {
+                                    "id": r["source_id"],
+                                    "name": r["source_id__name"],
+                                    "quantity": r["quantity"],
+                                    "quantity_str": resource_quantity,
+                                    "translated_quantity_str": resource_quantity,
+                                },
+                                "source_id": r["source_id"],
+                                "sector_id": r["sector_id"],
+                                "animations": r["source_id__data"]["animation"],
+                                "data": {
+                                    "type": r["source_id__data"]["type"],
+                                    "name": r["data"]["name"],
+                                    "coordinates": r["coordinates"],
+                                    "description": r["data"]["description"],
+                                },
+                                "size": r["source_id__size"],
+                            }
+                        )
 
         for data in sector_npc:
             module_list = [
