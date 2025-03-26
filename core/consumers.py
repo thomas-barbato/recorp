@@ -168,6 +168,8 @@ class GameConsumer(WebsocketConsumer):
             store.transfert_player_to_other_cache(
                 destination_sector_id, new_coordinates
             )
+            store.delete_user(self.user.id)
+            cache.clear()
             response = {
                 "type": "async_travel",
                 "message": {"user_can_travel": True},

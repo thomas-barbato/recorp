@@ -93,7 +93,7 @@ class GetDataFromDB:
     def get_resolution_sized_map(device_type):
         return {
             "is_pc": {"col": 20, "row": 16},
-            "is_mobile": {"col": 11, "row": 11},
+            "is_mobile": {"col": 10, "row": 10},
             "is_tablet": {"col": 20, "row": 20},
         }[device_type]
 

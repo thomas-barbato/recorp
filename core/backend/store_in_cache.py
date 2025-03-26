@@ -405,11 +405,18 @@ class StoreInCache:
         return found_player_index
     
     def transfert_player_to_other_cache(self, destination_sector, new_coordinates):
+        print(destination_sector)
         PlayerAction(self.user_calling_id).set_player_sector(
             destination_sector, 
             new_coordinates
         )
-
+        
+    def get_user(self, player_id):
+        in_cache = cache.get(self.room)
+        return [
+            key for key in in_cache['pc'] if key["user"]["player"] == player_id
+        ]
+        
     def delete_user(self, player_id):
         in_cache = cache.get(self.room)
         in_cache["pc"] = [

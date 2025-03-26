@@ -362,10 +362,9 @@ function async_travel(id, user_id, warpzone_name){
 }
 
 function player_travel(data){
+
     if(data.user_can_travel){
-
         window.location.reload();
-
     }else{
 
         let coord_x = data.coordinates.x;
