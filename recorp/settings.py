@@ -17,7 +17,7 @@ SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@
 LOGIN_REDIRECT_URL = "/"
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "7237-90-91-227-84.ngrok-free.app"]
+ALLOWED_HOSTS = ["127.0.0.1", "6988-90-91-227-84.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "daphne",
@@ -92,7 +92,7 @@ TEMPLATES = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.recorp.com",
-    "https://7237-90-91-227-84.ngrok-free.app",
+    "https://6988-90-91-227-84.ngrok-free.app",
 ]
 
 WSGI_APPLICATION = "recorp.routing.application"

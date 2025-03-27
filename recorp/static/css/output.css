@@ -4366,6 +4366,10 @@ select {
     padding: 1.25rem;
   }
 
+  .md\:p-1 {
+    padding: 0.25rem;
+  }
+
   .md\:text-start {
     text-align: start;
   }

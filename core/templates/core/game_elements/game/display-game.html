@@ -90,7 +90,7 @@
         </li>
     </ul>
 </div>
-<div id="map-background" class="flex lg:w-9/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0 items-center">
+<div id="map-background" class="flex lg:w-9/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0 justify-content-center items-center">
     <div class="flex z-100 mx-auto">
         <div class="grid">
             <table class="tabletop-view">
@@ -101,13 +101,13 @@
                             <span class="flex w-[32px] hidden" id="Y_X_y"></span>
                         </td>
                         {% for col in map_size_range.cols %}
-                            <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] p-1 text-xs p-1 uncrossable">
+                            <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] md:p-1 text-xs uncrossable">
                                 {{ col }}
                             </td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
-                        <td id="Y_{{ row }}" class="text-center text-white font-bold border border-slate-600 bg-gray-600/40 text-shadow w-[32px] h-[32px] p-1 text-xs uncrossable">{{ row }}</td>
+                        <td id="Y_{{ row }}" class="text-center text-white font-bold border border-slate-600 bg-gray-600/40 text-shadow w-[32px] h-[32px] md:p-1 text-xs uncrossable">{{ row }}</td>
                         {% for col in map_size_range.cols %}
                             <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row}}_{{ col }}">
                                 <div class="relative w-[32px] h-[32px] coord-zone-div">

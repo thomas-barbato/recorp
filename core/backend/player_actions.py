@@ -106,9 +106,6 @@ class PlayerAction:
             sector_id=sector_id,
             coordinates=coordinates
         )
-        print(Player.objects.filter(
-            id=self.player_id
-        ).values('sector_id__name'))
     
     def set_reverse_ship_status(self):
         playership_reverse_status = PlayerShip.objects.filter(

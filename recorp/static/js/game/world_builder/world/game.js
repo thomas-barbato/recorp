@@ -105,7 +105,7 @@ window.addEventListener('load', () => {
             );
         }, 1000);
     };
-
+    
     generate_sector(
         map_informations.sector.image,
         map_informations.sector_element, 

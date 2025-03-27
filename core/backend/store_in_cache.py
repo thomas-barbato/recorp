@@ -128,8 +128,7 @@ class StoreInCache:
                         resource_quantity = GetDataFromDB.get_resource_quantity_value(
                             r["quantity"], 100
                         )
-                        sector_data["sector_element"].append(
-                            {
+                        data_to_append = {
                                 "item_id": r["id"] ,
                                 "item_name": r["data"]["name"],
                                 "resource": {
@@ -150,7 +149,8 @@ class StoreInCache:
                                 },
                                 "size": r["source_id__size"],
                             }
-                        )
+                        if data_to_append not in sector_data["sector_element"]:
+                            sector_data["sector_element"].append(data_to_append)  
 
         for data in sector_npc:
             module_list = [
