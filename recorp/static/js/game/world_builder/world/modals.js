@@ -189,7 +189,9 @@ function create_foreground_modal(id, data) {
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
         let modal_name = e.id; 
 
-        item_action_container_img_warpzone.setAttribute(attribute_touch_click, "async_travel(" + data.home_sector + ",  " + current_user_id + ", '" + id + "')");
+        item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
+            async_travel(data.home_sector, current_user_id,id);
+        })
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_warpzone_figcaption = document.createElement('figcaption');

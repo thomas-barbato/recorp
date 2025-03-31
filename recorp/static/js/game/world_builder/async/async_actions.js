@@ -351,7 +351,6 @@ function update_player_range_in_modal(data){
 }
 
 function async_travel(id, user_id, warpzone_name){
-    console.log("dedans")
     gameSocket.send(JSON.stringify({
         message: JSON.stringify({
             "player": user_id,

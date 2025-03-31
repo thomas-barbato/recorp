@@ -35,8 +35,7 @@ function add_background(data) {
 }
 
 function add_foreground(data){
-    console.log(data)
-    console.log(data.length)
+    
     for (let sector_i = 0; sector_i < data.length; sector_i++) {
 
         let element_type = data[sector_i].data.type;
@@ -156,10 +155,7 @@ function add_foreground(data){
         let index_row = coord_y;
         let index_col = coord_x;
         let bg_url = '/static/img/foreground/' + element_type + '/' + animation_name + '/' + '0.gif';
-        console.log("================")
-        console.log(index_row, index_col)
-        console.log(size_y, size_x)
-        console.log("================")
+
         for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
 
@@ -523,29 +519,29 @@ function hide_sector_overflow(coord_x, coord_y) {
         if(window_width >= 1920){
             limite_x = 40;
         }else if(window_width >= 1800){
-            limite_x = 36;
+            limite_x = 40;
         }else if(window_width >= 1680){
             limite_x = 32;
         }else if(window_width >= 1560){
             limite_x = 28;
         }else if(window_width >= 1280){
-            limite_x = 24;
+            limite_x = 28;
         }else if(window_width >= 768){
             limite_x = 20;
         }else if(window_width >= 640){
             limite_x = 20;
         }else{
-            limite_x = 12;
+            limite_x = 10;
         }
 
         if(window_height >= 965){
-            limite_y = 25;
+            limite_y = 24;
         }else if(window_height >= 840){
             limite_y = 20;
         }else if(window_height >= 680){
             limite_y = 16;
         }else{
-            limite_y = 12;
+            limite_y = 10;
         }
     }
 
@@ -605,7 +601,6 @@ function update_target_coord_display(element) {
         }
     }
 }
-
 
 function generate_border_className(size_y, size_x){
     switch(size_y){
