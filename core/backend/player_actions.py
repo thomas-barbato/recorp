@@ -215,15 +215,11 @@ class PlayerAction:
         padding_w = spaceship_size_x + 3
         padding_h = spaceship_size_y + 3
         
-        # define "square" zone where user can be tp
-        # this square grow up when space can't be filled.
-        start_x = wz_coord_start_x - padding_w if wz_coord_start_x - padding_w > 0 else 0
-        end_x = wz_coord_end_x + padding_w if wz_coord_end_x + padding_w <= 39 else 39 
-        start_y = wz_coord_start_y - padding_h if wz_coord_start_y - padding_h > 0 else 0
-        end_y = wz_coord_end_y + padding_h if wz_coord_end_y + padding_h <= 39 else 39 
-        
         while True:
             
+        
+            # define "square" zone where user can be tp
+            # this square grow up when space can't be filled.
             start_x = wz_coord_start_x - padding_w if wz_coord_start_x - padding_w > 0 else 0
             end_x = wz_coord_end_x + padding_w if wz_coord_end_x + padding_w <= 39 else 39 
             start_y = wz_coord_start_y - padding_h if wz_coord_start_y - padding_h > 0 else 0
@@ -231,11 +227,11 @@ class PlayerAction:
             
             zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x)]
             
-            already_existing_zone_list = []
             arrival_zone = []
 
             for cell in zone_range_coordinate_to_travel:
                 
+                already_existing_zone_list = []
                 cell_x = cell['x']
                 cell_y = cell['y']
                 
@@ -268,11 +264,11 @@ class PlayerAction:
                                         else:
                                             already_existing_zone_list.append(current_cell)
                                             
-                if already_existing_zone_list:
-                        padding_w += 1
-                        padding_h += 1
-                else:
-                    return arrival_zone[0]
+            if already_existing_zone_list:
+                padding_w += 1
+                padding_h += 1
+            else:
+                return arrival_zone[0]
 
     def set_spaceship_statistics_with_module(self):
         pass

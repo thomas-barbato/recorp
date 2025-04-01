@@ -153,13 +153,16 @@ class GameConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(response))
 
     def async_travel(self, event):
+        
         response = {}
         message = json.loads(event["message"])
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
         ship_pos = PlayerAction(self.user.id).get_spaceship_coord_and_size(
             message["player"]
         )
+        
         if message["player"] == self.user.id:
+            
             destination_sector_id, new_coordinates = PlayerAction(
                 self.user.id
             ).player_travel_to_destination(

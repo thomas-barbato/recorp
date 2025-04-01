@@ -3,6 +3,7 @@ import re
 import json
 import ast
 import random
+from pprint import pprint
 from django.contrib import admin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext as _
@@ -939,7 +940,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
+            planets, asteroids, stations, warpzones, npcs, _ = GetDataFromDB.get_items_from_sector(
                 pk, with_npc=True
             )
             table_set = {
@@ -1022,7 +1023,7 @@ class NpcToSectorView(LoginRequiredMixin, TemplateView):
                                 "name": table["npc_template_id__ship_id__name"],
                                 "image": table["npc_template_id__ship_id__image"],
                                 "size": table["npc_template_id__ship_id__ship_category_id__size"],
-                                "template_pk": table["npc_template_id__ship_id__id"],
+                                "template_pk": table["npc_template_id"],
                                 "coordinates": table["coordinates"],
                             }
                         )
@@ -1049,7 +1050,8 @@ class NpcToSectorShipDataView(LoginRequiredMixin, TemplateView):
     model = Npc
 
     def post(self, request, **kwargs):
-        pk = json.load(request)["template_id"]
+        data = json.load(request)
+        pk = data["template_id"]
         result_dict = GetDataFromDB.get_selected_ship_data(pk)
         result_dict["template_pk"] = pk
         return JsonResponse(json.dumps(result_dict), safe=False)
@@ -1060,13 +1062,12 @@ class NpcToSectorUpdateDataView(LoginRequiredMixin, TemplateView):
     model = Npc
     
     def post(self, request, **kwargs):
-        recieved_data = json.load(request)
         
-        npc_list = Npc.objects.filter(sector_id=recieved_data['map_id'])
-        if npc_list.exists():
-            npc_list.delete()
+        recieved_data = json.load(request)
+        Npc.objects.filter(sector_id=recieved_data['map_id']).delete()
         
         for d in recieved_data['data']:
+            
             npc_template = NpcTemplate.objects.filter(id=d['data']['template_pk']).values(
                 'id',
                 'max_hp',

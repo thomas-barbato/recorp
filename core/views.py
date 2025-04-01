@@ -161,4 +161,4 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             error_msg = _("Sector unknown... Contact admin to get more informations")
             messages.warning(self.request, error_msg)
             data_to_send = {"form": LoginForm}
-            return redirect("/play/", data_to_send)
+            return redirect("/", data_to_send)

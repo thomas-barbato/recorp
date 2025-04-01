@@ -221,13 +221,12 @@ function load_npc_menu() {
 }
 
 function tile_already_used(obj) {
-    let data = obj.data;
     let row = parseInt(obj.pos.y) + 1;
     let col = parseInt(obj.pos.x) + 1;
 
     let response = false;
-    for (let row_i = 0; row_i < (atlas.tilesize * data.ship_category_id__size.y); row_i += atlas.tilesize) {
-        for (let col_i = 0; col_i < (atlas.tilesize * data.ship_category_id__size.x); col_i += atlas.tilesize) {
+    for (let row_i = 0; row_i < (atlas.tilesize * obj.data.ship_id__ship_category_id__size.y); row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < (atlas.tilesize * obj.data.ship_id__ship_category_id__size.x); col_i += atlas.tilesize) {
             let entry_point = document.querySelector('.tabletop-view').rows[row].cells[col];
             let entry_point_border = entry_point.querySelector('div');
             let entry_point_div = entry_point_border.querySelector('div')
@@ -244,19 +243,17 @@ function tile_already_used(obj) {
 }
 
 function delete_this_ship_or_pass(tile_id) {
+
     let entry_point = document.getElementById(tile_id);
     let entry_point_div = entry_point.querySelector('div');
     let spaceship_tile_class = undefined;
+
     if (entry_point_div.classList.contains('foreground-container')) {
         if (/spaceship-/.test(entry_point_div.className)) {
+
             spaceship_tile_class = entry_point_div.className.split(" ").filter(c => c.startsWith("spaceship-"))[0];
-            let spaceship_element = document.querySelectorAll(`.${spaceship_tile_class}`);
-
-            for (let i = 0; i < spaceship_element.length; i++) {
-                spaceship_element[i].classList.remove('foreground-container', 'cursor-pointer', spaceship_tile_class);
-                spaceship_element[i].innerHTML = "";
-            }
-
+            document.querySelectorAll(`.${spaceship_tile_class}`).forEach(e => e.remove());
+            
             for (let ship in spaceship_collection) {
                 if (spaceship_collection[ship].ship_id_on_map == spaceship_tile_class) {
                     spaceship_collection.splice(ship, 1);
@@ -276,32 +273,30 @@ function load_npc_on_map(obj) {
                 name: obj[obj_i].name,
                 size: obj[obj_i].size,
                 template_pk: obj[obj_i].template_pk,
+                spaceship_uuid: crypto.randomUUID()
             },
             pos: obj[obj_i].coordinates,
         }
-        let spaceship_class = undefined;
-
+        console.log(spaceship_obj)
         let index_row = parseInt(spaceship_obj.pos.y) + 1;
         let index_col = parseInt(spaceship_obj.pos.x) + 1;
         let bg_url = '/static/img/foreground/ships/' + spaceship_obj.data.image + '.png';
-
-        let id_uuid = crypto.randomUUID();
 
         for (let row_i = 0; row_i < (atlas.tilesize * spaceship_obj.data.size.y); row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < (atlas.tilesize * spaceship_obj.data.size.x); col_i += atlas.tilesize) {
 
                 let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                 let entry_point_div = entry_point.querySelector('div');
-                spaceship_class = `spaceship-${id_uuid}`;
+                spaceship_class = `spaceship-${spaceship_obj.data.spaceship_uuid}`;
 
                 entry_point_div.classList.add(
                     'foreground-container',
                     'cursor-pointer',
                     spaceship_class
                 );
-
                 
                 if(entry_point_div.querySelector('div')){
+
                     let img_div = entry_point_div.querySelector('div')
                     img_div.classList.add(
                         'm-auto',
@@ -316,6 +311,7 @@ function load_npc_on_map(obj) {
                     img_div.style.backgroundPositionY = `-${row_i}px`;
 
                 }else{
+
                     let img_div = document.createElement('div');
                     img_div.classList.add(
                         'm-auto',
@@ -332,25 +328,26 @@ function load_npc_on_map(obj) {
                 }
                 index_col++;
             }
+
             index_row++;
             index_col = parseInt(spaceship_obj.pos.x) + 1;
         }
+
         spaceship_obj.ship_id_on_map = spaceship_class;
         spaceship_collection.push(spaceship_obj);
     }
 }
 
 function add_spaceship_on_map(obj) {
-    let data = obj;
     let index_row = parseInt(obj.pos.y) + 1;
     let index_col = parseInt(obj.pos.x) + 1;
-    let bg_url = '/static/img/foreground/SHIPS/' + data.image + '.png';
-
+    let bg_url = '/static/img/foreground/SHIPS/' + obj.data.ship_id__image + '.png';
     let spaceship_class = undefined;
-
     let id_uuid = crypto.randomUUID();
-    for (let row_i = 0; row_i < (atlas.tilesize * data.size.y); row_i += atlas.tilesize) {
-        for (let col_i = 0; col_i < (atlas.tilesize * data.size.x); col_i += atlas.tilesize) {
+
+    for (let row_i = 0; row_i < (atlas.tilesize * obj.data.ship_id__ship_category_id__size.y); row_i += atlas.tilesize) {
+        for (let col_i = 0; col_i < (atlas.tilesize * obj.data.ship_id__ship_category_id__size.x); col_i += atlas.tilesize) {
+
             let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
             let entry_point_div = entry_point.querySelector('div');
             spaceship_class = `spaceship-${id_uuid}`;
@@ -360,7 +357,9 @@ function add_spaceship_on_map(obj) {
                 'cursor-pointer',
                 spaceship_class
             );
+
             if(entry_point_div.querySelector('div')){
+
                 let img_div = entry_point_div.querySelector('div')
                 img_div.classList.add(
                     'm-auto',
@@ -375,6 +374,7 @@ function add_spaceship_on_map(obj) {
                 img_div.style.backgroundPositionY = `-${row_i}px`;
 
             }else{
+
                 let img_div = document.createElement('div');
                 img_div.classList.add(
                     'm-auto',
@@ -392,11 +392,18 @@ function add_spaceship_on_map(obj) {
 
             index_col++;
         }
+
         index_row++;
         index_col = parseInt(obj.pos.x) + 1;
     }
+
     obj.ship_id_on_map = spaceship_class;
-    spaceship_collection.push(obj);
+    if(!spaceship_collection.includes(obj)){
+        spaceship_collection.push(obj);
+    }else{
+        console.log("already_inside")
+    }
+
 }
 
 function get_spaceship_data(tile_id) {

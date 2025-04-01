@@ -235,7 +235,7 @@ class GetDataFromDB:
                     "npc_template_id__ship_id__ship_category_id__size",
                     "npc_template_id__ship_id__image",
                     "npc_template_id__ship_id__name",
-                    "npc_template_id__ship_id__id",
+                    "npc_template_id",
                     "coordinates", 
                 ),
                 PlayerShip.objects.filter(
@@ -415,11 +415,8 @@ class GetDataFromDB:
 
     @staticmethod
     def get_selected_ship_data(template_id):
-        ship_id = NpcTemplate.objects.filter(id=template_id).values_list(
-            "ship_id", flat=True
-        )[0]
-        return Ship.objects.filter(id=ship_id).values(
-            "id", "name", "image", "ship_category_id__size"
+        return NpcTemplate.objects.filter(id=template_id).values(
+            "id", "ship_id", "ship_id__name", "ship_id__image", "ship_id__ship_category_id__size"
         )[0]
 
     @staticmethod
