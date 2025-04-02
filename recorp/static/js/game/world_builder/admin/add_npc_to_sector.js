@@ -412,6 +412,7 @@ function get_spaceship_data(tile_id) {
     let selected_sector_id = sector_selection.options[sector_selection.selectedIndex].value;
 
     if (selected_sector_id != "none") {
+
         let main_container = document.querySelector('#npc-container');
         let template_select = main_container.querySelector('select');
         let selected_template_id = template_select.options[template_select.selectedIndex].value;
@@ -423,6 +424,7 @@ function get_spaceship_data(tile_id) {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRFToken': csrf_token
         });
+        
         fetch(url, {
                 method: 'POST',
                 headers,

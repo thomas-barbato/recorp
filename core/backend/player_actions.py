@@ -152,10 +152,21 @@ class PlayerAction:
         if warpzone_home.exists():
             
             destination_sector_id = warpzone_home.values('warp_destination_id__sector_id')[0]['warp_destination_id__sector_id']
-            destination_cell = self.__calculate_destination_coord(destination_sector_id)
+            
+            player_spaceship = self.get_player_ship_size()
+            spaceship_size_x = player_spaceship['ship_id__ship_category_id__size']['x']
+            spaceship_size_y = player_spaceship['ship_id__ship_category_id__size']['y']  
+
+            padding_w = spaceship_size_x + 3
+            padding_h = spaceship_size_y + 3
+            
+            destination_cell = self.__calculate_destination_coord(destination_sector_id, spaceship_size_x, spaceship_size_y, padding_h, padding_w)
+            
             return destination_sector_id, destination_cell
     
-    def __calculate_destination_coord(self, destination_sector_id):
+    def __calculate_destination_coord(self, destination_sector_id, spaceship_size_x, spaceship_size_y, padding_h, padding_w):
+        
+        print(padding_h, padding_w)
         
         planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
             destination_sector_id, with_npc=True
@@ -170,9 +181,6 @@ class PlayerAction:
             "pc": pcs,
         }
         
-        player_spaceship = self.get_player_ship_size()
-        spaceship_size_x = player_spaceship['ship_id__ship_category_id__size']['x']
-        spaceship_size_y = player_spaceship['ship_id__ship_category_id__size']['y']
         
         all_forgeround_item_coord = []
         
@@ -181,7 +189,6 @@ class PlayerAction:
         for table_key, table_value in foreground_table_set.items():
             
             for value in table_value:
-                
                 if table_key == "npc" or table_key == "pc":
                     size = value['ship_id__ship_category_id__size'] if value.get('ship_id__ship_category_id__size') else value['npc_template_id__ship_id__ship_category_id__size']
                     coord = value['coordinates'] if value.get('coordinates') else value['player_id__coordinates']
@@ -211,62 +218,59 @@ class PlayerAction:
                                 
                 else:
                     all_forgeround_item_coord.append({'y': coord_y, 'x': coord_x})
-                    
-        padding_w = spaceship_size_x + 3
-        padding_h = spaceship_size_y + 3
         
-        while True:
-            
+        # define "square" zone where user can be tp
+        # this square grow up when space can't be filled.
+        start_x = wz_coord_start_x - padding_w if wz_coord_start_x - padding_w > 0 else 0
+        end_x = wz_coord_end_x + padding_w if wz_coord_end_x + padding_w <= 39 else 39 
+        start_y = wz_coord_start_y - padding_h if wz_coord_start_y - padding_h > 0 else 0
+        end_y = wz_coord_end_y + padding_h if wz_coord_end_y + padding_h <= 39 else 39 
         
-            # define "square" zone where user can be tp
-            # this square grow up when space can't be filled.
-            start_x = wz_coord_start_x - padding_w if wz_coord_start_x - padding_w > 0 else 0
-            end_x = wz_coord_end_x + padding_w if wz_coord_end_x + padding_w <= 39 else 39 
-            start_y = wz_coord_start_y - padding_h if wz_coord_start_y - padding_h > 0 else 0
-            end_y = wz_coord_end_y + padding_h if wz_coord_end_y + padding_h <= 39 else 39 
-            
-            zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x)]
-            
-            arrival_zone = []
+        zone_range_coordinate_to_travel = [{"y": y, "x": x} for y in range(start_y, end_y) for x in range(start_x, end_x)]
+        arrival_zone = []
 
-            for cell in zone_range_coordinate_to_travel:
-                
-                already_existing_zone_list = []
-                cell_x = cell['x']
-                cell_y = cell['y']
-                
-                if spaceship_size_x == 1 and spaceship_size_y == 1:
-                    if cell not in all_forgeround_item_coord:
-                        return cell
-                else:
-                    if cell not in all_forgeround_item_coord:
-                        if spaceship_size_y == 1 and spaceship_size_x > 1:
+        for cell in zone_range_coordinate_to_travel:
+            
+            already_existing_zone_list = []
+            cell_x = cell['x']
+            cell_y = cell['y']
+            
+            if spaceship_size_x == 1 and spaceship_size_y == 1:
+                if cell not in all_forgeround_item_coord:
+                    return cell
+                already_existing_zone_list.append(cell)
+            else:
+                if cell not in all_forgeround_item_coord:
+                    
+                    if spaceship_size_y == 1 and spaceship_size_x > 1:
+                        for x in range(cell_x, cell_x + spaceship_size_x):
+                            current_cell = {"y": cell_y, "x": x}
+                            if current_cell not in all_forgeround_item_coord:
+                                arrival_zone.append(current_cell)
+                            else:
+                                arrival_zone = []
+                                break
+                    else:
+                        if spaceship_size_y == 1:
                             for x in range(cell_x, cell_x + spaceship_size_x):
                                 current_cell = {"y": cell_y, "x": x}
                                 if current_cell not in all_forgeround_item_coord:
                                     arrival_zone.append(current_cell)
                                 else:
-                                    already_existing_zone_list.append(current_cell)
+                                    arrival_zone = []
+                                    break
                         else:
-                            if spaceship_size_y == 1:
+                            for y in range(cell_y, cell_y + spaceship_size_y):
                                 for x in range(cell_x, cell_x + spaceship_size_x):
-                                    current_cell = {"y": cell_y, "x": x}
+                                    current_cell = {"y": y, "x": x}
                                     if current_cell not in all_forgeround_item_coord:
                                         arrival_zone.append(current_cell)
                                     else:
-                                        already_existing_zone_list.append(current_cell)
-                            else:
-                                for y in range(cell_y, cell_y + spaceship_size_y):
-                                    for x in range(cell_x, cell_x + spaceship_size_x):
-                                        current_cell = {"y": y, "x": x}
-                                        if current_cell not in all_forgeround_item_coord:
-                                            arrival_zone.append(current_cell)
-                                        else:
-                                            already_existing_zone_list.append(current_cell)
-                                            
-            if already_existing_zone_list:
-                padding_w += 1
-                padding_h += 1
+                                        arrival_zone = []
+                                        break       
+            print(f"{len(arrival_zone)} = {spaceship_size_x * spaceship_size_y}")                    
+            if len(arrival_zone) != spaceship_size_x * spaceship_size_y:
+                self.__calculate_destination_coord(destination_sector_id, spaceship_size_x, spaceship_size_y, padding_h + 1, padding_w + 1)
             else:
                 return arrival_zone[0]
 
