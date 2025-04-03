@@ -320,7 +320,6 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
 
 
 function set_range_finding(data) {
-    console.log(data.is_in_range)
     return data['is_in_range'] == true ? true : false;
 }
 
@@ -364,38 +363,45 @@ function async_travel(id, user_id, warpzone_name){
 function player_travel(data){
 
     if(data.user_can_travel){
-        window.location.reload();
+        async_player_enter_in_sector(current_user_id)
     }else{
-
-        let coord_x = data.coordinates.x;
-        let coord_y = data.coordinates.y;
-        let size = {
-            "y" : data.size.size_y,
-            "x" : data.size.size_x,
-        };
-
-        for(c_y = coord_y ; c_y < coord_y + size.y ; c_y++){
-            for(c_x = coord_x ; c_x < coord_x + size.x ; c_x++){
-                let element = document.querySelector("#" + `${c_y}_${c_x}`);
-                element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
-                element.removeAttribute("size_x");
-                element.removeAttribute("size_y");
-                element.querySelector('div').replaceChildren();
-
-                let sector_name = document.querySelector("#sector-name").textContent;
-                let element_span = createElement('span');
-
-                element_span.className = "absolute hover:box-border hover:border-2 hover:border inline-block w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-                element_span.setAttribute('title', `${sector_name} [y = ${parseInt(c_y)}; x = ${parseInt(c_x)}]`);
-                element.addEventListener(attribute_touch_mouseover, function(){
-                    update_target_coord_display(entry_point);
-                })
-                element.append(element_span);
-            }
-        }
+        remove_player_from_the_sector(data)
     }
 }
 
-function remove_player_from_the_sector(data){
+function async_player_enter_in_sector(user_id){
+    gameSocket.send(JSON.stringify({
+        message: JSON.stringify({
+            "player": user_id
+        }),
+        type: "async_player_enter_in_sector"
+    }));
+}
 
+function remove_player_from_the_sector(data){
+    let coord_x = data.position.x;
+    let coord_y = data.position.y;
+    let size = {
+        "y" : data.size.y,
+        "x" : data.size.x,
+    };
+    for(c_y = coord_y ; c_y < coord_y + size.y ; c_y++){
+        for(c_x = coord_x ; c_x < coord_x + size.x ; c_x++){
+
+            let element = document.getElementById(`${c_y}_${c_x}`);
+            let element_div = element.querySelector('div');
+            let element_div_span = document.createElement('span');
+            
+            element.removeAttribute("size_x");
+            element.removeAttribute("size_y");
+            element_div.replaceChildren();
+
+            element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+            element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(c_y)}; x = ${parseInt(c_x)}]`);
+            element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
+            element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
+            
+            element_div.append(element_div_span);
+        }
+    }
 }

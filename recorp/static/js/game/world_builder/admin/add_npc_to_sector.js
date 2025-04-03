@@ -277,7 +277,6 @@ function load_npc_on_map(obj) {
             },
             pos: obj[obj_i].coordinates,
         }
-        console.log(spaceship_obj)
         let index_row = parseInt(spaceship_obj.pos.y) + 1;
         let index_col = parseInt(spaceship_obj.pos.x) + 1;
         let bg_url = '/static/img/foreground/ships/' + spaceship_obj.data.image + '.png';

@@ -166,8 +166,6 @@ class PlayerAction:
     
     def __calculate_destination_coord(self, destination_sector_id, spaceship_size_x, spaceship_size_y, padding_h, padding_w):
         
-        print(padding_h, padding_w)
-        
         planets, asteroids, stations, warpzones, npcs, pcs = GetDataFromDB.get_items_from_sector(
             destination_sector_id, with_npc=True
         )
@@ -180,7 +178,6 @@ class PlayerAction:
             "npc": npcs,
             "pc": pcs,
         }
-        
         
         all_forgeround_item_coord = []
         
@@ -267,8 +264,8 @@ class PlayerAction:
                                         arrival_zone.append(current_cell)
                                     else:
                                         arrival_zone = []
-                                        break       
-            print(f"{len(arrival_zone)} = {spaceship_size_x * spaceship_size_y}")                    
+                                        break
+                                    
             if len(arrival_zone) != spaceship_size_x * spaceship_size_y:
                 self.__calculate_destination_coord(destination_sector_id, spaceship_size_x, spaceship_size_y, padding_h + 1, padding_w + 1)
             else:

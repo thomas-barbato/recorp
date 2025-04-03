@@ -53,7 +53,6 @@ class GameConsumer(WebsocketConsumer):
 
         if not self.user.is_authenticated:
             return
-
         # send chat message event to the room
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
@@ -171,22 +170,18 @@ class GameConsumer(WebsocketConsumer):
             store.transfert_player_to_other_cache(
                 destination_sector_id, new_coordinates
             )
-            store.delete_user(self.user.id)
-            cache.clear()
             response = {
                 "type": "async_travel",
                 "message": {"user_can_travel": True},
             }
 
         else:
-
-            store.delete_user(message["player"])
+            data = store.get_user(message["player"])[0]['user']
+            store.delete_player_from_cache(data["player"])
             response = {
                 "type": "async_travel",
                 "message": {
-                    "user_must_be_deleted": True,
-                    "player": message["player"],
-                    "position": ship_pos["player_id__coordinates"],
+                    "position": data["coordinates"],
                     "size": ship_pos["ship_id__ship_category_id__size"],
                 },
             }
@@ -194,14 +189,38 @@ class GameConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(response))
 
     def async_player_enter_in_sector(self, event):
-        response = {}
+        
         message = json.loads(event["message"])
+        player_id = message['player']
+        current_player = PlayerAction(self.user.id)
+        
+        sector_id = current_player.get_player_sector_id()
+        ship_size = current_player.get_player_ship_size()
+        room_name = f"play_{sector_id}"
+        
+        message = {
+            "sector": PlayerAction(self.user.id).get_player_sector_id(),
+            "player_data": StoreInCache(room_name, self.user).get_user(player_id, room_name),
+            "size": ship_size
+        },
+        
+        async_to_sync(self.channel_layer.group_send)(
+            room_name,
+            {
+                "type": "user_join",
+                "user": self.user.username,
+                "message": message,
+            },
+        )
+
 
     def send_message(self, event):
         pass
 
     def user_join(self, event):
-        pass
+        print("dedans")
+        message = event
+        print(message)
 
     def user_leave(self, event):
         pass
