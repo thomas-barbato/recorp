@@ -138,7 +138,12 @@ window.addEventListener('load', () => {
                 update_ship_after_attack(data.message);
                 break;
             case "async_travel":
-                player_travel(data.message);
+                player_travel(data.message)
+                break;
+            case "user_join":
+                console.log(data.message)
+                add_pc(data.message)
+                break;
             case "send_message":
                 //sendMessage(data);
                 break;

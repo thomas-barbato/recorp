@@ -36,7 +36,7 @@ class GameConsumer(WebsocketConsumer):
 
         if self.user.is_authenticated:
             store = StoreInCache(self.room_group_name, self.user)
-            store.get_or_set_cache(need_to_be_recreated=True)
+            store.get_or_set_cache(need_to_be_recreated=False)
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -155,10 +155,12 @@ class GameConsumer(WebsocketConsumer):
         
         response = {}
         message = json.loads(event["message"])
+        print(message)
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        ship_pos = PlayerAction(self.user.id).get_spaceship_coord_and_size(
+        ship_pos = PlayerAction(message["player"]).get_spaceship_coord_and_size(
             message["player"]
         )
+        data = store.get_user(message["player"])
         
         if message["player"] == self.user.id:
             
@@ -168,7 +170,7 @@ class GameConsumer(WebsocketConsumer):
                 message["warpzone_name"], message["source_id"]
             )
             store.transfert_player_to_other_cache(
-                destination_sector_id, new_coordinates
+                destination_sector_id, new_coordinates, self.room_group_name
             )
             response = {
                 "type": "async_travel",
@@ -176,17 +178,19 @@ class GameConsumer(WebsocketConsumer):
             }
 
         else:
-            data = store.get_user(message["player"])[0]['user']
-            store.delete_player_from_cache(data["player"])
+            
+            store.delete_player_from_cache(message["player"])
             response = {
                 "type": "async_travel",
                 "message": {
-                    "position": data["coordinates"],
+                    "position": data[0]['user']['coordinates'],
                     "size": ship_pos["ship_id__ship_category_id__size"],
+                    "player_id": message["player"] 
                 },
             }
 
         self.send(text_data=json.dumps(response))
+
 
     def async_player_enter_in_sector(self, event):
         
@@ -195,32 +199,36 @@ class GameConsumer(WebsocketConsumer):
         current_player = PlayerAction(self.user.id)
         
         sector_id = current_player.get_player_sector_id()
-        ship_size = current_player.get_player_ship_size()
+        #ship_size = current_player.get_player_ship_size()
         room_name = f"play_{sector_id}"
         
         message = {
             "sector": PlayerAction(self.user.id).get_player_sector_id(),
             "player_data": StoreInCache(room_name, self.user).get_user(player_id, room_name),
-            "size": ship_size
-        },
+        }
         
         async_to_sync(self.channel_layer.group_send)(
             room_name,
             {
                 "type": "user_join",
-                "user": self.user.username,
                 "message": message,
             },
         )
 
 
+    def user_join(self, event):
+        message = event["message"]
+        response = {
+            "type": "user_join",
+            "message": message,
+        }
+
+        self.send(text_data=json.dumps(response))
+
+
+
     def send_message(self, event):
         pass
-
-    def user_join(self, event):
-        print("dedans")
-        message = event
-        print(message)
 
     def user_leave(self, event):
         pass

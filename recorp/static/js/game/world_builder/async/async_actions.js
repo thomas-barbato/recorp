@@ -361,11 +361,10 @@ function async_travel(id, user_id, warpzone_name){
 }
 
 function player_travel(data){
-
     if(data.user_can_travel){
-        async_player_enter_in_sector(current_user_id)
+        async_player_enter_in_sector(current_user_id);
     }else{
-        remove_player_from_the_sector(data)
+        remove_player_from_the_sector(data);
     }
 }
 
@@ -376,11 +375,16 @@ function async_player_enter_in_sector(user_id){
         }),
         type: "async_player_enter_in_sector"
     }));
+    if(user_id == current_user_id){
+        window.location.reload();
+    }
 }
 
 function remove_player_from_the_sector(data){
     let coord_x = data.position.x;
     let coord_y = data.position.y;
+    let player_id = data.player_id;
+
     let size = {
         "y" : data.size.y,
         "x" : data.size.x,
@@ -403,5 +407,10 @@ function remove_player_from_the_sector(data){
             
             element_div.append(element_div_span);
         }
+    }
+
+    var modal = document.querySelector('#modal-pc_' + player_id);
+    if(modal){
+        modal.parentNode.removeChild(modal);
     }
 }
