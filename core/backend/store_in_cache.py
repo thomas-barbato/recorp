@@ -404,7 +404,7 @@ class StoreInCache:
         found_player_index = player_data.index(found_player)
         return found_player_index
     
-    def transfert_player_to_other_cache(self, destination_sector, new_coordinates, old_room):
+    def transfert_player_to_other_cache(self, destination_sector, new_coordinates):
         
         PlayerAction(self.user_calling_id).set_player_sector(
             destination_sector, 
@@ -419,27 +419,20 @@ class StoreInCache:
         return room_name
         
     def get_user(self, player_id, room_name = None):
-        in_cache = cache.get(self.room) if room_name is None else cache.get(room_name)
         
-        if in_cache is None:
-            store = StoreInCache(room_name, self.user_calling)
-            store.get_or_set_cache(True)
-            in_cache = cache.get(self.room) if room_name is None else cache.get(room_name)
+        store = StoreInCache(room_name, self.user_calling)
+        store.get_or_set_cache(True)
+        in_cache = cache.get(self.room) if room_name is None else cache.get(room_name)
         return [
                 key for key in in_cache['pc'] if key["user"]["player"] == player_id
             ]
         
     def delete_player_from_cache(self, player_id, old_room = None):
-        #in_cache = cache.get(self.room) if old_room is None else cache.get(old_room)
         in_cache = cache.get(self.room)
         in_cache["pc"] = [
             key for key in in_cache['pc'] if key["user"]["player"] != player_id
         ]
         cache.set(self.room, in_cache)
-        
-    def add_user(self, destination_sector_id):
-        in_cache = cache.get(f"play_{destination_sector_id}")
-        in_cache["pc"]
 
     def add_msg(self, user):
         in_cache = cache.get(self.room)

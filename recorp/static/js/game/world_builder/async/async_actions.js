@@ -361,21 +361,21 @@ function async_travel(id, user_id, warpzone_name){
 }
 
 function player_travel(data){
-    if(data.user_can_travel){
-        async_player_enter_in_sector(current_user_id);
+    if(data.user_can_travel == true){
+        async_player_enter_in_sector(data);
     }else{
         remove_player_from_the_sector(data);
     }
 }
 
-function async_player_enter_in_sector(user_id){
+function async_player_enter_in_sector(data){
     gameSocket.send(JSON.stringify({
         message: JSON.stringify({
-            "player": user_id
+            data
         }),
         type: "async_player_enter_in_sector"
     }));
-    if(user_id == current_user_id){
+    if(data.player == current_user_id){
         window.location.reload();
     }
 }

@@ -141,8 +141,12 @@ window.addEventListener('load', () => {
                 player_travel(data.message)
                 break;
             case "user_join":
+                console.log("dedans")
+                console.log(data)
+                console.log("====")
                 console.log(data.message)
-                add_pc(data.message)
+                console.log("====")
+                add_pc(data.message.player_data)
                 break;
             case "send_message":
                 //sendMessage(data);

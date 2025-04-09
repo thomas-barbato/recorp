@@ -155,12 +155,12 @@ class GameConsumer(WebsocketConsumer):
         
         response = {}
         message = json.loads(event["message"])
-        print(message)
+        
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
         ship_pos = PlayerAction(message["player"]).get_spaceship_coord_and_size(
             message["player"]
         )
-        data = store.get_user(message["player"])
+        data = store.get_user(message['player'], self.room_group_name)
         
         if message["player"] == self.user.id:
             
@@ -170,16 +170,21 @@ class GameConsumer(WebsocketConsumer):
                 message["warpzone_name"], message["source_id"]
             )
             store.transfert_player_to_other_cache(
-                destination_sector_id, new_coordinates, self.room_group_name
+                destination_sector_id, new_coordinates
             )
             response = {
                 "type": "async_travel",
-                "message": {"user_can_travel": True},
+                "message": {
+                    "user_can_travel": True,
+                    "player": message["player"],
+                    "warpzone_name": message["warpzone_name"],
+                    "source_id": destination_sector_id
+                },
             }
+            #store.delete_player_from_cache(message["player"])
+            self.send(text_data=json.dumps(response))
 
         else:
-            
-            store.delete_player_from_cache(message["player"])
             response = {
                 "type": "async_travel",
                 "message": {
@@ -188,22 +193,19 @@ class GameConsumer(WebsocketConsumer):
                     "player_id": message["player"] 
                 },
             }
-
-        self.send(text_data=json.dumps(response))
+            
+            #store.delete_player_from_cache(message["player"])
+            self.send(text_data=json.dumps(response))
 
 
     def async_player_enter_in_sector(self, event):
-        
         message = json.loads(event["message"])
-        player_id = message['player']
-        current_player = PlayerAction(self.user.id)
-        
-        sector_id = current_player.get_player_sector_id()
-        #ship_size = current_player.get_player_ship_size()
+        player_id = message["data"]['player']
+        sector_id = message["data"]["source_id"]
         room_name = f"play_{sector_id}"
         
         message = {
-            "sector": PlayerAction(self.user.id).get_player_sector_id(),
+            "sector": message["data"]["source_id"],
             "player_data": StoreInCache(room_name, self.user).get_user(player_id, room_name),
         }
         

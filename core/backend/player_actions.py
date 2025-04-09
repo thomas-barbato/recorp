@@ -49,9 +49,7 @@ class PlayerAction:
         return self.player.values_list("coordinates", flat=True)[0]
 
     def get_other_player_name(self, other_player_id):
-        return Player.objects.filter(id=other_player_id).values_list("name", flat=True)[
-            0
-        ]
+        return Player.objects.filter(id=other_player_id).values_list("name", flat=True)[0]
 
     def get_other_player_user_id(self, other_player_id):
         return Player.objects.filter(id=other_player_id).values_list(
