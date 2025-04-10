@@ -18,7 +18,6 @@ class StoreInCache:
         self.room = room_name
         self.sector_pk = self.room.split("_")[1]
         self.user_calling = user_calling
-        self.user_calling_id = user_calling.id
 
     def get_or_set_cache(self, need_to_be_recreated=False):
         if need_to_be_recreated:
@@ -406,33 +405,31 @@ class StoreInCache:
     
     def transfert_player_to_other_cache(self, destination_sector, new_coordinates):
         
-        PlayerAction(self.user_calling_id).set_player_sector(
+        PlayerAction(self.user_calling).set_player_sector(
             destination_sector, 
             new_coordinates
         )
         
-        self.delete_player_from_cache(self.user_calling)
+        #self.delete_player_from_cache(self.user_calling)
         room_name = f"play_{destination_sector}"
-        store = StoreInCache(room_name, self.user_calling)
-        store.get_or_set_cache(True)
+        #store = StoreInCache(room_name, self.user_calling)
+        #store.get_or_set_cache(True)
         
         return room_name
         
     def get_user(self, player_id, room_name = None):
-        
-        store = StoreInCache(room_name, self.user_calling)
-        store.get_or_set_cache(True)
-        in_cache = cache.get(self.room) if room_name is None else cache.get(room_name)
+        in_cache = cache.get(room_name)
         return [
                 key for key in in_cache['pc'] if key["user"]["player"] == player_id
             ]
         
     def delete_player_from_cache(self, player_id, old_room = None):
-        in_cache = cache.get(self.room)
-        in_cache["pc"] = [
-            key for key in in_cache['pc'] if key["user"]["player"] != player_id
-        ]
-        cache.set(self.room, in_cache)
+        if player_id != self.user_calling:
+            in_cache = cache.get(old_room)
+            in_cache["pc"] = [
+                key for key in in_cache['pc'] if key["user"]["player"] != player_id
+            ]
+            cache.set(self.room, in_cache)
 
     def add_msg(self, user):
         in_cache = cache.get(self.room)

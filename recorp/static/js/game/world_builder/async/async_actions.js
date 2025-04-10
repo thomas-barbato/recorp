@@ -350,23 +350,58 @@ function update_player_range_in_modal(data){
 }
 
 function async_travel(id, user_id, warpzone_name){
-    gameSocket.send(JSON.stringify({
-        message: JSON.stringify({
-            "player": user_id,
-            "source_id": id,
-            "warpzone_name": warpzone_name,
-        }),
-        type: "async_travel"
-    }));
+    let coordinates = document.querySelector('.player-ship-start-pos').id.split('_')
+    let data = {
+        "player": user_id,
+        "source_id": id,
+        "warpzone_name": warpzone_name,
+        "coordinates": {
+            y : coordinates[0],
+            x : coordinates[1]
+        }
+    }
+
+    let url = "warp"
+
+    const headers = new Headers({
+    'Content-Type': 'x-www-form-urlencoded',
+    'Accept': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRFToken': csrf_token
+    });
+
+    fetch(url, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+            data
+        })
+    }).then(() => {
+
+        gameSocket.send(JSON.stringify({
+            message: JSON.stringify({
+                data
+            }),
+            type: "async_remove_ship"
+        }));
+
+        gameSocket.send(JSON.stringify({
+            message: JSON.stringify({
+                data
+            }),
+            type: "async_player_sector_change"
+        }));
+
+        window.location.reload();
+
+    });
 }
 
-function player_travel(data){
-    if(data.user_can_travel == true){
-        async_player_enter_in_sector(data);
-    }else{
-        remove_player_from_the_sector(data);
-    }
+function remove_ship_display(data){
+    remove_player_from_the_sector(data);
 }
+
 
 function async_player_enter_in_sector(data){
     gameSocket.send(JSON.stringify({

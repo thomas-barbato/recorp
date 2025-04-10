@@ -1,7 +1,7 @@
 import datetime
 import logging
 from urllib import request
-
+import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,7 +12,7 @@ from django.shortcuts import redirect
 from django.template import RequestContext, loader
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View, RedirectView
 from django_user_agents.utils import get_user_agent
 
 from core.backend.get_data import GetDataFromDB
@@ -162,3 +162,24 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             messages.warning(self.request, error_msg)
             data_to_send = {"form": LoginForm}
             return redirect("/", data_to_send)
+
+
+class ChangeSectorGameView(LoginRequiredMixin, RedirectView):
+    login_url = LOGIN_REDIRECT_URL
+    redirect_field_name = "login_redirect"
+    template_name = "play.html"
+    
+    def post(self, request, **kwargs):
+        data = json.load(request)["data"]
+        destination_sector, new_coordinates = PlayerAction(
+                self.request.user.id
+            ).player_travel_to_destination(
+                data["warpzone_name"], data["source_id"]
+            )
+            
+        PlayerAction(self.request.user.id).set_player_sector(
+            destination_sector, 
+            new_coordinates
+        )
+        store = StoreInCache(f"play_{destination_sector}", self.request.user.id)
+        store.get_or_set_cache(need_to_be_recreated=True)

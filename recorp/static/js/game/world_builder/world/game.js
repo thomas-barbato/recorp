@@ -137,16 +137,16 @@ window.addEventListener('load', () => {
             case "player_attack":
                 update_ship_after_attack(data.message);
                 break;
-            case "async_travel":
-                player_travel(data.message)
+            case "async_remove_ship":
+                console.log("async_remove_ship")
+                console.log(data)
+                console.log("==================")
+                remove_ship_display(data.message)
                 break;
             case "user_join":
-                console.log("dedans")
-                console.log(data)
-                console.log("====")
-                console.log(data.message)
-                console.log("====")
-                add_pc(data.message.player_data)
+                response = [data.message]
+                console.log(`response = ${response}`);
+                add_pc(response)
                 break;
             case "send_message":
                 //sendMessage(data);

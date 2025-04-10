@@ -306,7 +306,9 @@ function add_npc(data){
     }
 }
 
-function add_pc(data) {
+function add_pc(data, coming_from_consummer = false) {
+    console.log(data)
+    console.log("===========")
     let border_color = "";
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {

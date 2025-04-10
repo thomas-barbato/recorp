@@ -150,87 +150,86 @@ class GameConsumer(WebsocketConsumer):
         }
 
         self.send(text_data=json.dumps(response))
-
-    def async_travel(self, event):
         
-        response = {}
-        message = json.loads(event["message"])
         
-        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+    def async_remove_ship(self, event):
+        
+        message = json.loads(event["message"])["data"]
         ship_pos = PlayerAction(message["player"]).get_spaceship_coord_and_size(
             message["player"]
         )
-        data = store.get_user(message['player'], self.room_group_name)
         
-        if message["player"] == self.user.id:
+        coordinates = message["coordinates"]
+        
+        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user.id)
+        print(f"dans async_remove_ship, {self.room_group_name}")
+        store.delete_player_from_cache(message["player"], self.room_group_name)
+        
+        if message["player"] != self.user.id:
             
-            destination_sector_id, new_coordinates = PlayerAction(
-                self.user.id
-            ).player_travel_to_destination(
-                message["warpzone_name"], message["source_id"]
-            )
-            store.transfert_player_to_other_cache(
-                destination_sector_id, new_coordinates
-            )
             response = {
-                "type": "async_travel",
+                "type": "async_remove_ship",
                 "message": {
-                    "user_can_travel": True,
-                    "player": message["player"],
-                    "warpzone_name": message["warpzone_name"],
-                    "source_id": destination_sector_id
-                },
-            }
-            #store.delete_player_from_cache(message["player"])
-            self.send(text_data=json.dumps(response))
-
-        else:
-            response = {
-                "type": "async_travel",
-                "message": {
-                    "position": data[0]['user']['coordinates'],
+                    "position": coordinates,
                     "size": ship_pos["ship_id__ship_category_id__size"],
                     "player_id": message["player"] 
                 },
             }
-            
-            #store.delete_player_from_cache(message["player"])
             self.send(text_data=json.dumps(response))
+            
+            
+    def async_player_sector_change(self, event):
+        
+        message = json.loads(event["message"])["data"]
+        player_id = message['player']
+        
+        if player_id == self.user.id:
+            
+            sector_id = PlayerAction(player_id).get_player_sector()
+            room_name = f"play_{sector_id}"
+            store = StoreInCache(room_name, self.user)
+            store.get_or_set_cache(need_to_be_recreated=True)
+            message = {
+                "sector": sector_id,
+                "player_data": StoreInCache(room_name, message['player']).get_user(message['player'], room_name),
+                "player_id": message['player']
+            }
+            async_to_sync(self.channel_layer.group_send)(
+                room_name,
+                {
+                    "type": "async_player_enter_in_sector",
+                    "message": message,
+                },
+            )
 
 
     def async_player_enter_in_sector(self, event):
-        message = json.loads(event["message"])
-        player_id = message["data"]['player']
-        sector_id = message["data"]["source_id"]
+        message = event["message"]
+        player_id = message['player_id']
+        sector_id = message['sector']
         room_name = f"play_{sector_id}"
+        print("dans async_player_enter_in_sector")
+        in_cache = cache.get(room_name)
+        data = []
+        print(in_cache["pc"])
+        for pc in in_cache["pc"]:
+            if pc["user"]["player"] == player_id:
+                async_to_sync(self.channel_layer.group_send)(
+                    room_name,
+                    {
+                        "type": "user_join",
+                        "message": pc,
+                    },
+                )
         
-        message = {
-            "sector": message["data"]["source_id"],
-            "player_data": StoreInCache(room_name, self.user).get_user(player_id, room_name),
-        }
-        
-        async_to_sync(self.channel_layer.group_send)(
-            room_name,
-            {
-                "type": "user_join",
-                "message": message,
-            },
-        )
-
 
     def user_join(self, event):
+        print("dans user_join")
         message = event["message"]
+        print(self.room_group_name)
         response = {
             "type": "user_join",
             "message": message,
         }
 
         self.send(text_data=json.dumps(response))
-
-
-
-    def send_message(self, event):
-        pass
-
-    def user_leave(self, event):
-        pass

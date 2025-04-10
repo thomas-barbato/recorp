@@ -22,4 +22,9 @@ urlpatterns = [
         core_views.IndexView.as_view(template_name="index.html"),
         name="index_view",
     ),
+    path(
+        "play/warp",
+        core_views.ChangeSectorGameView.as_view(template_name="play.html"),
+        name="changeSector_view",
+    ),
 ]
