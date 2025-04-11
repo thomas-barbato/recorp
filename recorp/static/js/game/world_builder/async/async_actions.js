@@ -350,7 +350,10 @@ function update_player_range_in_modal(data){
 }
 
 function async_travel(id, user_id, warpzone_name){
-    let coordinates = document.querySelector('.player-ship-start-pos').id.split('_')
+    let spaceship = document.querySelector('.player-ship-start-pos');
+    let coordinates = spaceship.getAttribute('id').split('_')
+    let size_x = spaceship.getAttribute('size_x');
+    let size_y = spaceship.getAttribute('size_y');
     let data = {
         "player": user_id,
         "source_id": id,
@@ -358,6 +361,10 @@ function async_travel(id, user_id, warpzone_name){
         "coordinates": {
             y : coordinates[0],
             x : coordinates[1]
+        },
+        "size": {
+            x : size_x,
+            y : size_y
         }
     }
 
@@ -416,31 +423,46 @@ function async_player_enter_in_sector(data){
 }
 
 function remove_player_from_the_sector(data){
+    
     let coord_x = data.position.x;
     let coord_y = data.position.y;
     let player_id = data.player_id;
+    let size = data.size;
 
-    let size = {
-        "y" : data.size.y,
-        "x" : data.size.x,
-    };
-    for(c_y = coord_y ; c_y < coord_y + size.y ; c_y++){
-        for(c_x = coord_x ; c_x < coord_x + size.x ; c_x++){
+    if(size.x == 1 && size.y == 1){
+        let element = document.getElementById(`${coord_y}_${coord_x}`);
+        let element_div = element.querySelector('div');
+        let element_div_span = document.createElement('span');
+        
+        element.removeAttribute("size_x");
+        element.removeAttribute("size_y");
+        element_div.replaceChildren();
 
-            let element = document.getElementById(`${c_y}_${c_x}`);
-            let element_div = element.querySelector('div');
-            let element_div_span = document.createElement('span');
-            
-            element.removeAttribute("size_x");
-            element.removeAttribute("size_y");
-            element_div.replaceChildren();
-
-            element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-            element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(c_y)}; x = ${parseInt(c_x)}]`);
-            element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
-            element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
-            
-            element_div.append(element_div_span);
+        element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+        element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(coord_y)}; x = ${parseInt(coord_x)}]`);
+        element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
+        element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
+        
+        element_div.append(element_div_span);
+    }else{
+        for(c_y = coord_y ; c_y < coord_y + size.y ; c_y++){
+            for(c_x = coord_x ; c_x < coord_x + size.x ; c_x++){
+    
+                let element = document.getElementById(`${c_y}_${c_x}`);
+                let element_div = element.querySelector('div');
+                let element_div_span = document.createElement('span');
+                
+                element.removeAttribute("size_x");
+                element.removeAttribute("size_y");
+                element_div.replaceChildren();
+    
+                element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+                element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(c_y)}; x = ${parseInt(c_x)}]`);
+                element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
+                element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
+                
+                element_div.append(element_div_span);
+            }
         }
     }
 

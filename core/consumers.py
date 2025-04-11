@@ -155,14 +155,10 @@ class GameConsumer(WebsocketConsumer):
     def async_remove_ship(self, event):
         
         message = json.loads(event["message"])["data"]
-        ship_pos = PlayerAction(message["player"]).get_spaceship_coord_and_size(
-            message["player"]
-        )
-        
         coordinates = message["coordinates"]
+        size = message["size"]
         
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user.id)
-        print(f"dans async_remove_ship, {self.room_group_name}")
         store.delete_player_from_cache(message["player"], self.room_group_name)
         
         if message["player"] != self.user.id:
@@ -171,7 +167,7 @@ class GameConsumer(WebsocketConsumer):
                 "type": "async_remove_ship",
                 "message": {
                     "position": coordinates,
-                    "size": ship_pos["ship_id__ship_category_id__size"],
+                    "size": size,
                     "player_id": message["player"] 
                 },
             }
@@ -208,10 +204,9 @@ class GameConsumer(WebsocketConsumer):
         player_id = message['player_id']
         sector_id = message['sector']
         room_name = f"play_{sector_id}"
-        print("dans async_player_enter_in_sector")
         in_cache = cache.get(room_name)
-        data = []
-        print(in_cache["pc"])
+        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+        store.update_player_range_finding()
         for pc in in_cache["pc"]:
             if pc["user"]["player"] == player_id:
                 async_to_sync(self.channel_layer.group_send)(
@@ -224,9 +219,8 @@ class GameConsumer(WebsocketConsumer):
         
 
     def user_join(self, event):
-        print("dans user_join")
+        
         message = event["message"]
-        print(self.room_group_name)
         response = {
             "type": "user_join",
             "message": message,

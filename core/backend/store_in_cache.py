@@ -409,12 +409,7 @@ class StoreInCache:
             destination_sector, 
             new_coordinates
         )
-        
-        #self.delete_player_from_cache(self.user_calling)
         room_name = f"play_{destination_sector}"
-        #store = StoreInCache(room_name, self.user_calling)
-        #store.get_or_set_cache(True)
-        
         return room_name
         
     def get_user(self, player_id, room_name = None):
@@ -426,6 +421,7 @@ class StoreInCache:
     def delete_player_from_cache(self, player_id, old_room = None):
         if player_id != self.user_calling:
             in_cache = cache.get(old_room)
+            
             in_cache["pc"] = [
                 key for key in in_cache['pc'] if key["user"]["player"] != player_id
             ]
