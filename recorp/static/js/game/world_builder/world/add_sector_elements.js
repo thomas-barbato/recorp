@@ -260,7 +260,7 @@ function add_npc(data){
                 entry_point.classList.add("npc", "uncrossable");
                 entry_point.setAttribute('size_x', ship_size_x);
                 entry_point.setAttribute('size_y', ship_size_y);
-                entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]} [x : ${parseInt(data[i]["npc"]["coordinates"].y)}, y: ${parseInt(data[i]["npc"]["coordinates"].x)})]`);
+                entry_point_border.setAttribute('title', `${data[i]["npc"]["name"]} [x : ${parseInt(data[i]["npc"]["coordinates"].y)}, y: ${parseInt(data[i]["npc"]["coordinates"].x)}]`);
                 entry_point_border.setAttribute('data-modal-target', `modal-npc_${data[i].npc.id}`);
                 entry_point_border.setAttribute(attribute_touch_click, "open_close_modal('" + `modal-npc_${data[i].npc.id}` + "')");
                 entry_point_border.removeAttribute('onmouseover', 'get_pathfinding(this)');
@@ -306,7 +306,7 @@ function add_npc(data){
     }
 }
 
-function add_pc(data, coming_from_consummer = false) {
+function add_pc(data) {
     console.log(data)
     console.log("===========")
     let border_color = "";
@@ -469,7 +469,7 @@ function add_pc(data, coming_from_consummer = false) {
                     space_ship_reversed.style.display = "none";
                 }
 
-                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x : ${parseInt(data[i]["user"]["coordinates"].y)}, y: ${parseInt(data[i]["user"]["coordinates"].x )})]`);
+                entry_point_border.setAttribute('title', `${data[i]["user"]["name"]} [x : ${parseInt(data[i]["user"]["coordinates"].y)}, y: ${parseInt(data[i]["user"]["coordinates"].x )}]`);
                 entry_point_border.setAttribute('data-modal-target', `modal-pc_${data[i].user.player}`);
                 entry_point_border.addEventListener("mouseover", function(){
                     generate_border(ship_size_y, ship_size_x, parseInt(data[i]["user"]["coordinates"].y) + 1, parseInt(data[i]["user"]["coordinates"].x) + 1);

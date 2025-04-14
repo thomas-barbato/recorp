@@ -144,6 +144,9 @@ window.addEventListener('load', () => {
                 remove_ship_display(data.message)
                 break;
             case "user_join":
+                console.log("user_join")
+                console.log(data)
+                console.log("=========")
                 response = [data.message]
                 console.log(`response = ${response}`);
                 add_pc(response)

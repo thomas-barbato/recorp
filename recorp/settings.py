@@ -46,6 +46,7 @@ MIDDLEWARE = [
     # "django.middleware.cache.FetchFromCacheMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
+    "core.middleware.OneSessionPerUserMiddleware"
 ]
 
 ROOT_URLCONF = "recorp.urls"

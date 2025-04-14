@@ -19,6 +19,15 @@ def get_default_asteroid_size():
 def get_default_warzone_size():
     return {"x": 2, "y": 3}
 
+# Model to store the list of logged in users
+class LoggedInUser(models.Model):
+    user = models.OneToOneField(User, related_name='logged_in_user', on_delete=models.CASCADE)
+    # Session keys are 32 characters long
+    session_key = models.CharField(max_length=32, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
 
 class CashShop(models.Model):
     pass

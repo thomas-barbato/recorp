@@ -1,5 +1,6 @@
 import datetime
 import logging
+import urllib.request
 from urllib import request
 import json
 from django.contrib import messages
@@ -77,7 +78,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-
         user_agent = self.request.user_agent
         if user_agent.is_pc:
             map_range = GetDataFromDB.get_resolution_sized_map("is_pc")

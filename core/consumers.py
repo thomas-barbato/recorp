@@ -219,7 +219,6 @@ class GameConsumer(WebsocketConsumer):
         
 
     def user_join(self, event):
-        
         message = event["message"]
         response = {
             "type": "user_join",

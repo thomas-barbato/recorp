@@ -406,26 +406,9 @@ function async_travel(id, user_id, warpzone_name){
 }
 
 function remove_ship_display(data){
-    remove_player_from_the_sector(data);
-}
-
-
-function async_player_enter_in_sector(data){
-    gameSocket.send(JSON.stringify({
-        message: JSON.stringify({
-            data
-        }),
-        type: "async_player_enter_in_sector"
-    }));
-    if(data.player == current_user_id){
-        window.location.reload();
-    }
-}
-
-function remove_player_from_the_sector(data){
-    
-    let coord_x = data.position.x;
-    let coord_y = data.position.y;
+    console.log(data.position.x, data.position.y)
+    let coord_x = parseInt(data.position.x);
+    let coord_y = parseInt(data.position.y);
     let player_id = data.player_id;
     let size = data.size;
 
@@ -445,10 +428,9 @@ function remove_player_from_the_sector(data){
         
         element_div.append(element_div_span);
     }else{
-        for(c_y = coord_y ; c_y < coord_y + size.y ; c_y++){
-            for(c_x = coord_x ; c_x < coord_x + size.x ; c_x++){
-    
-                let element = document.getElementById(`${c_y}_${c_x}`);
+        for(let index_row = parseInt(coord_y) ; index_row <  parseInt(coord_y) + parseInt(size.y) ; index_row++){
+            for(let index_col = parseInt(coord_x) ; index_col < parseInt(coord_x) + parseInt(size.x) ; index_col++){
+                let element = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
                 let element_div = element.querySelector('div');
                 let element_div_span = document.createElement('span');
                 
@@ -457,7 +439,7 @@ function remove_player_from_the_sector(data){
                 element_div.replaceChildren();
     
                 element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-                element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(c_y)}; x = ${parseInt(c_x)}]`);
+                element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(index_row)}; x = ${parseInt(index_col)}]`);
                 element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
                 element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
                 
@@ -469,5 +451,18 @@ function remove_player_from_the_sector(data){
     var modal = document.querySelector('#modal-pc_' + player_id);
     if(modal){
         modal.parentNode.removeChild(modal);
+    }
+}
+
+
+function async_player_enter_in_sector(data){
+    gameSocket.send(JSON.stringify({
+        message: JSON.stringify({
+            data
+        }),
+        type: "async_player_enter_in_sector"
+    }));
+    if(data.player == current_user_id){
+        window.location.reload();
     }
 }
