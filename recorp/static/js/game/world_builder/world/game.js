@@ -75,6 +75,15 @@ function reverse_player_ship_display() {
     });
 }
 
+let logout = document.querySelectorAll('.logout');
+for(const button of logout){
+    button.addEventListener('click', function(){
+        let logout_submit_btn = button.querySelector('#logout-btn');
+        logout_submit_btn.click();
+    });
+}
+
+
 window.addEventListener('load', () => {
     let room = map_informations.sector.id;
     let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
@@ -113,8 +122,6 @@ window.addEventListener('load', () => {
         map_informations.pc
     );
 
-    
-
     window.onresize = function(event) {
         let user_id = document.querySelector('.player-ship-start-pos').id.split('_');
         setTimeout(() => {
@@ -138,18 +145,12 @@ window.addEventListener('load', () => {
                 update_ship_after_attack(data.message);
                 break;
             case "async_remove_ship":
-                console.log("async_remove_ship")
-                console.log(data)
-                console.log("==================")
                 remove_ship_display(data.message)
                 break;
             case "user_join":
-                console.log("user_join")
-                console.log(data)
-                console.log("=========")
-                response = [data.message]
-                console.log(`response = ${response}`);
-                add_pc(response)
+                console.log("user_join:")
+                console.log([data.message])
+                add_pc([data.message])
                 break;
             case "send_message":
                 //sendMessage(data);

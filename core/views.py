@@ -4,11 +4,12 @@ import urllib.request
 from urllib import request
 import json
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import RequestContext, loader
 from django.urls import reverse, reverse_lazy
@@ -183,3 +184,11 @@ class ChangeSectorGameView(LoginRequiredMixin, RedirectView):
         )
         store = StoreInCache(f"play_{destination_sector}", self.request.user.id)
         store.get_or_set_cache(need_to_be_recreated=True)
+        
+        
+class LogoutView(LogoutView):
+    http_method_names = ["post"]
+    template_name = "index.html"
+    def post(self, request):
+        logout(request)
+        return HttpResponseRedirect(LOGIN_REDIRECT_URL)

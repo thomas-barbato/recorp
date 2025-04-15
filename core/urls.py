@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-
 from core import views as core_views
+from django.contrib.auth import views as auth_views
 
 app_name = "core"
 
@@ -26,5 +26,11 @@ urlpatterns = [
         "play/warp",
         core_views.ChangeSectorGameView.as_view(template_name="play.html"),
         name="changeSector_view",
+    ),
+    path(
+        "logout",
+        auth_views.LogoutView.as_view(), 
+        {'next_page': settings.LOGOUT_REDIRECT_URL},
+        name="logout_view",
     ),
 ]

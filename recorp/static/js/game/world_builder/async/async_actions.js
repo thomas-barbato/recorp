@@ -324,7 +324,7 @@ function set_range_finding(data) {
 }
 
 function update_player_range_in_modal(data){
-    
+    console.log(data)
     let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
     for(node in pc_npc_nodeList){
         if(pc_npc_nodeList[node].id){
@@ -333,17 +333,19 @@ function update_player_range_in_modal(data){
             let splitted_id = modal_split[1].split('_');
             let node_type = splitted_id[0];
             let node_id = splitted_id[1];
-            
             let element = document.querySelector(`#${pc_npc_nodeList[node].id}`);
 
             for(module in data[node_type][node_id]){
-                let module_element = element.querySelector(`#module-${data[node_type][node_id][module].module_id}`);
+                let module_element = element.querySelector(`#module-${data[node_type][node_id].module_id}`);
                 let is_in_range = set_range_finding(data[node_type][node_id][module]);
-                if(is_in_range){
-                    module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
-                }else{
-                    module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
+                if(module_element.querySelector('#range-finder-warning-msg')){
+                    if(is_in_range){
+                        module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
+                    }else{
+                        module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
+                    }
                 }
+                
             }
         }
     }
@@ -406,7 +408,6 @@ function async_travel(id, user_id, warpzone_name){
 }
 
 function remove_ship_display(data){
-    console.log(data.position.x, data.position.y)
     let coord_x = parseInt(data.position.x);
     let coord_y = parseInt(data.position.y);
     let player_id = data.player_id;

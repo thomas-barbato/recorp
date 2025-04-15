@@ -185,9 +185,12 @@ class GameConsumer(WebsocketConsumer):
             room_name = f"play_{sector_id}"
             store = StoreInCache(room_name, self.user)
             store.get_or_set_cache(need_to_be_recreated=True)
+            player_data = StoreInCache(room_name, message['player']).get_user(message['player'], room_name)
+            if not player_data:
+                print("THIS PLAYER DO NOT EXISTS IN THIS ROOM")
             message = {
                 "sector": sector_id,
-                "player_data": StoreInCache(room_name, message['player']).get_user(message['player'], room_name),
+                "player_data": player_data,
                 "player_id": message['player']
             }
             async_to_sync(self.channel_layer.group_send)(

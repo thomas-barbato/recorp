@@ -72,7 +72,7 @@
                 {% translate "Message" %}
             </div>
         </li>
-        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
+        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white">
             <a href="#" class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-comments"></i>
             </a>
@@ -80,14 +80,16 @@
                 {% translate "Forum" %}
             </div>
         </li>
-        <li data-modal-target="option-modal" data-modal-toggle="option-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
+        <form method="post" action="{% url 'core:logout_view' %}?next=/" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white logout">
+            {% csrf_token %}
             <div class="w-20 flex justify-center items-center">
-                <i class="fa-solid fa-gear"></i>
+                <i class="fa-solid fa-home"></i>
             </div>
             <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:block hidden xl:text-start text-center">
-                {% translate "Settings" %}
+                {% translate "logout" %}
             </div>
-        </li>
+            <button type="submit" id="logout-btn" class="hidden"></button>
+        </form>
     </ul>
 </div>
 <div id="map-background" class="flex lg:w-9/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0 justify-content-center items-center">
