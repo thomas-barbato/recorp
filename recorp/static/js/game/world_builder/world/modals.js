@@ -127,10 +127,10 @@ function create_foreground_modal(id, data) {
         item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`;
 
         let item_action_container_img_scan_container = document.createElement('div');
-        item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+        item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]');
 
         let item_action_container_img_gather_container = document.createElement('div');
-        item_action_container_img_gather_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+        item_action_container_img_gather_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]');
 
         let item_action_container_img_scan = document.createElement('img');
         item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
@@ -183,7 +183,7 @@ function create_foreground_modal(id, data) {
         item_description_p.innerHTML = `${data.description} <b>${data.destination.name}</b>`;
 
         let item_action_container_img_warpzone_container = document.createElement('div');
-        item_action_container_img_warpzone_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+        item_action_container_img_warpzone_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]');
 
         let item_action_container_img_warpzone = document.createElement('img');
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
@@ -362,7 +362,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'gap-2');
+    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4'  , 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'gap-2');
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
@@ -395,7 +395,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let ship_statistics_container_label = document.createElement("label");
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
-    ship_statistics_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base', 'mt-5');
+    ship_statistics_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base', 'mt-2');
 
     // START SIMPLE STATS
     let ship_statistics_container_div = document.createElement('div');
@@ -557,7 +557,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let item_action_container_img_attack_btn_img = document.createElement('img');
     item_action_container_img_attack_btn_img.src = '/static/img/ux/target_icon.svg';
-    item_action_container_img_attack_btn_img.classList.add('cursor-pointer', 'flex', 'inline-block', 'mx-auto', 'object-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+    item_action_container_img_attack_btn_img.classList.add('cursor-pointer', 'flex', 'inline-block', 'mx-auto', 'object-center', 'justify-center', 'w-[15%]', 'h-[15%]');
     item_action_container_img_attack_btn_img.addEventListener('click', function() {
         check_radio_btn_and_swap_color(e.id, module_item_content.id);
     })
@@ -668,7 +668,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         'w-full',
         'p-2',
         'font-bold',
-        'italic',
         'rtl:text-right',
         'text-white',
         'mb-1',
@@ -701,7 +700,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         'w-full',
         'p-2',
         'font-bold',
-        'italic',
         'rtl:text-right',
         'text-white',
         'mb-1',
@@ -760,7 +758,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                     'bg-gray-800',
                     'text-white',
                     'hover:text-gray-800',
-                    'hover:animate-pulse',
                     'cursor-pointer',
                     'divide-y',
                     'divide-dashed',
@@ -1013,7 +1010,6 @@ function check_radio_btn_and_swap_color(id, module_id) {
                 'bg-gray-800',
                 'text-white',
                 'hover:text-gray-800',
-                'hover:animate-pulse',
                 'divide-white',
                 'hover:divide-gray-800',
             )
@@ -1041,7 +1037,6 @@ function check_radio_btn_and_swap_color(id, module_id) {
                 'bg-gray-800',
                 'text-white',
                 'hover:text-gray-800',
-                'hover:animate-pulse',
                 'divide-white',
                 'hover:divide-gray-800',
             )

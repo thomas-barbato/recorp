@@ -1,8 +1,9 @@
+
 {% load static %}
 {% load i18n %}
-<nav class="flex bg-zinc-950/70 w-full lg:hidden">
+<nav class="bg-zinc-950/70 w-full lg:hidden flex flex-row">
     <a href="/">
-        <img src="{% static 'ux/recorp.png' %}" class="h-10 pt-0.5 pl-2" alt="Recorp_logo" />
+        <img src="{% static 'ux/recorp.png' %}" class="h-10 p-1" alt="Recorp_logo" />
     </a>
     <div class="w-full flex justify-end bg-zinc-950/70">
         <button data-collapse-toggle="navbar-hamburger" type="button" class="navbar-burger p-3 text-emerald-400 hover:text-[#B1F1CB]">
@@ -70,7 +71,7 @@
                     <span>{% translate "Forum" %}</span>
                 </a>
             </li>
-            <form method="post" action="{% url 'core:logout_view' %}?next=/" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
+            <form method="post" action="{% url 'core:logout_view' %}" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
                 {% csrf_token %}
                 <i class="fa-solid fa-home fa-xl"></i>
                 <span>{% translate "Logout" %}</span>

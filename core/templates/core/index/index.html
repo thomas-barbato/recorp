@@ -1,0 +1,32 @@
+{% extends "generic_template.html" %}
+{% load static %}
+{% load customtags %}
+{% load i18n %}
+
+{% block content %}
+
+{% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    <header class="flex w-full index-panel-container flex-col">
+        {% include "index-top-panel.html" %}
+    </header>
+    <main class="flex main-index-container flex-row w-full">
+    </main>
+    <footer class="flex disclaimer-container m-0">
+        {% include "display_disclaimer.html" %}
+    </footer>
+{% else %}
+    <header class="flex w-full flex-col index-panel-container lg:blur-none">
+        {% include "index-top-panel.html" %}
+    </header>
+    <main class="flex main-index-container w-full flex-row justify-stretch lg:blur-none">
+    </main>
+    <footer class="flex bottom-0 w-full lg:h-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none">
+        {% include "display_disclaimer.html" %}
+    </footer>
+    
+{% endif %}
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/game/world_builder/account/login.js' %}" type="text/javascript"></script>
+{% endblock %}
+

@@ -1010,6 +1010,10 @@ video {
   height: 100vh;
 }
 
+.h-\[10px\] {
+  height: 10px;
+}
+
 .h-\[15\%\] {
   height: 15%;
 }
@@ -1158,6 +1162,10 @@ video {
   width: 100vh;
 }
 
+.w-\[10px\] {
+  width: 10px;
+}
+
 .w-\[15\%\] {
   width: 15%;
 }
@@ -1248,6 +1256,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-10 {
+  width: 2.5rem;
 }
 
 .max-w-2xl {
@@ -1365,6 +1377,33 @@ video {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .cursor-pointer {
@@ -2883,14 +2922,6 @@ video {
 
 .ps-3 {
   padding-inline-start: 0.75rem;
-}
-
-.pt-0 {
-  padding-top: 0px;
-}
-
-.pt-0\.5 {
-  padding-top: 0.125rem;
 }
 
 .pt-1 {

@@ -27,10 +27,9 @@ urlpatterns = [
         core_views.ChangeSectorGameView.as_view(template_name="play.html"),
         name="changeSector_view",
     ),
-    path(
-        "logout",
-        auth_views.LogoutView.as_view(), 
-        {'next_page': settings.LOGOUT_REDIRECT_URL},
-        name="logout_view",
-    ),
+    path('logout', auth_views.LogoutView.as_view(
+        next_page='/', 
+        http_method_names = ['post']
+        ), 
+        name='logout_view'),
 ]

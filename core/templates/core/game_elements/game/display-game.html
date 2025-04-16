@@ -80,7 +80,7 @@
                 {% translate "Forum" %}
             </div>
         </li>
-        <form method="post" action="{% url 'core:logout_view' %}?next=/" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white logout">
+        <form method="post" action="{% url 'core:logout_view' %}" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white logout">
             {% csrf_token %}
             <div class="w-20 flex justify-center items-center">
                 <i class="fa-solid fa-home"></i>
