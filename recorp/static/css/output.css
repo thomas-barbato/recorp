@@ -1010,10 +1010,6 @@ video {
   height: 100vh;
 }
 
-.h-\[10px\] {
-  height: 10px;
-}
-
 .h-\[15\%\] {
   height: 15%;
 }
@@ -1098,6 +1094,10 @@ video {
   max-height: 100%;
 }
 
+.min-h-screen {
+  min-height: 100vh;
+}
+
 .w-1\/12 {
   width: 8.333333%;
 }
@@ -1160,10 +1160,6 @@ video {
 
 .w-\[100vh\] {
   width: 100vh;
-}
-
-.w-\[10px\] {
-  width: 10px;
 }
 
 .w-\[15\%\] {
@@ -1256,10 +1252,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-10 {
-  width: 2.5rem;
 }
 
 .max-w-2xl {
@@ -1377,33 +1369,6 @@ video {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 1s infinite;
-}
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.animate-ping {
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .cursor-pointer {
@@ -2454,6 +2419,10 @@ video {
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
+.border-gray-300\/40 {
+  border-color: rgb(209 213 219 / 0.4);
+}
+
 .border-b-red-600 {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(220 38 38 / var(--tw-border-opacity));
@@ -2588,16 +2557,6 @@ video {
   background-color: rgb(82 82 82 / var(--tw-bg-opacity));
 }
 
-.bg-purple-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(126 34 206 / var(--tw-bg-opacity));
-}
-
-.bg-red-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(254 242 242 / var(--tw-bg-opacity));
-}
-
 .bg-red-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity));
@@ -2645,6 +2604,14 @@ video {
 
 .bg-zinc-950\/70 {
   background-color: rgb(9 9 11 / 0.7);
+}
+
+.bg-zinc-950\/90 {
+  background-color: rgb(9 9 11 / 0.9);
+}
+
+.bg-gray-700\/40 {
+  background-color: rgb(55 65 81 / 0.4);
 }
 
 .bg-gradient-to-b {
@@ -2908,16 +2875,8 @@ video {
   padding-left: 0.5rem;
 }
 
-.pl-7 {
-  padding-left: 1.75rem;
-}
-
 .pr-2 {
   padding-right: 0.5rem;
-}
-
-.pr-20 {
-  padding-right: 5rem;
 }
 
 .ps-3 {
@@ -3218,11 +3177,6 @@ video {
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 
-.text-red-800 {
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity));
-}
-
 .text-teal-300 {
   --tw-text-opacity: 1;
   color: rgb(94 234 212 / var(--tw-text-opacity));
@@ -3233,14 +3187,14 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-yellow-300 {
+  --tw-text-opacity: 1;
+  color: rgb(253 224 71 / var(--tw-text-opacity));
+}
+
 .text-yellow-400 {
   --tw-text-opacity: 1;
   color: rgb(250 204 21 / var(--tw-text-opacity));
-}
-
-.text-yellow-800 {
-  --tw-text-opacity: 1;
-  color: rgb(133 77 14 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -3966,11 +3920,6 @@ select {
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-purple-800:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(107 33 168 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-slate-300:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
@@ -4178,11 +4127,6 @@ select {
     background-color: rgb(17 24 39 / 0.8);
   }
 
-  .dark\:bg-purple-600 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(147 51 234 / var(--tw-bg-opacity));
-  }
-
   .dark\:text-blue-500 {
     --tw-text-opacity: 1;
     color: rgb(59 130 246 / var(--tw-text-opacity));
@@ -4196,11 +4140,6 @@ select {
   .dark\:text-gray-400 {
     --tw-text-opacity: 1;
     color: rgb(156 163 175 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-red-400 {
-    --tw-text-opacity: 1;
-    color: rgb(248 113 113 / var(--tw-text-opacity));
   }
 
   .dark\:text-white {
@@ -4254,11 +4193,6 @@ select {
   .dark\:hover\:bg-gray-800:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-  }
-
-  .dark\:hover\:bg-purple-700:hover {
-    --tw-bg-opacity: 1;
-    background-color: rgb(126 34 206 / var(--tw-bg-opacity));
   }
 
   .dark\:hover\:text-blue-500:hover {
@@ -4319,15 +4253,6 @@ select {
 @media (min-width: 640px) {
   .sm\:mb-3 {
     margin-bottom: 0.75rem;
-  }
-
-  .sm\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-
-  .sm\:leading-6 {
-    line-height: 1.5rem;
   }
 
   .sm\:underline {
