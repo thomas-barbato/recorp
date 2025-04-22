@@ -49,7 +49,7 @@ class IndexView(TemplateView):
             if user is not None and user.is_active and user.username != "npc":
                 login(self.request, user)
                 if Player.objects.filter(user_id=self.request.user.id).exists():
-                    url = "/play/"
+                    url = "/"
                 else:
                     url = "/play/tutorial/"
                 return redirect(url, data_to_send)

@@ -6,6 +6,7 @@ let attribute_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'on
 let action_listener_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'click';
 
 let logout = document.querySelectorAll('.logout');
+
 for(const button of logout){
     button.addEventListener(action_listener_touch_click, function(){
         console.log("click")
