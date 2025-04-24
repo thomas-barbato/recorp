@@ -1,73 +1,51 @@
 {% load static %}
 {% load i18n %}
 <nav class="flex bg-zinc-950/70 w-full lg:block hidden">
-    <div class="w-full flex bg-zinc-950/70 flex-col gap-5">
-        <div class="w-full flex flex-row gap-1">
-            <a href="/" class="gap-1 flex items-center justify-center text-md font-bold text-white p-1">
-                <img src="{% static 'ux/recorp.png' %}" class="h-8" alt="Recorp_logo" />
-                <p class="">Recorp</p>
-            </a>
-            {% if request.user.is_authenticated %}
-            <a href="/play" class="text-white flex justify-center items-center w-full flex-row p-2 gap-3">
-                <img src="{% static 'ux/rightArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
-                <p class="text-md font-bold">
-                    Welcome, {{request.user.username}}
-                </p>
-                <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
-            </a>
-            <form method="post" action="{% url 'core:logout_view' %}" class="flex items-center justify-center p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
-                {% csrf_token %}
-                <button type="submit" id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket fa-xl" title="{% translate 'Log out' %}"></i></button>
-            </form>
-            {% else %}
-            <div class="flex index-container w-full flex-row p-1 gap-1">
-                <section class="flex w-full justify-start">
-                    <ul class="flex flex-row w-full justify-evenly items-center gap-5 p-2">
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "News" %}</span>
-                        </li>
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "The universe" %}</span>
-                        </li>
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "Rules" %}</span>
-                        </li>
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "Rules" %}</span>
-                        </li>
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "Rules" %}</span>
-                        </li>
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "Rules" %}</span>
-                        </li>
-                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span>{% translate "Rules" %}</span>
-                        </li>   
-                    </ul>
-                </section>
-                <section class="flex w-auto justify-end">
+    <div class="flex w-full bg-zinc-950/70 flex-col">
+        <div class="flex w-full flex-row gap-1">
+            <div class="flex index-container w-full h-auto flex-row whitespace-nowrap p-1 gap-1">
+                <section class="flex w-auto justify-start">
+                    {% if request.user.is_authenticated %}
+                    <div method="POST" action="" class="flex flex-row gap-2 bg-gray-700/40 border border-gray-300/40 p-2 rounded-md">
+                        <a href="/" class="gap-1 flex flex-col items-center justify-center text-md font-bold text-white">
+                            <img src="{% static 'ux/recorp.png' %}" class="h-10" alt="Recorp_logo" />
+                            <p class="">Recorp</p>
+                        </a>
+                        <div class="h-auto min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
+                        <div class="flex flex-col p-2">
+                            <a href="/play" class="text-white flex justify-center items-center w-full flex-row whitespace-nowrap gap-2 p-1">
+                                <img src="{% static 'ux/rightArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
+                                <p class="text-md font-bold">
+                                    Welcome, {{request.user.username}}
+                                </p>
+                                <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
+                            </a>
+                            <form method="post" action="{% url 'core:logout_view' %}" class="flex items-center justify-center cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
+                                {% csrf_token %}
+                                <button type="submit" id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket fa-xl" title="{% translate 'Log out' %}"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
                     <form method="POST" action="" class="flex flex-row gap-2 bg-gray-700/40 border border-gray-300/40 p-1 rounded-md">
+                        <a href="/" class="gap-1 flex flex-col items-center justify-center text-md font-bold text-white p-1">
+                            <img src="{% static 'ux/recorp.png' %}" class="h-10" alt="Recorp_logo" />
+                            <p class="">Recorp</p>
+                        </a>
+                        <div class="h-[250px] h-[1em] self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
                         {% csrf_token %}
                         <div class="container flex flex-row gap-2">
                             <div class="flex flex-col justify-start label-container gap-3 whitespace-nowrap">
-                                <label for="id_username" class="flex font-bold text-sm text-white flex items-start">{% translate 'username' %}</label>
+                                <label for="id_username" class="flex font-bold text-sm text-white flex items-start mb-1">{% translate 'username' %}</label>
                                 <label for="id_password" class="flex font-bold text-sm text-white flex items-start">{% translate 'password' %}</label>
                             </div>
                             <div class="flex flex-col input-container whitespace-nowrap"> 
                                 <input type="text" name="username" maxlength="150" required="" id="id_username" class="flex w-auto items-center font-bold text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-                                <section class="text-center flex flex-row items-center gap-1 text-white text-xs hover:animate-pulse">
+                                <section class="text-center flex flex-row items-center gap-1 text-white text-sm hover:animate-pulse mb-1">
                                     <a href="/" class="italic">You don't have an account? Signup here</a>
                                 </section>
                                 <input type="password" name="password" required="" id="id_password" class="flex w-auto items-center text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-                                <section class="text-center flex flex-row items-center gap-1 text-white text-xs hover:animate-pulse">
+                                <section class="text-center flex flex-row items-center gap-1 text-white text-sm hover:animate-pulse">
                                     <a href="/" class="italic">Forgot password ?</a>
                                 </section>
                             </div>
@@ -78,25 +56,55 @@
                             </button>
                         </div>
                     </form>
+                    {% endif %}
+                </section>
+                <section class="flex w-full">
+                    <ul class="flex flex-row w-full justify-evenly items-center">
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "News" %}</span>
+                            </div>
+                        </li>
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "Lore" %}</span>
+                            </div>
+                        </li>
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "News" %}</span>
+                            </div>
+                        </li>
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "News" %}</span>
+                            </div>
+                        </li>
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "News" %}</span>
+                            </div>
+                        </li>
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "News" %}</span>
+                            </div>
+                        </li>
+                        <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-center gap-3 h-auto">
+                            <div class="flex p-2 gap-2 justify-center items-center">
+                                <i class="fa-solid fa-book fa-2xl"></i>
+                                <span>{% translate "News" %}</span>
+                            </div>
+                        </li>   
+                    </ul>
                 </section>
             </div>
-            {% endif %}
-        </div>
-        {% if request.user.is_authenticated %}
-        <ul class="flex flex-row w-full flex-wrap justify-evenly items-center">
-            <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-center md:text-base text-sm font-bold font-shadow nav-item hover:animate-pulse gap-3">
-                <i class="fa-solid fa-book fa-2xl"></i>
-                <span>{% translate "News" %}</span>
-            </li>
-            <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-center md:text-base text-sm font-bold font-shadow nav-item hover:animate-pulse gap-3">
-                <i class="fa-solid fa-book fa-2xl"></i>
-                <span>{% translate "The universe" %}</span>
-            </li>
-            <li class="flex flex-col cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-center md:text-base text-sm font-bold font-shadow nav-item hover:animate-pulse gap-3">
-                <i class="fa-solid fa-book fa-2xl"></i>
-                <span>{% translate "Rules" %}</span>
-            </li>
-        </ul>
-        {% endif %}
+        </div>  
     </div>
 </nav>
