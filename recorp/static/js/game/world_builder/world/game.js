@@ -148,8 +148,6 @@ window.addEventListener('load', () => {
                 remove_ship_display(data.message)
                 break;
             case "user_join":
-                console.log("user_join:")
-                console.log([data.message])
                 add_pc([data.message])
                 break;
             case "send_message":

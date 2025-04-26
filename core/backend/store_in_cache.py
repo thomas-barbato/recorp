@@ -448,4 +448,3 @@ class StoreInCache:
 
     def get_datetime_json(self, date_time):
         return json.dumps(date_time, indent=4, sort_keys=True, default=str)
-    

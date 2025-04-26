@@ -387,7 +387,7 @@ function async_travel(id, user_id, warpzone_name){
             data
         })
     }).then(() => {
-
+        /*
         gameSocket.send(JSON.stringify({
             message: JSON.stringify({
                 data
@@ -401,7 +401,13 @@ function async_travel(id, user_id, warpzone_name){
             }),
             type: "async_player_sector_change"
         }));
-
+        */
+        gameSocket.send(JSON.stringify({
+            message: JSON.stringify({
+                data
+            }),
+            type: "async_warp_travel"
+        }));
         window.location.reload();
 
     });

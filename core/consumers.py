@@ -151,77 +151,47 @@ class GameConsumer(WebsocketConsumer):
 
         self.send(text_data=json.dumps(response))
         
-        
-    def async_remove_ship(self, event):
+    def async_warp_travel(self, event):
         
         message = json.loads(event["message"])["data"]
         coordinates = message["coordinates"]
         size = message["size"]
+        player_id = message["player"]
         
-        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user.id)
-        store.delete_player_from_cache(message["player"], self.room_group_name)
+        source_store = StoreInCache(room_name=self.room_group_name, user_calling=self.user.id)
+        source_store.delete_player_from_cache(player_id, self.room_group_name)
+        destination_sector_id = PlayerAction(player_id).get_player_sector()
+        destination_room_key = f"play_{destination_sector_id}"
         
-        if message["player"] != self.user.id:
-            
-            response = {
+        if player_id != self.user.id:
+            spaceship_data_coord = {
                 "type": "async_remove_ship",
                 "message": {
                     "position": coordinates,
                     "size": size,
-                    "player_id": message["player"] 
+                    "player_id": player_id 
                 },
             }
-            self.send(text_data=json.dumps(response))
-            
-            
-    def async_player_sector_change(self, event):
-        
-        message = json.loads(event["message"])["data"]
-        player_id = message['player']
-        
-        if player_id == self.user.id:
-            
-            sector_id = PlayerAction(player_id).get_player_sector()
-            room_name = f"play_{sector_id}"
-            store = StoreInCache(room_name, self.user)
-            store.get_or_set_cache(need_to_be_recreated=True)
-            player_data = StoreInCache(room_name, message['player']).get_user(message['player'], room_name)
-            if not player_data:
-                print("THIS PLAYER DO NOT EXISTS IN THIS ROOM")
-            message = {
-                "sector": sector_id,
-                "player_data": player_data,
-                "player_id": message['player']
-            }
-            async_to_sync(self.channel_layer.group_send)(
-                room_name,
-                {
-                    "type": "async_player_enter_in_sector",
-                    "message": message,
-                },
-            )
-
-
-    def async_player_enter_in_sector(self, event):
-        message = event["message"]
-        player_id = message['player_id']
-        sector_id = message['sector']
-        room_name = f"play_{sector_id}"
-        in_cache = cache.get(room_name)
-        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        store.update_player_range_finding()
-        for pc in in_cache["pc"]:
-            if pc["user"]["player"] == player_id:
-                async_to_sync(self.channel_layer.group_send)(
-                    room_name,
-                    {
-                        "type": "user_join",
-                        "message": pc,
-                    },
-                )
-        
+            self.send(text_data=json.dumps(spaceship_data_coord))
+        else:
+            destination_store = StoreInCache(destination_room_key, self.user)
+            destination_store.get_or_set_cache(need_to_be_recreated=True)
+            in_cache = cache.get(destination_room_key)
+            store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+            store.update_player_range_finding()
+            for pc in in_cache["pc"]:
+                if pc["user"]["player"] == player_id:
+                    async_to_sync(self.channel_layer.group_send)(
+                        destination_room_key,
+                        {
+                            "type": "user_join",
+                            "message": pc,
+                        },
+                    )
 
     def user_join(self, event):
+        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+        store.update_player_range_finding()
         message = event["message"]
         response = {
             "type": "user_join",
