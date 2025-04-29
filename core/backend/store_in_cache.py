@@ -448,3 +448,13 @@ class StoreInCache:
 
     def get_datetime_json(self, date_time):
         return json.dumps(date_time, indent=4, sort_keys=True, default=str)
+    
+    def notify_room_users(room_id, message):
+        
+        from channels.layers import get_channel_layer
+        
+        channel_layer = get_channel_layer()
+        channel_layer.group_send(f"room_{room_id}", {
+            "type": "async_remove_ship",
+            "message": message
+        })

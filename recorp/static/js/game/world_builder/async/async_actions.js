@@ -324,28 +324,23 @@ function set_range_finding(data) {
 }
 
 function update_player_range_in_modal(data){
-    console.log(data)
-    let pc_npc_nodeList = document.querySelectorAll(["div[id*='-pc_']", "div[id*='-npc_']"]);
-    for(node in pc_npc_nodeList){
-        if(pc_npc_nodeList[node].id){
-            
-            let modal_split = pc_npc_nodeList[node].id.split('-')
-            let splitted_id = modal_split[1].split('_');
-            let node_type = splitted_id[0];
-            let node_id = splitted_id[1];
-            let element = document.querySelector(`#${pc_npc_nodeList[node].id}`);
-
-            for(module in data[node_type][node_id]){
-                let module_element = element.querySelector(`#module-${data[node_type][node_id].module_id}`);
-                let is_in_range = set_range_finding(data[node_type][node_id][module]);
+    let modal = "";
+    for(const node_type in data){
+        for(const node in data[node_type]){
+            if(node_type == "pc" || node_type == "npc"){
+                modal = document.getElementById(`modal-${node_type}_${data[node_type][node].target_id}`);
+            }else{
+                modal = document.getElementById(`modal-${data[node_type][node].name}`);
+            }
+            let module_element = modal.querySelector(`#module-${data[node_type][node].module_id}`);
+            if(module_element){
                 if(module_element.querySelector('#range-finder-warning-msg')){
-                    if(is_in_range){
+                    if(data[node_type][node].is_in_range){
                         module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
                     }else{
                         module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
                     }
                 }
-                
             }
         }
     }
@@ -387,21 +382,6 @@ function async_travel(id, user_id, warpzone_name){
             data
         })
     }).then(() => {
-        /*
-        gameSocket.send(JSON.stringify({
-            message: JSON.stringify({
-                data
-            }),
-            type: "async_remove_ship"
-        }));
-
-        gameSocket.send(JSON.stringify({
-            message: JSON.stringify({
-                data
-            }),
-            type: "async_player_sector_change"
-        }));
-        */
         gameSocket.send(JSON.stringify({
             message: JSON.stringify({
                 data
@@ -458,18 +438,5 @@ function remove_ship_display(data){
     var modal = document.querySelector('#modal-pc_' + player_id);
     if(modal){
         modal.parentNode.removeChild(modal);
-    }
-}
-
-
-function async_player_enter_in_sector(data){
-    gameSocket.send(JSON.stringify({
-        message: JSON.stringify({
-            data
-        }),
-        type: "async_player_enter_in_sector"
-    }));
-    if(data.player == current_user_id){
-        window.location.reload();
     }
 }

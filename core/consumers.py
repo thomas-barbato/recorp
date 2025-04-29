@@ -150,35 +150,38 @@ class GameConsumer(WebsocketConsumer):
         }
 
         self.send(text_data=json.dumps(response))
-        
+
     def async_warp_travel(self, event):
-        
+
         message = json.loads(event["message"])["data"]
         coordinates = message["coordinates"]
         size = message["size"]
         player_id = message["player"]
-        
-        source_store = StoreInCache(room_name=self.room_group_name, user_calling=self.user.id)
-        source_store.delete_player_from_cache(player_id, self.room_group_name)
+
+        StoreInCache(
+            room_name=self.room_group_name, user_calling=self.user.id
+        ).delete_player_from_cache(player_id, self.room_group_name)
         destination_sector_id = PlayerAction(player_id).get_player_sector()
         destination_room_key = f"play_{destination_sector_id}"
-        
+
         if player_id != self.user.id:
             spaceship_data_coord = {
                 "type": "async_remove_ship",
                 "message": {
                     "position": coordinates,
                     "size": size,
-                    "player_id": player_id 
+                    "player_id": player_id,
                 },
             }
             self.send(text_data=json.dumps(spaceship_data_coord))
         else:
-            destination_store = StoreInCache(destination_room_key, self.user)
-            destination_store.get_or_set_cache(need_to_be_recreated=True)
+            StoreInCache(
+                room_name=destination_room_key, user_calling=self.user
+            ).get_or_set_cache(need_to_be_recreated=True)
             in_cache = cache.get(destination_room_key)
-            store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-            store.update_player_range_finding()
+            StoreInCache(
+                room_name=self.room_group_name, user_calling=self.user
+            ).update_player_range_finding()
             for pc in in_cache["pc"]:
                 if pc["user"]["player"] == player_id:
                     async_to_sync(self.channel_layer.group_send)(
@@ -190,8 +193,6 @@ class GameConsumer(WebsocketConsumer):
                     )
 
     def user_join(self, event):
-        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        store.update_player_range_finding()
         message = event["message"]
         response = {
             "type": "user_join",

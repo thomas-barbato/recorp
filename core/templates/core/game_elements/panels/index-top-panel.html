@@ -20,9 +20,9 @@
                                 </p>
                                 <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
                             </a>
-                            <form method="post" action="{% url 'core:logout_view' %}" class="flex items-center justify-center cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
+                            <form method="post" action="{% url 'core:logout_view' %}" class="flex items-center justify-center cursor-pointer text-red-600 hover:text-red-400 text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
                                 {% csrf_token %}
-                                <button type="submit" id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket fa-xl" title="{% translate 'Log out' %}"></i></button>
+                                <button type="submit" id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket fa-xl rotate-180" title="{% translate 'Log out' %}"></i></button>
                             </form>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                             <img src="{% static 'ux/recorp.png' %}" class="h-10" alt="Recorp_logo" />
                             <p class="">Recorp</p>
                         </a>
-                        <div class="h-[250px] h-[1em] self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
+                        <div class="h-[1em] self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
                         {% csrf_token %}
                         <div class="container flex flex-row gap-2">
                             <div class="flex flex-col justify-start label-container gap-3 whitespace-nowrap">
