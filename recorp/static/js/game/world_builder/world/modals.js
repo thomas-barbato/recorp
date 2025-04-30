@@ -844,11 +844,12 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         });
                             
                         for(let module_container in module_path){
-                            let target_in_range = set_range_finding(module_path[module_container]);
-                            if (target_in_range == true) {
-                                range_finder_span.classList.add('hidden');
-                            }else{
-                                range_finder_span.classList.remove('hidden');
+                            if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
+                                if (module_path[module_container]['is_in_range']) {
+                                    range_finder_span.classList.add('hidden');
+                                }else{
+                                    range_finder_span.classList.remove('hidden');
+                                }
                             }
                         }
 
@@ -909,24 +910,21 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                     module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
                     module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
 
-                    let module_path = map_informations.pc[ship_i].ship.modules_range[target_type][target_id];
-
-                    for(let module_container in module_path){
-                        let target_in_range = set_range_finding(module_path[module_container]);
-                        if (target_in_range) {
-                            module_item_small_effect_range_finder_span.classList.add('hidden');
-                        }else{
-                            module_item_small_effect_range_finder_span.classList.remove('hidden');
+                    module_range_array = map_informations.pc[ship_i].ship.modules_range[target_type]
+                    if(typeof(module_range_array) != "undefined"){
+                        for(const module in module_range_array){
+                            is_in_range = module_range_array[module].is_in_range;
+                            if(is_in_range){
+                                module_item_small_effect_range_finder_span.classList.add('hidden');
+                            }else{
+                                module_item_small_effect_range_finder_span.classList.remove('hidden');
+                            }
+                            module_item_content.append(module_item_small_effect_range_finder_span)
+                            ship_offensive_module_container_cat_2_div.append(module_item_content);
                         }
                     }
-
-                    module_item_content.append(module_item_small_effect_range_finder_span)
-
-                    ship_offensive_module_container_cat_2_div.append(module_item_content);
-
                 }
             }
-
             item_action_container_img_attack_btn_container.append(item_action_container_img_attack_btn_img);
         }
     }

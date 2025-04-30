@@ -148,7 +148,7 @@ window.addEventListener('load', () => {
                 remove_ship_display(data.message)
                 break;
             case "user_join":
-                add_pc([data.message])
+                add_pc([data.message]);
                 break;
             case "send_message":
                 //sendMessage(data);

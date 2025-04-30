@@ -320,7 +320,7 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
 
 
 function set_range_finding(data) {
-    return data['is_in_range'] == true ? true : false;
+    return data['is_in_range'];
 }
 
 function update_player_range_in_modal(data){
