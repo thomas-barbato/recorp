@@ -15,7 +15,7 @@
 {% include "research-modal.html" %}
 {% include "task-modal.html" %}
 
-<div class="flex flex-col h-screen">
+<div class="flex flex-col h-screen no-scrollbar">
 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
     {% include "top-panel.html" %}
     <header class="flex w-full main-info-container flex-col">

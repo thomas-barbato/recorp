@@ -3,7 +3,7 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="side-panel" class="flex z-20 lg:inline order-1 w-1/12 hidden">
+<div id="side-panel" class="flex z-20 lg:inline order-1 w-1/12 hidden no-scrollbar">
     <ul class="flex flex-col ul-nav h-full gap-3 bg-zinc-950/70">
         <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white ">
             <div class="w-20 flex justify-center items-center">
@@ -92,7 +92,7 @@
         </form>
     </ul>
 </div>
-<div id="map-background" class="flex lg:w-9/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0 justify-content-center items-center">
+<div id="map-background" class="flex lg:w-9/12 w-full lg:order-2 lg:flex-row flex-col lg:mx-0 justify-content-center items-center overflow-x-hidden no-scrollbar">
     <div class="flex z-100 mx-auto">
         <div class="grid">
             <table class="tabletop-view">

@@ -1,23 +1,25 @@
 {% load static %}
 {% load i18n %}
-<nav class="flex bg-zinc-950/70 w-full lg:hidden">
-    <div class="w-full flex bg-zinc-950/70 flex-col">
-        <div class="w-full flex flex-row">
-            <a href="/" class="gap-1 flex text-xl font-bold text-white">
-                <img src="{% static 'ux/recorp.png' %}" class="h-10 p-1" alt="Recorp_logo" />
+<nav class="flex bg-zinc-950 w-full lg:hidden">
+    <div class="flex flex-col w-full">
+        <div class="flex flex-row w-full">
+            <a href="/" class="gap-1 flex flex-col text-xl font-bold text-white p-2 justify-start">
+                <img src="{% static 'ux/recorp.png' %}" class="h-10" alt="Recorp_logo" />
                 <p class="flex items-center justify-center text-sm font-bold">Recorp</p>
             </a>
             {% if request.user.is_authenticated %}
-            <a href="/play" class="text-white flex justify-center items-center w-full flex-row gap-3 mr-[5vw]">
-                <img src="{% static 'ux/rightArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
-                <p class="text-md font-bold">
-                    Welcome, {{request.user.username}}
+            <a href="/play" class="text-white flex justify-center items-center w-full flex-row gap-3 mr-[5vw] animate-pulse">
+                <img src="{% static 'ux/rightArrow-icon.svg' %}" class="w-5 h-5"/>
+                <p class="text-xl font-bold">
+                    Enter 
                 </p>
-                <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
+                <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-5 h-5"/>
             </a>
+            {% else %}
+            <span class="invisible w-full"></span>
             {% endif %}
-            <button data-collapse-toggle="navbar-hamburger" type="button" class="navbar-burger p-3 text-emerald-400 hover:text-[#B1F1CB] absolute right-0 ">
-                <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <button data-collapse-toggle="navbar-hamburger" type="button" class="navbar-burger p-1 text-emerald-400 hover:text-[#B1F1CB] flex justify-end items-center">
+                <svg class="block h-5 w-5 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Mobile menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
                 </svg>
@@ -26,11 +28,12 @@
         <div class="z-40 relative lg:hidden hidden" id="navbar-hamburger">
             <ul class="fixed w-full bg-zinc-950/90">
                 {% if request.user.is_authenticated %}
-                <form method="post" action="{% url 'core:logout_view' %}" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
+                <form method="post" action="{% url 'core:logout_view' %}" class="flex p-3 items-center justify-start cursor-pointer text-red-600 hover:text-red-400 text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
                     {% csrf_token %}
-                    <i class="fa-solid fa-home fa-xl"></i>
-                    <span>{% translate "Log out" %}</span>
-                    <button type="submit" id="logout-btn" class="hidden"></button>
+                    <button type="submit" id="logout-btn" title="{% translate 'Log out' %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket fa-xl rotate-180"></i>
+                        <span>{% translate "Log out" %}</span>
+                    </button>
                 </form>
                 {% else %}
                 <li class="bg-gray-700/40 border border-gray-300/40 m-1 rounded-md">

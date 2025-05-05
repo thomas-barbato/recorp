@@ -518,6 +518,7 @@ class GetDataFromDB:
 
             current_player_x = int(current_player["coordinates"]["x"])
             current_player_y = int(current_player["coordinates"]["y"])
+            
         sector_element_dict = {
             "pc": [e for e in PlayerShip.objects.filter(
                     player_id__sector_id=sector_id, is_current_ship=True
@@ -560,35 +561,41 @@ class GetDataFromDB:
                         current_player_start_y = 0
                         element_start_x = 0
                         element_start_y = 0
-
+                        
+                        # + 1 - 1 to limitate object with size more than 1 ;
+                        # exemple : Size 3 start in middle so we have to - 1.
                         if current_size["x"] > 1:
-                            current_player_start_x = current_player_x - module_range
-                            current_player_end_x = (
-                                current_player_x + module_range + current_size["x"]
-                            )
+                            if current_size["x"] == 2:
+                                current_player_start_x = current_player_x - module_range - 1
+                                current_player_end_x = current_player_x + module_range + 2
+                            else:
+                                current_player_start_x = current_player_x - module_range - 1
+                                current_player_end_x = current_player_x + module_range + 3
                         else:
                             current_player_start_x = current_player_x - module_range
                             current_player_end_x = current_player_x + module_range + 1
 
                         if current_size["y"] > 1:
-                            current_player_start_y = current_player_y - module_range
-                            current_player_end_y = (
-                                current_player_y + module_range + current_size["y"]
-                            )
+                            if current_size["y"] == 2:
+                                current_player_start_y = current_player_y - module_range - 1
+                                current_player_end_y = current_player_y + module_range + 2
+                            else:
+                                current_player_start_y = current_player_y - module_range - 1
+                                current_player_end_y = current_player_y + module_range + 3
                         else:
                             current_player_start_y = current_player_y - module_range
                             current_player_end_y = current_player_y + module_range + 1
-
-                        player_zone_range = [
-                            f"{y}_{x}"
-                            for y in range(current_player_start_y, current_player_end_y)
-                            for x in range(current_player_start_x, current_player_end_x)
-                        ]
                         
                         current_player_start_x = current_player_start_x if current_player_start_x >= 0 else 0
                         current_player_end_x = current_player_end_x if current_player_end_x <= 39 else 39
                         current_player_start_y = current_player_start_y if current_player_start_y >= 0 else 0
                         current_player_end_y = current_player_end_y if current_player_end_y <= 39 else 39
+                        
+                        player_zone_range = [
+                            f"{y}_{x}"
+                            for y in range(current_player_start_y, current_player_end_y)
+                            for x in range(current_player_start_x, current_player_end_x)
+                        ]
 
                         if index == "npc":
                             element_size_x = int(
