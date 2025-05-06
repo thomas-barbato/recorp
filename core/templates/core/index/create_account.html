@@ -1,0 +1,60 @@
+{% extends "generic_template.html" %}
+{% load static %}
+{% load customtags %}
+{% load i18n %}
+
+{% block content %}
+<div class="flex flex-col min-h-screen">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
+        {% include "mobile-index-top-panel.html" %}
+    </header>
+    <main class="flex main-index-container w-full h-full flex-row lg:blur-none overflow-y-scroll no-scrollbar p-2 text-shadow font-shadow">
+    </main>
+    <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
+        {% include "display_disclaimer.html" %}
+    </footer>
+    {% else %}
+    <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow z-50">
+        {% include "mobile-index-top-panel.html" %}
+        {% include "index-top-panel.html" %}
+    </header>
+    <main class="flex main-index-container w-full h-full flex-row justify-stretch overflow-y-scroll lg:blur-none no-scrollbar text-shadow p-2 z-0">
+        <form action="" method="POST" class="flex justify-center items-center flex-col mx-auto">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="fieldWrapper p-2">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Submit">
+        </form>
+    </main>
+    <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
+        {% include "display_disclaimer.html" %}
+    </footer>
+    {% endif %}
+</div>
+
+{% if messages %}
+<script>
+    function delete_error_message(){
+        let message_ul = document.querySelector('.messages')
+        let messages_li = document.querySelectorAll('.error-msg');
+        if(messages_li){
+            for(let i = 0; i < messages_li.length ; i++){
+                messages_li[i].remove();
+            }
+            
+        }
+    }
+    setTimeout(delete_error_message, 10000);
+</script>
+{% endif %}
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/game/world_builder/account/logout.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/game/world_builder/account/login.js' %}" type="text/javascript"></script>
+{% endblock %}
+

@@ -14,13 +14,13 @@ from django.shortcuts import redirect
 from django.template import RequestContext, loader
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
-from django.views.generic import TemplateView, View, RedirectView
+from django.views.generic import TemplateView, View, RedirectView, FormView
 from django_user_agents.utils import get_user_agent
 
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
-from core.forms import LoginForm
+from core.forms import LoginForm, SignupForm, PasswordRecoveryForm
 from core.models import Player, Sector
 from recorp.settings import LOGIN_REDIRECT_URL
 
@@ -33,7 +33,7 @@ def admin_index(request):
     return HttpResponse(template.render(context))
 
 class IndexView(TemplateView):
-    form_class = LoginForm
+    form_class = LoginForm()
     template_name = "index.html"
     redirect_authenticated_user = True
 
@@ -64,6 +64,18 @@ class IndexView(TemplateView):
             messages.warning(self.request, warning_msg)
             data_to_send = {"form": self.form_class}
             return redirect(url, data_to_send)
+        
+        
+class CreateAccountView(FormView):
+    form_class = SignupForm
+    template_name = "create_account.html"
+    success_url = "/"
+
+
+class PasswordRecoveryView(FormView):
+    form_class = PasswordRecoveryForm
+    template_name = "password_recovery.html"
+    success_url = "/"
 
 
 class DisplayTutorialView(LoginRequiredMixin, TemplateView):

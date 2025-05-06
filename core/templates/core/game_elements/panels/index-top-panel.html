@@ -1,8 +1,8 @@
 {% load static %}
 {% load i18n %}
-<nav class="flex bg-zinc-950/70 w-full lg:block hidden">
-    <div class="flex w-full bg-zinc-950/70 flex-col">
-        <div class="flex w-full flex-row gap-1">
+<nav class="flex w-full lg:block hidden">
+    <div class="flex w-full flex-col">
+        <div class="flex w-full flex-row gap-1 bg-zinc-950/90">
             <div class="flex index-container w-full h-auto flex-row whitespace-nowrap p-1 gap-1">
                 <section class="flex w-auto justify-start">
                     {% if request.user.is_authenticated %}
@@ -20,7 +20,7 @@
                                 </p>
                                 <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
                             </a>
-                            <form method="post" action="{% url 'core:logout_view' %}" class="flex items-center justify-center cursor-pointer text-red-600 hover:text-red-400 text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
+                            <form method="post" action="{% url 'core:logout_view' %}" class="flex items-center justify-center cursor-pointer text-red-600 hover:text-red-600 text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
                                 {% csrf_token %}
                                 <button type="submit" id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket fa-xl rotate-180" title="{% translate 'Log out' %}"></i></button>
                             </form>
@@ -42,11 +42,11 @@
                             <div class="flex flex-col input-container whitespace-nowrap"> 
                                 <input type="text" name="username" maxlength="150" required="" id="id_username" class="flex w-auto items-center font-bold text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
                                 <section class="text-center flex flex-row items-center gap-1 text-white text-sm hover:animate-pulse mb-1">
-                                    <a href="/" class="italic">You don't have an account? Signup here</a>
+                                    <a href="{% url 'core:create_account' %}" class="italic">You don't have an account? Signup here</a>
                                 </section>
                                 <input type="password" name="password" required="" id="id_password" class="flex w-auto items-center text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
                                 <section class="text-center flex flex-row items-center gap-1 text-white text-sm hover:animate-pulse">
-                                    <a href="/" class="italic">Forgot password ?</a>
+                                    <a href="{% url 'core:password_recovery' %}" class="italic">Forgot password ?</a>
                                 </section>
                             </div>
                         </div>
@@ -106,5 +106,23 @@
                 </section>
             </div>
         </div>  
+        <div class="relative lg:w-full w-1/2 justify-center bg-zinc-950/90">
+            {% if messages %}
+            <ul class=" absolute messages lg:w-full w-auto login-policy justify-center text-center bg-zinc-950/90" role="alert">
+                {% for message in messages %}
+                <li class="error-msg">
+                    {% if message.tags == "error" %}
+                    <p class="p-5 text-sm text-red-600 bg-zinc-950/0 font-bold font-shadow">
+                    {% endif %}
+                    {% if message.tags == "warning" %}
+                    <p class="p-5 text-sm text-yellow-300 bg-zinc-950/0 font-bold font-shadow">
+                    {% endif %}
+                    {{ message|safe }}
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
     </div>
 </nav>

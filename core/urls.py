@@ -23,6 +23,16 @@ urlpatterns = [
         name="index_view",
     ),
     path(
+        "account/create",
+        core_views.CreateAccountView.as_view(template_name="create_account.html"),
+        name="create_account",
+    ),
+    path(
+        "account/password_recovery",
+        core_views.PasswordRecoveryView.as_view(template_name="password_recovery.html"),
+        name="password_recovery",
+    ),
+    path(
         "play/warp",
         core_views.ChangeSectorGameView.as_view(template_name="play.html"),
         name="changeSector_view",

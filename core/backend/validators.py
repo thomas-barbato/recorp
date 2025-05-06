@@ -102,7 +102,31 @@ class CheckUsernameAlreadyUsed:
             "</div>"
         )
 
+class CheckEmailAlreadyUsed:
+    """docstring"""
 
+    def __init__(self):
+        self.table = User
+
+    def validate(self, email):
+        """check if email already exists in db."""
+        if self.table.objects.filter(email=email).exists() is True:
+            unique_email = _("Email already in use")
+            raise ValidationError(
+                _(
+                    mark_safe(
+                        '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
+                        "<p><b><i class="
+                        + '"fas fa-exclamation-triangle"'
+                        + "></i>"
+                        + email
+                        + "</b></p>"
+                        "</div>"
+                    )
+                ),
+                code="email_already_used",
+            )
+            
 class CheckImageExtension:
     """docstring"""
 

@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from core.backend.validators import (
     CheckPasswordPolicy,
     CheckUsernameAlreadyUsed,
+    CheckEmailAlreadyUsed,
 )
 from core.models import User
 
@@ -66,7 +67,7 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "password"]
+        fields = ["username", "password", "email"]
         exclude = ["user_id"]
 
     def save(self, *args, **kwargs):
@@ -95,7 +96,9 @@ class SignupForm(forms.ModelForm):
                 "class": "form-control text-center",
                 "placeholder": _("Email"),
             }
-        )
+        ),
+        required=True,
+        validators=[CheckEmailAlreadyUsed().validate]
     )
     password = forms.CharField(
         widget=PasswordInput(
@@ -119,4 +122,22 @@ class SignupForm(forms.ModelForm):
         label="",
         validators=[CheckPasswordPolicy().validate],
         help_text=CheckPasswordPolicy().get_help_text(),
+    )
+
+class PasswordRecoveryForm(forms.ModelForm):
+    """docstring"""
+
+    class Meta:
+        model = User
+        fields = ["email"]
+        
+    email = forms.EmailField(
+        widget=TextInput(
+            attrs={
+                "class": "form-control text-center",
+                "placeholder": _("Email"),
+            }
+        ),
+        required=True,
+        validators=[CheckPasswordPolicy().validate],
     )
