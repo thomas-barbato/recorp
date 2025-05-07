@@ -16,7 +16,7 @@
                             <a href="/play" class="text-white flex justify-center items-center w-full flex-row whitespace-nowrap gap-2 p-1">
                                 <img src="{% static 'ux/rightArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
                                 <p class="text-md font-bold">
-                                    Welcome, {{request.user.username}}
+                                    {%  translate "Enter" %}
                                 </p>
                                 <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-4 h-4 animate-pulse"/>
                             </a>
@@ -32,9 +32,9 @@
                             <img src="{% static 'ux/recorp.png' %}" class="h-10" alt="Recorp_logo" />
                             <p class="">Recorp</p>
                         </a>
-                        <div class="h-[1em] self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
+                        <div class="min-h-[1em] self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
                         {% csrf_token %}
-                        <div class="container flex flex-row gap-2">
+                        <div class="container flex flex-row gap-2 p-1">
                             <div class="flex flex-col justify-start label-container gap-3 whitespace-nowrap">
                                 <label for="id_username" class="flex font-bold text-sm text-white flex items-start mb-1">{% translate 'username' %}</label>
                                 <label for="id_password" class="flex font-bold text-sm text-white flex items-start">{% translate 'password' %}</label>

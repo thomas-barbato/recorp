@@ -23,30 +23,3 @@ password_value.addEventListener('change', function(e){
         login_btn.disabled = false;
     }
 })
-
-/*
-login_btn.addEventListener('click', function(e){
-    let data = {
-        'username' : username_value.value,
-        'password':  password_value.value
-    }
-
-    let url = "/"
-
-    const headers = new Headers({
-    'Content-Type': 'x-www-form-urlencoded',
-    'Accept': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRFToken': csrf_token
-    });
-    fetch(url, {
-        method: 'POST',
-        headers,
-        credentials: 'include',
-        body: JSON.stringify({
-            'data': data,
-        })
-    }).then(() => {
-        window.location.reload();
-    });
-});*/

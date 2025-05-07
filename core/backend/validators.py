@@ -119,7 +119,7 @@ class CheckEmailAlreadyUsed:
                         "<p><b><i class="
                         + '"fas fa-exclamation-triangle"'
                         + "></i>"
-                        + email
+                        + unique_email
                         + "</b></p>"
                         "</div>"
                     )

@@ -17,7 +17,7 @@ SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@
 LOGIN_REDIRECT_URL = "/"
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "009b-90-91-227-84.ngrok-free.app"]
+ALLOWED_HOSTS = ["127.0.0.1", "3799-90-91-227-84.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "daphne",
@@ -94,7 +94,7 @@ TEMPLATES = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.recorp.com",
-    "https://009b-90-91-227-84.ngrok-free.app",
+    "https://3799-90-91-227-84.ngrok-free.app",
 ]
 
 WSGI_APPLICATION = "recorp.routing.application"
@@ -175,6 +175,7 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 # The Django admin ships with some javascript and CSS,
 # for example, that are stored in Django’s Github repository.
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "recorp", "static")
 
 STATICFILES_DIRS = [
     ("tailwind", os.path.join(BASE_DIR, "recorp", "static", "js", "tailwind")),
@@ -216,8 +217,18 @@ STATICFILES_DIRS = [
             BASE_DIR, "recorp", "static", "img", "foreground", "blackhole"
         ),
     ),
-    ("fontawesome", os.path.join(BASE_DIR, "recorp", "static", "js", "fontawesome")),
-    ("ckeditor", os.path.join(BASE_DIR, "recorp", "static", "js", "ckeditor5")),
+    (
+        "fontawesome", 
+        os.path.join(
+            BASE_DIR, "recorp", "static", "js", "fontawesome"
+        )
+    ),
+    (
+        "ckeditor", 
+        os.path.join(
+            BASE_DIR, "recorp", "static", "js", "ckeditor5"
+        )
+    ),
 ]
 
 # public

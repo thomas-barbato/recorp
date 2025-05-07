@@ -16,7 +16,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import TemplateView, View, RedirectView, FormView
 from django_user_agents.utils import get_user_agent
-
+from django.http import JsonResponse
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
@@ -36,6 +36,10 @@ class IndexView(TemplateView):
     form_class = LoginForm()
     template_name = "index.html"
     redirect_authenticated_user = True
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
     def post(self, request, *args, **kwargs):
         data_to_send = {}
@@ -46,7 +50,7 @@ class IndexView(TemplateView):
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
             )
-            if user is not None and user.is_active and user.username != "npc":
+            if user is not None and user.is_active:
                 login(self.request, user)
                 if Player.objects.filter(user_id=self.request.user.id).exists():
                     url = "/"
@@ -70,6 +74,28 @@ class CreateAccountView(FormView):
     form_class = SignupForm
     template_name = "create_account.html"
     success_url = "/"
+    
+    def form_invalid(self, form):
+        print("invalide")
+        response = super().form_invalid(form)
+        if self.request.accepts("text/html"):
+            return response
+        else:
+            return JsonResponse(form.errors, status=400)
+
+    def form_valid(self, form):
+        print("valide")
+        # We make sure to call the parent's form_valid() method because
+        # it might do some processing (in the case of CreateView, it will
+        # call form.save() for example).
+        response = super().form_valid(form)
+        if self.request.accepts("text/html"):
+            return response
+        else:
+            data = {
+                "pk": self.object.pk,
+            }
+            return JsonResponse(data)
 
 
 class PasswordRecoveryView(FormView):

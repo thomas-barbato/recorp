@@ -5,56 +5,69 @@
 
 {% block content %}
 <div class="flex flex-col min-h-screen">
-    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
     <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
-        {% include "mobile-index-top-panel.html" %}
+        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+            {% include "mobile-create-account-top-panel.html" %}
+        {% else %}
+            {% include "mobile-create-account-top-panel.html" %}
+            {% include "create-account-top-panel.html" %}
+        {% endif %}
     </header>
-    <main class="flex main-index-container w-full h-full flex-row lg:blur-none overflow-y-scroll no-scrollbar p-2 text-shadow font-shadow">
-    </main>
-    <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
-        {% include "display_disclaimer.html" %}
-    </footer>
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    <main class="flex main-index-container w-full h-full flex-row lg:blur-none overflow-y-scroll  no-scrollbar text-shadow font-shadow p-1">
+        <div class="flex w-full justify-center items-start md:bg-[url(/static/img/ux/border-container-withbg-wide.svg)] bg-contain bg-no-repeat bg-top md:mt-[10%] p-1">
     {% else %}
-    <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow z-50">
-        {% include "mobile-index-top-panel.html" %}
-        {% include "index-top-panel.html" %}
-    </header>
     <main class="flex main-index-container w-full h-full flex-row justify-stretch overflow-y-scroll lg:blur-none no-scrollbar text-shadow p-2 z-0">
-        <form action="" method="POST" class="flex justify-center items-center flex-col mx-auto">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="fieldWrapper p-2">
-                    {{ field.errors }}
-                    {{ field.label_tag }} {{ field }}
+        <div class="w-full flex justify-center items-center md:bg-[url(/static/img/ux/border-container-withbg-wide.svg)] bg-contain bg-no-repeat bg-center p-1">
+    {% endif %}
+        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+            <div class="flex justify-center md:w-[80%] w-full items-center flex-col mx-auto bg-zinc-950/70 border border-gray-300/40 md:mt-[10%] p-2 md:gap-2 rounded-md gap-6">
+        {% else %}
+            <div class="flex justify-center w-auto items-center flex-col mx-auto bg-zinc-950/70 border border-gray-300/40 p-2 gap-2 rounded-md md:gap-4 sm:gap-3">
+        {% endif %}
+                <div class="grid xl:gap-6 gap-4 md:grid-cols-2 w-full ">
+                    <div>
+                        <label for="first_name_id" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.first_name.label}}</label>
+                        <input type="text" id="first_name_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John"/>
+                    </div>
+                    <div>
+                        <label for="last_name" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.last_name.label}}</label>
+                        <input type="text" id="last_name_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe"/>
+                    </div>
                 </div>
-            {% endfor %}
-            <input type="submit" value="Submit">
-        </form>
+                <div class="w-full">
+                    <label for="username" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.username.label}} <span class="text-red-600">*</span></label>
+                    <input type="text" id="username_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required />
+                </div> 
+                <div class="w-full">
+                    <label for="email" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.email.label}} <span class="text-red-600">*</span></label>
+                    <input type="email" id="email_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="my.email@email.com" required />
+                </div> 
+                <div class="w-full">
+                    <label for="password" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.password.label}} <span class="text-red-600">*</span></label>
+                    <input type="password" id="password_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                </div> 
+                <div class="w-full">
+                    <label for="password2_id" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.password2.label}} <span class="text-red-600">*</span></label>
+                    <input type="password" id="password2_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                </div> 
+                <div class="flex items-start mb-6">
+                    <div class="flex items-center h-5">
+                    <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required />
+                    </div>
+                    <label for="remember" class="ms-2 text-sm font-medium text-white">I agree with the <a href="#" class="hover:underline text-emerald-400">terms and conditions</a>.</label>
+                </div>
+                <button type="button" id="create-account-submit-button" class="text-white bg-emerald-400 hover:bg-emerald-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">{% translate "Register now" %}</button>
+            </div>
+        </div>
     </main>
     <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
         {% include "display_disclaimer.html" %}
     </footer>
-    {% endif %}
 </div>
 
-{% if messages %}
-<script>
-    function delete_error_message(){
-        let message_ul = document.querySelector('.messages')
-        let messages_li = document.querySelectorAll('.error-msg');
-        if(messages_li){
-            for(let i = 0; i < messages_li.length ; i++){
-                messages_li[i].remove();
-            }
-            
-        }
-    }
-    setTimeout(delete_error_message, 10000);
-</script>
-{% endif %}
 {% endblock %}
 {% block js %}
-<script src="{% static 'js/game/world_builder/account/logout.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/game/world_builder/account/login.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/game/world_builder/account/register.js' %}" type="text/javascript"></script>
 {% endblock %}
 

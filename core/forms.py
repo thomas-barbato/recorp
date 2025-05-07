@@ -67,59 +67,80 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "password", "email"]
+        fields = ["first_name", "last_name", "username", "password", "email"]
         exclude = ["user_id"]
 
     def save(self, *args, **kwargs):
         self.instance.username = self.instance.username.lower()
         self.instance.password = make_password(self.instance.password)
+        self.instance.email = self.instance.email.lower()
+        self.instance.first_name = self.instance.fist_name.lower()
+        self.instance.last_name = self.instance.last_name.lower()
         self.instance.is_staff = False
         self.instance.is_active = True
         self.instance.date_joined = datetime.datetime.now()
         super().save()
-
-    username = forms.CharField(
+    
+    first_name= forms.CharField(
         widget=TextInput(
             attrs={
                 "class": "form-control text-center",
-                "placeholder": _("Username"),
+                "placeholder": "Jonh",
+            }
+        ),
+        required=False,
+        label=_("first name"),
+    )
+    
+    last_name= forms.CharField(
+        widget=TextInput(
+            attrs={
+                "class": "form-control text-center"
+            }
+        ),
+        required=False,
+        label=_("last name"),
+    )  
+    
+    username = forms.CharField(
+        widget=TextInput(
+            attrs={
+                "class": "form-control text-center"
             }
         ),
         required=True,
-        label="",
+        label=_("username"),
         validators=[CheckUsernameAlreadyUsed().validate],
         help_text=CheckUsernameAlreadyUsed().get_help_text(),
     )
     email = forms.EmailField(
         widget=TextInput(
             attrs={
-                "class": "form-control text-center",
-                "placeholder": _("Email"),
+                "class": "form-control text-center"
             }
         ),
         required=True,
+        label=_("email address"),
         validators=[CheckEmailAlreadyUsed().validate]
     )
     password = forms.CharField(
         widget=PasswordInput(
             attrs={
-                "class": "form-control mt-1 text-center",
-                "placeholder": _("Password"),
+                "class": "form-control mt-1 text-center"
             }
         ),
         required=True,
-        label="",
+        label=_("Password"),
         validators=[CheckPasswordPolicy().validate],
     )
     password2 = forms.CharField(
         widget=PasswordInput(
             attrs={
-                "class": "form-control mt-1 text-center",
-                "placeholder": _("Confirm password"),
+                "class": "form-control mt-1 text-center"
             },
         ),
         required=True,
-        label="",
+        label=_("Confirm password"),
         validators=[CheckPasswordPolicy().validate],
         help_text=CheckPasswordPolicy().get_help_text(),
     )
