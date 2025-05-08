@@ -7,6 +7,7 @@ from django.forms.widgets import PasswordInput, TextInput
 from django.utils.translation import gettext as _
 from core.backend.validators import (
     CheckPasswordPolicy,
+    CheckPassword2Policy,
     CheckUsernameAlreadyUsed,
     CheckEmailAlreadyUsed,
 )
@@ -74,8 +75,8 @@ class SignupForm(forms.ModelForm):
         self.instance.username = self.instance.username.lower()
         self.instance.password = make_password(self.instance.password)
         self.instance.email = self.instance.email.lower()
-        self.instance.first_name = self.instance.fist_name.lower()
-        self.instance.last_name = self.instance.last_name.lower()
+        self.instance.first_name = self.instance.first_name.lower() if self.instance.first_name else "None"
+        self.instance.last_name = self.instance.last_name.lower() if self.instance.last_name else "None"
         self.instance.is_staff = False
         self.instance.is_active = True
         self.instance.date_joined = datetime.datetime.now()
@@ -84,7 +85,7 @@ class SignupForm(forms.ModelForm):
     first_name= forms.CharField(
         widget=TextInput(
             attrs={
-                "class": "form-control text-center",
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                 "placeholder": "Jonh",
             }
         ),
@@ -95,7 +96,7 @@ class SignupForm(forms.ModelForm):
     last_name= forms.CharField(
         widget=TextInput(
             attrs={
-                "class": "form-control text-center"
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             }
         ),
         required=False,
@@ -105,7 +106,7 @@ class SignupForm(forms.ModelForm):
     username = forms.CharField(
         widget=TextInput(
             attrs={
-                "class": "form-control text-center"
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             }
         ),
         required=True,
@@ -116,33 +117,34 @@ class SignupForm(forms.ModelForm):
     email = forms.EmailField(
         widget=TextInput(
             attrs={
-                "class": "form-control text-center"
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             }
         ),
         required=True,
         label=_("email address"),
-        validators=[CheckEmailAlreadyUsed().validate]
+        validators=[CheckEmailAlreadyUsed().validate],
+        help_text=CheckEmailAlreadyUsed().get_help_text(),
     )
     password = forms.CharField(
         widget=PasswordInput(
             attrs={
-                "class": "form-control mt-1 text-center"
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             }
         ),
         required=True,
         label=_("Password"),
         validators=[CheckPasswordPolicy().validate],
+        help_text=CheckPasswordPolicy().get_help_text(),
     )
     password2 = forms.CharField(
         widget=PasswordInput(
             attrs={
-                "class": "form-control mt-1 text-center"
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             },
         ),
         required=True,
         label=_("Confirm password"),
-        validators=[CheckPasswordPolicy().validate],
-        help_text=CheckPasswordPolicy().get_help_text(),
+        help_text=CheckPassword2Policy().get_help_text(),
     )
 
 class PasswordRecoveryForm(forms.ModelForm):

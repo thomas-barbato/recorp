@@ -29,7 +29,7 @@ class CheckPasswordPolicy:
             raise ValidationError(
                 _(
                     mark_safe(
-                        '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
+                        '<div class="alert alert-danger text-center" role="alert">'
                         "<li><b>"
                         + _("Your password must contain at least")
                         + ":</b></li>"
@@ -47,14 +47,37 @@ class CheckPasswordPolicy:
     def get_help_text(self):
         """docstring"""
         return _(
-            '<div class="alert alert-dark" role="alert">'
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="password_help_text">'
             "<ul>"
-            "<li><b>" + _("Your password must contain at least") + ":</b></li>"
+            "<li>" + _("Your password must contain at least") + ":</li>"
             "<li><b>8</b> " + _("letters") + "</li>"
             "<li><b>1</b> " + _("uppercase") + "</li>"
             "<li><b>1</b> " + _("lowercase") + "</li>"
             "<li><b>1</b> " + _("symbol") + "</li>"
             "<li><b>1</b> " + _("number") + "</li>"
+            "</ul>"
+            "</div>"
+        )
+        
+class CheckPassword2Policy:
+    """docstring"""
+
+    def __init__(self):
+        self.password_pattern = (
+            "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+        )
+
+    def validate(self, password):
+        """
+            Your passwords must match
+        """
+
+    def get_help_text(self):
+        """docstring"""
+        return _(
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="password2_help_text">'
+            "<ul>"
+            "<li class='gap-2'><i class='fas fa-exclamation-triangle'></i>" + _("Your passwords must match") + "</li>"
             "</ul>"
             "</div>"
         )
@@ -75,12 +98,12 @@ class CheckUsernameAlreadyUsed:
             raise ValidationError(
                 _(
                     mark_safe(
-                        '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
-                        "<p><b><i class="
+                        '<div class="alert alert-danger text-center" role="alert">'
+                        "<p><i class="
                         + '"fas fa-exclamation-triangle"'
                         + "></i>"
                         + unique_username
-                        + "</b></p>"
+                        + "</p>"
                         "</div>"
                     )
                 ),
@@ -91,13 +114,13 @@ class CheckUsernameAlreadyUsed:
         """docstring"""
         unique_username_msg = _("Username should be unique")
         return _(
-            '<div class="alert alert-danger text-center col-xl-4 col-md-4 col-sm-12" role="alert">'
-            "<ul>"
-            "<li><b><i class="
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="username_help_text">'
+            "<ul class='gap-1'>"
+            "<li class='flex flex-row gap-2 justify-center items-center'><i class="
             + '"fas fa-exclamation-triangle"'
-            + "></i><b>"
+            + "></i><p>"
             + unique_username_msg
-            + "</b></li>"
+            + "</li></p>"
             "</ul>"
             "</div>"
         )
@@ -111,21 +134,36 @@ class CheckEmailAlreadyUsed:
     def validate(self, email):
         """check if email already exists in db."""
         if self.table.objects.filter(email=email).exists() is True:
-            unique_email = _("Email already in use")
+            unique_email = _("Email already in use or the email address is badly formatted.")
             raise ValidationError(
                 _(
                     mark_safe(
-                        '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
-                        "<p><b><i class="
+                        '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-2" role="alert">'
+                        "<p><i class="
                         + '"fas fa-exclamation-triangle"'
                         + "></i>"
                         + unique_email
-                        + "</b></p>"
+                        + "</p>"
                         "</div>"
                     )
                 ),
                 code="email_already_used",
             )
+
+    def get_help_text(self):
+        """docstring"""
+        unique_email = _("Email already in use")
+        return _(
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="email_help_text">'
+            "<ul class='gap-1'>"
+            "<li class='flex flex-row gap-2 justify-center items-center'><i class="
+            + '"fas fa-exclamation-triangle"'
+            + "></i><p>"
+            + unique_email
+            + "</li></p>"
+            "</ul>"
+            "</div>"
+        )
             
 class CheckImageExtension:
     """docstring"""
@@ -142,10 +180,10 @@ class CheckImageExtension:
             raise ValidationError(
                 _(
                     mark_safe(
-                        '<div class="alert alert-danger text-center col-xl-12 col-md-12 col-sm-10 mt-1" role="alert">'
-                        "<p><b><i class="
+                        '<div class="alert alert-danger text-center" role="alert">'
+                        "<p><i class="
                         + '"fas fa-exclamation-triangle"'
-                        + "></i> Extensions autorisées: .jpg et .png</b></p>"
+                        + "></i> Extensions autorisées: <b>.jpg et .png</b></p>"
                         "</div>"
                     )
                 ),

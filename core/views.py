@@ -9,8 +9,9 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, HttpResponse
 from django.template import RequestContext, loader
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
@@ -24,8 +25,30 @@ from core.forms import LoginForm, SignupForm, PasswordRecoveryForm
 from core.models import Player, Sector
 from recorp.settings import LOGIN_REDIRECT_URL
 
+
 # logger = logging.getLogger("django")
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+class JsonableResponseMixin:
+    """
+    Mixin to add JSON support to a form.
+    Must be used with an object-based FormView (e.g. CreateView)
+    """
+
+    def form_invalid(self, form):
+        """docstring"""
+        if is_ajax(self.request):
+            return JsonResponse(form.errors, status=400)
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        """docstring"""
+        if is_ajax(self.request):
+            data = {"message": "Successfully submitted form data."}
+            return JsonResponse(data)
+        return super().form_valid(form)
 
 def admin_index(request):
     template = loader.get_template("admin/base_site.html")
@@ -36,10 +59,6 @@ class IndexView(TemplateView):
     form_class = LoginForm()
     template_name = "index.html"
     redirect_authenticated_user = True
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
     def post(self, request, *args, **kwargs):
         data_to_send = {}
@@ -52,10 +71,7 @@ class IndexView(TemplateView):
             )
             if user is not None and user.is_active:
                 login(self.request, user)
-                if Player.objects.filter(user_id=self.request.user.id).exists():
-                    url = "/"
-                else:
-                    url = "/play/tutorial/"
+                url = "/"
                 return redirect(url, data_to_send)
             unknown_user_msg = _(
                 "Unable to login, username and or password are incorrects"
@@ -70,32 +86,46 @@ class IndexView(TemplateView):
             return redirect(url, data_to_send)
         
         
-class CreateAccountView(FormView):
-    form_class = SignupForm
-    template_name = "create_account.html"
-    success_url = "/"
+class CreateAccountView(TemplateView):
     
-    def form_invalid(self, form):
-        print("invalide")
-        response = super().form_invalid(form)
-        if self.request.accepts("text/html"):
-            return response
-        else:
-            return JsonResponse(form.errors, status=400)
+    template_name: str = "create_account.html"
+    success_url = reverse_lazy("index_view")
+    
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect("/")
+        return super(CreateAccountView, self).get(*args,**kwargs)
+    
+    def get_context_data(self,*args, **kwargs):
+        
+        context = super(CreateAccountView, self).get_context_data(*args,**kwargs)
+        context["form"] = SignupForm(self.request.POST or None)
+        
+        return context
 
-    def form_valid(self, form):
-        print("valide")
-        # We make sure to call the parent's form_valid() method because
-        # it might do some processing (in the case of CreateView, it will
-        # call form.save() for example).
-        response = super().form_valid(form)
-        if self.request.accepts("text/html"):
-            return response
-        else:
-            data = {
-                "pk": self.object.pk,
-            }
-            return JsonResponse(data)
+    def post(self, request, *args, **kwargs):
+        json_data = json.load(request)
+        form = SignupForm(json_data)
+        data = {}
+        data["error"] = []
+        if json_data["password"] == json_data["password2"]:
+            if form.is_valid():
+                form.save()
+                user = authenticate(
+                    self.request,
+                    username=json_data["username"],
+                    password=json_data["password"],
+                )
+                if user is not None and user.is_active:
+                    login(self.request, user)
+                    url = "/"
+                    return JsonResponse({}, status=200)
+        
+        for field, errors in form.errors.items():
+            data["errors"].append(f"{field.split(' ')[0]}")
+                
+        response = data
+        return JsonResponse(response, status=200)
 
 
 class PasswordRecoveryView(FormView):
