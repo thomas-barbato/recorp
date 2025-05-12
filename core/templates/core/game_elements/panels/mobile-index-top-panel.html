@@ -11,7 +11,7 @@
             <a href="/play" class="text-white flex justify-center items-center w-full flex-row gap-3 mr-[5vw] animate-pulse">
                 <img src="{% static 'ux/rightArrow-icon.svg' %}" class="w-5 h-5"/>
                 <p class="text-xl font-bold">
-                    Enter 
+                    {%  translate "Enter" %} 
                 </p>
                 <img src="{% static 'ux/leftArrow-icon.svg' %}" class="w-5 h-5"/>
             </a>
@@ -38,9 +38,9 @@
                 {% else %}
                 <li class="bg-gray-700/40 border border-gray-300/40 m-1 rounded-md">
                     <div class="index-container w-full px-4">
-                        <div class="flex justify-center flex-row">
-                            <div class="md:w-1/2 w-full">
-                                <section class="flex self-center item-center justify-center p-2">
+                        <div class="flex justify-center">
+                            <div class="md:w-1/2 w-full flex-col">
+                                <section class="flex self-center item-center justify-center p-2 flex-col">
                                     <form method="POST" action="" class="flex flex-col gap-1 w-full">
                                         {% csrf_token %}
                                         <label for="id_username" class="font-bold text-sm text-white mb-1">{% translate 'username' %}:</label>
@@ -48,7 +48,28 @@
                                         <label for="id_password" class="font-bold text-sm text-white mb-1">{% translate 'password' %}:</label>
                                         <input type="password" name="password" required="" id="id_password" class="block w-full p-1 text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
                                         <div class="w-full text-center flex flex-row gap-1 text-white text-sm">
-                                            <a href="{% url 'core:password_recovery' %}" class="italic">Forgot password ?</a>
+                                            <a href="{% url 'core:password_recovery' %}"  class="italic first-letter:uppercase">{% translate "forgot password" %} ?</a>
+                                        </div>
+                                        <div class="w-full justify-center bg-zinc-950/90 ronded-md border border-gray-300/40">
+                                            {% if messages %}
+                                            <ul class=" messages lg:w-full w-auto login-policy justify-center text-center bg-zinc-950/90" role="alert">
+                                                {% for message in messages %}
+                                                <li class="error-msg">
+                                                    {% if message.tags == "error" %}
+                                                    <p class="p-5 text-sm text-red-600 bg-zinc-950/0 font-bold font-shadow">
+                                                    {% endif %}
+                                                    {% if message.tags == "warning" %}
+                                                    <p class="p-5 text-sm text-yellow-300 bg-zinc-950/0 font-bold font-shadow">
+                                                    {% endif %}
+                                                    {% if message.tags == "success" %}
+                                                    <p class="p-5 text-sm text-emerald-300 bg-zinc-950/0 font-bold font-shadow">
+                                                    {% endif %}
+                                                    {{ message|safe }}
+                                                    </p>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %}
                                         </div>
                                         <div class="w-full text-center mt-1">
                                             <button type="submit" id="login-btn" title="{% translate 'Log in' %}" class="bg-emerald-400 rounded-md p-1 hover:animate-pulse">
@@ -56,13 +77,8 @@
                                             </button>
                                         </div>
                                         <div class="w-full text-center flex flex-row gap-1 text-white text-sm mt-1 italic">
-                                            <a href="{% url 'core:create_account' %}" class="italic">You don't have an account? Signup here</a>
+                                            <a href="{% url 'core:create_account' %}" class="italic first-letter:uppercase">{%  translate "you don't have an account? Signup here" %}</a>
                                         </div>
-                                        {% if form.errors %}
-                                        <div class="">
-                                        {{ form.errors }}
-                                        </div>
-                                        {% endif %}
                                     </form>
                                 </section>
                             </div>
@@ -70,6 +86,29 @@
                     </div>
                 </li>
                 {% endif %}
+                <li>
+                    <div class="w-full justify-center bg-zinc-950/90 ronded-md border border-gray-300/40">
+                        {% if messages %}
+                        <ul class=" messages lg:w-full w-auto login-policy justify-center text-center bg-zinc-950/90" role="alert">
+                            {% for message in messages %}
+                            <li class="error-msg">
+                                {% if message.tags == "error" %}
+                                <p class="p-5 text-sm text-red-600 bg-zinc-950/0 font-bold font-shadow">
+                                {% endif %}
+                                {% if message.tags == "warning" %}
+                                <p class="p-5 text-sm text-yellow-300 bg-zinc-950/0 font-bold font-shadow">
+                                {% endif %}
+                                {% if message.tags == "success" %}
+                                <p class="p-5 text-sm text-emerald-300 bg-zinc-950/0 font-bold font-shadow">
+                                {% endif %}
+                                {{ message|safe }}
+                                </p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </li>
                 <li>
                     <span class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                         <i class="fa-solid fa-book fa-xl"></i>
@@ -80,20 +119,10 @@
         </div>
         <div class="relative bg-zinc-950/90">
             {% if messages %}
-            <ul class="absolute messages w-auto bg-zinc-950/90 login-policy" role="alert">
-                {% for message in messages %}
-                <li class="error-msg">
-                    {% if message.tags == "error" %}
-                        <p class="p-5 text-sm text-red-600 bg-zinc-950/0 font-bold font-shadow text-center">
-                    {% endif %}
-                    {% if message.tags == "warning" %}
-                        <p class="p-5 text-sm text-yellow-300 bg-zinc-950/0 font-bold font-shadow text-center">
-                    {% endif %}
-                        {{ message|safe }}
-                        </p>
-                </li>
-                {% endfor %}
-            </ul>
+            <script>
+                let navbar_burger = document.querySelector('#navbar-hamburger')
+                navbar_burger.classList.remove('hidden')
+            </script>
             {% endif %}
         </div>
     </div>

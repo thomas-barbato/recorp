@@ -28,8 +28,10 @@ from recorp.settings import LOGIN_REDIRECT_URL
 
 # logger = logging.getLogger("django")
 
+
 def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
 
 class JsonableResponseMixin:
     """
@@ -50,10 +52,12 @@ class JsonableResponseMixin:
             return JsonResponse(data)
         return super().form_valid(form)
 
+
 def admin_index(request):
     template = loader.get_template("admin/base_site.html")
     context = RequestContext(request, {})
     return HttpResponse(template.render(context))
+
 
 class IndexView(TemplateView):
     form_class = LoginForm()
@@ -69,10 +73,18 @@ class IndexView(TemplateView):
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
             )
-            if user is not None and user.is_active:
+            if user is not None and user.is_active and user.is_staff is False:
                 login(self.request, user)
-                url = "/"
-                return redirect(url, data_to_send)
+                player_id = PlayerAction(self.request.user).get_player_id()
+                if player_id:
+                    url = "/"
+                    return redirect(url, data_to_send)
+                else:
+                    url = "play/create_character"
+                    return redirect(url, data_to_send)
+            elif user is not None and user.is_active and user.is_staff:
+                pass
+
             unknown_user_msg = _(
                 "Unable to login, username and or password are incorrects"
             )
@@ -84,30 +96,30 @@ class IndexView(TemplateView):
             messages.warning(self.request, warning_msg)
             data_to_send = {"form": self.form_class}
             return redirect(url, data_to_send)
-        
-        
-class CreateAccountView(TemplateView):
-    
-    template_name: str = "create_account.html"
+
+
+class CreateAccountView(SuccessMessageMixin, TemplateView):
+
+    template_name: str = "create-account.html"
     success_url = reverse_lazy("index_view")
-    
+
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect("/")
-        return super(CreateAccountView, self).get(*args,**kwargs)
-    
-    def get_context_data(self,*args, **kwargs):
-        
-        context = super(CreateAccountView, self).get_context_data(*args,**kwargs)
+        return super(CreateAccountView, self).get(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+
+        context = super(CreateAccountView, self).get_context_data(*args, **kwargs)
         context["form"] = SignupForm(self.request.POST or None)
-        
+
         return context
 
     def post(self, request, *args, **kwargs):
         json_data = json.load(request)
         form = SignupForm(json_data)
         data = {}
-        data["error"] = []
+        data["errors"] = []
         if json_data["password"] == json_data["password2"]:
             if form.is_valid():
                 form.save()
@@ -118,14 +130,30 @@ class CreateAccountView(TemplateView):
                 )
                 if user is not None and user.is_active:
                     login(self.request, user)
-                    url = "/"
+                    url = "index_view"
+                    msg_part_one = _(
+                        "Your account has been successfully created with username"
+                    )
+                    msg_part_two = _("Click on <b>Enter</b> to create your character.")
+                    msg = (
+                        f"{msg_part_one} <b>{json_data['username']}</b> {msg_part_two}"
+                    )
+                    messages.success(self.request, msg)
                     return JsonResponse({}, status=200)
-        
+
         for field, errors in form.errors.items():
             data["errors"].append(f"{field.split(' ')[0]}")
-                
+
         response = data
         return JsonResponse(response, status=200)
+
+
+class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    login_url = LOGIN_REDIRECT_URL
+    redirect_field_name = "login_redirect"
+    form_class = LoginForm()
+    template_name = "create-character.html"
+    redirect_authenticated_user = True
 
 
 class PasswordRecoveryView(FormView):
@@ -214,7 +242,9 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 d["data"]["type_translated"] = _(d["data"]["type"])
                 d["data"]["description"] = _(d["data"]["description"])
                 if d["data"]["type"] != "warpzone":
-                    d["resource"]["translated_text_resource"] = (_("Resources available"),)
+                    d["resource"]["translated_text_resource"] = (
+                        _("Resources available"),
+                    )
                     d["resource"]["translated_quantity_str"] = _(
                         d["resource"]["translated_quantity_str"]
                     )
@@ -237,26 +267,30 @@ class ChangeSectorGameView(LoginRequiredMixin, RedirectView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "play.html"
-    
+
     def post(self, request, **kwargs):
         data = json.load(request)["data"]
         destination_sector, new_coordinates = PlayerAction(
-                self.request.user.id
-            ).player_travel_to_destination(
-                data["warpzone_name"], data["source_id"]
-            )
-            
+            self.request.user.id
+        ).player_travel_to_destination(data["warpzone_name"], data["source_id"])
+
         PlayerAction(self.request.user.id).set_player_sector(
-            destination_sector, 
-            new_coordinates
+            destination_sector, new_coordinates
         )
         store = StoreInCache(f"play_{destination_sector}", self.request.user.id)
         store.get_or_set_cache(need_to_be_recreated=True)
-        
-        
+
+
 class LogoutView(LogoutView):
     http_method_names = ["post"]
     template_name = "index.html"
+
     def post(self, request):
         logout(request)
+        try:
+            session_key = PlayerAction(self.request.user).get_session_key()
+            del request.session[session_key]
+            request.session.modified = True
+        except KeyError:
+            pass
         return HttpResponseRedirect(LOGIN_REDIRECT_URL)

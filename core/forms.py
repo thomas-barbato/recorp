@@ -132,7 +132,7 @@ class SignupForm(forms.ModelForm):
             }
         ),
         required=True,
-        label=_("Password"),
+        label=_("password"),
         validators=[CheckPasswordPolicy().validate],
         help_text=CheckPasswordPolicy().get_help_text(),
     )
@@ -143,7 +143,7 @@ class SignupForm(forms.ModelForm):
             },
         ),
         required=True,
-        label=_("Confirm password"),
+        label=_("confirm password"),
         help_text=CheckPassword2Policy().get_help_text(),
     )
 

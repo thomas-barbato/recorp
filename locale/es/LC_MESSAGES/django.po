@@ -266,6 +266,27 @@ msgstr "estadísticas"
 msgid "A portal that lets you travel to"
 msgstr "Un portal que le permite viajar a "
 
+msgid "i agree with the"
+msgstr "acepto las"
+
+msgid "terms and conditions"
+msgstr "condiciones generales"
+
+msgid "you don't have an account ? Signup here"
+msgstr "¿no tienes cuenta? Regístrese aquí"
+
+msgid "forgot password"
+msgstr "Contraseña olvidada"
+
+msgid "Your account has been successfully created with username"
+msgstr "Tu cuenta ha sido creada con éxito con el nombre de usuario"
+
+msgid "Click on <b>Enter</b> to create your character."
+msgstr "ahora estás conectado. Haz clic en <b>Entrar</b> para crear tu personaje."
+
+msgid "Enter"
+msgstr "Entrar"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""

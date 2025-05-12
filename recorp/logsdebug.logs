@@ -11566,3 +11566,1727 @@ Watching for file changes with StatReloader
 [mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:64690][0m
 [mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:64712][0m
 [mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:64690][0m
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.43, 127.0.0.1:52779][0m
+[mHTTP GET /fr/ 200 [0.37, 127.0.0.1:52779][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:52785][0m
+[36mHTTP GET /static/css/style.css 304 [0.02, 127.0.0.1:52779][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.14, 127.0.0.1:52788][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:52786][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.20, 127.0.0.1:52787][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.10, 127.0.0.1:52787][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.08, 127.0.0.1:52786][0m
+[mHTTP GET /fr/account/create 200 [0.08, 127.0.0.1:52786][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.03, 127.0.0.1:52786][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:53138][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:53138][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:53138][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:53303][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:53303][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:53303][0m
+[mHTTP GET /en/account/create 200 [0.01, 127.0.0.1:53303][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:53303][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:53303][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.16, 127.0.0.1:53347][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:53347][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:53303][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:53343][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53347][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.00, 127.0.0.1:53343][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:53345][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.24, 127.0.0.1:53346][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.24, 127.0.0.1:53344][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.06, 127.0.0.1:53303][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53303][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53344][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53344][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslate'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslate', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.43, 127.0.0.1:53416][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:53416][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslation'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslation', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.06, 127.0.0.1:53416][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslation'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslation', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.05, 127.0.0.1:53416][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslation'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslation', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.04, 127.0.0.1:53416][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslation'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslation', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.04, 127.0.0.1:53416][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslate'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslate', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.05, 127.0.0.1:53416][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'tanslation'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 49: 'tanslation', expected 'endblock'. Did you forget to register or load this tag?
+[35;1mHTTP GET /fr/account/create 500 [0.04, 127.0.0.1:53725][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:54751][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:54751][0m
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:54807][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:54807][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:54816][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:54815][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:54818][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:54819][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54807][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:54817][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54816][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54818][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.01, 127.0.0.1:54815][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54815][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54807][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.02, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.05, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:54807][0m
+[mHTTP GET /fr/account/create 200 [0.02, 127.0.0.1:54807][0m
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:55503][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:55670][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:55670][0m
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:55856][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:55936][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56041][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:56041][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56041][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56041][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56041][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56041][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:56041][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:56090][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56041][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56091][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:56092][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:56089][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56090][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56041][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:56088][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56041][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56088][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56088][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:56088][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56088][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.05, 127.0.0.1:56909][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:56909][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:57383][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57383][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 122, in post
+    msg_part_one = _("Your account has been successfully created with username")
+UnboundLocalError: local variable '_' referenced before assignment
+[35;1mHTTP POST /fr/account/create 500 [0.90, 127.0.0.1:57383][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:57383][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:58021][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:58021][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:58021][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:58021][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 122, in post
+    msg_part_one = _("Your account has been successfully created with username")
+UnboundLocalError: local variable '_' referenced before assignment
+[35;1mHTTP POST /fr/account/create 500 [1.00, 127.0.0.1:58021][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:58021][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:58379][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:58379][0m
+[36mHTTP GET /static/css/style.css 304 [0.00, 127.0.0.1:58379][0m
+[mHTTP GET /static/css/output.css 200 [0.04, 127.0.0.1:58379][0m
+[36mHTTP GET /static/ux/rightArrow-icon.svg 304 [0.00, 127.0.0.1:58379][0m
+[36mHTTP GET /static/ux/leftArrow-icon.svg 304 [0.00, 127.0.0.1:58379][0m
+[32mHTTP POST /fr/logout 302 [0.06, 127.0.0.1:58379][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:58379][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:58379][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:58379][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.02, 127.0.0.1:58379][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 122, in post
+    msg_part_one = _("Your account has been successfully created with username")
+UnboundLocalError: local variable '_' referenced before assignment
+[35;1mHTTP POST /fr/account/create 500 [0.89, 127.0.0.1:58379][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58424][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58424][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:58548][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:58548][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58548][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58560][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58561][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58562][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58563][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58564][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58560][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58548][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58565][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58565][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58561][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58561][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58560][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58561][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:58548][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58560][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58561][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58564][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58563][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58548][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58562][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58561][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.01, 127.0.0.1:58563][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58560][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58561][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58565][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58565][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58560][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58560][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58560][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 123, in post
+    msg_part_one = _("Your account has been successfully created with username")
+UnboundLocalError: local variable '_' referenced before assignment
+[35;1mHTTP POST /fr/account/create 500 [1.05, 127.0.0.1:58607][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:58688][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:58692][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:58688][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:58693][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:58694][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:58695][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58688][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58692][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:58696][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.01, 127.0.0.1:58693][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58693][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58697][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58697][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58692][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58692][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58692][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 130, in post
+    data["errors"].append(f"{field.split(' ')[0]}")
+KeyError: 'errors'
+[35;1mHTTP POST /fr/account/create 500 [0.03, 127.0.0.1:58692][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:59084][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59084][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59087][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59088][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59090][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59089][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59091][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59087][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59084][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.01, 127.0.0.1:59088][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59088][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59092][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59092][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59088][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59088][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59088][0m
+Internal Server Error: /fr/account/create
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 130, in post
+    data["errors"].append(f"{field.split(' ')[0]}")
+KeyError: 'errors'
+[35;1mHTTP POST /fr/account/create 500 [0.02, 127.0.0.1:59084][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/account/create 200 [0.03, 127.0.0.1:59322][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:59322][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:59326][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:59330][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:59328][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59326][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:59329][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:59327][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.01, 127.0.0.1:59330][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59327][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59331][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59332][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP POST /fr/account/create 200 [0.01, 127.0.0.1:59322][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:59322][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59330][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59327][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59328][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59326][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59329][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59330][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59322][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59331][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59332][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59327][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59327][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59326][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59329][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59330][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:59328][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59322][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59331][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59332][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59328][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59328][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59328][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59322][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59326][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59327][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59329][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59330][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59328][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59322][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59331][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59332][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59328][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59322][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59328][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:59568][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:59571][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:59570][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:59570][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:59571][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59569][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59571][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59573][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59576][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59573][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59576][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59573][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59573][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59573][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59569][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59572][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59571][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59568][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:59570][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.00, 127.0.0.1:59571][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59569][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59576][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59576][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59573][0m
+[mHTTP POST /fr/account/create 200 [0.91, 127.0.0.1:59573][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:59573][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:59573][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59569][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59572][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59571][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59568][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:59571][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59569][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59576][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59576][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59573][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59573][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:59570][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 187, in get_context_data
+    player = PlayerAction(self.request.user.id)
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 31, in __init__
+    self.player_id = self.get_player_id()
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 37, in get_player_id
+    return self.player.values_list("id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.12, 127.0.0.1:59573][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59570][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59576][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59634][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59573][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59570][0m
+[32mHTTP POST /fr/logout 302 [0.13, 127.0.0.1:59573][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59571][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59572][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:59569][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59568][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59573][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59573][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59576][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59634][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59570][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59573][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59570][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:59837][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:59837][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:59837][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:59837][0m
+[mHTTP POST /fr/account/create 200 [0.96, 127.0.0.1:59837][0m
+[32mHTTP GET /?register_success=True 302 [0.03, 127.0.0.1:59837][0m
+[mHTTP GET /fr/?register_success=True 200 [0.09, 127.0.0.1:59837][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:59837][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:59837][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:59979][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:59978][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:59978][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59981][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59982][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59978][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59979][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59980][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59986][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59980][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59986][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59983][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:59980][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:59980][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:59983][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59980][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59986][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59986][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP POST /fr/account/create 200 [0.99, 127.0.0.1:59983][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:59980][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:59983][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59980][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59978][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59982][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59981][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59979][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:59983][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59980][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:59978][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:59980][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:59986][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:59986][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59983][0m
+Watching for file changes with StatReloader
+[mHTTP GET /fr/?register_success=True 200 [0.13, 127.0.0.1:60718][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:60718][0m
+[32mHTTP POST /fr/logout 302 [0.09, 127.0.0.1:60718][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:60718][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:60718][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:60718][0m
+[32mHTTP POST /fr/ 302 [0.45, 127.0.0.1:60718][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60718][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:60799][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60799][0m
+[32mHTTP POST /fr/ 302 [0.43, 127.0.0.1:60799][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:60799][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:60799][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60799][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:60799][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:60799][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:60799][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:60799][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:60868][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:60799][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:60869][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:60865][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:60867][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:60866][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60868][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60868][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60868][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60868][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:60868][0m
+[32mHTTP POST /fr/ 302 [0.45, 127.0.0.1:60868][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:60868][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60868][0m
+[32mHTTP POST /fr/ 302 [0.43, 127.0.0.1:60868][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:60868][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:60995][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:60996][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[32mHTTP POST /fr/logout 302 [0.10, 127.0.0.1:60998][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60998][0m
+[32mHTTP POST /fr/ 302 [0.47, 127.0.0.1:60998][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:60997][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61000][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60998][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60996][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60998][0m
+[32mHTTP POST /fr/ 302 [0.43, 127.0.0.1:60997][0m
+[mHTTP GET /fr/ 200 [0.17, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:60997][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:60996][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:60995][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60997][0m
+[32mHTTP POST /fr/ 302 [0.43, 127.0.0.1:60998][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:60997][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61000][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:60998][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61000][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60997][0m
+[32mHTTP POST /fr/ 302 [0.49, 127.0.0.1:60998][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:60997][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60997][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61000][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60995][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60999][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60996][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60998][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60997][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61005][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60998][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61482][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61482][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61486][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /fr/account/create 200 [0.02, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.00, 127.0.0.1:61485][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61482][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP POST /fr/account/create 200 [1.11, 127.0.0.1:61477][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:61483][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61486][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61482][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61486][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61484][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:61486][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61483][0m
+[32mHTTP POST /fr/logout 302 [0.11, 127.0.0.1:61477][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.00, 127.0.0.1:61485][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61482][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61488][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61482][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP POST /fr/account/create 200 [0.94, 127.0.0.1:61477][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:61483][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:61477][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:61483][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61484][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61485][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61486][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61477][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61482][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:61486][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:61482][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61488][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61580][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61482][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:61483][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61483][0m
+[32mHTTP POST /fr/logout 302 [0.12, 127.0.0.1:61617][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:61617][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:61617][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61617][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61626][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61627][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61628][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61630][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61629][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61626][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61617][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61631][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61627][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61631][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61627][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61627][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61627][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:61839][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:61839][0m
+[mHTTP GET /fr/account/create 200 [0.02, 127.0.0.1:61839][0m
+[mHTTP POST /fr/account/create 200 [0.98, 127.0.0.1:61839][0m
+[32mHTTP GET /?register_success=True 302 [0.04, 127.0.0.1:61839][0m
+[mHTTP GET /fr/?register_success=True 200 [0.05, 127.0.0.1:61839][0m
+[mHTTP GET /fr/?register_success=True 200 [0.03, 127.0.0.1:61954][0m
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/?register_success=True 200 [0.10, 127.0.0.1:62159][0m
+[32mHTTP POST /fr/logout 302 [0.11, 127.0.0.1:62159][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:62159][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:62159][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:62159][0m
+[32mHTTP POST /fr/ 302 [0.54, 127.0.0.1:62159][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:62159][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:62159][0m
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.09, 127.0.0.1:63121][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63121][0m
+[32mHTTP POST /fr/logout 302 [0.09, 127.0.0.1:63121][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:63121][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:63121][0m
+[32mHTTP POST /fr/ 302 [0.50, 127.0.0.1:63121][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:63121][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:63121][0m
+[32mHTTP POST /fr/logout 302 [0.12, 127.0.0.1:63121][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:63121][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:63121][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:64811][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:64811][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:64811][0m
+[32mHTTP POST /fr/ 302 [0.52, 127.0.0.1:64811][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:64811][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:64811][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:64879][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:64879][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:65243][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:65243][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:65244][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:65245][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:65247][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:65246][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:65248][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:65243][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:65244][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:65248][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:65252][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:65252][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65248][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:65244][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:65248][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:65243][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65248][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65244][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:65245][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65243][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:65246][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:65247][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:65244][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:65248][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:65252][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:65248][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:65252][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:65248][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:65244][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:65248][0m
+[32mHTTP POST /fr/ 302 [0.49, 127.0.0.1:65243][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:65248][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:65243][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65248][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65244][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:65245][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:65247][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:65246][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65243][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:65244][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:65248][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:65244][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:65247][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:65245][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:65252][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:65252][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:65248][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:65248][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:65248][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:65243][0m
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:65248][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:65396][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:65396][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:49290][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:51301][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:51301][0m
+Internal Server Error: /fr/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\__init__.py", line 2053, in get_prep_value
+    return int(value)
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'SimpleLazyObject'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 72, in post
+    player_id = PlayerAction(self.request.user).get_player_id()
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 31, in __init__
+    self.player = Player.objects.filter(user_id=id).all()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\related_lookups.py", line 166, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\__init__.py", line 2055, in get_prep_value
+    raise e.__class__(
+TypeError: Field 'id' expected a number but got <SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x000001DAF53CAC20>>.
+[35;1mHTTP POST /fr/ 500 [0.57, 127.0.0.1:51301][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:51301][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP POST /fr/ 302 [0.54, 127.0.0.1:51353][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:51353][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:51353][0m
+[32mHTTP POST /fr/logout 302 [0.10, 127.0.0.1:51353][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:51353][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:51353][0m
+[32mHTTP POST /fr/ 302 [0.46, 127.0.0.1:51353][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:51353][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:51353][0m
+[32mHTTP POST /fr/logout 302 [0.11, 127.0.0.1:51353][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:51353][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:51353][0m
+Internal Server Error: /fr/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 75, in post
+    player_id = PlayerAction(self.request.user).get_player_id()
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 32, in __init__
+    self.player_id = self.get_player_id()
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 39, in get_player_id
+    return self.player.values_list("id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP POST /fr/ 500 [0.55, 127.0.0.1:51353][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Forbidden (CSRF token from POST incorrect.): /fr/
+[31;1mHTTP POST /fr/ 403 [0.02, 127.0.0.1:51434][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:51434][0m
+Internal Server Error: /fr/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 75, in post
+    player_id = PlayerAction(self.request.user).get_player_id()
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 32, in __init__
+    self.player_id = self.get_player_id()
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 39, in get_player_id
+    return self.player.values_list("id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP POST /fr/ 500 [0.48, 127.0.0.1:51434][0m
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.02, 127.0.0.1:51677][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:51677][0m
+[32mHTTP POST /fr/ 302 [0.44, 127.0.0.1:51677][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:51677][0m
+[32mHTTP POST /fr/ 302 [0.46, 127.0.0.1:51677][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:51677][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:51677][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:51677][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 200, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 52, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:51677][0m
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.02, 127.0.0.1:52075][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:52075][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:52083][0m
+[32mHTTP POST /fr/ 302 [0.46, 127.0.0.1:52083][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:52083][0m
+[33mHTTP GET /static/js/game/world_builder/account/create_character.js 404 [0.01, 127.0.0.1:52083][0m
+[33mHTTP GET /static/js/game/world_builder/account/create_character.js 404 [0.01, 127.0.0.1:52083][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:52083][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:52083][0m
+[32mHTTP POST /fr/logout 302 [0.12, 127.0.0.1:52083][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:52083][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:52083][0m
+[32mHTTP POST /fr/ 302 [0.47, 127.0.0.1:52083][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:52083][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:52083][0m
+[32mHTTP GET /play 302 [0.07, 127.0.0.1:52083][0m
+[mHTTP GET /fr/play/ 200 [0.29, 127.0.0.1:52083][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.00, 127.0.0.1:52083][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:52083][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:52147][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:52148][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:52149][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:52150][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:52151][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:52083][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:52147][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:52148][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:52149][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:52150][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:52151][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.01, 127.0.0.1:52083][0m
+[mHTTP GET /static/img/users/1/0.jpg 200 [0.01, 127.0.0.1:52149][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:52152]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:52152]
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.03, 127.0.0.1:52151][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.03, 127.0.0.1:52150][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.03, 127.0.0.1:52147][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.03, 127.0.0.1:52149][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.03, 127.0.0.1:52083][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.04, 127.0.0.1:52148][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:52147][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:52149][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:52150][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:52151][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:52083][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:52148][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:52147][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:52151][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:52150][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:52149][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:52083][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.02, 127.0.0.1:52148][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:52147][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:52151][0m
+[mHTTP GET /static/img/ux/default-user.svg 200 [0.01, 127.0.0.1:52149][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:52152]
+[32mHTTP POST /fr/logout 302 [0.16, 127.0.0.1:52083][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:52083][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:52083][0m

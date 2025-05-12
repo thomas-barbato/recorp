@@ -21,6 +21,7 @@ from core.models import (
     Warp,
     WarpZone,
     SectorWarpZone,
+    LoggedInUser, 
 )
 
 
@@ -32,9 +33,17 @@ class PlayerAction:
 
     def is_player_exists(self, player_id):
         return Player.objects.filter(id=player_id, user_id=self.id).exists()
-
+        
     def get_player_id(self):
-        return self.player.values_list("id", flat=True)[0]
+        # if player have created a character,
+        # return id
+        # else return None.
+        if self.player:
+            return self.player.values_list("id", flat=True)[0]
+        return None
+    
+    def get_session_key(self):
+        return LoggedInUser.filter(user_id=self.id).values_list('session_key', flat=True)
     
     def get_player_sector_id(self):
         return self.player.values_list("sector_id", flat=True)[0]

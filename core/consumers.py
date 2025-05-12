@@ -5,7 +5,6 @@ from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 
 from core.backend.store_in_cache import StoreInCache
-from core.backend.inter_channel_groups import send_message_to_group
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 

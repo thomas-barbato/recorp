@@ -24,8 +24,13 @@ urlpatterns = [
     ),
     path(
         "account/create",
-        core_views.CreateAccountView.as_view(template_name="create_account.html"),
+        core_views.CreateAccountView.as_view(template_name="create-account.html"),
         name="create_account",
+    ),
+    path(
+        "play/create_character",
+        core_views.CreateCharacterView.as_view(template_name="create-character.html"),
+        name="create_character",
     ),
     path(
         "account/password_recovery",

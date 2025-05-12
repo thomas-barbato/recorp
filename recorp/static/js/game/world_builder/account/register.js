@@ -58,7 +58,7 @@ submit_button.addEventListener(action_listener_touch_click, function(){
                     }
                 }, 5000);
             }else{
-                window.location.replace('/?register_success=True');
+                window.location.replace('/');
             }
             
 

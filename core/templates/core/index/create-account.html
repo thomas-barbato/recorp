@@ -27,31 +27,31 @@
         {% endif %}
                 <div class="grid xl:gap-6 gap-4 md:grid-cols-2 w-full ">
                     <div>
-                        <label for="id_first_name" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.first_name.label}}</label>
+                        <label for="id_first_name" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "first name" %}</label>
                         <input type="text" id="id_first_name" name="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John"/>
                     </div>
                     <div>
-                        <label for="id_last_name" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.last_name.label}}</label>
+                        <label for="id_last_name" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{%  translate "last name" %}</label>
                         <input type="text" id="id_last_name" name="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe"/>
                     </div>
                 </div>
                 <div class="w-full">
-                    <label for="id_username" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.username.label}} <span class="text-red-600">*</span></label>
+                    <label for="id_username" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "username" %} <span class="text-red-600">*</span></label>
                     <input type="text" id="id_username" name="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required />
                     {{ form.username.help_text | safe }}
                 </div> 
                 <div class="w-full">
-                    <label for="id_email" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.email.label}} <span class="text-red-600">*</span></label>
+                    <label for="id_email" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "email address" %} <span class="text-red-600">*</span></label>
                     <input type="email" id="id_email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="my.email@email.com" required />
                     {{ form.email.help_text | safe }}
                 </div> 
                 <div class="w-full">
-                    <label for="id_password"  class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.password.label}} <span class="text-red-600">*</span></label>
+                    <label for="id_password"  class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "password" %} <span class="text-red-600">*</span></label>
                     <input type="password" id="id_password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     {{ form.password.help_text | safe }}
                 </div> 
                 <div class="w-full">
-                    <label for="id_password2" class="block mb-2 text-sm font-medium text-white text-shadow font-bold">{{form.password2.label}} <span class="text-red-600">*</span></label>
+                    <label for="id_password2" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "confirm password" %} <span class="text-red-600">*</span></label>
                     <input type="password" id="id_password2" name="password2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     {{ form.password2.help_text | safe }}
                 </div>
@@ -59,17 +59,14 @@
                     <div class="flex items-center h-5">
                     <input for="id_remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required />
                     </div>
-                    <label id="id_remember" class="ms-2 text-sm font-medium text-white">I agree with the <a href="#" class="hover:underline text-emerald-400">terms and conditions</a>.</label>
+                    <label id="id_remember" class="ms-2 text-sm font-medium text-white first-letter:uppercase">{% translate "i agree with the" %} <a href="#" class="hover:underline text-emerald-400">{% translate "terms and conditions" %}</a>.</label>
                 </div>
                 <button type="button" onclick="this.disabled=true" id="create-account-submit-button" class="text-white bg-emerald-400 hover:bg-emerald-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">{% translate "Register now" %}</button>
             </form>
         </div>
-        {% if form.errors %}
-        This should pop up if there is an error
-        {% endif %}
     </main>
     <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
-        {% include "display_disclaimer.html" %}
+        {% include "display-disclaimer.html" %}
     </footer>
 </div>
 <script src="{% static 'js/game/world_builder/account/register.js' %}" type="text/javascript"></script>

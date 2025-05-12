@@ -36,17 +36,17 @@
                         {% csrf_token %}
                         <div class="container flex flex-row gap-2 p-1">
                             <div class="flex flex-col justify-start label-container gap-3 whitespace-nowrap">
-                                <label for="id_username" class="flex font-bold text-sm text-white flex items-start mb-1">{% translate 'username' %}</label>
-                                <label for="id_password" class="flex font-bold text-sm text-white flex items-start">{% translate 'password' %}</label>
+                                <label for="id_username" class="flex font-bold text-sm text-white flex items-start mb-1 first-letter:uppercase">{% translate 'username' %}</label>
+                                <label for="id_password" class="flex font-bold text-sm text-white flex items-start first-letter:uppercase">{% translate 'password' %}</label>
                             </div>
                             <div class="flex flex-col input-container whitespace-nowrap"> 
                                 <input type="text" name="username" maxlength="150" required="" id="id_username" class="flex w-auto items-center font-bold text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
                                 <section class="text-center flex flex-row items-center gap-1 text-white text-sm hover:animate-pulse mb-1">
-                                    <a href="{% url 'core:create_account' %}" class="italic">You don't have an account? Signup here</a>
+                                    <a href="{% url 'core:create_account' %}" class="italic first-letter:uppercase">{%  translate "you don't have an account? Signup here" %}</a>
                                 </section>
                                 <input type="password" name="password" required="" id="id_password" class="flex w-auto items-center text-center rounded-md border-0 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
                                 <section class="text-center flex flex-row items-center gap-1 text-white text-sm hover:animate-pulse">
-                                    <a href="{% url 'core:password_recovery' %}" class="italic">Forgot password ?</a>
+                                    <a href="{% url 'core:password_recovery' %}" class="italic first-letter:uppercase">{% translate "forgot password" %} ?</a>
                                 </section>
                             </div>
                         </div>
@@ -116,6 +116,9 @@
                     {% endif %}
                     {% if message.tags == "warning" %}
                     <p class="p-5 text-sm text-yellow-300 bg-zinc-950/0 font-bold font-shadow">
+                    {% endif %}
+                    {% if message.tags == "success" %}
+                    <p class="p-5 text-sm text-emerald-300 bg-zinc-950/0 font-bold font-shadow">
                     {% endif %}
                     {{ message|safe }}
                     </p>

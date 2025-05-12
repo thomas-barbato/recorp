@@ -3098,7 +3098,7 @@ video {
   text-transform: lowercase;
 }
 
-.capitalize {
+.first-letter:uppercase {
   text-transform: capitalize;
 }
 

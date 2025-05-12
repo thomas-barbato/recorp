@@ -50,11 +50,8 @@ msgstr "nom d'utilisateur"
 msgid "password"
 msgstr "mot de passe"
 
-msgid "Password"
-msgstr "mot de passe"
-
-msgid "Confirm password"
-msgstr "Confirmez votre mot de passe"
+msgid "confirm password"
+msgstr "confirmez votre mot de passe"
 
 msgid "You are now logged on"
 msgstr "Vous êtes maintenant connecté"
@@ -257,6 +254,12 @@ msgstr "réduit"
 msgid "empty"
 msgstr "vide"
 
+msgid "First name"
+msgstr "Prénom"
+
+msgid "Last name"
+msgstr "Nom de famille"
+
 msgid "The faction's main planet"
 msgstr "Planète mère de la faction"
 
@@ -272,8 +275,29 @@ msgstr "Pour afficher une ressource, vous devez utiliser votre scanner"
 msgid "statistics"
 msgstr "statistiques"
 
+msgid "i agree with the"
+msgstr "j'accepte les"
+
+msgid "terms and conditions"
+msgstr "termes et conditions"
+
+msgid "you don't have an account? Signup here"
+msgstr "Vous n'avez pas de compte ? Enregistrez vous ici"
+
+msgid "forgot password"
+msgstr "mot de passe oublié"
+
 msgid "A portal that lets you travel to"
 msgstr "Un portail vous permettant de voyager vers "
+
+msgid "Your account has been successfully created with username"
+msgstr "Votre compte a été créé avec succès avec comme identifiant"
+
+msgid "Click on <b>Enter</b> to create your character."
+msgstr "Cliquez sur <b>Entrer</b> pour créer votre personnage."
+
+msgid "Enter"
+msgstr "Entrer"
 
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
@@ -620,7 +644,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\core\validators.py:176
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "Veuillez entrer une adresse email valide."
 
 #. Translators: "letters" means latin letters: a-z and A-Z.
 #: .\venv\Lib\site-packages\django\core\validators.py:259
