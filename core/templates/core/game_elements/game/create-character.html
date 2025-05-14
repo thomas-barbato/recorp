@@ -13,24 +13,78 @@
     {% endif %}
 </header>
 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-<main class="flex main-index-container w-full h-full flex-row lg:blur-none overflow-y-scroll  no-scrollbar text-shadow font-shadow p-1">
-    <div class="flex w-full justify-center items-start md:mt-[10%] p-1">
+<main class="flex main-index-container w-full h-full flex-row lg:blur-none overflow-y-scroll  no-scrollbar text-shadow font-shadow ">
+    <div class="flex w-full justify-center items-start md:mt-[10%] bg-zinc-950/70">
 {% else %}
-<main class="flex main-index-container w-full h-full flex-row justify-stretch overflow-y-scroll lg:blur-none no-scrollbar text-shadow p-2 z-0">
-    <div class="w-full flex justify-center items-center p-1">
+<main class="flex main-index-container w-full h-full flex-row justify-stretch overflow-y-scroll lg:blur-none no-scrollbar text-shadow z-0">
+    <div class="w-full flex justify-center items-center bg-zinc-950/70 p-2">
 {% endif %}
-    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-        <form class="flex justify-center md:w-[80%] w-full items-center flex-col mx-auto bg-zinc-950/70 border border-gray-300/40 md:mt-[10%] p-2 md:gap-2 rounded-md gap-6">
-    {% else %}
-        <form class="flex justify-center w-auto items-center flex-col mx-auto bg-zinc-950/70 border border-gray-300/40 p-2 gap-2 rounded-md md:gap-4 sm:gap-3">
-    {% endif %}
-            <button type="button" onclick="this.disabled=true" id="create-account-submit-button" class="text-white bg-emerald-400 hover:bg-emerald-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">{% translate "Register now" %}</button>
-        </form>
+        <div id="character-faction" class="flex border border-gray-300/40 p-1 justify-around bg-cyan-950/20 w-[50%] h-full rounded-md flex-col">
+            <div class="w-full justify-center text-center text-xl font-bold text-shadow text-white uppercase">
+                {% translate "Character creation" %}
+            </div>
+            <div class="w-full justify-center text-center text-md font-bold text-shadow text-white uppercase">
+                {% translate "Select a faction" %}
+            </div>
+            <div class="flex w-auto h-full">
+                <div id="faction-container" class="w-full flex gap-6 flex-row justify-around p-2">
+                    {% for faction in factions %}
+                        {% if faction.name != "none" %}
+                        <div class="flex flex-col w-1/3 min-h-full h-full bg-gray-600/40 hover:bg-slate-300/40 border border-slate-600 rounded-t-md cursor-pointer faction" id="faction-{{ faction.id }}">
+                            <div id="faction-item" class="flex bg-white rounded-t-md font-bold justify-center items-center text-center">
+                                {{ faction.name }}
+                            </div>
+                            <img src="{% static '/img/ux/placeholder.svg' %}" class="object-fill">
+                            <p class="flex text-justify break-all p-2 h-[30vh] description-text flex-col text-sm font-shadow text-white"> 
+                                {{ faction.data.description }} 
+                            </p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="next-btn" class="flex justify-center items-center invisible">
+                <button type="button" class="cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-sm p-2.5 text-center inline-flex items-center me-2 rounded-md">
+                <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </div>
+        </div>
+        <div id="character-stats" class="flex border border-gray-300/40 p-1 justify-around bg-cyan-950/20 w-[50%] h-full rounded-md flex-col hidden">
+            <div class="w-full justify-center text-center text-xl font-bold text-shadow text-white uppercase">
+                {% translate "Character creation" %}
+            </div>
+            <div class="flex justify-around items-center">
+                <div id="previous-btn" class="flex justify-center items-center">
+                    <button type="button" class="cursor-pointer text-red-600 hover:text-red-400 rotate-180 text-sm font-bold font-shadow hover:animate-pulse text-sm p-2.5 text-center inline-flex items-center me-2 rounded-md">
+                    <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
     {% include "display-disclaimer.html" %}
 </footer>
-</div>
-<script src="{% static 'js/game/world_builder/account/create_character.js' %}" type="text/javascript"></script>
+    {% block js %}
+    <script>
+        let description_text = document.querySelectorAll('.description-text');
+        for(let i = 0; i < description_text.length ; i++){
+            let text_value = description_text[i].textContent;
+            let substring = " ..."
+            if(text_value.length > 300){
+                description_text[i].textContent = text_value.slice(0, 500) + substring;
+                let show_more_url = document.createElement('a');
+                show_more_url.href = "";
+                show_more_url.classList.add('font-bold', 'text-white', 'flex', 'justify-start');
+                show_more_url.textContent = "{% translate 'show more' %}"
+                description_text[i].append(show_more_url);
+            }
+        }
+    </script>
+    <script src="{% static 'js/game/world_builder/world/create_character.js' %}" type="text/javascript"></script>
+    {% endblock %}
 {% endblock %}
+

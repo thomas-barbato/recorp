@@ -154,6 +154,11 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
     form_class = LoginForm()
     template_name = "create-character.html"
     redirect_authenticated_user = True
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["factions"] = GetDataFromDB().get_faction_queryset()
+        return context
 
 
 class PasswordRecoveryView(FormView):

@@ -18,60 +18,60 @@
     <nav class="fixed top-10 left-0 bottom-0 flex flex-col w-full py-3 px-6 bg-zinc-950/70 overflow-y-auto">
         <ul>
             <li>
-                <span data-modal-target="character-modal" data-modal-toggle="character-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="character-modal" data-modal-toggle="character-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-user fa-xl"></i>
                     <span>{% translate "Character" %}</span></span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-box fa-xl"></i>
                     <span>{% translate "Inventory" %}</span></span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-people-group fa-xl"></i>
                     <span>{% translate "Faction" %}</span></span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="research-modal" data-modal-toggle="research-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="research-modal" data-modal-toggle="research-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-brain fa-xl"></i>
                     <span>{% translate "Research" %}</span></span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="map-modal" data-modal-toggle="map-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="map-modal" data-modal-toggle="map-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-map fa-xl"></i>
                     <span>{% translate "Map" %}</span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="task-modal" data-modal-toggle="task-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="task-modal" data-modal-toggle="task-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-list-check fa-xl"></i>
                     <span>{% translate "Tasks" %}</span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="event-modal" data-modal-toggle="event-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="event-modal" data-modal-toggle="event-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-mobile-screen-button fa-xl"></i>
                     <span>{% translate "Events" %}</span>
                 </span>
             </li>
             <li>
-                <span data-modal-target="message-modal" data-modal-toggle="message-modal" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <span data-modal-target="message-modal" data-modal-toggle="message-modal" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-envelope fa-xl"></i>
                     <span>{% translate "Forum" %}</span>
                 </span>
             </li>
             <li>
-                <a href="#" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
+                <a href="#" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
                     <i class="fa-solid fa-comments fa-xl"></i>
                     <span>{% translate "Forum" %}</span>
                 </a>
             </li>
-            <form method="post" action="{% url 'core:logout_view' %}" class="block p-3 cursor-pointer text-emerald-400 hover:bg-emelerald-900 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
+            <form method="post" action="{% url 'core:logout_view' %}" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
                 {% csrf_token %}
                 <i class="fa-solid fa-home fa-xl"></i>
                 <span>{% translate "Logout" %}</span>

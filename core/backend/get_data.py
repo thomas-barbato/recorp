@@ -146,6 +146,10 @@ class GetDataFromDB:
                 serializers.serialize("json", Warp.objects.all())
             ),
         }
+    
+    @staticmethod
+    def get_faction_queryset():
+        return Faction.objects.all()
 
     @staticmethod
     def serialize_queryset(queryset):
