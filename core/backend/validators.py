@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-
+from models import Player
 
 class CheckPasswordPolicy:
     """docstring"""
@@ -81,6 +81,49 @@ class CheckPassword2Policy:
             "</ul>"
             "</div>"
         )
+        
+class CheckUsernameAlreadyUser:
+    """docstring"""
+
+    def __init__(self):
+        self.table = Player
+
+    def validate(self, name):
+        """
+        check if username already exists in db.
+        """
+        if self.table.objects.filter(name=name).exists() is True:
+            unique_username = _("Player name already in use")
+            raise ValidationError(
+                _(
+                    mark_safe(
+                        '<div class="alert alert-danger text-center" role="alert">'
+                        "<p><i class="
+                        + '"fas fa-exclamation-triangle"'
+                        + "></i>"
+                        + unique_username
+                        + "</p>"
+                        "</div>"
+                    )
+                ),
+                code="username_already_used",
+            )
+
+    def get_help_text(self):
+        """docstring"""
+        unique_username_msg = _("Username should be unique")
+        return _(
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="username_help_text">'
+            "<ul class='gap-1'>"
+            "<li class='flex flex-row gap-2 justify-center items-center'><i class="
+            + '"fas fa-exclamation-triangle"'
+            + "></i><p>"
+            + unique_username_msg
+            + "</li></p>"
+            "</ul>"
+            "</div>"
+        )
+    
 
 
 class CheckUsernameAlreadyUsed:
@@ -94,7 +137,7 @@ class CheckUsernameAlreadyUsed:
         check if username already exists in db.
         """
         if self.table.objects.filter(username=user).exists() is True:
-            unique_username = _("Username already in use")
+            unique_username = _("Player name already in use")
             raise ValidationError(
                 _(
                     mark_safe(

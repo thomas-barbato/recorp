@@ -19,3 +19,8 @@ module.exports = {
 @tailwind utilities;``` on the top of .css files.
 
 - ```npx tailwindcss -i ./path/style.css -o ./dist/output.css --watch```
+
+to install redis on docker : 
+
+open docker terminal and type : 
+- ```docker run -d --name redis -p 6379:6379 redis:latest```
