@@ -10,8 +10,10 @@ from core.backend.validators import (
     CheckPassword2Policy,
     CheckUsernameAlreadyUsed,
     CheckEmailAlreadyUsed,
+    CheckCharacterNameAlreadyUsed,
+    CheckImageExtension,
 )
-from core.models import User
+from core.models import User, Player, Archetype
 
 
 class UploadImageForm(forms.Form):
@@ -146,6 +148,57 @@ class SignupForm(forms.ModelForm):
         label=_("confirm password"),
         help_text=CheckPassword2Policy().get_help_text(),
     )
+    
+    
+class CreateCharacterForm(forms.ModelForm):
+    """docstring"""
+    
+    class Meta:
+        model = Player
+        fields = ["name", "description", "image", "faction", "archetype"]
+        exclude = ["user_id"]
+        
+
+    def save(self, *args, **kwargs):
+        self.instance.name = self.instance.name.lower()
+        self.instance.description = self.instance.description
+        self.instance.image = self.instance.image
+        self.instance.faction = self.instance.faction
+        self.instance.archetype = self.instance.archetype
+        super().save()
+    
+    name = forms.CharField(
+        widget=TextInput(
+            attrs={
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            }
+        ),
+        required=True,
+        label=_("name"),
+        validators=[CheckCharacterNameAlreadyUsed().validate],
+        help_text=CheckCharacterNameAlreadyUsed().get_help_text(),
+    )
+    
+    archetype = forms.ModelChoiceField(queryset=Archetype.objects.all())
+
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "rows":"5",
+                "placeholder": _("Your character's description here...")
+            },
+        ),
+        label=_("description"),
+        required=False,
+    )
+    
+    image = forms.ImageField(
+        label="image_url", 
+        required=False,
+        validators=[CheckImageExtension().validate],
+        help_text=CheckImageExtension().get_help_text(),
+    )
+
 
 class PasswordRecoveryForm(forms.ModelForm):
     """docstring"""

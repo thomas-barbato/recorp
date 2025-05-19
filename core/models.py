@@ -101,7 +101,7 @@ class Faction(models.Model):
         faction = cls.objects.get_or_create(
             name="none",
         )
-        return faction.id
+        return faction
 
     def __str__(self):
         return f"{self.name}"
@@ -172,11 +172,43 @@ class SectorWarpZone(models.Model):
 
     def __str__(self):
         return f"from {self.warp_home.name } ({ self.warp_home.sector.name }) to {self.warp_destination.name} ({self.warp_destination.sector.name})"
+    
+
+class ShipCategory(models.Model):
+    name = models.CharField(
+        max_length=30, null=False, blank=False, default="Light Cruiser"
+    )
+    description = models.TextField(max_length=2500, blank=True)
+    size = models.JSONField(null=True)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Ship(models.Model):
+    name = models.CharField(max_length=30, null=False, blank=False)
+    description = models.TextField(max_length=2500, blank=True)
+    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
+    module_slot_available = models.PositiveIntegerField(default=4)
+    default_hp = models.PositiveSmallIntegerField(default=100)
+    default_movement = models.PositiveSmallIntegerField(default=10)
+    ship_category = models.ForeignKey(
+        ShipCategory, on_delete=models.SET_NULL, null=True
+    )
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Archetype(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField(max_length=2500, blank=True)
     data = models.JSONField(null=True)
+    ship = models.ForeignKey(Ship, on_delete=models.CASCADE, related_name="default_ship", null=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -312,36 +344,6 @@ class Log(models.Model):
 
     def __str__(self):
         return f"{self.log_type}: {self.content}"
-
-
-class ShipCategory(models.Model):
-    name = models.CharField(
-        max_length=30, null=False, blank=False, default="Light Cruiser"
-    )
-    description = models.TextField(max_length=2500, blank=True)
-    size = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class Ship(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False)
-    description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
-    module_slot_available = models.PositiveIntegerField(default=4)
-    default_hp = models.PositiveSmallIntegerField(default=100)
-    default_movement = models.PositiveSmallIntegerField(default=10)
-    ship_category = models.ForeignKey(
-        ShipCategory, on_delete=models.SET_NULL, null=True
-    )
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class NpcTemplate(models.Model):

@@ -21,8 +21,8 @@ from django.http import JsonResponse
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
-from core.forms import LoginForm, SignupForm, PasswordRecoveryForm
-from core.models import Player, Sector
+from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
+from core.models import Player, Sector, Archetype
 from recorp.settings import LOGIN_REDIRECT_URL
 
 
@@ -151,13 +151,15 @@ class CreateAccountView(SuccessMessageMixin, TemplateView):
 class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
-    form_class = LoginForm()
+    form_class = CreateCharacterForm()
     template_name = "create-character.html"
     redirect_authenticated_user = True
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["factions"] = GetDataFromDB().get_faction_queryset()
+        context["form"] = self.form_class
+        context["archetype_data"] = Archetype.objects.all()
         return context
 
 

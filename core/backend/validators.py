@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from models import Player
+from core.models import Player
 
 class CheckPasswordPolicy:
     """docstring"""
@@ -82,7 +82,7 @@ class CheckPassword2Policy:
             "</div>"
         )
         
-class CheckUsernameAlreadyUser:
+class CheckCharacterNameAlreadyUsed:
     """docstring"""
 
     def __init__(self):
@@ -111,7 +111,7 @@ class CheckUsernameAlreadyUser:
 
     def get_help_text(self):
         """docstring"""
-        unique_username_msg = _("Username should be unique")
+        unique_username_msg = _("Player name should be unique")
         return _(
             '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="username_help_text">'
             "<ul class='gap-1'>"
@@ -137,7 +137,7 @@ class CheckUsernameAlreadyUsed:
         check if username already exists in db.
         """
         if self.table.objects.filter(username=user).exists() is True:
-            unique_username = _("Player name already in use")
+            unique_username = _("Username already in use")
             raise ValidationError(
                 _(
                     mark_safe(
@@ -197,7 +197,7 @@ class CheckEmailAlreadyUsed:
         """docstring"""
         unique_email = _("Email already in use")
         return _(
-            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="email_help_text">'
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="username_help_text">'
             "<ul class='gap-1'>"
             "<li class='flex flex-row gap-2 justify-center items-center'><i class="
             + '"fas fa-exclamation-triangle"'
@@ -218,7 +218,7 @@ class CheckImageExtension:
         """
         check if extension is allowed.
         """
-        allowed_extensions = [".jpg", ".png"]
+        allowed_extensions = [".jpg", ".png", ".gif"]
         if not Path(file.name.lower()).suffixes[0] in allowed_extensions:
             raise ValidationError(
                 _(
@@ -232,3 +232,18 @@ class CheckImageExtension:
                 ),
                 code="extension_not_allowed",
             )
+
+    def get_help_text(self):
+        """docstring"""
+        image_extension = _("authorized extension : .jpg, .png, .gif")
+        return _(
+            '<div class="alert alert-danger text-center text-red-600 mt-2 hidden" role="alert" id="username_help_text">'
+            "<ul class='gap-1'>"
+            "<li class='flex flex-row gap-2 justify-center items-center'><i class="
+            + '"fas fa-exclamation-triangle"'
+            + "></i><p>"
+            + image_extension
+            + "</li></p>"
+            "</ul>"
+            "</div>"
+        )

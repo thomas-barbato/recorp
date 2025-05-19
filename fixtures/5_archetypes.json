@@ -10,6 +10,7 @@
                 "Thermal Shield": 10,
                 "Detection": 10
             },
+            "ship" : 5,
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
@@ -26,6 +27,7 @@
                 "Ballistic Shield": 10,
                 "Frigate": 10
             },
+            "ship" : 3,
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
@@ -42,6 +44,7 @@
                 "Counter Electronic Warfare": 10,
                 "Frigate": 10
             },
+            "ship" : 2,
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
@@ -58,6 +61,7 @@
                 "Hide Signature": 10,
                 "Frigate": 10
             },
+            "ship" : 1,
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
@@ -74,6 +78,7 @@
                 "Counter Electronic Warfare": 10,
                 "Frigate": 10
             },
+            "ship" : 3,
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
@@ -90,6 +95,7 @@
                 "Mining": 10,
                 "Frigate": 10
             },
+            "ship": 1,
             "created_at": "2020-02-28 12:38:15",
             "updated_at": "2020-02-28 12:38:15"
         }
