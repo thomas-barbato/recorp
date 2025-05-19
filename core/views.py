@@ -67,6 +67,7 @@ class IndexView(TemplateView):
     def post(self, request, *args, **kwargs):
         data_to_send = {}
         url = self.request.path
+        print("ok")
         try:
             user = authenticate(
                 self.request,
@@ -179,10 +180,19 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "play.html"
+    
+    def get(self, request, *args, **kwargs):
+        player = PlayerAction(self.request.user.id)
+        if player.is_player_exists() is False:
+            url = "create_character"
+            return HttpResponseRedirect(redirect_to=url)
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user_agent = self.request.user_agent
+        player = PlayerAction(self.request.user.id)
+        
         if user_agent.is_pc:
             map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
         elif user_agent.is_mobile:
@@ -214,7 +224,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 },
             ],
         }
-        player = PlayerAction(self.request.user.id)
         if Sector.objects.filter(id=player.get_player_sector()).exists():
             data = StoreInCache(
                 f"play_{player.get_player_sector()}", self.request.user

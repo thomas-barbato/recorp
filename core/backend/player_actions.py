@@ -31,8 +31,8 @@ class PlayerAction:
         self.player = Player.objects.filter(user_id=id).all()
         self.player_id = self.get_player_id()
 
-    def is_player_exists(self, player_id):
-        return Player.objects.filter(id=player_id, user_id=self.id).exists()
+    def is_player_exists(self):
+        return Player.objects.filter(user_id=self.id).exists()
         
     def get_player_id(self):
         # if player have created a character,

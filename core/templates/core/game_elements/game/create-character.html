@@ -34,7 +34,7 @@
                             <div id="faction-item" class="flex bg-white rounded-t-md text-sm font-bold justify-center items-center text-center">
                                 {{ faction.name }}
                             </div>
-                            <img src="{% static '/img/ux/placeholder.svg' %}" class="flex object-fill lg:block hidden">
+                            <img src="{% static '/img/ux/placeholder.svg' %}" class="flex object-fill lg:block hidden"> 
                             <div class="flex p-2">
                                 <p class="flex text-justify break-all description-text text-sm font-shadow text-white xl:line-clamp-18 lg:line-clamp-10 md:line-clamp-8 line-clamp-6"> 
                                     {{ faction.data.description }} 
@@ -54,15 +54,15 @@
             </div>
         </div>
         <div id="character-stats" class="flex border border-gray-300/40 p-1 justify-between bg-cyan-950/20 xl:w-[50%] lg:w-[80%] h-full rounded-md flex-col hidden">
-            <div class="w-full justify-start text-center text-xl font-bold text-shadow text-white uppercase">
+            <div class="w-full justify-start text-center text-xl font-bold text-shadow text-white uppercase bg-red-600">
                 {% translate "Character creation" %}
             </div>
-            <div class="flex flex-row w-full p-2 gap-2">
-                <div id="archetype-selection" class="flex flex-col">
+            <div class="flex flex-row w-full p-2 gap-2 justify-start bg-blue-600 h-full">
+                <div id="archetype-selection" class="flex flex-col w-[40%]">
                     <div id="archetype-select">
                         <label for="id_archetype" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "Archetype" %} <span class="text-red-600">*</span></label>
                         <select id="id_archetype" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="none" select="selected">---</option>
+                            <option value="none" selected="selected">---</option>
                             {% for archetype in archetype_data%}
                             <option value="{{ archetype.id }}">{% translate archetype.name %}</option>
                             {% endfor %}
@@ -70,22 +70,28 @@
                     </div>
                     <div id="archetype-informations">
                         {% for archetype in archetype_data%}
-                        <div id="archetype-{{ archetype.id }}" class="hidden archetype-selector">
-                            <p id="archetype-description-{{ archetype.id }}" class="flex p-2 text-center font-bold">
-                                {{ archetype.description }}
+                        <div id="archetype-{{ archetype.id }}" class="hidden archetype-selector bg-gray-600/40 border border-slate-600 rounded-t-md p-2">
+                            <p id="archetype-description-{{ archetype.id }}" class="flex p-2 text-center font-bold text-white">
+                                {% translate archetype.description %}
                             </p>
                             <div id="archetype-statistics-{{ archetypes.data }}" class="flex p-2 flex-col">
-                                {{ archetype.data }}
+                                <li>
+                                {% for key, value in archetype.data.items %}
+                                <ul>{{ key }} : {{ value }}</ul>
+                                {% endfor %}
+                                </li>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div id="character-informations" class="flex flex-col">
+                <div id="character-informations" class="flex flex-col  w-[60%]">
+                    <div> aaaaaaaaaaaaaaaaa</div>
+                    
+                    {% for archetype in archetype_data %}
+                        {{ archetype.name }}
+                    {% endfor %}
                 </div>
-                {% for archetype in archetype_data %}
-                    {{ archetype.name }}
-                {% endfor %}
             </div>
             <div class="flex justify-around items-center">
                 <div id="previous-btn" class="flex justify-center items-center flex-col">

@@ -19851,3 +19851,2449 @@ Watching for file changes with StatReloader
 [mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54110][0m
 [mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54110][0m
 [mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54110][0m
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.07, 127.0.0.1:56768][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:56768][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.17, 127.0.0.1:56768][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:56768][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:56775][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:56774][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:56776][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:56777][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.18, 127.0.0.1:56778][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56778][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56778][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56786][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56790][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56786][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:56789][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56788][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56778][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56790][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56786][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:56788][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56788][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56790][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56786][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56788][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56786][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56790][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56788][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56789][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56787][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56790][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56786][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56788][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:56791][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56789][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56788][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56787][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56789][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56934][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56938][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56937][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56936][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56934][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56935][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56939][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56937][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56938][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:56936][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56936][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56937][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /fr/play/create_character 200 [0.20, 127.0.0.1:56938][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:56936][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:56936][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:56937][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56936][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56938][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56936][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:57052][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57055][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57054][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57056][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57053][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57057][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57052][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57054][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57056][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57055][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57054][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:57053][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:57055][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:57053][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.00, 127.0.0.1:57053][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:57053][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57054][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57053][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57055][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57053][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:57112][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57111][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57116][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57115][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57113][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57114][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57112][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57116][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57111][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57113][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57115][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57116][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57111][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57111][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57111][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:57159][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57162][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57161][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57163][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57164][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57160][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57159][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57162][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57161][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57163][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57160][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57161][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57162][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57162][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57162][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:57263][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57264][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57268][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57267][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57265][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57266][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57263][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57264][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57265][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57268][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57266][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:57267][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57268][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57268][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57268][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:57268][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57268][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57267][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57264][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57266][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57265][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57263][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57267][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57268][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57265][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57267][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57266][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57268][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57268][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57268][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:57329][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57334][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57330][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57329][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57332][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57331][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57330][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57334][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57329][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:57333][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57332][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57333][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57334][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57334][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57334][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:57334][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57334][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57332][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57331][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57333][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57330][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57329][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57334][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57332][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57330][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57333][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57332][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57334][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57334][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57334][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:57755][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:57759][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:57757][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:57756][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57757][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57756][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:57758][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:57760][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57759][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57757][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57757][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57758][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57757][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:57759][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57759][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57756][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57757][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57760][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57755][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:57758][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57756][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57759][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57757][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:57757][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57758][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:57759][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57759][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57758][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57756][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57755][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57760][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57755][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57758][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:57757][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:57759][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57758][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57757][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57759][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:57828][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57831][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57830][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57829][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57833][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57832][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57828][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57831][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57829][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57830][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:57831][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57829][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57830][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57833][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57832][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57830][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:57831][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57831][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57830][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57829][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57833][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57832][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57828][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57830][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57829][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57831][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57829][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57830][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:57885][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57885][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57892][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57893][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57885][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57890][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:57885][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57892][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57893][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57885][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57892][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57894][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57890][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:57885][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57892][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57893][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57885][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:57892][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57890][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57894][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:57885][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57893][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57885][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57892][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.00, 127.0.0.1:57890][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:57890][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57894][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57894][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:57885][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:57891][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57891][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57885][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57893][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57892][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57894][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:57894][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:57890][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57891][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57894][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:57885][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 218, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.24, 127.0.0.1:57894][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.08, 127.0.0.1:57891][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57891][0m
+Not Found: /favicon.ico
+[32mHTTP GET /play 302 [0.05, 127.0.0.1:57885][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 218, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.05, 127.0.0.1:57891][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:57891][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 220, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:58030][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58030][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 221, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.09, 127.0.0.1:58069][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:58069][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:58068][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:58068][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:58068][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 221, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:58068][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58068][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 222, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.09, 127.0.0.1:58120][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:58120][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:58237][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:58237][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:58237][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58237][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58248][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58247][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58249][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58250][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58251][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58247][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58237][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58237][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:58248][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:58247][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58248][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58237][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58237][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:58237][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 223, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:58237][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58237][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:58414][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:58414][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58414][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58420][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58421][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58422][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58423][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58424][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58420][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58414][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58414][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:58421][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:58420][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58414][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58414][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58414][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:58425][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58430][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58432][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58433][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58430][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:58430][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58434][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[32mHTTP POST /fr/logout 302 [0.08, 127.0.0.1:58425][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58430][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58432][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58433][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:58434][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /fr/account/create 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58430][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58432][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58433][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.03, 127.0.0.1:58430][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[32mHTTP POST /fr/ 302 [0.49, 127.0.0.1:58425][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:58431][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58432][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58430][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58433][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:58432][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:58430][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58434][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58434][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:58425][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:58431][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58430][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58432][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58433][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58425][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58431][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:58430][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:58434][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58432][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58431][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58434][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58431][0m
+[32mHTTP GET /play 302 [0.08, 127.0.0.1:58425][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 219, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:58434][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58431][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:58513][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.03, 127.0.0.1:58513][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.09, 127.0.0.1:58579][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.04, 127.0.0.1:58579][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58574][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58572][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58575][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58576][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58573][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58577][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58574][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:58574][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:58572][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58575][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58573][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58573][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58573][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:58573][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 221, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:58573][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58573][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 220, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.08, 127.0.0.1:58669][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58669][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58669][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:58669][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:58669][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 220, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:58669][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58669][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 221, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.08, 127.0.0.1:58718][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58718][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 220, in get_context_data
+    print(player.is_player_exists())
+TypeError: PlayerAction.is_player_exists() missing 1 required positional argument: 'player_id'
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:59013][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:59013][0m
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 221, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+  File "D:\wamp64\www\recorp\core\backend\player_actions.py", line 55, in get_player_sector
+    return self.player.values_list("sector_id", flat=True)[0]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP GET /fr/play/ 500 [0.08, 127.0.0.1:59060][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59060][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 275, in get_context_data
+    return redirect(url, data_to_send)
+UnboundLocalError: local variable 'data_to_send' referenced before assignment
+[35;1mHTTP GET /fr/play/ 500 [0.08, 127.0.0.1:59237][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59237][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.08, 127.0.0.1:59237][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:59237][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:59237][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59237][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59255][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59256][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59257][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59258][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59259][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59255][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59237][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59256][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:59255][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:59259][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59256][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59256][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59256][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:59237][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 275, in get_context_data
+    return redirect(url, data_to_send)
+UnboundLocalError: local variable 'data_to_send' referenced before assignment
+[35;1mHTTP GET /fr/play/ 500 [0.05, 127.0.0.1:59237][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:59256][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.16, 127.0.0.1:59295][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:59295][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:59540][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:59540][0m
+[mHTTP GET /fr/ 200 [0.09, 127.0.0.1:59540][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59540][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59550][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59551][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59552][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59553][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59554][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59550][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59540][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59540][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:59551][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:59550][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59540][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59540][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59551][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:59540][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:59540][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59540][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:59652][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:59652][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:59652][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59652][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59662][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59663][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59664][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59665][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59666][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:59662][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59652][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59652][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:59663][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:59662][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59652][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59652][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:59652][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than CreateCharacterView.
+[35;1mHTTP GET /fr/play/ 500 [0.05, 127.0.0.1:59652][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:59652][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59652][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59652][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.06, 127.0.0.1:59699][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:59765][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:59769][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59769][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:59768][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:59765][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:59767][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:59766][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:59770][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:59768][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:59769][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59766][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:59767][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59769][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59769][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59767][0m
+[32mHTTP GET /play 302 [0.06, 127.0.0.1:59769][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.05, 127.0.0.1:59769][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:59769][0m
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:59970][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:59970][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:59970][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:59970][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59980][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:59981][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:59982][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:59983][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:59984][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:59980][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:59970][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:59981][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:59980][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:59984][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:59970][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:59970][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:59970][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:59970][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:59970][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:59970][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:60053][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:60053][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:60053][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60053][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60063][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60064][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:60065][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60067][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60066][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60063][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60053][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60053][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:60064][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:60063][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60053][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60053][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60053][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:60053][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 192, in get_context_data
+    return redirect(self.request, url, {})
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for '<ASGIRequest: GET '/fr/play/'>' not found. '<ASGIRequest: GET '/fr/play/'>' is not a valid view function or pattern name.
+[35;1mHTTP GET /fr/play/ 500 [0.12, 127.0.0.1:60053][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60053][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.07, 127.0.0.1:60104][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:60104][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:60104][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for '<module 'urllib.request' from 'C:\\Users\\belia\\AppData\\Local\\Programs\\Python\\Python310\\lib\\urllib\\request.py'>' not found. '<module 'urllib.request' from 'C:\\Users\\belia\\AppData\\Local\\Programs\\Python\\Python310\\lib\\urllib\\request.py'>' is not a valid view function or pattern name.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 192, in get_context_data
+    return redirect(request, url, {})
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 151, in resolve_url
+    if "/" not in to and "." not in to:
+TypeError: argument of type 'module' is not iterable
+[35;1mHTTP GET /fr/play/ 500 [0.11, 127.0.0.1:60104][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60104][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:60286][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.06, 127.0.0.1:60286][0m
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:60286][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60286][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60296][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60297][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:60298][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60299][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60300][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:60296][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60286][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60286][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:60297][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:60296][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60286][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60286][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60286][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:60286][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:60286][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60286][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:60335][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:60335][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:60335][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.17, 127.0.0.1:60347][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60335][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.17, 127.0.0.1:60349][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60347][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:60348][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:60345][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:60346][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:60335][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:60345][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60349][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60335][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60335][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60335][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:60335][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.05, 127.0.0.1:60335][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60335][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:60428][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:60428][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:60428][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60428][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60438][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60439][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:60440][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:60441][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:60442][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60438][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:60428][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:60439][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60428][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:60438][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60428][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60439][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60428][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:60428][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 192, in get_context_data
+    return redirect(CreateCharacterView.get())
+TypeError: TemplateView.get() missing 2 required positional arguments: 'self' and 'request'
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:60428][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60428][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:60472][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.03, 127.0.0.1:60472][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:60472][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60472][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60482][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:60484][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60483][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60485][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60486][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60482][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60472][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60472][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:60482][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:60483][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60472][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60472][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60472][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:60472][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 192, in get_context_data
+    return redirect(CreateCharacterView)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'core.views.CreateCharacterView' not found. 'core.views.CreateCharacterView' is not a valid view function or pattern name.
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:60472][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60472][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:60684][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:60684][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:60684][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60684][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60694][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60695][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:60696][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60697][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60698][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60694][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60684][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60684][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:60694][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:60695][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60684][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60684][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60684][0m
+[32mHTTP GET /play 302 [0.05, 127.0.0.1:60684][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 192, in get_context_data
+    return HttpResponseRedirect(reverse('create_character'))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'create_character' not found. 'create_character' is not a valid view function or pattern name.
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:60684][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60684][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:49796][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:49800][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:49795][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:49798][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:49797][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:49796][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:49799][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:49795][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:49800][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:49798][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:49799][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:49795][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49800][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:49800][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:49800][0m
+[mHTTP GET /fr/ 200 [0.05, 127.0.0.1:49800][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:49800][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:49795][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:49799][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:49796][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:49798][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:49797][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:49799][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:49800][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:49800][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:49795][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:49799][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:49800][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:49800][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:49800][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:49800][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 192, in get_context_data
+    return HttpResponseRedirect(reverse(url))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'play/create_character' not found. 'play/create_character' is not a valid view function or pattern name.
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:49800][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:49800][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:50727][0m
+[mHTTP GET /static/css/output.css 200 [0.04, 127.0.0.1:50727][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:50731][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50737][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:50737][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50737][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50742][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50743][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50744][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50745][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50746][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:50742][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:50737][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50737][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:50743][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:50742][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50737][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50743][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50737][0m
+[32mHTTP GET /redirect 302 [0.05, 127.0.0.1:50737][0m
+Internal Server Error: /fr/redirect/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 257, in get
+    url = self.get_redirect_url(*args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 182, in get_redirect_url
+    player = PlayerAction(request.user.id)
+AttributeError: module 'urllib.request' has no attribute 'user'
+[35;1mHTTP GET /fr/redirect/ 500 [0.06, 127.0.0.1:50737][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:50737][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:51844][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:51844][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:51844][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.09, 127.0.0.1:52340][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:52345][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:52341][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:52343][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52341][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:52345][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:52342][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.21, 127.0.0.1:52344][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:52340][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:52344][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:52341][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:52343][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52345][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:52345][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:52345][0m
+[32mHTTP GET /redirect 302 [0.04, 127.0.0.1:52345][0m
+Internal Server Error: /fr/redirect/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 257, in get
+    url = self.get_redirect_url(*args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 182, in get_redirect_url
+    player = PlayerAction(request.user.id)
+AttributeError: module 'urllib.request' has no attribute 'user'
+[35;1mHTTP GET /fr/redirect/ 500 [0.06, 127.0.0.1:52345][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:52345][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.07, 127.0.0.1:52398][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:52398][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:52398][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:52398][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52408][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:52410][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:52409][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:52411][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52398][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52410][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:52412][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:52412][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:52409][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:52398][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52412][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:52412][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:52412][0m
+[32mHTTP GET /redirect 302 [0.04, 127.0.0.1:52412][0m
+Internal Server Error: /fr/redirect/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 257, in get
+    url = self.get_redirect_url(*args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 183, in get_redirect_url
+    player = PlayerAction(self.request.user.id)
+NameError: name 'self' is not defined
+[35;1mHTTP GET /fr/redirect/ 500 [0.05, 127.0.0.1:52412][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:52412][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/redirect/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 257, in get
+    url = self.get_redirect_url(*args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 183, in get_redirect_url
+    player = PlayerAction(self.request.user.id)
+NameError: name 'self' is not defined
+[35;1mHTTP GET /fr/redirect/ 500 [0.08, 127.0.0.1:52436][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:52436][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:53628][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.06, 127.0.0.1:53628][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:53897][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:53900][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:53900][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:53901][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:53898][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:53899][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:53902][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:53897][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53901][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:53899][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:53900][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53898][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53900][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53900][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53900][0m
+[32mHTTP GET /redirect 302 [0.05, 127.0.0.1:53900][0m
+[32mHTTP GET /fr/redirect/ 302 [0.03, 127.0.0.1:53900][0m
+Not Found: /fr/redirect/play/create_character
+[33mHTTP GET /fr/redirect/play/create_character 404 [0.04, 127.0.0.1:53900][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:53900][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:53900][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53900][0m
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:53959][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:53961][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:53962][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:53961][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:53960][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:53963][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:53964][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:53959][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53962][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:53964][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:53960][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53962][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53961][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53961][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53961][0m
+Not Found: /redirect
+[33mHTTP GET /redirect 404 [0.04, 127.0.0.1:53961][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:53961][0m
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.07, 127.0.0.1:54024][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:54024][0m
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:54033][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54033][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54039][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54040][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54041][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54042][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54043][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54039][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54033][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:54043][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:54040][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54039][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54040][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54040][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54040][0m
+Not Found: /redirect
+[33mHTTP GET /redirect 404 [0.03, 127.0.0.1:54033][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54040][0m
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /redirect
+[33mHTTP GET /redirect 404 [0.04, 127.0.0.1:54053][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54053][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:54053][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:54053][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:54053][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:54053][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54056][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54087][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54088][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54053][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54089][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54056][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54090][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54090][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54087][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:54053][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54090][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54090][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54090][0m
+Not Found: /redirect
+[33mHTTP GET /redirect 404 [0.04, 127.0.0.1:54090][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54090][0m
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:54216][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:54216][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:54216][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54216][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54226][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54227][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54228][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54229][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54230][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:54226][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54216][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54216][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54227][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:54226][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54216][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54216][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54216][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:54216][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 188, in get_context_data
+    player = PlayerAction(request.user.id)
+AttributeError: module 'urllib.request' has no attribute 'user'
+[35;1mHTTP GET /fr/play/ 500 [0.06, 127.0.0.1:54216][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54216][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\backends\django.py", line 57, in render
+    context = make_context(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\template\context.py", line 278, in make_context
+    raise TypeError(
+TypeError: context must be a dict rather than HttpResponseRedirect.
+[35;1mHTTP GET /fr/play/ 500 [0.08, 127.0.0.1:54274][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54274][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:54362][0m
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:54362][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:54362][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:54372][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54362][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:54373][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:54374][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54372][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:54375][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:54376][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54373][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:54372][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54376][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54362][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54362][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54362][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:54362][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 193, in get_context_data
+    return HttpResponseRedirect(redirect_to=url, context={})
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\http\response.py", line 615, in __init__
+    super().__init__(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\http\response.py", line 374, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: HttpResponseBase.__init__() got an unexpected keyword argument 'context'
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:54362][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54362][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:54485][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:54485][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:54485][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54485][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54495][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54496][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54497][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54498][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54499][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54495][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54485][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:54499][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:54495][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54496][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54485][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54485][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54485][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:54485][0m
+[32mHTTP GET /fr/play/ 302 [0.02, 127.0.0.1:54485][0m
+Not Found: /fr/play/play/create_character
+[33mHTTP GET /fr/play/play/create_character 404 [0.03, 127.0.0.1:54485][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54485][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:54542][0m
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54554][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54542][0m
+[32mHTTP GET /play 302 [0.02, 127.0.0.1:54542][0m
+[32mHTTP GET /fr/play/ 302 [0.03, 127.0.0.1:54542][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54554][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/js/game/world_builder/world/create_character.js 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54552][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.00, 127.0.0.1:54553][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54542][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:54542][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:54552][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:54556][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54554][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54542][0m
+[32mHTTP POST /fr/logout 302 [0.08, 127.0.0.1:54542][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54554][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54542][0m
+[32mHTTP POST /fr/ 302 [0.55, 127.0.0.1:54542][0m
+[32mHTTP GET / 302 [0.06, 127.0.0.1:54542][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54554][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54552][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54553][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:54552][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54542][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54542][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:54542][0m
+[32mHTTP GET /fr/play/ 302 [0.02, 127.0.0.1:54542][0m
+Not Found: /fr/play/play/
+[33mHTTP GET /fr/play/play/ 404 [0.03, 127.0.0.1:54542][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:54542][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /static/ux/recorp.png 200 [0.06, 127.0.0.1:54682][0m
+[mHTTP GET /fr/ 200 [0.11, 127.0.0.1:54680][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:54682][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54681][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54685][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:54682][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.00, 127.0.0.1:54685][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54682][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54684][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54681][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54681][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:54685][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.01, 127.0.0.1:54682][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54685][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:54681][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54681][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:54681][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 189, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 226, in get_context_data
+    if Sector.objects.filter(id=player.get_player_sector()).exists():
+NameError: name 'player' is not defined
+[35;1mHTTP GET /fr/play/ 500 [0.07, 127.0.0.1:54681][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:54681][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:54718][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.04, 127.0.0.1:54718][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:54718][0m
+[mHTTP GET /fr/play/ 200 [0.28, 127.0.0.1:54718][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54718][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:54732][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54733][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:54734][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54735][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54736][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54732][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:54718][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:54733][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.03, 127.0.0.1:54736][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.03, 127.0.0.1:54734][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.04, 127.0.0.1:54735][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.03, 127.0.0.1:54733][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.03, 127.0.0.1:54732][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.03, 127.0.0.1:54718][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.03, 127.0.0.1:54736][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.03, 127.0.0.1:54735][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.02, 127.0.0.1:54732][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.03, 127.0.0.1:54733][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.05, 127.0.0.1:54734][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.05, 127.0.0.1:54718][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/img/users/1/0.jpg 200 [0.01, 127.0.0.1:54733][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.02, 127.0.0.1:54718][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:54718][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:54737]
+[mHTTP GET /static/img/ux/market.svg 200 [0.13, 127.0.0.1:54735][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.13, 127.0.0.1:54733][0m
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:54737]
+[mHTTP GET /static/img/ux/dock.svg 200 [0.13, 127.0.0.1:54736][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.13, 127.0.0.1:54732][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.13, 127.0.0.1:54734][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.03, 127.0.0.1:54718][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.06, 127.0.0.1:54733][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.06, 127.0.0.1:54734][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.02, 127.0.0.1:54733][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:54734][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.05, 127.0.0.1:54718][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.09, 127.0.0.1:54735][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.10, 127.0.0.1:54732][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.03, 127.0.0.1:54718][0m
+[mHTTP GET /static/img/ux/default-user.svg 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.04, 127.0.0.1:54733][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.03, 127.0.0.1:54735][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.03, 127.0.0.1:54732][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.19, 127.0.0.1:54736][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.12, 127.0.0.1:54734][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:54737]
+[32mHTTP POST /fr/logout 302 [0.08, 127.0.0.1:54718][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:54718][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:54718][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54733][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54736][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54734][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54732][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54718][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54733][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54735][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54735][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54718][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54735][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.

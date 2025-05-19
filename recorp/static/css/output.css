@@ -1248,6 +1248,10 @@ video {
   width: 50%;
 }
 
+.w-\[60\%\] {
+  width: 60%;
+}
+
 .w-\[80vw\] {
   width: 80vw;
 }
@@ -2494,6 +2498,10 @@ video {
   border-top-color: rgb(220 38 38 / var(--tw-border-opacity));
 }
 
+.bg-\[\#B1F1CB\]\/30 {
+  background-color: rgb(177 241 203 / 0.3);
+}
+
 .bg-\[rgb\(255\2c 0\2c 0\)\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 0 0 / var(--tw-bg-opacity));
@@ -2635,10 +2643,6 @@ video {
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
-.bg-slate-300\/40 {
-  background-color: rgb(203 213 225 / 0.4);
-}
-
 .bg-slate-600\/50 {
   background-color: rgb(71 85 105 / 0.5);
 }
@@ -2675,10 +2679,6 @@ video {
 
 .bg-zinc-950\/90 {
   background-color: rgb(9 9 11 / 0.9);
-}
-
-.bg-\[\#B1F1CB\]\/30 {
-  background-color: rgb(177 241 203 / 0.3);
 }
 
 .bg-gradient-to-b {
@@ -3998,6 +3998,10 @@ select {
   border-color: rgb(148 163 184 / var(--tw-border-opacity));
 }
 
+.hover\:bg-\[\#B1F1CB\]\/30:hover {
+  background-color: rgb(177 241 203 / 0.3);
+}
+
 .hover\:bg-blue-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(30 64 175 / var(--tw-bg-opacity));
@@ -4027,6 +4031,10 @@ select {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-600\/40:hover {
+  background-color: rgb(75 85 99 / 0.4);
+}
+
 .hover\:bg-gray-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -4041,26 +4049,9 @@ select {
   background-color: rgb(203 213 225 / 0.1);
 }
 
-.hover\:bg-slate-300\/40:hover {
-  background-color: rgb(203 213 225 / 0.4);
-}
-
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-\[\#B1F1CB\]\/30:hover {
-  background-color: rgb(177 241 203 / 0.3);
-}
-
-.hover\:bg-\[\#B1F1CB\]:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(177 241 203 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-gray-600\/40:hover {
-  background-color: rgb(75 85 99 / 0.4);
 }
 
 .hover\:font-bold:hover {
@@ -4703,13 +4694,6 @@ select {
 }
 
 @media (min-width: 1280px) {
-  .xl\:line-clamp-20 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 20;
-  }
-
   .xl\:line-clamp-18 {
     overflow: hidden;
     display: -webkit-box;
@@ -4751,13 +4735,6 @@ select {
 
   .xl\:text-start {
     text-align: start;
-  }
-
-  .xl\:line-clamp-20 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 20;
   }
 
   .xl\:line-clamp-18 {
