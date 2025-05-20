@@ -160,7 +160,7 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context = super().get_context_data(**kwargs)
         context["factions"] = GetDataFromDB().get_faction_queryset()
         context["form"] = self.form_class
-        context["archetype_data"] = Archetype.objects.all()
+        context["archetype_data"] = Archetype.objects.values('name', 'id', 'data', 'ship_id__image', 'description', 'ship_id__ship_category_id__size')
         return context
 
 

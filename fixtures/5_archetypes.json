@@ -6,7 +6,7 @@
             "description": "Fighter specialising in piloting heavy spaceships",
             "data": {
                 "Destroyer": 10,
-                "Laser": 10,
+                "Thermal Weapon": 10,
                 "Thermal Shield": 10,
                 "Detection": 10
             },

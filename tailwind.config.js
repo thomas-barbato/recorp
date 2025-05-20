@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const { addIconSelectors } = require("@iconify/tailwind");
 module.exports = {
     content: ["**/*.{html,js}"],
     theme: {
@@ -48,5 +49,6 @@ module.exports = {
     },
     plugins: [
         require("@tailwindcss/line-clamp"),
+        addIconSelectors(["game-icons"]),
     ],
 }

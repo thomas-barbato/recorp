@@ -19,6 +19,8 @@ module.exports = {
 @tailwind utilities;``` on the top of .css files.
 - ```npm install @tailwindcss/line-clamp```
 - ```npx tailwindcss -i ./path/style.css -o ./dist/output.css --watch```
+- ```npm i -D @iconify/tailwind```
+- ```npm i -D @iconify-json/game-icons```
 
 to install redis on docker : 
 

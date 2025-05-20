@@ -2,7 +2,7 @@
         "model": "core.skill",
         "pk": 1,
         "fields": {
-            "name": "Light",
+            "name": "Frigate",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Steering",
             "created_at": "2020-03-21 12:38:15",
@@ -13,7 +13,7 @@
         "model": "core.skill",
         "pk": 2,
         "fields": {
-            "name": "Medium",
+            "name": "Destroyer",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Steering",
             "created_at": "2020-03-21 12:38:15",
@@ -24,7 +24,7 @@
         "model": "core.skill",
         "pk": 3,
         "fields": {
-            "name": "Heavy",
+            "name": "Battlecruiser",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Steering",
             "created_at": "2020-03-21 12:38:15",
@@ -35,7 +35,7 @@
         "model": "core.skill",
         "pk": 4,
         "fields": {
-            "name": "Super heavy",
+            "name": "Dreadnought",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Steering",
             "created_at": "2020-03-21 12:38:15",
@@ -46,7 +46,7 @@
         "model": "core.skill",
         "pk": 5,
         "fields": {
-            "name": "Thermal",
+            "name": "Thermal Weapon",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Offensive",
             "created_at": "2020-03-21 12:38:15",
@@ -68,7 +68,7 @@
         "model": "core.skill",
         "pk": 7,
         "fields": {
-            "name": "Missile",
+            "name": "Missile Weapon",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Offensive",
             "created_at": "2020-03-21 12:38:15",
