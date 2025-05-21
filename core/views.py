@@ -162,6 +162,10 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context["form"] = self.form_class
         context["archetype_data"] = Archetype.objects.values('name', 'id', 'data', 'ship_id__image', 'description', 'ship_id__ship_category_id__size')
         return context
+    
+    def post(self, request, **kwargs):
+        print("ok dedans")
+        print(self.request.POST)
 
 
 class PasswordRecoveryView(FormView):

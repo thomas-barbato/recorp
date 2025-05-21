@@ -1110,6 +1110,10 @@ video {
   height: 40px;
 }
 
+.h-\[40vh\] {
+  height: 40vh;
+}
+
 .h-\[4vh\] {
   height: 4vh;
 }
@@ -1260,6 +1264,10 @@ video {
 
 .w-\[40px\] {
   width: 40px;
+}
+
+.w-\[40vw\] {
+  width: 40vw;
 }
 
 .w-\[45vw\] {
@@ -2478,6 +2486,10 @@ video {
   border-color: rgb(209 213 219 / 0.4);
 }
 
+.border-gray-300\/60 {
+  border-color: rgb(209 213 219 / 0.6);
+}
+
 .border-gray-800 {
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity));
@@ -2613,6 +2625,10 @@ video {
 
 .bg-gray-600\/40 {
   background-color: rgb(75 85 99 / 0.4);
+}
+
+.bg-gray-600\/60 {
+  background-color: rgb(75 85 99 / 0.6);
 }
 
 .bg-gray-700 {
@@ -3974,6 +3990,77 @@ select {
   background-image: repeating-linear-gradient(45deg, transparent, transparent, rgb(223, 5, 5) 15px, rgb(223, 5, 5) 15px);
 }
 
+.ql-container.ql-snow {
+  width: auto;
+}
+
+.ql-editor {
+  height: auto;
+  overflow-y: scroll;
+  width: 100%;
+  background-color:rgba(54, 65, 83, 0.4);
+}
+
+.ql-snow {
+  background-color:rgba(123, 143, 175, 0.4);
+  border-bottom: none;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label .ql-stroke {
+  fill: none;
+  stroke: #00d492 !important;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label:hover .ql-stroke {
+  fill: none;
+  stroke: #B1F1CB !important;
+}
+
+.ql-active .ql-stroke {
+  fill: none;
+  stroke: #B1F1CB !important;
+}
+
+button .ql-fill,
+.ql-picker-label .ql-fill {
+  fill: #00d492 !important;
+  stroke: none;
+}
+
+button:hover .ql-fill,
+.ql-picker-label:hover .ql-fill {
+  fill: #B1F1CB !important;
+  stroke: none;
+}
+
+.ql-active .ql-fill {
+  fill: #B1F1CB !important;
+  stroke: none;
+}
+
+button .ql-stroke,
+.ql-picker-label .ql-stroke {
+  fill: none;
+  stroke: #00d492 !important;
+}
+
+.ql-container {
+  min-height: 10rem;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ql-editor {
+  height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -4096,10 +4183,6 @@ select {
   border-color: rgb(148 163 184 / var(--tw-border-opacity));
 }
 
-.hover\:bg-\[\#B1F1CB\]\/30:hover {
-  background-color: rgb(177 241 203 / 0.3);
-}
-
 .hover\:bg-blue-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(30 64 175 / var(--tw-bg-opacity));
@@ -4129,10 +4212,6 @@ select {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-gray-600\/40:hover {
-  background-color: rgb(75 85 99 / 0.4);
-}
-
 .hover\:bg-gray-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -4150,6 +4229,10 @@ select {
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-\[\#B1F1CB\]\/30:hover {
+  background-color: rgb(177 241 203 / 0.3);
 }
 
 .hover\:font-bold:hover {
@@ -4543,12 +4626,8 @@ select {
     width: 12rem;
   }
 
-  .md\:w-\[40\%\] {
-    width: 40%;
-  }
-
-  .md\:w-\[60\%\] {
-    width: 60%;
+  .md\:w-\[50\%\] {
+    width: 50%;
   }
 
   .md\:w-\[80\%\] {
@@ -4587,6 +4666,22 @@ select {
     gap: 1.5rem;
   }
 
+  .md\:border {
+    border-width: 1px;
+  }
+
+  .md\:border-gray-300\/0 {
+    border-color: rgb(209 213 219 / 0);
+  }
+
+  .md\:border-gray-300\/60 {
+    border-color: rgb(209 213 219 / 0.6);
+  }
+
+  .md\:border-slate-600\/0 {
+    border-color: rgb(71 85 105 / 0);
+  }
+
   .md\:p-1 {
     padding: 0.25rem;
   }
@@ -4617,6 +4712,14 @@ select {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 8;
+  }
+
+  .hover\:md\:bg-\[\#B1F1CB\]\/30:hover {
+    background-color: rgb(177 241 203 / 0.3);
+  }
+
+  .hover\:md\:bg-gray-600\/60:hover {
+    background-color: rgb(75 85 99 / 0.6);
   }
 }
 
@@ -4777,6 +4880,11 @@ select {
     text-align: center;
   }
 
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
   .lg\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
@@ -4833,10 +4941,6 @@ select {
 
   .xl\:w-\[50\%\] {
     width: 50%;
-  }
-
-  .xl\:w-\[30\%\] {
-    width: 30%;
   }
 
   .xl\:flex-row {

@@ -4,182 +4,191 @@
 {% load i18n %}
 
 {% block content %}
-<header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
+<div class="flex justify-between flex-col h-full w-full overflow-hidden grow">
+    <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
+        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+            {% include "mobile-create-account-top-panel.html" %}
+        {% else %}
+            {% include "mobile-create-account-top-panel.html" %}
+            {% include "create-account-top-panel.html" %}
+        {% endif %}
+    </header>
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-        {% include "mobile-create-account-top-panel.html" %}
+    <main id="main-index-container" class="flex w-full h-full flex-row items-center lg:blur-none overflow-y-scroll no-scrollbar">
+        <form class="flex w-full justify-center items-start p-2">
     {% else %}
-        {% include "mobile-create-account-top-panel.html" %}
-        {% include "create-account-top-panel.html" %}
+    <main id="main-index-container" class="flex w-full h-full flex-row overflow-y-scroll lg:blur-none no-scrollbar text-shadow z-0 lg:p-0 p-2 overflow-y-scroll no-scrollbar">
+        <form class="w-full flex justify-center items-center p-2">
     {% endif %}
-</header>
-{% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-<main id="main-index-container" class="flex w-full h-full flex-row items-center lg:blur-none overflow-y-scroll no-scrollbar">
-    <div class="flex w-full justify-center items-start p-2">
-{% else %}
-<main id="main-index-container" class="flex w-full h-full flex-row justify-stretch overflow-y-scroll lg:blur-none no-scrollbar text-shadow z-0 lg:p-0 p-2">
-    <div class="w-full flex justify-center items-center  p-2">
-{% endif %}
-        <div id="character-faction" class="flex border border-gray-300/40 h-full p-1 justify-between bg-cyan-950/20 xl:w-[50%] lg:w-[80%] rounded-md flex-col">
-            <div class="flex w-full justify-center text-center text-xl font-bold text-shadow text-white uppercase">
-                {% translate "Character creation" %}
-            </div>
-            <div class="flex w-full justify-center text-center text-md font-bold text-shadow text-white uppercase">
-                {% translate "Select a faction" %}
-            </div>
-            <div class="flex w-auto">
-                <div id="faction-container" class="w-full flex md:gap-6 gap-2 lg:flex-row flex-col justify-around overflow-hidden">
-                    {% for faction in factions %}
-                        {% if faction.name != "none" %}
-                        <div class="flex flex-col p-1 lg:w-1/3 w-full lg:h-full bg-gray-600/40 hover:bg-[#B1F1CB]/30 border border-slate-600 rounded-t-md cursor-pointer faction" id="faction-{{ faction.id }}">
-                            <div id="faction-item" class="flex bg-white rounded-t-md text-sm font-bold justify-center items-center text-center">
-                                {{ faction.name }}
-                            </div>
-                            <img src="{% static '/img/ux/placeholder.svg' %}" class="flex object-fill lg:block hidden"> 
-                            <div class="flex p-2">
-                                <p class="flex text-justify break-keep description-text text-sm font-shadow text-white xl:line-clamp-18 lg:line-clamp-10 md:line-clamp-8 line-clamp-6"> 
-                                    {{ faction.data.description }} 
-                                </p>
-                            </div>
-                            <a href="" class="flex justify-start font-bold text-white text-sm">{% translate 'show more' %}</a>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
+            <div id="character-faction" class="flex border border-gray-300/60 h-full p-1 justify-between bg-cyan-950/20 xl:w-[50%] lg:w-[80%] rounded-md flex-col">
+                <div class="flex w-full justify-center text-center text-xl font-bold text-shadow text-white uppercase">
+                    {% translate "Character creation" %}
                 </div>
-            </div>
-            <div id="next-btn" class="flex justify-center items-center invisible">
-                <button type="button" class="cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-sm font-bold font-shadow hover:animate-pulse text-sm p-2.5 text-center inline-flex items-center me-2 rounded-md">
-                <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
-            </div>
-        </div>
-        <div id="character-stats" class="flex border border-gray-300/40 p-1 justify-between bg-cyan-950/20 xl:w-[40%] lg:w-[80%] w-full h-full rounded-md flex-col hidden">
-            <div class="w-full justify-start text-center text-xl font-bold text-shadow text-white uppercase">
-                {% translate "Character creation" %}
-            </div>
-            <div class="flex md:flex-row flex-col  w-full p-2 gap-2 justify-start h-full">
-                <div id="archetype-selection" class="flex flex-col md:w-[40%] w-full gap-3">
-                    <div id="archetype-select">
-                        <label for="id_archetype" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "Select an archetype" %} <span class="text-red-600">*</span></label>
-                        <select id="id_archetype" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected="selected">---</option>
-                            {% for archetype in archetype_data%}
-                            <option value="{{ archetype.id }}">{% translate archetype.name %}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div id="archetype-informations">
-                        {% for archetype in archetype_data%}
-                        <div id="archetype-{{ archetype.id }}" class="hidden archetype-selector bg-gray-600/40 border border-slate-600 rounded-t-md p-2">
-                            <div class="flex p-2">
-                                <p class="flex text-justify description-text text-sm font-shadow text-white"> 
-                                    {% translate archetype.description %}
-                                </p>
-                            </div>
-                            <div class="flex flex-row items-center">
-                                <div id="preview-ship" class="flex justify-center p-2">
-                                    <img class="
-                                    flex 
-                                    object-center 
-                                    {% if archetype.ship_id__ship_category_id__size.x == 1 %} 
-                                    w-[32px] 
-                                    {%  else  %} 
-                                    w-[64px] 
-                                    {%  endif %}    
-                                    h-[32px]
-                                    " 
-                                    src="{% static 'img/foreground/ships/'|add:archetype.ship_id__image|add:'.png' %}">
+                <div class="flex w-full justify-center text-center text-md font-bold text-shadow text-white uppercase">
+                    {% translate "Select a faction" %}
+                </div>
+                <div class="flex w-auto">
+                    <div id="faction-container" class="w-full flex md:gap-6 gap-2 lg:flex-row flex-col justify-around overflow-hidden">
+                        {% for faction in factions %}
+                            {% if faction.name != "none" %}
+                            <div class="flex flex-col p-1 lg:w-1/3 w-full lg:h-full bg-gray-600/60 hover:bg-[#B1F1CB]/30 border border-slate-600 rounded-t-md cursor-pointer faction" id="faction-{{ faction.id }}">
+                                <div id="faction-item" class="flex bg-white rounded-t-md lg:text-sm text-xs font-bold justify-center items-center text-center">
+                                    {{ faction.name }}
                                 </div>
-                                <div id="archetype-statistics-{{ archetypes.data }}" class="flex justify-center flex-col">
-                                    
-                                    <div class="flex">
-                                        <p class="flex text-justify description-text text-sm font-bold font-shadow text-white text-center justify-center"> 
-                                            {% translate "Starting skill points" %}
-                                        </p>
-                                    </div>
-                                    <ul class="flex flex-col">
-                                    {% for key, value in archetype.data.items %}
-                                    <li class="text-white font-shadow flex flex-row gap-2 items-center">
-                                        <span class="
-                                        iconify 
-                                        {% if key == 'Thermal Weapon' %}
-                                        game-icons--laser-blast 
-                                        {% elif key == 'Ballistic Weapon' %}
-                                        game-icons--anti-aircraft-gun
-                                        {%  elif key == 'Missile Weapon' %}
-                                        game-icons--missile-swarm
-                                        {% elif key == 'Frigate' or key == 'Destroyer' or key == 'Battlecruiser' or key == 'Dreadnought' %}
-                                        game-icons--spaceship
-                                        {% elif key == 'Thermal Shield' or key == 'Ballistic Shield' or key == 'Missile Shield' %}
-                                        game-icons--dragon-shield
-                                        {% elif key == 'Repair' %}
-                                        game-icons--auto-repair
-                                        {% elif key == 'Shield Amelioration' %}
-                                        game-icons--bolt-shield
-                                        {% elif key == 'Evasive Maneuver' or key == 'Hide Signature' %}
-                                        game-icons--invisible
-                                        {% elif key == 'Detection' %}
-                                        game-icons--aerial-signal
-                                        {% elif key == 'Sharpshooting' %}
-                                        game-icons--targeting
-                                        {% elif key == 'Electronic Warfare' %}
-                                        game-icons--computing
-                                        {% elif key == 'Counter Electronic Warfare' %}
-                                        game-icons--computing
-                                        {% elif key == 'Research' %}
-                                        game-icons--materials-science
-                                        {% elif key == 'Crafting' %}
-                                        game-icons--crafting
-                                        {% elif key == 'Mining' %}
-                                        game-icons--mining
-                                        {% elif key == 'Refining' %}
-                                        game-icons--melting-metal
-                                        {% elif key == 'Planetary Exploitation' %}
-                                        game-icons--wireframe-globe
-                                        {% endif %}
-                                        w-[14px] 
-                                        h-[14px]"></span>
-                                        {{ key }} 
-                                        <b class="text-emerald-400 font-shadow font-bold">
-                                            {{ value }}
-                                        </b>
-                                    </li>
-                                    {% endfor %}
-                                    </ul>
+                                <img src="{% static '/img/ux/placeholder.svg' %}" class="flex object-fill lg:block hidden"> 
+                                <div class="flex p-2">
+                                    <p class="flex text-justify break-keep description-text lg:text-sm text-xs font-shadow text-white xl:line-clamp-18 lg:line-clamp-10 md:line-clamp-8 line-clamp-6"> 
+                                        {{ faction.data.description }} 
+                                    </p>
                                 </div>
+                                <a href="" class="flex justify-start font-bold text-white lg:text-sm text-xs">{% translate 'show more' %}</a>
                             </div>
-                        </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
-                <div class="h-auto min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-80 dark:via-neutral-400 border-1 border border-gray-300/40"></div>
-                <div id="character-informations" class="flex flex-col md:w-[60%] w-full gap-6 bg-gray-600/40 border border-slate-600 rounded-t-md p-2">
-                    <div title="{% translate 'Change your picture' %}" class="w-full flex flex-col gap-2 items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
-                        <label for="" class="flex text-white font-bold">{% translate 'Select your picture' %}</label>
-                        <img class="flex w-24 w-24 box-content rounded-md justify-center items-center" id="user-avatar" src="{% static 'ux/default-user.svg' %}">
-                        <input type="file" id="id_image" class="hidden-input-file hidden" name="image" accept=".jpg, .png, .gif" />
-                    </div>
-                    <div class="flex w-full flex-col justify-center items-center">
-                        <label for="id_name" class="block mb-2 text-sm font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "character name" %} <span class="text-red-600">*</span></label>
-                        <input type="text" id="id_name" name="username" class="flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[50%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required />
-                        {{ form.name.help_text | safe }}
-                    </div> 
-                </div>
-            </div>
-            <div class="flex justify-around items-center">
-                <div id="previous-btn" class="flex justify-center items-center flex-col">
-                    <button type="button" class="cursor-pointer text-red-600 hover:text-red-400 rotate-180 text-sm font-bold font-shadow hover:animate-pulse text-sm p-2.5 text-center inline-flex items-center me-2 rounded-md">
+                <div id="next-btn" class="flex justify-center items-center invisible">
+                    <button type="button" class="cursor-pointer text-emerald-400 hover:text-[#B1F1CB] lg:text-sm text-xs font-bold font-shadow hover:animate-pulse lg:text-sm text-xs p-2.5 text-center inline-flex items-center me-2 rounded-md">
                     <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
                 </div>
             </div>
-        </div>
-    </div>
-</main>
-<footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
-    {% include "display-disclaimer.html" %}
-</footer>
+            <div id="character-stats" class="flex border border-gray-300/60 justify-between bg-cyan-950/20 xl:w-[40%] lg:w-[80%] w-full h-auto rounded-md flex-col hidden">
+                <div class="w-full justify-start text-center text-xl font-bold text-shadow text-white uppercase">
+                    {% translate "Character creation" %}
+                </div>
+                <div class="flex md:flex-row flex-col w-full p-2 gap-2 justify-start h-full">
+                    <div id="archetype-selection" class="flex flex-col md:w-[50%] w-full gap-3">
+                        <div id="archetype-select">
+                            <label for="id_archetype" class="block mb-2 lg:text-sm text-xs font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "Select an archetype" %} <span class="text-red-600">*</span></label>
+                            <select id="id_archetype" class="bg-gray-50 border border-gray-300 text-gray-900 lg:text-sm text-xs rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected="selected">---</option>
+                                {% for archetype in archetype_data%}
+                                <option value="{{ archetype.id }}">{% translate archetype.name %}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div id="archetype-informations">
+                            {% for archetype in archetype_data%}
+                            <div id="archetype-{{ archetype.id }}" class="hidden archetype-selector bg-gray-600/60 border border-slate-600 rounded-t-md p-2">
+                                <div class="flex p-2">
+                                    <p class="flex text-justify description-text lg:text-sm text-xs font-shadow text-white"> 
+                                        {% translate archetype.description %}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row items-center">
+                                    <div id="preview-ship" class="flex justify-center p-2">
+                                        <img class="
+                                        flex 
+                                        object-center 
+                                        {% if archetype.ship_id__ship_category_id__size.x == 1 %} 
+                                        w-[32px] 
+                                        {%  else  %} 
+                                        w-[64px] 
+                                        {%  endif %}    
+                                        h-[32px]
+                                        " 
+                                        src="{% static 'img/foreground/ships/'|add:archetype.ship_id__image|add:'.png' %}">
+                                    </div>
+                                    <div id="archetype-statistics-{{ archetypes.data }}" class="flex justify-center flex-col">
+                                        <div class="flex">
+                                            <p class="flex text-justify description-text lg:text-sm text-xs font-bold font-shadow text-white text-center justify-center"> 
+                                                {% translate "Starting skill points" %}
+                                            </p>
+                                        </div>
+                                        <ul class="flex flex-col">
+                                        {% for key, value in archetype.data.items %}
+                                        <li class="text-white font-shadow flex flex-row gap-2 items-center">
+                                            <span class="
+                                            iconify 
+                                            {% if key == 'Thermal Weapon' %}
+                                            game-icons--laser-blast 
+                                            {% elif key == 'Ballistic Weapon' %}
+                                            game-icons--anti-aircraft-gun
+                                            {%  elif key == 'Missile Weapon' %}
+                                            game-icons--missile-swarm
+                                            {% elif key == 'Frigate' or key == 'Destroyer' or key == 'Battlecruiser' or key == 'Dreadnought' %}
+                                            game-icons--spaceship
+                                            {% elif key == 'Thermal Shield' or key == 'Ballistic Shield' or key == 'Missile Shield' %}
+                                            game-icons--dragon-shield
+                                            {% elif key == 'Repair' %}
+                                            game-icons--auto-repair
+                                            {% elif key == 'Shield Amelioration' %}
+                                            game-icons--bolt-shield
+                                            {% elif key == 'Evasive Maneuver' or key == 'Hide Signature' %}
+                                            game-icons--invisible
+                                            {% elif key == 'Detection' %}
+                                            game-icons--aerial-signal
+                                            {% elif key == 'Sharpshooting' %}
+                                            game-icons--targeting
+                                            {% elif key == 'Electronic Warfare' %}
+                                            game-icons--computing
+                                            {% elif key == 'Counter Electronic Warfare' %}
+                                            game-icons--computing
+                                            {% elif key == 'Research' %}
+                                            game-icons--materials-science
+                                            {% elif key == 'Crafting' %}
+                                            game-icons--crafting
+                                            {% elif key == 'Mining' %}
+                                            game-icons--mining
+                                            {% elif key == 'Refining' %}
+                                            game-icons--melting-metal
+                                            {% elif key == 'Planetary Exploitation' %}
+                                            game-icons--wireframe-globe
+                                            {% endif %}
+                                            w-[14px] 
+                                            h-[14px]"></span>
+                                            <p class="text-xs">
+                                                {{ key }} 
+                                            </p>
+                                            <b class="text-emerald-400 font-shadow font-bold text-xs">
+                                                {{ value }}
+                                            </b>
+                                        </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="h-auto min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-80 dark:via-neutral-400 border-1 border border-gray-300/60 md:block hidden"></div>
+                    <div id="character-informations" class="flex flex-col md:w-[50%] w-full gap-6 bg-gray-600/60 border border-slate-600 rounded-md p-2">
+                        <div title="{% translate 'Change your picture' %}" class="w-full flex flex-col gap-2 items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
+                            <label for="" class="flex text-white font-bold">{% translate 'Select your picture' %}</label>
+                            <img class="flex w-24 w-24 box-content rounded-md justify-center items-center" id="user-avatar" src="{% static 'ux/default-user.svg' %}">
+                            <input type="file" id="id_image" class="hidden-input-file hidden" name="image" accept=".jpg, .png, .gif" />
+                        </div>
+                        <div class="flex w-full flex-col justify-center items-center">
+                            <label for="id_name" class="block mb-2 lg:text-sm text-xs font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "character name" %} <span class="text-red-600">*</span></label>
+                            <input type="text" id="id_name" name="name" class="flex bg-gray-50 border border-gray-300 text-gray-900 lg:text-sm text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[50%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" required />
+                            {{ form.name.help_text | safe }}
+                        </div> 
+                        <div class="flex w-full flex-col justify-start">
+                            <label for="editor" class="block mb-2 lg:text-sm text-xs font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "Description" %}</label>
+                            <div id="editor" class="flex w-[40vw] h-[40vh] max-h-[40vh] bg-gray-50 border border-gray-300 lg:text-sm text-xs cursor-pointer">
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <div class="flex justify-around items-center">
+                    <div id="previous-btn" class="flex justify-center items-center flex-col">
+                        <button type="button" class="cursor-pointer text-red-600 hover:text-red-400 rotate-180 lg:text-sm text-xs font-bold font-shadow hover:animate-pulse lg:text-sm text-xs p-2.5 text-center inline-flex items-center me-2 rounded-md">
+                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </div>
+                    <button type="button" onclick="this.disabled=true" id="create-character-submit-button" class="text-white bg-emerald-400 hover:bg-emerald-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full/2 sm:w-auto px-5 py-2.5 text-center">{% translate "Validate" %}</button>
+                </div>
+            </div>
+        </form>
+    </main>
+    <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
+        {% include "display-disclaimer.html" %}
+    </footer>
+</div>
 {% block js %}
 <script>
     let archetype_id = undefined;
@@ -198,6 +207,28 @@
     });
 </script>
 <script src="{% static 'js/game/world_builder/world/create_character.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/quill/quill.js' %}" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<script src="{% static 'js/quill/quill_element.js' %}" type="text/javascript"></script>
+<script>
+
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+    
+    let toolbar = document.querySelector('.ql-editor')
+    toolbar.classList.add('text-justify', 'break-all', 'overflow-x-hidden', 'h-[20vh]' )
+
+    let editor = document.querySelector('#editor')
+    
+    editor.addEventListener("click", () => {
+        document.querySelector(".ql-editor").focus();
+    });
+
+</script>
 {% endblock %}
 {% endblock %}
 

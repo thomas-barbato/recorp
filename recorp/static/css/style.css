@@ -188,3 +188,74 @@ select {
     background-color: rgba(0, 0, 0, 0.5);
     background-image: repeating-linear-gradient(45deg, transparent, transparent, rgb(223, 5, 5) 15px, rgb(223, 5, 5) 15px);
 }
+
+.ql-container.ql-snow {
+    width: auto;
+}
+
+.ql-editor {
+    height: auto;
+    overflow-y: scroll;
+    width: 100%;
+    background-color:rgba(54, 65, 83, 0.4);
+}
+
+.ql-snow {
+    background-color:rgba(123, 143, 175, 0.4);
+    border-bottom: none;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label .ql-stroke {
+    fill: none;
+    stroke: #00d492 !important;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label:hover .ql-stroke {
+    fill: none;
+    stroke: #B1F1CB !important;
+}
+
+.ql-active .ql-stroke {
+    fill: none;
+    stroke: #B1F1CB !important;
+}
+
+button .ql-fill,
+.ql-picker-label .ql-fill {
+    fill: #00d492 !important;
+    stroke: none;
+}
+
+button:hover .ql-fill,
+.ql-picker-label:hover .ql-fill {
+    fill: #B1F1CB !important;
+    stroke: none;
+}
+
+.ql-active .ql-fill {
+    fill: #B1F1CB !important;
+    stroke: none;
+}
+
+button .ql-stroke,
+.ql-picker-label .ql-stroke {
+    fill: none;
+    stroke: #00d492 !important;
+}
+
+.ql-container {
+    min-height: 10rem;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ql-editor {
+    height: 100%;
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+}
