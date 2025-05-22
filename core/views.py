@@ -18,6 +18,7 @@ from django.utils.translation import gettext as _
 from django.views.generic import TemplateView, View, RedirectView, FormView
 from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse
+from core.backend.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
@@ -164,8 +165,32 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         return context
     
     def post(self, request, **kwargs):
-        print("ok dedans")
-        print(self.request.POST)
+        if request.POST.get('id_name') and request.POST.get('id_faction'):
+            data = {
+                'name' : request.POST.get('id_name'),
+                'faction': request.POST.get('id_faction'),
+                'archetype': request.POST.get('id_archetype'),
+                'image': request.POST.get('id_image'),
+                'description': request.POST.get('id_description'),
+                'user' : self.request.user.id
+            }
+            form = CreateCharacterForm(data, request.FILES)
+            if form.is_valid():
+                new_player = Player(
+                    name=data["name"],
+                    faction_id=data["faction"],
+                    archetype_id=data["archetype"],
+                    image="0.gif",
+                    sector_id=Sector.objects.filter(name__contains="tuto").values_list('id', flat=True),
+                    coordinates = {"x" : 15, "y": 15 },
+                    description=data["description"],
+                    user_id=self.request.user.id
+                )
+                new_player.save()
+                UploadThisImage(request.FILES, "users", new_player.id, new_player.id).save()
+            else:
+                print("putain non !")
+                print(form.errors)
 
 
 class PasswordRecoveryView(FormView):
