@@ -134,7 +134,7 @@ DATABASES = {
         "PASSWORD": os.getenv("SQL_PASSWORD"),
         "HOST": os.getenv("SQL_HOST"),
         "PORT": os.getenv("SQL_PORT"),
-        "default-character-set": os.getenv("SQL_CHARSET"),
+        "character-set": 'utf8mb4',
     }
 }
 

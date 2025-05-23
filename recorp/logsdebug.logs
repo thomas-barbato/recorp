@@ -36748,3 +36748,1499 @@ Traceback (most recent call last):
     raise ValueError(
 ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
 [35;1mHTTP POST /fr/play/create_character 500 [0.18, 127.0.0.1:58168][0m
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.06, 127.0.0.1:61755][0m
+[mHTTP GET /fr/ 200 [0.12, 127.0.0.1:61755][0m
+[36mHTTP GET /static/css/style.css 304 [0.00, 127.0.0.1:61755][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:62269][0m
+[36mHTTP GET /static/ux/rightArrow-icon.svg 304 [0.01, 127.0.0.1:62269][0m
+[36mHTTP GET /static/ux/leftArrow-icon.svg 304 [0.00, 127.0.0.1:62269][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:62269][0m
+[32mHTTP GET /fr/play/ 302 [0.04, 127.0.0.1:62269][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:62269][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.10, 127.0.0.1:62282][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.11, 127.0.0.1:61755][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:62284][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62283][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:62285][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.11, 127.0.0.1:62269][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.00, 127.0.0.1:62282][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:62282][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:62282][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:62282][0m
+[32mHTTP GET /fr/play/ 302 [0.03, 127.0.0.1:62282][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:62282][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.08, 127.0.0.1:63936][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:63936][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:63942][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:63936][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:63942][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:63945][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:63942][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:63944][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:63945][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:63946][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:63943][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:63944][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:63944][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:63944][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:63943][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:63945][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:63942][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:63946][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:63944][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:63943][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:63943][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:63943][0m
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:63943][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:63943][0m
+[32mHTTP GET /fr/play/ 302 [0.04, 127.0.0.1:63943][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:63943][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:63943][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:63943][0m
+[32mHTTP POST /fr/logout 302 [0.06, 127.0.0.1:63943][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:63943][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:63943][0m
+[32mHTTP POST /fr/ 302 [0.49, 127.0.0.1:63943][0m
+[32mHTTP GET / 302 [0.07, 127.0.0.1:63943][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:63943][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:63943][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 225, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 266, in get_context_data
+    ).get_or_set_cache()
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 28, in get_or_set_cache
+    self.set_sector_data(self.sector_pk)
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 218, in set_sector_data
+    for module in Module.objects.filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+[35;1mHTTP GET /fr/play/ 500 [0.10, 127.0.0.1:63943][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:63943][0m
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:64064][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:64064][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 225, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 266, in get_context_data
+    ).get_or_set_cache()
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 28, in get_or_set_cache
+    self.set_sector_data(self.sector_pk)
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 218, in set_sector_data
+    for module in Module.objects.filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+[35;1mHTTP GET /fr/play/ 500 [0.10, 127.0.0.1:64064][0m
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.07, 127.0.0.1:64144][0m
+[mHTTP GET /static/css/style.css 200 [0.15, 127.0.0.1:64144][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:64144][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:64144][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:64144][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:64152][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:64154][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.01, 127.0.0.1:64144][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:64153][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:64150][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:64151][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:64151][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:64150][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:64151][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:64151][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:64151][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 225, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 267, in get_context_data
+    ).get_or_set_cache()
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 28, in get_or_set_cache
+    self.set_sector_data(self.sector_pk)
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 218, in set_sector_data
+    for module in Module.objects.filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+[35;1mHTTP GET /fr/play/ 500 [0.10, 127.0.0.1:64151][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:64151][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.07, 127.0.0.1:55635][0m
+[mHTTP GET /fr/ 200 [0.08, 127.0.0.1:55635][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:55635][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:55635][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:55650][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.21, 127.0.0.1:55648][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.22, 127.0.0.1:55649][0m
+[mHTTP GET /static/css/output.css 200 [0.22, 127.0.0.1:55647][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.21, 127.0.0.1:55651][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55635][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55635][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:55649][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:55649][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55649][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55649][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:55649][0m
+[32mHTTP GET /fr/play/ 302 [0.03, 127.0.0.1:55649][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:55649][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55635][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55649][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55651][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55647][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55635][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55649][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55651][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55648][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=data["archetype"]).values('module_id', 'module_id__name', 'module_id_effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.14, 127.0.0.1:55648][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:55741][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55741][0m
+[32mHTTP GET / 302 [0.05, 127.0.0.1:55741][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:55741][0m
+[32mHTTP POST /fr/logout 302 [0.08, 127.0.0.1:55741][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:55741][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:55741][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:55812][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:55812][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:55812][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55819][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55812][0m
+[32mHTTP POST /fr/ 302 [0.50, 127.0.0.1:55812][0m
+[32mHTTP GET / 302 [0.03, 127.0.0.1:55812][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:55812][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.00, 127.0.0.1:55812][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.00, 127.0.0.1:55833][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:55812][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 273, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 314, in get_context_data
+    ).get_or_set_cache()
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 28, in get_or_set_cache
+    self.set_sector_data(self.sector_pk)
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 41, in set_sector_data
+    sector_pc, sector_npc = GetDataFromDB.get_pc_from_sector(self.sector_pk)
+  File "D:\wamp64\www\recorp\core\backend\get_data.py", line 264, in get_pc_from_sector
+    Player.objects.filter(sector_id=pk)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2170, in add_fields
+    cols.append(join_info.transform_function(target, final_alias))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1846, in transform
+    return self.try_transform(wrapped, name)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1356, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'module_id_list' for BigAutoField or join on the field not permitted.
+[35;1mHTTP GET /fr/play/ 500 [0.08, 127.0.0.1:55812][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:55833][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP POST /fr/logout 302 [0.11, 127.0.0.1:56188][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:56188][0m
+[mHTTP GET /fr/ 200 [0.04, 127.0.0.1:56188][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP POST /fr/ 302 [0.49, 127.0.0.1:56342][0m
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:56346][0m
+[36mHTTP GET /static/js/quill/quill.js 304 [0.00, 127.0.0.1:56344][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.04, 127.0.0.1:56345][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=data["archetype"]).values('module_id', 'module_id__name', 'module_id_effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:56346][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:56372][0m
+[32mHTTP GET /fr/play/create_character 302 [0.00, 127.0.0.1:56372][0m
+[32mHTTP GET /?login_redirect=/fr/play/create_character 302 [0.01, 127.0.0.1:56372][0m
+[mHTTP GET /fr/?login_redirect=/fr/play/create_character 200 [0.01, 127.0.0.1:56372][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56372][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56372][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56383][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:56434][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56434][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56439][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56441][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56440][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56442][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56443][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56439][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56440][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:56434][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56441][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56441][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56440][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56443][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:56442][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56434][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56439][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.00, 127.0.0.1:56441][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56445][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56445][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56441][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56441][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56441][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56445][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=data["archetype"]).values('module_id', 'module_id__name', 'module_id_effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.10, 127.0.0.1:56434][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:56571][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:56571][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:56577][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:56581][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:56579][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:56578][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:56580][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56577][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56571][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56581][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56579][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56581][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56580][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56578][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:56577][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56579][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56571][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56581][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56583][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56584][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56581][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56581][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56581][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56584][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=data["archetype"]).values('module_id', 'module_id__name', 'module_id_effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:56571][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56618][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:56618][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:56618][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:56627][0m
+[mHTTP GET /static/css/output.css 200 [0.21, 127.0.0.1:56626][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56618][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.21, 127.0.0.1:56628][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.21, 127.0.0.1:56629][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.21, 127.0.0.1:56630][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56627][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56626][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56618][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56630][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56628][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56629][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56626][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56627][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:56630][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56638][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56639][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56627][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56627][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56627][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56638][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__name', 'module_id_effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.10, 127.0.0.1:56618][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56677][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:56677][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:56677][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:56684][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:56686][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:56690][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56677][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56688][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:56685][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56684][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56686][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56690][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56685][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56677][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56688][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56684][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56686][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:56690][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56694][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56695][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56684][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56684][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56684][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56694][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__name', 'module_id_effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'module_id_effect' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:56677][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.09, 127.0.0.1:56729][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:56731][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:56732][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56731][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56732][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:56730][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:56729][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:56734][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56733][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56732][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56734][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56733][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56731][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56732][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:56734][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56741][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56741][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56731][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56731][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56731][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56741][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 209, in post
+    if "DEFENSE" in archetype_module_list[module]["type"]:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 418, in __getitem__
+    raise TypeError(
+TypeError: QuerySet indices must be integers or slices, not dict.
+[35;1mHTTP POST /fr/play/create_character 500 [0.06, 127.0.0.1:56731][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:56814][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:56814][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:56821][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:56820][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56823][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:56822][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:56824][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56814][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56821][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56820][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56823][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56822][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56823][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56820][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:56824][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56821][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56814][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56823][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56826][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56827][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56820][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56820][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56820][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56826][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 207, in post
+    if "DEFENSE" in archetype_module_list[module]["type"]:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 418, in __getitem__
+    raise TypeError(
+TypeError: QuerySet indices must be integers or slices, not dict.
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:56814][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56909][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:56909][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:56915][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:56909][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:56915][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56918][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:56919][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:56916][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:56917][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56909][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56915][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56916][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56918][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56919][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56917][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56909][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56915][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:56918][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56921][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56922][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56916][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56916][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56916][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56921][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Incorrect string value: '\xEF\xBB\xBF</s...' for column 'description' at row 4
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 187, in execute
+    return self.cursor.execute(query, new_args)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 1366 (HY000): Incorrect string value: '\xEF\xBB\xBF</s...' for column 'description' at row 4
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 193, in post
+    new_player.save()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 187, in execute
+    return self.cursor.execute(query, new_args)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+django.db.utils.DatabaseError: (1366, "1366 (HY000): Incorrect string value: '\\xEF\\xBB\\xBF</s...' for column 'description' at row 4", 'HY000')
+[35;1mHTTP POST /fr/play/create_character 500 [0.42, 127.0.0.1:56909][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\recorp\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:57632][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:57642][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:57644][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:57642][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:57646][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:57645][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:57647][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57642][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57644][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:57643][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:57645][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:57646][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:57642][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:57643][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:57644][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:57647][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:57646][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:57645][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:57642][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:57653][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:57654][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57644][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57644][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57644][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:57653][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 207, in post
+    if "DEFENSE" in archetype_module_list[module]["type"]:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 418, in __getitem__
+    raise TypeError(
+TypeError: QuerySet indices must be integers or slices, not dict.
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:57644][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.06, 127.0.0.1:57946][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:57946][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:57946][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:57950][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:57951][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:57953][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:57954][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:57952][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57946][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57953][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57953][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57946][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57953][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:57961][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57961][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57967][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57968][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57969][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57970][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57971][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57967][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:57961][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:57968][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:57969][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.02, 127.0.0.1:57973][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.02, 127.0.0.1:57968][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.02, 127.0.0.1:57970][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:57971][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.02, 127.0.0.1:57967][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.02, 127.0.0.1:57961][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.03, 127.0.0.1:57969][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:57970][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:57973][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57969][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57969][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57969][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:57973][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 207, in post
+    if "DEFENSE" in archetype_module_list[module]["type"]:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 418, in __getitem__
+    raise TypeError(
+TypeError: QuerySet indices must be integers or slices, not dict.
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:57961][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.08, 127.0.0.1:58033][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:58034][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:58033][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:58035][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:58038][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:58036][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58033][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:58037][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58034][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:58035][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58038][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58038][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:58033][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58034][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58037][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:58036][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:58035][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58038][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58044][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58045][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58034][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58034][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58034][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58044][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 207, in post
+    if "DEFENSE" in module["type"]:
+KeyError: 'type'
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:58034][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.09, 127.0.0.1:58091][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:58092][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.00, 127.0.0.1:58092][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:58090][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58092][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:58090][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58092][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:58088][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:58089][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:58087][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.19, 127.0.0.1:58091][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58088][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:58087][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58089][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:58090][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:58092][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58094][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58088][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58103][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58103][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58090][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58090][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58090][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58103][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:58091][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:58090][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:58087][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:58092][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58089][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:58088][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:58094][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58087][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58092][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:58089][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58090][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58090][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58092][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.02, 127.0.0.1:58089][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.02, 127.0.0.1:58088][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58094][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.02, 127.0.0.1:58087][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58090][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58103][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58103][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58090][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58090][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58103][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58090][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:58145][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.17, 127.0.0.1:58152][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:58151][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58152][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:58155][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:58153][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:58145][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:58154][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58151][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:58155][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58153][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58151][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58152][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:58154][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:58145][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58155][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58153][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:58151][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58157][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58157][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58152][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58152][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58152][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58157][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2161, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1823, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'type' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 194, in post
+    archetype_module_list = ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'type', 'module_id__name', 'module_id__effect', 'module_id__type')
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1313, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1308, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2460, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2194, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'type' into field. Choices are: archetype, archetype_id, created_at, id, module, module_id, updated_at
+[35;1mHTTP POST /fr/play/create_character 500 [0.12, 127.0.0.1:58152][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:58212][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:58212][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:58212][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:58212][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:58212][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:58218][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:58221][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:58219][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58212][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:58220][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:58222][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:58219][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:58220][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58222][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58221][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58212][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:58218][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58219][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58224][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58225][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:58219][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58219][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58219][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58224][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 219, in post
+    current_cargo_size = module["effect"]['capacity']
+KeyError: 'effect'
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:58212][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.08, 127.0.0.1:58281][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:58281][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:58288][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58281][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:58287][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:58289][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58288][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:58290][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:58291][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:58289][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58291][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:58281][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58287][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58288][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58290][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58289][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:58291][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:58287][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58293][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58294][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58288][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58288][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58288][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58294][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+KeyError: 'ship'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 235, in post
+    print(new_player_ship)
+  File "D:\wamp64\www\recorp\core\models.py", line 593, in __str__
+    return f"{self.ship.name} : {self.player.name}"
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\fields\related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 623, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1404, in build_filter
+    return self._add_q(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 337, in get_prep_lookup
+    raise ValueError(
+ValueError: The QuerySet value for an exact lookup must be limited to one result using slicing.
+[35;1mHTTP POST /fr/play/create_character 500 [0.12, 127.0.0.1:58281][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/ 200 [0.22, 127.0.0.1:61057][0m
+[mHTTP GET /fr/play/create_character 200 [0.12, 127.0.0.1:61068][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:61068][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.22, 127.0.0.1:61071][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.05, 127.0.0.1:61068][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.03, 127.0.0.1:61071][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.28, 127.0.0.1:61072][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.04, 127.0.0.1:61071][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.31, 127.0.0.1:61070][0m
+[mHTTP GET /static/css/output.css 200 [0.34, 127.0.0.1:61073][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.35, 127.0.0.1:61069][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.12, 127.0.0.1:61068][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.04, 127.0.0.1:61069][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.05, 127.0.0.1:61073][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.05, 127.0.0.1:61071][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.06, 127.0.0.1:61068][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.09, 127.0.0.1:61070][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.11, 127.0.0.1:61072][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.07, 127.0.0.1:61069][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61082][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61082][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.02, 127.0.0.1:61068][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61068][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.02, 127.0.0.1:61068][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:61082][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:61068][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:61068][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61069][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:61072][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:61070][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:61073][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:61071][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.02, 127.0.0.1:61069][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:61072][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:61070][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.03, 127.0.0.1:61068][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.03, 127.0.0.1:61072][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.03, 127.0.0.1:61068][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.04, 127.0.0.1:61070][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.02, 127.0.0.1:61072][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.05, 127.0.0.1:61071][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.05, 127.0.0.1:61073][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.05, 127.0.0.1:61069][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.02, 127.0.0.1:61082][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:61082][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:61068][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:61068][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61068][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:61082][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/create_character 500 [0.62, 127.0.0.1:61068][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader

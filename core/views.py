@@ -26,7 +26,7 @@ from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
-from core.models import Player, Sector, Archetype
+from core.models import Player, Sector, Archetype, PlayerShip, ArchetypeModule, PlayerShipModule
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
 
@@ -71,7 +71,6 @@ class IndexView(TemplateView):
     def post(self, request, *args, **kwargs):
         data_to_send = {}
         url = self.request.path
-        print("ok")
         try:
             user = authenticate(
                 self.request,
@@ -192,12 +191,57 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 )
                 
                 new_player.save()
+                archetype_module_list = ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__type', 'module_id__name', 'module_id__effect', 'module_id__type')
+                module_list = [e['module_id'] for e in archetype_module_list]
+                archetype_ship = Archetype.objects.filter(id=data["archetype"]).values_list('ship_id', flat=True)
+                
+                current_hp = 0
+                current_movement = 0
+                current_ballistic_defense = 0
+                current_thermal_defense = 0
+                current_missile_defense = 0
+                current_cargo_size = 0
+                
+                for module in archetype_module_list:
+                    if "DEFENSE" in module["module_id__type"]:
+                        if "BALLISTIC" in module["module_id__type"]:
+                            current_ballistic_defense = module["module_id__effect"]["defense"]
+                        elif "THERMAL" in module["module_id__type"]:
+                            current_thermal_defense = module["module_id__effect"]["defense"]
+                        elif "MISSILE" in module["module_id__type"]:
+                            current_missile_defense = module["module_id__effect"]["defense"]
+                    elif "MOVEMENT" in module["module_id__type"]:
+                        current_movement = module["module_id__effect"]['bonus_mvt']
+                    elif "HULL" in module["module_id__type"]:
+                        current_hp = module["module_id__effect"]['hull_hp']
+                    elif "HOLD" in module["module_id__type"]:
+                        current_cargo_size = module["module_id__effect"]['capacity']
+                        
+                new_player_ship = PlayerShip(
+                    is_current_ship=True,
+                    is_reversed=False,
+                    current_hp=current_hp,
+                    current_cargo_size=current_cargo_size,
+                    current_movement=current_movement,
+                    current_missile_defense=current_missile_defense,
+                    current_ballistic_defense=current_ballistic_defense,
+                    current_thermal_defense=current_thermal_defense,
+                    status="FULL",
+                    player_id=new_player.id,
+                    ship_id=archetype_ship
+                )
+                
+                new_player_ship.save()
+                for id in module_list:
+                    PlayerShipModule.objects.create(
+                        module_id=id,
+                        player_ship_id=new_player_ship.id
+                    )
                 
                 upload_file = UploadThisImage(request.FILES.get('file'), "users", new_player.id, new_player.id)
                 upload_file.save()
                 
             else:
-                print("putain non !")
                 print(form.errors)
 
 
@@ -292,9 +336,9 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             }
 
             for d in data["sector_element"]:
-                d["data"]["type_translated"] = _(d["data"]["type"])
+                d["data"]["type_translated"] = _(d["data"]["module_id__type"])
                 d["data"]["description"] = _(d["data"]["description"])
-                if d["data"]["type"] != "warpzone":
+                if d["data"]["module_id__type"] != "warpzone":
                     d["resource"]["translated_text_resource"] = (
                         _("Resources available"),
                     )

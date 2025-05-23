@@ -14,7 +14,6 @@
             "current_cargo_size": 5,
             "status": "WOUNDED",
             "is_current_ship": true,
-            "module_id_list": [95, 35, 36, 23, 78, 92],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -35,7 +34,6 @@
             "current_cargo_size": 5,
             "status": "WOUNDED",
             "is_current_ship": true,
-            "module_id_list": [9, 23, 30, 36, 71, 101],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -56,7 +54,6 @@
             "current_cargo_size": 5,
             "status": "FULL",
             "is_current_ship": true,
-            "module_id_list": [1, 16, 23, 30, 36, 108],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -77,7 +74,6 @@
             "current_cargo_size": 8,
             "status": "FULL",
             "is_current_ship": true,
-            "module_id_list": [2, 9, 16, 24, 30, 37, 57, 65, 102, 108],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }
@@ -98,7 +94,6 @@
             "current_cargo_size": 8,
             "status": "FULL",
             "is_current_ship": true,
-            "module_id_list": [2, 9, 16, 24, 30, 37, 57, 65, 102, 108],
             "created_at": "2020-04-22 12:38:15",
             "updated_at": "2020-04-22 12:38:15"
         }

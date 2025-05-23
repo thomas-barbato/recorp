@@ -482,6 +482,16 @@ class Module(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.type}"
+    
+    
+class ArchetypeModule(models.Model):
+    archetype = models.ForeignKey(Archetype, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.archetype.name} - {self.module.name} [{self.module.effect}]"
 
 
 class PlayerLog(models.Model):
@@ -519,7 +529,7 @@ class PlayerSkill(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, default=1)
     level = models.PositiveIntegerField(default=0)
-    progress = models.FloatField(default=1.0)
+    progress = models.FloatField(default=0.0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -565,7 +575,6 @@ class PlayerShip(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     is_current_ship = models.BooleanField(default=True)
     is_reversed = models.BooleanField(default=False)
-    module_id_list = models.JSONField(null=True)
     current_hp = models.SmallIntegerField(default=100)
     max_hp = models.SmallIntegerField(default=100)
     current_movement = models.PositiveSmallIntegerField(default=10)
@@ -588,9 +597,21 @@ class PlayerShipResource(models.Model):
     source = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.source.name} - {self.resource.name} - quantity : {self.quantity}"
+    
+    
+class PlayerShipModule(models.Model):
+    player_ship = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.player_ship.player.name} - {self.player_ship.ship.name} - module : {self.module.name}"
 
 
 class FactionLeader(models.Model):

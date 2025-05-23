@@ -1,0 +1,391 @@
+[{
+    "model": "core.archetypemodule",
+    "pk": 1,
+    "fields": {
+        "archetype_id": 1,
+        "module_id": 9,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 2,
+    "fields": {
+        "archetype_id": 1,
+        "module_id": 23,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 3,
+    "fields": {
+        "archetype_id": 1,
+        "module_id": 37,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 4,
+    "fields": {
+        "archetype_id": 1,
+        "module_id": 101,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 5,
+    "fields": {
+        "archetype_id": 1,
+        "module_id": 30,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 6,
+    "fields": {
+        "archetype_id": 1,
+        "module_id": 78,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 7,
+    "fields": {
+        "archetype_id": 2,
+        "module_id": 1,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 8,
+    "fields": {
+        "archetype_id": 2,
+        "module_id": 50,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 9,
+    "fields": {
+        "archetype_id": 2,
+        "module_id": 93,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 10,
+    "fields": {
+        "archetype_id": 2,
+        "module_id": 30,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 11,
+    "fields": {
+        "archetype_id": 2,
+        "module_id": 24,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 12,
+    "fields": {
+        "archetype_id": 2,
+        "module_id": 36,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 13,
+    "fields": {
+        "archetype_id": 3,
+        "module_id": 1,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 14,
+    "fields": {
+        "archetype_id": 3,
+        "module_id": 64,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 15,
+    "fields": {
+        "archetype_id": 3,
+        "module_id": 30,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 16,
+    "fields": {
+        "archetype_id": 3,
+        "module_id": 23,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 17,
+    "fields": {
+        "archetype_id": 3,
+        "module_id": 36,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 18,
+    "fields": {
+        "archetype_id": 3,
+        "module_id": 58,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 19,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 1,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 20,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 23,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 21,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 36,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 22,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 31,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 23,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 92,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 24,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 78,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 25,
+    "fields": {
+        "archetype_id": 4,
+        "module_id": 108,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 26,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 1,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 27,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 23,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 28,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 36,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 29,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 30,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 30,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 43,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 31,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 50,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 32,
+    "fields": {
+        "archetype_id": 5,
+        "module_id": 95,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 33,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 10,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 34,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 23,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 35,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 37,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 36,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 30,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 37,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 92,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 38,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 44,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.archetypemodule",
+    "pk": 39,
+    "fields": {
+        "archetype_id": 6,
+        "module_id": 56,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}
+]
