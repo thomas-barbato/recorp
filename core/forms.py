@@ -157,17 +157,7 @@ class CreateCharacterForm(forms.ModelForm):
         model = Player
         fields = ["name", "description", "image", "faction", "archetype"]
         exclude = ["user_id"]
-
-    def save(self, *args, **kwargs):
-        print(self.instance)
-        Player.objects.create(
-            name=self.instance.name.lower(),
-            image="0.gif" if self.instance.image else None,
-            description=self.instance.description,
-            faction_id=self.instance.faction.id,
-            archetype_id=self.instance.archetype.id,
-            user_id=7
-        )
+        
     
     name = forms.CharField(
         widget=TextInput(

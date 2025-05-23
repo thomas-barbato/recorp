@@ -35295,3 +35295,1456 @@ Traceback (most recent call last):
     fp = io.BytesIO(fp.read())
 AttributeError: 'MultiValueDict' object has no attribute 'read'
 [35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:57635][0m
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.36, 127.0.0.1:60376][0m
+[mHTTP GET /fr/ 200 [0.27, 127.0.0.1:60376][0m
+[mHTTP GET /static/css/style.css 200 [0.24, 127.0.0.1:60376][0m
+[mHTTP GET /static/css/output.css 200 [0.25, 127.0.0.1:60387][0m
+[mHTTP GET /static/ux/leftArrow-icon.svg 200 [0.02, 127.0.0.1:60394][0m
+[mHTTP GET /static/ux/rightArrow-icon.svg 200 [0.03, 127.0.0.1:60376][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:60376][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 218, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 259, in get_context_data
+    ).get_or_set_cache()
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 28, in get_or_set_cache
+    self.set_sector_data(self.sector_pk)
+  File "D:\wamp64\www\recorp\core\backend\store_in_cache.py", line 218, in set_sector_data
+    for module in Module.objects.filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+[35;1mHTTP GET /fr/play/ 500 [0.52, 127.0.0.1:60376][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:60394][0m
+[32mHTTP GET /play 302 [0.04, 127.0.0.1:60376][0m
+[32mHTTP GET /fr/play/ 302 [0.04, 127.0.0.1:60376][0m
+[mHTTP GET /fr/play/create_character 200 [0.37, 127.0.0.1:60376][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:60444][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.02, 127.0.0.1:60445][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.06, 127.0.0.1:60447][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.08, 127.0.0.1:60446][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 190, in post
+    UploadThisImage(request.FILES, "users", new_player.id, new_player.id).save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 11, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.14, 127.0.0.1:60446][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:60468][0m
+[32mHTTP GET /fr/play/create_character 302 [0.01, 127.0.0.1:60468][0m
+[32mHTTP GET /?login_redirect=/fr/play/create_character 302 [0.01, 127.0.0.1:60468][0m
+[mHTTP GET /fr/?login_redirect=/fr/play/create_character 200 [0.01, 127.0.0.1:60468][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:60468][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:60475][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:60476][0m
+D:\wamp64\www\recorp\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:60578][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:60578][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:60584][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:60585][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:60587][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:60588][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:60586][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60584][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:60585][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:60587][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.03, 127.0.0.1:60578][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:60588][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:60584][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:60585][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:60578][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:60586][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:60587][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.05, 127.0.0.1:60585][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:60589][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:60590][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.02, 127.0.0.1:60585][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60585][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60585][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:60590][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 190, in post
+    UploadThisImage(request.FILES, "users", new_player.id, new_player.id).save()
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 11, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.14, 127.0.0.1:60578][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:60659][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:60662][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:60664][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:60660][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60662][0m
+[mHTTP GET /static/css/style.css 200 [0.21, 127.0.0.1:60663][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.21, 127.0.0.1:60659][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.21, 127.0.0.1:60661][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60664][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:60660][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:60663][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:60664][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:60662][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:60661][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:60659][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.02, 127.0.0.1:60660][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60663][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:60664][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:60671][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:60672][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60660][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:60662][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60662][0m
+[mHTTP GET /fr/play/create_character 200 [0.05, 127.0.0.1:60673][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:60673][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:60678][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:60679][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:60680][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:60681][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:60682][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:60673][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:60678][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:60680][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:60681][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:60681][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:60678][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:60679][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:60680][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:60673][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:60682][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:60679][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:60684][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:60684][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:60680][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:60680][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:60680][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:60684][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 190, in post
+    file = UploadThisImage(request.FILES, "users", new_player.id, new_player.id)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 11, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.12, 127.0.0.1:60673][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:53454][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:53454][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:53464][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:53462][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53464][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:53454][0m
+[mHTTP GET /static/css/output.css 200 [0.21, 127.0.0.1:53460][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.21, 127.0.0.1:53463][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.21, 127.0.0.1:53461][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:53462][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:53464][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:53461][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:53460][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:53462][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:53463][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53454][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53464][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:53460][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53467][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:53468][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53462][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53462][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53462][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.01, 127.0.0.1:53467][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 191, in post
+    avatar_file = UploadThisImage(request.FILES, "users", new_player.id, new_player.id)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 11, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.10, 127.0.0.1:53454][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.08, 127.0.0.1:53597][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:53601][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:53600][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:53597][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:53599][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:53602][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:53601][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:53598][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53600][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:53597][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:53602][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:53599][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53597][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:53601][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:53602][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:53598][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:53600][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53599][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53609][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:53609][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53601][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53601][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53601][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53609][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 191, in post
+    avatar_file = UploadThisImage(request.FILES, "users", new_player.id, new_player.id)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 12, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.10, 127.0.0.1:53601][0m
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:53736][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:53736][0m
+[mHTTP GET /static/css/output.css 200 [0.17, 127.0.0.1:53742][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:53736][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53742][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:53746][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:53743][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:53744][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:53742][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:53745][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:53746][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:53744][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53745][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:53746][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:53736][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:53743][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:53742][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53744][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53748][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:53749][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53742][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53742][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53742][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53748][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 191, in post
+    avatar_file = UploadThisImage(request.FILES, "users", new_player.id, new_player.id)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 11, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:53736][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.10, 127.0.0.1:53802][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:53797][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:53802][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:53797][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:53797][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:53799][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:53800][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:53797][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.21, 127.0.0.1:53801][0m
+[mHTTP GET /static/css/output.css 200 [0.21, 127.0.0.1:53796][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.22, 127.0.0.1:53798][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:53796][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:53799][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:53801][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:53800][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53797][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:53798][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53796][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53811][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:53812][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53799][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53799][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53799][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53811][0m
+[mHTTP GET /fr/play/create_character 200 [0.04, 127.0.0.1:53814][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53814][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53819][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:53820][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:53821][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:53822][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53823][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:53814][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53819][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:53820][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:53821][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:53823][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53820][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:53814][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:53821][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:53819][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53822][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:53820][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53825][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:53825][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53820][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53820][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53820][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53825][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 190, in post
+    avatar_file = UploadThisImage(request.FILES, "users", new_player.id, new_player.id)
+  File "D:\wamp64\www\recorp\core\backend\tiles.py", line 11, in __init__
+    self.file = Image.open(file)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:53814][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:54549][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:54549][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:54549][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:54555][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:54556][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:54559][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:54558][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:54557][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.03, 127.0.0.1:54555][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.03, 127.0.0.1:54549][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:54556][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:54557][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:54559][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:54555][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:54558][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54549][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:54559][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.02, 127.0.0.1:54561][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.02, 127.0.0.1:54562][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:54556][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54556][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54556][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54561][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    os.path.join(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\ntpath.py", line 117, in join
+    genericpath._check_arg_types('join', path, *paths)
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 152, in _check_arg_types
+    raise TypeError(f'{funcname}() argument must be str, bytes, or '
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'int'
+[35;1mHTTP POST /fr/play/create_character 500 [0.10, 127.0.0.1:54549][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:54635][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:54641][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:54635][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54641][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:54643][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:54642][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:54644][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54635][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:54645][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:54643][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:54642][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:54645][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:54641][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:54635][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:54644][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:54643][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54642][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:54645][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:54648][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:54649][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54641][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54641][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54641][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54648][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 195, in post
+    os.path.join(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\ntpath.py", line 117, in join
+    genericpath._check_arg_types('join', path, *paths)
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 152, in _check_arg_types
+    raise TypeError(f'{funcname}() argument must be str, bytes, or '
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'int'
+[35;1mHTTP POST /fr/play/create_character 500 [0.12, 127.0.0.1:54641][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:54703][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:54703][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:54703][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:54703][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:54713][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:54703][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:54711][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:54712][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:54710][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:54709][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:54713][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.00, 127.0.0.1:54713][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:54703][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:54711][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:54712][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54709][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:54710][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.00, 127.0.0.1:54711][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:54715][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:54716][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54710][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54710][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54710][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54715][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:54896][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.17, 127.0.0.1:54904][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:54896][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:54902][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:54904][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54896][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:54903][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:54905][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:54906][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:54902][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:54896][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:54905][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:54906][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:54903][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:54904][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:54902][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54896][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:54905][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:54908][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:54909][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54904][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54904][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54904][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54909][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 194, in post
+    os.path.join(
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\ntpath.py", line 117, in join
+    genericpath._check_arg_types('join', path, *paths)
+  File "C:\Users\belia\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 152, in _check_arg_types
+    raise TypeError(f'{funcname}() argument must be str, bytes, or '
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'int'
+[35;1mHTTP POST /fr/play/create_character 500 [0.07, 127.0.0.1:54904][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.06, 127.0.0.1:55156][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:55156][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:55156][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:55156][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.17, 127.0.0.1:55161][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:55157][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:55158][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:55159][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55161][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:55160][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55156][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55159][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55158][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55160][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55161][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55157][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55156][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.00, 127.0.0.1:55159][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55168][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55169][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55156][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55156][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55156][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55168][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 209, in post
+    save_to = os.path.join(self.save_path, "0.gif")
+AttributeError: 'CreateCharacterView' object has no attribute 'save_path'
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:55156][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55235][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:55235][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:55243][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:55245][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:55242][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:55244][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:55241][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55243][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:55235][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55245][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55242][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55244][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55241][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55243][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55242][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55245][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:55235][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55244][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55247][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55248][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55245][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55245][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55245][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55248][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'MultiValueDict' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 210, in post
+    file = Image.open(request.FILES)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'MultiValueDict' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.11, 127.0.0.1:55235][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.09, 127.0.0.1:55371][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:55373][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:55375][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:55373][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:55374][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:55382][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:55372][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:55371][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55375][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55382][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:55374][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55372][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55375][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55371][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55373][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55382][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55372][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55374][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55383][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55384][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:55373][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55374][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55373][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55383][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 210, in post
+    file = Image.open(request.FILES[0])
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 0
+[35;1mHTTP POST /fr/play/create_character 500 [0.17, 127.0.0.1:55373][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55444][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:55447][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:55446][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:55447][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:55444][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:55449][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55446][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:55445][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:55448][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55447][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55444][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55445][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55448][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55449][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55446][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55447][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55444][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55448][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55458][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55459][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55447][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55447][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55447][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55458][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 210, in post
+    file = Image.open(request.FILES.file)
+AttributeError: 'MultiValueDict' object has no attribute 'file'
+[35;1mHTTP POST /fr/play/create_character 500 [0.12, 127.0.0.1:55447][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55509][0m
+[mHTTP GET /static/css/style.css 200 [0.20, 127.0.0.1:55508][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:55506][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:55508][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:55510][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.21, 127.0.0.1:55505][0m
+[mHTTP GET /static/css/output.css 200 [0.21, 127.0.0.1:55507][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.21, 127.0.0.1:55509][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55506][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55510][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55505][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55506][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55508][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55505][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55510][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55509][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55508][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55516][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55516][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55508][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55508][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55508][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55516][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 211, in post
+    file = Image.open(request.FILES.file)
+AttributeError: 'MultiValueDict' object has no attribute 'file'
+[35;1mHTTP POST /fr/play/create_character 500 [0.13, 127.0.0.1:55508][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55635][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.17, 127.0.0.1:55643][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:55643][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:55643][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:55643][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:55635][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:55643][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:55642][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:55644][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:55645][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:55646][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55645][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55646][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55643][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55642][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55635][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55644][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55645][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55648][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55649][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55643][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55643][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55643][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55648][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'NoneType' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 210, in post
+    file = Image.open(request.FILES.get('file'))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'NoneType' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.13, 127.0.0.1:55643][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.08, 127.0.0.1:55777][0m
+[mHTTP GET /static/css/style.css 200 [0.21, 127.0.0.1:55781][0m
+[mHTTP GET /static/css/output.css 200 [0.21, 127.0.0.1:55780][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.22, 127.0.0.1:55778][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55780][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:55781][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.23, 127.0.0.1:55782][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.23, 127.0.0.1:55779][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.23, 127.0.0.1:55777][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55778][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55780][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55777][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55781][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.02, 127.0.0.1:55779][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.02, 127.0.0.1:55778][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55782][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55780][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55777][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55789][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55789][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:55781][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55781][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55781][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55789][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 209, in post
+    print(request.FILES["file"].read())
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'file'
+[35;1mHTTP POST /fr/play/create_character 500 [0.13, 127.0.0.1:55781][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55824][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:55825][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:55827][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:55825][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55827][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:55828][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:55824][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:55826][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:55829][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55827][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55828][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55824][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55825][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55829][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55826][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55827][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55828][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:55824][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55836][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55837][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55825][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55825][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55825][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55836][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'NoneType' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 211, in post
+    file = Image.open(request.FILES.get('file'))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'NoneType' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:55825][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55942][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:55941][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:55941][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:55945][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:55944][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55945][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:55943][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:55942][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:55946][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55941][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55944][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55943][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55942][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55946][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.02, 127.0.0.1:55945][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:55941][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55944][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:55942][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55952][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55953][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55941][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55941][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55941][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55952][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/create_character 500 [0.09, 127.0.0.1:55941][0m
+[mHTTP GET /fr/play/create_character 200 [0.03, 127.0.0.1:55965][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55965][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55970][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:55971][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:55972][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:55973][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55974][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:55965][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55970][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55973][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55971][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:55971][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:55972][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55965][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55970][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55974][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:55973][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:55976][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.00, 127.0.0.1:55971][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:55976][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:55971][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55971][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55971][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55976][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 210, in post
+    print(request.FILES[0])
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 0
+[35;1mHTTP POST /fr/play/create_character 500 [0.10, 127.0.0.1:55965][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56045][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:56045][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:56051][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:56045][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56051][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:56052][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56054][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:56055][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:56053][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56051][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56052][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56054][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56045][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56053][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56055][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56052][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56051][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.01, 127.0.0.1:56045][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56057][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56057][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56051][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56051][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56051][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56057][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3247, in open
+    fp.seek(0)
+AttributeError: 'NoneType' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 212, in post
+    file = Image.open(request.FILES.get('file'))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\PIL\Image.py", line 3249, in open
+    fp = io.BytesIO(fp.read())
+AttributeError: 'NoneType' object has no attribute 'read'
+[35;1mHTTP POST /fr/play/create_character 500 [0.13, 127.0.0.1:56045][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:56096][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:56096][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:56096][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:56103][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.18, 127.0.0.1:56104][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:56102][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:56106][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:56105][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56096][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:56104][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:56103][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:56096][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:56105][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:56106][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:56102][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:56104][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:56103][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:56096][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:56112][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:56113][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:56103][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56103][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56103][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:56112][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/create_character 500 [0.41, 127.0.0.1:56096][0m
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\tiles.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/create_character 200 [0.11, 127.0.0.1:58168][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:58168][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:58174][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:58177][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.19, 127.0.0.1:58175][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:58168][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:58176][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:58174][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:58178][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:58177][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:58175][0m
+[mHTTP GET /static/img/foreground/ships/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:58168][0m
+[mHTTP GET /static/img/ux/placeholder.svg 200 [0.01, 127.0.0.1:58174][0m
+[mHTTP GET /static/img/foreground/ships/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:58178][0m
+[mHTTP GET /static/img/foreground/ships/ship01-red-32px.png 200 [0.01, 127.0.0.1:58176][0m
+[mHTTP GET /static/img/foreground/ships/ship01-white-32px.png 200 [0.01, 127.0.0.1:58177][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:58175][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.00, 127.0.0.1:58168][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:58181][0m
+[36mHTTP GET /static/ckeditor/ckeditor.js.map 304 [0.00, 127.0.0.1:58182][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:58177][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:58177][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:58177][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:58182][0m
+Internal Server Error: /fr/play/create_character
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/create_character 500 [0.18, 127.0.0.1:58168][0m

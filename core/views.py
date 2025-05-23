@@ -3,6 +3,9 @@ import logging
 import urllib.request
 from urllib import request
 import json
+import os
+from PIL import Image
+from pathlib import Path
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LogoutView
@@ -24,7 +27,7 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
 from core.models import Player, Sector, Archetype
-from recorp.settings import LOGIN_REDIRECT_URL
+from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
 
 # logger = logging.getLogger("django")
@@ -172,7 +175,8 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 'archetype': request.POST.get('id_archetype'),
                 'image': request.POST.get('id_image'),
                 'description': request.POST.get('id_description'),
-                'user' : self.request.user.id
+                'user' : self.request.user.id,
+                'in_tutoriel_zone': True,
             }
             form = CreateCharacterForm(data, request.FILES)
             if form.is_valid():
@@ -186,8 +190,12 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     description=data["description"],
                     user_id=self.request.user.id
                 )
+                
                 new_player.save()
-                UploadThisImage(request.FILES, "users", new_player.id, new_player.id).save()
+                
+                upload_file = UploadThisImage(request.FILES.get('file'), "users", new_player.id, new_player.id)
+                upload_file.save()
+                
             else:
                 print("putain non !")
                 print(form.errors)

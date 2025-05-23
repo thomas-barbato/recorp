@@ -1,6 +1,6 @@
 from PIL import Image
-from recorp.settings import BASE_DIR
 from pathlib import Path
+from recorp.settings import BASE_DIR
 import os
 
 
@@ -12,6 +12,8 @@ class UploadThisImage:
         self.element_id = element_id
         self.category = category.lower()
         self.directory_name = directory_name
+        self.save_path = ""
+        
         if self.category == "foreground":
             self.parent_path = Path(
                 os.path.join(
@@ -19,8 +21,7 @@ class UploadThisImage:
                     "recorp",
                     "static",
                     "img",
-                    self.category,
-                    self.element_id,
+                    "foreground",
                 )
             )
         elif self.category == "users":
@@ -30,7 +31,8 @@ class UploadThisImage:
                     "recorp",
                     "static",
                     "img",
-                    self.category,
+                    str(self.category),
+                    str(self.element_id)
                 )
             )
         else:
@@ -40,7 +42,6 @@ class UploadThisImage:
                 )
             )
 
-        self.save_path = ""
 
     def __get_and_create_dir(self):
         if self.category == "users":
@@ -56,8 +57,7 @@ class UploadThisImage:
     def save(self):
         self.__get_and_create_dir()
         save_to = os.path.join(self.save_path, "0.gif")
-        print(save_to)
-        self.file.save(save_to, format="GIF", save_all=True, duration=100, loop=0)
+        self.file.save(save_to, format="GIF", save_all=True, append_images=[self.file], duration=100, loop=0)
 
     def get_save_path(self):
         return self.save_path
