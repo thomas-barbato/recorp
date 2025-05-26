@@ -56,6 +56,7 @@ from core.models import (
     NpcTemplate,
     NpcTemplateResource,
     NpcTemplateSkill,
+    SkillExperience
 )
 
 
@@ -71,6 +72,12 @@ class CustomAdminSite(admin.AdminSite):
                 "app_label": "my_test_app",
                 # "app_url": "/admin/test_view",
                 "models": [
+                    {
+                        "name": "set xp progress",
+                        "object_name": "set xp value progression per level",
+                        "admin_url": "/admin/set_xp_progression",
+                        "view_only": True,
+                    },
                     {
                         "name": "upload new image element",
                         "object_name": "upload new image element",
@@ -114,6 +121,10 @@ class CustomAdminSite(admin.AdminSite):
         # This doesn't work with urls += ...
         urls = [
             re_path(r"^my_view/$", self.admin_view(admin_index)),
+            re_path(r"^set_xp_progression/$",
+                self.admin_view(SetXpValueView.as_view()),
+                name="set-xp-progression",
+            ),
             re_path(
                 r"^upload_image_element/$",
                 self.admin_view(UploadImageView.as_view()),
@@ -1092,6 +1103,11 @@ class NpcToSectorUpdateDataView(LoginRequiredMixin, TemplateView):
                 faction_id=1
             )
         return JsonResponse(json.dumps({}), safe=False)
+    
+    
+class SetXpValueView(LoginRequiredMixin, TemplateView):
+    template_name = "set_xp_value.html"
+    model = SkillExperience
 
 
 class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):

@@ -26,7 +26,16 @@ from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
-from core.models import Player, Sector, Archetype, PlayerShip, ArchetypeModule, PlayerShipModule
+from core.models import (
+    Player, 
+    Sector, 
+    Archetype, 
+    Ship,
+    PlayerShip, 
+    ArchetypeModule, 
+    PlayerShipModule,  
+    PlayerSkill
+)
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
 
@@ -195,32 +204,41 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 module_list = [e['module_id'] for e in archetype_module_list]
                 archetype_ship = Archetype.objects.filter(id=data["archetype"]).values_list('ship_id', flat=True)
                 
-                current_hp = 0
-                current_movement = 0
-                current_ballistic_defense = 0
-                current_thermal_defense = 0
-                current_missile_defense = 0
-                current_cargo_size = 0
+                default_ship_values = Ship.objects.filter(id=archetype_ship).values(
+                    'default_hp',
+                    'default_movement',
+                    'default_ballistic_defense',
+                    'default_thermal_defense',
+                    'default_missile_defense'
+                )
                 
+                current_hp = default_ship_values['default_hp']
+                current_movement = default_ship_values['default_movement']
+                current_ballistic_defense = default_ship_values['default_ballistic_defense']
+                current_thermal_defense = default_ship_values['default_ballistic_defense']
+                current_missile_defense = default_ship_values['default_ballistic_defense']
+                current_cargo_size = 3
+                        
                 for module in archetype_module_list:
                     if "DEFENSE" in module["module_id__type"]:
                         if "BALLISTIC" in module["module_id__type"]:
-                            current_ballistic_defense = module["module_id__effect"]["defense"]
+                            current_ballistic_defense += module["module_id__effect"]["defense"]
                         elif "THERMAL" in module["module_id__type"]:
-                            current_thermal_defense = module["module_id__effect"]["defense"]
+                            current_thermal_defense += module["module_id__effect"]["defense"]
                         elif "MISSILE" in module["module_id__type"]:
-                            current_missile_defense = module["module_id__effect"]["defense"]
+                            current_missile_defense += module["module_id__effect"]["defense"]
                     elif "MOVEMENT" in module["module_id__type"]:
-                        current_movement = module["module_id__effect"]['bonus_mvt']
+                        current_movement += module["module_id__effect"]['bonus_mvt']
                     elif "HULL" in module["module_id__type"]:
-                        current_hp = module["module_id__effect"]['hull_hp']
+                        current_hp += module["module_id__effect"]['hull_hp']
                     elif "HOLD" in module["module_id__type"]:
-                        current_cargo_size = module["module_id__effect"]['capacity']
+                        current_cargo_size += module["module_id__effect"]['capacity']
                         
                 new_player_ship = PlayerShip(
                     is_current_ship=True,
                     is_reversed=False,
                     current_hp=current_hp,
+                    max_hp=current_hp,
                     current_cargo_size=current_cargo_size,
                     current_movement=current_movement,
                     current_missile_defense=current_missile_defense,
@@ -229,6 +247,10 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     status="FULL",
                     player_id=new_player.id,
                     ship_id=archetype_ship
+                )
+                
+                new_player_skills = PlayerSkill(
+                    
                 )
                 
                 new_player_ship.save()

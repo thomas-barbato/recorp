@@ -180,6 +180,8 @@ class ShipCategory(models.Model):
     )
     description = models.TextField(max_length=2500, blank=True)
     size = models.JSONField(null=True)
+    ship_category_hp = models.IntegerField(default=0, blank=False, null=False)
+    ship_category_movement = models.IntegerField(default=0, blank=False, null=False)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -191,17 +193,38 @@ class Ship(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     description = models.TextField(max_length=2500, blank=True)
     image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
-    module_slot_available = models.PositiveIntegerField(default=4)
+    module_slot_available = models.PositiveIntegerField(default=10)
+    
     default_hp = models.PositiveSmallIntegerField(default=100)
     default_movement = models.PositiveSmallIntegerField(default=10)
     ship_category = models.ForeignKey(
         ShipCategory, on_delete=models.SET_NULL, null=True
     )
+    default_ballistic_defense = models.PositiveSmallIntegerField(default=0)
+    default_thermal_defense = models.PositiveSmallIntegerField(default=0)
+    default_missile_defense = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name}"
+    
+    
+class ShipModuleLimitation(models.Model):
+    ship = models.ForeignKey(Ship, on_delete=models.CASCADE, related_name="ship_module_limitation", null=True)
+    defense_module_limitation = models.PositiveSmallIntegerField(default=3) 
+    weaponry_module_limitation = models.PositiveSmallIntegerField(default=1)
+    hold_module_limitation = models.PositiveSmallIntegerField(default=1)
+    movement_module_limitation = models.PositiveSmallIntegerField(default=1)
+    hull_module_limitation = models.PositiveSmallIntegerField(default=1)
+    repair_module_limitation = models.PositiveSmallIntegerField(default=1)
+    gathering_module_limitation = models.PositiveSmallIntegerField(default=1)
+    craft_module_limitation = models.PositiveSmallIntegerField(default=1)
+    research_module_limitation = models.PositiveSmallIntegerField(default=1)
+    electronic_warfare_module_limitation = models.PositiveSmallIntegerField(default=1)
+    colonization_module_limitation = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Archetype(models.Model):
@@ -272,6 +295,12 @@ class Skill(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+class SkillExperience(models.Model):
+    level = models.PositiveSmallIntegerField(default=0)
+    required_experience = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class SkillEffect(models.Model):

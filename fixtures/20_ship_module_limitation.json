@@ -1,0 +1,141 @@
+[{
+    "model": "core.shipmodulelimitation",
+    "pk": 1,
+    "fields": {
+        "ship": 1,
+        "defense_module_limitation": 3,
+        "weaponry_module_limitation": 2,
+        "hold_module_limitation": 1,
+        "movement_module_limitation": 3,
+        "hull_module_limitation": 1,
+        "repair_module_limitation": 1,
+        "gathering_module_limitation": 2,
+        "craft_module_limitation": 1,
+        "research_module_limitation": 1,
+        "electronic_warfare_module_limitation" : 3,
+        "colonization_module_limitation": 0,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.shipmodulelimitation",
+    "pk": 2,
+    "fields": {
+        "ship": 2,
+        "defense_module_limitation": 3,
+        "weaponry_module_limitation": 1,
+        "hold_module_limitation": 2,
+        "movement_module_limitation": 2,
+        "hull_module_limitation": 1,
+        "repair_module_limitation": 1,
+        "gathering_module_limitation": 2,
+        "craft_module_limitation": 2,
+        "research_module_limitation": 2,
+        "electronic_warfare_module_limitation" : 1,
+        "colonization_module_limitation": 0,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.shipmodulelimitation",
+    "pk": 3,
+    "fields": {
+        "ship": 3,
+        "defense_module_limitation": 3,
+        "weaponry_module_limitation": 1,
+        "hold_module_limitation": 2,
+        "movement_module_limitation": 3,
+        "hull_module_limitation": 2,
+        "repair_module_limitation": 3,
+        "gathering_module_limitation": 1,
+        "craft_module_limitation": 1,
+        "research_module_limitation": 1,
+        "electronic_warfare_module_limitation" : 1,
+        "colonization_module_limitation": 0,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.shipmodulelimitation",
+    "pk": 4,
+    "fields": {
+        "ship": 4,
+        "defense_module_limitation": 6,
+        "weaponry_module_limitation": 4,
+        "hold_module_limitation": 3,
+        "movement_module_limitation": 2,
+        "hull_module_limitation": 3,
+        "repair_module_limitation": 2,
+        "gathering_module_limitation": 0,
+        "craft_module_limitation": 0,
+        "research_module_limitation": 0,
+        "electronic_warfare_module_limitation" : 2,
+        "colonization_module_limitation": 1,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.shipmodulelimitation",
+    "pk": 4,
+    "fields": {
+        "ship": 4,
+        "defense_module_limitation": 6,
+        "weaponry_module_limitation": 4,
+        "hold_module_limitation": 3,
+        "movement_module_limitation": 2,
+        "hull_module_limitation": 3,
+        "repair_module_limitation": 2,
+        "gathering_module_limitation": 0,
+        "craft_module_limitation": 0,
+        "research_module_limitation": 0,
+        "electronic_warfare_module_limitation" : 2,
+        "colonization_module_limitation": 1,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.shipmodulelimitation",
+    "pk": 5,
+    "fields": {
+        "ship": 5,
+        "defense_module_limitation": 3,
+        "weaponry_module_limitation": 3,
+        "hold_module_limitation": 2,
+        "movement_module_limitation": 2,
+        "hull_module_limitation": 2,
+        "repair_module_limitation": 1,
+        "gathering_module_limitation": 0,
+        "craft_module_limitation": 0,
+        "research_module_limitation": 0,
+        "electronic_warfare_module_limitation" : 1,
+        "colonization_module_limitation": 0,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+},
+{
+    "model": "core.shipmodulelimitation",
+    "pk": 6,
+    "fields": {
+        "ship": 6,
+        "defense_module_limitation": 4,
+        "weaponry_module_limitation": 4,
+        "hold_module_limitation": 3,
+        "movement_module_limitation": 2,
+        "hull_module_limitation": 3,
+        "repair_module_limitation": 0,
+        "gathering_module_limitation": 0,
+        "craft_module_limitation": 0,
+        "research_module_limitation": 0,
+        "electronic_warfare_module_limitation" : 2,
+        "colonization_module_limitation": 0,
+        "created_at": "2020-02-28 12:38:15",
+        "updated_at": "2020-02-28 12:38:15"
+    }
+}
+]
