@@ -14,7 +14,7 @@ from django.contrib import messages
 from core.backend.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
 from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
-from core.forms import UploadImageForm
+from core.forms import UploadImageForm, SetXpForm
 from core.views import admin_index
 from core.models import (
     User,
@@ -1108,6 +1108,32 @@ class NpcToSectorUpdateDataView(LoginRequiredMixin, TemplateView):
 class SetXpValueView(LoginRequiredMixin, TemplateView):
     template_name = "set_xp_value.html"
     model = SkillExperience
+    form_class = SetXpForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.form_class
+        return context
+
+    def post(self, request, **kwargs):
+        required_xp_value = int(self.request.POST['required_experience'])
+        if required_xp_value >= 0:
+            SkillExperience.objects.all().delete()
+            for i in range(0,100):
+                experience = SkillExperience(
+                    level=i,
+                    required_experience=(required_xp_value * i) * 0.5
+                )
+                experience.save()
+            messages.success(
+                self.request, f"xp required set with success, with value : {self.request.POST['required_experience']}"
+            )
+        else:
+            messages.error(
+                self.request, f"your value can't be saved, please retry with correct value (int value)"
+            )
+        return HttpResponseRedirect(request.path)
+        
 
 
 class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):

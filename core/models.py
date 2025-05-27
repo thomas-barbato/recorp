@@ -634,7 +634,7 @@ class PlayerShipResource(models.Model):
     
     
 class PlayerShipModule(models.Model):
-    player_ship = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
+    player_ship = models.ForeignKey(PlayerShip, related_name="player_ship_module", on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)

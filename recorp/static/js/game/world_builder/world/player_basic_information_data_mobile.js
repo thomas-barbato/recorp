@@ -655,7 +655,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
         player_modal_container_body_otherModule_module_fieldset_legend.append(player_modal_container_body_otherModule_module_fieldset_legend_span);
         player_modal_container_body_otherModule_module_fieldset.append(player_modal_container_body_otherModule_module_fieldset_legend);
 
-        let img_src = map_informations['pc'][i].user.image == "img.png" ? `/static/img/ux/default-user.svg` : `/static/img/users/${map_informations['pc'][i].user.player}/0.jpg`
+        let img_src = map_informations['pc'][i].user.image == "img.png" ? `/static/img/ux/default-user.svg` : `/static/img/users/${map_informations['pc'][i].user.player}/0.gif`
 
         player_modal_container_header_img.src = img_src;
         player_modal_container_header_li_name_b.textContent = "Name: ";

@@ -27,13 +27,15 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
 from core.models import (
-    Player, 
-    Sector, 
-    Archetype, 
+    Player,
+    Sector,
+    Archetype,
     Ship,
-    PlayerShip, 
-    ArchetypeModule, 
-    PlayerShipModule,  
+    PlayerShip,
+    ArchetypeModule,
+    Skill,
+    SkillExperience,
+    PlayerShipModule,
     PlayerSkill
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
@@ -162,6 +164,7 @@ class CreateAccountView(SuccessMessageMixin, TemplateView):
 
 
 class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     form_class = CreateCharacterForm()
@@ -172,7 +175,7 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context = super().get_context_data(**kwargs)
         context["factions"] = GetDataFromDB().get_faction_queryset()
         context["form"] = self.form_class
-        context["archetype_data"] = Archetype.objects.values('name', 'id', 'data', 'ship_id__image', 'description', 'ship_id__ship_category_id__size')
+        context["archetype_data"] = Archetype.objects.values('name', 'id', 'data', 'ship_id__image', 'description')
         return context
     
     def post(self, request, **kwargs):
@@ -202,15 +205,15 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 new_player.save()
                 archetype_module_list = ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__type', 'module_id__name', 'module_id__effect', 'module_id__type')
                 module_list = [e['module_id'] for e in archetype_module_list]
-                archetype_ship = Archetype.objects.filter(id=data["archetype"]).values_list('ship_id', flat=True)
+                archetype_data = Archetype.objects.filter(id=data["archetype"]).values('ship_id', 'data')[0]
                 
-                default_ship_values = Ship.objects.filter(id=archetype_ship).values(
+                default_ship_values = Ship.objects.filter(id=archetype_data['ship_id']).values(
                     'default_hp',
                     'default_movement',
                     'default_ballistic_defense',
                     'default_thermal_defense',
                     'default_missile_defense'
-                )
+                )[0]
                 
                 current_hp = default_ship_values['default_hp']
                 current_movement = default_ship_values['default_movement']
@@ -241,23 +244,38 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     max_hp=current_hp,
                     current_cargo_size=current_cargo_size,
                     current_movement=current_movement,
+                    max_movement=current_movement,
                     current_missile_defense=current_missile_defense,
                     current_ballistic_defense=current_ballistic_defense,
                     current_thermal_defense=current_thermal_defense,
                     status="FULL",
                     player_id=new_player.id,
-                    ship_id=archetype_ship
-                )
-                
-                new_player_skills = PlayerSkill(
-                    
+                    ship_id=archetype_data['ship_id']
                 )
                 
                 new_player_ship.save()
+                
                 for id in module_list:
                     PlayerShipModule.objects.create(
                         module_id=id,
                         player_ship_id=new_player_ship.id
+                    )
+                
+                skill_list = [e for e in Skill.objects.values('id', 'name')]
+                
+                for skill in skill_list:
+                    skill_name = skill['name']
+                    skill_id = skill['id']
+                    skill_level = 0
+                    
+                    if archetype_data['data'].get(skill_name):
+                        skill_level = archetype_data['data'][skill_name]
+                        
+                    PlayerSkill.objects.create(
+                        level = skill_level,
+                        progress = 0.0,
+                        player_id = new_player.id,
+                        skill_id = skill_id
                     )
                 
                 upload_file = UploadThisImage(request.FILES.get('file'), "users", new_player.id, new_player.id)
@@ -328,9 +346,11 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             ],
         }
         if Sector.objects.filter(id=player.get_player_sector()).exists():
+            
             data = StoreInCache(
                 f"play_{player.get_player_sector()}", self.request.user
             ).get_or_set_cache()
+            
             result_dict = dict()
             for p in data["pc"]:
                 p["user"]["archetype_name"] = _(p["user"]["archetype_name"])
@@ -356,18 +376,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 ),
                 "translated_statistics_msg_label": _("statistics"),
             }
-
-            for d in data["sector_element"]:
-                d["data"]["type_translated"] = _(d["data"]["module_id__type"])
-                d["data"]["description"] = _(d["data"]["description"])
-                if d["data"]["module_id__type"] != "warpzone":
-                    d["resource"]["translated_text_resource"] = (
-                        _("Resources available"),
-                    )
-                    d["resource"]["translated_quantity_str"] = _(
-                        d["resource"]["translated_quantity_str"]
-                    )
-
+            
             result_dict["sector"] = data["sector"]
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
@@ -375,7 +384,9 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             return context
+        
         else:
+            
             error_msg = _("Sector unknown... Contact admin to get more informations")
             messages.warning(self.request, error_msg)
             data_to_send = {"form": LoginForm}

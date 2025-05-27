@@ -10,6 +10,7 @@ from core.models import (
     Sector,
     Player,
     Module,
+    PlayerShipModule
 )
 
 
@@ -209,80 +210,72 @@ class StoreInCache:
         for data in sector_pc:
             module_list = [
                 {
-                    "name": module["name"],
-                    "effect": module["effect"],
-                    "description": module["description"],
-                    "type": module["type"],
-                    "id": module["id"],
+                    "name": module["module_id__name"],
+                    "effect": module["module_id__effect"],
+                    "description": module["module_id__description"],
+                    "type": module["module_id__type"],
+                    "id": module["module_id"],
                 }
-                for module in Module.objects.filter(
-                    id__in=data["playership__module_id_list"]
-                ).values("name", "description", "effect", "type", "id")
+                for module in PlayerShipModule.objects.filter(
+                    player_ship_id=data["player_ship_id"]
+                ).values("module_id__name", "module_id__description", "module_id__effect", "module_id__type", "module_id")
             ]
-
-            max_hp = int(data["playership__max_hp"])
-            max_movement = int(data["playership__max_movement"])
-
-            for module in module_list:
-                for k, v in module.items():
-                    if isinstance(v, str) and "hull" in v:
-                        max_hp += module["effect"]["hull_hp"]
-                    if isinstance(v, str) and "propulsion" in v:
-                        max_movement += module["effect"]["bonus_mvt"]
+            
             sector_data["pc"].append(
                 {
                     "user": {
-                        "user": data["user_id"],
-                        "player": data["id"],
-                        "name": data["name"],
-                        "coordinates": data["coordinates"],
-                        "image": data["image"],
-                        "description": data["description"],
-                        "is_npc": data["is_npc"],
-                        "current_ap": data["current_ap"],
-                        "max_ap": data["max_ap"],
-                        "archetype_name": data["archetype_id__name"],
-                        "archetype_data": data["archetype_id__data"],
-                        "sector_name": data["sector_id__name"],
+                        "user": data["player_ship_id__player_id__user_id"],
+                        "player": data["player_ship_id__player_id"],
+                        "name": data["player_ship_id__player_id__name"],
+                        "coordinates": data["player_ship_id__player_id__coordinates"],
+                        "image": data["player_ship_id__player_id__image"],
+                        "description": data["player_ship_id__player_id__description"],
+                        "is_npc": data["player_ship_id__player_id__is_npc"],
+                        "current_ap": data["player_ship_id__player_id__current_ap"],
+                        "max_ap": data["player_ship_id__player_id__max_ap"],
+                        "archetype_name": data["player_ship_id__player_id__archetype_id__name"],
+                        "archetype_data": data["player_ship_id__player_id__archetype_id__data"],
+                        "sector_name": data["player_ship_id__player_id__sector_id__name"],
                     },
                     "faction": {
-                        "name": data["faction_id__name"],
+                        "name": data["player_ship_id__player_id__faction_id__name"],
                     },
                     "ship": {
-                        "name": data["playership__ship_id__name"],
-                        "image": data["playership__ship_id__image"],
-                        "max_hp": max_hp,
-                        "current_hp": int(data["playership__current_hp"]),
-                        "max_movement": max_movement,
-                        "current_movement": int(data["playership__current_movement"]),
+                        "name": data["player_ship_id__ship_id__name"],
+                        "image": data["player_ship_id__ship_id__image"],
+                        "description": data["player_ship_id__ship_id__description"],
+                        "max_hp": data["player_ship_id__max_hp"],
+                        "current_hp": int(data["player_ship_id__current_hp"]),
+                        "max_movement": int(data["player_ship_id__max_movement"]),
+                        "current_movement": int(data["player_ship_id__current_movement"]),
                         "current_ballistic_defense": data[
-                            "playership__current_ballistic_defense"
+                            "player_ship_id__current_ballistic_defense"
                         ],
                         "current_thermal_defense": data[
-                            "playership__current_thermal_defense"
+                            "player_ship_id__current_thermal_defense"
                         ],
                         "current_missile_defense": data[
-                            "playership__current_missile_defense"
+                            "player_ship_id__current_missile_defense"
                         ],
-                        "current_cargo_size": data["playership__current_cargo_size"],
-                        "status": data["playership__status"],
-                        "description": data["playership__ship_id__description"],
+                        "current_cargo_size": data["player_ship_id__current_cargo_size"],
+                        "status": data["player_ship_id__status"],
                         "module_slot_available": data[
-                            "playership__ship_id__module_slot_available"
+                            "player_ship_id__ship_id__module_slot_available"
                         ],
+                        "module_slot_already_in_use": len(module_list),
                         "modules": module_list,
                         "modules_range": GetDataFromDB.is_in_range(
-                            sector_data["sector"]["id"], data["user_id"], is_npc=False
+                            sector_data["sector"]["id"], data["player_ship_id__player_id__user_id"], is_npc=False
                         ),
                         "ship_scanning_module_available": True if len([e['name'] for e in module_list if e['name'] == "spaceship probe"]) > 0 else False,
                         "category_name": data[
-                            "playership__ship_id__ship_category__name"
+                            "player_ship_id__ship_id__ship_category__name"
                         ],
                         "category_description": data[
-                            "playership__ship_id__ship_category__description"
+                            "player_ship_id__ship_id__ship_category__description"
                         ],
-                        "size": data["playership__ship_id__ship_category__size"],
-                        "is_reversed": data["playership__is_reversed"],
+                        "size": data["player_ship_id__ship_id__ship_category__size"],
+                        "is_reversed": data["player_ship_id__is_reversed"],
                     },
                 }
             )

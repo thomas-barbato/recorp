@@ -1,1765 +1,1754 @@
-[{
-        "model": "core.module",
-        "pk": 1,
-        "fields": {
-            "name": "none",
-            "type": "none",
-            "tier": 0,
-            "effect": {},
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 2,
-        "fields": {
-            "name": "Ballistic shield lv-1",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 1,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 3,
-        "fields": {
-            "name": "Ballistic shield lv-2",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 2,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 4,
-        "fields": {
-            "name": "Ballistic shield lv-3",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 3,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 5,
-        "fields": {
-            "name": "Ballistic shield lv-4",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 4,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 40
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 6,
-        "fields": {
-            "name": "Ballistic shield lv-5",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 5,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 50
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 7,
-        "fields": {
-            "name": "Ballistic shield lv-6",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 6,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 60
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 8,
-        "fields": {
-            "name": "Ballistic shield lv-7",
-            "type": "DEFENSE_BALLISTIC",
-            "tier": 7,
-            "effect": {
-                "defense_type": "ballistic",
-                "defense": 70
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 9,
-        "fields": {
-            "name": "Thermal shield lv-1",
-            "type": "DEFENSE_THERMAL",
-            "tier": 1,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 10,
-        "fields": {
-            "name": "Thermal shield lv-1",
-            "type": "DEFENSE_THERMAL",
-            "tier": 2,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 11,
-        "fields": {
-            "name": "Thermal shield lv-2",
-            "type": "DEFENSE_THERMAL",
-            "tier": 3,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 12,
-        "fields": {
-            "name": "Thermal shield lv-3",
-            "type": "DEFENSE_THERMAL",
-            "tier": 4,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 40
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 13,
-        "fields": {
-            "name": "Thermal shield lv-4",
-            "type": "DEFENSE_THERMAL",
-            "tier": 5,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 50
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 14,
-        "fields": {
-            "name": "Thermal shield lv-5",
-            "type": "DEFENSE_THERMAL",
-            "tier": 6,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 60
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 15,
-        "fields": {
-            "name": "Thermal shield lv-6",
-            "type": "DEFENSE_THERMAL",
-            "tier": 7,
-            "effect": {
-                "defense_type": "thermal",
-                "defense": 70
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 16,
-        "fields": {
-            "name": "Missile shield lv-1",
-            "type": "DEFENSE_MISSILE",
-            "tier": 1,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 17,
-        "fields": {
-            "name": "Missile shield lv-2",
-            "type": "DEFENSE_MISSILE",
-            "tier": 2,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 18,
-        "fields": {
-            "name": "Missile shield lv-3",
-            "type": "DEFENSE_MISSILE",
-            "tier": 3,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 19,
-        "fields": {
-            "name": "Missile shield lv-4",
-            "type": "DEFENSE_MISSILE",
-            "tier": 4,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 40
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 20,
-        "fields": {
-            "name": "Missile shield lv-5",
-            "type": "DEFENSE_MISSILE",
-            "tier": 5,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 50
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 21,
-        "fields": {
-            "name": "Missile shield lv-6",
-            "type": "DEFENSE_MISSILE",
-            "tier": 6,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 60
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 22,
-        "fields": {
-            "name": "Missile shield lv-7",
-            "type": "DEFENSE_MISSILE",
-            "tier": 7,
-            "effect": {
-                "defense_type": "missile",
-                "defense": 70
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 23,
-        "fields": {
-            "name": "cargo hold lv-1",
-            "type": "HOLD",
-            "tier": 1,
-            "effect": {
-                "capacity": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 24,
-        "fields": {
-            "name": "cargo hold lv-2",
-            "type": "HOLD",
-            "tier": 2,
-            "effect": {
-                "capacity": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 25,
-        "fields": {
-            "name": "cargo hold lv-3",
-            "type": "HOLD",
-            "tier": 3,
-            "effect": {
-                "capacity": 9
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 26,
-        "fields": {
-            "name": "cargo hold lv-4",
-            "type": "HOLD",
-            "tier": 4,
-            "effect": {
-                "capacity": 12
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 27,
-        "fields": {
-            "name": "cargo hold lv-5",
-            "type": "HOLD",
-            "tier": 5,
-            "effect": {
-                "capacity": 15
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 28,
-        "fields": {
-            "name": "cargo hold lv-6",
-            "type": "HOLD",
-            "tier": 6,
-            "effect": {
-                "capacity": 18
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 29,
-        "fields": {
-            "name": "cargo hold lv-7",
-            "type": "HOLD",
-            "tier": 7,
-            "effect": {
-                "capacity": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 30,
-        "fields": {
-            "name": "propulsion lv-1",
-            "type": "MOVEMENT",
-            "tier": 1,
-            "effect": {
-                "bonus_mvt": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 31,
-        "fields": {
-            "name": "propulsion lv-2",
-            "type": "MOVEMENT",
-            "tier": 2,
-            "effect": {
-                "bonus_mvt": 15
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 32,
-        "fields": {
-            "name": "propulsion lv-3",
-            "type": "MOVEMENT",
-            "tier": 3,
-            "effect": {
-                "bonus_mvt": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 33,
-        "fields": {
-            "name": "propulsion lv-4",
-            "type": "MOVEMENT",
-            "tier": 4,
-            "effect": {
-                "bonus_mvt": 25
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 34,
-        "fields": {
-            "name": "propulsion lv-5",
-            "type": "MOVEMENT",
-            "tier": 5,
-            "effect": {
-                "bonus_mvt": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 34,
-        "fields": {
-            "name": "propulsion lv-6",
-            "type": "MOVEMENT",
-            "tier": 6,
-            "effect": {
-                "bonus_mvt": 35
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 35,
-        "fields": {
-            "name": "propulsion lv-7",
-            "type": "MOVEMENT",
-            "tier": 7,
-            "effect": {
-                "bonus_mvt": 40
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 36,
-        "fields": {
-            "name": "hull lv-1",
-            "type": "HULL",
-            "tier": 1,
-            "effect": {
-                "hull_hp": 50
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 37,
-        "fields": {
-            "name": "hull lv-2",
-            "type": "HULL",
-            "tier": 2,
-            "effect": {
-                "hull_hp": 75
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 38,
-        "fields": {
-            "name": "hull lv-3",
-            "type": "HULL",
-            "tier": 3,
-            "effect": {
-                "hull_hp": 100
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 39,
-        "fields": {
-            "name": "hull lv-4",
-            "type": "HULL",
-            "tier": 4,
-            "effect": {
-                "hull_hp": 125
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 40,
-        "fields": {
-            "name": "hull lv-5",
-            "type": "HULL",
-            "tier": 5,
-            "effect": {
-                "hull_hp": 150
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 41,
-        "fields": {
-            "name": "hull lv-6",
-            "type": "HULL",
-            "tier": 6,
-            "effect": {
-                "hull_hp": 175
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 42,
-        "fields": {
-            "name": "hull lv-7",
-            "type": "HULL",
-            "tier": 7,
-            "effect": {
-                "hull_hp": 200
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 43,
-        "fields": {
-            "name": "repaire shield lv-1",
-            "type": "REPAIR",
-            "tier": 1,
-            "effect": {
-                "repair_shield": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 44,
-        "fields": {
-            "name": "repaire shield lv-2",
-            "type": "REPAIR",
-            "tier": 2,
-            "effect": {
-                "repair_shield": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 45,
-        "fields": {
-            "name": "repaire shield lv-3",
-            "type": "REPAIR",
-            "tier": 3,
-            "effect": {
-                "repair_shield": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 46,
-        "fields": {
-            "name": "repaire shield lv-4",
-            "type": "REPAIR",
-            "tier": 4,
-            "effect": {
-                "repair_shield": 40
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 47,
-        "fields": {
-            "name": "repaire shield lv-5",
-            "type": "REPAIR",
-            "tier": 5,
-            "effect": {
-                "repair_shield": 50
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 48,
-        "fields": {
-            "name": "repaire shield lv-6",
-            "type": "REPAIR",
-            "tier": 6,
-            "effect": {
-                "repair_shield": 60
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 49,
-        "fields": {
-            "name": "repaire shield lv-7",
-            "type": "REPAIR",
-            "tier": 7,
-            "effect": {
-                "repair_shield": 70
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 50,
-        "fields": {
-            "name": "mining lv-1",
-            "type": "GATHERING",
-            "tier": 1,
-            "effect": {
-                "gathering_amount": 15,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 51,
-        "fields": {
-            "name": "mining lv-2",
-            "type": "GATHERING",
-            "tier": 2,
-            "effect": {
-                "gathering_amount": 30,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 52,
-        "fields": {
-            "name": "mining lv-3",
-            "type": "GATHERING",
-            "tier": 3,
-            "effect": {
-                "gathering_amount": 45,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 53,
-        "fields": {
-            "name": "mining lv-4",
-            "type": "GATHERING",
-            "tier": 4,
-            "effect": {
-                "gathering_amount": 60,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 53,
-        "fields": {
-            "name": "mining lv-5",
-            "type": "GATHERING",
-            "tier": 5,
-            "effect": {
-                "gathering_amount": 75,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 54,
-        "fields": {
-            "name": "mining lv-6",
-            "type": "GATHERING",
-            "tier": 6,
-            "effect": {
-                "gathering_amount": 90,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 55,
-        "fields": {
-            "name": "mining lv-7",
-            "type": "GATHERING",
-            "tier": 7,
-            "effect": {
-                "gathering_amount": 105,
-                "range": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 56,
-        "fields": {
-            "name": "scavenging module",
-            "type": "GATHERING",
-            "tier": 1,
-            "effect": {
-                "can_scavenge": true
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 57,
-        "fields": {
-            "name": "research lab lv-1",
-            "type": "RESEARCH",
-            "tier": 1,
-            "effect": {
-                "research_time_discrease": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 58,
-        "fields": {
-            "name": "research lab lv-2",
-            "type": "RESEARCH",
-            "tier": 2,
-            "effect": {
-                "research_time_discrease": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 59,
-        "fields": {
-            "name": "research lab lv-3",
-            "type": "RESEARCH",
-            "tier": 3,
-            "effect": {
-                "research_time_discrease": 15
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 60,
-        "fields": {
-            "name": "research lab lv-4",
-            "type": "RESEARCH",
-            "tier": 4,
-            "effect": {
-                "research_time_discrease": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 61,
-        "fields": {
-            "name": "research lab lv-5",
-            "type": "RESEARCH",
-            "tier": 5,
-            "effect": {
-                "research_time_discrease": 25
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 62,
-        "fields": {
-            "name": "research lab lv-6",
-            "type": "RESEARCH",
-            "tier": 6,
-            "effect": {
-                "research_time_discrease": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 63,
-        "fields": {
-            "name": "research lab lv-7",
-            "type": "RESEARCH",
-            "tier": 7,
-            "effect": {
-                "research_time_discrease": 35
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 64,
-        "fields": {
-            "name": "crafting station lv-1",
-            "type": "CRAFT",
-            "tier": 1,
-            "effect": {
-                "crafting_tier_allowed": 1
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 65,
-        "fields": {
-            "name": "crafting station lv-2",
-            "type": "CRAFT",
-            "tier": 2,
-            "effect": {
-                "crafting_tier_allowed": 2
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 66,
-        "fields": {
-            "name": "crafting station lv-3",
-            "type": "CRAFT",
-            "tier": 3,
-            "effect": {
-                "crafting_tier_allowed": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 67,
-        "fields": {
-            "name": "crafting station lv-4",
-            "type": "CRAFT",
-            "tier": 4,
-            "effect": {
-                "crafting_tier_allowed": 4
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 68,
-        "fields": {
-            "name": "crafting station lv-5",
-            "type": "CRAFT",
-            "tier": 5,
-            "effect": {
-                "crafting_tier_allowed": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 69,
-        "fields": {
-            "name": "crafting station lv-6",
-            "type": "CRAFT",
-            "tier": 6,
-            "effect": {
-                "crafting_tier_allowed": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 70,
-        "fields": {
-            "name": "crafting station lv-7",
-            "type": "CRAFT",
-            "tier": 7,
-            "effect": {
-                "crafting_tier_allowed": 7
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 71,
-        "fields": {
-            "name": "jammer lv-1",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 1,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 15,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 72,
-        "fields": {
-            "name": "jammer lv-2",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 2,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 20,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 73,
-        "fields": {
-            "name": "jammer lv-3",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 3,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 25,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 74,
-        "fields": {
-            "name": "jammer lv-4",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 4,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 30,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 75,
-        "fields": {
-            "name": "jammer lv-5",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 5,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 35,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 76,
-        "fields": {
-            "name": "jammer lv-6",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 6,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 40,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 77,
-        "fields": {
-            "name": "jammer lv-7",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 7,
-            "effect": {
-                "disabled_targeting": true,
-                "aiming_discrease": 45,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 78,
-        "fields": {
-            "name": "targeting system lv-1",
-            "type": "WEAPONRY",
-            "tier": 1,
-            "effect": {
-                "aiming_increase": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 78,
-        "fields": {
-            "name": "targeting system lv-1",
-            "type": "WEAPONRY",
-            "tier": 1,
-            "effect": {
-                "aiming_increase": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 79,
-        "fields": {
-            "name": "targeting system lv-2",
-            "type": "WEAPONRY",
-            "tier": 2,
-            "effect": {
-                "aiming_increase": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 80,
-        "fields": {
-            "name": "targeting system lv-3",
-            "type": "WEAPONRY",
-            "tier": 3,
-            "effect": {
-                "aiming_increase": 15
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 81,
-        "fields": {
-            "name": "targeting system lv-4",
-            "type": "WEAPONRY",
-            "tier": 4,
-            "effect": {
-                "aiming_increase": 20
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 82,
-        "fields": {
-            "name": "targeting system lv-5",
-            "type": "WEAPONRY",
-            "tier": 5,
-            "effect": {
-                "aiming_increase": 25
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 83,
-        "fields": {
-            "name": "targeting system lv-6",
-            "type": "WEAPONRY",
-            "tier": 6,
-            "effect": {
-                "aiming_increase": 30
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 84,
-        "fields": {
-            "name": "targeting system lv-7",
-            "type": "WEAPONRY",
-            "tier": 7,
-            "effect": {
-                "aiming_increase": 35
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 85,
-        "fields": {
-            "name": "speed bump lv-1",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 1,
-            "effect": {
-                "movement_discrease": 5,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 86,
-        "fields": {
-            "name": "speed bump lv-2",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 2,
-            "effect": {
-                "movement_discrease": 10,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 87,
-        "fields": {
-            "name": "speed bump lv-3",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 3,
-            "effect": {
-                "movement_discrease": 15,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 88,
-        "fields": {
-            "name": "speed bump lv-4",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 4,
-            "effect": {
-                "movement_discrease": 20,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 89,
-        "fields": {
-            "name": "speed bump lv-5",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 5,
-            "effect": {
-                "movement_discrease": 25,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 90,
-        "fields": {
-            "name": "speed bump lv-6",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 6,
-            "effect": {
-                "movement_discrease": 30,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 91,
-        "fields": {
-            "name": "speed bump lv-7",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 7,
-            "effect": {
-                "movement_discrease": 30,
-                "range": 5
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 92,
-        "fields": {
-            "name": "spaceship probe",
-            "type": "ELECTRONIC_WARFARE",
-            "tier": 1,
-            "effect": {
-                "display_ship_data": true,
-                "range": 50
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 93,
-        "fields": {
-            "name": "drilling probe",
-            "type": "GATHERING",
-            "tier": 1,
-            "effect": {
-                "display_mineral_data": true,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 94,
-        "fields": {
-            "name": "Colonization module",
-            "type": "COLONIZATION",
-            "tier": 1,
-            "effect": {
-                "can_colonizate_world": true
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 95,
-        "fields": {
-            "name": "Ballistic weapon lv-1",
-            "type": "WEAPONRY",
-            "tier": 1,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 1,
-                "max_damage": 10,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 96,
-        "fields": {
-            "name": "Ballistic weapon lv-2",
-            "type": "WEAPONRY",
-            "tier": 2,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 5,
-                "max_damage": 15,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 97,
-        "fields": {
-            "name": "Ballistic weapon lv-3",
-            "type": "WEAPONRY",
-            "tier": 3,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 10,
-                "max_damage": 20,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 98,
-        "fields": {
-            "name": "Ballistic weapon lv-4",
-            "type": "WEAPONRY",
-            "tier": 4,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 15,
-                "max_damage": 25,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 99,
-        "fields": {
-            "name": "Ballistic weapon lv-5",
-            "type": "WEAPONRY",
-            "tier": 5,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 20,
-                "max_damage": 30,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 100,
-        "fields": {
-            "name": "Ballistic weapon lv-6",
-            "type": "WEAPONRY",
-            "tier": 6,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 25,
-                "max_damage": 35,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 100,
-        "fields": {
-            "name": "Ballistic weapon lv-7",
-            "type": "WEAPONRY",
-            "tier": 7,
-            "effect": {
-                "damage_type": "ballistic",
-                "min_damage": 30,
-                "max_damage": 40,
-                "range": 3
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 101,
-        "fields": {
-            "name": "thermal weapon lv-1",
-            "type": "WEAPONRY",
-            "tier": 1,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 4,
-                "max_damage": 4,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 102,
-        "fields": {
-            "name": "thermal weapon lv-2",
-            "type": "WEAPONRY",
-            "tier": 2,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 8,
-                "max_damage": 8,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 103,
-        "fields": {
-            "name": "thermal weapon lv-3",
-            "type": "WEAPONRY",
-            "tier": 3,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 12,
-                "max_damage": 12,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 104,
-        "fields": {
-            "name": "thermal weapon lv-4",
-            "type": "WEAPONRY",
-            "tier": 4,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 16,
-                "max_damage": 16,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 105,
-        "fields": {
-            "name": "thermal weapon lv-5",
-            "type": "WEAPONRY",
-            "tier": 4,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 20,
-                "max_damage": 20,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 106,
-        "fields": {
-            "name": "thermal weapon lv-6",
-            "type": "WEAPONRY",
-            "tier": 6,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 24,
-                "max_damage": 24,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 107,
-        "fields": {
-            "name": "thermal weapon lv-7",
-            "type": "WEAPONRY",
-            "tier": 7,
-            "effect": {
-                "damage_type": "thermal",
-                "min_damage": 28,
-                "max_damage": 28,
-                "range": 10
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 108,
-        "fields": {
-            "name": "missile weapon lv-1",
-            "type": "WEAPONRY",
-            "tier": 1,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 5,
-                "max_damage": 15,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 109,
-        "fields": {
-            "name": "missile weapon lv-2",
-            "type": "WEAPONRY",
-            "tier": 2,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 5,
-                "max_damage": 25,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 110,
-        "fields": {
-            "name": "missile weapon lv-3",
-            "type": "WEAPONRY",
-            "tier": 3,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 10,
-                "max_damage": 35,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 111,
-        "fields": {
-            "name": "missile weapon lv-4",
-            "type": "WEAPONRY",
-            "tier": 4,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 10,
-                "max_damage": 45,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 112,
-        "fields": {
-            "name": "missile weapon lv-5",
-            "type": "WEAPONRY",
-            "tier": 5,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 15,
-                "max_damage": 55,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 113,
-        "fields": {
-            "name": "missile weapon lv-6",
-            "type": "WEAPONRY",
-            "tier": 6,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 15,
-                "max_damage": 65,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
-    },
-    {
-        "model": "core.module",
-        "pk": 114,
-        "fields": {
-            "name": "missile weapon lv-7",
-            "type": "WEAPONRY",
-            "tier": 7,
-            "effect": {
-                "damage_type": "missile",
-                "min_damage": 20,
-                "max_damage": 75,
-                "range": 6
-            },
-            "created_at": "2024-06-04 12:38:15",
-            "updated_at": "2024-06-04 12:38:15"
-        }
+[
+{
+    "model": "core.module",
+    "pk": 1,
+    "fields": {
+        "name": "Ballistic shield lv-1",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 1,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
     }
+},
+{
+    "model": "core.module",
+    "pk": 2,
+    "fields": {
+        "name": "Ballistic shield lv-2",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 2,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 3,
+    "fields": {
+        "name": "Ballistic shield lv-3",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 3,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 4,
+    "fields": {
+        "name": "Ballistic shield lv-4",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 4,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 40
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 5,
+    "fields": {
+        "name": "Ballistic shield lv-5",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 5,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 50
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 6,
+    "fields": {
+        "name": "Ballistic shield lv-6",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 6,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 60
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 7,
+    "fields": {
+        "name": "Ballistic shield lv-7",
+        "type": "DEFENSE_BALLISTIC",
+        "tier": 7,
+        "effect": {
+            "defense_type": "ballistic",
+            "defense": 70
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 8,
+    "fields": {
+        "name": "Thermal shield lv-1",
+        "type": "DEFENSE_THERMAL",
+        "tier": 1,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 9,
+    "fields": {
+        "name": "Thermal shield lv-1",
+        "type": "DEFENSE_THERMAL",
+        "tier": 2,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 10,
+    "fields": {
+        "name": "Thermal shield lv-2",
+        "type": "DEFENSE_THERMAL",
+        "tier": 3,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 11,
+    "fields": {
+        "name": "Thermal shield lv-3",
+        "type": "DEFENSE_THERMAL",
+        "tier": 4,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 40
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 12,
+    "fields": {
+        "name": "Thermal shield lv-4",
+        "type": "DEFENSE_THERMAL",
+        "tier": 5,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 50
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 13,
+    "fields": {
+        "name": "Thermal shield lv-5",
+        "type": "DEFENSE_THERMAL",
+        "tier": 6,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 60
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 14,
+    "fields": {
+        "name": "Thermal shield lv-6",
+        "type": "DEFENSE_THERMAL",
+        "tier": 7,
+        "effect": {
+            "defense_type": "thermal",
+            "defense": 70
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 15,
+    "fields": {
+        "name": "Missile shield lv-1",
+        "type": "DEFENSE_MISSILE",
+        "tier": 1,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 16,
+    "fields": {
+        "name": "Missile shield lv-2",
+        "type": "DEFENSE_MISSILE",
+        "tier": 2,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 17,
+    "fields": {
+        "name": "Missile shield lv-3",
+        "type": "DEFENSE_MISSILE",
+        "tier": 3,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 18,
+    "fields": {
+        "name": "Missile shield lv-4",
+        "type": "DEFENSE_MISSILE",
+        "tier": 4,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 40
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 19,
+    "fields": {
+        "name": "Missile shield lv-5",
+        "type": "DEFENSE_MISSILE",
+        "tier": 5,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 50
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 20,
+    "fields": {
+        "name": "Missile shield lv-6",
+        "type": "DEFENSE_MISSILE",
+        "tier": 6,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 60
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 21,
+    "fields": {
+        "name": "Missile shield lv-7",
+        "type": "DEFENSE_MISSILE",
+        "tier": 7,
+        "effect": {
+            "defense_type": "missile",
+            "defense": 70
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 22,
+    "fields": {
+        "name": "cargo hold lv-1",
+        "type": "HOLD",
+        "tier": 1,
+        "effect": {
+            "capacity": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 23,
+    "fields": {
+        "name": "cargo hold lv-2",
+        "type": "HOLD",
+        "tier": 2,
+        "effect": {
+            "capacity": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 24,
+    "fields": {
+        "name": "cargo hold lv-3",
+        "type": "HOLD",
+        "tier": 3,
+        "effect": {
+            "capacity": 9
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 25,
+    "fields": {
+        "name": "cargo hold lv-4",
+        "type": "HOLD",
+        "tier": 4,
+        "effect": {
+            "capacity": 12
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 26,
+    "fields": {
+        "name": "cargo hold lv-5",
+        "type": "HOLD",
+        "tier": 5,
+        "effect": {
+            "capacity": 15
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 27,
+    "fields": {
+        "name": "cargo hold lv-6",
+        "type": "HOLD",
+        "tier": 6,
+        "effect": {
+            "capacity": 18
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 28,
+    "fields": {
+        "name": "cargo hold lv-7",
+        "type": "HOLD",
+        "tier": 7,
+        "effect": {
+            "capacity": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 29,
+    "fields": {
+        "name": "propulsion lv-1",
+        "type": "MOVEMENT",
+        "tier": 1,
+        "effect": {
+            "bonus_mvt": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 30,
+    "fields": {
+        "name": "propulsion lv-2",
+        "type": "MOVEMENT",
+        "tier": 2,
+        "effect": {
+            "bonus_mvt": 15
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 31,
+    "fields": {
+        "name": "propulsion lv-3",
+        "type": "MOVEMENT",
+        "tier": 3,
+        "effect": {
+            "bonus_mvt": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 32,
+    "fields": {
+        "name": "propulsion lv-4",
+        "type": "MOVEMENT",
+        "tier": 4,
+        "effect": {
+            "bonus_mvt": 25
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 33,
+    "fields": {
+        "name": "propulsion lv-5",
+        "type": "MOVEMENT",
+        "tier": 5,
+        "effect": {
+            "bonus_mvt": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 34,
+    "fields": {
+        "name": "propulsion lv-6",
+        "type": "MOVEMENT",
+        "tier": 6,
+        "effect": {
+            "bonus_mvt": 35
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 35,
+    "fields": {
+        "name": "propulsion lv-7",
+        "type": "MOVEMENT",
+        "tier": 7,
+        "effect": {
+            "bonus_mvt": 40
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 36,
+    "fields": {
+        "name": "hull lv-1",
+        "type": "HULL",
+        "tier": 1,
+        "effect": {
+            "hull_hp": 50
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 37,
+    "fields": {
+        "name": "hull lv-2",
+        "type": "HULL",
+        "tier": 2,
+        "effect": {
+            "hull_hp": 75
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 38,
+    "fields": {
+        "name": "hull lv-3",
+        "type": "HULL",
+        "tier": 3,
+        "effect": {
+            "hull_hp": 100
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 39,
+    "fields": {
+        "name": "hull lv-4",
+        "type": "HULL",
+        "tier": 4,
+        "effect": {
+            "hull_hp": 125
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 40,
+    "fields": {
+        "name": "hull lv-5",
+        "type": "HULL",
+        "tier": 5,
+        "effect": {
+            "hull_hp": 150
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 41,
+    "fields": {
+        "name": "hull lv-6",
+        "type": "HULL",
+        "tier": 6,
+        "effect": {
+            "hull_hp": 175
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 42,
+    "fields": {
+        "name": "hull lv-7",
+        "type": "HULL",
+        "tier": 7,
+        "effect": {
+            "hull_hp": 200
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 43,
+    "fields": {
+        "name": "repaire shield lv-1",
+        "type": "REPAIR",
+        "tier": 1,
+        "effect": {
+            "repair_shield": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 44,
+    "fields": {
+        "name": "repaire shield lv-2",
+        "type": "REPAIR",
+        "tier": 2,
+        "effect": {
+            "repair_shield": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 45,
+    "fields": {
+        "name": "repaire shield lv-3",
+        "type": "REPAIR",
+        "tier": 3,
+        "effect": {
+            "repair_shield": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 46,
+    "fields": {
+        "name": "repaire shield lv-4",
+        "type": "REPAIR",
+        "tier": 4,
+        "effect": {
+            "repair_shield": 40
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 47,
+    "fields": {
+        "name": "repaire shield lv-5",
+        "type": "REPAIR",
+        "tier": 5,
+        "effect": {
+            "repair_shield": 50
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 48,
+    "fields": {
+        "name": "repaire shield lv-6",
+        "type": "REPAIR",
+        "tier": 6,
+        "effect": {
+            "repair_shield": 60
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 49,
+    "fields": {
+        "name": "repaire shield lv-7",
+        "type": "REPAIR",
+        "tier": 7,
+        "effect": {
+            "repair_shield": 70
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 50,
+    "fields": {
+        "name": "mining lv-1",
+        "type": "GATHERING",
+        "tier": 1,
+        "effect": {
+            "gathering_amount": 15,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 51,
+    "fields": {
+        "name": "mining lv-2",
+        "type": "GATHERING",
+        "tier": 2,
+        "effect": {
+            "gathering_amount": 30,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 52,
+    "fields": {
+        "name": "mining lv-3",
+        "type": "GATHERING",
+        "tier": 3,
+        "effect": {
+            "gathering_amount": 45,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 53,
+    "fields": {
+        "name": "mining lv-4",
+        "type": "GATHERING",
+        "tier": 4,
+        "effect": {
+            "gathering_amount": 60,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 53,
+    "fields": {
+        "name": "mining lv-5",
+        "type": "GATHERING",
+        "tier": 5,
+        "effect": {
+            "gathering_amount": 75,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 54,
+    "fields": {
+        "name": "mining lv-6",
+        "type": "GATHERING",
+        "tier": 6,
+        "effect": {
+            "gathering_amount": 90,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 55,
+    "fields": {
+        "name": "mining lv-7",
+        "type": "GATHERING",
+        "tier": 7,
+        "effect": {
+            "gathering_amount": 105,
+            "range": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 56,
+    "fields": {
+        "name": "scavenging module",
+        "type": "GATHERING",
+        "tier": 1,
+        "effect": {
+            "can_scavenge": true
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 57,
+    "fields": {
+        "name": "research lab lv-1",
+        "type": "RESEARCH",
+        "tier": 1,
+        "effect": {
+            "research_time_discrease": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 58,
+    "fields": {
+        "name": "research lab lv-2",
+        "type": "RESEARCH",
+        "tier": 2,
+        "effect": {
+            "research_time_discrease": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 59,
+    "fields": {
+        "name": "research lab lv-3",
+        "type": "RESEARCH",
+        "tier": 3,
+        "effect": {
+            "research_time_discrease": 15
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 60,
+    "fields": {
+        "name": "research lab lv-4",
+        "type": "RESEARCH",
+        "tier": 4,
+        "effect": {
+            "research_time_discrease": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 61,
+    "fields": {
+        "name": "research lab lv-5",
+        "type": "RESEARCH",
+        "tier": 5,
+        "effect": {
+            "research_time_discrease": 25
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 62,
+    "fields": {
+        "name": "research lab lv-6",
+        "type": "RESEARCH",
+        "tier": 6,
+        "effect": {
+            "research_time_discrease": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 63,
+    "fields": {
+        "name": "research lab lv-7",
+        "type": "RESEARCH",
+        "tier": 7,
+        "effect": {
+            "research_time_discrease": 35
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 64,
+    "fields": {
+        "name": "crafting station lv-1",
+        "type": "CRAFT",
+        "tier": 1,
+        "effect": {
+            "crafting_tier_allowed": 1
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 65,
+    "fields": {
+        "name": "crafting station lv-2",
+        "type": "CRAFT",
+        "tier": 2,
+        "effect": {
+            "crafting_tier_allowed": 2
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 66,
+    "fields": {
+        "name": "crafting station lv-3",
+        "type": "CRAFT",
+        "tier": 3,
+        "effect": {
+            "crafting_tier_allowed": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 67,
+    "fields": {
+        "name": "crafting station lv-4",
+        "type": "CRAFT",
+        "tier": 4,
+        "effect": {
+            "crafting_tier_allowed": 4
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 68,
+    "fields": {
+        "name": "crafting station lv-5",
+        "type": "CRAFT",
+        "tier": 5,
+        "effect": {
+            "crafting_tier_allowed": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 69,
+    "fields": {
+        "name": "crafting station lv-6",
+        "type": "CRAFT",
+        "tier": 6,
+        "effect": {
+            "crafting_tier_allowed": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 70,
+    "fields": {
+        "name": "crafting station lv-7",
+        "type": "CRAFT",
+        "tier": 7,
+        "effect": {
+            "crafting_tier_allowed": 7
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 71,
+    "fields": {
+        "name": "jammer lv-1",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 1,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 15,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 72,
+    "fields": {
+        "name": "jammer lv-2",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 2,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 20,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 73,
+    "fields": {
+        "name": "jammer lv-3",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 3,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 25,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 74,
+    "fields": {
+        "name": "jammer lv-4",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 4,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 30,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 75,
+    "fields": {
+        "name": "jammer lv-5",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 5,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 35,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 76,
+    "fields": {
+        "name": "jammer lv-6",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 6,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 40,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 77,
+    "fields": {
+        "name": "jammer lv-7",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 7,
+        "effect": {
+            "disabled_targeting": true,
+            "aiming_discrease": 45,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 78,
+    "fields": {
+        "name": "targeting system lv-1",
+        "type": "WEAPONRY",
+        "tier": 1,
+        "effect": {
+            "aiming_increase": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 78,
+    "fields": {
+        "name": "targeting system lv-1",
+        "type": "WEAPONRY",
+        "tier": 1,
+        "effect": {
+            "aiming_increase": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 79,
+    "fields": {
+        "name": "targeting system lv-2",
+        "type": "WEAPONRY",
+        "tier": 2,
+        "effect": {
+            "aiming_increase": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 80,
+    "fields": {
+        "name": "targeting system lv-3",
+        "type": "WEAPONRY",
+        "tier": 3,
+        "effect": {
+            "aiming_increase": 15
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 81,
+    "fields": {
+        "name": "targeting system lv-4",
+        "type": "WEAPONRY",
+        "tier": 4,
+        "effect": {
+            "aiming_increase": 20
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 82,
+    "fields": {
+        "name": "targeting system lv-5",
+        "type": "WEAPONRY",
+        "tier": 5,
+        "effect": {
+            "aiming_increase": 25
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 83,
+    "fields": {
+        "name": "targeting system lv-6",
+        "type": "WEAPONRY",
+        "tier": 6,
+        "effect": {
+            "aiming_increase": 30
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 84,
+    "fields": {
+        "name": "targeting system lv-7",
+        "type": "WEAPONRY",
+        "tier": 7,
+        "effect": {
+            "aiming_increase": 35
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 85,
+    "fields": {
+        "name": "speed bump lv-1",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 1,
+        "effect": {
+            "movement_discrease": 5,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 86,
+    "fields": {
+        "name": "speed bump lv-2",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 2,
+        "effect": {
+            "movement_discrease": 10,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 87,
+    "fields": {
+        "name": "speed bump lv-3",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 3,
+        "effect": {
+            "movement_discrease": 15,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 88,
+    "fields": {
+        "name": "speed bump lv-4",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 4,
+        "effect": {
+            "movement_discrease": 20,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 89,
+    "fields": {
+        "name": "speed bump lv-5",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 5,
+        "effect": {
+            "movement_discrease": 25,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 90,
+    "fields": {
+        "name": "speed bump lv-6",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 6,
+        "effect": {
+            "movement_discrease": 30,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 91,
+    "fields": {
+        "name": "speed bump lv-7",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 7,
+        "effect": {
+            "movement_discrease": 30,
+            "range": 5
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 92,
+    "fields": {
+        "name": "spaceship probe",
+        "type": "ELECTRONIC_WARFARE",
+        "tier": 1,
+        "effect": {
+            "display_ship_data": true,
+            "range": 50
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 93,
+    "fields": {
+        "name": "drilling probe",
+        "type": "GATHERING",
+        "tier": 1,
+        "effect": {
+            "display_mineral_data": true,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 94,
+    "fields": {
+        "name": "Colonization module",
+        "type": "COLONIZATION",
+        "tier": 1,
+        "effect": {
+            "can_colonizate_world": true
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 95,
+    "fields": {
+        "name": "Ballistic weapon lv-1",
+        "type": "WEAPONRY",
+        "tier": 1,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 1,
+            "max_damage": 10,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 96,
+    "fields": {
+        "name": "Ballistic weapon lv-2",
+        "type": "WEAPONRY",
+        "tier": 2,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 5,
+            "max_damage": 15,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 97,
+    "fields": {
+        "name": "Ballistic weapon lv-3",
+        "type": "WEAPONRY",
+        "tier": 3,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 10,
+            "max_damage": 20,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 98,
+    "fields": {
+        "name": "Ballistic weapon lv-4",
+        "type": "WEAPONRY",
+        "tier": 4,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 15,
+            "max_damage": 25,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 99,
+    "fields": {
+        "name": "Ballistic weapon lv-5",
+        "type": "WEAPONRY",
+        "tier": 5,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 20,
+            "max_damage": 30,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 100,
+    "fields": {
+        "name": "Ballistic weapon lv-6",
+        "type": "WEAPONRY",
+        "tier": 6,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 25,
+            "max_damage": 35,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 100,
+    "fields": {
+        "name": "Ballistic weapon lv-7",
+        "type": "WEAPONRY",
+        "tier": 7,
+        "effect": {
+            "damage_type": "ballistic",
+            "min_damage": 30,
+            "max_damage": 40,
+            "range": 3
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 101,
+    "fields": {
+        "name": "thermal weapon lv-1",
+        "type": "WEAPONRY",
+        "tier": 1,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 4,
+            "max_damage": 4,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 102,
+    "fields": {
+        "name": "thermal weapon lv-2",
+        "type": "WEAPONRY",
+        "tier": 2,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 8,
+            "max_damage": 8,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 103,
+    "fields": {
+        "name": "thermal weapon lv-3",
+        "type": "WEAPONRY",
+        "tier": 3,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 12,
+            "max_damage": 12,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 104,
+    "fields": {
+        "name": "thermal weapon lv-4",
+        "type": "WEAPONRY",
+        "tier": 4,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 16,
+            "max_damage": 16,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 105,
+    "fields": {
+        "name": "thermal weapon lv-5",
+        "type": "WEAPONRY",
+        "tier": 4,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 20,
+            "max_damage": 20,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 106,
+    "fields": {
+        "name": "thermal weapon lv-6",
+        "type": "WEAPONRY",
+        "tier": 6,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 24,
+            "max_damage": 24,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 107,
+    "fields": {
+        "name": "thermal weapon lv-7",
+        "type": "WEAPONRY",
+        "tier": 7,
+        "effect": {
+            "damage_type": "thermal",
+            "min_damage": 28,
+            "max_damage": 28,
+            "range": 10
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 108,
+    "fields": {
+        "name": "missile weapon lv-1",
+        "type": "WEAPONRY",
+        "tier": 1,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 5,
+            "max_damage": 15,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 109,
+    "fields": {
+        "name": "missile weapon lv-2",
+        "type": "WEAPONRY",
+        "tier": 2,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 5,
+            "max_damage": 25,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 110,
+    "fields": {
+        "name": "missile weapon lv-3",
+        "type": "WEAPONRY",
+        "tier": 3,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 10,
+            "max_damage": 35,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 111,
+    "fields": {
+        "name": "missile weapon lv-4",
+        "type": "WEAPONRY",
+        "tier": 4,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 10,
+            "max_damage": 45,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 112,
+    "fields": {
+        "name": "missile weapon lv-5",
+        "type": "WEAPONRY",
+        "tier": 5,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 15,
+            "max_damage": 55,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 113,
+    "fields": {
+        "name": "missile weapon lv-6",
+        "type": "WEAPONRY",
+        "tier": 6,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 15,
+            "max_damage": 65,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+},
+{
+    "model": "core.module",
+    "pk": 114,
+    "fields": {
+        "name": "missile weapon lv-7",
+        "type": "WEAPONRY",
+        "tier": 7,
+        "effect": {
+            "damage_type": "missile",
+            "min_damage": 20,
+            "max_damage": 75,
+            "range": 6
+        },
+        "created_at": "2024-06-04 12:38:15",
+        "updated_at": "2024-06-04 12:38:15"
+    }
+}
 ]

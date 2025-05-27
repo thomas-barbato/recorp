@@ -42,7 +42,7 @@ function create_foreground_modal(id, data) {
 
     let header_div = document.createElement('h3');
     header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
-    header_div.textContent = `${data.name.toUpperCase()} (${data.translated_type.toUpperCase()})`;
+    header_div.textContent = `${data.name.toUpperCase()}`;
 
     let close_button_url = '/static/img/ux/close.svg';
 
@@ -577,7 +577,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     if (!is_npc) {
 
         let target_img = document.createElement('img');
-        target_img.src = data.player.image == "img.png" ? `/static/img/ux/default-user.svg` : `/static/img/users/${player_id}/0.jpg`
+        target_img.src = data.player.image == "img.png" ? `/static/img/ux/default-user.svg` : `/static/img/users/${player_id}/0.gif`
         target_img.style.width = "30%";
         target_img.style.height = "30%";
         target_img.style.margin = "0 auto";
@@ -739,7 +739,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                 ship_detailed_statistics_container_div.classList.add('hidden');
                 ship_statistics_warning_msg_container_p.classList.remove('hidden');
             }
-
             for (let module_i in map_informations.pc[ship_i].ship.modules) {
                 let module_item_content = document.createElement('div');
                 let module_item_p = document.createElement('p');

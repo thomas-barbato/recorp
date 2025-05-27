@@ -14,15 +14,14 @@
 </div>
 
 <div class="flex flex-col">
-    <div class="flex flex-col w-[90%] gap-2">
-        <label for="level-base-value">Entrez une valeur de base pour définir les points d'experience par niveaux.</label>
-        <input type="number" name="experience-value" id="experience_value"/>
+    <form action="" method="POST" class="flex flex-col w-full gap-2">
+        {% csrf_token %}
+        {{ form }}
         <div class="flex flex-row gap-2 justify-around">
             <input type="button" value="test value" id="test-value"/>
-            <input type="button" value="save value"/>
+            <input type="submit" value="save value" id="save-value"/>
         </div>
         <ul id="experience-value-per-level" class="grid grid-cols-4 gap-4"></ul>
-        
     </div>
 </div>
 {% block js %}
@@ -37,9 +36,13 @@ document.querySelector('#test-value').addEventListener('click', function(){
 
     for(let i = 0 ; i <= 100 ; i++){
         let nb_li = document.createElement('li')
-        nb_li.textContent = `level: ${i} : ${(value * i) + ((value * i )/2)}`
+        nb_li.textContent = `level: ${i} : ${(value * i) * 0.5}`
         experience_display.append(nb_li);
     }
+})
+
+document.querySelector('#save-value').addEventListener('click', function(){
+
 })
 </script>
 {% endblock %}

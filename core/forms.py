@@ -13,7 +13,7 @@ from core.backend.validators import (
     CheckCharacterNameAlreadyUsed,
     CheckImageExtension,
 )
-from core.models import User, Player, Archetype
+from core.models import User, Player, Archetype, SkillExperience
 
 
 class UploadImageForm(forms.Form):
@@ -209,3 +209,17 @@ class PasswordRecoveryForm(forms.ModelForm):
         required=True,
         validators=[CheckPasswordPolicy().validate],
     )
+
+
+class SetXpForm(forms.ModelForm):
+    """docstring"""
+
+    class Meta:
+        model = SkillExperience
+        fields = ["required_experience"]
+
+    def save(self, *args, **kwargs):
+        for i in range(0,100):
+            self.instance.level = i
+            self.instance.required_experience = int(self.instance.required_experience)
+            super().save()
