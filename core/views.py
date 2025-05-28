@@ -324,28 +324,26 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         context["loop"] = range(10)
         context["map_size_range"] = {"cols": range(40), "rows": range(40)}
 
-        context["skills"] = {
-            "categories": [
-                "Steering",
-                "Offensive",
-                "Defensive",
-                "Utility",
-                "Industry",
-            ],
-            "list": [
-                {
-                    "id": "1",
-                    "skill_name": "Frigate",
-                    "level": 1,
-                    "expertise": "Rookie",
-                    "effects": "bliblibli +12 !",
-                    "progress": 5,
-                    "cat": "Steering",
-                    "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.",
-                },
-            ],
-        }
         if Sector.objects.filter(id=player.get_player_sector()).exists():
+            context["skills"] = {
+                "categories": [
+                    "Steering",
+                    "Offensive",
+                    "Defensive",
+                    "Utility",
+                    "Industry",
+                ],
+                "list": [
+                        {
+                            "id": skill['id'],
+                            "skill_name": skill['skill_id__name'],
+                            "level": skill['level'],
+                            "progress": str(skill['progress']).replace(',', '.'),
+                            "cat": skill['skill_id__category'],
+                            "description": skill['skill_id__description'],
+                        } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values('id', 'level', 'progress', 'skill_id__name', 'skill_id__category', 'skill_id__description')
+                ],
+            }
             
             data = StoreInCache(
                 f"play_{player.get_player_sector()}", self.request.user

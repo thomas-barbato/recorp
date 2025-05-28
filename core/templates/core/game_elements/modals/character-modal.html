@@ -8,71 +8,80 @@
                     {% translate "Character Sheet" %}
                 </h3>
             </div>
+            {% for player in map_informations.pc %}
+            {% if player.user.user == request.user.id %}
             <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col">
                 <div class="lg:w-1/4 w-4/4 order-1 p-1 lg:flex-row flex-col">
-                    <div class="w-2/2 mt-1 flex items-center justify-center gap-2">
+                    <div class="w-2/2 lg:h-full mt-1 flex flex-col gap-2 bg-gray-800 border border-[#B1F1CB] p-2 rounded-md">
                         <div title="{% translate 'Change your picture' %}" class="lg:w-full w-1/2 mt-1 flex items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
-                            <img class="md:w-48 w-24 box-content rounded-full ring-2 ring-gray-300 dark:ring-gray-500" id="user-avatar" src="{% static 'ux/default-user.svg' %}">
+                            <img class="md:w-48 w-24 box-content rounded-md ring-2 ring-gray-300 dark:ring-gray-500" id="user-avatar" {% if player.user.image %} src="/static/img/users/{{player.user.player}}/0.gif" {% else %} src="{% static 'ux/default-user.svg' %}" {% endif %}>
                             <input type="file" id="id_image" class="hidden-input-file hidden" name="image" accept=".jpg, .png" />
                         </div>
-                        <div class="lg:w-full w-1/2 mt-1 flex lg:items-start items-center lg:justify-center justify-start ">
+                        <div class="lg:w-auto w-1/2 mt-1 flex lg:items-start items-center lg:justify-center justify-start p-2">
                             <ul>
-                                {% for player in map_informations.pc %}
-                                    {% if player.user.user == request.user.id %}
-                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Name" %}:</b> {{ player.user.name }}</li>
-                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Archetype" %}:</b> {% translate player.user.archetype_name %}</li>
-                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Faction" %}:</b> {{ player.faction.name }}</li>
-                                        <li class="text-justify text-center text-white font-shadow md:text-base text-sm"><b>{% translate "Sector" %}:</b> {{ player.user.sector_name }}</li>
-                                    {% endif %}
-                                {% endfor %}
+                                        <li class="text-justify text-center text-white font-shadow text-sm"><b>{% translate "Name" %}:</b> {{ player.user.name }}</li>
+                                        <li class="text-justify text-center text-white font-shadow text-sm"><b>{% translate "Archetype" %}:</b> {% translate player.user.archetype_name %}</li>
+                                        <li class="text-justify text-center text-white font-shadow text-sm"><b>{% translate "Faction" %}:</b> {{ player.faction.name }}</li>
+                                        <li class="text-justify text-center text-white font-shadow text-sm"><b>{% translate "Sector" %}:</b> {{ player.user.sector_name }}</li>
+                                    
                             </ul>
                         </div>
-                    </div>
-                    <div class="w-full mt-2">
-                        <span id="usr-background" class="block p-2.5 w-full md:text-base text-sm col-span-12 text-justify text-center dark:text-white cursor-pointer max-h-[40vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">{{ description }}</span>
-                    </div>
-                    <div class="w-full flex items-center justify-center cursor-pointer md:mt-2 mt-1" id="edit-mod-btn">
-                        <i title="{% translate 'Change your description' %}" class="fa-solid fa-file-pen fa-2xl p-5 text-white hover:animate-pulse"></i>
-                    </div>
-                    <div class="w-full flex flex-row items-center justify-center hidden mt-2 mt-1" id="btn-group">
-                        <div class="md:w-1/2 flex items-start justify-center cursor-pointer md:mt-2 mt-1" id="save-edition-btn">
-                            <i title="{% translate 'Return to read mode to save' %}" class="fa-solid fa-floppy-disk fa-2xl p-5 text-emerald-400 hover:text-[#B1F1CB] hover:cursor-pointer hover:animate-pulse"></i>
+                        <div class="flex w-full flex-col justify-start mt-">
+                            <div id="editor" class="flex w-full h-[40vh] max-h-[40vh] text-sm cursor-pointer">
+                                {{ player.user.description | safe }}
+                            </div>
                         </div>
-                        <div class="md:w-1/2 flex items-end justify-center cursor-pointer md:mt-2 mt-1" id="cancel-edition-btn">
-                            <i title="{% translate 'Discard changes' %}" class="fa-solid fa-xmark fa-2xl p-5 text-red-700 hover:text-red-500 hover:cursor-pointer hover:animate-pulse"></i>
+                        <!--
+                        <div class="flex w-full mt-2 justify-center p-2">
+                            <span id="usr-background" class="block w-full text-sm text-justify cursor-pointer max-h-[40vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">{{ player.user.description|safe }}</span>
+                        </div>-->
+                        <div class="w-full flex items-center justify-center cursor-pointer md:mt-2 mt-1" id="edit-mod-btn">
+                            <i title="{% translate 'Change your description' %}" class="fa-solid fa-file-pen fa-2xl p-5 text-white hover:animate-pulse"></i>
+                        </div>
+                        <div class="w-full flex flex-row items-center justify-center hidden mt-2 mt-1" id="btn-group">
+                            <div class="md:w-1/2 flex items-start justify-center cursor-pointer md:mt-2 mt-1" id="save-edition-btn">
+                                <i title="{% translate 'Return to read mode to save' %}" class="fa-solid fa-floppy-disk fa-2xl p-5 text-emerald-400 hover:text-[#B1F1CB] hover:cursor-pointer hover:animate-pulse"></i>
+                            </div>
+                            <div class="md:w-1/2 flex items-end justify-center cursor-pointer md:mt-2 mt-1" id="cancel-edition-btn">
+                                <i title="{% translate 'Discard changes' %}" class="fa-solid fa-xmark fa-2xl p-5 text-red-700 hover:text-red-500 hover:cursor-pointer hover:animate-pulse"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="lg:w-3/4 w-3/3 order-2 flex-wrap">
+                <div class="flex lg:w-3/4 w-full order-2 flex-wrap gap-3">
                     {% for category in skills.categories %}
-                    <fieldset class="flex lg:flex-row flex-col gap-1 p-1 flex-wrap w-full justify-center items-center">
-                        <legend class="text-xl md:text-start text-center font-shadow font-bold text-gray-900 dark:text-white p-1">
-                        {{ category }}
+                    <fieldset class="flex lg:flex-row flex-col gap-1 p-1 flex-wrap w-full justify-center items-center bg-gray-800 border-[#B1F1CB]">
+                        <legend class="text-sm text-start font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[10vw]">
+                            <span class="flex justify-center">{{ category }}</span>
                         </legend>
                         {% for skill in skills.list %}
                             {% if category == skill.cat %}
-                            <div class="w-[100%] mb-1 lg:w-1/5 skills" id="skill-{{ skill.id }}">
+                            <div class="w-[100%] gap-3 lg:w-1/5 skills popover-element" id="skill-{{ skill.id }}" data-popover-target="popover-{{ skill.id }}">
                                 {% if request.user_agent.is_pc %}
-                                <p data-popover-target="popover-{{ skill.id }}" class="popover-element text-start font-bold dark:text-white font-shadow mb-1 md:cursor-pointer">{{ skill.skill_name }} <i class="fa-regular fa-circle-question text-white invisible"></i>
-                                <div class="flex w-full mb-2 self-center">
-                                    <div class="relative w-5 h-5 bg-zinc-300 text-start">
-                                        <span class="text-bold text-xs text-black font-shadow absolute top-0.5 left-1 px-0.5">
-                                            {{ skill.level }}
-                                        </span>
-                                    </div>
-                                    <div class="w-full md:w-3/4 h-5 bg-zinc-300">
-                                        <div class="h-5 text-xs font-medium progress-bar-color text-center leading-none font-shadow pt-1" style="width: {{ skill.progress }}% ; color:black;">{{ skill.progress }}%</div>
+                                <div class="flex w-full flex-row gap-2 mb-2 text-sm font-bold text-white md:cursor-pointer">
+                                    <p class="flex w-auto text-emerald-300">
+                                        {{ skill.skill_name }}
+                                    </p> 
+                                    <span class="flex font-bold text-black text-sm bg-emerald-900 border-[#B1F1CB] text-emerald-300 rounded-sm px-2">
+                                        {{ skill.level }}
+                                    </span>
+                                    <i class="fa-regular fa-circle-question text-white invisible"></i>
+                                </div>
+                                <div class="flex w-[50%] mb-2 self-center">
+                                    <div class="w-full relative bg-zinc-300 text-center h-auto rounded-r-sm text-xs text-center">
+                                        <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs mx-auto text-center">{{ skill.progress }}%</span>
+                                        <div class="h-3 text-xs bg-yellow-600 rounded-r-sm text-center leading-none" style="width:{{ skill.progress }}% ; color:black;"></div>
                                     </div>
                                 </div>
-                                <div data-popover id="popover-{{ skill.id }}" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-white font-shadow transition-opacity duration-300 border border-[#B1F1CB] rounded-lg shadow-sm bg-gray-800">
+                                <div data-popover id="popover-{{ skill.id }}" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-white transition-opacity duration-300 border border-[#B1F1CB] rounded-lg shadow-sm bg-gray-800">
                                     <div class="px-3 py-2 bg-emerald-900 border-b border-[#B1F1CB] rounded-t-lg text-[#B1F1CB]">
                                         <h3 class="font-bold text-center">{{ skill.skill_name }}</h3>
                                     </div>
                                     <div class="px-3 py-2 font-bold font-shadow text-start">
                                         {% translate 'Description' %}:
                                     </div>
-                                    <div class="px-3 py-2 font-shadow text-justify">
-                                        <p>{{ skill.description }}</p>
+                                    <div class="px-3 py-2 font-shadow break-all">
+                                        <p class="p-2">{{ skill.description }}</p>
                                     </div>
                                     <div class="px-3 py-2 font-bold font-shadow text-start">
                                         {% translate 'Effects' %}:
@@ -130,11 +139,51 @@
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
+            {% endfor %}
             <div class="flex justify-center items-center md:p-4 bg-black/0 sm:mb-3">
-                <button data-modal-hide="character-modal" type="button" class="font-shadow text-emerald-400 rounded-md hover:text-[#B1F1CB] border-emerald-400 hover:border-[#B1F1CB]  hover:cursor-pointer font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border md:text-base text-sm px-5 py-2.5 focus:z-10">{% translate "Close" %}</button>
+                <button data-modal-hide="character-modal" type="button" class="font-shadow text-emerald-400 rounded-md hover:text-[#B1F1CB] border-emerald-400 hover:border-[#B1F1CB]  hover:cursor-pointer font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border text-sm px-5 py-2.5 focus:z-10">{% translate "Close" %}</button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="{% static 'js/quill/quill.js' %}" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<script src="{% static 'js/quill/quill_element.js' %}" type="text/javascript"></script>
+<script>
+
+    let edit_description_btn = document.querySelector('#edit-mod-btn')
+    edit_description_btn.addEventListener("click", () => {
+        edit_description_btn.classList.add('bg-gray-50', 'border', 'border-gray-300')
+        let quill_content = undefined;
+        const quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        quill.getHTML = () => {
+            return quill.root.innerHTML;
+        };
+
+        quill.on('text-change', () => {
+            quill_content = quill.getHTML();
+        });
+        
+        
+        let toolbar = document.querySelector('.ql-editor')
+        toolbar.classList.add('text-justify', 'break-all', 'overflow-x-hidden', 'h-[20vh]' )
+
+        let editor = document.querySelector('#editor')
+        
+        editor.addEventListener("click", () => {
+            document.querySelector(".ql-editor").focus();
+        });
+    });
+    
+
+    
+</script>
 <script src="{% static 'world_builder/world/character_modal.js' %}"></script>
