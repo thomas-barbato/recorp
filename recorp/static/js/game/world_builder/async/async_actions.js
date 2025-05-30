@@ -325,6 +325,7 @@ function set_range_finding(data) {
 
 function update_player_range_in_modal(data){
     let modal = "";
+    console.log(data)
     for(const node_type in data){
         for(const node in data[node_type]){
             if(node_type == "pc" || node_type == "npc"){
@@ -332,13 +333,15 @@ function update_player_range_in_modal(data){
             }else{
                 modal = document.getElementById(`modal-${data[node_type][node].name}`);
             }
-            let module_element = modal.querySelector(`#module-${data[node_type][node].module_id}`);
-            if(module_element){
-                if(module_element.querySelector('#range-finder-warning-msg')){
-                    if(data[node_type][node].is_in_range){
-                        module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
-                    }else{
-                        module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
+            if(modal){
+                let module_element = modal.querySelector(`#module-${data[node_type][node].module_id}`);
+                if(module_element){
+                    if(module_element.querySelector('#range-finder-warning-msg')){
+                        if(data[node_type][node].is_in_range){
+                            module_element.querySelector('#range-finder-warning-msg').classList.add('hidden');
+                        }else{
+                            module_element.querySelector('#range-finder-warning-msg').classList.remove('hidden');
+                        }
                     }
                 }
             }

@@ -443,9 +443,6 @@ class GetDataFromDB:
         result_dict = {}
         player_zone_range = []
         current_size = None
-
-        index_foreground_element = ["other_element", "asteroid", "warpzone", "station"]
-        index_pc_npc = ["pc", "npc"]
         index_module_type = ["WEAPONRY", "ELECTRONIC_WARFARE"]
 
         current_player_x = 0
@@ -461,13 +458,13 @@ class GetDataFromDB:
                     "player_ship_id__player_id__coordinates",
                     "player_ship_id__player_id"
                 )][0]
-            # "module_id_list",
+            
             current_player_module = [e for e in PlayerShipModule.objects.filter(
-                    (
-                        Q(player_ship_id__player_id=current_player["player_ship_id__player_id"])
-                        & Q(module_id__effect__has_key="range")
-                    )
-                ).values("module_id", "module_id__effect", "module_id__type")]
+                player_ship_id__player_id=current_player["player_ship_id__player_id"],
+                module_id__effect__has_key="range",
+                module_id__type__in=index_module_type
+            ).values("module_id", "module_id__effect", "module_id__type")]
+            
             player_size_x = int(current_player["player_ship_id__ship_id__ship_category_id__size"]["x"])
             player_size_y = int(current_player["player_ship_id__ship_id__ship_category_id__size"]["y"])
 
@@ -530,12 +527,15 @@ class GetDataFromDB:
             current_player_y = int(current_player["coordinates"]["y"])
             
         sector_element_dict = {
-            "pc": [e for e in PlayerShip.objects.filter(
+            "pc": [{'id': e["player_id"],
+                    'player_id__coordinates': e['player_id__coordinates'],
+                    'ship_id__ship_category_id__size': e['ship_id__ship_category_id__size']
+                    } for e in PlayerShip.objects.filter(
                     player_id__sector_id=sector_id, is_current_ship=True
                 )
                 .exclude(player_id__user_id=current_user_id)
                 .values(
-                    "id",
+                    "player_id",
                     "player_id__coordinates",
                     "ship_id__ship_category_id__size",
                 )],

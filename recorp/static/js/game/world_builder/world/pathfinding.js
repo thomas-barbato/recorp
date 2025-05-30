@@ -1,321 +1,377 @@
+// Variables globales
 let pathfinder_obj = {};
 let cell_already_clicked = false;
-
-let current_player = new Player(
-    null,
-    null,
-    null,
-)
-
+let current_player = new Player(null, null, null);
 let pathfinding_path_before_preview_zone_len = 1;
 
+// Configuration des styles CSS
+const CSS_CLASSES = {
+    TEAL_ZONE: 'teal-zone',
+    BG_TEAL: 'bg-teal-500/30',
+    BG_RED: 'bg-red-600/50',
+    BG_AMBER: 'bg-amber-400/50',
+    BORDER_AMBER: 'border-amber-400',
+    BORDER_RED: 'border-red-600',
+    ANIMATE_PULSE: 'animate-pulse',
+    TEXT_WHITE: 'text-white',
+    FONT_BOLD: 'font-bold',
+    TEXT_CENTER: 'text-center',
+    BORDER: 'border',
+    BORDER_2: 'border-2',
+    BORDER_DASHED: 'border-dashed',
+    BORDER_GREEN: 'border-green-300',
+    BORDER_CYAN: 'border-cyan-400',
+    HOVER_BORDER: 'hover:border-2',
+    HOVER_BORDER_SIMPLE: 'hover:border'
+};
+
+const GRID_CONSTANTS = {
+    MAX_SIZE: 41,
+    WALL_WEIGHT: 15,
+    MIN_WEIGHT: 1,
+    MAX_WEIGHT: 7
+};
+
+// Configuration des événements de pathfinding
 function set_pathfinding_event() {
-    let pf = document.querySelectorAll(".tile:not(.hidden),.tile:not(.uncrossable)");
-    for (let i = 0; i < pf.length; i++){
-        let pf_child = pf[i].querySelector('.pathfinding-zone');
-        if(pf_child){
-            if(!pf[i].classList.contains('uncrossable') && !pf[i].classList.contains('hidden') && !pf[i].classList.contains('pc') && !pf[i].classList.contains('npc')){
-                pf_child.setAttribute('onmouseover', 'get_pathfinding(this)');
-                pf_child.setAttribute('onclick', 'display_pathfinding()');
-            }
+    const pathfindingTiles = document.querySelectorAll(".tile:not(.hidden):not(.uncrossable)");
+    
+    pathfindingTiles.forEach(tile => {
+        const pathfindingZone = tile.querySelector('.pathfinding-zone');
+        if (pathfindingZone && isValidPathfindingTile(tile)) {
+            pathfindingZone.setAttribute('onmouseover', 'get_pathfinding(this)');
+            pathfindingZone.setAttribute('onclick', 'display_pathfinding()');
         }
-    }
+    });
 }
 
+function isValidPathfindingTile(tile) {
+    const invalidClasses = ['uncrossable', 'hidden', 'pc', 'npc'];
+    return !invalidClasses.some(className => tile.classList.contains(className));
+}
+
+// Affichage du pathfinding
 function display_pathfinding() {
-    let span = pathfinder_obj.player_cell;
-    let player_span = span.querySelector('div>span');
-    player_span.classList.add('box-border', 'border-2', 'border');
-    if (current_player.selected_cell_bool === false) {
-        pathfinding_path_before_preview_zone_len = 0;
-        for (let i = 0; i < pathfinder_obj.path.length; i++) {
-            let td_el = pathfinder_obj.graph.rows[pathfinder_obj.path[i].x].cells[pathfinder_obj.path[i].y];
-            let span_el = td_el.querySelector('span');
-            span_el.classList.remove('border', 'border-2');
-            // if path is lower or equal to move_point value
-            if (i < current_player.move_points_value) {
-                // if i index is lower than path - ship size x
-                // show teal path.
-                if (i < pathfinder_obj.path.length - 1) {
-                    // Test without teal
-                    if (current_player.move_points_value == 0) {
-                        span_el.classList.add('bg-red-600/50', 'border-red-600');
-                        span_el.classList.add('text-white', 'font-bold', 'text-center');
-                    } else {
-                        span_el.classList.add('bg-teal-500/30', 'teal-zone');
-                        span_el.classList.add('text-white', 'font-bold', 'text-center');
-                    }
-                    // display coord on screen.
-                    span_el.textContent = i + 1;
+    const playerSpan = pathfinder_obj.player_cell.querySelector('div>span');
+    playerSpan.classList.add('box-border', CSS_CLASSES.BORDER_2, CSS_CLASSES.BORDER);
 
-                    // if i index is same has path - 1
-                    // show ship placeholder.
-                } else if (i == pathfinder_obj.path.length - 1) {
-                    // will be used to stock real ship coordinates
-                    let ship_arrival_coordinates = []
-                    let can_be_crossed = true;
-                    for (let row_i = pathfinder_obj.path[pathfinder_obj.path.length - 1].x; row_i < (pathfinder_obj.path[pathfinder_obj.path.length - 1].x + current_player.s_size.y); row_i++) {
-                        for (let col_i = pathfinder_obj.path[pathfinder_obj.path.length - 1].y; col_i < (pathfinder_obj.path[pathfinder_obj.path.length - 1].y + current_player.s_size.x); col_i++) {
-                            let td_ship_el = document.getElementById(`${row_i-1}_${col_i-1}`);
-                            if (td_ship_el) {
-                                // check outbound
-                                if ((col_i) >= 41 || (row_i - 1) >= 41 || td_ship_el.classList.contains('uncrossable') || td_ship_el.classList.contains('ship-pos') || current_player.move_points == 0) {
-                                    can_be_crossed = false;
-                                }
-                                // save id in list
-                                ship_arrival_coordinates.push(`${row_i-1}_${col_i-1}`);
-                            } else {
-                                can_be_crossed = false;
-                            }
-                        }
-                    }
-
-
-                    if (can_be_crossed == true) {
-                        for (let index = 0; index < ship_arrival_coordinates.length; index++) {
-                            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
-                            let span_ship_el = td_ship_el.querySelector('span');
-                            span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed', 'teal-zone');
-                            span_ship_el.classList.add('bg-amber-400/50', 'border-amber-400', 'animate-pulse', 'text-white', 'font-bold', 'text-center');
-                            span_ship_el.textContent = "";
-                        }
-                        // set new end_coord
-                        current_player.set_end_coord(
-                            pathfinder_obj.path[i].x,
-                            pathfinder_obj.path[i].y
-                        );
-                        // set real coordinates
-                        current_player.set_fullsize_coordinates(ship_arrival_coordinates);
-                        current_player.set_selected_cell_bool(true);
-                    } else {
-                        for (let i = 0; i < ship_arrival_coordinates.length; i++) {
-                            let uncrossable_td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
-                            let uncrossable_span_ship_el = undefined;
-                            if(uncrossable_td_ship_el){
-                                uncrossable_span_ship_el = uncrossable_td_ship_el.querySelector('span');
-                                uncrossable_span_ship_el.classList.remove('bg-teal-500/30', 'border-dashed', 'teal-zone');
-                                uncrossable_span_ship_el.classList.add('bg-red-600/50', 'border-red-600', 'animate-pulse', 'text-white', 'font-bold', 'text-center');
-                                uncrossable_span_ship_el.textContent = "";
-                            }
-                        }
-                        current_player.set_selected_cell_bool(false);
-                    }
-
-                    let teal_zone_size = document.querySelectorAll('.teal-zone').length + 1
-                    switch (ship_arrival_coordinates.length) {
-                        case 9:
-                            for (let index = 0; index < 9; index++) {
-                                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
-                                let span_ship_el = td_ship_el.querySelector('span');
-                                if (td_ship_el.classList.contains('ship-pos')) {
-                                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
-                                }
-                                switch (index) {
-                                    case 0:
-                                        span_ship_el.classList.add('border-l', 'border-t');
-                                        span_ship_el.classList.remove('hover:border-2', 'hover:border');
-                                        break;
-                                    case 1:
-                                        span_ship_el.classList.add('border-t');
-                                        break;
-                                    case 2:
-                                        span_ship_el.classList.add('border-t', 'border-r');
-                                        break;
-                                    case 3:
-                                        span_ship_el.classList.add('border-l');
-                                        break;
-                                    case 4:
-                                        span_ship_el.classList.add('text-white', 'font-bold', 'text-center');
-                                        span_ship_el.textContent = `${teal_zone_size}`;
-                                        current_player.set_move_cost(teal_zone_size);
-                                        break;
-                                    case 5:
-                                        span_ship_el.classList.add('border-r');
-                                        break;
-                                    case 6:
-                                        span_ship_el.classList.add('border-l', 'border-b');
-                                        break;
-                                    case 7:
-                                        span_ship_el.classList.add('border-b');
-                                        break;
-                                    case 8:
-                                        span_ship_el.classList.add('border-r', 'border-b');
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            break;
-                        case 3:
-                            for (let index = 0; index < 3; index++) {
-                                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
-                                let span_ship_el = td_ship_el.querySelector('span');
-                                if (td_ship_el.classList.contains('ship-pos')) {
-                                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
-                                }
-                                switch (index) {
-                                    case 0:
-                                        span_ship_el.classList.add('border-t', 'border-l', 'border-b');
-                                        span_ship_el.classList.remove('hover:border-2', 'hover:border');
-                                        break;
-                                    case 1:
-                                        span_ship_el.classList.add('border-t', 'border-b');
-                                        span_ship_el.textContent = `${teal_zone_size}`;
-                                        current_player.set_move_cost(teal_zone_size);
-                                        break;
-                                    case 2:
-                                        span_ship_el.classList.add('border-t', 'border-r', 'border-b');
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            break;
-                        case 2:
-                            for (let index = 0; index < 2; index++) {
-                                let td_ship_el = document.getElementById(`${ship_arrival_coordinates[index]}`);
-                                let span_ship_el = td_ship_el.querySelector('span');
-                                if (td_ship_el.classList.contains('ship-pos')) {
-                                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300');
-                                }
-                                switch (index) {
-                                    case 0:
-                                        span_ship_el.classList.add('border-t', 'border-l', 'border-b');
-                                        span_ship_el.classList.remove('hover:border-2', 'hover:border');
-                                        if (!current_player.reversed_ship_status) {
-                                            span_ship_el.textContent = `${teal_zone_size}`;
-                                            current_player.set_move_cost(teal_zone_size);
-                                        }
-                                        break;
-                                    case 1:
-                                        span_ship_el.classList.add('border-t', 'border-r', 'border-b');
-                                        if (current_player.reversed_ship_status) {
-                                            span_ship_el.textContent = `${teal_zone_size}`;
-                                            current_player.set_move_cost(teal_zone_size);
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            break;
-                        case 1:
-                            let td_ship_el = document.getElementById(`${ship_arrival_coordinates[0]}`);
-                            let span_ship_el = td_ship_el.querySelector('span')
-                            span_ship_el.classList.add('border');
-                            span_ship_el.textContent = `${teal_zone_size}`;
-                            current_player.set_move_cost(teal_zone_size);
-                            break;
-                        default:
-                            break;
-                    }
-                    pathfinding_path_before_preview_zone_len = 1;
-                }
-            } else {
-                span_el.classList.add('bg-red-600/50', 'border-red-600', 'text-white', 'font-bold', 'text-center');
-                span_el.textContent = `${i + 1}`;
-            }
-        }
-
+    if (!current_player.selected_cell_bool) {
+        handlePathfindingDisplay();
     } else {
-        cleanCss();
-        current_player.set_selected_cell_bool(false);
-        // redefine start_coord
-        // you have to revert end_x and end_y because graph use x as y and y as x ...
-        current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
-        update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
-
-        let player_coord_array = Array.prototype.slice.call(document.querySelectorAll('.ship-pos')).map(function(element) {
-            return element.id;
-        });
-
-        async_move({
-            player: current_player.player,
-            end_y: current_player.coord.end_x - 1,
-            end_x: current_player.coord.end_y - 1,
-            is_reversed: current_player.reversed_ship_status,
-            start_id_array: player_coord_array,
-            move_cost: current_player.player_move_cost,
-            destination_id_array: current_player.fullsize_coordinate,
-        });
+        handlePlayerMovement();
     }
 }
 
-function get_pathfinding(e) {
-    cleanCss();
-
-    let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
-    current_player.set_is_reversed(ship_is_reversed);
-    let player_obj = map_informations['pc'].find((a) => a['user']['user'] === current_user_id);
-    let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
-    let destination_node_id = e.parentNode.parentNode.id.split('_');
-    let size = document.querySelector('.player-ship-start-pos');
-    let grid_container = document.querySelector('tbody');
-
-    current_player.set_player_id(
-        player_obj['user']['player']
-    );
-
-    current_player.set_ship_size(
-        parseInt(size.getAttribute('size_x')),
-        parseInt(size.getAttribute('size_y'))
-    );
-
-    // we use start_node_id to get destination coord.
-    // we check ship size to define itterator.
-    if (current_player.s_size.x == 1 && current_player.s_size.y == 1) {
-        current_player.set_start_coord(
-            parseInt(start_node_id[1]) + 1,
-            parseInt(start_node_id[0]) + 1,
-        );
-    } else if (current_player.s_size.x == 2 && current_player.s_size.y == 1) {
-        if (current_player.reversed_ship_status == true) {
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]) + 1,
-                parseInt(start_node_id[0]) + 1,
-            );
+function handlePathfindingDisplay() {
+    pathfinding_path_before_preview_zone_len = 0;
+    
+    pathfinder_obj.path.forEach((pathNode, index) => {
+        const cellElement = getCellElement(pathNode);
+        const spanElement = cellElement.querySelector('span');
+        
+        clearPathNodeStyles(spanElement);
+        
+        if (index < current_player.move_points_value) {
+            processValidPathNode(spanElement, index);
         } else {
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]) + 2,
-                parseInt(start_node_id[0]) + 1,
-            );
+            processInvalidPathNode(spanElement, index);
         }
-    } else if (current_player.s_size.x == 3 && current_player.s_size.y == 1) {
-        if (current_player.reversed_ship_status == true) {
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]),
-                parseInt(start_node_id[0]) + 1,
-            );
-        } else {
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]) + 2,
-                parseInt(start_node_id[0]) + 1,
-            );
-        }
-    } else if (current_player.s_size.x == 3 && current_player.s_size.y == 3) {
-        if (current_player.reversed_ship_status == true) {
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]),
-                parseInt(start_node_id[0]) + 1,
-            );
-        } else {
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]) + 2,
-                parseInt(start_node_id[0]) + 1,
-            );
+    });
+}
+
+function getCellElement(pathNode) {
+    return pathfinder_obj.graph.rows[pathNode.x].cells[pathNode.y];
+}
+
+function clearPathNodeStyles(spanElement) {
+    spanElement.classList.remove(CSS_CLASSES.BORDER, CSS_CLASSES.BORDER_2);
+}
+
+function processValidPathNode(spanElement, index) {
+    if (index < pathfinder_obj.path.length - 1) {
+        displayPathStep(spanElement, index);
+    } else {
+        displayShipPreview(index);
+    }
+}
+
+function displayPathStep(spanElement, index) {
+    if (current_player.move_points_value === 0) {
+        applyRedPathStyle(spanElement);
+    } else {
+        applyTealPathStyle(spanElement);
+    }
+    spanElement.textContent = index + 1;
+}
+
+function applyRedPathStyle(spanElement) {
+    spanElement.classList.add(CSS_CLASSES.BG_RED, CSS_CLASSES.BORDER_RED, 
+        CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+}
+
+function applyTealPathStyle(spanElement) {
+    spanElement.classList.add(CSS_CLASSES.BG_TEAL, CSS_CLASSES.TEAL_ZONE, 
+        CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+}
+
+function processInvalidPathNode(spanElement, index) {
+    spanElement.classList.add(CSS_CLASSES.BG_RED, CSS_CLASSES.BORDER_RED, 
+        CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+    spanElement.textContent = index + 1;
+}
+
+function displayShipPreview(pathIndex) {
+    const shipCoordinates = calculateShipCoordinates(pathIndex);
+    const canBeCrossed = validateShipPlacement(shipCoordinates);
+    
+    if (canBeCrossed) {
+        displayValidShipPreview(shipCoordinates);
+        updatePlayerCoordinates(pathIndex, shipCoordinates);
+    } else {
+        displayInvalidShipPreview(shipCoordinates);
+        current_player.set_selected_cell_bool(false);
+    }
+    
+    applyShipBorders(shipCoordinates);
+}
+
+function calculateShipCoordinates(pathIndex) {
+    const coordinates = [];
+    const lastPathNode = pathfinder_obj.path[pathIndex];
+    
+    for (let row = lastPathNode.x; row < lastPathNode.x + current_player.s_size.y; row++) {
+        for (let col = lastPathNode.y; col < lastPathNode.y + current_player.s_size.x; col++) {
+            coordinates.push(`${row-1}_${col-1}`);
         }
     }
+    
+    return coordinates;
+}
 
-    // we use destination_node_id to get destination coord.
-    // we add +1 to get the real coord.
+function validateShipPlacement(coordinates) {
+    return coordinates.every(coord => {
+        const element = document.getElementById(coord);
+        if (!element) return false;
+        
+        const [row, col] = coord.split('_').map(Number);
+        return col < GRID_CONSTANTS.MAX_SIZE && 
+               row < GRID_CONSTANTS.MAX_SIZE && 
+               !element.classList.contains('uncrossable') && 
+               !element.classList.contains('ship-pos') && 
+               current_player.move_points !== 0;
+    });
+}
+
+function displayValidShipPreview(coordinates) {
+    coordinates.forEach(coord => {
+        const element = document.getElementById(coord);
+        const spanElement = element.querySelector('span');
+        
+        spanElement.classList.remove(CSS_CLASSES.BG_TEAL, CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.TEAL_ZONE);
+        spanElement.classList.add(CSS_CLASSES.BG_AMBER, CSS_CLASSES.BORDER_AMBER, 
+            CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+        spanElement.textContent = "";
+    });
+}
+
+function displayInvalidShipPreview(coordinates) {
+    coordinates.forEach(coord => {
+        const element = document.getElementById(coord);
+        if (element) {
+            const spanElement = element.querySelector('span');
+            spanElement.classList.remove(CSS_CLASSES.BG_TEAL, CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.TEAL_ZONE);
+            spanElement.classList.add(CSS_CLASSES.BG_RED, CSS_CLASSES.BORDER_RED, 
+                CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+            spanElement.textContent = "";
+        }
+    });
+}
+
+function updatePlayerCoordinates(pathIndex, coordinates) {
     current_player.set_end_coord(
-        parseInt(destination_node_id[1]) + 1,
-        parseInt(destination_node_id[0]) + 1
+        pathfinder_obj.path[pathIndex].x,
+        pathfinder_obj.path[pathIndex].y
     );
+    current_player.set_fullsize_coordinates(coordinates);
+    current_player.set_selected_cell_bool(true);
+}
 
+function applyShipBorders(coordinates) {
+    const tealZoneSize = document.querySelectorAll('.teal-zone').length + 1;
+    const shipSize = coordinates.length;
+    
+    const borderConfigs = {
+        9: getBorderConfig9x9(),
+        3: getBorderConfig3x1(),
+        2: getBorderConfig2x1(),
+        1: getBorderConfig1x1()
+    };
+    
+    const config = borderConfigs[shipSize];
+    if (config) {
+        applyBorderConfiguration(coordinates, config, tealZoneSize);
+    }
+    
+    pathfinding_path_before_preview_zone_len = 1;
+}
+
+function getBorderConfig9x9() {
+    return [
+        { classes: ['border-l', 'border-t'], removeBorder: true },
+        { classes: ['border-t'] },
+        { classes: ['border-t', 'border-r'] },
+        { classes: ['border-l'] },
+        { classes: [CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER], showCost: true },
+        { classes: ['border-r'] },
+        { classes: ['border-l', 'border-b'] },
+        { classes: ['border-b'] },
+        { classes: ['border-r', 'border-b'] }
+    ];
+}
+
+function getBorderConfig3x1() {
+    return [
+        { classes: ['border-t', 'border-l', 'border-b'], removeBorder: true },
+        { classes: ['border-t', 'border-b'], showCost: true },
+        { classes: ['border-t', 'border-r', 'border-b'] }
+    ];
+}
+
+function getBorderConfig2x1() {
+    return [
+        { 
+            classes: ['border-t', 'border-l', 'border-b'], 
+            removeBorder: true,
+            showCost: !current_player.reversed_ship_status 
+        },
+        { 
+            classes: ['border-t', 'border-r', 'border-b'],
+            showCost: current_player.reversed_ship_status 
+        }
+    ];
+}
+
+function getBorderConfig1x1() {
+    return [{ classes: [CSS_CLASSES.BORDER], showCost: true }];
+}
+
+function applyBorderConfiguration(coordinates, config, tealZoneSize) {
+    coordinates.forEach((coord, index) => {
+        const element = document.getElementById(coord);
+        const spanElement = element.querySelector('span');
+        const borderConfig = config[index];
+        
+        if (element.classList.contains('ship-pos')) {
+            spanElement.classList.remove(CSS_CLASSES.BORDER, CSS_CLASSES.BORDER_DASHED, 
+                CSS_CLASSES.BORDER_2, CSS_CLASSES.BORDER_GREEN);
+        }
+        
+        if (borderConfig.removeBorder) {
+            spanElement.classList.remove(CSS_CLASSES.HOVER_BORDER, CSS_CLASSES.HOVER_BORDER_SIMPLE);
+        }
+        
+        spanElement.classList.add(...borderConfig.classes);
+        
+        if (borderConfig.showCost) {
+            spanElement.textContent = tealZoneSize;
+            current_player.set_move_cost(tealZoneSize);
+        }
+    });
+}
+
+function handlePlayerMovement() {
+    cleanCss();
     current_player.set_selected_cell_bool(false);
+    
+    // Redéfinir les coordonnées de départ
+    current_player.set_start_coord(current_player.coord.end_y, current_player.coord.end_x);
+    update_user_coord_display(current_player.coord.start_x, current_player.coord.start_y);
+    
+    const playerCoordArray = Array.from(document.querySelectorAll('.ship-pos'))
+        .map(element => element.id);
+    
+    const moveData = {
+        player: current_player.player,
+        end_y: current_player.coord.end_x - 1,
+        end_x: current_player.coord.end_y - 1,
+        is_reversed: current_player.reversed_ship_status,
+        start_id_array: playerCoordArray,
+        move_cost: current_player.player_move_cost,
+        destination_id_array: current_player.fullsize_coordinate,
+    };
+    
+    async_move(moveData);
+}
 
-    let opts = {
+// Récupération du pathfinding
+function get_pathfinding(element) {
+    cleanCss();
+    
+    const shipIsReversed = document.querySelectorAll('.player-ship-reversed')[0]?.style.display === "block";
+    current_player.set_is_reversed(shipIsReversed);
+    
+    const playerObj = map_informations['pc'].find(a => a['user']['user'] === current_user_id);
+    const startNodeId = document.querySelector('.player-ship-start-pos').id.split('_');
+    const destinationNodeId = element.parentNode.parentNode.id.split('_');
+    const sizeElement = document.querySelector('.player-ship-start-pos');
+    const gridContainer = document.querySelector('tbody');
+    
+    initializePlayer(playerObj, sizeElement, startNodeId, destinationNodeId);
+    
+    const pathfindingOptions = createPathfindingOptions();
+    const targetGrid = gridContainer.rows[pathfindingOptions.grid_goal.y].cells[pathfindingOptions.grid_goal.x];
+    
+    if (targetGrid?.classList.contains(pathfindingOptions.css.wall)) {
+        return;
+    }
+    
+    pathfinding(gridContainer, pathfindingOptions);
+}
+
+function initializePlayer(playerObj, sizeElement, startNodeId, destinationNodeId) {
+    current_player.set_player_id(playerObj['user']['player']);
+    
+    const shipSize = {
+        x: parseInt(sizeElement.getAttribute('size_x')),
+        y: parseInt(sizeElement.getAttribute('size_y'))
+    };
+    current_player.set_ship_size(shipSize.x, shipSize.y);
+    
+    const startCoord = calculateStartCoordinates(startNodeId, shipSize);
+    current_player.set_start_coord(startCoord.x, startCoord.y);
+    
+    const endCoord = {
+        x: parseInt(destinationNodeId[1]) + 1,
+        y: parseInt(destinationNodeId[0]) + 1
+    };
+    current_player.set_end_coord(endCoord.x, endCoord.y);
+    
+    current_player.set_selected_cell_bool(false);
+}
+
+function calculateStartCoordinates(startNodeId, shipSize) {
+    const baseX = parseInt(startNodeId[1]);
+    const baseY = parseInt(startNodeId[0]) + 1;
+    
+    const sizeConfigs = {
+        '1x1': { x: baseX + 1, y: baseY },
+        '2x1': current_player.reversed_ship_status 
+            ? { x: baseX + 1, y: baseY }
+            : { x: baseX + 2, y: baseY },
+        '3x1': current_player.reversed_ship_status 
+            ? { x: baseX, y: baseY }
+            : { x: baseX + 2, y: baseY },
+        '3x3': current_player.reversed_ship_status 
+            ? { x: baseX, y: baseY }
+            : { x: baseX + 2, y: baseY }
+    };
+    
+    const sizeKey = `${shipSize.x}x${shipSize.y}`;
+    return sizeConfigs[sizeKey] || { x: baseX + 1, y: baseY };
+}
+
+function createPathfindingOptions() {
+    return {
         grid_size: { cols: atlas.col, rows: atlas.row },
         grid_start: {
             y: current_player.coord.start_y,
@@ -334,56 +390,53 @@ function get_pathfinding(e) {
         debug: false,
         closest: true
     };
-
-    let grid = grid_container.rows[opts.grid_goal.y].cells[opts.grid_goal.x];
-
-    if (grid && grid.classList.contains(opts.css.wall)) {
-        return;
-    }
-
-    pathfinding(grid_container, opts);
 }
+
+// Nettoyage des styles CSS
 function cleanCss() {
-    let pf_zone = document.querySelectorAll('.pathfinding-zone');
-
-    for (let i = 0; i < pf_zone.length; i++) {
-        let pf_zone_parent = pf_zone[i].parentElement.parentElement;
-        if(!pf_zone_parent.classList.contains('hidden')){
-            pf_zone[i].classList.remove(
-                'teal-zone',
-                'bg-teal-500/30',
-                'bg-red-600/50',
-                'animate-pulse',
-                'bg-amber-400/50',
-                'border-amber-400',
-                'border-red-600',
-                'finish', 
-                'box-border',
-                'border-2',
-                'border',
-                'text-white',
-                'font-bold',
-                'text-center',
-                'border-l',
-                'border-r',
-                'border-b',
-                'border-t'
-            );
-            pf_zone[i].textContent = "";
-           
-            pf_zone[i].classList.add('hover:border-2', 'hover:border');
-            if (pf_zone_parent.classList.contains('player-ship-start-pos') || pf_zone_parent.classList.contains('ship-pos')) {
-                pf_zone[i].classList.add('border-dashed', 'border-green-300');
-            }else if(pf_zone_parent.classList.contains('pc')){
-                pf_zone[i].classList.add('border-dashed', 'border-cyan-400');
-            }else if(pf_zone_parent.classList.contains('npc')){
-                pf_zone[i].classList.add('border-dashed', 'border-red-600');
-            }
+    const pathfindingZones = document.querySelectorAll('.pathfinding-zone');
+    
+    pathfindingZones.forEach(zone => {
+        const parent = zone.parentElement.parentElement;
+        if (!parent.classList.contains('hidden')) {
+            resetZoneStyles(zone);
+            applyDefaultStyles(zone, parent);
         }
-        
+    });
+}
+
+function resetZoneStyles(zone) {
+    const classesToRemove = [
+        CSS_CLASSES.TEAL_ZONE, CSS_CLASSES.BG_TEAL, CSS_CLASSES.BG_RED,
+        CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.BG_AMBER, CSS_CLASSES.BORDER_AMBER,
+        CSS_CLASSES.BORDER_RED, 'finish', 'box-border', CSS_CLASSES.BORDER_2,
+        CSS_CLASSES.BORDER, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD,
+        CSS_CLASSES.TEXT_CENTER, 'border-l', 'border-r', 'border-b', 'border-t'
+    ];
+    
+    zone.classList.remove(...classesToRemove);
+    zone.textContent = "";
+}
+
+function applyDefaultStyles(zone, parent) {
+    zone.classList.add(CSS_CLASSES.HOVER_BORDER, CSS_CLASSES.HOVER_BORDER_SIMPLE);
+    
+    const styleMap = {
+        'player-ship-start-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_GREEN],
+        'ship-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_GREEN],
+        'pc': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_CYAN],
+        'npc': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_RED]
+    };
+    
+    for (const [className, styles] of Object.entries(styleMap)) {
+        if (parent.classList.contains(className)) {
+            zone.classList.add(...styles);
+            break;
+        }
     }
 }
 
+// Fonction principale de pathfinding
 function pathfinding(graph, opts) {
     this.graph = graph;
     this.opts = opts;
@@ -393,6 +446,7 @@ function pathfinding(graph, opts) {
     this.new_graph = new GraphSearch(this.graph, this.opts, this.search, this.css);
 }
 
+// Classe GraphSearch
 function GraphSearch(graph, options, css) {
     this.gs_graph = graph;
     this.gs_opts = options;
@@ -402,49 +456,52 @@ function GraphSearch(graph, options, css) {
 
 GraphSearch.prototype.initialize = function() {
     this.gs_grid = [];
-    let self = this;
-    let nodes = [];
-    let node_row = [];
-    // prepare graph, from object to array.
-    for (let row_i = 0; row_i < this.gs_opts.grid_size.rows + 1; row_i++) {
-        this.gs_grid[row_i] = []
-        node_row = [];
-        for (let col_i = 0; col_i < this.gs_opts.grid_size.cols + 1; col_i++) {
-            this.gs_graph.rows[row_i].cells[col_i].classList.remove("finish");
-            // add wall (weight: 15)
-            if (this.gs_graph.rows[row_i].cells[col_i].classList.contains("uncrossable")) {
-                node_row.push(15);
-            } else {
-                // define cell weigth
-                node_row.push(Math.floor(Math.random() * 3) * 2 + 1);
-            }
-            // define end path
-            if (row_i == this.gs_opts.grid_goal.y && col_i == this.gs_opts.grid_goal.x) {
-                this.gs_graph.rows[row_i].cells[col_i].classList.add(this.gs_css.finish);
-            }
-            this.gs_grid[row_i].push(this.gs_graph.rows[row_i].cells[col_i]);
-        }
-        nodes.push(node_row);
-    }
-
+    const nodes = this.buildNodeGrid();
     this.temp_graph = new Graph(nodes);
-    self.cellOnMouseHover();
+    this.cellOnMouseHover();
+};
+
+GraphSearch.prototype.buildNodeGrid = function() {
+    const nodes = [];
+    
+    for (let row = 0; row < this.gs_opts.grid_size.rows + 1; row++) {
+        this.gs_grid[row] = [];
+        const nodeRow = [];
+        
+        for (let col = 0; col < this.gs_opts.grid_size.cols + 1; col++) {
+            const cell = this.gs_graph.rows[row].cells[col];
+            cell.classList.remove("finish");
+            
+            const weight = cell.classList.contains("uncrossable") 
+                ? GRID_CONSTANTS.WALL_WEIGHT 
+                : Math.floor(Math.random() * 3) * 2 + 1;
+            
+            nodeRow.push(weight);
+            
+            if (row === this.gs_opts.grid_goal.y && col === this.gs_opts.grid_goal.x) {
+                cell.classList.add(this.gs_css.finish);
+            }
+            
+            this.gs_grid[row].push(cell);
+        }
+        nodes.push(nodeRow);
+    }
+    
+    return nodes;
 };
 
 GraphSearch.prototype.cellOnMouseHover = function() {
     this.end = this.nodeFromElement(this.gs_opts.grid_goal);
     this.start = this.nodeFromElement(this.gs_opts.grid_start);
-    var path = astar.search(this.temp_graph, this.start, this.end, this.gs_opts);
-
-    if (path.length === 0) {
-        return;
+    const path = astar.search(this.temp_graph, this.start, this.end, this.gs_opts);
+    
+    if (path.length > 0) {
+        this.setPathfindingObject(path);
     }
-
-    this.setPathfindingObject(path);
 };
 
-GraphSearch.prototype.nodeFromElement = function(arg) {
-    return this.temp_graph.grid[parseInt(arg.y)][parseInt(arg.x)];
+GraphSearch.prototype.nodeFromElement = function(coordinates) {
+    return this.temp_graph.grid[parseInt(coordinates.y)][parseInt(coordinates.x)];
 };
 
 GraphSearch.prototype.setPathfindingObject = function(path) {
@@ -455,163 +512,131 @@ GraphSearch.prototype.setPathfindingObject = function(path) {
     };
 };
 
+// Fonctions utilitaires
 function pathTo(node) {
-    var curr = node;
-    var path = [];
-    while (curr.parent) {
-        path.unshift(curr);
-        curr = curr.parent;
+    const path = [];
+    let current = node;
+    
+    while (current.parent) {
+        path.unshift(current);
+        current = current.parent;
     }
+    
     return path;
 }
 
 function getHeap() {
-    return new BinaryHeap(function(node) {
-        return node.f;
-    });
+    return new BinaryHeap(node => node.f);
 }
 
-
-
-var astar = {
-    /**
-    * Perform an A* Search on a graph given a start and end node.
-    * @param {Graph} graph
-    * @param {GridNode} start
-    * @param {GridNode} end
-    * @param {Object} [options]
-    * @param {bool} [options.closest] Specifies whether to return the
-            path to the closest node if the target is unreachable.
-    * @param {Function} [options.heuristic] Heuristic function (see
-    *          astar.heuristics).
-    */
-    search: function(graph, start, end, options) {
+// Algorithme A*
+const astar = {
+    search: function(graph, start, end, options = {}) {
         graph.cleanDirty();
-        options = options || {};
-        var heuristic = astar.heuristics.manhattan;
-        var closest = options.closest;
-        var openHeap = getHeap();
-        var closestNode = start; // set the start node to be the closest if required
-
+        
+        const heuristic = astar.heuristics.manhattan;
+        const closest = options.closest;
+        const openHeap = getHeap();
+        let closestNode = start;
+        
         start.h = heuristic(start, end);
         graph.markDirty(start);
-
         openHeap.push(start);
-
+        
         while (openHeap.size() > 0) {
-
-            // Grab the lowest f(x) to process next.  Heap keeps this sorted for us.
-            var currentNode = openHeap.pop();
-
-            // End case -- result has been found, return the traced path.
+            const currentNode = openHeap.pop();
+            
             if (currentNode === end) {
                 return pathTo(currentNode);
             }
-
-            // Normal case -- move currentNode from open to closed, process each of its neighbors.
+            
             currentNode.closed = true;
-
-            // Find all neighbors for the current node.
-            var neighbors = graph.neighbors(currentNode);
-
-            for (var i = 0; i < neighbors.length; ++i) {
-                var neighbor = neighbors[i];
-
+            const neighbors = graph.neighbors(currentNode);
+            
+            for (const neighbor of neighbors) {
                 if (neighbor.closed || neighbor.isWall()) {
-                    // Not a valid node to process, skip to next neighbor.
                     continue;
                 }
-
-                // The g score is the shortest distance from start to current node.
-                // We need to check if the path we have arrived at this neighbor is the shortest one we have seen yet.
-                var gScore = currentNode.g + neighbor.getCost(currentNode);
-                var beenVisited = neighbor.visited;
-
+                
+                const gScore = currentNode.g + neighbor.getCost(currentNode);
+                const beenVisited = neighbor.visited;
+                
                 if (!beenVisited || gScore < neighbor.g) {
-
-                    // Found an optimal (so far) path to this node.  Take score for node to see how good it is.
-                    neighbor.visited = true;
-                    neighbor.parent = currentNode;
-                    neighbor.h = neighbor.h || heuristic(neighbor, end);
-                    neighbor.g = gScore;
-                    neighbor.f = neighbor.g + neighbor.h;
+                    this.updateNeighbor(neighbor, currentNode, heuristic, end, gScore);
                     graph.markDirty(neighbor);
+                    
                     if (closest) {
-                        // If the neighbour is closer than the current closestNode or if it's equally close but has
-                        // a cheaper path than the current closest node then it becomes the closest node
-                        if (neighbor.h < closestNode.h || (neighbor.h === closestNode.h && neighbor.g < closestNode.g)) {
-                            closestNode = neighbor;
-                        }
+                        closestNode = this.updateClosestNode(neighbor, closestNode);
                     }
-
+                    
                     if (!beenVisited) {
-                        // Pushing to heap will put it in proper place based on the 'f' value.
                         openHeap.push(neighbor);
                     } else {
-                        // Already seen the node, but since it has been rescored we need to reorder it in the heap
                         openHeap.rescoreElement(neighbor);
                     }
                 }
             }
         }
-
-        if (closest) {
-            return pathTo(closestNode);
-        }
-
-        // No result was found - empty array signifies failure to find path.
-        return [];
+        
+        return closest ? pathTo(closestNode) : [];
     },
-    // See list of heuristics: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+    
+    updateNeighbor: function(neighbor, currentNode, heuristic, end, gScore) {
+        neighbor.visited = true;
+        neighbor.parent = currentNode;
+        neighbor.h = neighbor.h || heuristic(neighbor, end);
+        neighbor.g = gScore;
+        neighbor.f = neighbor.g + neighbor.h;
+    },
+    
+    updateClosestNode: function(neighbor, closestNode) {
+        if (neighbor.h < closestNode.h || 
+            (neighbor.h === closestNode.h && neighbor.g < closestNode.g)) {
+            return neighbor;
+        }
+        return closestNode;
+    },
+    
     heuristics: {
         manhattan: function(pos0, pos1) {
-            var d1 = Math.abs(pos1.x - pos0.x);
-            var d2 = Math.abs(pos1.y - pos0.y);
-            return d1 + d2;
+            return Math.abs(pos1.x - pos0.x) + Math.abs(pos1.y - pos0.y);
         }
     },
+    
     cleanNode: function(node) {
-        node.f = 0;
-        node.g = 0;
-        node.h = 0;
-        node.visited = false;
-        node.closed = false;
-        node.parent = null;
+        Object.assign(node, {
+            f: 0, g: 0, h: 0,
+            visited: false, closed: false, parent: null
+        });
     }
 };
 
-/**
- * A graph memory structure
- * @param {Array} gridIn 2D array of input weights
- * @param {Object} [options]
- */
-function Graph(gridIn, options) {
-    options = options || {};
+// Classe Graph
+function Graph(gridIn, options = {}) {
     this.nodes = [];
     this.grid = [];
-    for (var y = 0; y < gridIn.length; y++) {
+    
+    for (let y = 0; y < gridIn.length; y++) {
         this.grid[y] = [];
-
-        for (var x = 0, row = gridIn[y]; x < row.length; x++) {
-            var node = new GridNode(y, x, row[x]);
+        const row = gridIn[y];
+        
+        for (let x = 0; x < row.length; x++) {
+            const node = new GridNode(y, x, row[x]);
             this.grid[y][x] = node;
             this.nodes.push(node);
         }
     }
+    
     this.init();
 }
 
 Graph.prototype.init = function() {
     this.dirtyNodes = [];
-    for (var i = 0; i < this.nodes.length; i++) {
-        astar.cleanNode(this.nodes[i]);
-    }
+    this.nodes.forEach(node => astar.cleanNode(node));
 };
 
 Graph.prototype.cleanDirty = function() {
-    for (var i = 0; i < this.dirtyNodes.length; i++) {
-        astar.cleanNode(this.dirtyNodes[i]);
-    }
+    this.dirtyNodes.forEach(node => astar.cleanNode(node));
     this.dirtyNodes = [];
 };
 
@@ -620,48 +645,22 @@ Graph.prototype.markDirty = function(node) {
 };
 
 Graph.prototype.neighbors = function(node) {
-    var ret = [];
-    var x = node.x;
-    var y = node.y;
-    var grid = this.grid;
-
-    // West
-    if (grid[x - 1] && grid[x - 1][y]) {
-        ret.push(grid[x - 1][y]);
-    }
-
-    // East
-    if (grid[x + 1] && grid[x + 1][y]) {
-        ret.push(grid[x + 1][y]);
-    }
-
-    // South
-    if (grid[x] && grid[x][y - 1]) {
-        ret.push(grid[x][y - 1]);
-    }
-
-    // North
-    if (grid[x] && grid[x][y + 1]) {
-        ret.push(grid[x][y + 1]);
-    }
-
-    return ret;
+    const directions = [
+        [-1, 0], [1, 0], [0, -1], [0, 1] // West, East, South, North
+    ];
+    
+    return directions
+        .map(([dx, dy]) => this.grid[node.x + dx]?.[node.y + dy])
+        .filter(Boolean);
 };
 
 Graph.prototype.toString = function() {
-    var graphString = [];
-    var nodes = this.grid;
-    for (var x = 0; x < nodes.length; x++) {
-        var rowDebug = [];
-        var row = nodes[x];
-        for (var y = 0; y < row.length; y++) {
-            rowDebug.push(row[y].weight);
-        }
-        graphString.push(rowDebug.join(" "));
-    }
-    return graphString.join("\n");
+    return this.grid.map(row => 
+        row.map(node => node.weight).join(" ")
+    ).join("\n");
 };
 
+// Classe GridNode
 function GridNode(x, y, weight) {
     this.x = x;
     this.y = y;
@@ -673,8 +672,8 @@ GridNode.prototype.toString = function() {
 };
 
 GridNode.prototype.getCost = function(fromNeighbor) {
-    // Take diagonal weight into consideration.
-    if (fromNeighbor && fromNeighbor.x != this.x && fromNeighbor.y != this.y) {
+    // Prise en compte du poids diagonal
+    if (fromNeighbor && fromNeighbor.x !== this.x && fromNeighbor.y !== this.y) {
         return this.weight * 1.41421;
     }
     return this.weight;
@@ -684,6 +683,7 @@ GridNode.prototype.isWall = function() {
     return this.weight === 0;
 };
 
+// Classe BinaryHeap
 function BinaryHeap(scoreFunction) {
     this.content = [];
     this.scoreFunction = scoreFunction;
@@ -691,115 +691,97 @@ function BinaryHeap(scoreFunction) {
 
 BinaryHeap.prototype = {
     push: function(element) {
-        // Add the new element to the end of the array.
         this.content.push(element);
-
-        // Allow it to sink down.
         this.sinkDown(this.content.length - 1);
     },
+    
     pop: function() {
-        // Store the first element so we can return it later.
-        var result = this.content[0];
-        // Get the element at the end of the array.
-        var end = this.content.pop();
-        // If there are any elements left, put the end element at the
-        // start, and let it bubble up.
+        const result = this.content[0];
+        const end = this.content.pop();
+        
         if (this.content.length > 0) {
             this.content[0] = end;
             this.bubbleUp(0);
         }
+        
         return result;
     },
+    
     remove: function(node) {
-        var i = this.content.indexOf(node);
-
-        // When it is found, the process seen in 'pop' is repeated
-        // to fill up the hole.
-        var end = this.content.pop();
-
-        if (i !== this.content.length - 1) {
-            this.content[i] = end;
-
+        const index = this.content.indexOf(node);
+        const end = this.content.pop();
+        
+        if (index !== this.content.length - 1) {
+            this.content[index] = end;
+            
             if (this.scoreFunction(end) < this.scoreFunction(node)) {
-                this.sinkDown(i);
+                this.sinkDown(index);
             } else {
-                this.bubbleUp(i);
+                this.bubbleUp(index);
             }
         }
     },
+    
     size: function() {
         return this.content.length;
     },
+    
     rescoreElement: function(node) {
         this.sinkDown(this.content.indexOf(node));
     },
+    
     sinkDown: function(n) {
-        // Fetch the element that has to be sunk.
-        var element = this.content[n];
-
-        // When at 0, an element can not sink any further.
+        const element = this.content[n];
+        
         while (n > 0) {
-
-            // Compute the parent element's index, and fetch it.
-            var parentN = ((n + 1) >> 1) - 1;
-            var parent = this.content[parentN];
-            // Swap the elements if the parent is greater.
+            const parentN = ((n + 1) >> 1) - 1;
+            const parent = this.content[parentN];
+            
             if (this.scoreFunction(element) < this.scoreFunction(parent)) {
                 this.content[parentN] = element;
                 this.content[n] = parent;
-                // Update 'n' to continue at the new position.
                 n = parentN;
-            }
-            // Found a parent that is less, no need to sink any further.
-            else {
+            } else {
                 break;
             }
         }
     },
+    
     bubbleUp: function(n) {
-        // Look up the target element and its score.
-        var length = this.content.length;
-        var element = this.content[n];
-        var elemScore = this.scoreFunction(element);
-
+        const length = this.content.length;
+        const element = this.content[n];
+        const elemScore = this.scoreFunction(element);
+        
         while (true) {
-            // Compute the indices of the child elements.
-            var child2N = (n + 1) << 1;
-            var child1N = child2N - 1;
-            // This is used to store the new position of the element, if any.
-            var swap = null;
-            var child1Score;
-            // If the first child exists (is inside the array)...
+            const child2N = (n + 1) << 1;
+            const child1N = child2N - 1;
+            let swap = null;
+            let child1Score;
+            
             if (child1N < length) {
-                // Look it up and compute its score.
-                var child1 = this.content[child1N];
+                const child1 = this.content[child1N];
                 child1Score = this.scoreFunction(child1);
-
-                // If the score is less than our element's, we need to swap.
+                
                 if (child1Score < elemScore) {
                     swap = child1N;
                 }
             }
-
-            // Do the same checks for the other child.
+            
             if (child2N < length) {
-                var child2 = this.content[child2N];
-                var child2Score = this.scoreFunction(child2);
+                const child2 = this.content[child2N];
+                const child2Score = this.scoreFunction(child2);
+                
                 if (child2Score < (swap === null ? elemScore : child1Score)) {
                     swap = child2N;
                 }
             }
-
-            // If the element needs to be moved, swap it, and continue.
+            
             if (swap !== null) {
                 this.content[n] = this.content[swap];
                 this.content[swap] = element;
                 n = swap;
-            }
-            // Otherwise, we are done.
-            else {
+            } else {
                 break;
-
             }
         }
     }
