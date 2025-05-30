@@ -145,6 +145,7 @@ window.addEventListener('load', () => {
                 update_ship_after_attack(data.message);
                 break;
             case "async_remove_ship":
+                console.log("dedans")
                 remove_ship_display(data.message)
                 break;
             case "user_join":

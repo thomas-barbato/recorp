@@ -155,10 +155,10 @@ function validateShipPlacement(coordinates) {
         
         const [row, col] = coord.split('_').map(Number);
         return col < GRID_CONSTANTS.MAX_SIZE && 
-               row < GRID_CONSTANTS.MAX_SIZE && 
-               !element.classList.contains('uncrossable') && 
-               !element.classList.contains('ship-pos') && 
-               current_player.move_points !== 0;
+            row < GRID_CONSTANTS.MAX_SIZE && 
+            !element.classList.contains('uncrossable') && 
+            !element.classList.contains('ship-pos') && 
+            current_player.move_points !== 0;
     });
 }
 
@@ -169,7 +169,7 @@ function displayValidShipPreview(coordinates) {
         
         spanElement.classList.remove(CSS_CLASSES.BG_TEAL, CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.TEAL_ZONE);
         spanElement.classList.add(CSS_CLASSES.BG_AMBER, CSS_CLASSES.BORDER_AMBER, 
-            CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+        CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
         spanElement.textContent = "";
     });
 }
@@ -181,7 +181,7 @@ function displayInvalidShipPreview(coordinates) {
             const spanElement = element.querySelector('span');
             spanElement.classList.remove(CSS_CLASSES.BG_TEAL, CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.TEAL_ZONE);
             spanElement.classList.add(CSS_CLASSES.BG_RED, CSS_CLASSES.BORDER_RED, 
-                CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+            CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
             spanElement.textContent = "";
         }
     });

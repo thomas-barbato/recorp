@@ -1,685 +1,693 @@
 import json
-import pprint
 import os
+from typing import Dict, List, Tuple, Any, Optional, Union
+
 from django.core import serializers
-from recorp.settings import BASE_DIR
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, QuerySet
+
+from recorp.settings import BASE_DIR
 from core.models import (
-    Planet,
-    Asteroid,
-    Station,
-    Warp,
-    WarpZone,
-    SectorWarpZone,
-    Resource,
-    PlanetResource,
-    AsteroidResource,
-    StationResource,
-    Faction,
-    FactionResource,
-    Security,
-    Sector,
-    Player,
-    PlayerShip,
-    PlayerShipResource,
-    PlayerShipModule,
-    Ship,
-    ShipCategory,
-    PlayerShipModule,
-    Skill,
-    Npc,
-    NpcTemplateResource,
-    NpcTemplate,
-    NpcTemplateSkill,
-    Module,
+    Planet, Asteroid, Station, Warp, WarpZone, SectorWarpZone,
+    Resource, PlanetResource, AsteroidResource, StationResource,
+    Faction, FactionResource, Security, Sector, Player, PlayerShip,
+    PlayerShipResource, PlayerShipModule, Ship, ShipCategory,
+    Skill, Npc, NpcTemplateResource, NpcTemplate, NpcTemplateSkill, Module,
 )
 
 
 class GetDataFromDB:
+    """Classe utilitaire pour récupérer et manipuler les données du jeu spatial"""
+    
+    # Constantes de configuration
+    MAP_SIZE = {"cols": 40, "rows": 40}
+    
+    ELEMENT_SIZES = {
+        "planet": {"x": 4, "y": 4},
+        "station": {"x": 3, "y": 3},
+        "asteroid": {"x": 1, "y": 1},
+        "satellite": {"x": 3, "y": 3},
+        "blackhole": {"x": 5, "y": 3},
+        "star": {"x": 2, "y": 2},
+        "warpzone": {"x": 2, "y": 3},
+    }
+    
+    RESOLUTION_CONFIGS = {
+        "is_pc": {"col": 20, "row": 16},
+        "is_mobile": {"col": 10, "row": 10},
+        "is_tablet": {"col": 20, "row": 20},
+    }
+    
+    FG_TYPES = [
+        "planet", "asteroid", "station", "blackhole", 
+        "star", "satellite", "warpzone"
+    ]
+    
+    TABLE_MAPPING = {
+        "satellite": [Planet, PlanetResource],
+        "star": [Planet, PlanetResource],
+        "blackhole": [Planet, PlanetResource],
+        "planet": [Planet, PlanetResource],
+        "asteroid": [Asteroid, AsteroidResource],
+        "station": [Station, StationResource],
+        "faction": [Faction, FactionResource],
+        "player": [User, Player, PlayerShipResource, PlayerShip],
+        "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
+        "warpzone": [Warp, WarpZone, SectorWarpZone],
+        "warpzone_only": WarpZone,
+        "resource": Resource,
+        "ship": Ship,
+        "security": Security,
+        "sector": Sector,
+        "skill": Skill,
+        "module": Module,
+    }
+    
+    WEAPONRY_MODULE_TYPES = ["WEAPONRY", "ELECTRONIC_WARFARE"]
+
     def __init__(self):
         pass
 
+    # === Méthodes de configuration et constantes ===
+    
     @staticmethod
-    def get_size():
+    def get_size() -> List[Dict[str, Dict[str, int]]]:
+        """Retourne les tailles de tous les éléments au format legacy"""
         return [
-            {"planet_data": {"x": 4, "y": 4}},
-            {"station_data": {"x": 3, "y": 3}},
-            {"asteroid_data": {"x": 1, "y": 1}},
-            {"satellite_data": {"x": 3, "y": 3}},
-            {"blackhole_data": {"x": 5, "y": 3}},
-            {"star_data": {"x": 2, "y": 2}},
-            {"warpzone_data": {"x": 2, "y": 3}},
+            {f"{element}_data": size} 
+            for element, size in GetDataFromDB.ELEMENT_SIZES.items()
         ]
 
     @staticmethod
-    def get_specific_size(element):
-        return {
-            "planet": {"x": 4, "y": 4},
-            "station": {"x": 3, "y": 3},
-            "asteroid": {"x": 1, "y": 1},
-            "satellite": {"x": 3, "y": 3},
-            "blackhole": {"x": 5, "y": 3},
-            "star": {"x": 2, "y": 2},
-            "warpzone": {"x": 2, "y": 3},
-        }[element]
+    def get_specific_size(element: str) -> Dict[str, int]:
+        """Retourne la taille spécifique d'un élément"""
+        return GetDataFromDB.ELEMENT_SIZES.get(element, {"x": 1, "y": 1})
 
     @staticmethod
-    def get_fg_element_url(element):
-        return os.listdir(
-            os.path.join(
-                BASE_DIR,
-                "recorp",
-                "static",
-                "img",
-                "foreground",
-                element,
-            )
+    def get_fg_element_url(element: str) -> List[str]:
+        """Retourne les URLs des images de premier plan pour un élément"""
+        path = os.path.join(BASE_DIR, "recorp", "static", "img", "foreground", element)
+        return os.listdir(path) if os.path.exists(path) else []
+
+    @staticmethod
+    def get_bg_fg_url(bg_fg_choice: str) -> List[str]:
+        """Retourne les URLs d'arrière-plan ou de premier plan"""
+        path = os.path.join(BASE_DIR, "recorp", "static", "img", bg_fg_choice)
+        return os.listdir(path) if os.path.exists(path) else []
+
+    @staticmethod
+    def get_map_size() -> Dict[str, int]:
+        """Retourne la taille de la carte"""
+        return GetDataFromDB.MAP_SIZE.copy()
+
+    @staticmethod
+    def get_map_size_range() -> Dict[str, range]:
+        """Retourne les ranges de la carte"""
+        return {
+            "cols": range(GetDataFromDB.MAP_SIZE["cols"]),
+            "rows": range(GetDataFromDB.MAP_SIZE["rows"])
+        }
+
+    @staticmethod
+    def get_resolution_sized_map(device_type: str) -> Dict[str, int]:
+        """Retourne les dimensions de carte adaptées au type d'appareil"""
+        return GetDataFromDB.RESOLUTION_CONFIGS.get(
+            device_type, 
+            GetDataFromDB.RESOLUTION_CONFIGS["is_pc"]
         )
 
     @staticmethod
-    def get_bg_fg_url(bg_fg_choice):
-        return os.listdir(
-            os.path.join(BASE_DIR, "recorp", "static", "img", bg_fg_choice)
-        )
+    def get_fg_type() -> List[str]:
+        """Retourne les types de premier plan disponibles"""
+        return GetDataFromDB.FG_TYPES.copy()
 
     @staticmethod
-    def get_map_size():
-        return {"cols": 40, "rows": 40}
+    def get_table(table_name: str) -> Union[List, type]:
+        """Retourne la ou les tables correspondant au nom donné"""
+        return GetDataFromDB.TABLE_MAPPING.get(table_name)
 
+    # === Méthodes de sérialisation et requêtes ===
+    
     @staticmethod
-    def get_map_size_range():
-        return {"cols": range(40), "rows": range(40)}
-
-    @staticmethod
-    def get_resolution_sized_map(device_type):
+    def get_animation_queryset() -> Dict[str, List[Dict]]:
+        """Retourne les données sérialisées pour les animations"""
         return {
-            "is_pc": {"col": 20, "row": 16},
-            "is_mobile": {"col": 10, "row": 10},
-            "is_tablet": {"col": 20, "row": 20},
-        }[device_type]
-
-    @staticmethod
-    def get_fg_type():
-        return [
-            "planet",
-            "asteroid",
-            "station",
-            "blackhole",
-            "star",
-            "satellite",
-            "warpzone",
-        ]
-
-    @staticmethod
-    def get_animation_queryset():
-        return {
-            "planet_data": json.loads(
-                serializers.serialize(
-                    "json",
-                    Planet.objects.filter(data__contains={"type": "planet"}),
-                )
-            ),
-            "satellite_data": json.loads(
-                serializers.serialize(
-                    "json",
-                    Planet.objects.filter(data__contains={"type": "satellite"}),
-                )
-            ),
-            "blackhole_data": json.loads(
-                serializers.serialize(
-                    "json",
-                    Planet.objects.filter(data__contains={"type": "blackhole"}),
-                )
-            ),
-            "star_data": json.loads(
-                serializers.serialize(
-                    "json",
-                    Planet.objects.filter(data__contains={"type": "star"}),
-                )
-            ),
-            "asteroid_data": json.loads(
-                serializers.serialize("json", Asteroid.objects.all())
-            ),
-            "stations_data": json.loads(
-                serializers.serialize("json", Station.objects.all())
-            ),
-            "warpzone_data": json.loads(
-                serializers.serialize("json", Warp.objects.all())
-            ),
+            "planet_data": GetDataFromDB._serialize_planets_by_type("planet"),
+            "satellite_data": GetDataFromDB._serialize_planets_by_type("satellite"),
+            "blackhole_data": GetDataFromDB._serialize_planets_by_type("blackhole"),
+            "star_data": GetDataFromDB._serialize_planets_by_type("star"),
+            "asteroid_data": GetDataFromDB.serialize_queryset(Asteroid.objects.all()),
+            "stations_data": GetDataFromDB.serialize_queryset(Station.objects.all()),
+            "warpzone_data": GetDataFromDB.serialize_queryset(Warp.objects.all()),
         }
     
     @staticmethod
-    def get_faction_queryset():
+    def _serialize_planets_by_type(planet_type: str) -> List[Dict]:
+        """Méthode helper pour sérialiser les planètes par type"""
+        queryset = Planet.objects.filter(data__contains={"type": planet_type})
+        return GetDataFromDB.serialize_queryset(queryset)
+
+    @staticmethod
+    def get_faction_queryset() -> QuerySet:
+        """Retourne toutes les factions"""
         return Faction.objects.all()
 
     @staticmethod
-    def serialize_queryset(queryset):
+    def serialize_queryset(queryset: QuerySet) -> List[Dict]:
+        """Sérialise un queryset Django en JSON"""
         return json.loads(serializers.serialize("json", queryset))
 
     @staticmethod
-    def get_resource_queryset():
+    def get_resource_queryset() -> QuerySet:
+        """Retourne toutes les ressources"""
         return Resource.objects.all()
 
+    # === Méthodes de gestion des secteurs ===
+    
     @staticmethod
-    def get_table(table_name):
-        return {
-            "satellite": [Planet, PlanetResource],
-            "star": [Planet, PlanetResource],
-            "blackhole": [Planet, PlanetResource],
-            "planet": [Planet, PlanetResource],
-            "asteroid": [Asteroid, AsteroidResource],
-            "station": [Station, StationResource],
-            "faction": [Faction, FactionResource],
-            "player": [User, Player, PlayerShipResource, PlayerShip],
-            "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
-            "warpzone": [Warp, WarpZone, SectorWarpZone],
-            "warpzone_only": WarpZone,
-            "resource": Resource,
-            "ship": Ship,
-            "security": Security,
-            "sector": Sector,
-            "skill": Skill,
-            "module": Module,
-        }[table_name]
+    def count_foreground_item_in_map(map_pk: int) -> int:
+        """Compte les éléments de premier plan dans une carte"""
+        try:
+            sector_data = Sector.objects.filter(id=map_pk).values(
+                "planet_sector__sector_id",
+                "asteroid_sector__sector_id", 
+                "station_sector__sector_id"
+            ).first()
+            
+            if not sector_data:
+                return 0
+                
+            return sum(1 for value in sector_data.values() if value is not None)
+        except (Sector.DoesNotExist, IndexError):
+            return 0
 
     @staticmethod
-    def count_foreground_item_in_map(map_pk):
-        return len(
-            [
-                v
-                for k, v in Sector.objects.filter(id=map_pk)
-                .values(
-                    "planet_sector__sector_id",
-                    "asteroid_sector__sector_id",
-                    "station_sector__sector_id",
-                )[0]
-                .items()
-                if v is not None
-            ]
-        )
+    def check_if_table_pk_exists(table: str, pk: int) -> bool:
+        """Vérifie si une clé primaire existe dans une table"""
+        table_model = GetDataFromDB.get_table(table)
+        if not table_model:
+            return False
+        return table_model.objects.filter(id=pk).exists()
 
     @staticmethod
-    def check_if_table_pk_exists(table, pk):
-        this_table = GetDataFromDB.get_table(table)
-        return this_table.objects.filter(id=pk).exists()
-
-    @staticmethod
-    def remove_map(map_pk):
+    def remove_map(map_pk: int) -> None:
+        """Supprime une carte et ses NPCs associés"""
         Sector.objects.filter(id=map_pk).delete()
         Npc.objects.filter(Sector=map_pk).delete()
 
     @staticmethod
-    def delete_items_from_sector(pk):
-        sector = Sector.objects.get(id=pk)
-        sector.planet_sector.all().delete()
-        sector.asteroid_sector.all().delete()
-        sector.station_sector.all().delete()
-        sector.warp_sector.all().delete()
-        sector.npc_sector.all().delete()
+    def delete_items_from_sector(pk: int) -> None:
+        """Supprime tous les éléments d'un secteur"""
+        try:
+            sector = Sector.objects.get(id=pk)
+            sector.planet_sector.all().delete()
+            sector.asteroid_sector.all().delete()
+            sector.station_sector.all().delete()
+            sector.warp_sector.all().delete()
+            sector.npc_sector.all().delete()
+        except Sector.DoesNotExist:
+            pass
 
     @staticmethod
-    def get_items_from_sector(pk, with_npc=False):
-        sector = Sector.objects.get(id=pk)
-        if with_npc:
-            player_id_list = Player.objects.filter(sector_id=pk).values("id")
-            return (
-                sector.planet_sector.values(
-                    "source_id__size", "data", "coordinates", "id", "source_id", "source_id__data__type"
-                ),
-                sector.asteroid_sector.values(
-                    "source_id__size", "data", "coordinates", "id", "source_id", "source_id__data__type"
-                ),
-                sector.station_sector.values(
-                    "source_id__size", "data", "coordinates", "id", "source_id", "source_id__data__type"
-                ),
-                sector.warp_sector.values(
-                    "source_id__size", "data", "coordinates", "source_id", "id", "sector_id"
-                ),
-                sector.npc_sector.values(
-                    "id",
-                    "npc_template_id__ship_id__ship_category_id__size",
-                    "npc_template_id__ship_id__image",
-                    "npc_template_id__ship_id__name",
-                    "npc_template_id",
-                    "coordinates", 
-                ),
-                PlayerShip.objects.filter(
-                    player_id__in=player_id_list,
-                    is_current_ship=True,
-                ).values(
-                    "ship_id__ship_category_id__size",
-                    "player_id__coordinates",
-                )
-            )
+    def get_items_from_sector(pk: int, with_npc: bool = False) -> Tuple:
+        """Récupère les éléments d'un secteur"""
+        try:
+            sector = Sector.objects.get(id=pk)
+        except Sector.DoesNotExist:
+            return tuple()
 
-        return (
-            sector.planet_sector.all(),
-            sector.asteroid_sector.all(),
-            sector.station_sector.all(),
-            sector.warp_sector.all(),
-        )
-
-    @staticmethod
-    def get_pc_from_sector(pk):
-        return (
-            PlayerShipModule.objects.filter(player_ship_id__player_id__sector_id=pk).values(
-                    "player_ship_id",
-                    "player_ship_id__player_id",
-                    "player_ship_id__player_id__name",
-                    "player_ship_id__player_id__coordinates",
-                    "player_ship_id__player_id__image",
-                    "player_ship_id__player_id__description",
-                    "player_ship_id__player_id__is_npc",
-                    "player_ship_id__player_id__user_id",
-                    "player_ship_id__player_id__current_ap",
-                    "player_ship_id__player_id__max_ap",
-                    "player_ship_id__player_id__faction_id__name",
-                    "player_ship_id__player_id__archetype_id__name",
-                    "player_ship_id__player_id__archetype_id__data",
-                    "player_ship_id__player_id__sector_id__name",
-                    "player_ship_id__ship_id__name",
-                    "player_ship_id__ship_id__image",
-                    "player_ship_id__ship_id__description",
-                    "player_ship_id__is_current_ship",
-                    "player_ship_id__is_reversed",
-                    "player_ship_id__current_hp",
-                    "player_ship_id__max_hp",
-                    "player_ship_id__current_movement",
-                    "player_ship_id__max_movement",
-                    "player_ship_id__current_missile_defense",
-                    "player_ship_id__current_ballistic_defense",
-                    "player_ship_id__current_thermal_defense",
-                    "player_ship_id__current_cargo_size",
-                    "player_ship_id__status",
-                    "player_ship_id__ship_id__module_slot_available",
-                    "player_ship_id__ship_id__ship_category__name",
-                    "player_ship_id__ship_id__ship_category__description",
-                    "player_ship_id__ship_id__ship_category__size",
-            ).distinct(),
-            Npc.objects.filter(sector_id=pk).values(
-                "id",
-                "coordinates",
-                "status",
-                "hp",
-                "npc_template_id__max_hp",
-                "movement",
-                "npc_template_id__max_movement",
-                "ballistic_defense",
-                "npc_template_id__max_ballistic_defense",
-                "thermal_defense",
-                "npc_template_id__max_thermal_defense",
-                "missile_defense",
-                "npc_template_id__max_missile_defense",
-                "npc_template_id__module_id_list",
-                "npc_template_id__difficulty",
-                "npc_template_id__name",
-                "npc_template_id__id",
-                "faction_id__name",
-                "npc_template_id__ship_id__image",
-                "npc_template_id__ship_id__ship_category_id__size",
-                "npc_template_id__ship_id__ship_category_id__name",
-                "npc_template_id__ship_id__ship_category_id__description",
-                "npc_template_id__ship_id__name",
+        base_items = (
+            sector.planet_sector.values(
+                "source_id__size", "data", "coordinates", "id", 
+                "source_id", "source_id__data__type"
+            ),
+            sector.asteroid_sector.values(
+                "source_id__size", "data", "coordinates", "id", 
+                "source_id", "source_id__data__type"
+            ),
+            sector.station_sector.values(
+                "source_id__size", "data", "coordinates", "id", 
+                "source_id", "source_id__data__type"
+            ),
+            sector.warp_sector.values(
+                "source_id__size", "data", "coordinates", 
+                "source_id", "id", "sector_id"
             ),
         )
+
+        if not with_npc:
+            return base_items
+
+        # Ajout des données NPC et joueurs
+        player_ids = Player.objects.filter(sector_id=pk).values("id")
         
+        npc_data = sector.npc_sector.values(
+            "id", "npc_template_id__ship_id__ship_category_id__size",
+            "npc_template_id__ship_id__image", "npc_template_id__ship_id__name",
+            "npc_template_id", "coordinates"
+        )
+        
+        player_ships = PlayerShip.objects.filter(
+            player_id__in=player_ids, is_current_ship=True
+        ).values(
+            "ship_id__ship_category_id__size",
+            "player_id__coordinates"
+        )
+
+        return base_items + (npc_data, player_ships)
+
+    # === Méthodes de gestion des joueurs et NPCs ===
+    
     @staticmethod
-    def get_npc_template_data(pk):
-        template = [
-            entry
-            for entry in NpcTemplate.objects.filter(id=pk).values(
-                "id",
-                "name",
-                "difficulty",
-                "module_id_list",
-                "max_hp",
-                "max_movement",
-                "max_missile_defense",
-                "max_thermal_defense",
-                "max_ballistic_defense",
-                "hold_capacity",
-                "behavior",
-                "ship_id",
-                "ship_id__image",
-            )
-        ]
-        skills = [
-            entry
-            for entry in NpcTemplateSkill.objects.filter(npc_template_id=pk).values(
-                "skill_id", "skill__name", "level"
-            )
-        ]
-        resources = [
-            entry
-            for entry in NpcTemplateResource.objects.filter(npc_template_id=pk).values(
-                "npc_template_id",
-                "resource_id",
-                "quantity",
-                "can_be_randomized",
-            )
-        ]
-        return (template, skills, resources)
+    def get_pc_from_sector(pk: int) -> Tuple[QuerySet, QuerySet]:
+        """Récupère les données des joueurs et NPCs d'un secteur"""
+        player_modules = PlayerShipModule.objects.filter(
+            player_ship_id__player_id__sector_id=pk
+        ).values(
+            "player_ship_id", "player_ship_id__player_id",
+            "player_ship_id__player_id__name", "player_ship_id__player_id__coordinates",
+            "player_ship_id__player_id__image", "player_ship_id__player_id__description",
+            "player_ship_id__player_id__is_npc", "player_ship_id__player_id__user_id",
+            "player_ship_id__player_id__current_ap", "player_ship_id__player_id__max_ap",
+            "player_ship_id__player_id__faction_id__name",
+            "player_ship_id__player_id__archetype_id__name",
+            "player_ship_id__player_id__archetype_id__data",
+            "player_ship_id__player_id__sector_id__name",
+            "player_ship_id__ship_id__name", "player_ship_id__ship_id__image",
+            "player_ship_id__ship_id__description", "player_ship_id__is_current_ship",
+            "player_ship_id__is_reversed", "player_ship_id__current_hp",
+            "player_ship_id__max_hp", "player_ship_id__current_movement",
+            "player_ship_id__max_movement", "player_ship_id__current_missile_defense",
+            "player_ship_id__current_ballistic_defense", "player_ship_id__current_thermal_defense",
+            "player_ship_id__current_cargo_size", "player_ship_id__status",
+            "player_ship_id__ship_id__module_slot_available",
+            "player_ship_id__ship_id__ship_category__name",
+            "player_ship_id__ship_id__ship_category__description",
+            "player_ship_id__ship_id__ship_category__size"
+        ).distinct()
+
+        npcs = Npc.objects.filter(sector_id=pk).values(
+            "id", "coordinates", "status", "hp", "npc_template_id__max_hp",
+            "movement", "npc_template_id__max_movement", "ballistic_defense",
+            "npc_template_id__max_ballistic_defense", "thermal_defense",
+            "npc_template_id__max_thermal_defense", "missile_defense",
+            "npc_template_id__max_missile_defense", "npc_template_id__module_id_list",
+            "npc_template_id__difficulty", "npc_template_id__name", "npc_template_id__id",
+            "faction_id__name", "npc_template_id__ship_id__image",
+            "npc_template_id__ship_id__ship_category_id__size",
+            "npc_template_id__ship_id__ship_category_id__name",
+            "npc_template_id__ship_id__ship_category_id__description",
+            "npc_template_id__ship_id__name"
+        )
+
+        return player_modules, npcs
 
     @staticmethod
-    def check_if_no_missing_entry(data, data_item=None):
+    def get_npc_template_data(pk: int) -> Tuple[List, List, List]:
+        """Récupère les données complètes d'un template NPC"""
+        template = list(NpcTemplate.objects.filter(id=pk).values(
+            "id", "name", "difficulty", "module_id_list", "max_hp",
+            "max_movement", "max_missile_defense", "max_thermal_defense",
+            "max_ballistic_defense", "hold_capacity", "behavior",
+            "ship_id", "ship_id__image"
+        ))
+
+        skills = list(NpcTemplateSkill.objects.filter(npc_template_id=pk).values(
+            "skill_id", "skill__name", "level"
+        ))
+
+        resources = list(NpcTemplateResource.objects.filter(npc_template_id=pk).values(
+            "npc_template_id", "resource_id", "quantity", "can_be_randomized"
+        ))
+
+        return template, skills, resources
+
+    @staticmethod
+    def get_template_data() -> List[Dict]:
+        """Récupère tous les templates NPC"""
+        return list(NpcTemplate.objects.values(
+            "id", "name", "ship_id__image", "max_hp", "max_movement",
+            "difficulty", "max_missile_defense", "max_thermal_defense",
+            "max_ballistic_defense", "behavior"
+        ))
+
+    @staticmethod
+    def get_selected_ship_data(template_id: int) -> Dict:
+        """Récupère les données du vaisseau pour un template donné"""
+        try:
+            return NpcTemplate.objects.filter(id=template_id).values(
+                "id", "ship_id", "ship_id__name", "ship_id__image",
+                "ship_id__ship_category_id__size"
+            ).first()
+        except (NpcTemplate.DoesNotExist, IndexError):
+            return {}
+
+    @staticmethod
+    def get_related_npc_on_sector_data(sector_id: int) -> List[Dict]:
+        """Récupère les NPCs liés à un secteur"""
+        return list(Npc.objects.filter(sector_id=sector_id).values(
+            "id", "coordinates", "npc_template_id__id", "npc_template_id__name",
+            "npc_template_id__ship_id__image", "npc_template_id__ship_id__ship_category_id__size",
+            "npc_template_id__ship_id__name"
+        ))
+
+    # === Méthodes utilitaires ===
+    
+    @staticmethod
+    def check_if_no_missing_entry(data: Dict, data_item: Optional[Dict] = None) -> Tuple[bool, List[str]]:
+        """Vérifie s'il manque des entrées dans les données"""
         missing_data = []
-        for d_key, d_value in data.items():
-            if not d_value and d_value is not False or d_value == "":
-                missing_data.append(d_key)
+        
+        # Vérification des données principales
+        for key, value in data.items():
+            if GetDataFromDB._is_empty_value(value):
+                missing_data.append(key)
+        
+        # Vérification des éléments de données
         if data_item:
-            for i in data_item:
-                for d_key, d_value in data_item[i].items():
-                    if (
-                        not d_value
-                        and d_value is not False
-                        or d_value == "none"
-                        or d_value == ""
-                    ):
-                        missing_data.append(f"{d_key} (ITEM #{int(i)+1})")
-        if len(missing_data) > 0:
-            return True, missing_data
-        else:
-            return False, []
+            for i, item_data in data_item.items():
+                for key, value in item_data.items():
+                    if GetDataFromDB._is_empty_value(value):
+                        missing_data.append(f"{key} (ITEM #{int(i) + 1})")
+        
+        return len(missing_data) > 0, missing_data
 
     @staticmethod
-    def get_resource_quantity_value(value, max_value):
-        result_value = 100 * (value / max_value)
+    def _is_empty_value(value: Any) -> bool:
+        """Vérifie si une valeur est considérée comme vide"""
+        return (
+            (not value and value is not False) or 
+            value == "" or 
+            value == "none"
+        )
+
+    @staticmethod
+    def get_resource_quantity_value(value: float, max_value: float) -> str:
+        """Détermine le niveau de ressource basé sur le pourcentage"""
+        if max_value == 0:
+            return "empty"
+        
+        if value == 0:
+            return "empty"
+        
         if max_value == value:
-            result = "full"
-        elif result_value >= 75.0 and result_value < 100.0:
-            result = "above average"
-        elif result_value >= 50.0 and result_value < 75.0:
-            result = "average"
-        elif result_value > 25.0 and result_value < 50.0:
-            result = "below average"
-        elif result_value > 0.0 and result_value <= 25.0:
-            result = "depleted"
-        elif value == 0:
-            result = "empty"
+            return "full"
+        
+        percentage = 100 * (value / max_value)
+        
+        if percentage >= 75.0:
+            return "above average"
+        elif percentage >= 50.0:
+            return "average"
+        elif percentage > 25.0:
+            return "below average"
+        elif percentage > 0.0:
+            return "depleted"
+        
+        return "empty"
+
+    # === Système de portée et combat ===
+    
+    @staticmethod
+    def is_in_range(sector_id: int, current_user_id: int, is_npc: bool = False) -> Dict[str, List[Dict]]:
+        """
+        Détermine quels éléments sont à portée d'un joueur ou NPC
+        Méthode complexe refactorisée pour plus de lisibilité
+        """
+        try:
+            current_player_data = GetDataFromDB._get_current_player_data(current_user_id, is_npc)
+            sector_elements = GetDataFromDB._get_sector_elements(sector_id, current_user_id)
+            
+            return GetDataFromDB._calculate_range_for_all_elements(
+                current_player_data, sector_elements
+            )
+        except Exception as e:
+            # Log de l'erreur en production
+            return {}
+
+    @staticmethod
+    def _get_current_player_data(current_user_id: int, is_npc: bool) -> Dict:
+        """Récupère les données du joueur/NPC courant"""
+        if is_npc:
+            return GetDataFromDB._get_npc_player_data(current_user_id)
+        else:
+            return GetDataFromDB._get_human_player_data(current_user_id)
+
+    @staticmethod
+    def _get_human_player_data(user_id: int) -> Dict:
+        """Récupère les données d'un joueur humain"""
+        player_data = PlayerShipModule.objects.filter(
+            player_ship_id__player_id__user_id=user_id,
+            player_ship_id__is_current_ship=True
+        ).values(
+            "player_ship_id__ship_id__ship_category_id__size",
+            "player_ship_id__player_id__coordinates",
+            "player_ship_id__player_id"
+        ).first()
+
+        if not player_data:
+            return {}
+
+        modules = PlayerShipModule.objects.filter(
+            player_ship_id__player_id=player_data["player_ship_id__player_id"],
+            module_id__effect__has_key="range",
+            module_id__type__in=GetDataFromDB.WEAPONRY_MODULE_TYPES
+        ).values("module_id", "module_id__effect", "module_id__type")
+
+        return {
+            "coordinates": player_data["player_ship_id__player_id__coordinates"],
+            "size": player_data["player_ship_id__ship_id__ship_category_id__size"],
+            "modules": list(modules)
+        }
+
+    @staticmethod
+    def _get_npc_player_data(npc_id: int) -> Dict:
+        """Récupère les données d'un NPC"""
+        npc_data = Npc.objects.filter(id=npc_id).values(
+            "id", "npc_template_id__module_id_list",
+            "npc_template_id__ship_id__ship_category_id__size",
+            "coordinates"
+        ).first()
+
+        if not npc_data:
+            return {}
+
+        modules = Module.objects.filter(
+            Q(id__in=npc_data["npc_template_id__module_id_list"]) &
+            Q(effect__has_key="range") &
+            Q(type__in=GetDataFromDB.WEAPONRY_MODULE_TYPES)
+        ).values("id", "effect", "type")
+
+        return {
+            "coordinates": npc_data["coordinates"],
+            "size": npc_data["npc_template_id__ship_id__ship_category_id__size"],
+            "modules": list(modules)
+        }
+
+    @staticmethod
+    def _get_sector_elements(sector_id: int, exclude_user_id: int) -> Dict:
+        """Récupère tous les éléments d'un secteur"""
+        return {
+            "pc": GetDataFromDB._get_player_ships_in_sector(sector_id, exclude_user_id),
+            "npc": GetDataFromDB._get_npcs_in_sector(sector_id),
+            "asteroid": GetDataFromDB._get_asteroids_in_sector(sector_id),
+            "station": GetDataFromDB._get_stations_in_sector(sector_id),
+            "warpzone": GetDataFromDB._get_warpzones_in_sector(sector_id),
+            "other_element": GetDataFromDB._get_planets_in_sector(sector_id),
+        }
+
+    @staticmethod
+    def _get_player_ships_in_sector(sector_id: int, exclude_user_id: int) -> List[Dict]:
+        """Récupère les vaisseaux des joueurs dans un secteur"""
+        return list(PlayerShip.objects.filter(
+            player_id__sector_id=sector_id,
+            is_current_ship=True
+        ).exclude(
+            player_id__user_id=exclude_user_id
+        ).values(
+            "player_id",
+            "player_id__coordinates",
+            "ship_id__ship_category_id__size"
+        ))
+
+    @staticmethod
+    def _get_npcs_in_sector(sector_id: int) -> List[Dict]:
+        """Récupère les NPCs dans un secteur"""
+        return list(Npc.objects.filter(sector_id=sector_id).values(
+            "id", "coordinates", "npc_template_id__ship_id__ship_category_id__size"
+        ))
+
+    @staticmethod
+    def _get_asteroids_in_sector(sector_id: int) -> List[Dict]:
+        """Récupère les astéroïdes dans un secteur"""
+        return list(AsteroidResource.objects.filter(sector_id=sector_id).values(
+            "id", "source_id__size", "coordinates", "data__name"
+        ))
+
+    @staticmethod
+    def _get_stations_in_sector(sector_id: int) -> List[Dict]:
+        """Récupère les stations dans un secteur"""
+        return list(StationResource.objects.filter(sector_id=sector_id).values(
+            "id", "source_id__size", "coordinates", "data__name"
+        ))
+
+    @staticmethod
+    def _get_warpzones_in_sector(sector_id: int) -> List[Dict]:
+        """Récupère les zones de téléportation dans un secteur"""
+        return list(WarpZone.objects.filter(sector_id=sector_id).values(
+            "id", "source_id__size", "coordinates", "data__name"
+        ))
+
+    @staticmethod
+    def _get_planets_in_sector(sector_id: int) -> List[Dict]:
+        """Récupère les planètes dans un secteur"""
+        return list(PlanetResource.objects.filter(sector_id=sector_id).values(
+            "id", "source_id__size", "coordinates", "data__name"
+        ))
+
+    @staticmethod
+    def _calculate_range_for_all_elements(player_data: Dict, sector_elements: Dict) -> Dict[str, List[Dict]]:
+        """Calcule la portée pour tous les éléments du secteur"""
+        if not player_data or not player_data.get("modules"):
+            return {key: [] for key in sector_elements.keys()}
+
+        result = {}
+        
+        for element_type, elements in sector_elements.items():
+            result[element_type] = []
+            
+            for element in elements:
+                for module in player_data["modules"]:
+                    range_data = GetDataFromDB._calculate_single_element_range(
+                        player_data, element, module, element_type
+                    )
+                    result[element_type].append(range_data)
+        
         return result
 
     @staticmethod
-    def get_template_data():
-        # Use list to be able to use join and serialize...
-        return list(
-            NpcTemplate.objects.values(
-                "id",
-                "name",
-                "ship_id__image",
-                "max_hp",
-                "max_movement",
-                "difficulty",
-                "max_missile_defense",
-                "max_thermal_defense",
-                "max_ballistic_defense",
-                "behavior",
-            )
+    def _calculate_single_element_range(player_data: Dict, element: Dict, module: Dict, element_type: str) -> Dict:
+        """Calcule si un élément spécifique est à portée"""
+        # Extraction des données du module
+        if 'module_id__type' in module:  # Joueur humain
+            module_id = module["module_id"]
+            module_range = int(module["module_id__effect"]["range"])
+            module_type = module["module_id__type"]
+        else:  # NPC
+            module_id = module["id"]
+            module_range = int(module["effect"]["range"])
+            module_type = module["type"]
+
+        # Calcul des coordonnées et tailles
+        player_coords = GetDataFromDB._extract_coordinates(player_data["coordinates"])
+        player_size = player_data["size"]
+        
+        element_coords = GetDataFromDB._extract_element_coordinates(element, element_type)
+        element_size = GetDataFromDB._extract_element_size(element, element_type)
+
+        # Calcul de la zone de portée
+        player_range_zone = GetDataFromDB._calculate_range_zone(
+            player_coords, player_size, module_range
+        )
+        
+        # Vérification si l'élément est dans la zone
+        is_in_range = GetDataFromDB._is_element_in_range_zone(
+            element_coords, element_size, player_range_zone
         )
 
-    @staticmethod
-    def get_selected_ship_data(template_id):
-        return NpcTemplate.objects.filter(id=template_id).values(
-            "id", "ship_id", "ship_id__name", "ship_id__image", "ship_id__ship_category_id__size"
-        )[0]
-
-    @staticmethod
-    def get_related_npc_on_sector_data(sector_id):
-        # Use list to be able to use join and serialize...
-        return list(
-            Npc.objects.filter(sector_id=sector_id).values(
-                "id",
-                "coordinates",
-                "npc_template_id__id",
-                "npc_template_id__name",
-                "npc_template_id__ship_id__image",
-                "npc_template_id__ship_id__ship_category_id__size",
-                "npc_template_id__ship_id__name",
-            )
-        )
-
-    @staticmethod
-    def is_in_range(sector_id, current_user_id, is_npc=False):
-        result_dict = {}
-        player_zone_range = []
-        current_size = None
-        index_module_type = ["WEAPONRY", "ELECTRONIC_WARFARE"]
-
-        current_player_x = 0
-        current_player_y = 0
-
-        if is_npc is False:
-
-            current_player = [e for e in PlayerShipModule.objects.filter(
-                    player_ship_id__player_id__user_id=current_user_id, 
-                    player_ship_id__is_current_ship=True
-                ).values(
-                    "player_ship_id__ship_id__ship_category_id__size",
-                    "player_ship_id__player_id__coordinates",
-                    "player_ship_id__player_id"
-                )][0]
-            
-            current_player_module = [e for e in PlayerShipModule.objects.filter(
-                player_ship_id__player_id=current_player["player_ship_id__player_id"],
-                module_id__effect__has_key="range",
-                module_id__type__in=index_module_type
-            ).values("module_id", "module_id__effect", "module_id__type")]
-            
-            player_size_x = int(current_player["player_ship_id__ship_id__ship_category_id__size"]["x"])
-            player_size_y = int(current_player["player_ship_id__ship_id__ship_category_id__size"]["y"])
-
-            current_size = {
-                "x": player_size_x,
-                "y": player_size_y,
-            }
-
-            if current_player.get("player_ship_id__player_id__coordinates"):
-                # a npc
-                if current_player["player_ship_id__player_id__coordinates"].get("x"):
-                    current_player_x = int(
-                        current_player["player_ship_id__player_id__coordinates"]["x"]
-                    )
-                    current_player_y = int(
-                        current_player["player_ship_id__player_id__coordinates"]["y"]
-                    )
-                else:
-                    # not a player or a npc
-                    current_player_x = int(
-                        current_player["player_ship_id__player_id__coordinates"]["x"]
-                    )
-                    current_player_y = int(
-                        current_player["player_ship_id__player_id__coordinates"]["y"]
-                    )
-
-        else:
-
-            current_player = [e for e in Npc.objects.filter(id=current_user_id).values(
-                    "id",
-                    "npc_template_id__module_id_list",
-                    "npc_template_id__ship_id__ship_category_id__size",
-                    "coordinates",
-                )][0]
-            current_player_module = [
-                { 
-                    "id": e['id'],
-                    "effect": e['effect'],
-                    "type": e['type']
-                } for e in Module.objects.filter(
-                    (
-                        Q(id__in=current_player["npc_template_id__module_id_list"])
-                        & Q(effect__has_key="range")
-                    )
-                ).values("id", "effect", "type")]
-
-            npc_size_x = int(
-                current_player["npc_template_id__ship_id__ship_category_id__size"]["x"]
-            )
-            npc_size_y = int(
-                current_player["npc_template_id__ship_id__ship_category_id__size"]["y"]
-            )
-
-            current_size = {
-                "x": npc_size_x,
-                "y": npc_size_y,
-            }
-
-            current_player_x = int(current_player["coordinates"]["x"])
-            current_player_y = int(current_player["coordinates"]["y"])
-            
-        sector_element_dict = {
-            "pc": [{'id': e["player_id"],
-                    'player_id__coordinates': e['player_id__coordinates'],
-                    'ship_id__ship_category_id__size': e['ship_id__ship_category_id__size']
-                    } for e in PlayerShip.objects.filter(
-                    player_id__sector_id=sector_id, is_current_ship=True
-                )
-                .exclude(player_id__user_id=current_user_id)
-                .values(
-                    "player_id",
-                    "player_id__coordinates",
-                    "ship_id__ship_category_id__size",
-                )],
-            "npc": [e for e in Npc.objects.filter(sector_id=sector_id).values(
-                "id",
-                "coordinates",
-                "npc_template_id__ship_id__ship_category_id__size",
-            )],
-            "asteroid": [e for e in AsteroidResource.objects.filter(sector_id=sector_id).values(
-                "id", "source_id__size", "coordinates", "data__name"
-            )],
-            "station": [e for e in StationResource.objects.filter(sector_id=sector_id).values(
-                "id", "source_id__size", "coordinates", "data__name"
-            )],
-            "warpzone": [e for e in WarpZone.objects.filter(sector_id=sector_id).values(
-                "id", "source_id__size", "coordinates", "data__name"
-            )],
-            "other_element": [e for e in PlanetResource.objects.filter(sector_id=sector_id).values(
-                "id", "source_id__size", "coordinates", "data__name"
-            )],
+        return {
+            "target_id": element["id"],
+            "module_id": module_id,
+            "type": module_type,
+            "name": element.get("data__name"),
+            "is_in_range": is_in_range,
         }
-        for index, _ in sector_element_dict.items():
-            result_dict[index] = []
-            for item in sector_element_dict[index]:
-                for module in current_player_module:
-                    module_effect_is_in_range = False
-                    # PC
-                    if module.get('module_id__type'):
-                        module_id = module["module_id"]
-                        module_range = int(module["module_id__effect"]["range"])
-                        module_type = module["module_id__type"]
-                        module_effect_is_in_range = False
-                    else:
-                        # NPC
-                        module_id = module["id"]
-                        module_range = int(module["effect"]["range"])
-                        module_type = module["type"]
-                        
-                    current_player_start_x = 0
-                    current_player_start_y = 0
-                    element_start_x = 0
-                    element_start_y = 0
-                    
-                    # + 1 - 1 to limitate object with size more than 1 ;
-                    # exemple : Size 3 start in middle so we have to - 1.
-                    if current_size["x"] > 1:
-                        if current_size["x"] == 2:
-                            current_player_start_x = current_player_x - module_range - 1
-                            current_player_end_x = current_player_x + module_range + 2
-                        else:
-                            current_player_start_x = current_player_x - module_range - 1
-                            current_player_end_x = current_player_x + module_range + 3
-                    else:
-                        current_player_start_x = current_player_x - module_range
-                        current_player_end_x = current_player_x + module_range + 1
 
-                    if current_size["y"] > 1:
-                        if current_size["y"] == 2:
-                            current_player_start_y = current_player_y - module_range - 1
-                            current_player_end_y = current_player_y + module_range + 2
-                        else:
-                            current_player_start_y = current_player_y - module_range - 1
-                            current_player_end_y = current_player_y + module_range + 3
-                    else:
-                        current_player_start_y = current_player_y - module_range
-                        current_player_end_y = current_player_y + module_range + 1
-                    
-                    current_player_start_x = current_player_start_x if current_player_start_x >= 0 else 0
-                    current_player_end_x = current_player_end_x if current_player_end_x <= 39 else 39
-                    current_player_start_y = current_player_start_y if current_player_start_y >= 0 else 0
-                    current_player_end_y = current_player_end_y if current_player_end_y <= 39 else 39
-                    
-                    player_zone_range = [
-                        f"{y}_{x}"
-                        for y in range(current_player_start_y, current_player_end_y)
-                        for x in range(current_player_start_x, current_player_end_x)
-                    ]
+    @staticmethod
+    def _extract_coordinates(coords_data: Dict) -> Tuple[int, int]:
+        """Extrait les coordonnées x, y"""
+        if coords_data and coords_data.get("x") is not None:
+            return int(coords_data["x"]), int(coords_data["y"])
+        return 0, 0
 
-                    if index == "npc":
-                        element_size_x = int(
-                            item["npc_template_id__ship_id__ship_category_id__size"]["x"]
-                        )
-                        element_size_y = int(
-                            item["npc_template_id__ship_id__ship_category_id__size"]["y"]
-                        )
-                        element_start_x = int(
-                            item["coordinates"]["x"]
-                        )
-                        element_start_y = int(
-                            item["coordinates"]["y"]
-                        )
+    @staticmethod
+    def _extract_element_coordinates(element: Dict, element_type: str) -> Tuple[int, int]:
+        """Extrait les coordonnées d'un élément selon son type"""
+        if element_type == "npc":
+            return GetDataFromDB._extract_coordinates(element["coordinates"])
+        elif element_type == "pc":
+            return GetDataFromDB._extract_coordinates(element["player_id__coordinates"])
+        else:
+            coords_data = element.get("coordinates", {})
+            return GetDataFromDB._extract_coordinates(coords_data)
 
-                    elif index == "pc":
-                        element_size_x = int(
-                            item["ship_id__ship_category_id__size"]["x"]
-                        )
-                        element_size_y = int(
-                            item["ship_id__ship_category_id__size"]["y"]
-                        )
-                        element_start_x = int(
-                            item["player_id__coordinates"]["x"]
-                        )
-                        element_start_y = int(
-                            item["player_id__coordinates"]["y"]
-                        )
-                    else:
-                        element_size_x = int(item["source_id__size"]["x"])
-                        element_size_y = int(item["source_id__size"]["y"])
-                        element_start_x = int(
-                            item["source_id__size"]["x"]
-                        )
-                        element_start_y = int(
-                            item["source_id__size"]["y"]
-                        )
-                    if element_size_y == 1 and element_size_x == 1:
-                        if (
-                            f"{element_start_y}_{element_start_x}"
-                            in player_zone_range
-                        ):
-                            module_effect_is_in_range = True
-                    else:
-                        element_zone_range = [
-                            f"{y}_{x}"
-                            for y in range(
-                                element_start_y,
-                                element_start_y + element_size_y,
-                            )
-                            for x in range(
-                                element_start_x,
-                                element_start_x + element_size_x,
-                            )
-                        ]
-                        if (
-                            len(set(player_zone_range).intersection(element_zone_range))
-                            > 0
-                        ):
-                            module_effect_is_in_range = True
+    @staticmethod
+    def _extract_element_size(element: Dict, element_type: str) -> Dict[str, int]:
+        """Extrait la taille d'un élément selon son type"""
+        if element_type == "npc":
+            return element["npc_template_id__ship_id__ship_category_id__size"]
+        elif element_type == "pc":
+            return element["ship_id__ship_category_id__size"]
+        else:
+            return element["source_id__size"]
 
-                    data = {
-                        "target_id": item["id"],
-                        "module_id": module_id,
-                        "type": module_type,
-                        "name": item["data__name"] if item.get("data__name") else None,
-                        "is_in_range": module_effect_is_in_range,
-                    }
-                    result_dict[index].append(data)  
-        return result_dict
+    @staticmethod
+    def _calculate_range_zone(coords: Tuple[int, int], size: Dict[str, int], module_range: int) -> List[str]:
+        """Calcule la zone de portée d'un joueur"""
+        x, y = coords
+        size_x, size_y = size["x"], size["y"]
+        
+        # Calcul des limites avec ajustement pour la taille
+        start_x = GetDataFromDB._calculate_range_start(x, size_x, module_range)
+        end_x = GetDataFromDB._calculate_range_end(x, size_x, module_range)
+        start_y = GetDataFromDB._calculate_range_start(y, size_y, module_range)
+        end_y = GetDataFromDB._calculate_range_end(y, size_y, module_range)
+        
+        # Limitation aux bordes de la carte
+        start_x = max(0, start_x)
+        end_x = min(GetDataFromDB.MAP_SIZE["cols"], end_x)
+        start_y = max(0, start_y)
+        end_y = min(GetDataFromDB.MAP_SIZE["rows"], end_y)
+        
+        # Génération de la zone de portée
+        return [
+            f"{y}_{x}"
+            for y in range(start_y, end_y)
+            for x in range(start_x, end_x)
+        ]
+
+    @staticmethod
+    def _calculate_range_start(coord: int, size: int, module_range: int) -> int:
+        """Calcule la coordonnée de début de portée"""
+        if size > 1:
+            offset = -1 if size == 2 else -1
+            return coord - module_range + offset
+        return coord - module_range
+
+    @staticmethod
+    def _calculate_range_end(coord: int, size: int, module_range: int) -> int:
+        """Calcule la coordonnée de fin de portée"""
+        if size > 1:
+            offset = 2 if size == 2 else 3
+            return coord + module_range + offset
+        return coord + module_range + 1
+
+    @staticmethod
+    def _is_element_in_range_zone(element_coords: Tuple[int, int], element_size: Dict[str, int], 
+        range_zone: List[str]) -> bool:
+        """Vérifie si un élément est dans la zone de portée"""
+        element_x, element_y = element_coords
+        size_x, size_y = element_size["x"], element_size["y"]
+        
+        if size_x == 1 and size_y == 1:
+            # Élément de taille 1x1
+            return f"{element_y}_{element_x}" in range_zone
+        else:
+            # Élément de taille supérieure - génération de sa zone
+            element_zone = [
+                f"{y}_{x}"
+                for y in range(element_y, element_y + size_y)
+                for x in range(element_x, element_x + size_x)
+            ]
+            # Vérification de l'intersection
+            return len(set(range_zone).intersection(element_zone)) > 0

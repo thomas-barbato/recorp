@@ -325,7 +325,6 @@ function set_range_finding(data) {
 
 function update_player_range_in_modal(data){
     let modal = "";
-    console.log(data)
     for(const node_type in data){
         for(const node in data[node_type]){
             if(node_type == "pc" || node_type == "npc"){
