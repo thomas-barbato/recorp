@@ -190,7 +190,7 @@ function create_foreground_modal(id, data) {
         let modal_name = e.id; 
 
         item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
-            async_travel(data.home_sector, current_user_id,id);
+            async_travel(data.home_sector, current_user_id, id);
         })
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 

@@ -171,7 +171,7 @@ class GetDataFromDB:
             "asteroid": [Asteroid, AsteroidResource],
             "station": [Station, StationResource],
             "faction": [Faction, FactionResource],
-            "player": [User, Player, PlayerShipResource],
+            "player": [User, Player, PlayerShipResource, PlayerShip],
             "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
             "warpzone": [Warp, WarpZone, SectorWarpZone],
             "warpzone_only": WarpZone,

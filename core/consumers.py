@@ -155,15 +155,18 @@ class GameConsumer(WebsocketConsumer):
         message = json.loads(event["message"])["data"]
         coordinates = message["coordinates"]
         size = message["size"]
-        player_id = message["player"]
+        user = message["user"]
+        
+        player_action = PlayerAction(user)
+        player_id = player_action.get_player_id()
 
         StoreInCache(
             room_name=self.room_group_name, user_calling=self.user.id
-        ).delete_player_from_cache(player_id, self.room_group_name)
-        destination_sector_id = PlayerAction(player_id).get_player_sector()
+        ).delete_player_from_cache(user, self.room_group_name)
+        destination_sector_id = player_action.get_player_sector()
         destination_room_key = f"play_{destination_sector_id}"
 
-        if player_id != self.user.id:
+        if user != self.user.id:
             spaceship_data_coord = {
                 "type": "async_remove_ship",
                 "message": {

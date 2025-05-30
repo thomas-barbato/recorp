@@ -310,6 +310,7 @@ function add_pc(data) {
     let border_color = "";
     let coordinates_array_to_disable_button = [];
     for (let i = 0; i < data.length; i++) {
+        console.log("dans la boucle");
         let coord = data[i]["user"]["coordinates"]
         let coord_x;
         let coord_y;

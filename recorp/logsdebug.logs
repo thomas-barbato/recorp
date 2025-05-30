@@ -49863,3 +49863,1920 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:63532]
 WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:63578]
 WebSocket CONNECT /ws/play_1/ [127.0.0.1:63578]
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.17, 127.0.0.1:61305][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:61305][0m
+[36mHTTP GET /static/world_builder/world/character_modal.js 304 [0.01, 127.0.0.1:61305][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.06, 127.0.0.1:61315][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.00, 127.0.0.1:61315][0m
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.01, 127.0.0.1:61305][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.00, 127.0.0.1:61315][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61317]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61317]
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.00, 127.0.0.1:61315][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.00, 127.0.0.1:61315][0m
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:61329][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61339][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61339][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61339][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61339][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61340]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61340]
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61337][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61335][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61329][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61338][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:61336][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:61339][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61337][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61340]
+[mHTTP GET /fr/play/ 200 [0.41, 127.0.0.1:61343][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61343][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61353][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:61351][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61354][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61353][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61354][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:61343][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61351][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61353][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61354][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:61351][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:61352][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.02, 127.0.0.1:61354][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.02, 127.0.0.1:61353][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.02, 127.0.0.1:61343][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61351][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:61350][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61350][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61350][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61350][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61350][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61366]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61366]
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61351][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61353][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61343][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61354][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:61351][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61343][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61353][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61354][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:61351][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:61343][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:61350][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:61351][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61353][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:61354][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61352][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:61343][0m
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:61315][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61317]
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61305][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61374][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:61316][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61373][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61375][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61305][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61316][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61375][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61373][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61374][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:61315][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:61373][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.00, 127.0.0.1:61373][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61373][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.00, 127.0.0.1:61374][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.00, 127.0.0.1:61374][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.00, 127.0.0.1:61373][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61373][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61374][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61375][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61315][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61316][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61305][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.00, 127.0.0.1:61373][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.00, 127.0.0.1:61315][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:61374][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61374][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61374][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61380]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61380]
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61316][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61315][0m
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:61374][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61373][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61375][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61305][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.00, 127.0.0.1:61373][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:61316][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61375][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61315][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61374][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.00, 127.0.0.1:61374][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:61315][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61375][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61373][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:61316][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:61305][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:61374][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61315][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61373][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.00, 127.0.0.1:61316][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61316][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.12, 127.0.0.1:61316][0m
+[mHTTP GET /fr/play/ 200 [0.20, 127.0.0.1:61316][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61380]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:61316][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:61400]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:61400]
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.47, 127.0.0.1:61316][0m
+[mHTTP GET /fr/play/ 200 [0.55, 127.0.0.1:61316][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:61400]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:61316][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61426]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61426]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61366]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:61590][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.04, 127.0.0.1:61599][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61595][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61595][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61595][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61601]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61601]
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:61603][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61426]
+[mHTTP GET /static/css/style.css 200 [0.03, 127.0.0.1:61603][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:61611][0m
+[mHTTP GET /static/css/output.css 200 [0.03, 127.0.0.1:61609][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.03, 127.0.0.1:61610][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:61612][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:61613][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61611][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61603][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61609][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61610][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:61603][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.00, 127.0.0.1:61603][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61603][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.00, 127.0.0.1:61603][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61603][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61610][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61611][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61613][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61612][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61609][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61603][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.00, 127.0.0.1:61610][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.00, 127.0.0.1:61612][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.00, 127.0.0.1:61613][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61613][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61613][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61613][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61614]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61614]
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61611][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61609][0m
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:61613][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61612][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61610][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61603][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:61611][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61609][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61610][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61612][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61613][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:61603][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.00, 127.0.0.1:61611][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:61610][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:61612][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61613][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:61603][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61611][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61609][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.00, 127.0.0.1:61610][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.00, 127.0.0.1:61612][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61610][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.14, 127.0.0.1:61610][0m
+[mHTTP GET /fr/play/ 200 [0.20, 127.0.0.1:61610][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61614]
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:61610][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:61626]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:61626]
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.17, 127.0.0.1:61590][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61601]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:61590][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:61599][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61596][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61596][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61596][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:61645]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:61645]
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61590][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.00, 127.0.0.1:61595][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:61596][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:61597][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61599][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:61598][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61595][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:61610][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:61645]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:61988][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.03, 127.0.0.1:61993][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.03, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.02, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.03, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61997][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:61998]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:61998]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:61996][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.44, 127.0.0.1:61988][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:61998]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:61988][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:61988][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:61993][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.03, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.02, 127.0.0.1:61994][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.03, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.03, 127.0.0.1:61993][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.03, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.02, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61997][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62013]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62013]
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.00, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.00, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:61996][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62013]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:61988][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:61993][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:61995][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:61996][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.02, 127.0.0.1:61994][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.02, 127.0.0.1:61993][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.02, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.02, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61994][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61994][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62021]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62021]
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.02, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.03, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.02, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.02, 127.0.0.1:61995][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.18, 127.0.0.1:61988][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62021]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:61994][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:61997][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:61994][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:61997][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62041]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62041]
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:61995][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:61996][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:61988][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:61997][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:61994][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:61993][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:61996][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:62047][0m
+[mHTTP GET /fr/play/ 200 [0.14, 127.0.0.1:62047][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:61626]
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:62096][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:62094][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:62094][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.00, 127.0.0.1:62094][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62094][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.00, 127.0.0.1:62094][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.00, 127.0.0.1:62095][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.00, 127.0.0.1:62094][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62097][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.03, 127.0.0.1:62096][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62096][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62099]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62099]
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62095][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62041]
+[mHTTP GET /fr/play/ 200 [0.10, 127.0.0.1:62103][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:62112][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62110][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62109][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62112][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62114]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62114]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.00, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.00, 127.0.0.1:62112][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.37, 127.0.0.1:62095][0m
+[mHTTP GET /fr/play/ 200 [0.53, 127.0.0.1:62095][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62099]
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:62095][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62133]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62133]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:62095][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62133]
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:62095][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62139]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62139]
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62114]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:62112][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:62109][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62112][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62112][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62112][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62147]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62147]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.02, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:62095][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62139]
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:62095][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62158]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62158]
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62147]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:62112][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:62112][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.02, 127.0.0.1:62109][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62112][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62112][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62112][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62165]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62165]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62103][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62108][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62112][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62111][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62109][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62110][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.02, 127.0.0.1:62108][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62165]
+[mHTTP GET /fr/play/ 200 [0.16, 127.0.0.1:62175][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62175][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62180][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62183][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62180][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:62175][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62183][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62180][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.02, 127.0.0.1:62183][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:62180][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.02, 127.0.0.1:62175][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62183][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62180][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62183][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62183][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62183][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62183][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62186]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62186]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62183][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62180][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62175][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62183][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62180][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62175][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62183][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62182][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62181][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62184][0m
+[mHTTP GET /fr/play/ 200 [0.34, 127.0.0.1:62095][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62158]
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:62098][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.00, 127.0.0.1:62098][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.00, 127.0.0.1:62095][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.00, 127.0.0.1:62095][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62094][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62194]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62194]
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:62095][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:62097][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:62098][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:62094][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62047][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:62096][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62096][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.16, 127.0.0.1:62096][0m
+[mHTTP GET /fr/play/ 200 [0.18, 127.0.0.1:62096][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62194]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62205]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62205]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:62502][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62205]
+[36mHTTP GET /static/world_builder/world/character_modal.js 304 [0.00, 127.0.0.1:62502][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.00, 127.0.0.1:62502][0m
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:62507][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.00, 127.0.0.1:62508][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62509]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62509]
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62186]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62526][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62529]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62529]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62526][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62529]
+[mHTTP GET /fr/play/ 200 [0.10, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62526][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62535]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62535]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62524][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.38, 127.0.0.1:62508][0m
+[mHTTP GET /fr/play/ 200 [0.49, 127.0.0.1:62508][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62509]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62553]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62553]
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62535]
+[mHTTP GET /fr/play/ 200 [0.10, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62526][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62526][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62560]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62560]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62524][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62527][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62526][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.00, 127.0.0.1:62528][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62525][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62524][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62560]
+[mHTTP GET /fr/play/ 200 [0.11, 127.0.0.1:62584][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62584][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62593][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62584][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62593][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62593][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62584][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62593][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62584][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62590][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62590][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62590][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62590][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62595]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62595]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62593][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62584][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62593][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62584][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.00, 127.0.0.1:62592][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62590][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62591][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62592][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62589][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62593][0m
+D:\wamp64\www\recorp\core\backend\store_in_cache.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62749]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62749]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62758]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62758]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.17, 127.0.0.1:62894][0m
+[36mHTTP GET /static/world_builder/world/character_modal.js 304 [0.00, 127.0.0.1:62894][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.00, 127.0.0.1:62894][0m
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:62900][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.00, 127.0.0.1:62901][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62902]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62902]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:62907][0m
+[mHTTP GET /static/css/style.css 200 [0.18, 127.0.0.1:62907][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:62907][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:62907][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:62907][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:62912][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:62913][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.21, 127.0.0.1:62915][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.21, 127.0.0.1:62916][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.21, 127.0.0.1:62914][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.02, 127.0.0.1:62913][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62916][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62916][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62916][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62918]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62918]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.02, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:62914][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62918]
+[mHTTP GET /fr/play/ 200 [0.16, 127.0.0.1:62907][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:62915][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:62916][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:62916][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:62916][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62928]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62928]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.02, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.03, 127.0.0.1:62914][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.02, 127.0.0.1:62915][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.02, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.02, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.02, 127.0.0.1:62907][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.02, 127.0.0.1:62913][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.02, 127.0.0.1:62915][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:62912][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.02, 127.0.0.1:62916][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:62914][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:62907][0m
+[mHTTP GET /fr/play/ 200 [0.42, 127.0.0.1:62901][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62902]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62937]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62937]
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.17, 127.0.0.1:62901][0m
+[mHTTP GET /fr/play/ 200 [0.19, 127.0.0.1:62901][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62937]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:62948]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:62948]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:63803][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62948]
+[36mHTTP GET /static/world_builder/world/character_modal.js 304 [0.00, 127.0.0.1:63803][0m
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:63808][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.00, 127.0.0.1:63803][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.00, 127.0.0.1:63809][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:63810]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:63810]
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:62928]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:63813][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:63813][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.02, 127.0.0.1:63823][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.02, 127.0.0.1:63820][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.02, 127.0.0.1:63819][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:63823][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:63823][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:63823][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:63824]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:63824]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.02, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.02, 127.0.0.1:63813][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.02, 127.0.0.1:63822][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.03, 127.0.0.1:63819][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.03, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.02, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:63813][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:63824]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:63823][0m
+[mHTTP GET /static/css/style.css 200 [0.06, 127.0.0.1:63823][0m
+[mHTTP GET /static/css/output.css 200 [0.06, 127.0.0.1:63821][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.07, 127.0.0.1:63819][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.06, 127.0.0.1:63813][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.06, 127.0.0.1:63822][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.07, 127.0.0.1:63820][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:63820][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:63823][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:63823][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:63823][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:63836]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:63836]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:63813][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:63819][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.02, 127.0.0.1:63820][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:63822][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.02, 127.0.0.1:63813][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:63823][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:63821][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:63819][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:63809][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.38, 127.0.0.1:63924][0m
+[mHTTP GET /fr/play/ 200 [0.53, 127.0.0.1:63924][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:63810]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:63936]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:63936]
+D:\wamp64\www\recorp\core\backend\get_data.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:64239]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:64239]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:64248]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:64248]
+D:\wamp64\www\recorp\core\backend\get_data.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.47, 127.0.0.1:49987][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:49987][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:49987][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:49987][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.00, 127.0.0.1:49987][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:49996][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:49993][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:49994][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:49997][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.20, 127.0.0.1:49995][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:49994][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:49995][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:49996][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:49997][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:49993][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:49994][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:49995][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:49997][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:49993][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:49995][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:49994][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.05, 127.0.0.1:49996][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:49994][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:49994][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:49999]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:49999]
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.01, 127.0.0.1:49994][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:49997][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:49996][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:49993][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:49995][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:49997][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:49994][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:49993][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:49995][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:49996][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:49997][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:49994][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:49995][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:49993][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:49987][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.00, 127.0.0.1:49997][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:49997][0m
+D:\wamp64\www\recorp\core\backend\store_in_cache.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50227]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50227]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.15, 127.0.0.1:50447][0m
+[36mHTTP GET /static/world_builder/world/add_sector_elements.js 304 [0.00, 127.0.0.1:50447][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50453]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50453]
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.22, 127.0.0.1:50447][0m
+[mHTTP GET /fr/play/ 200 [0.20, 127.0.0.1:50447][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50453]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:50479]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:50479]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:50491]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:50491]
+[mHTTP GET /fr/play/ 200 [0.25, 127.0.0.1:50500][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:50491]
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:50500][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:50500][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.17, 127.0.0.1:50510][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:50500][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.18, 127.0.0.1:50512][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:50513][0m
+[mHTTP GET /static/css/output.css 200 [0.19, 127.0.0.1:50509][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:50511][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:50500][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:50511][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50509][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:50512][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:50513][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:50511][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:50509][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:50512][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:50513][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.00, 127.0.0.1:50500][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50511][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50511][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:50511][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:50514]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:50514]
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:50513][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:50512][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:50509][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:50511][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:50512][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:50509][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:50513][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:50511][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:50512][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:50509][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:50511][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:50510][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:50513][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:50512][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:50509][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50509][0m
+[mHTTP GET /fr/play/ 200 [0.14, 127.0.0.1:50518][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50518][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:50518][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:50518][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50523][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50527][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:50527][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50527][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50527][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:50530]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:50530]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:50518][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:50518][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:50523][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.00, 127.0.0.1:50524][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:50527][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:50525][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:50524][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:50526][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:50523][0m
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:50542]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:50542]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:50540]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:50540]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\get_data.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\store_in_cache.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\store_in_cache.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.25, 127.0.0.1:51148][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:51148][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.00, 127.0.0.1:51148][0m
+[mHTTP GET /static/css/output.css 200 [0.18, 127.0.0.1:51155][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:51156][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:51157][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.19, 127.0.0.1:51158][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.19, 127.0.0.1:51159][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.00, 127.0.0.1:51148][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:51156][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51158][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:51157][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:51159][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.00, 127.0.0.1:51148][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.00, 127.0.0.1:51156][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:51158][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:51157][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:51159][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:51156][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51156][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:51156][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:51164]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:51164]
+[mHTTP GET /static/img/ux/invade.svg 200 [0.00, 127.0.0.1:51158][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:51156][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:51157][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:51159][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:51158][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:51156][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:51159][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:51157][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:51159][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:51158][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:51157][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:51156][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:51155][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:51148][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.01, 127.0.0.1:51159][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51159][0m
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:51176][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:51183][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51183][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51183][0m
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:51187]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:51187]
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/ux/scan_resource_icon.svg 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/background/bg_space_2/0.gif 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_2/0.gif 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/ux/gather_icon.svg 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.00, 127.0.0.1:51185][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.40, 127.0.0.1:51159][0m
+[mHTTP GET /fr/play/ 200 [0.55, 127.0.0.1:51159][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:51164]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51204]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51204]
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.16, 127.0.0.1:51159][0m
+[mHTTP GET /fr/play/ 200 [0.17, 127.0.0.1:51159][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51204]
+WebSocket HANDSHAKING /ws/play_1/ [127.0.0.1:51217]
+WebSocket CONNECT /ws/play_1/ [127.0.0.1:51217]
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.36, 127.0.0.1:51176][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:51187]
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:51176][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/ckeditor/ckeditor.js 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data.js 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/world_builder/world/player_basic_information_data_mobile.js 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:51176][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:51182][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/close.svg 200 [0.00, 127.0.0.1:51183][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51183][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51258]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51258]
+[mHTTP GET /static/img/ux/new_location.svg 200 [0.02, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/foreground/planet/planete_3/0.gif 200 [0.02, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/dock.svg 200 [0.02, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/ux/market.svg 200 [0.02, 127.0.0.1:51184][0m
+[mHTTP GET /static/img/ux/join_faction.svg 200 [0.02, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/ux/task.svg 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/img/ux/warpzone_icon_v2.svg 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/ux/invade.svg 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/ux/target_icon.svg 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/ux/contact_icon.svg 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/img/ux/repaire_icon.svg 200 [0.01, 127.0.0.1:51181][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:51185][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:51184][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:51182][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:51176][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.00, 127.0.0.1:51181][0m
+Internal Server Error: /fr/play/warp
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 265, in _get_response_async
+    self.check_response(response, callback)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view core.views.view didn't return an HttpResponse object. It returned None instead.
+[35;1mHTTP POST /fr/play/warp 500 [0.47, 127.0.0.1:51159][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:51183][0m
+[mHTTP GET /fr/play/ 200 [0.51, 127.0.0.1:51159][0m
+WebSocket DISCONNECT /ws/play_1/ [127.0.0.1:51217]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51270]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51270]
+[mHTTP GET /static/img/ux/movement-icon.svg 200 [0.00, 127.0.0.1:51183][0m

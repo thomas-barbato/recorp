@@ -352,7 +352,7 @@ function async_travel(id, user_id, warpzone_name){
     let size_x = spaceship.getAttribute('size_x');
     let size_y = spaceship.getAttribute('size_y');
     let data = {
-        "player": user_id,
+        "user": user_id,
         "source_id": id,
         "warpzone_name": warpzone_name,
         "coordinates": {

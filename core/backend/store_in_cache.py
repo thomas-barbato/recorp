@@ -414,7 +414,6 @@ class StoreInCache:
     def delete_player_from_cache(self, player_id, old_room = None):
         if player_id != self.user_calling:
             in_cache = cache.get(old_room)
-            
             in_cache["pc"] = [
                 key for key in in_cache['pc'] if key["user"]["player"] != player_id
             ]
