@@ -73,7 +73,7 @@
             "name": "Technician",
             "description": "Technician specialising in keeping spaceship operational",
             "data": {
-                "Repair": 10,
+                "Repaire": 10,
                 "Shield Amelioration": 10,
                 "Counter Electronic Warfare": 10,
                 "Frigate": 10
@@ -90,7 +90,7 @@
             "name": "Jack-of-all-trades",
             "description": "For those who like to explore, limited knowledge of piloting light spaceships and harvesting (more limited than those who become Harvester or Fighter)",
             "data": {
-                "Repair": 10,
+                "Repaire": 10,
                 "Ballistic Weapon": 10,
                 "Mining": 10,
                 "Frigate": 10

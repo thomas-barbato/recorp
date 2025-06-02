@@ -171,7 +171,7 @@ class Migration(migrations.Migration):
                             ("MOVEMENT", "movement"),
                             ("GATHERING", "gathering"),
                             ("PROBE", "probe"),
-                            ("REPAIR", "repair"),
+                            ("REPAIRE", "repaire"),
                             ("ELECTRONIC_WARFARE", "electronic warfare"),
                             ("RESEARCH", "research"),
                             ("CRAFT", "craft"),

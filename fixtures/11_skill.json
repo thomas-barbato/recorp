@@ -145,7 +145,7 @@
         "model": "core.skill",
         "pk": 14,
         "fields": {
-            "name": "Repair",
+            "name": "Repaire",
             "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
             "category": "Utility",
             "created_at": "2020-03-21 12:38:15",

@@ -487,7 +487,7 @@ class Module(models.Model):
         ("MOVEMENT", "movement"),
         ("GATHERING", "gathering"),
         ("PROBE", "probe"),
-        ("REPAIR", "repair"),
+        ("REPAIRE", "repaire"),
         ("ELECTRONIC_WARFARE", "electronic warfare"),
         ("RESEARCH", "research"),
         ("CRAFT", "craft"),

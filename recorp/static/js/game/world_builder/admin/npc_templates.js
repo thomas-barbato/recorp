@@ -169,7 +169,7 @@ npc_submit_button.addEventListener('click', function() {
     let selectedSpaceShip_element = document.querySelector('.selected-spaceShip');
 
     let template_hp_statistics = 0;
-    let template_hp_skill_bonus = skill_dict["Repair"];
+    let template_hp_skill_bonus = skill_dict["repaire"];
     let template_hp_module_bonus = 0;
     let template_move_statistics = 0;
     let template_move_skill_bonus = skill_dict["Light"];

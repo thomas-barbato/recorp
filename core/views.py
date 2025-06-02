@@ -176,6 +176,7 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context["factions"] = GetDataFromDB().get_faction_queryset()
         context["form"] = self.form_class
         context["archetype_data"] = Archetype.objects.values('name', 'id', 'data', 'ship_id__image', 'description')
+        context["archetype_modules"] = ArchetypeModule.objects.values('archetype_id', 'module_id__name', 'module_id__type', 'module_id__effect')
         return context
     
     def post(self, request, **kwargs):

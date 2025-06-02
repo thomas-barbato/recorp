@@ -696,7 +696,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             "HOLD",
             "HULL",
             "MOVEMENT",
-            "REPAIR",
+            "REPAIRE",
             "GATHERING",
             "RESEARCH",
             "CRAFT",
@@ -751,7 +751,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         )
         hp_total = int(
             (spaceship["default_hp"] + int(module_bonus_hp))
-            + (50 * (int(skill_dict["Repair"]["level"]) / 100))
+            + (50 * (int(skill_dict["repaire"]["level"]) / 100))
         )
         move_total = int(
             (spaceship["default_movement"] + int(module_bonus_move))
@@ -872,7 +872,7 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
             )
             hp_total = int(
                 (spaceship["default_hp"] + int(module_bonus_hp))
-                + (50 * (int(skill_dict["Repair"]["level"]) / 100))
+                + (50 * (int(skill_dict["REPAIRE"]["level"]) / 100))
             )
             move_total = int(
                 (spaceship["default_movement"] + int(module_bonus_move))

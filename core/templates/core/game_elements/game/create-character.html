@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block content %}
-<div class="flex justify-between flex-col h-full w-full overflow-hidden grow">
+<div class="flex justify-between flex-col h-full w-full overflow-hidden">
     <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
         {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
             {% include "mobile-create-account-top-panel.html" %}
@@ -17,22 +17,22 @@
     <main id="main-index-container" class="flex w-full h-full flex-row items-center lg:blur-none overflow-y-scroll no-scrollbar">
         <form class="flex w-full justify-center items-start p-2">
     {% else %}
-    <main id="main-index-container" class="flex w-full h-full flex-row overflow-y-scroll lg:blur-none no-scrollbar text-shadow z-0 lg:p-0 p-2 overflow-y-scroll no-scrollbar">
+    <main id="main-index-container" class="flex w-full h-[80vh] flex-row overflow-y-scroll lg:blur-none no-scrollbar text-shadow z-0 lg:p-0 p-2 overflow-y-scroll no-scrollbar">
         <form class="w-full flex justify-center items-center p-2">
     {% endif %}
-            <div id="character-faction" class="flex border border-gray-300/60 h-full p-1 justify-between bg-cyan-950/20 xl:w-[50%] lg:w-[80%] rounded-md flex-col">
-                <div class="flex w-full justify-center text-center text-xl font-bold text-shadow text-white uppercase">
+            <div id="character-faction" class="flex border border-gray-300/60 h-full p-1 justify-between bg-black/50 xl:w-[50%] lg:w-[80%] rounded-md flex-col">
+                <div class="flex w-full justify-center text-center text-xl font-bold text-shadow uppercase text-emerald-400">
                     {% translate "Character creation" %}
                 </div>
-                <div class="flex w-full justify-center text-center text-md font-bold text-shadow text-white uppercase">
+                <div class="flex w-full justify-center text-center text-md font-bold text-shadow uppercase text-emerald-400">
                     {% translate "Select a faction" %}
                 </div>
                 <div class="flex w-auto">
                     <div id="faction-container" class="w-full flex md:gap-6 gap-2 lg:flex-row flex-col justify-around overflow-hidden">
                         {% for faction in factions %}
                             {% if faction.name != "none" %}
-                            <div class="flex flex-col p-1 lg:w-1/3 w-full lg:h-full bg-gray-600/60 hover:bg-[#B1F1CB]/30 border border-slate-600 rounded-t-md cursor-pointer faction" id="faction-{{ faction.id }}">
-                                <div id="faction-item" class="flex bg-white rounded-t-md lg:text-sm text-xs font-bold justify-center items-center text-center">
+                            <div class="flex flex-col p-1 lg:w-1/3 w-full lg:h-full bg-gray-800 hover:bg-[#B1F1CB]/30 border border-slate-600 rounded-t-md cursor-pointer faction" id="faction-{{ faction.id }}">
+                                <div id="faction-item" class="flex rounded-t-md lg:text-sm text-xs font-bold justify-center items-center text-center bg-emerald-900 text-emerald-300">
                                     {{ faction.name }}
                                 </div>
                                 <img src="{% static '/img/ux/placeholder.svg' %}" class="flex object-fill lg:block hidden"> 
@@ -54,15 +54,15 @@
                     </svg>
                 </div>
             </div>
-            <div id="character-stats" class="flex border border-gray-300/60 justify-between bg-cyan-950/20 xl:w-[40%] lg:w-[80%] w-full h-auto rounded-md flex-col hidden">
-                <div class="w-full justify-start text-center text-xl font-bold text-shadow text-white uppercase">
+            <div id="character-stats" class="flex border border-gray-300/60 justify-between bg-black/50 xl:w-[40%] lg:w-[80%] w-full m-h-[80%] rounded-md flex-col hidden">
+                <div class="w-full justify-start text-center text-xl font-bold text-shadow text-emerald-300 uppercase">
                     {% translate "Character creation" %}
                 </div>
-                <div class="flex md:flex-row flex-col w-full p-2 gap-2 justify-start h-full">
+                <div class="flex md:flex-row flex-col w-full p-2 gap-2 justify-start">
                     <div id="archetype-selection" class="flex flex-col md:w-[50%] w-full gap-3">
                         <div id="archetype-select">
                             <label for="id_archetype" class="block mb-2 lg:text-sm text-xs font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "Select an archetype" %} <span class="text-red-600">*</span></label>
-                            <select id="id_archetype" class="bg-gray-50 border border-gray-300 text-gray-900 lg:text-sm text-xs rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="id_archetype" class="lg:text-sm text-xs rounded-lg block w-full p-2.5 placeholder-[#B1F1CB] text-emerald-300 bg-emerald-900">
                                 <option selected="selected">---</option>
                                 {% for archetype in archetype_data%}
                                 <option value="{{ archetype.id }}">{% translate archetype.name %}</option>
@@ -71,9 +71,9 @@
                         </div>
                         <div id="archetype-informations">
                             {% for archetype in archetype_data%}
-                            <div id="archetype-{{ archetype.id }}" class="hidden archetype-selector bg-gray-600/60 border border-slate-600 rounded-t-md p-2">
+                            <div id="archetype-{{ archetype.id }}" class="hidden archetype-selector bg-gray-800 border border-[#B1F1CB] rounded-t-md p-2">
                                 <div class="flex p-2">
-                                    <p class="flex text-justify description-text lg:text-sm text-xs font-shadow text-white"> 
+                                    <p class="flex text-justify description-text text-xs font-shadow text-white"> 
                                         {% translate archetype.description %}
                                     </p>
                                 </div>
@@ -82,18 +82,17 @@
                                         <img class="
                                         flex 
                                         object-center 
-                                        {% if archetype.ship_id__ship_category_id__size.x == 1 %} 
+                                        {% if archetype.ship_id__ship_category_id__size.x == 1 and archetype.ship_id__ship_category_id__size.y == 1%} 
                                         w-[32px] 
                                         {%  else  %} 
                                         w-[64px] 
-                                        {%  endif %}    
-                                        h-[32px]
+                                        {%  endif %}  
                                         " 
                                         src="{% static 'img/foreground/ships/'|add:archetype.ship_id__image|add:'.png' %}">
                                     </div>
                                     <div id="archetype-statistics-{{ archetypes.data }}" class="flex justify-center flex-col">
                                         <div class="flex">
-                                            <p class="flex text-justify description-text lg:text-sm text-xs font-bold font-shadow text-white text-center justify-center"> 
+                                            <p class="flex text-justify description-text lg:text-sm text-xs font-bold font-shadow text-emerald-300 text-center justify-center"> 
                                                 {% translate "Starting skill points" %}
                                             </p>
                                         </div>
@@ -112,7 +111,7 @@
                                             game-icons--spaceship
                                             {% elif key == 'Thermal Shield' or key == 'Ballistic Shield' or key == 'Missile Shield' %}
                                             game-icons--dragon-shield
-                                            {% elif key == 'Repair' %}
+                                            {% elif key == 'Repaire' %}
                                             game-icons--auto-repair
                                             {% elif key == 'Shield Amelioration' %}
                                             game-icons--bolt-shield
@@ -137,12 +136,12 @@
                                             {% elif key == 'Planetary Exploitation' %}
                                             game-icons--wireframe-globe
                                             {% endif %}
-                                            w-[14px] 
-                                            h-[14px]"></span>
+                                            w-[16px] 
+                                            h-[16px]"></span>
                                             <p class="text-xs">
                                                 {{ key }} 
                                             </p>
-                                            <b class="text-emerald-400 font-shadow font-bold text-xs">
+                                            <b class="text-[#B1F1CB] font-shadow font-bold text-xs">
                                                 {{ value }}
                                             </b>
                                         </li>
@@ -150,12 +149,28 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <div id="archetype-base-module" class="flex justify-center flex-col p-2">
+                                    <p class="flex text-justify description-text text-sm font-bold font-shadow text-emerald-300"> 
+                                        {% translate "Starting modules" %}
+                                    </p>
+                                    <div id="archetype-base-module-container" class="flex h-[30vh] overflow-y-scroll flex-col thin-semi-transparent-scrollbar thin-semi-transparent-scrollbar:hover">
+                                    {% for module in archetype_modules %}
+                                        <ul class="flex flex-col font-bold font-shadow justify-start items-start">
+                                        {% if archetype.id == module.archetype_id %}
+                                                <li class="text-white font-shadow flex flex-col">
+                                                    <div class="text-xs flex text-start">{{ module.module_id__name }}</div>
+                                                </li>
+                                        {% endif %}
+                                        </ul>
+                                    {% endfor %}
+                                    </div>
+                                </div>
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="h-auto min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-80 dark:via-neutral-400 border-1 border border-gray-300/60 md:block hidden"></div>
-                    <div id="character-informations" class="flex flex-col md:w-[50%] w-full gap-6 bg-gray-600/60 border border-slate-600 rounded-md p-2">
+                    <div class="min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-80 dark:via-neutral-400 border-1 border border-[#B1F1CB] md:block hidden"></div>
+                    <div id="character-informations" class="flex flex-col md:w-[50%] w-full gap-6 bg-gray-800 border border-[#B1F1CB] rounded-md p-2">
                         <div title="{% translate 'Change your picture' %}" class="w-full flex flex-col gap-2 items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
                             <label for="" class="flex text-white font-bold">{% translate 'Select your picture' %}</label>
                             <img class="flex w-24 w-24 box-content rounded-md justify-center items-center" id="user-avatar" src="{% static 'ux/default-user.svg' %}">
@@ -163,7 +178,7 @@
                         </div>
                         <div class="flex w-full flex-col justify-center items-center">
                             <label for="id_name" class="block mb-2 lg:text-sm text-xs font-medium text-white text-shadow font-bold first-letter:uppercase">{% translate "character name" %} <span class="text-red-600">*</span></label>
-                            <input type="text" id="id_name" name="name" class="flex bg-gray-50 border border-gray-300 text-gray-900 lg:text-sm text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[50%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" required />
+                            <input type="text" id="id_name" name="name" class="flex lg:text-sm text-xs rounded-lg block w-[50%] p-2.5 placeholder-[#B1F1CB] text-emerald-300 bg-emerald-900" placeholder="name" required />
                             {{ form.name.help_text | safe }}
                         </div> 
                         <div class="flex w-full flex-col justify-start">
@@ -311,13 +326,13 @@
 
     for(let i = 0 ; i < faction_element.length ; i++){
         faction_element[i].addEventListener(action_listener_touch_click, function(){
-            if(faction_element[i].classList.contains('bg-gray-600/60')){
-                faction_element[i].classList.remove('bg-gray-600/60', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
+            if(faction_element[i].classList.contains('bg-gray-800')){
+                faction_element[i].classList.remove('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
                 faction_element[i].classList.add('bg-[#B1F1CB]/30', 'md:border', 'md:border-1', 'md:border-gray-300/60');
                 document.querySelector('#next-btn').classList.remove('invisible');
             }else{
                 faction_element[i].classList.remove('bg-[#B1F1CB]/30', 'md:border', 'md:border-1', 'md:border-gray-300/60');
-                faction_element[i].classList.add('bg-gray-600/60', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
+                faction_element[i].classList.add('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
                 document.querySelector('#next-btn').classList.add('invisible');
             }
 
@@ -326,8 +341,8 @@
 
             for(let y = 0; y < faction_element.length; y++){
                 if(this_element != faction_element[y]){
-                    faction_element[y].classList.remove('bg-[#B1F1CB]/30', 'hover:md:bg-gray-600/60', 'md:border', 'md:border-1', 'md:border-gray-300/60');
-                    faction_element[y].classList.add('bg-gray-600/60', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
+                    faction_element[y].classList.remove('bg-[#B1F1CB]/30', 'hover:md:bg-gray-800', 'md:border', 'md:border-1', 'md:border-gray-300/60');
+                    faction_element[y].classList.add('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
                 }
             }
 
