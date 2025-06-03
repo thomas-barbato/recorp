@@ -611,6 +611,9 @@ class PlayerShip(models.Model):
     current_missile_defense = models.SmallIntegerField(default=0)
     current_thermal_defense = models.SmallIntegerField(default=0)
     current_ballistic_defense = models.SmallIntegerField(default=0)
+    max_missile_defense = models.SmallIntegerField(default=0)
+    max_thermal_defense = models.SmallIntegerField(default=0)
+    max_ballistic_defense = models.SmallIntegerField(default=0)
     current_cargo_size = models.SmallIntegerField(default=2)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]

@@ -131,6 +131,7 @@ window.addEventListener('load', () => {
             }
         }, "300");
     };
+    
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);

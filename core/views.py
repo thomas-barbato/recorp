@@ -221,20 +221,29 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 current_ballistic_defense = default_ship_values['default_ballistic_defense']
                 current_thermal_defense = default_ship_values['default_ballistic_defense']
                 current_missile_defense = default_ship_values['default_ballistic_defense']
+                max_ballistic_defense = default_ship_values['default_ballistic_defense']
+                max_thermal_defense = default_ship_values['default_ballistic_defense']
+                max_missile_defense = default_ship_values['default_ballistic_defense']
+                max_movement = default_ship_values['max_movement']
                 current_cargo_size = 3
                         
                 for module in archetype_module_list:
                     if "DEFENSE" in module["module_id__type"]:
                         if "BALLISTIC" in module["module_id__type"]:
                             current_ballistic_defense += module["module_id__effect"]["defense"]
+                            max_ballistic_defense += module["module_id__effect"]["defense"]
                         elif "THERMAL" in module["module_id__type"]:
                             current_thermal_defense += module["module_id__effect"]["defense"]
+                            max_thermal_defense += module["module_id__effect"]["defense"]
                         elif "MISSILE" in module["module_id__type"]:
                             current_missile_defense += module["module_id__effect"]["defense"]
+                            max_missile_defense += module["module_id__effect"]["defense"]
                     elif "MOVEMENT" in module["module_id__type"]:
                         current_movement += module["module_id__effect"]['bonus_mvt']
+                        max_movement += module["module_id__effect"]['bonus_mvt']
                     elif "HULL" in module["module_id__type"]:
                         current_hp += module["module_id__effect"]['hull_hp']
+                        max_hp += module["module_id__effect"]['hull_hp']
                     elif "HOLD" in module["module_id__type"]:
                         current_cargo_size += module["module_id__effect"]['capacity']
                         
@@ -249,6 +258,9 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     current_missile_defense=current_missile_defense,
                     current_ballistic_defense=current_ballistic_defense,
                     current_thermal_defense=current_thermal_defense,
+                    max_missile_defense=max_missile_defense,
+                    max_ballistic_defense=max_ballistic_defense,
+                    max_thermal_defense=max_thermal_defense,
                     status="FULL",
                     player_id=new_player.id,
                     ship_id=archetype_data['ship_id']
@@ -296,7 +308,6 @@ class DisplayTutorialView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "tutorial.html"
-
 
 class DisplayGameView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL

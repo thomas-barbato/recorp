@@ -38,7 +38,7 @@ character_statistics_progressbar_fieldset_mobile.classList.add(
     'justify-center',
     'gap-1',
     'flex-col',
-    'bg-gray-600/40',
+    'bg-gray-800',
     'border',
     'border-slate-600',
     'rounded-md'
@@ -174,7 +174,7 @@ character_currentEffects_fieldset_mobile.classList.add(
     'border',
     'border-slate-600',
     'rounded',
-    'bg-gray-600/40',
+    'bg-gray-800',
 );
 
 character_currentEffects_fieldset_legend_mobile.textContent = "Current effects";
@@ -282,7 +282,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'lg:border-slate-600/0',
             'lg:items-center',
             'lg:justify-center',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'border',
             'border-slate-600',
             'rounded-md',
@@ -343,7 +343,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'w-full',
             'gap-2',
             'flex-row',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'p-2',
             'mx-auto'
         );
@@ -397,7 +397,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'w-full',
             'gap-2',
             'flex-col',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'p-2',
             'mx-auto'
         );
@@ -409,7 +409,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'justify-center',
             'gap-2',
             'flex-row',
-            'bg-gray-600/40',
+            'bg-gray-800',
         );
         player_modal_container_body_fieldset_legend.classList.add(
             "text-xs",
@@ -428,7 +428,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'justify-center',
             'gap-2',
             'flex-col',
-            'bg-gray-600/40',
+            'bg-gray-800',
         );
         player_modal_container_body_fieldset_legend.classList.add(
             "text-xs",
@@ -543,7 +543,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'flex',
             'gap-2',
             'flex-col',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'border',
             'border-slate-600',
             'rounded-md'
@@ -566,7 +566,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'gap-2',
             'flex-col',
             'items-start',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'border',
             'border-slate-600',
             'rounded-md'
@@ -589,7 +589,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'flex',
             'gap-2',
             'flex-col',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'border',
             'border-slate-600',
             'rounded-md'
@@ -611,7 +611,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
             'flex',
             'gap-2',
             'flex-col',
-            'bg-gray-600/40',
+            'bg-gray-800',
             'border',
             'border-slate-600',
             'rounded-md'

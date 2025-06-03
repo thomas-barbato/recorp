@@ -52,18 +52,25 @@ character_statistics_progressbar_fieldset.classList.add(
     'text-start',
     'flex-col',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded',
-    'bg-gray-600/40',
+    'bg-gray-800',
+    'mb-2',
+    'min-h-[50px]',
 );
 
 character_statistics_progressbar_fieldset_legend.classList.add(
     "text-xs",
-    "text-start",
+    "text-center",
     "font-shadow",
     "font-bold",
-    "text-white",
-    "truncate"
+    "text-emerald-300", 
+    "bg-emerald-900",
+    "border", 
+    "border-[#B1F1CB]", 
+    "rounded-md", 
+    "p-1", 
+    "min-w-[5vw]"
 )
 
 character_statistics_progressbar_fieldset_legend.textContent = "Statistics";
@@ -76,24 +83,31 @@ character_currentEffects_fieldset.classList.add(
     'justify-center',
     'mx-auto',
     'gap-1',
-    'h-[25px]',
+    'h-[50px]',
     'p-2',
     'w-full',
     'text-start',
     'flex-col',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded',
-    'bg-gray-600/40',
+    'bg-gray-800',
+    'mb-2',
+    'min-h-[50px]',
 );
 
 character_currentEffects_fieldset_legend.classList.add(
     "text-xs",
-    "text-start",
+    "text-center",
     "font-shadow",
     "font-bold",
-    "text-white",
-    "truncate",
+    "text-emerald-300", 
+    "bg-emerald-900",
+    "border", 
+    "border-[#B1F1CB]", 
+    "rounded-md", 
+    "p-1", 
+    "min-w-[5vw]"
 )
 
 character_currentEffects_fieldset.id = "current-effects";
@@ -212,21 +226,28 @@ character_module_fieldset.classList.add(
     'w-auto',
     'text-start',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded',
-    'bg-gray-600/40',
+    'bg-gray-800',
     'h-[30vh]',
     'overflow-y-scroll',
     'thin-semi-transparent-scrollbar',
-    'thin-semi-transparent-scrollbar:hover'
+    'thin-semi-transparent-scrollbar:hover',
+    'mb-2',
+    'min-h-[50px]',
 )
 character_module_fieldset_legend.classList.add(
     "text-xs",
-    "text-start",
+    "text-center",
     "font-shadow",
     "font-bold",
-    "text-white",
-    "truncate"  
+    "text-emerald-300", 
+    "bg-emerald-900",
+    "border", 
+    "border-[#B1F1CB]", 
+    "rounded-md", 
+    "p-1", 
+    "min-w-[5vw]"  
 );
 
 character_defensive_modules_fieldset.classList.add(
@@ -238,10 +259,12 @@ character_defensive_modules_fieldset.classList.add(
     'items-start',
     'bg-gray-600/40',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded-md',
     'mx-auto',
-    "truncate"
+    "truncate",
+    'mb-2',
+    'min-h-[50px]',
 );
 character_defensive_modules_fieldset_legend.classList.add(
     "text-xs",
@@ -272,9 +295,10 @@ character_offensive_modules_fieldset.classList.add(
     'items-start',
     'bg-gray-600/40',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded-md',
-    'mx-auto'
+    'mx-auto',
+    'min-h-[50px]',
 );
 character_offensive_modules_fieldset_legend.classList.add(
     "text-xs",
@@ -306,9 +330,10 @@ character_electronicWarfare_modules_fieldset.classList.add(
     'items-start',
     'bg-gray-600/40',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded-md',
-    'mx-auto'
+    'mx-auto',
+    'min-h-[50px]',
 );
 
 character_electronicWarfare_modules_fieldset_legend.classList.add(
@@ -341,9 +366,11 @@ character_other_modules_fieldset.classList.add(
     'items-start',
     'bg-gray-600/40',
     'border',
-    'border-slate-600',
+    'border-[#B1F1CB]',
     'rounded-md',
-    'mx-auto'
+    'mx-auto',
+    'mb-2',
+    'min-h-[50px]',
 );
 
 character_other_modules_fieldset_legend.classList.add(
@@ -405,7 +432,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
 
             if (map_informations['pc'][i].ship.modules[module_i]["type"].includes("DEFENSE") && !map_informations['pc'][i].ship.modules[module_i]["name"].includes('hull')) {
                 let defense_name = map_informations['pc'][i].ship.modules[module_i]["name"].split(" ")[0].toLowerCase()
-                let defense_value = `${Math.round((map_informations['pc'][i].ship["current_"+defense_name+"_defense"] * 100) / (map_informations['pc'][i].ship.modules[module_i].effect.defense))}%`;
+                let defense_value = `${Math.round((map_informations['pc'][i].ship["current_"+defense_name+"_defense"] * 100) / (map_informations['pc'][i].ship["max_"+defense_name+"_defense"]))}%`;
 
                 let defensive_module_div = document.createElement('div');
                 let defensive_module_label = document.createElement('label');
@@ -436,7 +463,7 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     'leading-none',
                     'h-[15px]',
                     'absolute',
-                    'module-container'
+                    'module-container',
                 );
 
                 defensive_module_text.classList.add(
@@ -448,10 +475,10 @@ for (let i = 0; i < map_informations['pc'].length; i++) {
                     'font-bold',
                     'font-shadow',
                     'text-blue-100',
-                    'module-container'
+                    'module-container',
                 );
 
-                defensive_module_text.textContent = `${map_informations['pc'][i].ship["current_"+defense_name+"_defense"]} / ${map_informations['pc'][i].ship.modules[module_i].effect.defense}`;
+                defensive_module_text.textContent = `${map_informations['pc'][i].ship["current_"+defense_name+"_defense"]} / ${(map_informations['pc'][i].ship["max_"+defense_name+"_defense"])}`;
                 defensive_module_content.style.width = defense_value;
 
                 defensive_module_div.append( defensive_module_label)

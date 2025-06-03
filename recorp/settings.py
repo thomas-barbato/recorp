@@ -222,13 +222,7 @@ STATICFILES_DIRS = [
         os.path.join(
             BASE_DIR, "recorp", "static", "js", "fontawesome"
         )
-    ),
-    (
-        "ckeditor", 
-        os.path.join(
-            BASE_DIR, "recorp", "static", "js", "ckeditor5"
-        )
-    ),
+    )
 ]
 
 # public

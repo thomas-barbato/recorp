@@ -245,6 +245,8 @@ function add_npc(data){
                 translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
             },
         }
+        console.log(`npc_${data[i].npc.id}`)
+
         let modal = create_pc_npc_modal(`npc_${data[i].npc.id}`, modal_data, `${coord_y-1}_${coord_x-1}`, ship_size_y, ship_size_x, true);
         document.querySelector('#modal-container').append(modal);
 
@@ -325,7 +327,6 @@ function add_pc(data) {
         let is_reversed = data[i]["ship"]["is_reversed"];
 
         let modal_data = {}
-
         if (data[i].user.user != current_user_id) {
             modal_data = {
                 player: {

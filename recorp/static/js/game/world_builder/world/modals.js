@@ -335,6 +335,7 @@ function create_foreground_modal(id, data) {
 }
 
 function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x, is_npc) {
+    console.log("dedans")
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
@@ -358,6 +359,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     );
     let player_id = id.split('_')[1];
 
+    console.log("dedans2")
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
 
@@ -392,6 +394,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
     let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+
+    console.log("dedans3")
 
     let ship_statistics_container_label = document.createElement("label");
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
@@ -430,6 +434,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     movement_container_label.textContent = "Movement points:";
     movement_container_text.textContent = `${movement.status}`;
     movement_container_label.classList.add('text-white');
+
+    console.log("dedans4")
 
     movement_container.append(movement_container_label);
     movement_container.append(movement_container_text);
@@ -474,6 +480,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
     movement_progress_bar_container_content.style.width = move_percent;
 
+    console.log("dedans5")
+
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
 
@@ -509,6 +517,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         ship_attack_modules.classList.remove('hidden');
     })
 
+
+    console.log("dedans6")
     let item_action_container_img_contact_container = document.createElement('div');
     item_action_container_img_contact_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
 
@@ -562,6 +572,8 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         check_radio_btn_and_swap_color(e.id, module_item_content.id);
     })
 
+
+    console.log("dedans7")
     item_action_container_img_attack_container.append(item_action_container_img_attack);
     item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption);
     item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption_ap);
@@ -574,8 +586,12 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption);
     item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
 
-    if (!is_npc) {
 
+    console.log("dedans8")
+    if (!is_npc) {
+        
+
+        console.log("not a npc")
         let target_img = document.createElement('img');
         target_img.src = data.player.image == "img.png" ? `/static/img/ux/default-user.svg` : `/static/img/users/${player_id}/0.gif`
         target_img.style.width = "30%";
@@ -589,12 +605,17 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
         ship_action_container_div.append(item_action_container_img_attack_container);
         ship_action_container_div.append(item_action_container_img_contact_container);
         ship_action_container_div.append(item_action_container_img_repaire_container);
+        console.log("not a npc FIN")
 
     } else {
+        
+
+        console.log(" npc")
 
         header_div.textContent = `${data.player.name.toUpperCase()}`;
         content_div.classList.add('bg-gradient-to-b', 'from-red-600/70', 'to-black/70');
         ship_action_container_div.append(item_action_container_img_attack_container);
+        console.log("npc FIN")
     }
 
     for (let defense_module_i in data.ship.modules) {
@@ -634,7 +655,6 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
 
             module_element_detailed.append(module_content_detailed_text);
             module_element_detailed.append(module_content_detailed);
-
             ship_detailed_statistics_container_div.append(module_content_detailed_label);
             ship_detailed_statistics_container_div.append(module_element_detailed);
             // END DETAILED DEFENSE MODULE
@@ -834,30 +854,31 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
                         range_finder_span.textContent = "Your target is out of range";
                         range_finder_span.classList.add('text-red-600', 'animate-pulse');
                         range_finder_span.id = "range-finder-warning-msg";
-
-                        let array_module = Array.from(map_informations.pc[ship_i].ship.modules_range[target_type])
-                        module_path = array_module.filter(function (module, index) {
-                            if(module.target_id == target_id){
-                                return module
-                            }
-                        });
-                            
-                        for(let module_container in module_path){
-                            if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
-                                if (module_path[module_container]['is_in_range']) {
-                                    range_finder_span.classList.add('hidden');
-                                }else{
-                                    range_finder_span.classList.remove('hidden');
+                        if(map_informations.pc[ship_i].ship.modules_range.length > 0){
+                            let array_module = Array.from(map_informations.pc[ship_i].ship.modules_range[target_type])
+                            module_path = array_module.filter(function (module, index) {
+                                if(module.target_id == target_id){
+                                    return module
+                                }
+                            });
+                                
+                            for(let module_container in module_path){
+                                if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
+                                    if (module_path[module_container]['is_in_range']) {
+                                        range_finder_span.classList.add('hidden');
+                                    }else{
+                                        range_finder_span.classList.remove('hidden');
+                                    }
                                 }
                             }
-                        }
 
-                        module_item_content.append(radio_btn);
-                        module_item_content.append(damage_type_span);
-                        module_item_content.append(damage_span);
-                        module_item_content.append(range_span);
-                        module_item_content.append(chance_to_hit_span);
-                        module_item_content.append(range_finder_span);
+                            module_item_content.append(radio_btn);
+                            module_item_content.append(damage_type_span);
+                            module_item_content.append(damage_span);
+                            module_item_content.append(range_span);
+                            module_item_content.append(chance_to_hit_span);
+                            module_item_content.append(range_finder_span);
+                        }
 
                     } else {
 
@@ -961,6 +982,7 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     content_div.append(footer_container_div);
     container_div.append(content_div);
     e.append(container_div);
+    console.log(e)
 
     return e;
 

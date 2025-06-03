@@ -424,9 +424,7 @@ function add_spaceship_on_map(obj) {
     
     if (!spaceship_collection.includes(obj)) {
         spaceship_collection.push(obj);
-    } else {
-        console.log("already_inside");
-    }
+    } 
 }
 
 async function get_spaceship_data(tile_id) {

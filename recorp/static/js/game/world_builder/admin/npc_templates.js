@@ -340,8 +340,6 @@ delete_button.addEventListener('click', function() {
     delete_this_template();
 })
 
-
-
 function save_or_update_npc_template() {
     let template_select = document.querySelector('#template-select');
     let template_selectedElement = template_select.options[template_select.selectedIndex];

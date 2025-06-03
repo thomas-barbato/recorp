@@ -21,6 +21,7 @@ module.exports = {
 - ```npx tailwindcss -i ./path/style.css -o ./dist/output.css --watch```
 - ```npm i -D @iconify/tailwind```
 - ```npm i -D @iconify-json/game-icons```
+- ```npm install pixi.js ```
 
 to install redis on docker : 
 
