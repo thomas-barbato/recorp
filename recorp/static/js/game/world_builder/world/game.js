@@ -140,13 +140,13 @@ window.addEventListener('load', () => {
                 update_player_coord(data.message);
                 break;
             case "async_reverse_ship":
+                console.log("async_reverse_ship !")
                 reverse_ship(data.message);
                 break;
             case "player_attack":
                 update_ship_after_attack(data.message);
                 break;
             case "async_remove_ship":
-                console.log("dedans")
                 remove_ship_display(data.message)
                 break;
             case "user_join":

@@ -262,7 +262,7 @@ function applyBorderConfiguration(coordinates, config, tealZoneSize) {
         const borderConfig = config[index];
         
         if (element.classList.contains('ship-pos')) {
-            spanElement.classList.remove(CSS_CLASSES.BORDER, CSS_CLASSES.BORDER_DASHED, 
+            spanElement.classList.remove(CSS_CLASSES.BORDER_DASHED, 
                 CSS_CLASSES.BORDER_2, CSS_CLASSES.BORDER_GREEN);
         }
         
@@ -419,7 +419,8 @@ function resetZoneStyles(zone) {
 }
 
 function applyDefaultStyles(zone, parent) {
-    zone.classList.add(CSS_CLASSES.HOVER_BORDER, CSS_CLASSES.HOVER_BORDER_SIMPLE);
+    // uncomment to add border everywhere.
+    //zone.classList.add(CSS_CLASSES.HOVER_BORDER, CSS_CLASSES.HOVER_BORDER_SIMPLE);
     
     const styleMap = {
         'player-ship-start-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_GREEN],

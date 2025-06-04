@@ -170,7 +170,7 @@ function createNPCContainer() {
     // Container principal
     const main_container = DOMUtils.createElement('div', [
         "w-full", "gap-1", "flex", "flex-col", "bg-gray-600", 
-        "border", "border-white", "mb-1", "p-2", "npc-container-content-item"
+        "mb-1", "p-2", "npc-container-content-item"
     ], { id: 'npc-container' });
 
     // Titre

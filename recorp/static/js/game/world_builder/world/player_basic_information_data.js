@@ -33,11 +33,13 @@ let character_module_progressbar_container = document.createElement('div');
 character_main_container.classList.add(
     'w-full',
     'flex',
-    'flex-wrap',
     'items-center',
     'justify-center',
     'flex-col',
     'md:block',
+    'h-full',
+    'place-content-center',
+    'thin-semi-transparent-scrollbar'
 );
 
 character_statistics_progressbar_fieldset.classList.add(
@@ -229,7 +231,7 @@ character_module_fieldset.classList.add(
     'border-[#B1F1CB]',
     'rounded',
     'bg-gray-800',
-    'h-[30vh]',
+    'max-h-[60vh]',
     'overflow-y-scroll',
     'thin-semi-transparent-scrollbar',
     'thin-semi-transparent-scrollbar:hover',

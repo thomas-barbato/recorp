@@ -21,7 +21,7 @@
     <header class="flex w-full main-info-container flex-col">
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container flex-row w-full">
+    <main class="flex main-game-container flex-row w-full h-full">
         {% include "display-game.html" %}
         {% include "display-chat.html" %}
     </main>
@@ -33,10 +33,10 @@
         {% include "top-panel.html" %}
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container w-full flex-row justify-stretch lg:blur-none">
+    <main class="flex main-game-container w-full h-full flex-row lg:blur-none">
         {% include "display-game.html" %}
     </main>
-    <footer class="flex bottom-0 w-full lg:h-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none">
+    <footer class="lg:absolute flex bottom-0 w-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 lg:blur-none p-2">
         {% include "display-disclaimer.html" %}
     </footer>
 {% endif %}

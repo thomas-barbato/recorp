@@ -11,10 +11,10 @@
             {% for player in map_informations.pc %}
             {% if player.user.user == request.user.id %}
             <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col">
-                <div class="lg:w-1/4 w-4/4 order-1 p-1 lg:flex-row flex-col">
+                <div class="lg:w-1/5 w-4/4 order-1 p-1 lg:flex-row flex-col">
                     <div class="w-2/2 lg:h-full mt-1 flex flex-col gap-2 bg-gray-800 border border-[#B1F1CB] p-2 rounded-md">
                         <div title="{% translate 'Change your picture' %}" class="lg:w-full w-1/2 mt-1 flex items-center lg:justify-center md:justify-end justify-center cursor-pointer hover:animate-pulse">
-                            <img class="md:w-48 w-24 box-content rounded-md ring-2 ring-gray-300 dark:ring-gray-500" id="user-avatar" {% if player.user.image %} src="/static/img/users/{{player.user.player}}/0.gif" {% else %} src="{% static 'ux/default-user.svg' %}" {% endif %}>
+                            <img class="h-auto w-24 box-content rounded-md ring-2 ring-gray-300 dark:ring-gray-500" id="user-avatar" {% if player.user.image %} src="/static/img/users/{{player.user.player}}/0.gif" {% else %} src="{% static 'ux/default-user.svg' %}" {% endif %}>
                             <input type="file" id="id_image" class="hidden-input-file hidden" name="image" accept=".jpg, .png" />
                         </div>
                         <div class="lg:w-auto w-1/2 mt-1 flex lg:items-start items-center lg:justify-center justify-start p-2">
@@ -31,10 +31,6 @@
                                 {{ player.user.description | safe }}
                             </div>
                         </div>
-                        <!--
-                        <div class="flex w-full mt-2 justify-center p-2">
-                            <span id="usr-background" class="block w-full text-sm text-justify cursor-pointer max-h-[40vh] scrolling-touch overflow-hidden hover:overflow-y-scroll">{{ player.user.description|safe }}</span>
-                        </div>-->
                         <div class="w-full flex items-center justify-center cursor-pointer md:mt-2 mt-1" id="edit-mod-btn">
                             <i title="{% translate 'Change your description' %}" class="fa-solid fa-file-pen fa-2xl p-5 text-white hover:animate-pulse"></i>
                         </div>
@@ -48,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex lg:w-3/4 w-full order-2 flex-wrap gap-3">
+                <div class="flex lg:w-4/5 w-full order-2 flex-wrap gap-3">
                     {% for category in skills.categories %}
                     <fieldset class="flex lg:flex-row flex-col gap-1 p-1 flex-wrap w-full justify-center items-center bg-gray-800 border-[#B1F1CB]">
                         <legend class="text-sm text-start font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[10vw]">
@@ -56,9 +52,9 @@
                         </legend>
                         {% for skill in skills.list %}
                             {% if category == skill.cat %}
-                            <div class="w-[100%] gap-3 lg:w-1/5 skills popover-element" id="skill-{{ skill.id }}" data-popover-target="popover-{{ skill.id }}">
+                            <div class="flex w-[100%] gap-2 lg:w-1/5 flex-col skills popover-element p-2" id="skill-{{ skill.id }}" data-popover-target="popover-{{ skill.id }}">
                                 {% if request.user_agent.is_pc %}
-                                <div class="flex w-full flex-row gap-2 mb-2 text-sm font-bold text-white md:cursor-pointer">
+                                <div class="flex w-full lg:justify-start justify-center flex-row gap-2 mb-2 text-sm font-bold text-white md:cursor-pointer">
                                     <p class="flex w-auto text-emerald-300">
                                         {{ skill.skill_name }}
                                     </p> 
@@ -67,7 +63,7 @@
                                     </span>
                                     <i class="fa-regular fa-circle-question text-white invisible"></i>
                                 </div>
-                                <div class="flex w-[50%] mb-2 self-center">
+                                <div class="flex  w-full self-center">
                                     <div class="w-full relative bg-zinc-300 text-center h-auto rounded-r-sm text-xs text-center">
                                         <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs mx-auto text-center">{{ skill.progress }}%</span>
                                         <div class="h-3 text-xs bg-yellow-600 rounded-r-sm text-center leading-none" style="width:{{ skill.progress }}% ; color:black;"></div>

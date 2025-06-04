@@ -1086,10 +1086,6 @@ video {
   height: 25px;
 }
 
-.h-\[25vh\] {
-  height: 25vh;
-}
-
 .h-\[30px\] {
   height: 30px;
 }
@@ -1162,6 +1158,10 @@ video {
   max-height: 40vh;
 }
 
+.max-h-\[60vh\] {
+  max-height: 60vh;
+}
+
 .max-h-full {
   max-height: 100%;
 }
@@ -1170,12 +1170,12 @@ video {
   min-height: 1em;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
 .min-h-\[50px\] {
   min-height: 50px;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-1\/12 {
@@ -1204,10 +1204,6 @@ video {
 
 .w-2\/4 {
   width: 50%;
-}
-
-.w-20 {
-  width: 5rem;
 }
 
 .w-24 {
@@ -1350,10 +1346,6 @@ video {
   width: 1px;
 }
 
-.w-\[80\%\] {
-  width: 80%;
-}
-
 .min-w-\[10vw\] {
   min-width: 10vw;
 }
@@ -1491,6 +1483,10 @@ video {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.cursor-crosshair {
+  cursor: crosshair;
 }
 
 .touch-auto {
@@ -4188,10 +4184,6 @@ button .ql-stroke,
   border-color: rgb(31 41 55 / var(--tw-divide-opacity));
 }
 
-.hover\:overflow-y-scroll:hover {
-  overflow-y: scroll;
-}
-
 .hover\:border:hover {
   border-width: 1px;
 }
@@ -4668,10 +4660,6 @@ button .ql-stroke,
     width: 75%;
   }
 
-  .md\:w-48 {
-    width: 12rem;
-  }
-
   .md\:w-\[50\%\] {
     width: 50%;
   }
@@ -4767,6 +4755,10 @@ button .ql-stroke,
 }
 
 @media (min-width: 1024px) {
+  .lg\:absolute {
+    position: absolute;
+  }
+
   .lg\:order-2 {
     order: 2;
   }
@@ -4805,10 +4797,6 @@ button .ql-stroke,
 
   .lg\:block {
     display: block;
-  }
-
-  .lg\:inline-block {
-    display: inline-block;
   }
 
   .lg\:inline {
@@ -4851,8 +4839,8 @@ button .ql-stroke,
     width: 16.666667%;
   }
 
-  .lg\:w-3\/4 {
-    width: 75%;
+  .lg\:w-4\/5 {
+    width: 80%;
   }
 
   .lg\:w-9\/12 {
@@ -4897,6 +4885,10 @@ button .ql-stroke,
 
   .lg\:items-center {
     align-items: center;
+  }
+
+  .lg\:justify-start {
+    justify-content: flex-start;
   }
 
   .lg\:justify-center {
@@ -4962,10 +4954,6 @@ button .ql-stroke,
     -webkit-line-clamp: 15;
   }
 
-  .xl\:block {
-    display: block;
-  }
-
   .xl\:h-\[25\%\] {
     height: 25%;
   }
@@ -4988,6 +4976,14 @@ button .ql-stroke,
 
   .xl\:flex-row {
     flex-direction: row;
+  }
+
+  .xl\:items-center {
+    align-items: center;
+  }
+
+  .xl\:justify-center {
+    justify-content: center;
   }
 
   .xl\:gap-6 {

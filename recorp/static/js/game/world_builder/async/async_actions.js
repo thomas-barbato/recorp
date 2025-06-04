@@ -93,14 +93,20 @@ function async_reverse_ship(data) {
 }
 
 function reverse_ship(data) {
+    console.log("dedans")
+    console.log(data)
     let id_list = data["id_array"];
+    console.log(id_list)
     update_reverse_ship_in_cache_array(data["player_id"], data["is_reversed"]);
 
     for (let i = 0; i < id_list.length; i++) {
         let element = document.getElementById(id_list[i]);
+        console.log(element)
         let element_ship = element.querySelector('.ship');
+        console.log(element_ship)
         let element_ship_reversed = element.querySelector('.ship-reversed');
-
+        console.log(element_ship_reversed)
+        console.log(data["is_reversed"] == true)
         if (data["is_reversed"] == true) {
             element_ship.style.display = "none";
             element_ship_reversed.style.display = "block";
