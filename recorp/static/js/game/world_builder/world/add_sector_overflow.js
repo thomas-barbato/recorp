@@ -37,8 +37,8 @@ function getLimitY() {
     const height = window.innerHeight;
     
     if (height >= 1080) return 26;
-    if (height >= 963) return 24;
-    if (height >= 840) return 20;
+    if (height >= 963) return 23;
+    if (height >= 840) return 22;
     if (height >= 680) return 16;
     return 10;
 }

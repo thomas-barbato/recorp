@@ -26,4 +26,15 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.disclaimer-container').classList.remove('blur-sm');
         }
     });
+
+    // Navbar buttons
+    const navbar_element_list = document.querySelectorAll('.button-panel');
+    navbar_element_list.forEach(function (element, index) {
+        element.addEventListener("mouseover", function(){
+            element.querySelector('.button-panel-text').classList.remove('hidden')
+        })
+        element.addEventListener("mouseout", function(){
+            element.querySelector('.button-panel-text').classList.add('hidden')
+        })
+    });
 });

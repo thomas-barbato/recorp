@@ -3,94 +3,107 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ request.user.id|json_script:"script_user_id" }}
-<div id="side-panel" class="flex z-20 lg:inline hidden order-1 w-1/12 no-scrollbar h-full place-content-center">
-    <ul class="flex flex-col ul-nav gap-2 p-2 h-max-[60hv] bg-zinc-950/70">
-        <li data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center xl:items-center xl:justify-center">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name">
-                {% translate "Character" %}
-            </div>
-        </li>
-        <li data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-box"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name ">
-                {% translate "Inventory" %}
-            </div>
-        </li>
-        <li data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-people-group"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Faction" %}
-            </div>
-        </li>
-        <li data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-brain"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Research" %}
-            </div>
-        </li>
-        <li data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-map"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Map" %}
-            </div>
-        </li>
-        <li data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-list-check"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Tasks" %}
-            </div>
-        </li>
-        <li data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Events" %}
-            </div>
-        </li>
-        <li data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-envelope"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Message" %}
-            </div>
-        </li>
-        <li class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white ">
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-comments"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "Forum" %}
-            </div>
-        </li>
-        <form method="post" action="{% url 'core:logout_view' %}" class="flex xl:flex-row flex-col hover:bg-emerald-400/40 cursor-pointer p-2 text-emerald-400 hover:text-white logout">
-            {% csrf_token %}
-            <div class="w-auto flex items-center">
-                <i class="fa-solid fa-home"></i>
-            </div>
-            <div class="w-full font-bold nav-item-fullscreen side-panel-item-name xl:text-start text-center">
-                {% translate "logout" %}
-            </div>
-            <button type="submit" id="logout-btn" class="hidden"></button>
-        </form>
-    </ul>
+<div id="chat" class="flex z-20 lg:inline hidden order-1 w-2/12 no-scrollbar h-full place-content-center bg-red-600">
+    <p class="flex justify-center items-center"><b>CHAT HERE !</b>  </p>
 </div>
-<div id="map-background" class="flex lg:w-9/12 w-full h-full lg:order-2 lg:flex-row flex-col lg:mx-0 overflow-x-hidden no-scrollbar">
-    <div class="flex z-100 mx-auto justify-center items-center">
+<div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col lg:mx-0 overflow-x-hidden no-scrollbar gap-3">
+    <div  class="flex z-20 lg:inline hidden w-1/12 no-scrollbar w-full place-content-center justify-center p-2">
+        <ul class="flex flex-row ul-nav gap-2 p-2 w-full justify-center items-center">
+            <li data-tooltip-target="character-tooltip" data-tooltip-placement="bottom" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center  ">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-user fa-lg"></i>
+                </div>
+                <div id="character-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Character" %}
+                    <div class="map-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="inventory-tooltip" data-tooltip-placement="bottom" data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-box fa-lg"></i>
+                </div>
+                <div id="inventory-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Inventory" %}
+                    <div class="map-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="faction-tooltip" data-tooltip-placement="bottom" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-people-group fa-lg"></i>
+                </div>
+                <div id="faction-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Faction" %}
+                    <div class="map-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="research-tooltip" data-tooltip-placement="bottom" data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-brain fa-lg"></i>
+                </div>
+                <div id="research-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Research" %}
+                    <div class="map-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="map-tooltip" data-tooltip-placement="bottom" data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-map fa-lg"></i>
+                </div>
+                <div id="map-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Map" %}
+                    <div class="map-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="task-tooltip" data-tooltip-placement="bottom" data-tooltip-placement="bottom" data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-list-check fa-lg"></i>
+                </div>
+                <div id="task-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Tasks" %}
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="event-tooltip" data-tooltip-placement="bottom" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-mobile-screen-button fa-lg"></i>
+                </div>
+                <div id="event-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Events" %}
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="message-tooltip" data-tooltip-placement="bottom" data-modal-target="message-modal" data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-envelope fa-lg"></i>
+                </div>
+                <div id="message-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Message" %}
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li data-tooltip-target="forum-tooltip" data-tooltip-placement="bottom" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center">
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-comments fa-lg"></i>
+                </div>
+                <div id="forum-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Forum" %}
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <form data-tooltip-target="logout-tooltip" data-tooltip-placement="bottom" method="post" action="{% url 'core:logout_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-white button-panel justify-center items-center logout">
+                {% csrf_token %}
+                <div class="w-auto flex items-center">
+                    <i class="fa-solid fa-home fa-lg"></i>
+                </div>
+                <div id="logout-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                    {% translate "Logout" %}
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+                <button type="submit" id="logout-btn" class="hidden"></button>
+            </form>
+        </ul>
+    </div>
+    <div class="flex z-100 mx-auto">
         <div class="grid">
             <table class="tabletop-view">
                 <tbody>
@@ -132,32 +145,32 @@
                     <img src="{% static 'ux/cancel_icon.svg' %}" class="w-[40px] h-[40px] inset-center"/>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-400/40 bg-gray-800/50 border-r border-l border-b border-t border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('left')" id="move-left">
-                    <i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
+                    <i class="fa-solid fa-left-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon fa-lg"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 relative" id="top-right">
-                    <i class="text-emerald-400 absolute bottom-0"></i>
+                    <i class="text-emerald-400 absolute bottom-0 fa-lg"></i>
                 </button>
             </div>
             <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="ltr">
                 <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-400/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('top')" id="move-top">
-                    <i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
+                    <i class="fa-solid fa-up-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon fa-lg"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 self-center relative" ontouchstart="mobile_movement_action()" id="center">
-                    <i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon"></i>
+                    <i class="fa-solid fa-location-crosshairs fa-2x text-emerald-400 inset-center arrow-icon fa-lg"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 self-bottom relative active:bg-emerald-400/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('bottom')" id="move-bottom">
-                    <i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
+                    <i class="fa-solid fa-down-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon fa-lg"></i>
                 </button>
             </div>
             <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded" dir="rtl">
                 <button type='button' class="flex-1 w-full pb-5 relative">
-                    <i class="text-emerald-400 absolute top-0" id="bottom-left"></i>
+                    <i class="text-emerald-400 absolute top-0" id="bottom-left fa-lg"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 relative active:bg-emerald-400/40 bg-gray-800/50 border-l border-r border-t border-b border-[#B1F1CB] direction-arrow" ontouchstart="display_pathfinding_mobile('right')" id="move-right">
-                    <i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon"></i>
+                    <i class="fa-solid fa-right-long fa-2x active:text-white text-emerald-400 inset-center arrow-icon fa-lg"></i>
                 </button>
                 <button type='button' class="flex-1 w-full pb-5 relative" id="bottom-right">
-                    <i class="text-emerald-400 absolute bottom-0"></i>
+                    <i class="text-emerald-400 absolute bottom-0 fa-lg"></i>
                 </button>
             </div>
         </div>
