@@ -5,7 +5,7 @@
 {{ request.user.id|json_script:"script_user_id" }}
 <div id="chat" class="flex z-20 lg:inline hidden order-1 w-2/12 no-scrollbar place-content-center">
     <div class="inline-block md:mx-auto text-center text-emerald-300 text-sm p-2" id="chat-item-container">
-        <fieldset class="relative flex-col text-xs mx-auto w-auto rounded-sm border border-b-[#B1F1CB]/0 border-[#B1F1CB] text-start bg-gray-800 p-1">
+        <fieldset class="relative flex-col text-xs mx-auto rounded-sm w-auto border border-b-[#B1F1CB]/0 border-[#B1F1CB] text-start bg-gray-800 p-1">
             <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw]"><p class="text-center">Chat & Log</p></legend>
             <span id="chat-item-container-element" class="flex flex-col p-2 gap-1 h-[70vh] max-h-[70vh] overflow-y-scroll thin-semi-transparent-scrollbar thin-semi-transparent-scrollbar:hover">
                 <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
@@ -223,7 +223,7 @@
                     <div class="flex justify-start self-center">
                         <img class="w-24 h-auto h-auto max-w-xl rounded-lg" alt="image description" {% if pc.user.image %} srcset="/static/img/users/{{pc.user.player}}/0.gif" {% else %} srcset="{% static 'ux/default-user.svg' %}" {% endif %}>
                     </div>
-                    <div class="flex w-full flex-col">
+                    <div class="flex w-full flex-col self-center">
                         <div class="flex w-full flex-col text-xs">
                             <label for="player-name" class="text-white">{% translate "Name" %}:</label>
                             <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.name }}</div>
