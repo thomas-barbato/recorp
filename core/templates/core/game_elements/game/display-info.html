@@ -9,21 +9,21 @@
 
     <div id="info-sector-container" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20">
       <div class="flex lg:p-0 p-2 gap-1 lg:flex-row flex-col">
-        <p class="font-shadow text-xs w-auto text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
-        <p class="font-shadow text-xs w-auto text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
-        <p class="font-shadow text-xs w-auto text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
-        </span>
+        
         <div class="flex w-full mx-auto lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1">
+          <p class="font-shadow text-xs w-auto text-emerald-300 bg-emerald-900 border border-[#B1F1CB] p-1 rounded-md"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
+          <p class="font-shadow text-xs w-auto text-emerald-300 bg-emerald-900 border border-[#B1F1CB] p-1 rounded-md"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
+          <p class="font-shadow text-xs w-auto text-emerald-300 bg-emerald-900 border border-[#B1F1CB] p-1 rounded-md"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
           <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
             <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
             <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
             <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
           </div>
           <div class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-between lg:w-auto lg:w-[10vw] w-[45vw]">
-              <label for="target-coord-name"><i class="fa-solid fa-satellite-dish px-1.5 py-1.5"></i></label>
-                <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[10vw] w-[25vw] px-1.5 py-1 font-shadow truncate text-center">{% translate 'Nothing selected' %}</span>
-                <span id="target-coord-y" class="flex bg-neutral-400 font-bold px-1.5 py-1 invisible">00</span>
-                <span id="target-coord-x" class="flex bg-emerald-400 font-bold px-1.5 py-1 rounded-r invisible">00</span>
+              <label for="target-coord-name"><i class="fa-solid fa-satellite-dish p-1"></i></label>
+                <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[15vw] w-[25vw] px-1.5 py-1 font-shadow truncate text-center">{% translate 'Nothing selected' %}</span>
+                <span id="target-coord-y" class="flex bg-neutral-400 font-bold p-1 invisible">00</span>
+                <span id="target-coord-x" class="flex bg-emerald-400 font-bold p-1 rounded-r invisible">00</span>
           </div>
         </div>
         <span class="flex mx-auto lg:hidden justify-center item-center">

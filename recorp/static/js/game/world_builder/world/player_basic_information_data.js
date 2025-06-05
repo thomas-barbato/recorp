@@ -1,10 +1,13 @@
 let character_main = document.querySelector('#player-info-item-container');
 let info_container = document.querySelector('#current-effects-mobile')
 let character_main_container = document.createElement('div');
-let character_currentEffects_fieldset = document.createElement('fieldset'); 
+let character_currentEffects_fieldset = document.createElement('fieldset');
+let character_currentEffects_fieldset_default_text = document.createElement('p');
 let character_currentEffects_fieldset_legend = document.createElement('legend');
+let character_currentEffects_fieldset_legend_text = document.createElement('p');
 let character_module_fieldset = document.createElement('fieldset');
 let character_module_fieldset_legend = document.createElement('legend');
+let character_module_fieldset_legend_text = document.createElement('p');
 let character_defensive_modules_fieldset = document.createElement('fieldset');
 let character_defensive_modules_fieldset_legend = document.createElement('legend');
 let character_offensive_modules_fieldset = document.createElement('fieldset');
@@ -16,6 +19,7 @@ let character_other_modules_fieldset_legend = document.createElement('legend');
 let character_status_container = document.createElement('div');
 let character_statistics_progressbar_fieldset = document.createElement('fieldset');
 let character_statistics_progressbar_fieldset_legend = document.createElement('legend');
+let character_statistics_progressbar_fieldset_legend_text = document.createElement('p');
 let character_statistics_progressbar_hp_div = document.createElement('div');
 let character_statistics_progressbar_hp_label = document.createElement('label');
 let character_statistics_progressbar_hp_content = document.createElement('div');
@@ -63,7 +67,7 @@ character_statistics_progressbar_fieldset.classList.add(
 
 character_statistics_progressbar_fieldset_legend.classList.add(
     "text-xs",
-    "text-center",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-emerald-300", 
@@ -75,7 +79,10 @@ character_statistics_progressbar_fieldset_legend.classList.add(
     "min-w-[5vw]"
 )
 
+character_statistics_progressbar_fieldset_legend_text.classList.add('text-center')
+
 character_statistics_progressbar_fieldset_legend.textContent = "Statistics";
+character_statistics_progressbar_fieldset_legend.append(character_statistics_progressbar_fieldset_legend_text);
 character_statistics_progressbar_fieldset.append(character_statistics_progressbar_fieldset_legend);
 
 character_currentEffects_fieldset.classList.add(
@@ -85,7 +92,6 @@ character_currentEffects_fieldset.classList.add(
     'justify-center',
     'mx-auto',
     'gap-1',
-    'h-[50px]',
     'p-2',
     'w-full',
     'text-start',
@@ -95,12 +101,12 @@ character_currentEffects_fieldset.classList.add(
     'rounded',
     'bg-gray-800',
     'mb-2',
-    'min-h-[50px]',
+    'min-h-[15vh]',
 );
 
 character_currentEffects_fieldset_legend.classList.add(
     "text-xs",
-    "text-center",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-emerald-300", 
@@ -109,12 +115,32 @@ character_currentEffects_fieldset_legend.classList.add(
     "border-[#B1F1CB]", 
     "rounded-md", 
     "p-1", 
-    "min-w-[5vw]"
+    "min-w-[5vw]",
 )
 
+character_currentEffects_fieldset_legend_text.classList.add('text-center');
+
+character_currentEffects_fieldset_legend_text.textContent = "Current effects";
+
 character_currentEffects_fieldset.id = "current-effects";
-character_currentEffects_fieldset_legend.textContent = "Current effects";
-character_currentEffects_fieldset.append(character_currentEffects_fieldset_legend)
+
+character_currentEffects_fieldset_default_text.classList.add(
+    'flex', 
+    'p-2', 
+    'text-center',
+    'text-red-600',
+    'font-bold',
+    'animate-pulse',
+    'justify-center',
+    'items-center',
+    'font-shadow'
+);
+
+character_currentEffects_fieldset_default_text.textContent = `{% translate 'Nothing affects you at the moment' %}`;
+
+character_currentEffects_fieldset_legend.append(character_currentEffects_fieldset_legend_text);
+character_currentEffects_fieldset.append(character_currentEffects_fieldset_legend);
+character_currentEffects_fieldset.append(character_currentEffects_fieldset_default_text);
 
 
 character_statistics_progressbar_hp_div.classList.add(
@@ -240,7 +266,7 @@ character_module_fieldset.classList.add(
 )
 character_module_fieldset_legend.classList.add(
     "text-xs",
-    "text-center",
+    "text-start",
     "font-shadow",
     "font-bold",
     "text-emerald-300", 
@@ -251,6 +277,12 @@ character_module_fieldset_legend.classList.add(
     "p-1", 
     "min-w-[5vw]"  
 );
+
+character_module_fieldset_legend_text.classList.add('text-center');
+
+character_module_fieldset_legend.textContent = "Equiped modules";
+character_module_fieldset_legend.append(character_module_fieldset_legend_text);
+character_module_fieldset.append(character_module_fieldset_legend);
 
 character_defensive_modules_fieldset.classList.add(
     'flex',
@@ -276,9 +308,6 @@ character_defensive_modules_fieldset_legend.classList.add(
     "text-white",
     "truncate"
 );
-
-character_module_fieldset_legend.textContent = "Modules";
-character_module_fieldset.append(character_module_fieldset_legend);
 
 let character_defensive_modules_fieldset_legend_span = document.createElement('span');
 character_defensive_modules_fieldset_legend_span.textContent = "Shield";

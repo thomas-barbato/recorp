@@ -261,18 +261,13 @@ function update_player_pos_display_after_move(data){
 
         coord_y++;
         coord_x = parseInt(data.player.user.coordinates.x) + 1
-        
-        let remaining_movement_mobile = document.querySelector('#remaining-movement-div-mobile');
-        let remaining_movement_div_mobile = remaining_movement_mobile.querySelector('div');
-        let remaining_movement_span_mobile = remaining_movement_mobile.querySelector('span');
-        remaining_movement_div_mobile.style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
-        remaining_movement_span_mobile.textContent = `${data.player.ship.current_movement} / ${data.player.ship.max_movement}`;
 
-        let remaining_movement = document.querySelector('#remaining-movement-div');
-        let remaining_movement_div = remaining_movement.querySelector('div');
-        let remaining_movement_span = remaining_movement.querySelector('span');
-        remaining_movement_div.style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
-        remaining_movement_span.textContent = `${data.player.ship.current_movement} / ${data.player.ship.max_movement}`;
+        document.querySelector('#movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
+        document.querySelector('#mobile-movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
+        document.querySelector('#movement-container-value-max').textContent = `${data.player.ship.max_movement}`;
+        document.querySelector('#movement-container-value-min').textContent = `${data.player.ship.current_movement}`;
+        document.querySelector('#mobile-movement-container-value-max').textContent = `${data.player.ship.max_movement}`;
+        document.querySelector('#mobile- movement-container-value-min').textContent = `${data.player.ship.current_movement}`;
 
     }
 
