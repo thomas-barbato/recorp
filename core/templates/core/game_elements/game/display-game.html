@@ -5,7 +5,7 @@
 {{ request.user.id|json_script:"script_user_id" }}
 <div id="chat" class="flex z-20 lg:inline hidden order-1 w-2/12 no-scrollbar place-content-center">
     <div class="inline-block md:mx-auto text-center text-emerald-300 text-sm p-2" id="chat-item-container">
-        <fieldset class="relative flex-col text-xs mx-auto rounded-sm w-auto border border-b-[#B1F1CB]/0 border-[#B1F1CB] text-start bg-gray-800 p-1">
+        <fieldset class="relative flex-col text-xs mx-auto  w-auto border border-b-[#B1F1CB]/0 border-[#B1F1CB] text-start bg-gray-800 p-1">
             <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw]"><p class="text-center">Chat & Log</p></legend>
             <span id="chat-item-container-element" class="flex flex-col p-2 gap-1 h-[70vh] max-h-[70vh] overflow-y-scroll thin-semi-transparent-scrollbar thin-semi-transparent-scrollbar:hover">
                 <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
@@ -212,7 +212,7 @@
         </div>
     </div>
 </div>
-<div class="flex z-20 lg:inline hidden order-3 w-2/12 no-scrollbar h-full p-2" id="player-infos">
+<div class="flex z-20 lg:inline hidden order-3 w-2/12 no-scrollbar h-full m-1" id="player-infos">
     {% for pc in map_informations.pc %}
         {% if pc.user.user == request.user.id %}
             <div id="player-info-item-container" class="w-full flex items-center justify-center gap-2 flex-row md:block h-full place-content-center thin-semi-transparent-scrollbar">
@@ -406,7 +406,7 @@
 <script src="{% static 'world_builder/world/game.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/navbar_game.js'%}" type="text/javascript"></script>
 <!--<script src="{% static 'world_builder/world/player_basic_information_data.js'%}" type='text/javascript'></script>-->
-<!--<script src="{% static 'world_builder/world/player_basic_information_data_mobile.js'%}" type='text/javascript'></script>-->
+<script src="{% static 'world_builder/world/player_basic_information_data_mobile.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/classes/player.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_background.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_foreground.js'%}" type='text/javascript'></script>

@@ -401,6 +401,100 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             messages.warning(self.request, error_msg)
             data_to_send = {"form": LoginForm}
             return redirect("/", data_to_send)
+        
+class DisplayPlay2View(LoginRequiredMixin, TemplateView):
+    login_url = LOGIN_REDIRECT_URL
+    redirect_field_name = "login_redirect"
+    template_name = "play2.html"
+    
+    def get(self, request, *args, **kwargs):
+        player = PlayerAction(self.request.user.id)
+        if player.is_player_exists() is False:
+            url = "create_character"
+            return HttpResponseRedirect(redirect_to=url)
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user_agent = self.request.user_agent
+        player = PlayerAction(self.request.user.id)
+        
+        if user_agent.is_pc:
+            map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
+        elif user_agent.is_mobile:
+            map_range = GetDataFromDB.get_resolution_sized_map("is_mobile")
+        elif user_agent.is_tablet:
+            map_range = GetDataFromDB.get_resolution_sized_map("is_tablet")
+
+        context["loop"] = range(10)
+        context["map_size_range"] = {"cols": range(40), "rows": range(40)}
+
+        if Sector.objects.filter(id=player.get_player_sector()).exists():
+            context["skills"] = {
+                "categories": [
+                    "Steering",
+                    "Offensive",
+                    "Defensive",
+                    "Utility",
+                    "Industry",
+                ],
+                "list": [
+                        {
+                            "id": skill['id'],
+                            "skill_name": skill['skill_id__name'],
+                            "level": skill['level'],
+                            "progress": str(skill['progress']).replace(',', '.'),
+                            "cat": skill['skill_id__category'],
+                            "description": skill['skill_id__description'],
+                        } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values('id', 'level', 'progress', 'skill_id__name', 'skill_id__category', 'skill_id__description')
+                ],
+            }
+            
+            data = StoreInCache(
+                f"play_{player.get_player_sector()}", self.request.user
+            ).get_or_set_cache()
+            
+            result_dict = dict()
+            for p in data["pc"]:
+                p["user"]["archetype_name"] = _(p["user"]["archetype_name"])
+
+            data["sector"]["security"]["translated_name"] = _(
+                data["sector"]["security"]["translated_name"]
+            )
+
+            data["sector"]["faction"]["translated_text_faction_level_starter"] = _(
+                "The faction's main planet"
+            )
+
+            result_dict["actions"] = {
+                "translated_action_label_msg": _("Actions available"),
+                "translated_close_msg": _("Close"),
+                "player_is_same_faction": player.get_player_faction()
+                == data["sector"]["faction"]["id"],
+                "translated_scan_msg_str": _(
+                    "In order to display resource you must scan it"
+                ),
+                "translated_statistics_msg_str": _(
+                    "Equip your spaceship with the ‘spaceship probe’ module to access detailed statistics"
+                ),
+                "translated_statistics_msg_label": _("statistics"),
+            }
+            
+            result_dict["sector"] = data["sector"]
+            result_dict["sector_element"] = data["sector_element"]
+            result_dict["pc"] = data["pc"]
+            result_dict["npc"] = data["npc"]
+            result_dict["screen_sized_map"] = map_range
+            context["map_informations"] = result_dict
+            return context
+        
+        else:
+            
+            error_msg = _("Sector unknown... Contact admin to get more informations")
+            messages.warning(self.request, error_msg)
+            data_to_send = {"form": LoginForm}
+            return redirect("/", data_to_send)
+
 
 
 class ChangeSectorGameView(LoginRequiredMixin, RedirectView):
