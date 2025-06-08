@@ -45,7 +45,6 @@ window.addEventListener('load', () => {
             );
         }, 1000);
     };
-    
 
     gameSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);

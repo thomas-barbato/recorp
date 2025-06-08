@@ -8,7 +8,9 @@ class GameScene extends Phaser.Scene {
         this.PATHS = {
             BACKGROUND: '/static/img/background/',
             FOREGROUND: '/static/img/foreground/',
+            USERS: '/static/img/users/',
             SHIPS: '/static/img/foreground/SHIPS/',
+            UX : '/static/img/ux/',
             IMG_NAME: '0.gif'
         }
         this.gridWidth = 0;
@@ -18,11 +20,17 @@ class GameScene extends Phaser.Scene {
         this.popover = null;
         this.popoverBackground = null;
         this.popoverText = null;
+        this.popoverImage = null; // Nouvelle propriété pour l'image du popover
+        this.otherPlayers = new Map(); // Map pour stocker les autres joueurs
+        this.npcs = new Map(); // Map pour stocker les npc
+        this.lastMoveTime = 0; // Pour contrôler la vitesse de déplacement
+        this.lastCollisionWarning = 0; // Pour éviter le spam de warnings
+        this.playerSize = 1; // Taille du joueur principal (peut être modifiée)
     }
 
     createPopover() {
         // Créer le popover (initialement invisible)
-        this.popoverBackground = this.add.rectangle(0, 0, 120, 60, 0x2c3e50, 0.9);
+        this.popoverBackground = this.add.rectangle(0, 0, 120, 80, 0x2c3e50, 0.9);
         this.popoverBackground.setStrokeStyle(2, 0x34495e);
         this.popoverBackground.setVisible(false);
         this.popoverBackground.setDepth(1000); // Mettre au premier plan
@@ -36,28 +44,51 @@ class GameScene extends Phaser.Scene {
         this.popoverText.setOrigin(0.5);
         this.popoverText.setVisible(false);
         this.popoverText.setDepth(1001); // Mettre au-dessus du fond
+        
+        // Créer l'image du popover (pour les joueurs)
+        this.popoverImage = this.add.image(0, 0, '');
+        this.popoverImage.setVisible(false);
+        this.popoverImage.setDepth(1002);
+        this.popoverImage.setDisplaySize(32, 32); // Taille fixe pour l'image du joueur
     }
 
-    showPopover(x, y, cell) {
+    showPopover(x, y, cell, isPlayer = false, playerData = null) {
         // Calculer la position du popover
         const cellCenterX = x * this.CELL_SIZE + this.CELL_SIZE / 2;
         const cellCenterY = y * this.CELL_SIZE + this.CELL_SIZE / 2;
         
         // Positionner le popover au-dessus de la cellule
         const popoverX = cellCenterX;
-        const popoverY = cellCenterY - this.CELL_SIZE - 20;
+        const popoverY = cellCenterY - this.CELL_SIZE - 30;
         
-        // Contenu du popover avec informations sur la cellule
-        const distance = this.calculateDistance(x, y, this.player.gridX, this.player.gridY);
-        const popoverContent = `Cellule (${x}, ${y})\nDistance: ${distance}`;
+        let popoverContent;
+        let popoverWidth = 120;
+        let popoverHeight = 60;
+        
+        if (isPlayer && playerData) {
+            // Contenu pour un joueur
+            popoverContent = `${playerData.user.name}\nCoord: (${playerData.user.coordinates.x}, ${playerData.user.coordinates.y})`;
+            popoverWidth = Math.max(150, playerData.user.name.length * 8);
+            popoverHeight = 80;
+            
+            // Afficher l'image du joueur si elle existe
+            if (playerData.user.image) {
+                this.popoverImage.setTexture(`player_${playerData.player}`);
+                this.popoverImage.setPosition(popoverX, popoverY - 25);
+                this.popoverImage.setVisible(true);
+            }
+        } else {
+            // Contenu pour une cellule normale
+            const distance = this.calculateDistance(x, y, this.player.gridX, this.player.gridY);
+            popoverContent = `Cellule (${x}, ${y})\nDistance: ${distance}`;
+        }
         
         // Ajuster la taille du fond selon le contenu
-        const textWidth = Math.max(100, popoverContent.length * 6);
-        this.popoverBackground.setSize(textWidth, 50);
+        this.popoverBackground.setSize(popoverWidth, popoverHeight);
         
         // Positionner et afficher le popover
         this.popoverBackground.setPosition(popoverX, popoverY);
-        this.popoverText.setPosition(popoverX, popoverY);
+        this.popoverText.setPosition(popoverX, isPlayer ? popoverY + 15 : popoverY);
         this.popoverText.setText(popoverContent);
         
         this.popoverBackground.setVisible(true);
@@ -71,6 +102,7 @@ class GameScene extends Phaser.Scene {
         if (this.popoverBackground && this.popoverText) {
             this.popoverBackground.setVisible(false);
             this.popoverText.setVisible(false);
+            this.popoverImage.setVisible(false);
         }
     }
 
@@ -83,48 +115,30 @@ class GameScene extends Phaser.Scene {
         let adjustedY = y;
         
         // Ajuster X si le popover sort à droite
-        if (x + 60 > worldView.right) {
-            adjustedX = worldView.right - 60;
+        if (x + 75 > worldView.right) {
+            adjustedX = worldView.right - 75;
         }
         // Ajuster X si le popover sort à gauche
-        if (x - 60 < worldView.left) {
-            adjustedX = worldView.left + 60;
+        if (x - 75 < worldView.left) {
+            adjustedX = worldView.left + 75;
         }
         
         // Ajuster Y si le popover sort en haut
-        if (y - 25 < worldView.top) {
-            adjustedY = y + this.CELL_SIZE + 45; // Placer en dessous de la cellule
+        if (y - 40 < worldView.top) {
+            adjustedY = y + this.CELL_SIZE + 60; // Placer en dessous de la cellule
         }
         
         // Appliquer les ajustements
         this.popoverBackground.setPosition(adjustedX, adjustedY);
-        this.popoverText.setPosition(adjustedX, adjustedY);
+        this.popoverText.setPosition(adjustedX, adjustedY + (this.popoverImage.visible ? 15 : 0));
+        if (this.popoverImage.visible) {
+            this.popoverImage.setPosition(adjustedX, adjustedY - 25);
+        }
     }
 
     calculateDistance(x1, y1, x2, y2) {
         // Calculer la distance Manhattan (plus appropriée pour une grille)
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    preload() {
-        // Créer des textures pour les cellules et le joueur
-        this.load.image('background', `${this.PATHS.BACKGROUND}${this.SECTOR_DATA.sector.image}/${this.PATHS.IMG_NAME}`);
-    }
-
-    create() {
-        console.log( this.game.config.backgroundColor)
-        // image(0, 0) pour que l'image commence à s'afficher en haut à gauche.
-        // setOrigine(0, 0) pour que l'image se place en haut à gauche.
-        this.add.image(0, 0, 'background').setOrigin(0, 0)
-        this.calculateGridSize();
-        this.createGrid();
-        this.createPlayer();
-        this.createPopover();
-        this.setupCamera();
-        this.setupInput();
-        
-        // Gérer le redimensionnement
-        this.scale.on('resize', this.handleResize, this);
     }
 
     calculateGridSize() {
@@ -163,13 +177,48 @@ class GameScene extends Phaser.Scene {
                 // Ajouter les événements de clic
                 cell.on('pointerdown', () => {
                     console.log(`Cellule cliquée: X=${x}, Y=${y}`);
-                    this.movePlayerTo(x, y);
+                    // Vérifier collision avant de bouger
+                    const playerSize = this.playerSize || 1;
+                    const collisionCheck = this.checkCollision(x, y, playerSize);
+                    if (!collisionCheck.hasCollision && this.isValidPosition(x, y, playerSize)) {
+                        this.movePlayerTo(x, y);
+                    } else if (collisionCheck.hasCollision) {
+                        this.showCollisionWarning(collisionCheck.player.user.name);
+                    }
                 });
                 
                 cell.on('pointerover', () => {
-                    // ajouter une couleur sur la case au passage de la souris.
-                    cell.setFillStyle(0x3498db, 0.6);
-                    this.showPopover(x, y, cell);
+                    // Vérifier s'il y a un joueur sur cette cellule ou ses environs
+                    let collisionInfo = null;
+                    
+                    // Vérifier contre tous les joueurs et leurs zones d'occupation
+                    for (let [playerId, playerObj] of this.otherPlayers) {
+                        const playerCells = this.getOccupiedCells(
+                            playerObj.gridX, 
+                            playerObj.gridY, 
+                            playerObj.data.ship.size || 1
+                        );
+                        
+                        // Vérifier si cette cellule fait partie des cellules occupées
+                        if (playerCells.some(cell => cell.x === x && cell.y === y)) {
+                            collisionInfo = {
+                                hasCollision: true,
+                                player: playerObj.data,
+                                playerId: playerId
+                            };
+                            break;
+                        }
+                    }
+                    
+                    if (collisionInfo && collisionInfo.hasCollision) {
+                        // Afficher les infos du joueur plutôt que de la cellule
+                        cell.setFillStyle(0xe74c3c, 0.3); // Rouge pour indiquer occupation
+                        this.showPopover(x, y, cell, true, collisionInfo.player);
+                    } else {
+                        // Comportement normal pour cellule vide
+                        cell.setFillStyle(0x3498db, 0.6);
+                        this.showPopover(x, y, cell);
+                    }
                 });
                 
                 cell.on('pointerout', () => {
@@ -182,21 +231,143 @@ class GameScene extends Phaser.Scene {
             }
         }
     }
-    createPlayer() {
-        // Créer le joueur aux coordonnées spécifiées (10, 19)
-        const playerX = 10;
-        const playerY = 19;
-        
-        this.player = this.add.circle(
-            playerX * this.CELL_SIZE + this.CELL_SIZE / 2,
-            playerY * this.CELL_SIZE + this.CELL_SIZE / 2,
-            this.CELL_SIZE / 3,
-            0xe74c3c
-        );
-        
-        this.player.setStrokeStyle(2, 0xc0392b);
-        this.player.gridX = playerX;
-        this.player.gridY = playerY;
+
+    createPlayers() {
+        // Vérifier si les données des joueurs existent
+        if (!this.SECTOR_DATA.pc || !Array.isArray(this.SECTOR_DATA.pc)) {
+            console.log('Aucune donnée de joueur trouvée ou format incorrect');
+            return;
+        }
+
+        // Parcourir tous les joueurs dans les données du secteur
+        this.SECTOR_DATA.pc.forEach(playerData => {
+
+            const playerId = `pc_${playerData.player}`;
+            const coordinates = playerData.user.coordinates;
+            const shipId = playerData.ship.ship_id;
+            const shipSize_x = playerData.ship.size.x * 32 || 1;
+            const shipSize_y = playerData.ship.size.y * 32 || 1;
+
+            if(current_user_id != playerData.user.user){
+
+                // Vérifier que les coordonnées sont valides
+                if (coordinates && coordinates.x >= 0 && coordinates.x < this.MAX_GRID_SIZE && 
+                    coordinates.y >= 0 && coordinates.y < this.MAX_GRID_SIZE) {
+                    
+                    // Créer le vaisseau du joueur
+                    const shipSprite = this.add.sprite(
+                        coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
+                        coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
+                        `ship_${shipId}`
+                    );
+                    
+                    // Adapter la taille du vaisseau selon ses caractéristiques
+                    shipSprite.setDisplaySize(shipSize_x, shipSize_y);
+                    shipSprite.setDepth(500); // Au-dessus de la grille mais sous le popover
+                    
+                    // Rendre le vaisseau interactif
+                    shipSprite.setInteractive();
+                    
+                    // Ajouter les événements de survol
+                    shipSprite.on('pointerover', () => {
+                        this.showPopover(coordinates.x, coordinates.y, null, true, playerData);
+                    });
+                    
+                    shipSprite.on('pointerout', () => {
+                        this.hidePopover();
+                    });
+                    
+                    // Ajouter le clic pour des interactions futures
+                    shipSprite.on('pointerdown', () => {
+                        console.log(`Joueur cliqué: ${playerData.user.name} (${playerId})`);
+                        // Ici vous pouvez ajouter d'autres interactions avec le joueur
+                    });
+            
+                    // Stocker le joueur avec son ID
+                    this.otherPlayers.set(playerId, {
+                        sprite: shipSprite,
+                        data: playerData,
+                        gridX: coordinates.x,
+                        gridY: coordinates.y
+                    });
+                }
+                
+                console.log(`Joueur créé: ${playerData.user.name} à (${coordinates.x}, ${coordinates.y})`);
+            }else{
+
+                // Créer le vaisseau du joueur
+                this.player = this.add.sprite(
+                    coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    `ship_${shipId}`
+                );
+                this.player.setDisplaySize(shipSize_x, shipSize_y);
+                this.player.setDepth(500)
+                this.player.gridX = coordinates.x;
+                this.player.gridY = coordinates.y;
+                
+            }
+        });
+    }
+
+    createNpcs() {
+        // Vérifier si les données des joueurs existent
+        if (!this.SECTOR_DATA.npc || !Array.isArray(this.SECTOR_DATA.npc)) {
+            console.log('Aucune donnée de joueur trouvée ou format incorrect');
+            return;
+        }
+
+        // Parcourir tous les joueurs dans les données du secteur
+        this.SECTOR_DATA.npc.forEach(npcData => {
+            const npcId = `npc_${npcData.npc.id}`;
+            const coordinates = npcData.npc.coordinates;
+            const shipSize_x = npcData.ship.size.x * 32 || 1;
+            const shipSize_y = npcData.ship.size.y * 32 || 1;
+            
+            // Vérifier que les coordonnées sont valides
+            if (coordinates && coordinates.x >= 0 && coordinates.x < this.MAX_GRID_SIZE && 
+                coordinates.y >= 0 && coordinates.y < this.MAX_GRID_SIZE) {
+                
+                // Créer le vaisseau du joueur
+                const shipSprite = this.add.sprite(
+                    coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    `ship_${npcData.ship.ship_id}`
+                );
+                
+                // Adapter la taille du vaisseau selon ses caractéristiques
+                shipSprite.setDisplaySize(shipSize_x, shipSize_y);
+                shipSprite.setDepth(500); // Au-dessus de la grille mais sous le popover
+                
+                // Rendre le vaisseau interactif
+                shipSprite.setInteractive();
+                
+                // Ajouter les événements de survol
+                shipSprite.on('pointerover', () => {
+                    this.showPopover(coordinates.x, coordinates.y, null, false, npcData);
+                });
+                
+                shipSprite.on('pointerout', () => {
+                    this.hidePopover();
+                });
+                
+                // Ajouter le clic pour des interactions futures
+                shipSprite.on('pointerdown', () => {
+                    console.log(`npc cliqué`);
+                    // Ici vous pouvez ajouter d'autres interactions avec le joueur
+                });
+                
+                // Stocker le joueur avec son ID
+                this.npcs.set(npcId, {
+                    sprite: shipSprite,
+                    data: npcData,
+                    gridX: coordinates.x,
+                    gridY: coordinates.y,
+                    sizeX: shipSize_x,
+                    sizeY: shipSize_y,
+                });
+            }
+        });
     }
 
     setupCamera() {
@@ -238,39 +409,241 @@ class GameScene extends Phaser.Scene {
         this.wasd = this.input.keyboard.addKeys('W,S,A,D');
     }
 
+    checkCollision(x, y, playerSize = 1) {
+        console.log("DEDANS")
+        // Calculer toutes les cases que le joueur occuperait
+        const occupiedCells = this.getOccupiedCells(x, y, playerSize);
+        
+        // Vérifier chaque case occupée contre tous les autres joueurs
+        for (let [playerId, playerObj] of this.otherPlayers) {
+            const otherPlayerCells = this.getOccupiedCells(
+                playerObj.gridX, 
+                playerObj.gridY, 
+                playerObj.data.ship.size || 1
+            );
+            
+            // Vérifier s'il y a une intersection entre les cases
+            for (let myCell of occupiedCells) {
+                for (let otherCell of otherPlayerCells) {
+                    if (myCell.x === otherCell.x && myCell.y === otherCell.y) {
+                        return {
+                            hasCollision: true,
+                            player: playerObj.data,
+                            playerId: playerId,
+                            collisionCell: myCell
+                        };
+                    }
+                }
+            }
+        }
+        return { hasCollision: false };
+    }
+
+    getOccupiedCells(centerX, centerY, size) {
+        const cells = [];
+        const halfSize = Math.floor(size / 2);
+        
+        // Pour les tailles impaires, le centre est au milieu
+        // Pour les tailles paires, on décale légèrement
+        const startX = centerX - halfSize;
+        const startY = centerY - halfSize;
+        const endX = startX + size - 1;
+        const endY = startY + size - 1;
+        
+        for (let x = startX; x <= endX; x++) {
+            for (let y = startY; y <= endY; y++) {
+                // Vérifier que les coordonnées sont dans les limites de la grille
+                if (x >= 0 && x < this.MAX_GRID_SIZE && y >= 0 && y < this.MAX_GRID_SIZE) {
+                    cells.push({ x, y });
+                }
+            }
+        }
+        
+        return cells;
+    }
+
+    isValidPosition(x, y, playerSize = 1) {
+        // Vérifier que toutes les cases occupées sont dans les limites
+        const occupiedCells = this.getOccupiedCells(x, y, playerSize);
+        
+        for (let cell of occupiedCells) {
+            if (cell.x < 0 || cell.x >= this.MAX_GRID_SIZE || 
+                cell.y < 0 || cell.y >= this.MAX_GRID_SIZE) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    showCollisionWarning(playerName) {
+        // Créer un message de collision temporaire
+        const warningText = this.add.text(
+            this.player.x,
+            this.player.y - 40,
+            `Collision avec ${playerName}!`,
+            {
+                fontSize: '14px',
+                fill: '#e74c3c',
+                fontFamily: 'Arial',
+                backgroundColor: '#2c3e50',
+                padding: { x: 8, y: 4 }
+            }
+        );
+        warningText.setOrigin(0.5);
+        warningText.setDepth(2000);
+
+        // Faire disparaître le message après 2 secondes
+        this.tweens.add({
+            targets: warningText,
+            alpha: 0,
+            duration: 2000,
+            ease: 'Power2',
+            onComplete: () => {
+                warningText.destroy();
+            }
+        });
+
+        // Animation de secousse pour le joueur
+        this.tweens.add({
+            targets: this.player,
+            x: this.player.x + 5,
+            duration: 50,
+            yoyo: true,
+            repeat: 3,
+            ease: 'Power2'
+        });
+    }
+
     movePlayerTo(targetX, targetY) {
-        // Vérifier que les coordonnées sont valides
-        if (targetX >= 0 && targetX < this.MAX_GRID_SIZE && 
-            targetY >= 0 && targetY < this.MAX_GRID_SIZE) {
-            
-            // Cacher le popover pendant le déplacement
-            this.hidePopover();
-            
-            // Animer le déplacement du joueur
-            this.tweens.add({
-                targets: this.player,
-                x: targetX * this.CELL_SIZE + this.CELL_SIZE / 2,
-                y: targetY * this.CELL_SIZE + this.CELL_SIZE / 2,
-                duration: 300,
-                ease: 'Power2'
+        // Obtenir la taille du joueur (supposons que le joueur principal a une taille de 1 par défaut)
+        const playerSize = this.playerSize || 1;
+        
+        // Vérifier que les coordonnées sont valides et dans les limites
+        if (!this.isValidPosition(targetX, targetY, playerSize)) {
+            console.log("Position invalide - sort des limites de la grille");
+            return;
+        }
+        
+        // Vérifier les collisions avec d'autres joueurs
+        const collisionCheck = this.checkCollision(targetX, targetY, playerSize);
+        
+        if (collisionCheck.hasCollision) {
+            // Collision détectée - empêcher le mouvement
+            console.log(`Collision avec le joueur: ${collisionCheck.player.user.name}`);
+            this.showCollisionWarning(collisionCheck.player.user.name);
+            return; // Arrêter le mouvement
+        }
+        
+        // Cacher le popover pendant le déplacement
+        this.hidePopover();
+        
+        // Animer le déplacement du joueur
+        this.tweens.add({
+            targets: this.player,
+            x: targetX * this.CELL_SIZE + this.CELL_SIZE / 2,
+            y: targetY * this.CELL_SIZE + this.CELL_SIZE / 2,
+            duration: 300,
+            ease: 'Power2'
+        });
+        
+        // Mettre à jour les coordonnées du joueur
+        this.player.gridX = targetX;
+        this.player.gridY = targetY;
+    }
+
+    preload_npc(){
+        if (this.SECTOR_DATA.npc && Array.isArray(this.SECTOR_DATA.npc)) {
+            this.SECTOR_DATA.npc.forEach(npcData => {
+                // Charger l'image du vaisseau
+                if (npcData.ship && npcData.ship.image) {
+                    this.load.image(`ship_${npcData.ship.ship_id}`,`${this.PATHS.SHIPS}${npcData.ship.image}.png`);
+                }
             });
-            
-            // Mettre à jour les coordonnées du joueur
-            this.player.gridX = targetX;
-            this.player.gridY = targetY;
         }
     }
 
+    preload_pc(){
+        if (this.SECTOR_DATA.pc && Array.isArray(this.SECTOR_DATA.pc)) {
+            this.SECTOR_DATA.pc.forEach(playerData => {
+                // Charger l'image du vaisseau
+                if (playerData.ship && playerData.ship.image) {
+                    this.load.image(`ship_${playerData.ship.ship_id}`, `${this.PATHS.SHIPS}${playerData.ship.image}.png`);
+                }
+                
+                // Charger l'image du joueur pour le popover
+                if (playerData.user && playerData.user.image) {
+                    this.load.image(`player_${playerData.player}`, `${this.PATHS.USERS}${playerData.user.player}/${playerData.user.image}`);
+                }
+            });
+        }
+    }
+
+    preload() {
+        // Créer des textures pour les cellules et le joueur
+        this.load.image('background', `${this.PATHS.BACKGROUND}${this.SECTOR_DATA.sector.image}/${this.PATHS.IMG_NAME}`);
+        // Charger les images des npc
+        this.preload_npc()
+        // Charger les images des vaisseaux et des joueurs
+        this.preload_pc();
+    }
+
+    create() {
+        // image(0, 0) pour que l'image commence à s'afficher en haut à gauche.
+        // setOrigine(0, 0) pour que l'image se place en haut à gauche.
+        this.add.image(0, 0, 'background').setOrigin(0, 0)
+        this.calculateGridSize();
+        this.createGrid();
+        this.createPlayers();
+        this.createNpcs();
+        this.createPopover();
+        this.setupCamera();
+        this.setupInput();
+        
+        // Gérer le redimensionnement
+        this.scale.on('resize', this.handleResize, this);
+    }
+
     update() {
-        // Gérer le déplacement au clavier
+        // Gérer le déplacement au clavier avec vérification de collision
+        let newX = this.player.gridX;
+        let newY = this.player.gridY;
+        let shouldMove = false;
+
         if (this.cursors.left.isDown || this.wasd.A.isDown) {
-            this.movePlayerTo(this.player.gridX - 1, this.player.gridY);
+            newX = this.player.gridX - 1;
+            shouldMove = true;
         } else if (this.cursors.right.isDown || this.wasd.D.isDown) {
-            this.movePlayerTo(this.player.gridX + 1, this.player.gridY);
+            newX = this.player.gridX + 1;
+            shouldMove = true;
         } else if (this.cursors.up.isDown || this.wasd.W.isDown) {
-            this.movePlayerTo(this.player.gridX, this.player.gridY - 1);
+            newY = this.player.gridY - 1;
+            shouldMove = true;
         } else if (this.cursors.down.isDown || this.wasd.S.isDown) {
-            this.movePlayerTo(this.player.gridX, this.player.gridY + 1);
+            newY = this.player.gridY + 1;
+            shouldMove = true;
+        }
+
+        // Si un mouvement est demandé, vérifier les collisions
+        if (shouldMove) {
+            // Ajouter un délai pour éviter les mouvements trop rapides
+            if (!this.lastMoveTime || this.time.now - this.lastMoveTime > 200) {
+                const playerSize = this.playerSize || 1;
+                const collisionCheck = this.checkCollision(newX, newY, playerSize);
+                
+                if (!collisionCheck.hasCollision && this.isValidPosition(newX, newY, playerSize)) {
+                    this.movePlayerTo(newX, newY);
+                    this.lastMoveTime = this.time.now;
+                } else {
+                    // Collision détectée avec les touches
+                    if (!this.lastCollisionWarning || this.time.now - this.lastCollisionWarning > 1000) {
+                        if (collisionCheck.hasCollision) {
+                            this.showCollisionWarning(collisionCheck.player.user.name);
+                        }
+                        this.lastCollisionWarning = this.time.now;
+                    }
+                }
+            }
         }
         
         // Mettre à jour la position du popover si il est visible
@@ -295,7 +668,6 @@ const config = {
     height: Math.min(game_canvas_rect.height, 736),
     parent: game_canvas,
     scene: GameScene,
-    transparent: true,
     physics: {
         default: 'arcade',
         arcade: {
@@ -310,7 +682,6 @@ const config = {
 
 // Créer et lancer le jeu
 const game = new Phaser.Game(config);
-
 
 // Gérer le redimensionnement de la fenêtre
 window.addEventListener('resize', () => {

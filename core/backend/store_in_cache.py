@@ -228,7 +228,6 @@ class StoreInCache:
                 
                 max_hp = int(npc_data["npc_template_id__max_hp"])
                 max_movement = int(npc_data["npc_template_id__max_movement"])
-
                 sector_data["npc"].append({
                     "npc": {
                         "id": npc_data["id"],
@@ -241,6 +240,7 @@ class StoreInCache:
                     "ship": {
                         "name": npc_data["npc_template_id__ship_id__name"],
                         "image": npc_data["npc_template_id__ship_id__image"],
+                        "ship_id": npc_data["npc_template_id__ship_id"], 
                         "current_hp": int(npc_data["hp"]),
                         "max_hp": max_hp,
                         "current_movement": int(npc_data["movement"]),
@@ -288,6 +288,7 @@ class StoreInCache:
                     "ship": {
                         "name": pc_data["player_ship_id__ship_id__name"],
                         "image": pc_data["player_ship_id__ship_id__image"],
+                        "ship_id": pc_data["player_ship_id__ship_id"],
                         "description": pc_data["player_ship_id__ship_id__description"],
                         "max_hp": pc_data["player_ship_id__max_hp"],
                         "current_hp": int(pc_data["player_ship_id__current_hp"]),

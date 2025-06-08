@@ -265,6 +265,7 @@ class GetDataFromDB:
             player_ship_id__player_id__sector_id=pk
         ).values(
             "player_ship_id", "player_ship_id__player_id",
+            "player_ship_id__ship_id",
             "player_ship_id__player_id__name", "player_ship_id__player_id__coordinates",
             "player_ship_id__player_id__image", "player_ship_id__player_id__description",
             "player_ship_id__player_id__is_npc", "player_ship_id__player_id__user_id",
@@ -292,6 +293,7 @@ class GetDataFromDB:
         npcs = Npc.objects.filter(sector_id=pk).values(
             "id", "coordinates", "status", "hp", "npc_template_id__max_hp",
             "movement", "npc_template_id__max_movement", "ballistic_defense",
+            "npc_template_id__ship_id",
             "npc_template_id__max_ballistic_defense", "thermal_defense",
             "npc_template_id__max_thermal_defense", "missile_defense",
             "npc_template_id__max_missile_defense", "npc_template_id__module_id_list",
