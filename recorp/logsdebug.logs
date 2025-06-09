@@ -46584,3 +46584,977 @@ WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57465]
 [mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:57513][0m
 WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57524]
 WebSocket CONNECT /ws/play_3/ [127.0.0.1:57524]
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.28, 127.0.0.1:57094][0m
+[mHTTP GET /fr/ 200 [0.21, 127.0.0.1:57094][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.21, 127.0.0.1:57107][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.22, 127.0.0.1:57105][0m
+[mHTTP GET /static/css/output.css 200 [0.22, 127.0.0.1:57104][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.22, 127.0.0.1:57106][0m
+[mHTTP GET /static/css/style.css 200 [0.23, 127.0.0.1:57094][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.03, 127.0.0.1:57107][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.26, 127.0.0.1:57108][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.02, 127.0.0.1:57108][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:57108][0m
+[mHTTP GET /fr/play2/ 200 [0.22, 127.0.0.1:57169][0m
+[36mHTTP GET /static/js/phaser/phaser.js 304 [0.00, 127.0.0.1:57169][0m
+[36mHTTP GET /static/js/game/world_builder/temp_play2/game.js 304 [0.01, 127.0.0.1:57174][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:57175][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57176]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57176]
+[mHTTP GET /fr/play2/ 200 [0.05, 127.0.0.1:57175][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57176]
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:57175][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57174][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57210][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57169][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57212][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57211][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57175][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:57174][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:57210][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.02, 127.0.0.1:57211][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.02, 127.0.0.1:57169][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.03, 127.0.0.1:57175][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.02, 127.0.0.1:57210][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.02, 127.0.0.1:57211][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:57211][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:57169][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.08, 127.0.0.1:57174][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:57174][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.23, 127.0.0.1:57212][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:57210][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:57212][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:57169][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:57175][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.02, 127.0.0.1:57174][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.02, 127.0.0.1:57211][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57213]
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57211][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57213]
+[32mHTTP GET / 302 [0.03, 127.0.0.1:57386][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:57386][0m
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:57398][0m
+[mHTTP GET /fr/play/ 200 [0.14, 127.0.0.1:57400][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.00, 127.0.0.1:57398][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.01, 127.0.0.1:57410][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57411]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57411]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57411]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:57398][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:57410][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.01, 127.0.0.1:57398][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57422]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57422]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:57773][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57213]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:57773][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57779]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57779]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58056][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57779]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:58056][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58061]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58061]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58056][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58061]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58074]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58074]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58056][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58074]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58084]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58084]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58056][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58084]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58097]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58097]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58056][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58097]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:58056][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58109]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58109]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58056][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58109]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:58056][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58130]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58130]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58601][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58130]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:58601][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58606]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58606]
+[mHTTP GET /fr/play2/ 200 [0.05, 127.0.0.1:58629][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58606]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:58629][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58634]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58634]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58629][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58634]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:58629][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58651]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58651]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58629][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58651]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:58629][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58665]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58665]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:58629][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58665]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:58629][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:58683]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:58683]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:59554][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:58683]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:59554][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:59559]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:59559]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57422]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:59565][0m
+[36mHTTP GET /static/js/phaser/phaser.js 304 [0.01, 127.0.0.1:59567][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.01, 127.0.0.1:59570][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:59566][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:59577]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:59577]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:59554][0m
+[mHTTP GET /fr/play2/ 200 [0.05, 127.0.0.1:60605][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:59559]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:60605][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:60612]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:60612]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:59577]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:61572][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:61575][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61585]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61585]
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:61596][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:61597][0m
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:62292][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:60612]
+[36mHTTP GET /static/js/game/world_builder/temp_play2/game.js 304 [0.00, 127.0.0.1:62292][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:62298][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62299]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62299]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.08, 127.0.0.1:62298][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61585]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:65131][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65135][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65134][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:65132][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:65136][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:65133][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:65131][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:65135][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:65134][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:65131][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:65136][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.02, 127.0.0.1:65133][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:65135][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:65133][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:65135][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:65136][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:65132][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:65134][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:65143][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:65143][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:65134][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:65136][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:65132][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:65132][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:65134][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:65136][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:65135][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:65131][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:65133][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:65145]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:65145]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50078][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62299]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:50078][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:50078][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50088]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50088]
+[mHTTP GET /fr/play2/ 200 [0.12, 127.0.0.1:50078][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50088]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50078][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:50078][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50105]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50105]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50078][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50105]
+[36mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 304 [0.00, 127.0.0.1:50078][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50111]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50111]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:50078][0m
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50339][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50111]
+[36mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 304 [0.00, 127.0.0.1:50339][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50344]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50344]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:65145]
+[mHTTP GET /fr/play2/ 200 [0.08, 127.0.0.1:50381][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50382][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50383][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50386][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50384][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50385][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50381][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50382][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50386][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50384][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:50383][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:50385][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:50382][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:50381][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50385][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.02, 127.0.0.1:50383][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:50384][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:50386][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:50394][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50384][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50384][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:50394][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50384][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:50384][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:50383][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:50386][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:50385][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:50381][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:50382][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50395]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50395]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50395]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:50495][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50498][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50497][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50499][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50496][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50495][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50498][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:50497][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50499][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50500][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:50496][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:50498][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.02, 127.0.0.1:50495][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50496][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50497][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:50498][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:50505][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:50500][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50498][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:50498][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:50505][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50498][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.00, 127.0.0.1:50498][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:50497][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:50498][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.00, 127.0.0.1:50496][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.00, 127.0.0.1:50497][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:50498][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50506]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50506]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50538][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50344]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:50538][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50544]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50544]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:50538][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50506]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:50614][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50618][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50617][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50616][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50615][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50619][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50614][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50618][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50614][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:50617][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50615][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.02, 127.0.0.1:50616][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:50618][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50617][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50616][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:50615][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:50626][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:50619][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:50614][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50615][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50615][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:50626][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50619][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:50619][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.00, 127.0.0.1:50615][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:50617][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.00, 127.0.0.1:50619][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.00, 127.0.0.1:50619][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.00, 127.0.0.1:50619][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50627]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50627]
+[mHTTP GET /fr/play2/ 200 [0.08, 127.0.0.1:50683][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50544]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50683][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:50683][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50697]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50697]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50627]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50715][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:50718][0m
+[mHTTP GET /static/css/output.css 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.00, 127.0.0.1:50718][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.00, 127.0.0.1:50718][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.00, 127.0.0.1:50718][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:50718][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50716][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50716][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50720][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:50715][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:50717][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.02, 127.0.0.1:50719][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:50726][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:50726][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50717][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:50718][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50719][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:50719][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:50718][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:50717][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:50716][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:50715][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:50720][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50738]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50738]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50738]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50811][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50816][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50811][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50814][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:50816][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:50811][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:50811][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:50821][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:50814][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:50816][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:50816][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:50821][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.ttf 200 [0.04, 127.0.0.1:50815][0m
+[mHTTP GET /fr/play2/ 200 [0.08, 127.0.0.1:50811][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50811][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50826][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50827][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:50811][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:50826][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.01, 127.0.0.1:50811][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50826][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:50821][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:50827][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50815][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:50812][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:50821][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:50827][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:50812][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:50815][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:50827][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:50813][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:50811][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:50826][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50828]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50828]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:50883][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50697]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.00, 127.0.0.1:50883][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50889]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50889]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50828]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51003][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51006][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51005][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51004][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51007][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51008][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51003][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51006][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.02, 127.0.0.1:51003][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:51005][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:51004][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.02, 127.0.0.1:51008][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.02, 127.0.0.1:51006][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51008][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51004][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:51005][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:51007][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:51015][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:51003][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51005][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:51007][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:51015][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51007][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:51007][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:51004][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:51005][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:51008][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:51003][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:51006][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51016]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51016]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51016]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:51086][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51088][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51087][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51086][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51090][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51089][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51091][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51088][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:51087][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:51089][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:51086][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:51090][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:51088][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.02, 127.0.0.1:51091][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51088][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51090][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:51089][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:51087][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:51096][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:51096][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:51087][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:51089][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51091][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:51087][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:51089][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:51091][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:51090][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:51086][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:51088][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51097]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51097]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51206][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50889]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:51206][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51212]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51212]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:51206][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51097]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51249][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51253][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51252][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51250][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51251][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51254][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51249][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51253][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:51249][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:51254][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:51252][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:51250][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:51253][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.01, 127.0.0.1:51249][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:51261][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:51251][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51250][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51253][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:51252][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:51254][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.01, 127.0.0.1:51261][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:51251][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51251][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:51251][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:51254][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:51252][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:51250][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:51249][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:51253][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51262]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51262]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51206][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51212]
+[36mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 304 [0.00, 127.0.0.1:51206][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51269]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51269]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51380][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51269]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:51380][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51385]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51385]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51380][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51385]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:51380][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51395]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51395]
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:51380][0m
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:51930][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51395]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:51930][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51935]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51935]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51262]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:51939][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51942][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51941][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51940][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.00, 127.0.0.1:51940][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51941][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51940][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51942][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:51943][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:51939][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:51944][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:51940][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:51942][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.01, 127.0.0.1:51943][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:51944][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:51939][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:51941][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.00, 127.0.0.1:51944][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:51951][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:51944][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51944][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:51951][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:51941][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:51941][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:51940][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:51939][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.02, 127.0.0.1:51944][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:51943][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:51942][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51952]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51952]
+D:\wamp64\www\recorp\core\backend\store_in_cache.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52630]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52630]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52631]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52631]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52630]
+[mHTTP GET /fr/play2/ 200 [0.10, 127.0.0.1:52929][0m
+[mHTTP GET /static/css/style.css 200 [0.19, 127.0.0.1:52929][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.19, 127.0.0.1:52930][0m
+[mHTTP GET /static/css/output.css 200 [0.20, 127.0.0.1:52932][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52929][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.20, 127.0.0.1:52934][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.20, 127.0.0.1:52931][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.20, 127.0.0.1:52933][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:52932][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:52930][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:52934][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:52931][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:52929][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:52931][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:52934][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:52930][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:52933][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:52932][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:52941][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52933][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:52941][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:52933][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:52933][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52942]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52942]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52942]
+[mHTTP GET /fr/play2/ 200 [0.05, 127.0.0.1:52933][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52933][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52930][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:52932][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:52929][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52934][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:52931][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52933][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:52930][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:52929][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:52934][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:52931][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:52933][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:52934][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:52931][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:52929][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:52932][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:52930][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:52941][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:52933][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:52941][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:52932][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:52933][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52970]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52970]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52970]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:53838][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53841][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:53839][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:53843][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53838][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:53840][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:53839][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:53841][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.02, 127.0.0.1:53843][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.02, 127.0.0.1:53840][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:53840][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53841][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:53838][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:53839][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53849][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53842][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53842][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53849][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53842][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:53841][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:53839][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53840][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:53838][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:53843][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:53841][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53850]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53850]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53850]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:53838][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53843][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:53839][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:53841][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53838][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:53840][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:53843][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:53838][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:53840][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:53839][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.02, 127.0.0.1:53841][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:53840][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:53839][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:53843][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53849][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53839][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:53842][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53849][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53841][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:53841][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:53839][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:53843][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:53838][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53842][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:53840][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:53841][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:53839][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53882]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53882]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53882]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:53944][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:53944][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:53947][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:53949][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:53945][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:53946][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:53944][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:53947][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:53949][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:53945][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:53946][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:53944][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.02, 127.0.0.1:53948][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:53944][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:53946][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.02, 127.0.0.1:53945][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:53947][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:53954][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:53954][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:53948][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:53948][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:53948][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.00, 127.0.0.1:53945][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.00, 127.0.0.1:53948][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:53947][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:53944][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:53946][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:53945][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:53948][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:53949][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53955]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53955]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53955]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:54274][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54277][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54276][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54279][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54274][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54278][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54275][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54277][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.02, 127.0.0.1:54276][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.02, 127.0.0.1:54279][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.02, 127.0.0.1:54274][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.02, 127.0.0.1:54275][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:54277][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:54278][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:54279][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54275][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:54277][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:54285][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:54276][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54285][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:54276][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:54277][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54278][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:54278][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:54274][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:54277][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:54275][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:54276][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:54279][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:54278][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.00, 127.0.0.1:54277][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54287]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54287]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:54287]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:54335][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54339][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54338][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54337][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54335][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:54337][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:54339][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:54338][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:54335][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54339][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:54338][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:54335][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:54345][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:54336][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:54337][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54339][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:54339][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54345][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54336][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.02, 127.0.0.1:54336][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.02, 127.0.0.1:54339][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:54338][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:54337][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.02, 127.0.0.1:54335][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:54340][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:54339][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54353]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54353]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:54353]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:54336][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54335][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54338][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54337][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54339][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:54337][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:54335][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:54339][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54335][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:54339][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:54345][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:54338][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:54337][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:54336][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54345][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54336][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:54338][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:54340][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:54339][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:54335][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:54337][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:54336][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:54338][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54363]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54363]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:54363]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:54753][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54753][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54758][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:54757][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:54755][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:54756][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54754][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:54753][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:54758][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:54757][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:54756][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:54754][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:54753][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.02, 127.0.0.1:54755][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:54757][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:54753][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:54754][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.00, 127.0.0.1:54764][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:54758][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.00, 127.0.0.1:54755][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:54764][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54755][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:54755][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:54755][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:54754][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:54758][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:54753][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:54756][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:54757][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:54755][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:54754][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54765]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54765]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:54765]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:55206][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55209][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55206][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55209][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:55206][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.03, 127.0.0.1:55211][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:55210][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:55217][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:55209][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55217][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:55209][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55211][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55209][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:55206][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:55207][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:55210][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55219]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55219]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55219]
+[mHTTP GET /fr/play2/ 200 [0.05, 127.0.0.1:55211][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:55209][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55206][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/world_builder/world/character_modal.js 200 [0.01, 127.0.0.1:55209][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/game.js 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/update_user_coordinates.js 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.01, 127.0.0.1:55210][0m
+[36mHTTP GET /static/tailwind/flowbite.min.js.map 304 [0.01, 127.0.0.1:55217][0m
+[mHTTP GET /static/fonts/space_2.jpg 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/js/phaser/phaser.js 200 [0.04, 127.0.0.1:55206][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.04, 127.0.0.1:55209][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:55211][0m
+[36mHTTP GET /static/js/quill/quill.js.map 304 [0.00, 127.0.0.1:55217][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:55211][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:55210][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.01, 127.0.0.1:55209][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.01, 127.0.0.1:55207][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:55206][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:55208][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.01, 127.0.0.1:55211][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.01, 127.0.0.1:55210][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55254]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55254]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:55358][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52631]
+[36mHTTP GET /static/js/game/world_builder/temp_play2/game.js 304 [0.00, 127.0.0.1:55358][0m
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:55366][0m
+[mHTTP GET /static/img/foreground/WARPZONE/warpzone_1/0.gif 200 [0.00, 127.0.0.1:55358][0m
+[mHTTP GET /static/img/foreground/PLANET/planete_3/0.gif 200 [0.00, 127.0.0.1:55366][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55368]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55368]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:55417][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55368]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:55417][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55422]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55422]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:55417][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55422]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:55417][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.00, 127.0.0.1:55472][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:55417][0m
+[mHTTP GET /static/img/users/25/0.gif 200 [0.01, 127.0.0.1:55471][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55473]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55473]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:55417][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55473]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:55417][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55485]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55485]
+[mHTTP GET /fr/play2/ 200 [0.07, 127.0.0.1:55417][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55485]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.03, 127.0.0.1:55417][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55496]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55496]
+[mHTTP GET /fr/play2/ 200 [0.06, 127.0.0.1:55417][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55496]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:55417][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55509]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55509]
+[mHTTP GET /fr/play2/ 200 [0.05, 127.0.0.1:55417][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55509]
+[mHTTP GET /static/js/game/world_builder/temp_play2/phaser_config.js 200 [0.02, 127.0.0.1:55417][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55529]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55529]
