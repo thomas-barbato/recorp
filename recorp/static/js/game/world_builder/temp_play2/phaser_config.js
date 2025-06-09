@@ -56,6 +56,73 @@ class GameScene extends Phaser.Scene {
         return sizeMap[sizeValue] || { x: 1, y: 1 };
     }
 
+    getObjectZone(coordX, coordY, elementSize){
+
+        const coord_array = []
+        const size = getSizeFromValue(elementSize);
+        const sizeX = size.x;
+        const sizeY = size.y;
+
+        if(sizeX == 1 && sizeY == 1){
+            return { x: coordX, y: coordY }
+        }
+
+        switch(size.x){
+
+            case 2:
+                if(size.y == 1){
+
+                    coord_array = [
+                        {x: coordX - 1, y: coordY},{x: coordX, y: coordY}
+                    ];
+
+                }else if(size.y == 2){
+
+                    coord_array = [
+                        {x: coordX - 1, y: coordY},{x: coordX, y: coordY},
+                        {x: coordX, y: coordY},{x: coordX, y: coordY}
+                    ]
+
+                }else if(size.y == 3){
+
+                    coord_array = [
+                        {x: coordX - 1, y: coordY - 1}, {x: coordX, y: coordY -1},
+                        {x: coordX - 1, y: coordY}, {x: coordX, y: coordY},
+                        {x: coordX - 1, y: coordY + 1}, {x: coordX, y: coordY + 1},
+                    ]
+
+                }
+                break;
+            case 3:
+                if(size.y == 1){
+
+                    coord_array = [{x: coordX - 1, y: coordY}, {x: coordX, y: coordY}, {x: coordX + 1, y: coordY}]
+                    
+                }else if(size.y == 3){
+
+                    coord_array = [
+                        {x: coordX - 1, y: coordY - 1}, {x: coordX, y: coordY - 1}, {x: coordX + 1, y: coordY - 1},
+                        {x: coordX - 1, y: coordY}, {x: coordX, y: coordY}, {x: coordX + 1, y: coordY},
+                        {x: coordX - 1, y: coordY + 1}, {x: coordX, y: coordY + 1}, {x: coordX + 1, y: coordY + 1},
+                    ]
+
+                }
+                break;
+            case 4:
+
+            coord_array = [
+                {x: coordX - 1, y: coordY-2}, {x: coordX, y: coordY-2}, {x: coordX + 1, y: coordY-2}, {x: coordX + 2, y: coordY-2},
+                {x: coordX - 1, y: coordY-1}, {x: coordX, y: coordY-1}, {x: coordX + 1, y: coordY-1}, {x: coordX + 2, y: coordY-1},
+                {x: coordX - 1, y: coordY}, {x: coordX, y: coordY}, {x: coordX + 1, y: coordY}, {x: coordX + 2, y: coordY},
+                {x: coordX - 1, y: coordY + 1}, {x: coordX, y: coordY + 1}, {x: coordX + 1, y: coordY + 1}, {x: coordX + 2, y: coordY + 1},
+            ]
+                
+        }
+
+        return coord_array
+
+    }
+
     createSectorElements() {
         // Vérifier si les données des éléments statiques existent
         if (!this.SECTOR_DATA.sector_element || !Array.isArray(this.SECTOR_DATA.sector_element)) {
@@ -116,6 +183,144 @@ class GameScene extends Phaser.Scene {
         });
     }
 
+    createPlayers() {
+        // Vérifier si les données des joueurs existent
+        if (!this.SECTOR_DATA.pc || !Array.isArray(this.SECTOR_DATA.pc)) {
+            console.log('Aucune donnée de joueur trouvée ou format incorrect');
+            return;
+        }
+
+        // Parcourir tous les joueurs dans les données du secteur
+        this.SECTOR_DATA.pc.forEach(playerData => {
+
+            const playerId = `pc_${playerData.player}`;
+            const coordinates = playerData.user.coordinates;
+            const shipId = playerData.ship.ship_id;
+            const shipSize_x = playerData.ship.size.x * 32 || 1;
+            const shipSize_y = playerData.ship.size.y * 32 || 1;
+
+            if(current_user_id != playerData.user.user){
+
+                // Vérifier que les coordonnées sont valides
+                if (coordinates && coordinates.x >= 0 && coordinates.x < this.MAX_GRID_SIZE && 
+                    coordinates.y >= 0 && coordinates.y < this.MAX_GRID_SIZE) {
+                    
+                    // Créer le vaisseau du joueur
+                    const shipSprite = this.add.sprite(
+                        coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
+                        coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
+                        `ship_${shipId}`
+                    );
+                    
+                    // Adapter la taille du vaisseau selon ses caractéristiques
+                    shipSprite.setDisplaySize(shipSize_x, shipSize_y);
+                    shipSprite.setDepth(500); // Au-dessus de la grille mais sous le popover
+                    
+                    // Rendre le vaisseau interactif
+                    shipSprite.setInteractive();
+                    
+                    // Ajouter les événements de survol
+                    shipSprite.on('pointerover', () => {
+                        this.showPopover(coordinates.x, coordinates.y, null, true, playerData);
+                    });
+                    
+                    shipSprite.on('pointerout', () => {
+                        this.hidePopover();
+                    });
+                    
+                    // Ajouter le clic pour des interactions futures
+                    shipSprite.on('pointerdown', () => {
+                        console.log(`Joueur cliqué: ${playerData.user.name} (${playerId})`);
+                        // Ici vous pouvez ajouter d'autres interactions avec le joueur
+                    });
+            
+                    // Stocker le joueur avec son ID
+                    this.otherPlayers.set(playerId, {
+                        sprite: shipSprite,
+                        data: playerData,
+                        gridX: coordinates.x,
+                        gridY: coordinates.y,
+                        size: this.getSizeFromValue(playerData.ship.size.x * playerData.ship.size.y)
+                    });
+                }
+                
+                console.log(`Joueur créé: ${playerData.user.name} à (${coordinates.x}, ${coordinates.y})`);
+            }else{
+
+                // Créer le vaisseau du joueur
+                this.player = this.add.sprite(
+                    coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    `ship_${shipId}`
+                );
+                this.player.setDisplaySize(shipSize_x, shipSize_y);
+                this.player.setDepth(500)
+                this.player.gridX = coordinates.x;
+                this.player.gridY = coordinates.y;
+                
+            }
+        });
+    }
+
+    createNpcs() {
+        // Vérifier si les données des joueurs existent
+        if (!this.SECTOR_DATA.npc || !Array.isArray(this.SECTOR_DATA.npc)) {
+            console.log('Aucune donnée de joueur trouvée ou format incorrect');
+            return;
+        }
+
+        // Parcourir tous les joueurs dans les données du secteur
+        this.SECTOR_DATA.npc.forEach(npcData => {
+            const npcId = `npc_${npcData.npc.id}`;
+            const coordinates = npcData.npc.coordinates;
+            const shipSize_x = npcData.ship.size.x * 32 || 1;
+            const shipSize_y = npcData.ship.size.y * 32 || 1;
+            
+            // Vérifier que les coordonnées sont valides
+            if (coordinates && coordinates.x >= 0 && coordinates.x < this.MAX_GRID_SIZE && 
+                coordinates.y >= 0 && coordinates.y < this.MAX_GRID_SIZE) {
+                
+                // Créer le vaisseau du joueur
+                const shipSprite = this.add.sprite(
+                    coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
+                    `ship_${npcData.ship.ship_id}`
+                );
+                
+                // Adapter la taille du vaisseau selon ses caractéristiques
+                shipSprite.setDisplaySize(shipSize_x, shipSize_y);
+                shipSprite.setDepth(500); // Au-dessus de la grille mais sous le popover
+                
+                // Rendre le vaisseau interactif
+                shipSprite.setInteractive();
+                
+                // Ajouter les événements de survol
+                shipSprite.on('pointerover', () => {
+                    this.showPopover(coordinates.x, coordinates.y, null, false, npcData);
+                });
+                
+                shipSprite.on('pointerout', () => {
+                    this.hidePopover();
+                });
+                
+                // Ajouter le clic pour des interactions futures
+                shipSprite.on('pointerdown', () => {
+                    console.log(`npc cliqué`);
+                    // Ici vous pouvez ajouter d'autres interactions avec le joueur
+                });
+                
+                // Stocker le joueur avec son ID
+                this.npcs.set(npcId, {
+                    sprite: shipSprite,
+                    data: npcData,
+                    gridX: coordinates.x,
+                    gridY: coordinates.y,
+                    size: this.getSizeFromValue(npcData.ship.size.x * npcData.ship.size.y)
+                });
+            }
+        });
+    }
+
     createPopover() {
         // Créer le popover (initialement invisible)
         this.popoverBackground = this.add.rectangle(0, 0, 120, 80, 0x2c3e50, 0.9);
@@ -166,9 +371,12 @@ class GameScene extends Phaser.Scene {
                 this.popoverImage.setVisible(true);
             }
         } else {
+            
             // Contenu pour une cellule normale
             const distance = this.calculateDistance(x, y, this.player.gridX, this.player.gridY);
             popoverContent = `Cellule (${x}, ${y})\nDistance: ${distance}`;
+            popoverWidth = Math.max(50, popoverContent.length * 5);
+            popoverHeight = 30;
         }
         
         // Ajuster la taille du fond selon le contenu
@@ -365,144 +573,6 @@ class GameScene extends Phaser.Scene {
                 this.gridCells[x][y] = cell;
             }
         }
-    }
-
-    createPlayers() {
-        // Vérifier si les données des joueurs existent
-        if (!this.SECTOR_DATA.pc || !Array.isArray(this.SECTOR_DATA.pc)) {
-            console.log('Aucune donnée de joueur trouvée ou format incorrect');
-            return;
-        }
-
-        // Parcourir tous les joueurs dans les données du secteur
-        this.SECTOR_DATA.pc.forEach(playerData => {
-
-            const playerId = `pc_${playerData.player}`;
-            const coordinates = playerData.user.coordinates;
-            const shipId = playerData.ship.ship_id;
-            const shipSize_x = playerData.ship.size.x * 32 || 1;
-            const shipSize_y = playerData.ship.size.y * 32 || 1;
-
-            if(current_user_id != playerData.user.user){
-
-                // Vérifier que les coordonnées sont valides
-                if (coordinates && coordinates.x >= 0 && coordinates.x < this.MAX_GRID_SIZE && 
-                    coordinates.y >= 0 && coordinates.y < this.MAX_GRID_SIZE) {
-                    
-                    // Créer le vaisseau du joueur
-                    const shipSprite = this.add.sprite(
-                        coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
-                        coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
-                        `ship_${shipId}`
-                    );
-                    
-                    // Adapter la taille du vaisseau selon ses caractéristiques
-                    shipSprite.setDisplaySize(shipSize_x, shipSize_y);
-                    shipSprite.setDepth(500); // Au-dessus de la grille mais sous le popover
-                    
-                    // Rendre le vaisseau interactif
-                    shipSprite.setInteractive();
-                    
-                    // Ajouter les événements de survol
-                    shipSprite.on('pointerover', () => {
-                        this.showPopover(coordinates.x, coordinates.y, null, true, playerData);
-                    });
-                    
-                    shipSprite.on('pointerout', () => {
-                        this.hidePopover();
-                    });
-                    
-                    // Ajouter le clic pour des interactions futures
-                    shipSprite.on('pointerdown', () => {
-                        console.log(`Joueur cliqué: ${playerData.user.name} (${playerId})`);
-                        // Ici vous pouvez ajouter d'autres interactions avec le joueur
-                    });
-            
-                    // Stocker le joueur avec son ID
-                    this.otherPlayers.set(playerId, {
-                        sprite: shipSprite,
-                        data: playerData,
-                        gridX: coordinates.x,
-                        gridY: coordinates.y
-                    });
-                }
-                
-                console.log(`Joueur créé: ${playerData.user.name} à (${coordinates.x}, ${coordinates.y})`);
-            }else{
-
-                // Créer le vaisseau du joueur
-                this.player = this.add.sprite(
-                    coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
-                    coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
-                    `ship_${shipId}`
-                );
-                this.player.setDisplaySize(shipSize_x, shipSize_y);
-                this.player.setDepth(500)
-                this.player.gridX = coordinates.x;
-                this.player.gridY = coordinates.y;
-                
-            }
-        });
-    }
-
-    createNpcs() {
-        // Vérifier si les données des joueurs existent
-        if (!this.SECTOR_DATA.npc || !Array.isArray(this.SECTOR_DATA.npc)) {
-            console.log('Aucune donnée de joueur trouvée ou format incorrect');
-            return;
-        }
-
-        // Parcourir tous les joueurs dans les données du secteur
-        this.SECTOR_DATA.npc.forEach(npcData => {
-            const npcId = `npc_${npcData.npc.id}`;
-            const coordinates = npcData.npc.coordinates;
-            const shipSize_x = npcData.ship.size.x * 32 || 1;
-            const shipSize_y = npcData.ship.size.y * 32 || 1;
-            
-            // Vérifier que les coordonnées sont valides
-            if (coordinates && coordinates.x >= 0 && coordinates.x < this.MAX_GRID_SIZE && 
-                coordinates.y >= 0 && coordinates.y < this.MAX_GRID_SIZE) {
-                
-                // Créer le vaisseau du joueur
-                const shipSprite = this.add.sprite(
-                    coordinates.x * this.CELL_SIZE + this.CELL_SIZE / 2,
-                    coordinates.y * this.CELL_SIZE + this.CELL_SIZE / 2,
-                    `ship_${npcData.ship.ship_id}`
-                );
-                
-                // Adapter la taille du vaisseau selon ses caractéristiques
-                shipSprite.setDisplaySize(shipSize_x, shipSize_y);
-                shipSprite.setDepth(500); // Au-dessus de la grille mais sous le popover
-                
-                // Rendre le vaisseau interactif
-                shipSprite.setInteractive();
-                
-                // Ajouter les événements de survol
-                shipSprite.on('pointerover', () => {
-                    this.showPopover(coordinates.x, coordinates.y, null, false, npcData);
-                });
-                
-                shipSprite.on('pointerout', () => {
-                    this.hidePopover();
-                });
-                
-                // Ajouter le clic pour des interactions futures
-                shipSprite.on('pointerdown', () => {
-                    console.log(`npc cliqué`);
-                    // Ici vous pouvez ajouter d'autres interactions avec le joueur
-                });
-                
-                // Stocker le joueur avec son ID
-                this.npcs.set(npcId, {
-                    sprite: shipSprite,
-                    data: npcData,
-                    gridX: coordinates.x,
-                    gridY: coordinates.y,
-                    sizeX: shipSize_x,
-                    sizeY: shipSize_y,
-                });
-            }
-        });
     }
 
     setupCamera() {
