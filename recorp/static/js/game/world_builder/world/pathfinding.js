@@ -312,6 +312,7 @@ function get_pathfinding(element) {
     
     const playerObj = map_informations['pc'].find(a => a['user']['user'] === current_user_id);
     const startNodeId = document.querySelector('.player-ship-start-pos').id.split('_');
+    console.log(document.querySelector('.player-ship-start-pos').id)
     const destinationNodeId = element.parentNode.parentNode.id.split('_');
     const sizeElement = document.querySelector('.player-ship-start-pos');
     const gridContainer = document.querySelector('tbody');

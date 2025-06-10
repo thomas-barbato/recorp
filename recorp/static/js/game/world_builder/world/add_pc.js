@@ -38,7 +38,7 @@ function extractPlayerInfo(playerData) {
             name: playerData.user.name
         },
         isCurrentUser,
-        borderColor: isCurrentUser ? "border-green-300" : "border-cyan-400"
+        borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400"
     };
 }
 
@@ -236,7 +236,7 @@ function setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spa
     update_user_coord_display(playerInfo.coordinates.baseX, playerInfo.coordinates.baseY);
     
     cell.classList.add("ship-pos");
-    cellDiv.classList.add("bg-green-300/10");
+    cellDiv.classList.add("bg-orange-400/30");
     border.classList.add(playerInfo.borderColor);
     
     handleCurrentUserShipPositioning(cell, playerInfo.ship.sizeY, playerInfo.ship.sizeX, rowOffset, colOffset);

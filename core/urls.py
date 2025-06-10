@@ -13,11 +13,6 @@ urlpatterns = [
         name="play_view",
     ),
     path(
-        "play2/",
-        core_views.DisplayPlay2View.as_view(template_name="play2.html"),
-        name="play2_view",
-    ),
-    path(
         "play/tutorial",
         core_views.DisplayTutorialView.as_view(template_name="tutorial.html"),
         name="tutorial_view",

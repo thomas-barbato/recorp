@@ -159,7 +159,7 @@ function update_player_pos_display_after_move(data){
     if (!is_user_is_on_mobile_device()) {
         set_pathfinding_event();
     }
-
+    console.log(ship_size_y, ship_size_x)
     for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
             
@@ -261,11 +261,10 @@ function update_player_pos_display_after_move(data){
 
         coord_y++;
         coord_x = parseInt(data.player.user.coordinates.x) + 1
-
         document.querySelector('#movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
-        document.querySelector('#mobile-movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
         document.querySelector('#movement-container-value-max').textContent = `${data.player.ship.max_movement}`;
         document.querySelector('#movement-container-value-min').textContent = `${data.player.ship.current_movement}`;
+        document.querySelector('#mobile-movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
         document.querySelector('#mobile-movement-container-value-max').textContent = `${data.player.ship.max_movement}`;
         document.querySelector('#mobile- movement-container-value-min').textContent = `${data.player.ship.current_movement}`;
 
