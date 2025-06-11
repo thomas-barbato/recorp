@@ -109,7 +109,11 @@
                                             game-icons--missile-swarm
                                             {% elif key == 'Frigate' or key == 'Destroyer' or key == 'Battlecruiser' or key == 'Dreadnought' %}
                                             game-icons--spaceship
-                                            {% elif key == 'Thermal Shield' or key == 'Ballistic Shield' or key == 'Missile Shield' %}
+                                            {%  elif key == 'Termal Shield' %}
+                                            game-icons--laser-warning
+                                            {% elif key == 'Ballistic Shield' %}
+                                            game-icons--shield-reflect
+                                            {% key == 'Missile Shield' %}
                                             game-icons--dragon-shield
                                             {% elif key == 'Repaire' %}
                                             game-icons--auto-repair
@@ -228,7 +232,7 @@
 
     let user_is_on_mobile_bool = is_user_is_on_mobile_device()
 
-    let action_listener_touch_click = user_is_on_mobile_bool === true ? 'click' : 'click';
+    let action_listener_touch_click = user_is_on_mobile_bool === true ? 'click' : 'touchstart';
     let faction_element = document.querySelectorAll('.faction');
     let faction_selected = ""
 

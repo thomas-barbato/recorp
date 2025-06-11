@@ -1,19 +1,107 @@
 {% load static %}
 {% load i18n %}
-<div class="flex w-full flex-col overflow-hidden lg:blur-none mx-auto order-1 text-xs lg:items-center items-start bg-zinc-950/70 text-white 2xl:border-b border-solid border-slate-600 2xl:border-slate-600/0" id="info-container">
+<div class="flex w-full flex-col overflow-hidden lg:blur-none mx-auto order-1 text-xs lg:items-center items-start text-white 2xl:border-b border-[#B1F1CB]" id="info-container">
   
-  <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-1 p-1">
+  <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-1 p-1 bg-gray-800 border border-slate-600">
 
-    <div id="mobile-info-player-container" class="flex flex-col w-full item-center justify-end lg:hidden inline gap-1 z-30">
+    <div id="mobile-info-player-container" class="flex flex-col h-full w-full item-center lg:hidden inline gap-1 z-30">
+      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md">
+      {% for pc in map_informations.pc %}
+        {% if pc.user.user == request.user.id %}
+        <div class="flex w-full flex-row" id="">
+            <span class="flex w-full z-10 font-bold font-shadow justify-between" id="hp-container-value-mobile">
+                <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Hull points'%}">
+                  <span class="flex items-center gap-1">
+                    <label for="hp-container-value-mobile" class="iconify game-icons--shieldcomb width-[24px] height-[24px]"></label>
+                    <span>{% translate 'Hull points'%}</span>
+                  </span>
+                  <span class="flex gap-1">
+                    <span id="hp-container-value-min">{{pc.ship.current_hp}}</span>/<span id="hp-container-value-max">{{pc.ship.max_hp}}</span>
+                  </span>
+                </div>
+            </span>
+          </div>
+          <div class="flex w-full flex-row" id="">
+            <span class="flex w-full z-10 font-bold font-shadow justify-between" id="movement-container-value-mobile">
+                <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Movement points'%}">
+                  <span class="flex items-center gap-1">
+                    <label for="movement-container-value-mobile" class="iconify game-icons--spaceship width-[24px] height-[24px]"></label>
+                    <span>{% translate 'Movement points'%}</span>
+                  </span>
+                  <span class="flex gap-1">
+                    <span id="movement-container-value-min">{{pc.ship.current_movement}}</span>/<span id="movement-container-value-max">{{pc.ship.max_movement}}</span>
+                  </span>
+                </div>
+            </span>
+          </div>
+          <div class="flex w-full flex-row" id="">
+            <span class="flex w-full z-10 font-bold font-shadow justify-between" id="hp-container-value-mobile">
+                <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Action points'%}">
+                  <span class="flex items-center gap-1">
+                    <label for="ap-container-value-mobile" class="iconify game-icons--targeting width-[24px] height-[24px]"></label>
+                    <span>{% translate 'Action points'%}</span>
+                  </span>
+                  <span class="flex gap-1">
+                    <span id="ap-container-value-min">{{pc.user.current_ap}}</span>/<span id="ap-container-value-max">{{pc.user.max_ap}}</span>
+                  </span>
+                </div>
+            </span>
+          </div>
+          
+      </fieldset>
+      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md">
+          <div class="flex w-full flex-row" id="">
+            <span class="flex w-full z-10 font-bold font-shadow justify-between" id="ballistic-container-value-mobile">
+                <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Ballistic defense'%}">
+                  <span class="flex items-center gap-1">
+                    <label for="thermal-container-value-mobile" class="iconify game-icons--shield-reflect width-[24px] height-[24px]"></label>
+                    <span>{% translate 'Ballistic defense'%}</span>
+                  </span>
+                  <span class="flex gap-1">
+                    <span id="ballistic-container-value-min">{{pc.ship.current_ballistic_defense}}</span>/<span id="ballistic-container-value-max">{{pc.ship.max_ballistic_defense}}</span>
+                  </span>
+                </div>
+            </span>
+          </div>
+          <div class="flex w-full flex-row" id="">
+            <span class="flex w-full z-10 text-xs font-bold font-shadow" id="thermal-container-value-mobile">
+                <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Thermal defense'%}">
+                  <span class="flex items-center gap-1">
+                    <label for="thermal-container-value-mobile" class="iconify game-icons--laser-warning width-[24px] height-[24px]"></label>
+                    <span>{% translate 'Thermal defense'%}</span>
+                  </span>
+                  <span class="flex gap-1">
+                    <span id="thermal-container-value-min">{{pc.ship.current_thermal_defense}}</span>/<span id="thermal-container-value-max">{{pc.ship.max_thermal_defense}}</span>
+                  </span>
+                </div>
+            </span>
+          </div>
+          <div class="flex w-full flex-row" id="">
+            <span class="flex w-full z-10 text-xs font-bold font-shadow justify-between" id="missile-container-value-mobile">
+                <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Missile defense'%}">
+                  <span class="flex items-center gap-1">
+                    <label for="missile-container-value-mobile" class="iconify game-icons--dragon-shield width-[24px] height-[24px]"></label>
+                    <span>{% translate 'Missile defense'%}</span>
+                  </span>
+                  <span class="flex gap-1">
+                    <span id="missile-container-value-min">{{pc.ship.current_missile_defense}}</span>/<span id="missile-container-value-max">{{pc.ship.max_missile_defense}}</span>
+                  </span>
+                </div>
+              </span>
+          </div>
+        {% endif %}
+      {% endfor %}
+      </fieldset>
+      <i class="fa-solid fa-id-badge fa-2x mx-auto text-emerald-400" id="character-full-info-btn"></i>
     </div>
 
-    <div id="info-sector-container" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20">
+    <div id="info-sector-container" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20 lg:border-none border border-[#B1F1CB] lg:rounded-none rounded lg:bg-emerald-900/0 bg-emerald-900/40 rounded-md">
       <div class="flex lg:p-0 p-2 gap-1 lg:flex-row flex-col">
         
-        <div class="flex w-full mx-auto lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start gap-1">
-          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] p-1 rounded-md"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
-          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] p-1 rounded-md"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
-          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] p-1 rounded-md"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
+        <div class="flex w-full mx-auto lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start lg:gap-1">
+          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
+          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
+          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
           <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
             <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
             <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
@@ -38,3 +126,6 @@
     </fieldset>
   </div>
 </div>
+
+<script>
+</script>
