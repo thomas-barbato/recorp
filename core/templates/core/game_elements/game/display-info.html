@@ -1,13 +1,28 @@
 {% load static %}
 {% load i18n %}
-<div class="flex w-full flex-col overflow-hidden lg:blur-none mx-auto order-1 text-xs lg:items-center items-start text-white 2xl:border-b border-[#B1F1CB]" id="info-container">
+<div class="flex w-full flex-col overflow-hidden lg:blur-none mx-auto order-1 text-xs lg:items-center items-start text-white 2xl:border-b border-[#B1F1CB] bg-gray-800 border border-slate-600" id="info-container">
   
-  <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-1 p-1 bg-gray-800 border border-slate-600">
+  <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-1 p-1">
 
     <div id="mobile-info-player-container" class="flex flex-col h-full w-full item-center lg:hidden inline gap-1 z-30">
-      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md">
       {% for pc in map_informations.pc %}
-        {% if pc.user.user == request.user.id %}
+      {% if pc.user.user == request.user.id %}
+      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-1">
+        <div class="flex w-full mx-auto lg:flex-row flex-row lg:justify-center lg:items-center justify-start items-start lg:gap-1">
+          <img class="w-[56.4px] h-auto h-auto max-w-xl rounded-lg" alt="image description" {% if pc.user.image %} srcset="/static/img/users/{{pc.user.player}}/0.gif" {% else %} srcset="{% static 'ux/default-user.svg' %}" {% endif %}>
+          <div class="flex w-full flex-col self-center p-2">
+            <div class="flex w-full flex-row text-xs gap-1">
+                <label for="player-name" class="text-white font-bold">{% translate "Name" %}:</label>
+                <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.name }}</div>
+            </div>
+            <div class="flex w-full flex-row text-xs gap-1">
+                <label for="player-name" class="text-white font-bold">{% translate "Archetype" %}:</label>
+                <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.archetype_name }}</div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md">
         <div class="flex w-full flex-row" id="">
             <span class="flex w-full z-10 font-bold font-shadow justify-between" id="hp-container-value-mobile">
                 <div class="flex gap-2 flex-row justify-between items-center w-full" title="{% translate 'Hull points'%}">
@@ -47,7 +62,66 @@
                 </div>
             </span>
           </div>
-          
+      </fieldset>
+    </div>
+    <div id="info-sector-container" class="flex flex-col lg:w-full w-full text-center item-start z-20 border-none rounded rounded-md lg:block hidden">
+      <div class="flex lg:p-0 p-2 gap-1 lg:flex-row flex-col">
+        <div class="flex w-full mx-auto lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start lg:gap-1">
+          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
+          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
+          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
+          <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
+            <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
+            <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
+            <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
+          </div>
+          <div class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-between lg:w-auto lg:w-[10vw] w-[45vw]">
+              <label for="target-coord-name"><i class="fa-solid fa-satellite-dish p-1"></i></label>
+                <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[15vw] w-[25vw] px-1.5 py-1 font-shadow truncate text-center">{% translate 'Nothing selected' %}</span>
+                <span id="target-coord-y" class="flex bg-neutral-400 font-bold p-1 invisible">00</span>
+                <span id="target-coord-x" class="flex bg-emerald-400 font-bold p-1 rounded-r invisible">00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="info-sector-container-mobile" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20 lg:hidden gap-1">
+      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-1">
+        <div class="flex w-full flex-row" id="">
+          <span class="flex w-full z-10 font-bold font-shadow justify-between" id="movement-container-value-mobile">
+              <div class="flex gap-2 flex-row justify-between items-center w-full">
+                <span class="flex items-center gap-1">
+                  <span>{% translate "Sector" %}</span>
+                </span>
+                <span class="flex gap-1">
+                  <span id="sector-name">{{ map_informations.sector.name }}</span>
+                </span>
+              </div>
+          </span>
+        </div>
+        <div class="flex w-full flex-row" id="">
+          <span class="flex w-full z-10 font-bold font-shadow justify-between" id="movement-container-value-mobile">
+              <div class="flex gap-2 flex-row justify-between items-center w-full">
+                <span class="flex items-center gap-1">
+                  <span>{% translate "Faction" %}</span>
+                </span>
+                <span class="flex gap-1">
+                  <span id="sector-faction">{{ map_informations.sector.faction.name }}</span>
+                </span>
+              </div>
+          </span>
+        </div>
+        <div class="flex w-full flex-row" id="">
+          <span class="flex w-full z-10 font-bold font-shadow justify-between" id="movement-container-value-mobile">
+              <div class="flex gap-2 flex-row justify-between items-center w-full">
+                <span class="flex items-center gap-1">
+                  <span>{% translate "Security level" %}</span>
+                </span>
+                <span class="flex gap-1">
+                  <span id="sector-security">{{ map_informations.sector.security.translated_name }}</span>
+                </span>
+              </div>
+          </span>
+        </div>
       </fieldset>
       <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md">
           <div class="flex w-full flex-row" id="">
@@ -89,36 +163,18 @@
                 </div>
               </span>
           </div>
-        {% endif %}
-      {% endfor %}
       </fieldset>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  <div class="flex w-full lg:hidden flex-row p-2">
+    <span class="flex w-1/2 justify-center items-center">
       <i class="fa-solid fa-id-badge fa-2x mx-auto text-emerald-400" id="character-full-info-btn"></i>
-    </div>
-
-    <div id="info-sector-container" class="flex flex-col lg:w-full w-full lg:text-center item-start z-20 lg:border-none border border-[#B1F1CB] lg:rounded-none rounded lg:bg-emerald-900/0 bg-emerald-900/40 rounded-md">
-      <div class="flex lg:p-0 p-2 gap-1 lg:flex-row flex-col">
-        
-        <div class="flex w-full mx-auto lg:flex-row flex-col lg:justify-center lg:items-center justify-start items-start lg:gap-1">
-          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span></p>
-          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}</p>
-          <p class="font-shadow text-xs w-auto text-emerald-300 lg:bg-emerald-900 lg:border lg:border-[#B1F1CB] lg:p-1 lg:rounded-md"><b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}</p>
-          <div class="flex flex-row bg-neutral-600 rounded-l rounded-r flex justify-center items-center">
-            <label for="player-coord-x"><i class="fa-solid fa-arrows-to-eye px-1.5 py-0.5"></i></label>
-            <span id="player-coord-y" class="bg-neutral-400 font-bold px-1.5 py-1"></span>
-            <span id="player-coord-x" class="bg-emerald-400 font-bold px-1.5 py-1 rounded-r"></span>
-          </div>
-          <div class="flex flex-row bg-neutral-400 rounded-l rounded-r bg-neutral-600 flex lg:justify-center lg:items-center justify-self-between lg:w-auto lg:w-[10vw] w-[45vw]">
-              <label for="target-coord-name"><i class="fa-solid fa-satellite-dish p-1"></i></label>
-                <span id="target-coord-name" class="font-bold bg-neutral-600 lg:w-[15vw] w-[25vw] px-1.5 py-1 font-shadow truncate text-center">{% translate 'Nothing selected' %}</span>
-                <span id="target-coord-y" class="flex bg-neutral-400 font-bold p-1 invisible">00</span>
-                <span id="target-coord-x" class="flex bg-emerald-400 font-bold p-1 rounded-r invisible">00</span>
-          </div>
-        </div>
-        <span class="flex mx-auto lg:hidden justify-center item-center">
-          <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400" id="chat-btn"></i>
-        </span>
-      </div>
-    </div>
+    </span>
+    <span class="flex w-1/2 justify-center items-center">
+      <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400" id="chat-btn"></i>
+    </span>
   </div>
   <div class="flex flex-row w-full lg:hidden justify-center item-start mb-1 px-2" id="current-effects-mobile">
     <fieldset class="flex text-xs items-start justify-center mx-auto gap-1 h-[25px] p-2 w-full text-start flex-col border border-slate-600 rounded bg-gray-600/40">
