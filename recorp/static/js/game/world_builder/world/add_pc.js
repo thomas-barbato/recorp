@@ -1,4 +1,6 @@
 function add_pc(data) {
+    console.log("dans add_pc")
+    console.log(data)
     const coordinatesArrayToDisableButton = [];
     
     data.forEach(playerData => {

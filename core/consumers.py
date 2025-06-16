@@ -301,10 +301,13 @@ class GameConsumer(WebsocketConsumer):
 
         self._remove_player_from_current_sector(user)
         destination_room_key = self._get_destination_room_key(player_action)
-
+        print(f"destination room key : {destination_room_key}")
+        print("dans _process_warp_travel")
         if self._is_other_player(user):
+            print("if")
             self._handle_other_player_warp(coordinates, size, player_id)
         else:
+            print("else")
             self._handle_own_player_warp(destination_room_key, player_id)
 
     def _remove_player_from_current_sector(self, user: int) -> None:
@@ -317,6 +320,7 @@ class GameConsumer(WebsocketConsumer):
     def _get_destination_room_key(self, player_action: PlayerAction) -> str:
         """Obtient la clé de la salle de destination."""
         destination_sector_id = player_action.get_player_sector()
+        print(f"Destination room key : {destination_sector_id}")
         return f"play_{destination_sector_id}"
 
     def _is_other_player(self, user: int) -> bool:
@@ -325,6 +329,7 @@ class GameConsumer(WebsocketConsumer):
 
     def _handle_other_player_warp(self, coordinates: Any, size: Any, player_id: int) -> None:
         """Gère le voyage d'un autre joueur."""
+        print("dans _handle_other_player_warp")
         spaceship_data_coord = {
             "type": "async_remove_ship",
             "message": {
@@ -333,10 +338,11 @@ class GameConsumer(WebsocketConsumer):
                 "player_id": player_id,
             },
         }
+        print(spaceship_data_coord)
         self._send_response(spaceship_data_coord)
 
     def _handle_own_player_warp(self, destination_room_key: str, player_id: int) -> None:
-        """Gère le voyage du propre joueur."""
+        """Gère le voyage du joueur."""
         self._setup_destination_cache(destination_room_key)
         self._update_source_cache()
         self._notify_destination_room(destination_room_key, player_id)
@@ -357,10 +363,13 @@ class GameConsumer(WebsocketConsumer):
 
     def _notify_destination_room(self, destination_room_key: str, player_id: int) -> None:
         """Notifie la salle de destination de l'arrivée du joueur."""
+        print("dans notify_destination_room")
         in_cache = cache.get(destination_room_key)
         
         for pc in in_cache["pc"]:
+            print(pc["user"]["player"], player_id)
             if pc["user"]["player"] == player_id:
+                print(pc["user"]["player"] == player_id)
                 async_to_sync(self.channel_layer.group_send)(
                     destination_room_key,
                     {

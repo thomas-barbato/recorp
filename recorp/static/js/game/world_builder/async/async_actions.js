@@ -159,7 +159,6 @@ function update_player_pos_display_after_move(data){
     if (!is_user_is_on_mobile_device()) {
         set_pathfinding_event();
     }
-    console.log(ship_size_y, ship_size_x)
     for (let row_i = 0; row_i < (atlas.tilesize * ship_size_y); row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < (atlas.tilesize * ship_size_x); col_i += atlas.tilesize) {
             
@@ -186,7 +185,7 @@ function update_player_pos_display_after_move(data){
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
 
-            entry_point_div.classList.add('bg-green-300/10');
+            entry_point_div.classList.add('bg-orange-400/30');
 
             entry_point_border.removeAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
             entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
@@ -202,7 +201,7 @@ function update_player_pos_display_after_move(data){
             space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
             update_user_coord_display(data.player.user.coordinates.x, data.player.user.coordinates.y);
-            border_color = "border-green-300";
+            border_color = "border-orange-400";
             entry_point.classList.add("ship-pos");
 
             if (!is_user_is_on_mobile_device()) {
@@ -263,11 +262,11 @@ function update_player_pos_display_after_move(data){
         coord_x = parseInt(data.player.user.coordinates.x) + 1
         document.querySelector('#movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
         document.querySelector('#movement-container-value-max').textContent = `${data.player.ship.max_movement}`;
-        document.querySelector('#movement-container-value-min').textContent = `${data.player.ship.current_movement}`;
-        document.querySelector('#mobile-movement-percent').style.width = `${Math.round((data.player.ship.current_movement * 100) / (data.player.ship.max_movement))}%`;
-        document.querySelector('#mobile-movement-container-value-max').textContent = `${data.player.ship.max_movement}`;
-        document.querySelector('#mobile- movement-container-value-min').textContent = `${data.player.ship.current_movement}`;
-
+        
+        let current_movement_value = document.querySelectorAll('#movement-container-value-current');
+        current_movement_value.forEach(element => {
+            element.textContent = `${data.player.ship.current_movement}`;
+        });
     }
 
     occured_event_display_on_map("movement", false, data.player.user.player, value=data.move_cost)

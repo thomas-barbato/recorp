@@ -138,7 +138,7 @@
         <input type="submit" id="chat-message-submit" hidden>
     </div>
 </div>
-<div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2">
+<div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2 justify-center items-center">
     <div class="flex z-100 mx-auto mb-2 justify-center lg:items-center">
         <div class="grid">
             <table class="tabletop-view">
@@ -169,7 +169,7 @@
             </table>
         </div>
     </div>
-    <div id="modal-container" class="z-[100] hidden"></div>
+    <div id="modal-container" class="z-[100]"></div>
     <div class="w-full flex justify-center items-center z-100 lg:order-99 order-3 lg:hidden" dir="ltr" id="mobile-cross">
         <div class="flex w-full justify-center items-center lg:hidden lg:order-99 order-3">
             <div class="w-[20vw] h-[20vh] flex flex-col bg-gray-600/40 border border-slate-600 rounded">
@@ -291,6 +291,101 @@
                     </div>
                 </fieldset>
                 <div id="button-menu" class="border border-[#B1F1CB] rounded bg-emerald-900/40 p-6">
+                    <ul class="grid grid-cols-3 gap-3">
+                        <li data-tooltip-target="character-tooltip" data-tooltip-placement="bottom" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center  ">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-user fa-lg"></i>
+                            </div>
+                            <div id="character-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Character" %}
+                                <div class="map-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="inventory-tooltip" data-tooltip-placement="bottom" data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-box fa-lg"></i>
+                            </div>
+                            <div id="inventory-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Inventory" %}
+                                <div class="map-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="faction-tooltip" data-tooltip-placement="bottom" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-people-group fa-lg"></i>
+                            </div>
+                            <div id="faction-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Faction" %}
+                                <div class="map-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="research-tooltip" data-tooltip-placement="bottom" data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-brain fa-lg"></i>
+                            </div>
+                            <div id="research-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Research" %}
+                                <div class="map-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="map-tooltip" data-tooltip-placement="bottom" data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-map fa-lg"></i>
+                            </div>
+                            <div id="map-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Map" %}
+                                <div class="map-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="task-tooltip" data-tooltip-placement="bottom" data-tooltip-placement="bottom" data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-list-check fa-lg"></i>
+                            </div>
+                            <div id="task-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Tasks" %}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="event-tooltip" data-tooltip-placement="bottom" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-mobile-screen-button fa-lg"></i>
+                            </div>
+                            <div id="event-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Events" %}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="message-tooltip" data-tooltip-placement="bottom" data-modal-target="message-modal" data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-envelope fa-lg"></i>
+                            </div>
+                            <div id="message-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Message" %}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <li data-tooltip-target="forum-tooltip" data-tooltip-placement="bottom" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-comments fa-lg"></i>
+                            </div>
+                            <div id="forum-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Forum" %}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </li>
+                        <form data-tooltip-target="logout-tooltip" data-tooltip-placement="bottom" method="post" action="{% url 'core:logout_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center logout">
+                            {% csrf_token %}
+                            <div class="w-auto flex items-center">
+                                <i class="fa-solid fa-home fa-lg"></i>
+                            </div>
+                            <div id="logout-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                                {% translate "Logout" %}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                            <button type="submit" id="logout-btn" class="hidden"></button>
+                        </form>
+                    </ul>
+                    <!--
                     <ul class="flex flex-col w-auto justify-center items-center gap-6">
                         <div class="flex flex-row w-full justify-around items-center gap-3">
                             <li data-tooltip-target="character-tooltip" data-tooltip-placement="bottom" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center  ">
@@ -392,7 +487,7 @@
                                 <button type="submit" id="logout-btn" class="hidden"></button>
                             </form>
                         </div>
-                    </ul>
+                    </ul>-->
                 </div>
             </div>
         {% endif %}
@@ -402,15 +497,16 @@
 <script src="{% static 'world_builder/world/game.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/navbar_game.js'%}" type="text/javascript"></script>
 <script src="{% static 'world_builder/classes/player.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/world/modals.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_background.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_foreground.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_borders.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_npc.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_pc.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/world/add_pc.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_sector_overflow.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/update_user_coordinates.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/async/async_actions.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/world/modals.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding_mobile.js'%}" type='text/javascript'></script>

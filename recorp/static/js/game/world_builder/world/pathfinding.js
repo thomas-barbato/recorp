@@ -19,7 +19,7 @@ const CSS_CLASSES = {
     BORDER: 'border',
     BORDER_2: 'border-2',
     BORDER_DASHED: 'border-dashed',
-    BORDER_GREEN: 'border-green-300',
+    BORDER_ORANGE: 'border-orange-400',
     BORDER_CYAN: 'border-cyan-400',
     HOVER_BORDER: 'hover:border-2',
     HOVER_BORDER_SIMPLE: 'hover:border'
@@ -263,7 +263,7 @@ function applyBorderConfiguration(coordinates, config, tealZoneSize) {
         
         if (element.classList.contains('ship-pos')) {
             spanElement.classList.remove(CSS_CLASSES.BORDER_DASHED, 
-                CSS_CLASSES.BORDER_2, CSS_CLASSES.BORDER_GREEN);
+                CSS_CLASSES.BORDER_2, CSS_CLASSES.BORDER_ORANGE);
         }
         
         if (borderConfig.removeBorder) {
@@ -312,7 +312,6 @@ function get_pathfinding(element) {
     
     const playerObj = map_informations['pc'].find(a => a['user']['user'] === current_user_id);
     const startNodeId = document.querySelector('.player-ship-start-pos').id.split('_');
-    console.log(document.querySelector('.player-ship-start-pos').id)
     const destinationNodeId = element.parentNode.parentNode.id.split('_');
     const sizeElement = document.querySelector('.player-ship-start-pos');
     const gridContainer = document.querySelector('tbody');
@@ -424,8 +423,8 @@ function applyDefaultStyles(zone, parent) {
     //zone.classList.add(CSS_CLASSES.HOVER_BORDER, CSS_CLASSES.HOVER_BORDER_SIMPLE);
     
     const styleMap = {
-        'player-ship-start-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_GREEN],
-        'ship-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_GREEN],
+        'player-ship-start-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_ORANGE],
+        'ship-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_ORANGE],
         'pc': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_CYAN],
         'npc': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_RED]
     };

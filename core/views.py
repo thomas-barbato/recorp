@@ -362,8 +362,8 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             ).get_or_set_cache()
             
             result_dict = dict()
-            for p in data["pc"]:
-                p["user"]["archetype_name"] = _(p["user"]["archetype_name"])
+            for pc in data["pc"]:
+                pc["user"]["archetype_name"] = _(pc["user"]["archetype_name"])
 
             data["sector"]["security"]["translated_name"] = _(
                 data["sector"]["security"]["translated_name"]

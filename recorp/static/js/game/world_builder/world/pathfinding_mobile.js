@@ -429,7 +429,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (span_ship_el) {
                     if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('ship-start-pos')) {
-                        span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
+                        span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-orange-400', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                         span_ship_el.textContent = "";
                     }
                     switch (i) {
@@ -473,7 +473,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('ship-start-pos')) {
-                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
+                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-orange-400', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = "";
                 }
                 if (i == 0) {
@@ -493,7 +493,7 @@ function define_position_preview(ship_arrival_coordinates, can_be_crossed, direc
                 let td_ship_el = document.getElementById(`${ship_arrival_coordinates[i]}`);
                 let span_ship_el = td_ship_el.querySelector('span');
                 if (td_ship_el.classList.contains('ship-pos') || td_ship_el.classList.contains('ship-start-pos')) {
-                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-green-300', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
+                    span_ship_el.classList.remove('border', 'border-dashed', 'border-2', 'border-orange-400', 'hover:border-2', 'hover:border', 'text-white', 'font-bold', 'text-center');
                     span_ship_el.textContent = "";
                 }
                 if (i == 0) {

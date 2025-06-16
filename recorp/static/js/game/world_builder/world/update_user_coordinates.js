@@ -42,7 +42,6 @@ function handleMobileInteraction(element) {
     const span = element.querySelector('span');
     
     if (element.classList.contains('ship-pos')) {
-        console.log("dedans")
         reverse_player_ship_display();
     } else if (element.classList.contains('uncrossable') && span?.dataset.modalTarget) {
         open_close_modal(span.dataset.modalTarget);

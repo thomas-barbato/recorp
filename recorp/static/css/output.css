@@ -843,6 +843,11 @@ video {
   margin: auto;
 }
 
+.mx-0 {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -851,11 +856,6 @@ video {
 .my-1 {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
-}
-
-.mx-0 {
-  margin-left: 0px;
-  margin-right: 0px;
 }
 
 .mb-1 {
@@ -1159,10 +1159,6 @@ video {
   height: 100vh;
 }
 
-.h-\[15vh\] {
-  height: 15vh;
-}
-
 .max-h-\[40vh\] {
   max-height: 40vh;
 }
@@ -1211,20 +1207,12 @@ video {
   width: 83.333333%;
 }
 
-.w-12 {
-  width: 3rem;
-}
-
 .w-2 {
   width: 0.5rem;
 }
 
 .w-2\/12 {
   width: 16.666667%;
-}
-
-.w-2\/4 {
-  width: 50%;
 }
 
 .w-24 {
@@ -1315,6 +1303,10 @@ video {
   width: 50%;
 }
 
+.w-\[56\.4px\] {
+  width: 56.4px;
+}
+
 .w-\[64px\] {
   width: 64px;
 }
@@ -1365,50 +1357,6 @@ video {
 
 .w-px {
   width: 1px;
-}
-
-.w-\[12px\] {
-  width: 12px;
-}
-
-.w-\[120px\] {
-  width: 120px;
-}
-
-.w-\[60px\] {
-  width: 60px;
-}
-
-.w-\[58px\] {
-  width: 58px;
-}
-
-.w-\[55px\] {
-  width: 55px;
-}
-
-.w-\[56px\] {
-  width: 56px;
-}
-
-.w-\[57px\] {
-  width: 57px;
-}
-
-.w-\[57\.5px\] {
-  width: 57.5px;
-}
-
-.w-\[56\.5px\] {
-  width: 56.5px;
-}
-
-.w-\[56\.4px\] {
-  width: 56.4px;
-}
-
-.w-3\/4 {
-  width: 75%;
 }
 
 .min-w-\[10vw\] {
@@ -1832,6 +1780,10 @@ video {
 
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .grid-cols-4 {
@@ -2603,11 +2555,6 @@ video {
   border-color: rgb(31 41 55 / var(--tw-border-opacity));
 }
 
-.border-green-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(134 239 172 / var(--tw-border-opacity));
-}
-
 .border-orange-400 {
   --tw-border-opacity: 1;
   border-color: rgb(251 146 60 / var(--tw-border-opacity));
@@ -2768,10 +2715,6 @@ video {
 
 .bg-gray-900\/50 {
   background-color: rgb(17 24 39 / 0.5);
-}
-
-.bg-green-300\/10 {
-  background-color: rgb(134 239 172 / 0.1);
 }
 
 .bg-neutral-400 {
@@ -4747,10 +4690,6 @@ button .ql-stroke,
     display: block;
   }
 
-  .md\:hidden {
-    display: none;
-  }
-
   .md\:h-\[60\%\] {
     height: 60%;
   }
@@ -4864,11 +4803,6 @@ button .ql-stroke,
 @media (min-width: 1024px) {
   .lg\:order-6 {
     order: 6;
-  }
-
-  .lg\:mx-0 {
-    margin-left: 0px;
-    margin-right: 0px;
   }
 
   .lg\:mb-0 {

@@ -140,7 +140,6 @@ window.addEventListener('load', () => {
                 update_player_coord(data.message);
                 break;
             case "async_reverse_ship":
-                console.log("async_reverse_ship !")
                 reverse_ship(data.message);
                 break;
             case "player_attack":
