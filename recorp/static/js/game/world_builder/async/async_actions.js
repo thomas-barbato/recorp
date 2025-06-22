@@ -47,9 +47,10 @@ function update_player_coord(data) {
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             entry_point.classList.remove('pc', 'uncrossable');
             end_point.classList.add('pc', 'uncrossable');
+            /*
             end_point.addEventListener(attribute_touch_click, function(){
                 open_close(`modal-pc_${target_player_id}`);
-            })
+            })*/
             let end_point_border = end_point.querySelector('span');
             end_point_border.addEventListener("mouseover", function(){
                 generate_border(size["y"], size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1));

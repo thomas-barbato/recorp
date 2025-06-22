@@ -218,23 +218,23 @@ class GetDataFromDB:
 
         base_items = (
             sector.planet_sector.values(
-                "source_id__size", "data", "coordinates", "id", 
-                "source_id", "source_id__data__type"
+                "source_id__size", "data", "coordinates", "id",
+                "source_id", "source_id__data__type" 
             ),
             sector.asteroid_sector.values(
                 "source_id__size", "data", "coordinates", "id", 
-                "source_id", "source_id__data__type"
+                "source_id", "source_id__data__type" 
             ),
             sector.station_sector.values(
                 "source_id__size", "data", "coordinates", "id", 
-                "source_id", "source_id__data__type"
+                "source_id", "source_id__data__type" 
             ),
             sector.warp_sector.values(
                 "source_id__size", "data", "coordinates", 
-                "source_id", "id", "sector_id"
+                "source_id", "id", "sector_id" 
             ),
         )
-
+        
         if not with_npc:
             return base_items
 

@@ -200,17 +200,24 @@ function handleShipDisplay(spaceShip, spaceShipReversed, isReversed) {
 
 function setupBorderAndInteractions(border, playerData, playerInfo) {
     border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-    border.setAttribute('title', 
+    border.setAttribute('data-title', 
         `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
     );
     border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
     
     // Set click behavior for non-mobile devices
+    /*
     if (!is_user_is_on_mobile_device()) {
         const clickAction = playerInfo.isCurrentUser 
             ? "reverse_player_ship_display()" 
             : `open_close_modal('modal-pc_${playerInfo.user.id}')`;
         border.setAttribute(attribute_touch_click, clickAction);
+    }
+    */
+    if (!is_user_is_on_mobile_device()) {
+        if(playerInfo.isCurrentUser){
+            border.setAttribute(attribute_touch_click, "reverse_player_ship_display()");    
+        }
     }
     
     // Add hover events

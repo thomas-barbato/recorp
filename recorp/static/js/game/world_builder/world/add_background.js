@@ -36,9 +36,7 @@ function applyBackgroundStyle(cell, bgUrl, xOffset, yOffset) {
 
 function setupCellInteraction(border, cell, rowIndex, colIndex) {
     border.classList.add('pathfinding-zone', 'cursor-crosshair');
-    border.setAttribute('title', 
-        `${map_informations["sector"]["name"]} [y = ${rowIndex - 1}; x = ${colIndex - 1}]`
-    );
+    border.setAttribute('data-title', `${map_informations["sector"]["name"]} [y = ${rowIndex - 1}; x = ${colIndex - 1}]`);
     
     cell.addEventListener(attribute_touch_mouseover, function() {
         update_target_coord_display(cell);

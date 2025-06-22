@@ -335,9 +335,11 @@ function initializePlayer(playerObj, sizeElement, startNodeId, destinationNodeId
         x: parseInt(sizeElement.getAttribute('size_x')),
         y: parseInt(sizeElement.getAttribute('size_y'))
     };
+
     current_player.set_ship_size(shipSize.x, shipSize.y);
     
     const startCoord = calculateStartCoordinates(startNodeId, shipSize);
+    
     current_player.set_start_coord(startCoord.x, startCoord.y);
     
     const endCoord = {

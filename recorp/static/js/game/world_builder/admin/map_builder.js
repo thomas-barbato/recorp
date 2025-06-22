@@ -87,6 +87,10 @@
             fg_menu[i].remove();
         }
 
+        if(object.type == "warpzone"){
+            
+        }
+
         let fg_container = document.querySelectorAll('.foreground-container');
         if (fg_container) { clear_foreground() };
         for (let obj_fg in object['sector_element']) {
@@ -189,6 +193,9 @@
                 value == "warpzone_data" ? fg_warp_element.classList.remove('hidden') : fg_warp_element.classList.add('hidden');
                 value == "warpzone_data" ? fg_warp_description_element.classList.add('hidden') : fg_warp_description_element.classList.remove('hidden');
                 value == "warpzone_data" ? fg_warp_destination_element.classList.remove('hidden') : fg_warp_destination_element.classList.add('hidden');
+                if(fg_warp_element){
+                    
+                }
                 display_select_animation_preview(text, value, fg_item_selector.id);
                 let item_id = clone.querySelector('input[name=item-id]')
                 item_id.value = text;
@@ -236,14 +243,16 @@
             document.querySelector('#foreground-menu').appendChild(element)
             if (typeof pre_existing_data !== "undefined") {
                 if(pre_existing_data["type"] == "warpzone"){
+                    console.log(pre_existing_data)
                     let fg_destination_selector = element.querySelector("#fg-warp-sector-selector");
                     let fg_warp_sector = element.querySelector('#fg-warp-sector');
-                    fg_destination_selector.selectedIndex = [...fg_destination_selector.options].findIndex(option => option.text === pre_existing_data['warp_destination']['warp_destination_id']);
-                    element.querySelector('#fg-warp-sector-selector').value = pre_existing_data['warp_destination']['warp_destination_id'];
-                    fg_warp_sector.classList.remove('hidden')
-                    fg_warp_sector.selectedIndex = [...fg_warp_sector.options].findIndex(option => option.value === pre_existing_data['warp_destination']);
-                    fg_warp_sector.options.value = pre_existing_data['warp_destination']
+                    fg_destination_selector.selectedIndex = [...fg_destination_selector.options].findIndex(option => option.text === pre_existing_data['warp_destination']);
+                    fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex(option => option.text === pre_existing_data['item_name']);
+                    element.querySelector('#fg-warp-sector-selector').value = pre_existing_data['warp_destination'];
+                    fg_warp_sector.value = pre_existing_data['warp_destination']
                     element.querySelector('#item-description-container').classList.add('hidden');
+                    fg_warp_sector.classList.remove('hidden');
+
                 }
                 fg_item_selector.selectedIndex = [...fg_item_selector.options].findIndex(option => option.text === pre_existing_data['item_name']);
                 let text = fg_item_selector.options[fg_item_selector.selectedIndex].text;
@@ -540,6 +549,7 @@
             
             if(item_type == "warpzone"){
                 let item_warpzone_destination = element[i].querySelector('select[name=item-warpzone-destination]').value;
+                console.log(item_warpzone_destination)
                 data_entry[i] = {
                     'coordinates':{
                         'x': coord_x,

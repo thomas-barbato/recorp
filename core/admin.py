@@ -141,6 +141,11 @@ class CustomAdminSite(admin.AdminSite):
                 name="sector_gestion",
             ),
             re_path(
+                r"^sector_gestion/get_selected_data$",
+                self.admin_view(sectorDataGetElementTypeDataView.as_view()),
+                name="get_selected_data",
+            ),
+            re_path(
                 r"^sector_gestion/sector_data$",
                 self.admin_view(SectorDataView.as_view()),
                 name="sector_data",
@@ -302,6 +307,15 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        context["foreground_element_label"] = [
+            "planet",
+            "asteroid",
+            "station",
+            "star",
+            "moon",
+            "warpzone",
+            "npc"
+        ]
         context["map_size_range"] = GetDataFromDB.get_map_size_range()
         context["map_size"] = GetDataFromDB.get_map_size()
         context["background"] = GetDataFromDB.get_bg_fg_url("background")
@@ -452,22 +466,52 @@ class SectorDeleteView(LoginRequiredMixin, DeleteView):
                 f"Sector with name {sector_name} deleted with success",
             )
         return JsonResponse(json.dumps(response), safe=False)
+    
+
+class sectorDataGetElementTypeDataView(LoginRequiredMixin, TemplateView):
+    template_name = "sector_gestion.html"
+    
+    def post(self, request):
+        
+        foreground_element_type = json.load(request)["element_type"]
+        response = {}
+        available_type = {
+            "star" : [e for e in Planet.objects.filter(data__type="star").values('id', 'name', 'data__animation', 'size')],
+            "planet": [e for e in Planet.objects.filter(data__type="planet").values('id', 'name', 'data__animation', 'size')],
+            "moon": [e for e in Planet.objects.filter(data__type="satellite").values('id', 'name', 'data__animation', 'size')],
+            "asteroid": [e for e in Asteroid.objects.values('id', 'name', 'data__animation', 'size')],
+            "warpzone": [e for e in Warp.objects.values('id', 'name', 'data__animation', 'size')],
+            "station": [e for e in Station.objects.values('id', 'name', 'data__animation', 'size')],
+            "npc" : [e for e in NpcTemplate.objects.values(
+                "id", "ship_id", "ship_id__name", "ship_id__image",
+                "ship_id__ship_category_id__size"
+            )]
+            
+        }
+        
+        if available_type.get(foreground_element_type) is not None:
+            response = available_type[foreground_element_type]
+            
+        return JsonResponse(json.dumps(response), safe=False)
+            
 
 
 class SectorDataView(LoginRequiredMixin, TemplateView):
     template_name = "sector_gestion.html"
-
+    
     def post(self, request):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():
             sector = Sector.objects.get(id=pk)
             planets, asteroids, stations, warpzones = GetDataFromDB.get_items_from_sector(pk)
+            
             table_set = {
-                "planet": planets,
-                "asteroid": asteroids,
-                "station": stations,
-                "warpzone": warpzones
+                "planet": [e for e in planets] if planets else None,
+                "asteroid": [e for e in asteroids] if asteroids else None,
+                "station": [e for e in stations] if stations else None,
+                "warpzone": [e for e in warpzones] if warpzones else None
             }
+            
             result_dict = dict()
             result_dict["sector_element"] = []
             result_dict["faction"] = {
@@ -482,37 +526,38 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                 "image": sector.image,
                 "security_id": sector.security_id,
             }
-
+            
             for table_key, table_value in table_set.items():
                 for table in table_value:
+                    print(table)
                     item_name = ""
                     match table_key:
                         case "planet":
                             item_name = Planet.objects.filter(
-                                id=table.source_id
+                                id=table['source_id']
                             ).values_list("name", flat=True)[0]
                         case "satellite":
                             item_name = Planet.objects.filter(
-                                id=table.source_id,
+                                id=table['source_id'],
                                 data__contains={"type": "satellite"},
                             ).values_list("name", flat=True)[0]
                         case "blackhole":
                             item_name = Planet.objects.filter(
-                                id=table.source_id,
+                                id=table['source_id'],
                                 data__contains={"type": "blackhole"},
                             ).values_list("name", flat=True)[0]
                         case "star":
                             item_name = Planet.objects.filter(
-                                id=table.source_id,
+                                id=table['source_id'],
                                 data__contains={"type": "star"},
                             ).values_list("name", flat=True)[0]
                         case "asteroid":
                             item_name = Asteroid.objects.filter(
-                                id=table.source_id
+                                id=table['source_id']
                             ).values_list("name", flat=True)[0]
                         case "station":
                             item_name = Station.objects.filter(
-                                id=table.source_id
+                                id=table['source_id']
                             ).values_list("name", flat=True)[0]
                         case "warpzone":
                             item_name = WarpZone.objects.filter(
@@ -525,8 +570,8 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "type": table_key,
                                 "item_id": table.id,
                                 "item_name": item_name,
-                                "source_id": table.source_id,
-                                "sector_id": table.sector_id,
+                                "source_id": table['source_id'],
+                                "sector_id": sector,
                                 "warp_destination": sector_warp_zone_destination[0] if len(sector_warp_zone_destination)>0 else "none-selected",
                                 "data": table.data,
                                 "coordinates": table.coordinates
@@ -539,8 +584,8 @@ class SectorDataView(LoginRequiredMixin, TemplateView):
                                 "item_id": table.id,
                                 "item_name": item_name,
                                 "resource_id": table.resource_id,
-                                "source_id": table.source_id,
-                                "sector_id": table.sector_id,
+                                "source_id": table['source_id'],
+                                "sector_id": sector,
                                 "data": table.data,
                                 "coordinates": table.coordinates,
                             }

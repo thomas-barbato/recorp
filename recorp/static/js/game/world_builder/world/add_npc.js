@@ -118,11 +118,10 @@ function setupNpcCell(cell, border, npcData, npcInfo) {
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
     
     // Configure border
-    border.setAttribute('title', 
+    border.setAttribute('data-title', 
         `${npcInfo.npc.name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );
     border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
-    border.setAttribute(attribute_touch_click, `open_close_modal('modal-npc_${npcInfo.npc.id}')`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     
     // Add event listeners
