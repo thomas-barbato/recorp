@@ -499,6 +499,18 @@ class sectorDataGetElementTypeDataView(LoginRequiredMixin, TemplateView):
 class SectorDataView(LoginRequiredMixin, TemplateView):
     template_name = "sector_gestion.html"
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["planet_url"] = GetDataFromDB.get_fg_element_url("planet")
+        context["station_url"] = GetDataFromDB.get_fg_element_url("station")
+        context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
+        context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
+        context["star_url"] = GetDataFromDB.get_fg_element_url("star")
+        context["blackhole_url"] = GetDataFromDB.get_fg_element_url("blackhole")
+        context["warpzone_url"] = GetDataFromDB.get_fg_element_url("warpzone")
+        context["ships_url"] = GetDataFromDB.get_fg_element_url("ships")
+        return context
+    
     def post(self, request):
         pk = json.load(request)["map_id"]
         if Sector.objects.filter(id=pk).exists():

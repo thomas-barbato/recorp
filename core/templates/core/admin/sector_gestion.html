@@ -17,141 +17,129 @@
 {{ animations_data|json_script:"script_animation_data"}}
 {{ asteroid_url|json_script:"script_asteroid_url" }}
 {{ warpzone_url|json_script:"script_warpzone_url" }}
+{{ ships_url|json_script:"script_ships_url" }}
 
 <div id="message-list" class="hidden p-2 text-center bg-blue-50 dark:bg-gray-800 w-[100%] h-25" role="alert">
     <p class="text-red-600 font-bold text-justify"></p>
 </div>
-<div class="flex flex-col">
-    <div class="flex flex-col w-[90%]">
-        <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
-        <section class="mb-2">
-            <div class="flex flex-row">
-                <div class="flex w-full flex-col">
-                    <label for="sector-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select sector</b></label>
-                    <div class="flex flex-row gap-1">
-                        <select id="sector-select" name="sector-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                            <option value="none" class="text-center" selected>None</option>
-                            {% for sector in sector_data %}
-                                <option value="{{ sector.id }}" class="text-center">{{ sector.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
-                    </div>
-                </div>
-            </div><small class="text-red-500">chose a sector to update or delete it, if you select <b>none</b> you will create new one</small>
-        </section>
-
-        {% include "delete_confirm_modal.html" %}
-
-        <section id="background-menu" class="w-full">
-            <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>
-            <select id="background" name="background" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                {% for bg in background %}
-                    <option value="{{ bg }}" class="text-center">{{ bg }}</option>
-                {% endfor %}
-            </select>
-        </section>
-
-        <section class="w-full mt-1">
-            <label for="sector-name" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Map name:</b></label>
-            <input type="text" class="w-full text-center" id="sector-name" name="sector-name" value="" required>
-        </section>
-
-        <section class="w-full mt-1">
-            <label for="owned-by-faction" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is owned by faction: <small class="text-red-500">(choose it if it's not a faction starter map, but you still want to assign it to a faction)</small></b></label>
-            <input type="checkbox" id="owned-by-faction" class="w-full flex item-start" name="owned-by-faction" value="faction_owned" required>
-            <label for="faction-starter" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is faction starter:</b></label>
-            <input type="checkbox" id="faction-starter" class="w-full" name="faction-starter" value="faction_starter" required>
-        </section>
-
-        <section class="w-full mt-1" id="faction-select" style="display:none">
-            <label for="faction-choice" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Assign faction:</b></label>
-            <select id="faction-choice" name="faction-choice" class="text-center mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
-                {% for faction in faction_data %}
-                    <option value="{{ faction.id }}" class="text-center">{{ faction.name }}</option>
-                {% endfor %}
-            </select>
-        </section>
-
-        <section class="w-full mt-1">
-            <label for="security-level" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector security level:</b></label>
-            <select id="security-level" name="security-level" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer" required>
-                {% for sec in security_data %}
-                    <option value="{{ sec.id }}">{{ sec.name }}</option>
-                {% endfor %}
-            </select>
-        </section>
-
-        <section class="w-full mt-1">
-            <label for="sector-description" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector description:</b></label>
-            <textarea id="sector-description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write sector description here..."></textarea>
-        </section>
-
-        <section class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full">
-            <label for="fg-item-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Item to add on map :</b></label>
-            <select id="fg-item-selector" class="fg-item-selector" name="item-type">
-                <option class="text-white" selected>none</option>
-                {% for label in foreground_element_label %}
-                <option name="foreground-choice" value="{{ label }}">{{label}}</option>
-                {% endfor %}
-            </select>
-        </section>
-
-        <section id="element-section" class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full bg-red-600 hidden">
-            <div id="foreground-element-container"></div>
-            <div id="coordinates" class="flex flex-col items-start mt-1 mb-1 coord_size gap-3">
-                <span class="foreground-menu-title text-center text-sm flex flex-col justify-center w-full">
-                    <label for="coord-radio-button">Get coordinate</label>
-                    <input class="mt-1 coord-radio-button text-center" id="coord-radio-button-1" type="radio" name="coord-radio-button" value="Activate" />
-                </span>
-                <section class="flex w-1/2 gap-2 coord">
-                    <div class="flex flex-col coord-x w-">
-                        <label for="coord-x" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Coord X :</b></label>
-                        <input type="number" id="coord-x-1" name="coord-x" min="0" value="0" class="cursor-pointer text-center">
-                    </div>
-                    <div class="flex flex-col coord-y">
-                        <label for="coord-y" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Coord Y :</b></label>
-                        <input type="number" id="coord-y-1" name="coord-y" min="0" value="0" class="cursor-pointer text-center">
-                    </div>
-                </section>
-            </div>
-        </section>
-
-        <section id="preview-button" class="mt-1 flex w-full flex-row gap-1 items-center">
-            <input class="mt-1 flex mx-auto w-1/2" id="preview" type="button" value="Preview">
-            <input class="mt-1 flex mx-auto w-1/2" id="save-or-update" type="button" value="save">
-        </section>
-
-        <section class="flex flex-col mt-2 self-start w-[80vw]">
-            <div id="map-background" class=" flex flex-row self-start">
-                <div class="flex xl:self-center self-start item-center">
-                    <div class="grid">
-                        <table class="tabletop-view no-spacing" cellspacing="0" border="0">
-                            <tbody>
-                                {% for row in map_size_range.rows %}
-                                    {% if forloop.first %}
-                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 text-center align-middle no-borders">0:0</td>
-                                        {% for col in map_size_range.cols %}
-                                        <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle no-borders">{{ col }}</td>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <tr class="rows">
-                                        <td class="bg-gray-800/40 text-emerald-300 w-[32px] h-[32px] p-0 z-5 align-middle text-center no-borders">{{ row }}</td>
-                                    {% for col in map_size_range.cols %}
-                                        <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="x: {{col}}, y: {{row}}" id="{{col}}_{{row}}" style="">
-                                            <div class="relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10">
-                                            </div>
-                                        </td>
-                                    {% endfor %}
-                                    </tr>
+<div class="flex-col">
+    <div class="flex flex-row gap-3">
+        <div class="flex flex-col w-3/4">
+            <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
+            <section class="mb-2">
+                <div class="flex flex-row">
+                    <div class="flex w-full flex-col">
+                        <label for="sector-select" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select sector</b></label>
+                        <div class="flex flex-row gap-1">
+                            <select id="sector-select" name="sector-select" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                                <option value="none" class="text-center" selected>None</option>
+                                {% for sector in sector_data %}
+                                    <option value="{{ sector.id }}" class="text-center">{{ sector.name }}</option>
                                 {% endfor %}
-                            </tbody>
-                        </table>
+                            </select>
+                            <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
+                        </div>
                     </div>
+                </div><small class="text-red-500">chose a sector to update or delete it, if you select <b>none</b> you will create new one</small>
+            </section>
+
+            {% include "delete_confirm_modal.html" %}
+
+            <section id="background-menu" class="w-full">
+                <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>
+                <select id="background" name="background" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                    {% for bg in background %}
+                        <option value="{{ bg }}" class="text-center">{{ bg }}</option>
+                    {% endfor %}
+                </select>
+            </section>
+
+            <section class="w-full mt-1">
+                <label for="sector-name" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Map name:</b></label>
+                <input type="text" class="w-full text-center" id="sector-name" name="sector-name" value="" required>
+            </section>
+
+            <section class="w-full mt-1">
+                <label for="owned-by-faction" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is owned by faction: <small class="text-red-500">(choose it if it's not a faction starter map, but you still want to assign it to a faction)</small></b></label>
+                <input type="checkbox" id="owned-by-faction" class="w-full flex item-start" name="owned-by-faction" value="faction_owned" required>
+                <label for="faction-starter" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is faction starter:</b></label>
+                <input type="checkbox" id="faction-starter" class="w-full" name="faction-starter" value="faction_starter" required>
+            </section>
+
+            <section class="w-full mt-1" id="faction-select" style="display:none">
+                <label for="faction-choice" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Assign faction:</b></label>
+                <select id="faction-choice" name="faction-choice" class="text-center mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                    {% for faction in faction_data %}
+                        <option value="{{ faction.id }}" class="text-center">{{ faction.name }}</option>
+                    {% endfor %}
+                </select>
+            </section>
+
+            <section class="w-full mt-1">
+                <label for="security-level" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector security level:</b></label>
+                <select id="security-level" name="security-level" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer" required>
+                    {% for sec in security_data %}
+                        <option value="{{ sec.id }}">{{ sec.name }}</option>
+                    {% endfor %}
+                </select>
+            </section>
+
+            <section class="w-full mt-1">
+                <label for="sector-description" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector description:</b></label>
+                <textarea id="sector-description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write sector description here..."></textarea>
+            </section>
+
+            <section class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full">
+                <label for="fg-item-selector" class="block mb-2 text-gray-900 dark:text-white font-bold"><b>Item to add on map :</b></label>
+                <select id="fg-item-selector" class="fg-item-selector" name="item-type">
+                    <option class="text-white" selected>none</option>
+                    {% for label in foreground_element_label %}
+                    <option name="foreground-choice" value="{{ label }}">{{label}}</option>
+                    {% endfor %}
+                </select>
+            </section>
+
+            <section id="element-section" class="flex gap-2 flex-col items-center mx-auto mt-1 mb-1 w-full bg-gray-600 rounded-lg border border-gray-300 hidden gap-2">
+                <div id="foreground-element-container" class="flex flex-col"></div>
+            </section>
+
+            <section id="preview-button" class="mt-1 flex w-full flex-row gap-1 items-center">
+                <input class="mt-1 flex mx-auto w-1/2" id="preview" type="button" value="Preview">
+                <input class="mt-1 flex mx-auto w-1/2" id="save-or-update" type="button" value="save">
+            </section>
+        </div>
+        
+        <div class="flex flex-col w-1/4" id="data-on-map"></div>
+    </div>
+    <section class="flex flex-col mt-2 self-start w-[80vw]">
+        <div id="map-background" class=" flex flex-row self-start">
+            <div class="flex xl:self-center self-start item-center">
+                <div class="grid">
+                    <table class="tabletop-view no-spacing" cellspacing="0" border="0">
+                        <tbody>
+                            {% for row in map_size_range.rows %}
+                                {% if forloop.first %}
+                                <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 text-center align-middle no-borders">0:0</td>
+                                    {% for col in map_size_range.cols %}
+                                    <td class="text-center bg-gray-800/40 text-emerald-300 font-bold w-[32px] h-[32px] p-0 z-5 align-middle no-borders">{{ col }}</td>
+                                    {% endfor %}
+                                {% endif %}
+                                <tr class="rows">
+                                    <td class="bg-gray-800/40 text-emerald-300 w-[32px] h-[32px] p-0 z-5 align-middle text-center no-borders">{{ row }}</td>
+                                {% for col in map_size_range.cols %}
+                                    <td class="w-[32px] h-[32px] m-0 p-0 z-5 tile no-borders" title="x: {{col}}, y: {{row}}" id="{{col}}_{{row}}" style="">
+                                        <div class="relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10">
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 </div>
 
 <script src="{% static 'world_builder/admin/map_builder_v2.js' %}" type="text/javascript">
