@@ -3,6 +3,9 @@
 
 {% block content %}
 
+<link href="{% static 'fontawesome/css/fontawesome.css' %}" rel="stylesheet"/>
+<link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
+<link href="{% static 'fontawesome/css/solid.css' %}"  rel="stylesheet"/>
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
@@ -23,8 +26,8 @@
     <p class="text-red-600 font-bold text-justify"></p>
 </div>
 <div class="flex-col">
-    <div class="flex flex-row gap-3">
-        <div class="flex flex-col w-3/4">
+    <div class="flex flex-row gap-3 w-[80vw]">
+        <div class="flex flex-col gap-2">
             <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
             <section class="mb-2">
                 <div class="flex flex-row">
@@ -45,28 +48,27 @@
 
             {% include "delete_confirm_modal.html" %}
 
+            <section class="w-full">
+                <label for="sector-name" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Map name:</b></label>
+                <input type="text" class="w-full text-center" id="sector-name" name="sector-name" value="" required>
+            </section>
+
             <section id="background-menu" class="w-full">
                 <label for="background" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Background</b></label>
                 <select id="background" name="background" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                    <option value="none" class="text-center">none</option>
                     {% for bg in background %}
                         <option value="{{ bg }}" class="text-center">{{ bg }}</option>
                     {% endfor %}
                 </select>
             </section>
 
-            <section class="w-full mt-1">
-                <label for="sector-name" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Map name:</b></label>
-                <input type="text" class="w-full text-center" id="sector-name" name="sector-name" value="" required>
-            </section>
-
-            <section class="w-full mt-1">
-                <label for="owned-by-faction" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is owned by faction: <small class="text-red-500">(choose it if it's not a faction starter map, but you still want to assign it to a faction)</small></b></label>
-                <input type="checkbox" id="owned-by-faction" class="w-full flex item-start" name="owned-by-faction" value="faction_owned" required>
+            <section class="w-full">
                 <label for="faction-starter" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Is faction starter:</b></label>
                 <input type="checkbox" id="faction-starter" class="w-full" name="faction-starter" value="faction_starter" required>
             </section>
 
-            <section class="w-full mt-1" id="faction-select" style="display:none">
+            <section class="w-full" id="faction-select">
                 <label for="faction-choice" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Assign faction:</b></label>
                 <select id="faction-choice" name="faction-choice" class="text-center mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
                     {% for faction in faction_data %}
@@ -75,7 +77,7 @@
                 </select>
             </section>
 
-            <section class="w-full mt-1">
+            <section class="w-full">
                 <label for="security-level" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector security level:</b></label>
                 <select id="security-level" name="security-level" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer" required>
                     {% for sec in security_data %}
@@ -84,7 +86,7 @@
                 </select>
             </section>
 
-            <section class="w-full mt-1">
+            <section class="w-full">
                 <label for="sector-description" class="block mb-2 font-medium text-gray-900 dark:text-white"><b>Sector description:</b></label>
                 <textarea id="sector-description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write sector description here..."></textarea>
             </section>
@@ -103,13 +105,11 @@
                 <div id="foreground-element-container" class="flex flex-col"></div>
             </section>
 
-            <section id="preview-button" class="mt-1 flex w-full flex-row gap-1 items-center">
-                <input class="mt-1 flex mx-auto w-1/2" id="preview" type="button" value="Preview">
+            <section id="save-button" class="mt-1 flex w-full flex-row gap-1 items-center">
                 <input class="mt-1 flex mx-auto w-1/2" id="save-or-update" type="button" value="save">
             </section>
         </div>
-        
-        <div class="flex flex-col w-1/4" id="data-on-map"></div>
+        <div class="flex flex-col w-full" id="data-on-map"></div>
     </div>
     <section class="flex flex-col mt-2 self-start w-[80vw]">
         <div id="map-background" class=" flex flex-row self-start">

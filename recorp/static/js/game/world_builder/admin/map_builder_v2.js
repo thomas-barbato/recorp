@@ -1,6 +1,7 @@
 // Configuration et constantes
 const CONFIG = {
     FOREGROUND_PATH: "/static/img/foreground/",
+    BACKGROUND_PATH: "/static/img/background/",
     SELECTORS: {
         FG_ITEM_SELECTOR: "#fg-item-selector",
         ELEMENT_SECTION: "#element-section",
@@ -18,7 +19,8 @@ const CONFIG = {
         JUSTIFY_CENTER: "justify-center",
         ITEMS_CENTER: "items-center",
         P_2: "p-2",
-        GAP_2: "gap-2"
+        GAP_2: "gap-2",
+        TRASH : "fa-solid fa-trash"
     },
     ATLAS : {
         col : 40,
@@ -28,7 +30,27 @@ const CONFIG = {
         map_height_size : 40 * 32,
     },
     LAST_ELEMENT_SELECTED : null,
-    SAVED_ELEMENT_ON_MAP: []
+    SAVED_ELEMENT_ON_MAP: {
+        sector: {
+            'sector_id': null,
+            'name': null,
+            'description': null,
+            'bg': null,
+            'is_faction_starter': false,
+            'faction': 1,
+            'security_level': 1,
+        },
+        map : {
+            'npc': {},
+            'planet': {},
+            'asteroid': {},
+            'station': {},
+            'warpzone': {},
+            'moon': {},
+            'star': {},
+        }
+        
+    }
 };
 // Utilitaires DOM
 class DOMUtils {
@@ -124,7 +146,7 @@ class UIElementFactory {
     static createImageContainer() {
         const container = DOMUtils.createElement('div', {
             classes: [CONFIG.CSS_CLASSES.FLEX, CONFIG.CSS_CLASSES.W_FULL, 
-                    CONFIG.CSS_CLASSES.JUSTIFY_CENTER, CONFIG.CSS_CLASSES.ITEMS_CENTER]
+                CONFIG.CSS_CLASSES.JUSTIFY_CENTER, CONFIG.CSS_CLASSES.ITEMS_CENTER]
         });
         
         const img = DOMUtils.createElement('img');
@@ -142,6 +164,7 @@ class MapElementsManager {
     }
 
     reset() {
+        
         this.elementType = "";
         this.menu = null;
         this.data = null;
@@ -235,66 +258,20 @@ class MapElementsManager {
         if (value === 'none') {
             this.selectedData = null;
             imageElement.src = '';
+            CONFIG.LAST_ELEMENT_SELECTED = {};
             return;
         }
 
         const [elementType, elementId] = value.split('_');
         const selectedItem = this.data.find(item => item.id == elementId);
+        Object.assign(selectedItem, {type: elementType, id: elementId, temp_uuid: crypto.randomUUID()});
         
         if (selectedItem) {
-            this.selectedData = selectedItem;
-            CONFIG.LAST_ELEMENT_SELECTED = this.selectedData;
+            CONFIG.LAST_ELEMENT_SELECTED = selectedItem;
             this.updateImage(elementType, selectedItem, imageElement);
-            this.attachMapListener();
-            
         }
     }
     
-    attachMapListener(){
-        let mapElement = document.querySelectorAll('.tile');
-        if(mapElement[0].getAttribute('listener') === 'true'){
-            return;
-        }
-        // Create a new instance to be able to work 
-        // in eventListener...
-        mapManager = new MapElementsManager()
-        mapElement.forEach(element => {
-            element.addEventListener('click', function(){
-                mapManager.drawElementOnMap(element.id)
-            })
-        })
-    }
-
-    drawElementOnMap(id){
-
-        const elementType = document.querySelector('#fg-item-selector').value;
-        const imagePath = elementType === CONFIG.ELEMENT_TYPES.NPC
-            ? `${CONFIG.FOREGROUND_PATH}ships/${CONFIG.LAST_ELEMENT_SELECTED.ship_id__image}.png`
-            : `${CONFIG.FOREGROUND_PATH}${elementType}/${CONFIG.LAST_ELEMENT_SELECTED.name}/0.gif`
-        const tile_id = id.split('_');
-        const coord = {
-            x : tile_id[1],
-            y : tile_id[0]
-        };
-        
-        const elementData = {
-            url: imagePath,
-            size: CONFIG.LAST_ELEMENT_SELECTED.size,
-            pos: coord
-        };
-
-        this.storeElement(elementData);
-    }
-
-    defineSavedElementOnMap(elementData){
-        CONFIG.SAVED_ELEMENT_ON_MAP.push(elementData);
-        console.log(CONFIG.SAVED_ELEMENT_ON_MAP);
-    }
-
-    resetSavedElementOnMap(){
-        CONFIG.SAVED_ELEMENT_ON_MAP = [];
-    }
-
     updateImage(elementType, selectedItem, imageElement) {
         const imagePath = elementType === CONFIG.ELEMENT_TYPES.NPC
             ? `${CONFIG.FOREGROUND_PATH}ships/${selectedItem.ship_id__image}.png`
@@ -312,8 +289,200 @@ class MapElementsManager {
 
 class UIElementFunctionality {
     constructor(){
+    }
+    attachMapListener(){
+        mapManager = new UIElementFunctionality();
+        let tile_container = document.querySelectorAll('.tile')
+        tile_container.forEach(tile => {
+            // Create a new instance to be able to work 
+            // in eventListener...
+            tile.addEventListener('click', function(){
+                const coord = {y : "", x : ""};
+                [coord.x, coord.y] = tile.id.split('_');
+                mapManager.defineElementOnMap({coordinates : coord});
+                mapManager.drawElementOnMap();
+            })
+        })
+    }
+
+    defineElementOnMap(coord){
+        
+        Object.assign(CONFIG.LAST_ELEMENT_SELECTED, coord);
+        this.defineSavedElementOnMap();
+    }
+
+    getNextIndex(obj) {
+        const indices = Object.keys(obj).map(key => parseInt(key)).filter(num => !isNaN(num));
+        return indices.length === 0 ? 0 : Math.max(...indices) + 1;
+    }
+
+    defineSavedElementOnMap(){
+        let nextIndex = this.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type]);
+        CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type][nextIndex] = CONFIG.LAST_ELEMENT_SELECTED;
+    }
+
+    loadExistingElementOnMap(){
+        //
+    }
+
+    resetSavedElementOnMap(){
+        CONFIG.SAVED_ELEMENT_ON_MAP.map = [];
+    }
+
+    drawElementOnMap(){
+        const imagePath = CONFIG.LAST_ELEMENT_SELECTED.type === CONFIG.ELEMENT_TYPES.NPC
+            ? `${CONFIG.FOREGROUND_PATH}ships/${CONFIG.LAST_ELEMENT_SELECTED.ship_id__image}.png`
+            : `${CONFIG.FOREGROUND_PATH}${CONFIG.LAST_ELEMENT_SELECTED.type}/${CONFIG.LAST_ELEMENT_SELECTED.name}/0.gif`;
+        
+        const sizeX = CONFIG.LAST_ELEMENT_SELECTED.size.x;
+        const sizeY = CONFIG.LAST_ELEMENT_SELECTED.size.y;
+        const tileSize = CONFIG.ATLAS.tilesize;
+        const totalTileSizeX = sizeX * tileSize;
+        const totalTileSizeY = sizeY * tileSize;
+        const temp_uuid = crypto.randomUUID();
+
+        CONFIG.LAST_ELEMENT_SELECTED.temp_uuid = temp_uuid;
+
+        let indexCol = parseInt(CONFIG.LAST_ELEMENT_SELECTED.coordinates.x) + 1;
+        let indexRow = parseInt(CONFIG.LAST_ELEMENT_SELECTED.coordinates.y) + 1;
+
+        sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid);
+        this.appendDataMenu();
+    }
+
+    drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid){
+        
+            let entry_point = document.querySelector('.tabletop-view').rows[indexRow].cells[indexCol];
+            let entry_point_div = entry_point.querySelector('div');
+            entry_point_div.classList.add(
+                'foreground-container',
+                `uuid-${temp_uuid}`
+            );
+
+            let img_div = document.createElement('div');
+            img_div.classList.add(
+                'm-auto',
+                'w-[32px]',
+                'h-[32px]',
+            );
+            img_div.style.backgroundImage = "url('" + imagePath + "')";
+            entry_point_div.append(img_div);
 
     }
+
+    drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid){
+        for (let row_i = 0; row_i < totalTileSizeY; row_i += tileSize) {
+            for (let col_i = 0; col_i < totalTileSizeX; col_i += tileSize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[indexRow].cells[indexCol];
+                let entry_point_div = entry_point.querySelector('div');
+                entry_point_div.classList.add(
+                    'foreground-container',
+                    `uuid-${temp_uuid}`
+                );
+
+                let img_div = document.createElement('div');
+                img_div.classList.add(
+                    'm-auto',
+                    'w-[32px]',
+                    'h-[32px]',
+                );
+                img_div.style.backgroundImage = "url('" + imagePath + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_div.append(img_div);
+                indexCol++;
+                
+            }
+            indexRow++;
+            indexCol = parseInt(CONFIG.LAST_ELEMENT_SELECTED.coordinates.x) + 1;
+        }
+    }
+
+    drawMapBackground(value){
+        if(value == "none"){
+            CONFIG.SAVED_ELEMENT_ON_MAP.sector.bg = null;
+            document.querySelectorAll('.tile').forEach(element => {
+                element.style.backgroundImage = "";
+            })
+            return;
+        }
+
+        let index_row = 1;
+        let index_col = 1;
+        let bg_url = `${CONFIG.BACKGROUND_PATH}${value}/0.gif`;
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.bg = value;
+
+        for (let row_i = 0; row_i < CONFIG.ATLAS.map_height_size; row_i += CONFIG.ATLAS.tilesize) {
+            for (let col_i = 0; col_i < CONFIG.ATLAS.map_width_size; col_i += CONFIG.ATLAS.tilesize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                entry_point.style.backgroundImage = "url('" + bg_url + "')";
+                entry_point.style.backgroundPositionX = `-${col_i}px`;
+                entry_point.style.backgroundPositionY = `-${row_i}px`;
+                index_col++;
+            }
+            index_row++;
+            index_col = 1;
+        }
+
+    }
+
+    appendDataMenu(){
+        document.querySelector('#data-on-map').append(this.createDataMenuContainer());
+    }
+
+    createDataMenuContainerDivP(){
+        let container_div_p = document.createElement('p');
+        container_div_p.textContent = `displayed name : ${CONFIG.LAST_ELEMENT_SELECTED?.displayed_name}, item name: ${CONFIG.LAST_ELEMENT_SELECTED?.name}, type: ${CONFIG.LAST_ELEMENT_SELECTED.type}, coord(x = ${CONFIG.LAST_ELEMENT_SELECTED.coordinates.x}, y = ${CONFIG.LAST_ELEMENT_SELECTED.coordinates.y}) size(${CONFIG.LAST_ELEMENT_SELECTED.size.y}x${CONFIG.LAST_ELEMENT_SELECTED.size.x})`;
+        container_div_p.className = "flex font-bold";
+        return container_div_p;
+    }
+    
+    createDataMenuContainerDivI(){
+        let container_div_i = document.createElement('i');
+        container_div_i.className = `${CONFIG.CSS_CLASSES.TRASH}`;
+        container_div_i.id = CONFIG.LAST_ELEMENT_SELECTED.temp_uuid;
+        container_div_i.addEventListener('click', this.deleteElementOnMap)
+        return container_div_i;
+    }
+
+    createDataMenuContainerDiv(){
+        let container_div = document.createElement('div');
+        container_div.className = "flex w-full flex-row justify-between items-center gap-2";
+        container_div.append(this.createDataMenuContainerDivP());
+        container_div.append(this.createDataMenuContainerDivI());
+        return container_div;
+    }
+
+    createDataMenuContainer(){
+        let container = document.createElement('container');
+        container.className = "flex w-full bg-gray-600 border-emerald-300 p-2";
+        container.id = `container-${CONFIG.LAST_ELEMENT_SELECTED?.temp_uuid}`;
+        container.setAttribute('data-type', CONFIG.LAST_ELEMENT_SELECTED?.type)
+        container.append(this.createDataMenuContainerDiv());
+        return container;
+    }
+
+    deleteElementOnMap(){
+
+        let id = this.id;
+        let element_to_delete = document.querySelectorAll(`.uuid-${id}`);
+        let element_type = document.getElementById(`container-${id}`).getAttribute('data-type');
+
+        element_to_delete.forEach(element => {
+            element.className = "relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10";
+            element.innerHTML = "";
+        })
+
+        for(let obj in CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type]){
+            if(!CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type][obj].temp_uuid == this.id){
+                delete CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type][obj];
+            }
+        }
+
+        document.querySelector(`#container-${id}`).remove();
+        
+    }
+
 }
 
 // Gestionnaire principal de l'application
@@ -327,17 +496,49 @@ class AppManager {
     initializeElements() {
         this.fgItemSelector = DOMUtils.querySelector(CONFIG.SELECTORS.FG_ITEM_SELECTOR);
         this.elementSection = DOMUtils.querySelector(CONFIG.SELECTORS.ELEMENT_SECTION);
+        this.sector_selection = DOMUtils.querySelector('#sector-select');
+        this.background_selector = DOMUtils.querySelector('#background');
+        this.sector_name = document.querySelector('#sector-name');
+        this.security_level = DOMUtils.querySelector('#security-level');
+        this.faction_choice = DOMUtils.querySelector('#faction-choice');
+        this.faction_starter = DOMUtils.querySelector('#faction-starter');
+        this.sector_description = DOMUtils.querySelector('#sector-description');
         this.csrfToken = DOMUtils.querySelector(CONFIG.SELECTORS.CSRF_TOKEN).value;
     }
 
     initializeServices() {
         this.apiService = new ApiService(this.csrfToken);
         this.mapManager = new MapElementsManager(this.apiService);
+        this.UIElementFunctionality = new UIElementFunctionality();
     }
 
     attachEventListeners() {
+        this.sector_selection.addEventListener('change', (event) => {
+            this.handleSectorSelectionChange(event.target.value);
+        });
         this.fgItemSelector.addEventListener('change', (event) => {
             this.handleFgItemChange(event.target.value);
+        });
+        this.background_selector.addEventListener('change', (event) => {
+            this.UIElementFunctionality.drawMapBackground(event.target.value);
+        });
+        this.sector_name.addEventListener('change', (event) => {
+            this.handleSectorNameChange(event.target.value);
+        });
+        this.security_level.addEventListener('change', (event) => {
+            this.handleSecurityLevelChange(event.target.value);
+        });
+        this.faction_choice.addEventListener('change', (event) => {
+            this.handleFactionChoiceChange(event.target.value);
+        });
+        this.sector_description.addEventListener('change', (event) => {
+            this.handleSectorDescriptionChange(event.target.value);
+        });
+        this.faction_starter.addEventListener('change', (event) => {
+            this.handleFactionStarterChange(event.target.checked);
+        });
+        document.querySelectorAll('.tile').forEach(tile => {
+            this.handleTileLoader(tile);
         });
     }
 
@@ -349,6 +550,100 @@ class AppManager {
             this.elementSection.classList.add(CONFIG.CSS_CLASSES.HIDDEN);
             this.mapManager.cleanOldMenu();
         }
+    }
+    handleSectorSelectionChange(value){
+        this.resetUX();
+        if(value == "none"){
+            return
+        }
+    }
+
+    handleSectorNameChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.name = value !== "" ? value : null;
+    }
+    
+    handleSecurityLevelChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.security_level = value;
+    }
+    
+    handleFactionChoiceChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.security_level = value;
+    }
+    
+    handleSectorDescriptionChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.description = value;
+    }
+    
+    handleFactionStarterChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter = value;
+    }
+    
+    handleFactionStarterChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter = value;
+    }
+
+    handleTileLoader(tile){
+        // Create a new instance to be able to work 
+        // in eventListener...
+        tile.addEventListener('click', function(){
+        this.UIElementFunctionality = new UIElementFunctionality(); 
+            const coord = {y : "", x : ""};
+            [coord.x, coord.y] = tile.id.split('_');
+            this.UIElementFunctionality.defineElementOnMap({coordinates : coord});
+            this.UIElementFunctionality.drawElementOnMap();
+        })
+    }
+
+    resetMap(){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.bg = null;
+        document.querySelectorAll('.tile').forEach(element => {
+            element.style.backgroundImage = "";
+            let div = element.querySelector('div');
+            div.className = "relative w-[32px] h-[32px] hover:border hover:border-amber-400 border-dashed block hover:bg-slate-300/10";
+            div.innerHTML = "";
+        })
+    }
+
+    resetDataOnMap(){
+        document.querySelector('#data-on-map').innerHTML = "";
+    }
+
+    resetUX(){
+        
+        CONFIG.LAST_ELEMENT_SELECTED = null,
+        CONFIG.SAVED_ELEMENT_ON_MAP = {
+            sector: {
+                'name': null,
+                'description': null,
+                'bg': null,
+                'is_faction_starter': false,
+                'faction': 1,
+                'security_level': 1,
+            },
+            map : {
+                'npc': {},
+                'planet': {},
+                'asteroid': {},
+                'station': {},
+                'warpzone': {},
+                'moon': {},
+                'star': {},
+            }
+            
+        }
+
+        this.background_selector.value = "none";
+        this.sector_name.value = "";
+        this.security_level.value = "1";
+        this.faction_choice.value = "1";
+        this.faction_starter.checked = false;
+        this.sector_description.value = "";
+
+        this.fgItemSelector.value = "none";
+        this.elementSection.classList.add(CONFIG.CSS_CLASSES.HIDDEN);
+        this.resetMap();
+        this.resetDataOnMap();
+
     }
 }
 
