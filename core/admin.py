@@ -142,8 +142,13 @@ class CustomAdminSite(admin.AdminSite):
             ),
             re_path(
                 r"^sector_gestion/get_selected_data$",
-                self.admin_view(sectorDataGetElementTypeDataView.as_view()),
+                self.admin_view(GetElementTypeDataView.as_view()),
                 name="get_selected_data",
+            ),
+            re_path(
+                r"^sector_gestion/get_sector_data$",
+                self.admin_view(GetSectorDataView.as_view()),
+                name="get_sector_data",
             ),
             re_path(
                 r"^sector_gestion/sector_data$",
@@ -312,7 +317,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
             "asteroid",
             "station",
             "star",
-            "moon",
+            "satellite",
             "warpzone",
             "npc"
         ]
@@ -467,8 +472,64 @@ class SectorDeleteView(LoginRequiredMixin, DeleteView):
             )
         return JsonResponse(json.dumps(response), safe=False)
     
+    
+class GetSectorDataView(LoginRequiredMixin, TemplateView):
+    template_name = "sector_gestion.html"
+    
+    def post(self, request):
+        
+        response = {}
+        
+        try:
+            sector_id = json.load(request)["sector_id"]
+            sector = Sector.objects.get(id=sector_id)
+            response = {
+                "sector" : {
+                    "name": sector.name,
+                    "description": sector.description,
+                    "id" : sector_id,
+                    "image": sector.image,
+                    "is_faction_level_starter" : sector.is_faction_level_starter,
+                    "security_id" : sector.security_id,
+                    "faction_id" : sector.faction_id
+                },
+                "star" : [e for e in sector.planet_sector.filter(source_id__data__type="star").values(
+                    "source_id__size", "data", "coordinates", "id",
+                    "source_id", "source_id__data__type", "source_id__data__animation"
+                )],
+                "planet" : [e for e in sector.planet_sector.filter(source_id__data__type="planet").values(
+                    "source_id__size", "data", "coordinates", "id",
+                    "source_id", "source_id__data__type", "source_id__data__animation"
+                )],
+                "satellite" : [e for e in sector.planet_sector.filter(source_id__data__type="satellite").values(
+                    "source_id__size", "data", "coordinates", "id",
+                    "source_id", "source_id__data__type", "source_id__data__animation" 
+                )],
+                "asteroid" : [e for e in sector.asteroid_sector.values(
+                    "source_id__size", "data", "coordinates", "id", 
+                    "source_id", "source_id__data__type", "source_id__data__animation"
+                )],
+                "warpzone" : [e for e in sector.warp_sector.values(
+                    "source_id__size", "data", "coordinates", 
+                    "source_id", "id", "sector_id", "source_id__data__animation" 
+                )],
+                "station" : [e for e in sector.station_sector.values(
+                    "source_id__size", "data", "coordinates", "id", 
+                    "source_id", "source_id__data__type" 
+                )],
+                "npc": [e for e in sector.npc_sector.values(
+                    "id", "npc_template_id__ship_id__ship_category_id__size",
+                    "npc_template_id__ship_id__image", "npc_template_id__ship_id__name",
+                    "npc_template_id", "coordinates", "npc_template_id__name"
+                )]
+            }
+        except Sector.DoesNotExist:
+            return tuple()
+        
+        return JsonResponse(json.dumps(response), safe=False)
+    
 
-class sectorDataGetElementTypeDataView(LoginRequiredMixin, TemplateView):
+class GetElementTypeDataView(LoginRequiredMixin, TemplateView):
     template_name = "sector_gestion.html"
     
     def post(self, request):
@@ -478,7 +539,7 @@ class sectorDataGetElementTypeDataView(LoginRequiredMixin, TemplateView):
         available_type = {
             "star" : [e for e in Planet.objects.filter(data__type="star").values('id', 'name', 'data__animation', 'size')],
             "planet": [e for e in Planet.objects.filter(data__type="planet").values('id', 'name', 'data__animation', 'size')],
-            "moon": [e for e in Planet.objects.filter(data__type="satellite").values('id', 'name', 'data__animation', 'size')],
+            "satellite": [e for e in Planet.objects.filter(data__type="satellite").values('id', 'name', 'data__animation', 'size')],
             "asteroid": [e for e in Asteroid.objects.values('id', 'name', 'data__animation', 'size')],
             "warpzone": [e for e in Warp.objects.values('id', 'name', 'data__animation', 'size')],
             "station": [e for e in Station.objects.values('id', 'name', 'data__animation', 'size')],

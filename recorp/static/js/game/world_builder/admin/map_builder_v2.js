@@ -35,7 +35,7 @@ const CONFIG = {
             'sector_id': null,
             'name': null,
             'description': null,
-            'bg': null,
+            'image': null,
             'is_faction_starter': false,
             'faction': 1,
             'security_level': 1,
@@ -46,7 +46,7 @@ const CONFIG = {
             'asteroid': {},
             'station': {},
             'warpzone': {},
-            'moon': {},
+            'satellite': {},
             'star': {},
         }
         
@@ -109,6 +109,27 @@ class ApiService {
             throw error;
         }
     }
+
+    async fetchSelectedSector(sectorId) {
+
+        try {
+            const response = await fetch('get_sector_data', {
+                method: 'POST',
+                headers: this.baseHeaders,
+                credentials: 'include',
+                body: JSON.stringify({sector_id: sectorId})
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Erreur dans fetchSelectedSector:', error);
+            throw error;
+        }
+    }
 }
 
 // Générateur d'éléments UI
@@ -160,6 +181,7 @@ class UIElementFactory {
 class MapElementsManager {
     constructor(apiService) {
         this.apiService = apiService;
+        this.functionality = new UIElementFunctionality();
         this.reset();
     }
 
@@ -169,6 +191,8 @@ class MapElementsManager {
         this.menu = null;
         this.data = null;
         this.selectedData = null;
+        this.sector = null;
+        this.sectorData = null;
     }
 
     async createNewMenu(elementType) {
@@ -187,6 +211,30 @@ class MapElementsManager {
             
         } catch (error) {
             console.error('Erreur lors de la création du menu:', error);
+            this.data = null;
+        }
+    }
+
+    async loadSectorData(sectorId){
+        if (sectorId == "none"){
+            return ; 
+        }
+
+        this.sector = sectorId;
+
+        try{
+            this.sectorData = JSON.parse(await this.apiService.fetchSelectedSector(sectorId));
+            this.handleLoadSavedElementOnMap(this.sectorData);
+            this.handleSectorNameLoad(this.sectorData.sector.name);
+            this.handleSectorBackgroundLoad(this.sectorData.sector.image);
+            this.handleSectorFactionStarterLoad(this.sectorData.sector.is_faction_starter);
+            this.handleFactionChoiceLoad(this.sectorData.sector.faction_id);
+            this.handleSectorDescriptionLoad(this.sectorData.sector.description);
+            this.handleSecurityLevelLoad(this.sectorData.sector.security_id);
+            this.handleSectorLoadDraw();
+
+        } catch (error) {
+            console.error('Erreur lors du chargement des données du secteur:', error);
             this.data = null;
         }
     }
@@ -263,7 +311,17 @@ class MapElementsManager {
         }
 
         const [elementType, elementId] = value.split('_');
-        const selectedItem = this.data.find(item => item.id == elementId);
+        let selectedItem = this.data.find(item => item.id == elementId);
+        if(elementType == "npc"){
+            selectedItem = {
+                id: selectedItem.ship_id,
+                image: selectedItem.ship_id__image,
+                name: selectedItem.ship_id__name,
+                size : selectedItem.ship_id__ship_category_id__size,
+                temp_uuid : selectedItem.temp_uuid,
+                type: elementType
+            }
+        }
         Object.assign(selectedItem, {type: elementType, id: elementId, temp_uuid: crypto.randomUUID()});
         
         if (selectedItem) {
@@ -271,10 +329,183 @@ class MapElementsManager {
             this.updateImage(elementType, selectedItem, imageElement);
         }
     }
+
+    handleSectorBackgroundLoad(value){
+        if(value == "none"){
+            CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = null;
+            document.querySelectorAll('.tile').forEach(element => {
+                element.style.backgroundImage = "";
+            })
+            return;
+        }
+
+        let index_row = 1;
+        let index_col = 1;
+        let bg_url = `${CONFIG.BACKGROUND_PATH}${value}/0.gif`;
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = value;
+
+        document.querySelector("#background").value = value;
+
+        for (let row_i = 0; row_i < CONFIG.ATLAS.map_height_size; row_i += CONFIG.ATLAS.tilesize) {
+            for (let col_i = 0; col_i < CONFIG.ATLAS.map_width_size; col_i += CONFIG.ATLAS.tilesize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                entry_point.style.backgroundImage = "url('" + bg_url + "')";
+                entry_point.style.backgroundPositionX = `-${col_i}px`;
+                entry_point.style.backgroundPositionY = `-${row_i}px`;
+                index_col++;
+            }
+            index_row++;
+            index_col = 1;
+        }
+    }
+
+
+    handleLoadSavedElementOnMap(value){
+        for(let type in value){
+            if(type != "sector"){
+                for(let i in value[type]){
+
+                    let data = {};
+                    let this_element = value[type][i];
+                    const imagePath = type === CONFIG.ELEMENT_TYPES.NPC
+                        ? `${CONFIG.FOREGROUND_PATH}ships/${this_element.npc_template_id__ship_id__image}.png`
+                        : `${CONFIG.FOREGROUND_PATH}${type}/${this_element.source_id__data__animation}/0.gif`;
+                    if(type != "npc"){
+                        data = {
+                            data__animation: imagePath,
+                            id: this_element.id,
+                            name: this_element.data.name,
+                            size: this_element.source_id__size,
+                            coordinates: this_element.coordinates,
+                            temp_uuid: crypto.randomUUID(),
+                            type: type,
+                        }
+                    }else{
+                        data = {
+                            data__animation: imagePath,
+                            id: this_element.id,
+                            name: this_element.npc_template_id__name,
+                            size: this_element.npc_template_id__ship_id__ship_category_id__size,
+                            coordinates: this_element.coordinates,
+                            temp_uuid: crypto.randomUUID(),
+                            type: type,
+                        }
+                    }
+
+                    let nextIndex = this.functionality.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[type]);
+                    CONFIG.SAVED_ELEMENT_ON_MAP.map[type][nextIndex] = data;
+                    
+                    CONFIG.LAST_ELEMENT_SELECTED = data
+                    this.functionality.appendDataMenu()
+                    
+                }
+            }
+        }
+    }
+
+    handleSectorNameLoad(value){
+
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.name = value !== "" ? value : null;
+        document.querySelector('#sector-name').value = CONFIG.SAVED_ELEMENT_ON_MAP.sector.name;
+    }
+
+    handleFactionChoiceLoad(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.faction = value !== "" ? value : 1;
+        document.querySelector('#faction-choice').value = CONFIG.SAVED_ELEMENT_ON_MAP.sector.faction;
+    }
+
+    handleSecurityLevelLoad(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.security_level = value !== "" ? value : 1;
+        document.querySelector('#security-level').value = CONFIG.SAVED_ELEMENT_ON_MAP.sector.security_level;
+    }
+
+    handleSectorFactionStarterLoad(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter = value;
+        document.querySelector('#faction-starter').checked = CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter;
+    }
+
+    handleSectorDescriptionLoad(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.description = value !== "" ? value : null;
+        document.querySelector('#sector-description').value = CONFIG.SAVED_ELEMENT_ON_MAP.sector.description; 
+    }
+
+    handleSectorLoadDraw(){
+        
+        for(const category in CONFIG.SAVED_ELEMENT_ON_MAP.map){
+            for(const index in CONFIG.SAVED_ELEMENT_ON_MAP.map[category]){
+                let data = CONFIG.SAVED_ELEMENT_ON_MAP.map[category][index]
+                const imagePath = data.data__animation;
+                const sizeX = data.size.x;
+                const sizeY = data.size.y;
+                const tileSize = CONFIG.ATLAS.tilesize;
+                const totalTileSizeX = sizeX * tileSize;
+                const totalTileSizeY = sizeY * tileSize;
+                const temp_uuid = data.temp_uuid;
+
+                let indexCol = parseInt(data.coordinates.x) + 1;
+                let indexRow = parseInt(data.coordinates.y) + 1;
+
+                sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid);
+            }
+            
+        }
+        
+
+    }
+    
+    drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid){
+        
+            let entry_point = document.querySelector('.tabletop-view').rows[indexRow].cells[indexCol];
+            let entry_point_div = entry_point.querySelector('div');
+            entry_point_div.classList.add(
+                'foreground-container',
+                `uuid-${temp_uuid}`
+            );
+
+            let img_div = document.createElement('div');
+            img_div.classList.add(
+                'm-auto',
+                'w-[32px]',
+                'h-[32px]',
+            );
+            img_div.style.backgroundImage = "url('" + imagePath + "')";
+            entry_point_div.append(img_div);
+
+    }
+
+    drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid){
+        let index_row = indexRow;
+        let index_col = indexCol;
+        for (let row_i = 0; row_i < totalTileSizeY; row_i += tileSize) {
+            for (let col_i = 0; col_i < totalTileSizeX; col_i += tileSize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                let entry_point_div = entry_point.querySelector('div');
+                entry_point_div.classList.add(
+                    'foreground-container',
+                    `uuid-${temp_uuid}`
+                );
+
+                let img_div = document.createElement('div');
+                img_div.classList.add(
+                    'm-auto',
+                    'w-[32px]',
+                    'h-[32px]',
+                );
+                img_div.style.backgroundImage = "url('" + imagePath + "')";
+                img_div.style.backgroundPositionX = `-${col_i}px`;
+                img_div.style.backgroundPositionY = `-${row_i}px`;
+                entry_point_div.append(img_div);
+                index_col++;
+                
+            }
+            index_row++;
+            index_col = parseInt(indexCol);
+        }
+    }
     
     updateImage(elementType, selectedItem, imageElement) {
         const imagePath = elementType === CONFIG.ELEMENT_TYPES.NPC
-            ? `${CONFIG.FOREGROUND_PATH}ships/${selectedItem.ship_id__image}.png`
+            ? `${CONFIG.FOREGROUND_PATH}ships/${selectedItem.image}.png`
             : `${CONFIG.FOREGROUND_PATH}${elementType}/${selectedItem.name}/0.gif`;
         
         imageElement.src = imagePath;
@@ -306,7 +537,6 @@ class UIElementFunctionality {
     }
 
     defineElementOnMap(coord){
-        
         Object.assign(CONFIG.LAST_ELEMENT_SELECTED, coord);
         this.defineSavedElementOnMap();
     }
@@ -317,12 +547,9 @@ class UIElementFunctionality {
     }
 
     defineSavedElementOnMap(){
+
         let nextIndex = this.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type]);
         CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type][nextIndex] = CONFIG.LAST_ELEMENT_SELECTED;
-    }
-
-    loadExistingElementOnMap(){
-        //
     }
 
     resetSavedElementOnMap(){
@@ -331,7 +558,7 @@ class UIElementFunctionality {
 
     drawElementOnMap(){
         const imagePath = CONFIG.LAST_ELEMENT_SELECTED.type === CONFIG.ELEMENT_TYPES.NPC
-            ? `${CONFIG.FOREGROUND_PATH}ships/${CONFIG.LAST_ELEMENT_SELECTED.ship_id__image}.png`
+            ? `${CONFIG.FOREGROUND_PATH}ships/${CONFIG.LAST_ELEMENT_SELECTED.image}.png`
             : `${CONFIG.FOREGROUND_PATH}${CONFIG.LAST_ELEMENT_SELECTED.type}/${CONFIG.LAST_ELEMENT_SELECTED.name}/0.gif`;
         
         const sizeX = CONFIG.LAST_ELEMENT_SELECTED.size.x;
@@ -400,7 +627,7 @@ class UIElementFunctionality {
 
     drawMapBackground(value){
         if(value == "none"){
-            CONFIG.SAVED_ELEMENT_ON_MAP.sector.bg = null;
+            CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = null;
             document.querySelectorAll('.tile').forEach(element => {
                 element.style.backgroundImage = "";
             })
@@ -410,7 +637,7 @@ class UIElementFunctionality {
         let index_row = 1;
         let index_col = 1;
         let bg_url = `${CONFIG.BACKGROUND_PATH}${value}/0.gif`;
-        CONFIG.SAVED_ELEMENT_ON_MAP.sector.bg = value;
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = value;
 
         for (let row_i = 0; row_i < CONFIG.ATLAS.map_height_size; row_i += CONFIG.ATLAS.tilesize) {
             for (let col_i = 0; col_i < CONFIG.ATLAS.map_width_size; col_i += CONFIG.ATLAS.tilesize) {
@@ -431,8 +658,14 @@ class UIElementFunctionality {
     }
 
     createDataMenuContainerDivP(){
+        const displayed_name = CONFIG.LAST_ELEMENT_SELECTED?.displayed_name;
+        const name = CONFIG.LAST_ELEMENT_SELECTED?.name; 
+        const type = CONFIG.LAST_ELEMENT_SELECTED.type;
+        const coordinates = CONFIG.LAST_ELEMENT_SELECTED.coordinates;
+        const size = CONFIG.LAST_ELEMENT_SELECTED.size;
+
         let container_div_p = document.createElement('p');
-        container_div_p.textContent = `displayed name : ${CONFIG.LAST_ELEMENT_SELECTED?.displayed_name}, item name: ${CONFIG.LAST_ELEMENT_SELECTED?.name}, type: ${CONFIG.LAST_ELEMENT_SELECTED.type}, coord(x = ${CONFIG.LAST_ELEMENT_SELECTED.coordinates.x}, y = ${CONFIG.LAST_ELEMENT_SELECTED.coordinates.y}) size(${CONFIG.LAST_ELEMENT_SELECTED.size.y}x${CONFIG.LAST_ELEMENT_SELECTED.size.x})`;
+        container_div_p.textContent = `displayed name : ${displayed_name}, item name: ${name}, type: ${type}, coord(x = ${coordinates.x}, y = ${coordinates.y}) size(${size.y}x${size.x})`;
         container_div_p.className = "flex font-bold";
         return container_div_p;
     }
@@ -445,7 +678,7 @@ class UIElementFunctionality {
         return container_div_i;
     }
 
-    createDataMenuContainerDiv(){
+    createDataMenuContainerDiv(data = {}){
         let container_div = document.createElement('div');
         container_div.className = "flex w-full flex-row justify-between items-center gap-2";
         container_div.append(this.createDataMenuContainerDivP());
@@ -520,7 +753,7 @@ class AppManager {
             this.handleFgItemChange(event.target.value);
         });
         this.background_selector.addEventListener('change', (event) => {
-            this.UIElementFunctionality.drawMapBackground(event.target.value);
+            this.handleSectorBackgroundLoad(event.target.value);
         });
         this.sector_name.addEventListener('change', (event) => {
             this.handleSectorNameChange(event.target.value);
@@ -551,11 +784,13 @@ class AppManager {
             this.mapManager.cleanOldMenu();
         }
     }
-    handleSectorSelectionChange(value){
+
+    async handleSectorSelectionChange(value){
         this.resetUX();
         if(value == "none"){
-            return
+            return;
         }
+        await this.mapManager.loadSectorData(value);
     }
 
     handleSectorNameChange(value){
@@ -566,10 +801,6 @@ class AppManager {
         CONFIG.SAVED_ELEMENT_ON_MAP.sector.security_level = value;
     }
     
-    handleFactionChoiceChange(value){
-        CONFIG.SAVED_ELEMENT_ON_MAP.sector.security_level = value;
-    }
-    
     handleSectorDescriptionChange(value){
         CONFIG.SAVED_ELEMENT_ON_MAP.sector.description = value;
     }
@@ -577,9 +808,33 @@ class AppManager {
     handleFactionStarterChange(value){
         CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter = value;
     }
-    
-    handleFactionStarterChange(value){
-        CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter = value;
+
+    handleSectorBackgroundLoad(value){
+        if(value == "none"){
+            CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = null;
+            document.querySelectorAll('.tile').forEach(element => {
+                element.style.backgroundImage = "";
+            })
+            return;
+        }
+
+        let index_row = 1;
+        let index_col = 1;
+        let bg_url = `${CONFIG.BACKGROUND_PATH}${value}/0.gif`;
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = value;
+
+        for (let row_i = 0; row_i < CONFIG.ATLAS.map_height_size; row_i += CONFIG.ATLAS.tilesize) {
+            for (let col_i = 0; col_i < CONFIG.ATLAS.map_width_size; col_i += CONFIG.ATLAS.tilesize) {
+                let entry_point = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
+                entry_point.style.backgroundImage = "url('" + bg_url + "')";
+                entry_point.style.backgroundPositionX = `-${col_i}px`;
+                entry_point.style.backgroundPositionY = `-${row_i}px`;
+                index_col++;
+            }
+            index_row++;
+            index_col = 1;
+        }
+
     }
 
     handleTileLoader(tile){
@@ -595,7 +850,7 @@ class AppManager {
     }
 
     resetMap(){
-        CONFIG.SAVED_ELEMENT_ON_MAP.sector.bg = null;
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = null;
         document.querySelectorAll('.tile').forEach(element => {
             element.style.backgroundImage = "";
             let div = element.querySelector('div');
@@ -615,7 +870,7 @@ class AppManager {
             sector: {
                 'name': null,
                 'description': null,
-                'bg': null,
+                'image': null,
                 'is_faction_starter': false,
                 'faction': 1,
                 'security_level': 1,
@@ -626,7 +881,7 @@ class AppManager {
                 'asteroid': {},
                 'station': {},
                 'warpzone': {},
-                'moon': {},
+                'satellite': {},
                 'star': {},
             }
             
