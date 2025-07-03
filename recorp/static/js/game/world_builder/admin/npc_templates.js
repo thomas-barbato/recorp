@@ -55,6 +55,7 @@ npc_submit_button.addEventListener('click', function() {
     let template_select = document.querySelector('#template-select');
     let template_selected_name = template_select.options[template_select.selectedIndex].value;
     let template_name = document.querySelector('#template-name-input').value;
+    let template_displayed_name = document.querySelector('#template-displayed-name-input').value;
     let selected_ship = ship_select.options[ship_select.selectedIndex];
     let ship_id = selected_ship.value;
     selected_spaceship_name = selected_ship.textContent;
@@ -147,6 +148,12 @@ npc_submit_button.addEventListener('click', function() {
     } else {
         document.querySelector('#npc-template-modal-name-warning').classList.remove('hidden');
     }
+    if (template_displayed_name) {
+        let template_displayed_name_element = document.getElementById('npc-template-modal-displayed-name')
+        template_displayed_name_element.textContent = template_displayed_name;
+        template_displayed_name_element.classList.add('bg-gray-600', 'border', 'border-gray-800');
+        document.querySelector('#npc-template-modal-displayed-name-warning').classList.add('hidden');
+    } 
 
     for (let skill in skill_info_array) {
         let skill_element_li = document.createElement('li');
@@ -344,6 +351,7 @@ function save_or_update_npc_template() {
     let template_select = document.querySelector('#template-select');
     let template_selectedElement = template_select.options[template_select.selectedIndex];
     let template_name = document.querySelector('#template-name-input');
+    let template_displayed_name =  document.querySelector('#template-displayed-name-input');
     let difficulty_input = document.querySelector('#difficulty-select');
     let difficulty = difficulty_input.value;
     let ship_select = document.querySelector('#ship-select');
@@ -382,6 +390,7 @@ function save_or_update_npc_template() {
     if (ship_selectedElement.value != "none" && ship_selectedElement.value && template_name.value) {
         let template_data = {
             "name": template_name.value,
+            "displayed_name": template_displayed_name.value,
             "template_id": template_selectedElement.value,
             "difficulty": difficulty,
             "behavior": behavior,
@@ -418,6 +427,7 @@ function save_or_update_npc_template() {
 
 function load_data_from_selected_template(response_data) {
     document.querySelector('#template-name-input').value = response_data.template[0].name;
+    document.querySelector('#template-displayed-name-input').value = response_data.template[0].displayed_name;
     let spaceship_selected = document.querySelector(`#spaceship-option-${response_data.template[0].ship_id}`);
     spaceship_selected.selected = true;
     spaceship_selected.classList.add('selected-spaceShip');
@@ -446,6 +456,7 @@ function load_data_from_selected_template(response_data) {
 
 function unload_template_data() {
     document.querySelector('#template-name-input').value = "";
+    document.querySelector('#template-displayed-name-input').value = "";
     document.querySelector('#ship-select').value = "none";
     document.querySelector('#behavior-select').value = "passive";
 

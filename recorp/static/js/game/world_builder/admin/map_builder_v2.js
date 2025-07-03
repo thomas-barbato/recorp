@@ -29,6 +29,7 @@ const CONFIG = {
         map_width_size : 40 * 32,
         map_height_size : 40 * 32,
     },
+    LAST_UUID : null,
     LAST_ELEMENT_SELECTED : null,
     SAVED_ELEMENT_ON_MAP: {
         sector: {
@@ -118,6 +119,48 @@ class ApiService {
                 headers: this.baseHeaders,
                 credentials: 'include',
                 body: JSON.stringify({sector_id: sectorId})
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Erreur dans fetchSelectedSector:', error);
+            throw error;
+        }
+    }
+
+    async fetchSaveSectorData() {
+
+        try {
+            const response = await fetch('save_sector_data', {
+                method: 'POST',
+                headers: this.baseHeaders,
+                credentials: 'include',
+                body: JSON.stringify(CONFIG.SAVED_ELEMENT_ON_MAP)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Erreur dans fetchSelectedSector:', error);
+            throw error;
+        }
+    }
+
+    async fetchUpdateSectorData() {
+
+        try {
+            const response = await fetch('update_sector_data', {
+                method: 'POST',
+                headers: this.baseHeaders,
+                credentials: 'include',
+                body: JSON.stringify(CONFIG.SAVED_ELEMENT_ON_MAP)
             });
 
             if (!response.ok) {
@@ -227,7 +270,7 @@ class MapElementsManager {
             this.handleLoadSavedElementOnMap(this.sectorData);
             this.handleSectorNameLoad(this.sectorData.sector.name);
             this.handleSectorBackgroundLoad(this.sectorData.sector.image);
-            this.handleSectorFactionStarterLoad(this.sectorData.sector.is_faction_starter);
+            this.handleSectorFactionStarterLoad(this.sectorData.sector.is_faction_level_starter);
             this.handleFactionChoiceLoad(this.sectorData.sector.faction_id);
             this.handleSectorDescriptionLoad(this.sectorData.sector.description);
             this.handleSecurityLevelLoad(this.sectorData.sector.security_id);
@@ -306,7 +349,7 @@ class MapElementsManager {
         if (value === 'none') {
             this.selectedData = null;
             imageElement.src = '';
-            CONFIG.LAST_ELEMENT_SELECTED = {};
+            CONFIG.LAST_ELEMENT_SELECTED = null;
             return;
         }
 
@@ -317,12 +360,13 @@ class MapElementsManager {
                 id: selectedItem.ship_id,
                 image: selectedItem.ship_id__image,
                 name: selectedItem.ship_id__name,
+                displayed_name: selectedItem.displayed_name,
                 size : selectedItem.ship_id__ship_category_id__size,
-                temp_uuid : selectedItem.temp_uuid,
+                displayed_name : selectedItem.displayed_name,
                 type: elementType
             }
         }
-        Object.assign(selectedItem, {type: elementType, id: elementId, temp_uuid: crypto.randomUUID()});
+        Object.assign(selectedItem, {type: elementType, id: elementId});
         
         if (selectedItem) {
             CONFIG.LAST_ELEMENT_SELECTED = selectedItem;
@@ -364,7 +408,6 @@ class MapElementsManager {
         for(let type in value){
             if(type != "sector"){
                 for(let i in value[type]){
-
                     let data = {};
                     let this_element = value[type][i];
                     const imagePath = type === CONFIG.ELEMENT_TYPES.NPC
@@ -372,26 +415,33 @@ class MapElementsManager {
                         : `${CONFIG.FOREGROUND_PATH}${type}/${this_element.source_id__data__animation}/0.gif`;
                     if(type != "npc"){
                         data = {
-                            data__animation: imagePath,
+                            image_url: imagePath,
+                            data__animation: this_element.source_id__data__animation,
                             id: this_element.id,
                             name: this_element.data.name,
+                            displayed_name: this_element.data.name,
                             size: this_element.source_id__size,
                             coordinates: this_element.coordinates,
+                            description : this_element.data__description,
                             temp_uuid: crypto.randomUUID(),
+                            template_id : this_element.npc_template_id,
                             type: type,
                         }
                     }else{
                         data = {
-                            data__animation: imagePath,
+                            image_url: imagePath,
+                            data__animation: this_element.source_id__data__animation,
                             id: this_element.id,
                             name: this_element.npc_template_id__name,
+                            displayed_name: this_element.npc_template_id__displayed_name,
                             size: this_element.npc_template_id__ship_id__ship_category_id__size,
                             coordinates: this_element.coordinates,
                             temp_uuid: crypto.randomUUID(),
+                            source_id: this_element.source_id,
+                            description: this_element.data__description,
                             type: type,
                         }
                     }
-
                     let nextIndex = this.functionality.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[type]);
                     CONFIG.SAVED_ELEMENT_ON_MAP.map[type][nextIndex] = data;
                     
@@ -399,6 +449,19 @@ class MapElementsManager {
                     this.functionality.appendDataMenu()
                     
                 }
+            }else{
+                let this_element = value[type];
+                let data = {
+                    'sector_id': this_element.id,
+                    'displayed_name': this_element.name,
+                    'name': this_element.name,
+                    'description': this_element.data__description,
+                    'image': this_element.image,
+                    'is_faction_starter': this_element.is_faction_level_starter,
+                    'faction': this_element.faction,
+                    'security_level': this_element.security_id,
+                }
+                CONFIG.SAVED_ELEMENT_ON_MAP.sector = data;
             }
         }
     }
@@ -433,19 +496,19 @@ class MapElementsManager {
         
         for(const category in CONFIG.SAVED_ELEMENT_ON_MAP.map){
             for(const index in CONFIG.SAVED_ELEMENT_ON_MAP.map[category]){
-                let data = CONFIG.SAVED_ELEMENT_ON_MAP.map[category][index]
-                const imagePath = data.data__animation;
+                
+                let data = CONFIG.SAVED_ELEMENT_ON_MAP.map[category][index];
+                const imagePath = data.image_url;
                 const sizeX = data.size.x;
                 const sizeY = data.size.y;
                 const tileSize = CONFIG.ATLAS.tilesize;
                 const totalTileSizeX = sizeX * tileSize;
                 const totalTileSizeY = sizeY * tileSize;
-                const temp_uuid = data.temp_uuid;
 
                 let indexCol = parseInt(data.coordinates.x) + 1;
                 let indexRow = parseInt(data.coordinates.y) + 1;
 
-                sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid);
+                sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath);
             }
             
         }
@@ -453,13 +516,13 @@ class MapElementsManager {
 
     }
     
-    drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid){
+    drawSingleSizedElement(indexRow, indexCol, imagePath){
         
             let entry_point = document.querySelector('.tabletop-view').rows[indexRow].cells[indexCol];
             let entry_point_div = entry_point.querySelector('div');
             entry_point_div.classList.add(
                 'foreground-container',
-                `uuid-${temp_uuid}`
+                `uuid-${CONFIG.LAST_UUID}`
             );
 
             let img_div = document.createElement('div');
@@ -473,7 +536,7 @@ class MapElementsManager {
 
     }
 
-    drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid){
+    drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath){
         let index_row = indexRow;
         let index_col = indexCol;
         for (let row_i = 0; row_i < totalTileSizeY; row_i += tileSize) {
@@ -482,7 +545,7 @@ class MapElementsManager {
                 let entry_point_div = entry_point.querySelector('div');
                 entry_point_div.classList.add(
                     'foreground-container',
-                    `uuid-${temp_uuid}`
+                    `uuid-${CONFIG.LAST_UUID}`
                 );
 
                 let img_div = document.createElement('div');
@@ -521,24 +584,33 @@ class MapElementsManager {
 class UIElementFunctionality {
     constructor(){
     }
-    attachMapListener(){
-        mapManager = new UIElementFunctionality();
-        let tile_container = document.querySelectorAll('.tile')
-        tile_container.forEach(tile => {
-            // Create a new instance to be able to work 
-            // in eventListener...
-            tile.addEventListener('click', function(){
-                const coord = {y : "", x : ""};
-                [coord.x, coord.y] = tile.id.split('_');
-                mapManager.defineElementOnMap({coordinates : coord});
-                mapManager.drawElementOnMap();
-            })
-        })
-    }
 
     defineElementOnMap(coord){
-        Object.assign(CONFIG.LAST_ELEMENT_SELECTED, coord);
-        this.defineSavedElementOnMap();
+
+        let animation = document.querySelector('#select-element').value;
+        let uuid = CONFIG.LAST_UUID;
+        let type = document.querySelector('#fg-item-selector').value;
+        let displayedName = document.querySelector('#name-input').value;
+        let description = document.querySelector('#description-input').value;
+        let size = CONFIG.LAST_ELEMENT_SELECTED.size;
+
+        CONFIG.LAST_ELEMENT_SELECTED.coordinates = coord;
+        CONFIG.LAST_ELEMENT_SELECTED.description = description;
+        CONFIG.LAST_ELEMENT_SELECTED.displayed_name = displayedName;
+        CONFIG.LAST_ELEMENT_SELECTED.temp_uuid = uuid;
+        CONFIG.LAST_ELEMENT_SELECTED.type = type;
+        
+        let nextIndex = this.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type]);
+        CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type][nextIndex] = {
+            coordinates : coord,
+            data__animation: animation,
+            description : description,
+            displayed_name : displayedName,
+            type : type,
+            size: size,
+            temp_uuid : uuid,
+        }
+
     }
 
     getNextIndex(obj) {
@@ -547,13 +619,8 @@ class UIElementFunctionality {
     }
 
     defineSavedElementOnMap(){
-
         let nextIndex = this.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type]);
         CONFIG.SAVED_ELEMENT_ON_MAP.map[CONFIG.LAST_ELEMENT_SELECTED.type][nextIndex] = CONFIG.LAST_ELEMENT_SELECTED;
-    }
-
-    resetSavedElementOnMap(){
-        CONFIG.SAVED_ELEMENT_ON_MAP.map = [];
     }
 
     drawElementOnMap(){
@@ -566,24 +633,21 @@ class UIElementFunctionality {
         const tileSize = CONFIG.ATLAS.tilesize;
         const totalTileSizeX = sizeX * tileSize;
         const totalTileSizeY = sizeY * tileSize;
-        const temp_uuid = crypto.randomUUID();
-
-        CONFIG.LAST_ELEMENT_SELECTED.temp_uuid = temp_uuid;
 
         let indexCol = parseInt(CONFIG.LAST_ELEMENT_SELECTED.coordinates.x) + 1;
         let indexRow = parseInt(CONFIG.LAST_ELEMENT_SELECTED.coordinates.y) + 1;
 
-        sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid);
+        sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath);
         this.appendDataMenu();
     }
 
-    drawSingleSizedElement(indexRow, indexCol, imagePath, temp_uuid){
+    drawSingleSizedElement(indexRow, indexCol, imagePath){
         
             let entry_point = document.querySelector('.tabletop-view').rows[indexRow].cells[indexCol];
             let entry_point_div = entry_point.querySelector('div');
             entry_point_div.classList.add(
                 'foreground-container',
-                `uuid-${temp_uuid}`
+                `uuid-${CONFIG.LAST_UUID}`
             );
 
             let img_div = document.createElement('div');
@@ -597,14 +661,14 @@ class UIElementFunctionality {
 
     }
 
-    drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, temp_uuid){
+    drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath){
         for (let row_i = 0; row_i < totalTileSizeY; row_i += tileSize) {
             for (let col_i = 0; col_i < totalTileSizeX; col_i += tileSize) {
                 let entry_point = document.querySelector('.tabletop-view').rows[indexRow].cells[indexCol];
                 let entry_point_div = entry_point.querySelector('div');
                 entry_point_div.classList.add(
                     'foreground-container',
-                    `uuid-${temp_uuid}`
+                    `uuid-${CONFIG.LAST_UUID}`
                 );
 
                 let img_div = document.createElement('div');
@@ -673,8 +737,10 @@ class UIElementFunctionality {
     createDataMenuContainerDivI(){
         let container_div_i = document.createElement('i');
         container_div_i.className = `${CONFIG.CSS_CLASSES.TRASH}`;
-        container_div_i.id = CONFIG.LAST_ELEMENT_SELECTED.temp_uuid;
-        container_div_i.addEventListener('click', this.deleteElementOnMap)
+        container_div_i.id = CONFIG.LAST_UUID;
+        container_div_i.addEventListener('click', (event) =>{
+            this.deleteElementOnMap(event.target.id);
+        })
         return container_div_i;
     }
 
@@ -689,15 +755,13 @@ class UIElementFunctionality {
     createDataMenuContainer(){
         let container = document.createElement('container');
         container.className = "flex w-full bg-gray-600 border-emerald-300 p-2";
-        container.id = `container-${CONFIG.LAST_ELEMENT_SELECTED?.temp_uuid}`;
-        container.setAttribute('data-type', CONFIG.LAST_ELEMENT_SELECTED?.type)
+        container.id = `container-${CONFIG.LAST_UUID}`;
+        container.setAttribute('data-type', CONFIG.LAST_ELEMENT_SELECTED?.type);
         container.append(this.createDataMenuContainerDiv());
         return container;
     }
 
-    deleteElementOnMap(){
-
-        let id = this.id;
+    deleteElementOnMap(id){
         let element_to_delete = document.querySelectorAll(`.uuid-${id}`);
         let element_type = document.getElementById(`container-${id}`).getAttribute('data-type');
 
@@ -707,13 +771,12 @@ class UIElementFunctionality {
         })
 
         for(let obj in CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type]){
-            if(!CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type][obj].temp_uuid == this.id){
+            if(CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type][obj].temp_uuid == id){
                 delete CONFIG.SAVED_ELEMENT_ON_MAP.map[element_type][obj];
             }
         }
 
         document.querySelector(`#container-${id}`).remove();
-        
     }
 
 }
@@ -736,6 +799,7 @@ class AppManager {
         this.faction_choice = DOMUtils.querySelector('#faction-choice');
         this.faction_starter = DOMUtils.querySelector('#faction-starter');
         this.sector_description = DOMUtils.querySelector('#sector-description');
+        this.save_button = DOMUtils.querySelector('#save-or-update');
         this.csrfToken = DOMUtils.querySelector(CONFIG.SELECTORS.CSRF_TOKEN).value;
     }
 
@@ -769,6 +833,9 @@ class AppManager {
         });
         this.faction_starter.addEventListener('change', (event) => {
             this.handleFactionStarterChange(event.target.checked);
+        });
+        this.save_button.addEventListener('click', (event) => {
+            this.handleSaveOrUpdateSector();
         });
         document.querySelectorAll('.tile').forEach(tile => {
             this.handleTileLoader(tile);
@@ -809,6 +876,10 @@ class AppManager {
         CONFIG.SAVED_ELEMENT_ON_MAP.sector.is_faction_starter = value;
     }
 
+    handleFactionChoiceChange(value){
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.faction = value;
+    }
+
     handleSectorBackgroundLoad(value){
         if(value == "none"){
             CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = null;
@@ -841,12 +912,29 @@ class AppManager {
         // Create a new instance to be able to work 
         // in eventListener...
         tile.addEventListener('click', function(){
-        this.UIElementFunctionality = new UIElementFunctionality(); 
-            const coord = {y : "", x : ""};
-            [coord.x, coord.y] = tile.id.split('_');
-            this.UIElementFunctionality.defineElementOnMap({coordinates : coord});
+            let splitted_coord = tile.id.split('_');
+            let coord = {x: splitted_coord[0] , y: splitted_coord[1]}
+            console.log(coord.x, coord.y)
+            this.UIElementFunctionality = new UIElementFunctionality(); 
+            CONFIG.LAST_UUID = crypto.randomUUID();
+            this.UIElementFunctionality.defineElementOnMap(coord);
+            //this.UIElementFunctionality.defineSavedElementOnMap();
             this.UIElementFunctionality.drawElementOnMap();
         })
+    }
+
+    handleSaveOrUpdateSector(){
+        
+        if(this.checkIfSaveOrUpdate() == "save"){
+            this.apiService.fetchSaveSectorData();
+        }else{
+            console.log(CONFIG.SAVED_ELEMENT_ON_MAP)
+            this.apiService.fetchUpdateSectorData();
+        }
+    }
+
+    checkIfSaveOrUpdate(){
+        return this.sector_selection.value === "none" ? "save" : "update"; 
     }
 
     resetMap(){

@@ -386,6 +386,7 @@ class NpcTemplate(models.Model):
     )
 
     ship = models.ForeignKey(Ship, on_delete=models.SET_NULL, null=True)
+    displayed_name = models.CharField(max_length=50, null=True)
     name = models.CharField(max_length=50)
     difficulty = models.SmallIntegerField(default=1)
     description = models.TextField(max_length=2500, blank=True)

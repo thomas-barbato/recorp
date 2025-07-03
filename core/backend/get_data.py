@@ -298,6 +298,7 @@ class GetDataFromDB:
             "npc_template_id__max_thermal_defense", "missile_defense",
             "npc_template_id__max_missile_defense", "npc_template_id__module_id_list",
             "npc_template_id__difficulty", "npc_template_id__name", "npc_template_id__id",
+            "npc_template_id__displayed_name",
             "faction_id__name", "npc_template_id__ship_id__image",
             "npc_template_id__ship_id__ship_category_id__size",
             "npc_template_id__ship_id__ship_category_id__name",
@@ -312,9 +313,9 @@ class GetDataFromDB:
         """Récupère les données complètes d'un template NPC"""
         template = list(NpcTemplate.objects.filter(id=pk).values(
             "id", "name", "difficulty", "module_id_list", "max_hp",
-            "max_movement", "max_missile_defense", "max_thermal_defense",
-            "max_ballistic_defense", "hold_capacity", "behavior",
-            "ship_id", "ship_id__image"
+            "displayed_name","max_movement", "max_missile_defense", 
+            "max_thermal_defense", "max_ballistic_defense", "hold_capacity", 
+            "behavior", "ship_id", "ship_id__image"
         ))
 
         skills = list(NpcTemplateSkill.objects.filter(npc_template_id=pk).values(
@@ -332,8 +333,8 @@ class GetDataFromDB:
         """Récupère tous les templates NPC"""
         return list(NpcTemplate.objects.values(
             "id", "name", "ship_id__image", "max_hp", "max_movement",
-            "difficulty", "max_missile_defense", "max_thermal_defense",
-            "max_ballistic_defense", "behavior"
+            "displayed_name", "difficulty", "max_missile_defense", 
+            "max_thermal_defense", "max_ballistic_defense", "behavior"
         ))
 
     @staticmethod
@@ -342,7 +343,7 @@ class GetDataFromDB:
         try:
             return NpcTemplate.objects.filter(id=template_id).values(
                 "id", "ship_id", "ship_id__name", "ship_id__image",
-                "ship_id__ship_category_id__size"
+                "ship_id__ship_category_id__size", "displayed_name"
             ).first()
         except (NpcTemplate.DoesNotExist, IndexError):
             return {}
@@ -351,7 +352,7 @@ class GetDataFromDB:
     def get_related_npc_on_sector_data(sector_id: int) -> List[Dict]:
         """Récupère les NPCs liés à un secteur"""
         return list(Npc.objects.filter(sector_id=sector_id).values(
-            "id", "coordinates", "npc_template_id__id", "npc_template_id__name",
+            "id", "coordinates", "npc_template_id__id", "npc_template_id__name", "npc_template_id__displayed_name",
             "npc_template_id__ship_id__image", "npc_template_id__ship_id__ship_category_id__size",
             "npc_template_id__ship_id__name"
         ))

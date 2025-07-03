@@ -232,6 +232,7 @@ class StoreInCache:
                     "npc": {
                         "id": npc_data["id"],
                         "name": npc_data["npc_template_id__name"],
+                        "displayed_name": npc_data["npc_template_id__displayed_name"],
                         "coordinates": npc_data["coordinates"],
                     },
                     "faction": {

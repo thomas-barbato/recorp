@@ -30,7 +30,8 @@ function extractNpcInfo(npcData) {
         },
         npc: {
             id: npcData.npc.id,
-            name: npcData.npc.name
+            name: npcData.npc.name,
+            displayed_name: npcData.npc.displayed_name,
         }
     };
 }
@@ -38,7 +39,7 @@ function extractNpcInfo(npcData) {
 function createNpcModalData(npcData) {
     return {
         player: {
-            name: npcData.npc.name,
+            name: npcData.npc.displayed_name,
             image: npcData.npc.image,
             faction_name: npcData.faction.name
         },
@@ -119,7 +120,7 @@ function setupNpcCell(cell, border, npcData, npcInfo) {
     
     // Configure border
     border.setAttribute('data-title', 
-        `${npcInfo.npc.name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
+        `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );
     border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');

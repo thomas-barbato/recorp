@@ -113,7 +113,7 @@
                                             game-icons--laser-warning
                                             {% elif key == 'Ballistic Shield' %}
                                             game-icons--shield-reflect
-                                            {% key == 'Missile Shield' %}
+                                            {% elif key == 'Missile Shield' %}
                                             game-icons--dragon-shield
                                             {% elif key == 'Repaire' %}
                                             game-icons--auto-repair
@@ -232,7 +232,7 @@
 
     let user_is_on_mobile_bool = is_user_is_on_mobile_device()
 
-    let action_listener_touch_click = user_is_on_mobile_bool === true ? 'click' : 'touchstart';
+    let action_listener_touch_click = user_is_on_mobile_bool === false ? 'click' : 'touchstart';
     let faction_element = document.querySelectorAll('.faction');
     let faction_selected = ""
 
@@ -327,16 +327,16 @@
         }
     }
 
-
-    for(let i = 0 ; i < faction_element.length ; i++){
-        faction_element[i].addEventListener(action_listener_touch_click, function(){
-            if(faction_element[i].classList.contains('bg-gray-800')){
-                faction_element[i].classList.remove('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
-                faction_element[i].classList.add('bg-[#B1F1CB]/30', 'md:border', 'md:border-1', 'md:border-gray-300/60');
+    faction_element.forEach(faction => {
+        faction.addEventListener(action_listener_touch_click, function(){
+            console.log("ok")
+            if(faction.classList.contains('bg-gray-800')){
+                faction.classList.remove('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
+                faction.classList.add('bg-[#B1F1CB]/30', 'md:border', 'md:border-1', 'md:border-gray-300/60');
                 document.querySelector('#next-btn').classList.remove('invisible');
             }else{
-                faction_element[i].classList.remove('bg-[#B1F1CB]/30', 'md:border', 'md:border-1', 'md:border-gray-300/60');
-                faction_element[i].classList.add('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
+                faction.classList.remove('bg-[#B1F1CB]/30', 'md:border', 'md:border-1', 'md:border-gray-300/60');
+                faction.classList.add('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
                 document.querySelector('#next-btn').classList.add('invisible');
             }
 
@@ -349,10 +349,9 @@
                     faction_element[y].classList.add('bg-gray-800', 'hover:md:bg-[#B1F1CB]/30', 'md:border-gray-300/0', 'md:border-1');
                 }
             }
-
             this_element = undefined;
         })
-    }
+    })
 
     reader.onload = e => {
         img_user.src = e.target.result;

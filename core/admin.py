@@ -142,7 +142,7 @@ class CustomAdminSite(admin.AdminSite):
             ),
             re_path(
                 r"^sector_gestion/get_selected_data$",
-                self.admin_view(GetElementTypeDataView.as_view()),
+                self.admin_view(GetSectorElementTypeDataView.as_view()),
                 name="get_selected_data",
             ),
             re_path(
@@ -151,14 +151,14 @@ class CustomAdminSite(admin.AdminSite):
                 name="get_sector_data",
             ),
             re_path(
-                r"^sector_gestion/sector_data$",
-                self.admin_view(SectorDataView.as_view()),
-                name="sector_data",
+                r"^sector_gestion/save_sector_data$",
+                self.admin_view(SetSectorView.as_view()),
+                name="save_sector_data",
             ),
             re_path(
-                r"^sector_gestion/sector_update_data$",
-                self.admin_view(SectorUpdateDataView.as_view()),
-                name="sector_update_data",
+                r"^sector_gestion/update_sector_data$",
+                self.admin_view(UpdateSectorView.as_view()),
+                name="update_sector_data",
             ),
             re_path(
                 r"^sector_gestion/sector_delete$",
@@ -494,33 +494,33 @@ class GetSectorDataView(LoginRequiredMixin, TemplateView):
                     "faction_id" : sector.faction_id
                 },
                 "star" : [e for e in sector.planet_sector.filter(source_id__data__type="star").values(
-                    "source_id__size", "data", "coordinates", "id",
+                    "source_id__size", "data", "coordinates", "id", "data__description",
                     "source_id", "source_id__data__type", "source_id__data__animation"
                 )],
                 "planet" : [e for e in sector.planet_sector.filter(source_id__data__type="planet").values(
-                    "source_id__size", "data", "coordinates", "id",
+                    "source_id__size", "data", "coordinates", "id", "data__description",
                     "source_id", "source_id__data__type", "source_id__data__animation"
                 )],
                 "satellite" : [e for e in sector.planet_sector.filter(source_id__data__type="satellite").values(
-                    "source_id__size", "data", "coordinates", "id",
+                    "source_id__size", "data", "coordinates", "id", "data__description",
                     "source_id", "source_id__data__type", "source_id__data__animation" 
                 )],
                 "asteroid" : [e for e in sector.asteroid_sector.values(
-                    "source_id__size", "data", "coordinates", "id", 
+                    "source_id__size", "data", "coordinates", "id", "data__description",
                     "source_id", "source_id__data__type", "source_id__data__animation"
                 )],
                 "warpzone" : [e for e in sector.warp_sector.values(
-                    "source_id__size", "data", "coordinates", 
+                    "source_id__size", "data", "coordinates", "data__description",
                     "source_id", "id", "sector_id", "source_id__data__animation" 
                 )],
                 "station" : [e for e in sector.station_sector.values(
-                    "source_id__size", "data", "coordinates", "id", 
+                    "source_id__size", "data", "coordinates", "id", "data__description", 
                     "source_id", "source_id__data__type" 
                 )],
                 "npc": [e for e in sector.npc_sector.values(
                     "id", "npc_template_id__ship_id__ship_category_id__size",
                     "npc_template_id__ship_id__image", "npc_template_id__ship_id__name",
-                    "npc_template_id", "coordinates", "npc_template_id__name"
+                    "npc_template_id", "coordinates", "npc_template_id__name", "npc_template_id__displayed_name"
                 )]
             }
         except Sector.DoesNotExist:
@@ -529,7 +529,7 @@ class GetSectorDataView(LoginRequiredMixin, TemplateView):
         return JsonResponse(json.dumps(response), safe=False)
     
 
-class GetElementTypeDataView(LoginRequiredMixin, TemplateView):
+class GetSectorElementTypeDataView(LoginRequiredMixin, TemplateView):
     template_name = "sector_gestion.html"
     
     def post(self, request):
@@ -545,7 +545,7 @@ class GetElementTypeDataView(LoginRequiredMixin, TemplateView):
             "station": [e for e in Station.objects.values('id', 'name', 'data__animation', 'size')],
             "npc" : [e for e in NpcTemplate.objects.values(
                 "id", "ship_id", "ship_id__name", "ship_id__image",
-                "ship_id__ship_category_id__size"
+                "ship_id__ship_category_id__size", "displayed_name"
             )]
             
         }
@@ -554,223 +554,204 @@ class GetElementTypeDataView(LoginRequiredMixin, TemplateView):
             response = available_type[foreground_element_type]
             
         return JsonResponse(json.dumps(response), safe=False)
-            
-
-
-class SectorDataView(LoginRequiredMixin, TemplateView):
+    
+    
+class SetSectorView(LoginRequiredMixin, TemplateView):
     template_name = "sector_gestion.html"
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["planet_url"] = GetDataFromDB.get_fg_element_url("planet")
-        context["station_url"] = GetDataFromDB.get_fg_element_url("station")
-        context["asteroid_url"] = GetDataFromDB.get_fg_element_url("asteroid")
-        context["satellite_url"] = GetDataFromDB.get_fg_element_url("satellite")
-        context["star_url"] = GetDataFromDB.get_fg_element_url("star")
-        context["blackhole_url"] = GetDataFromDB.get_fg_element_url("blackhole")
-        context["warpzone_url"] = GetDataFromDB.get_fg_element_url("warpzone")
-        context["ships_url"] = GetDataFromDB.get_fg_element_url("ships")
-        return context
+    def post(self, request):
+        sector_elements = json.load(request)
+        map_elements = sector_elements["map"]
+        sector_data = sector_elements["sector"]
+        response = {"success": False}
+        
+        sector = Sector(
+            name=sector_data["name"],
+            image=sector_data["image"],
+            description=sector_data["description"],
+            is_faction_level_starter=sector_data["is_faction_starter"],
+            faction_id=sector_data["faction"],
+            security_id=sector_data["security_level"]
+        )
+        
+        sector.save()
+
+        for index in map_elements:
+            for element in map_elements[index]:
+                
+                if index in ["planet", "star", "satellite"]:
+                    source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                    PlanetResource.objects.create(
+                        quantity=0,
+                        data={
+                            "name": map_elements[index][element]["displayed_name"],
+                            "description": map_elements[index][element]["description"]
+                        },
+                        coordinates=map_elements[index][element]["coordinates"],
+                        resource_id=1,
+                        sector_id=sector.id,
+                        source_id=source_id
+                    )
+                elif index == "asteroid":
+                    
+                    source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                    AsteroidResource.objects.create(
+                        quantity=0,
+                        data={
+                            "name": map_elements[index][element]["displayed_name"],
+                            "description": map_elements[index][element]["description"]
+                        },
+                        coordinates=map_elements[index][element]["coordinates"],
+                        resource_id=1,
+                        sector_id=sector.id,
+                        source_id=source_id
+                    )
+                elif index == "station":
+                    
+                    source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                    StationResource.objects.create(
+                        quantity=0,
+                        data={
+                            "name": map_elements[index][element]["displayed_name"],
+                            "description": map_elements[index][element]["description"]
+                        },
+                        coordinates=map_elements[index][element]["coordinates"],
+                        resource_id=1,
+                        sector_id=sector.id,
+                        source_id=source_id
+                    )
+                    
+                elif index == "warpzone":
+                    
+                    source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                    WarpZone.objects.create(
+                        data={
+                            "name": map_elements[index][element]["displayed_name"],
+                            "description": map_elements[index][element]["description"]
+                        },
+                        coordinates=map_elements[index][element]["coordinates"],
+                        sector_id=sector.id,
+                        source_id=source_id
+                    )   
+                elif index == "npc":
+                    id = map_elements[index][element]["data__animation"].split('_')[1]
+                    ThisNpcTemplate = NpcTemplate.objects.filter(id=id)
+                    Npc.objects.create(
+                        coordinates=map_elements[index][element]['coordinates'],
+                        current_ap=10,
+                        max_ap=10,
+                        hp=ThisNpcTemplate.values_list('max_hp', flat=True)[0],
+                        movement=ThisNpcTemplate.values_list('max_movement', flat=True)[0],
+                        missile_defense=ThisNpcTemplate.values_list('max_missile_defense', flat=True)[0],
+                        thermal_defense=ThisNpcTemplate.values_list('max_thermal_defense', flat=True)[0],
+                        ballistic_defense=ThisNpcTemplate.values_list('max_ballistic_defense', flat=True)[0],
+                        status="FULL",
+                        faction_id=1,
+                        npc_template_id=ThisNpcTemplate.values_list('id', flat=True)[0],
+                        sector_id=sector.id
+                    )
+            
+        return JsonResponse(json.dumps({}), safe=False)
+    
+    
+class UpdateSectorView(LoginRequiredMixin, TemplateView):
+    template_name = "sector_gestion.html"
     
     def post(self, request):
-        pk = json.load(request)["map_id"]
-        if Sector.objects.filter(id=pk).exists():
-            sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations, warpzones = GetDataFromDB.get_items_from_sector(pk)
-            
-            table_set = {
-                "planet": [e for e in planets] if planets else None,
-                "asteroid": [e for e in asteroids] if asteroids else None,
-                "station": [e for e in stations] if stations else None,
-                "warpzone": [e for e in warpzones] if warpzones else None
-            }
-            
-            result_dict = dict()
-            result_dict["sector_element"] = []
-            result_dict["faction"] = {
-                "name": sector.faction_sector.name,
-                "faction_id": sector.faction_id,
-                "is_faction_level_starter": sector.is_faction_level_starter,
-            }
-            result_dict["sector"] = {
-                "id": pk,
-                "name": sector.name,
-                "description": sector.description,
-                "image": sector.image,
-                "security_id": sector.security_id,
-            }
-            
-            for table_key, table_value in table_set.items():
-                for table in table_value:
-                    print(table)
-                    item_name = ""
-                    match table_key:
-                        case "planet":
-                            item_name = Planet.objects.filter(
-                                id=table['source_id']
-                            ).values_list("name", flat=True)[0]
-                        case "satellite":
-                            item_name = Planet.objects.filter(
-                                id=table['source_id'],
-                                data__contains={"type": "satellite"},
-                            ).values_list("name", flat=True)[0]
-                        case "blackhole":
-                            item_name = Planet.objects.filter(
-                                id=table['source_id'],
-                                data__contains={"type": "blackhole"},
-                            ).values_list("name", flat=True)[0]
-                        case "star":
-                            item_name = Planet.objects.filter(
-                                id=table['source_id'],
-                                data__contains={"type": "star"},
-                            ).values_list("name", flat=True)[0]
-                        case "asteroid":
-                            item_name = Asteroid.objects.filter(
-                                id=table['source_id']
-                            ).values_list("name", flat=True)[0]
-                        case "station":
-                            item_name = Station.objects.filter(
-                                id=table['source_id']
-                            ).values_list("name", flat=True)[0]
-                        case "warpzone":
-                            item_name = WarpZone.objects.filter(
-                                id=table.id
-                            ).values_list("source_id__name", flat=True)[0]
-                    if table_key == "warpzone":
-                        sector_warp_zone_destination = SectorWarpZone.objects.filter(warp_home_id=table.id).values('warp_destination_id')
-                        result_dict["sector_element"].append(
-                            {
-                                "type": table_key,
-                                "item_id": table.id,
-                                "item_name": item_name,
-                                "source_id": table['source_id'],
-                                "sector_id": sector,
-                                "warp_destination": sector_warp_zone_destination[0] if len(sector_warp_zone_destination)>0 else "none-selected",
-                                "data": table.data,
-                                "coordinates": table.coordinates
-                            }
-                        )
-                    else:
-                        result_dict["sector_element"].append(
-                            {
-                                "type": table_key,
-                                "item_id": table.id,
-                                "item_name": item_name,
-                                "resource_id": table.resource_id,
-                                "source_id": table['source_id'],
-                                "sector_id": sector,
-                                "data": table.data,
-                                "coordinates": table.coordinates,
-                            }
-                        )
-            return JsonResponse(json.dumps(result_dict), safe=False)
-        return JsonResponse({}, safe=False)
-
-
-class SectorUpdateDataView(LoginRequiredMixin, UpdateView):
-    model = Sector
-
-    def post(self, request, *args, **kwargs):
-        data_from_post = json.load(request)
-        pk = data_from_post["map_data"]["sector_id"]
-        sector_name = Sector.objects.filter(id=pk).values_list("name", flat=True)[0]
+        
+        sector_elements = json.load(request)
+        map_elements = sector_elements["map"]
+        sector_data = sector_elements["sector"]
+        sector_pk = sector_data["sector_id"]
         response = {"success": False}
-        (
-            data_is_missing,
-            missing_data_response,
-        ) = GetDataFromDB.check_if_no_missing_entry(
-            data_from_post["map_data"],
-            data_item=data_from_post["data"],
-        )
-        if data_is_missing is False:
-            if GetDataFromDB.check_if_table_pk_exists("sector", pk):
-                Sector.objects.filter(id=pk).update(
-                    name=data_from_post["map_data"]["sector_name"],
-                    description=data_from_post["map_data"]["sector_description"],
-                    image=data_from_post["map_data"]["sector_background"],
-                    security_id=data_from_post["map_data"]["security"],
-                    faction_id=data_from_post["map_data"]["faction_id"],
-                    is_faction_level_starter=data_from_post["map_data"][
-                        "is_faction_starter"
-                    ],
-                )
+        
+        if GetDataFromDB.check_if_table_pk_exists("sector", sector_pk):
+            Sector.objects.filter(id=sector_pk).update(
+                name=sector_data["name"],
+                faction_id=sector_data["faction"],
+                is_faction_level_starter=sector_data["is_faction_starter"],
+                image=sector_data["image"],
+                security_id=sector_data["security_level"],
+                description=sector_data["description"]
+            )
+            
+            GetDataFromDB.delete_items_from_sector(sector_pk)
+            print(map_elements)
+            for index in map_elements:
+                for element in map_elements[index]:
                 
-                GetDataFromDB.delete_items_from_sector(pk)
-
-                for item, _ in data_from_post["data"].items():
-                    item_type = data_from_post["data"][item]["item_type"]
-                    item_img_name = data_from_post["data"][item]["item_img_name"]
-                    item_name = data_from_post["data"][item]["item_name"]
-                    table_item_name = data_from_post["data"][item]["item_id"]
-                    coordinates = data_from_post["data"][item]["coordinates"]
-                    
-                    if item_type == "warpzone":
-                    
-                        table, table_resource, table_zone = GetDataFromDB.get_table(item_type)
-                        source_id = table.objects.filter(name=table_item_name).values('id')[0]['id']
-                        
-                        if table_resource.objects.filter(name=item_name).exists():
-                            item_name = f'{item_name}-{random.randint(1,999999)}'
-                        
-                        table_resource.objects.create(
-                            name=item_name,
-                            sector_id = pk,
-                            source_id = source_id,
+                    if index in ["planet", "star", "satellite"]:
+                        source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                        PlanetResource.objects.create(
+                            quantity=0,
                             data={
-                                "name": item_name,
-                                "description": "A portal that lets you travel to",
+                                "name": map_elements[index][element]["displayed_name"],
+                                "description": map_elements[index][element]["description"]
                             },
-                            coordinates=coordinates
+                            coordinates=map_elements[index][element]["coordinates"],
+                            resource_id=1,
+                            sector_id=sector_pk,
+                            source_id=source_id
+                        )
+                    elif index == "asteroid":
+                        
+                        source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                        AsteroidResource.objects.create(
+                            quantity=0,
+                            data={
+                                "name": map_elements[index][element]["displayed_name"],
+                                "description": map_elements[index][element]["description"]
+                            },
+                            coordinates=map_elements[index][element]["coordinates"],
+                            resource_id=1,
+                            sector_id=sector_pk,
+                            source_id=source_id
+                        )
+                    elif index == "station":
+                        
+                        source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                        StationResource.objects.create(
+                            quantity=0,
+                            data={
+                                "name": map_elements[index][element]["displayed_name"],
+                                "description": map_elements[index][element]["description"]
+                            },
+                            coordinates=map_elements[index][element]["coordinates"],
+                            resource_id=1,
+                            sector_id=sector_pk,
+                            source_id=source_id
                         )
                         
-                        warpzone_id = table_resource.objects.filter(name=item_name).values('id')[0]['id']
+                    elif index == "warpzone":
                         
-                        if data_from_post["data"][item]["item_warpzone_destination"] != "none-selected":
-                            table_zone.objects.create(
-                                warp_home_id = warpzone_id,
-                                warp_destination_id = data_from_post["data"][item]["item_warpzone_destination"]
-                            )
-                            if table_zone.objects.filter(warp_home_id=data_from_post["data"][item]["item_warpzone_destination"],warp_destination_id = warpzone_id).exists() is False:
-                                table_zone.objects.create(warp_home_id=data_from_post["data"][item]["item_warpzone_destination"],warp_destination_id = warpzone_id)
-                                
-                    else:
-                        rsrc_data_list = data_from_post["data"][item]["resource_data"]
-                        table, table_resource = GetDataFromDB.get_table(item_type)
-                        for rsrc in rsrc_data_list:
-                            item_type_id = table.objects.filter(name=item_img_name).values_list(
-                                "id", flat=True
-                            )[0]
-                            resource_id = 1 if rsrc == "none" else rsrc
-                            table_resource.objects.create(
-                                sector_id=pk,
-                                resource_id=resource_id,
-                                source_id=item_type_id,
-                                data={
-                                    "name": data_from_post["data"][item]["item_name"],
-                                    "description": data_from_post["data"][item][
-                                        "item_description"
-                                    ],
-                                },
-                                coordinates=coordinates
-                            )
-                messages.success(
-                    self.request,
-                    f'Sector with name {data_from_post["map_data"]["sector_name"]} edited with success',
-                )
-                response = {"success": True}
-            else:
-                messages.error(
-                    self.request,
-                    f"Error can't edit {sector_name}, sector does not exists",
-                )
-
-        else:
-            messages.error(
-                self.request,
-                f'Error can\'t edit {sector_name}, missing : {", ".join(missing_data_response)}',
-            )
-        return JsonResponse(json.dumps(response), safe=False)
-
+                        source_id = map_elements[index][element]['data__animation'].split('_')[1]
+                        WarpZone.objects.create(
+                            data={
+                                "name": map_elements[index][element]["displayed_name"],
+                                "description": map_elements[index][element]["description"]
+                            },
+                            coordinates=map_elements[index][element]["coordinates"],
+                            sector_id=sector_pk,
+                            source_id=source_id
+                        )   
+                    elif index == "npc":
+                        id = map_elements[index][element]["data__animation"].split('_')[1]
+                        ThisNpcTemplate = NpcTemplate.objects.filter(id=id)
+                        Npc.objects.create(
+                            coordinates=map_elements[index][element]['coordinates'],
+                            current_ap=10,
+                            max_ap=10,
+                            hp=ThisNpcTemplate.values_list('max_hp', flat=True)[0],
+                            movement=ThisNpcTemplate.values_list('max_movement', flat=True)[0],
+                            missile_defense=ThisNpcTemplate.values_list('max_missile_defense', flat=True)[0],
+                            thermal_defense=ThisNpcTemplate.values_list('max_thermal_defense', flat=True)[0],
+                            ballistic_defense=ThisNpcTemplate.values_list('max_ballistic_defense', flat=True)[0],
+                            status="FULL",
+                            faction_id=1,
+                            npc_template_id=ThisNpcTemplate.values_list('id', flat=True)[0],
+                            sector_id=sector_pk
+                        )
+        return JsonResponse(json.dumps({}), safe=False)
 
 class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
     template_name = "create_npc_template.html"
@@ -881,6 +862,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
 
         new_template = NpcTemplate.objects.create(
             name=data_from_post["data"]["name"],
+            displayed_name=data_from_post["data"]["displayed_name"],
             difficulty=data_from_post["data"]["difficulty"],
             ship_id=spaceship["id"],
             description="",
@@ -1005,6 +987,7 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
 
             NpcTemplate.objects.filter(id=template_id).update(
                 name=data_from_post["data"]["name"],
+                displayed_name=data_from_post["data"]["displayed_name"],
                 difficulty=data_from_post["data"]["difficulty"],
                 ship_id=spaceship["id"],
                 description="",
