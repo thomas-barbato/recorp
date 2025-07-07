@@ -463,6 +463,7 @@ class SectorDeleteView(LoginRequiredMixin, DeleteView):
         response = {"success": False}
         pk = json.load(request)["pk"]
         if GetDataFromDB.check_if_table_pk_exists("sector", pk):
+            GetDataFromDB.delete_items_from_sector(pk)
             sector_name = Sector.objects.filter(id=pk).values_list("name", flat=True)[0]
             Sector.objects.filter(id=pk).delete()
             response = {"success": True}
@@ -676,7 +677,7 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
             )
             
             GetDataFromDB.delete_items_from_sector(sector_pk)
-            print(map_elements)
+            
             for index in map_elements:
                 for element in map_elements[index]:
                 
@@ -735,8 +736,9 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                             source_id=source_id
                         )   
                     elif index == "npc":
-                        id = map_elements[index][element]["data__animation"].split('_')[1]
-                        ThisNpcTemplate = NpcTemplate.objects.filter(id=id)
+                        source_id = map_elements[index][element]["data__animation"].split('_')[1]
+                        print(source_id)
+                        ThisNpcTemplate = NpcTemplate.objects.filter(id=source_id)
                         Npc.objects.create(
                             coordinates=map_elements[index][element]['coordinates'],
                             current_ap=10,
