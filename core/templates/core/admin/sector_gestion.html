@@ -40,7 +40,6 @@
                                     <option value="{{ sector.id }}" class="text-center">{{ sector.name }}</option>
                                 {% endfor %}
                             </select>
-                            <i class="fa-solid fa-trash fa-2x hover:text-emerald-400 cursor-pointer" style="display:none;" data-modal-target="delete-confirmation-modal" data-modal-toggle="delete-confirmation-modal"></i>
                         </div>
                     </div>
                 </div><small class="text-red-500">chose a sector to update or delete it, if you select <b>none</b> you will create new one</small>
@@ -143,7 +142,7 @@
     </section>
 </div>
 
-<script src="{% static 'world_builder/admin/map_builder_v2.js' %}" type="text/javascript">
+<script src="{% static 'world_builder/admin/map_builder.js' %}" type="text/javascript">
 </script>
 
 {% endblock %}

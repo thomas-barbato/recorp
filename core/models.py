@@ -153,7 +153,6 @@ class Warp(models.Model):
         return f"{self.name}"
     
 class WarpZone(models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False, default="SectorWarp")
     data = models.JSONField(null=True)
     coordinates = models.JSONField(null=True)
     source = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)

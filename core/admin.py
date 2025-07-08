@@ -103,11 +103,12 @@ class CustomAdminSite(admin.AdminSite):
                         "view_only": True,
                     },
                     {
-                        "name": "create / update / delete new npc and assign it on sector",
-                        "object_name": "create / update / delete new npc and assign it on sector",
-                        "admin_url": "/admin/sector_gestion/npc",
+                        "name": "Create link bewteen warpzone",
+                        "object_name": "Create link bewteen warpzone",
+                        "admin_url": "/admin/sector_gestion/warpzone/warpzone_link_add",
                         "view_only": True,
                     },
+                    
                 ],
             }
         ]
@@ -191,25 +192,15 @@ class CustomAdminSite(admin.AdminSite):
                 name="npc_template_update",
             ),
             re_path(
-                r"^sector_gestion/npc$",
-                self.admin_view(NpcToSectorView.as_view()),
-                name="npc",
+                r"^sector_gestion/warpzone/warpzone_link_add$",
+                self.admin_view(WarpzoneLinkDataDisplayView.as_view()),
+                name="warpzone_link_add",
             ),
             re_path(
-                r"^sector_gestion/get_ship_data$",
-                self.admin_view(NpcToSectorShipDataView.as_view()),
-                name="get_ship_data",
-            ),
-            re_path(
-                r"^sector_gestion/npc_assign_update$",
-                self.admin_view(NpcToSectorUpdateDataView.as_view()),
-                name="npc_assign_update",
-            ),
-            re_path(
-                r"^sector_gestion/npc/delete$",
-                self.admin_view(NpcToSectorDeleteDataView.as_view()),
-                name="npc_assign_delete",
-            ),
+                r"^sector_gestion/warpzone/warpzone_link_delete$",
+                self.admin_view(WarpzoneLinkDataDeleteView.as_view()),
+                name="warpzone_link_delete",
+            )
         ] + urls
         return urls
 
@@ -342,7 +333,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
             "id", "name"
         )
         context["warpzone_data"] = GetDataFromDB.get_table("warpzone_only").objects.values(
-            "id", "name"
+            "id", "data__name"
         )
         context["faction_data"] = GetDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetDataFromDB.get_size()
@@ -542,7 +533,7 @@ class GetSectorElementTypeDataView(LoginRequiredMixin, TemplateView):
             "planet": [e for e in Planet.objects.filter(data__type="planet").values('id', 'name', 'data__animation', 'size')],
             "satellite": [e for e in Planet.objects.filter(data__type="satellite").values('id', 'name', 'data__animation', 'size')],
             "asteroid": [e for e in Asteroid.objects.values('id', 'name', 'data__animation', 'size')],
-            "warpzone": [e for e in Warp.objects.values('id', 'name', 'data__animation', 'size')],
+            "warpzone": [e for e in Warp.objects.values('id', 'data__animation', 'size')],
             "station": [e for e in Station.objects.values('id', 'name', 'data__animation', 'size')],
             "npc" : [e for e in NpcTemplate.objects.values(
                 "id", "ship_id", "ship_id__name", "ship_id__image",
@@ -1032,180 +1023,6 @@ class NpcTemplateDeleteDataView(LoginRequiredMixin, DeleteView):
         NpcTemplateSkill.objects.filter(npc_template_id=template_id).delete()
         NpcTemplateResource.objects.filter(npc_template_id=template_id).delete()
         NpcTemplate.objects.filter(id=template_id).delete()
-
-
-class NpcToSectorView(LoginRequiredMixin, TemplateView):
-    template_name = "generate_npc_on_sector.html"
-    model = NpcTemplate
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context["map_size_range"] = GetDataFromDB.get_map_size_range()
-        context["map_size"] = GetDataFromDB.get_map_size()
-        context["sector_data"] = GetDataFromDB.get_table("sector").objects.values(
-            "id", "name"
-        )
-        context["npc_template"] = GetDataFromDB.get_template_data()
-        context["size"] = GetDataFromDB.get_size()
-
-        return context
-
-    def post(self, request, **kwargs):
-        pk = json.load(request)["map_id"]
-        if Sector.objects.filter(id=pk).exists():
-            sector = Sector.objects.get(id=pk)
-            planets, asteroids, stations, warpzones, npcs, _ = GetDataFromDB.get_items_from_sector(
-                pk, with_npc=True
-            )
-            table_set = {
-                "planet": planets,
-                "asteroid": asteroids,
-                "station": stations,
-                "warpzone": warpzones,
-                "npc": npcs,
-            }
-            result_dict = dict()
-            result_dict["sector_element"] = []
-            result_dict["npc"] = []
-            result_dict["faction"] = {
-                "name": sector.faction_sector.name,
-                "faction_id": sector.faction_id,
-                "is_faction_level_starter": sector.is_faction_level_starter,
-            }
-            result_dict["sector"] = {
-                "id": pk,
-                "name": sector.name,
-                "description": sector.description,
-                "image": sector.image,
-                "security_id": sector.security_id,
-            }
-
-            for table_key, table_value in table_set.items():
-                for table in table_value:
-                    item_name = ""
-                    match table_key:
-                        case "planet":
-                            item_name = Planet.objects.filter(
-                                id=table["source_id"],
-                            ).values_list("name", flat=True)[0]
-                        case "satellite":
-                            item_name = Planet.objects.filter(
-                                id=table["source_id"],
-                                data__contains={"type": "satellite"},
-                            ).values_list("name", flat=True)[0]
-                        case "blackhole":
-                            item_name = Planet.objects.filter(
-                                id=table["source_id"],
-                                data__contains={"type": "blackhole"},
-                            ).values_list("name", flat=True)[0]
-                        case "star":
-                            item_name = Planet.objects.filter(
-                                id=table["source_id"],
-                                data__contains={"type": "star"},
-                            ).values_list("name", flat=True)[0]
-                        case "asteroid":
-                            item_name = Asteroid.objects.filter(
-                                id=table["source_id"]
-                            ).values_list("name", flat=True)[0]
-                        case "station":
-                            item_name = Station.objects.filter(
-                                id=table["source_id"]
-                            ).values_list("name", flat=True)[0]
-                        case "warpzone":
-                            item_name = WarpZone.objects.filter(
-                                id=table["source_id"]
-                            ).values_list("source_id__name", flat=True)[0]
-                    if table_key == "warpzone":
-                        sector_warp_zone_destination = SectorWarpZone.objects.filter(warp_home_id=table["id"]).values('warp_destination_id')
-                        result_dict["sector_element"].append(
-                            {
-                                "type": table_key,
-                                "item_id": table["id"],
-                                "item_name": item_name,
-                                "size": table["source_id__size"],
-                                "source_id": table["source_id"] if table.get("source_id") else None,
-                                "sector_id": table["sector_id"],
-                                "warp_destination": sector_warp_zone_destination[0] if len(sector_warp_zone_destination)>0 else "none-selected",
-                                "data": table["data"] if table.get("data") else None,
-                                "coordinates": table["coordinates"],
-                            }
-                        )
-                    elif table_key == "npc":
-                        result_dict["npc"].append(
-                            {   
-                                "id": table["id"],
-                                "name": table["npc_template_id__ship_id__name"],
-                                "image": table["npc_template_id__ship_id__image"],
-                                "size": table["npc_template_id__ship_id__ship_category_id__size"],
-                                "template_pk": table["npc_template_id"],
-                                "coordinates": table["coordinates"],
-                            }
-                        )
-                    else:
-                        result_dict["sector_element"].append(
-                            {
-                                "type": table_key,
-                                "item_id": table["id"],
-                                "item_name": item_name,
-                                "source_id": table["source_id"] if table.get("source_id") else None,
-                                "data": table["data"] if table.get("data") else None,
-                                "type": table["source_id__data__type"],
-                                "coordinates": table["coordinates"],
-                                "size": table["source_id__size"],
-                                "coordinates": table["coordinates"],
-                            }
-                        )
-            return JsonResponse(json.dumps(result_dict), safe=False)
-        return JsonResponse({}, safe=False)
-    
-    
-class NpcToSectorShipDataView(LoginRequiredMixin, TemplateView):
-    template_name = "generate_npc_on_sector.html"
-    model = Npc
-
-    def post(self, request, **kwargs):
-        data = json.load(request)
-        pk = data["template_id"]
-        result_dict = GetDataFromDB.get_selected_ship_data(pk)
-        result_dict["template_pk"] = pk
-        return JsonResponse(json.dumps(result_dict), safe=False)
-    
-
-class NpcToSectorUpdateDataView(LoginRequiredMixin, TemplateView):
-    template_name = "generate_npc_on_sector.html"
-    model = Npc
-    
-    def post(self, request, **kwargs):
-        
-        recieved_data = json.load(request)
-        Npc.objects.filter(sector_id=recieved_data['map_id']).delete()
-        
-        for d in recieved_data['data']:
-            
-            npc_template = NpcTemplate.objects.filter(id=d['data']['template_pk']).values(
-                'id',
-                'max_hp',
-                'max_movement',
-                'max_missile_defense',
-                'max_thermal_defense',
-                'max_ballistic_defense'
-            )[0]
-            
-            Npc.objects.create(
-                hp=npc_template['max_hp'],
-                movement=npc_template['max_movement'],
-                missile_defense=npc_template['max_missile_defense'],
-                thermal_defense=npc_template['max_thermal_defense'],
-                ballistic_defense=npc_template['max_ballistic_defense'],
-                coordinates=d['pos'],
-                current_ap=10,
-                max_ap=10,
-                status="FULL",
-                sector_id=recieved_data['map_id'],
-                npc_template_id=npc_template['id'],
-                faction_id=1
-            )
-        return JsonResponse(json.dumps({}), safe=False)
     
     
 class SetXpValueView(LoginRequiredMixin, TemplateView):
@@ -1236,8 +1053,101 @@ class SetXpValueView(LoginRequiredMixin, TemplateView):
                 self.request, f"your value can't be saved, please retry with correct value (int value)"
             )
         return HttpResponseRedirect(request.path)
+    
+    
+class WarpzoneLinkDataDisplayView(LoginRequiredMixin, TemplateView):
+    template_name = "create_link_between_warpzone.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["warpzone"] = [e for e in WarpZone.objects.values(
+            'sector_id__name', 
+            'sector_id', 
+            'data__name', 
+            'coordinates', 
+            'id'
+            )]
+        context["already_existing_warpzone"] = [e for e in SectorWarpZone.objects.values(
+            'id',
+            'warp_home_id__data__name',
+            'warp_destination_id__data__name',
+            'warp_home_id__coordinates',
+            'warp_destination_id__coordinates',
+            'warp_home_id__sector_id__name',
+            'warp_destination_id__sector_id__name'
+        )]
+        return context
+    
+    def post(self, request, **kwargs):
+        recieved_data = json.load(request)
         
-
+        source = recieved_data['source']
+        destination = recieved_data['destination']
+        wayback = recieved_data['wayback']
+        
+        response = {}
+        
+        if source and destination:
+            
+            source_to_dest = []
+            dest_to_source = []
+            
+            if SectorWarpZone.objects.filter(warp_destination_id = destination, warp_home_id = source).exists() is False:
+            
+                source_to_dest = SectorWarpZone(
+                    warp_destination_id = destination,
+                    warp_home_id = source
+                )
+                source_to_dest.save()
+                
+                response["source"] = [e for e in SectorWarpZone.objects.filter(id=source_to_dest.pk).values(
+                    'id',
+                    'warp_home_id__data__name',
+                    'warp_home_id__sector_id__name',
+                    'warp_home_id__coordinates',
+                    'warp_destination_id__data__name',
+                    'warp_destination_id__sector_id__name',
+                    'warp_destination_id__coordinates',
+                )][0]
+            
+            if wayback:
+            
+                if SectorWarpZone.objects.filter(warp_destination_id = source, warp_home_id = destination).exists() is False:
+                
+                    dest_to_source = SectorWarpZone(
+                        warp_destination_id = source,
+                        warp_home_id = destination
+                    )
+                    dest_to_source.save()
+                    
+                    response["wayback"] = [e for e in SectorWarpZone.objects.filter(id=dest_to_source.pk).values(
+                        'id',
+                        'warp_home_id__data__name',
+                        'warp_home_id__sector_id__name',
+                        'warp_home_id__coordinates',
+                        'warp_destination_id__data__name',
+                        'warp_destination_id__sector_id__name',
+                        'warp_destination_id__coordinates',
+                    )][0]
+                    
+        return JsonResponse(json.dumps(response), safe=False)
+    
+    
+class WarpzoneLinkDataDeleteView(LoginRequiredMixin, TemplateView):
+    template_name = "create_link_between_warpzone.html"
+    
+    def post(self, request, **kwargs):
+        recieved_data = json.load(request)
+        
+        source = recieved_data['id']
+        data = SectorWarpZone.objects.filter(id=source).values('warp_home_id', 'warp_destination_id')[0]
+        response = {}
+        
+        SectorWarpZone.objects.filter(warp_home_id=data['warp_home_id'], warp_destination_id=data['warp_destination_id']).delete()
+        SectorWarpZone.objects.filter(warp_home_id=data['warp_destination_id'], warp_destination_id=data['warp_home_id']).delete()
+        
+        return JsonResponse(json.dumps(response), safe=False)
+        
 
 class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):
     template_name = "create_npc_template.html"

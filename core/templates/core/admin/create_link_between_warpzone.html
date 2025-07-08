@@ -1,0 +1,97 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content %}
+
+{{ warpzone|json_script:"warpzone_script" }}
+
+<link href="{% static 'fontawesome/css/fontawesome.css' %}" rel="stylesheet"/>
+<link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
+<link href="{% static 'fontawesome/css/solid.css' %}"  rel="stylesheet"/>
+<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
+<script src="{% static 'tailwind/flowbite.min.js' %}"></script>
+
+
+<div id="message-list" class="hidden p-2 text-center bg-blue-50 dark:bg-gray-800 w-[100%] h-25" role="alert">
+    <p class="text-red-600 font-bold text-justify"></p>
+</div>
+
+<div class="flex-col">
+    <div class="flex flex-row gap-3 w-[80vw]">
+        <div class="flex flex-col gap-2">
+            <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
+            <section class="mb-2">
+                <div class="flex flex-row">
+                    <div class="flex w-full flex-col">
+                        <label for="warpzone-source" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Warpzone</b></label>
+                        <div class="flex flex-row gap-1">
+                            <select id="warpzone-source" name="warpzone-source" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                                <option value="none" class="text-center" selected>None</option>
+                                {% for warp in warpzone %} 
+                                    <option value="{{ warp.id }}" class="text-center">{{ warp.data__name }} - {{ warp.sector_id__name}} - {x : {{ warp.coordinates.x }}, y : {{ warp.coordinates.y }}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div><small class="text-red-500">Chose a warpzone to create a link between this warpzone to another</small>
+            </section>
+        </div>
+    </div>
+    <div class="flex flex-row gap-3 w-[80vw]">
+        <div class="flex flex-col gap-2">
+            <section class="mb-2">
+                <div class="flex flex-row">
+                    <div class="flex w-full flex-col">
+                        <label for="warpzone-destination" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Select Destination</b></label>
+                        <div class="flex flex-row gap-1">
+                            <select id="warpzone-destination" name="warpzone-destination" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer">
+                                <option value="none" class="text-center" selected>None</option>
+                            </select>
+                        </div>
+                    </div>
+            </section>
+        </div>
+    </div>
+    <div class="flex flex-col gap-3">
+        <div class="flex gap-2 flex-row">
+            <label for="warpzone-wayback" class="font-bold">Add way back</label>
+            <input type="checkbox" id="warpzone-wayback" name="warpzone-wayback" value="" checked>
+        </div>
+        <input class="mt-1 flex mx-auto bg-green-400" id="save" type="button" value="save">
+    </div>
+    
+    <div class="flex flex-row gap-3 w-[80vw]">
+        <div class="flex flex-col gap-2">
+            <input type="hidden" value="{{ csrf_token }}" id="csrf_token">
+            <section class="mb-2">
+                <div class="flex flex-col">
+                    <label for="alrady-existing-warpzone" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white"><b>Already existing links</b></label>
+                    <div class="flex w-full flex-col gap-2" id="alrady-existing-warpzone">
+                        {% for warp in already_existing_warpzone %} 
+                        <div class="flex flex-row gap-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm justify-between" id="{{ warp.id }}">
+                            <div class="flex flex-col">
+                                <p>Source: {{ warp.warp_home_id__data__name }}, {{ warp.warp_home_id__sector_id__name }} - {x : {{ warp.warp_home_id__coordinates.x }}, y : {{ warp.warp_home_id__coordinates.y }}}</p>
+                                <p>Destination: {{ warp.warp_destination_id__data__name }}, {{ warp.warp_destination_id__sector_id__name }} - {x : {{ warp.warp_destination_id__coordinates.x }}, y : {{ warp.warp_destination_id__coordinates.y }}}</p>
+                            </div>
+                            <div class="flex justify-end items-center" id="trash-{{ warp.id }}">
+                                <i class="fa-solid fa-trash fa-2x cursor-pointer"></i>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'world_builder/admin/add_warpzone_link.js' %}" type="text/javascript">
+</script>
+
+{% endblock %}
+
+<!-- hide sidebar -->
+{% block sidebar  %}
+{% endblock %}
