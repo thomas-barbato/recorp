@@ -1099,16 +1099,6 @@ class WarpzoneLinkDataDisplayView(LoginRequiredMixin, TemplateView):
                     warp_home_id = source
                 )
                 source_to_dest.save()
-                
-                response["source"] = [e for e in SectorWarpZone.objects.filter(id=source_to_dest.pk).values(
-                    'id',
-                    'warp_home_id__data__name',
-                    'warp_home_id__sector_id__name',
-                    'warp_home_id__coordinates',
-                    'warp_destination_id__data__name',
-                    'warp_destination_id__sector_id__name',
-                    'warp_destination_id__coordinates',
-                )][0]
             
             if wayback:
             
@@ -1119,16 +1109,6 @@ class WarpzoneLinkDataDisplayView(LoginRequiredMixin, TemplateView):
                         warp_home_id = destination
                     )
                     dest_to_source.save()
-                    
-                    response["wayback"] = [e for e in SectorWarpZone.objects.filter(id=dest_to_source.pk).values(
-                        'id',
-                        'warp_home_id__data__name',
-                        'warp_home_id__sector_id__name',
-                        'warp_home_id__coordinates',
-                        'warp_destination_id__data__name',
-                        'warp_destination_id__sector_id__name',
-                        'warp_destination_id__coordinates',
-                    )][0]
                     
         return JsonResponse(json.dumps(response), safe=False)
     

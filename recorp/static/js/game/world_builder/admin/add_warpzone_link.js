@@ -100,10 +100,7 @@ CONFIG.saveButton.addEventListener('click', (event) => {
             body: data
         }).then(response => response.json())
         .then(data => {
-            let parsedData = JSON.parse(data)
-            for(const d in parsedData){
-                displayNewLink(parsedData[d])
-            }
+            location.reload();
         });
     } catch (error) {
         console.error('Erreur dans fetchSelectedData:', error);

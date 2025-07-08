@@ -143,7 +143,7 @@ class StoreInCache:
             map_elements = elementResource.objects.filter(
                 sector_id=self.sector_pk
             ).values(
-                "id", "name", "data", "sector_id", "source_id",
+                "id", "data", "sector_id", "source_id", "data__name",
                 "source_id__name", "source_id__size", "source_id__data", "coordinates"
             )
             
@@ -151,7 +151,7 @@ class StoreInCache:
                 destination = elementZone.objects.filter(
                     warp_home_id=element["id"]
                 ).values(
-                    "warp_destination_id", "warp_destination_id__name", "warp_home_id"
+                    "warp_destination_id", "warp_destination_id__data__name", "warp_home_id"
                 ).first()
                 
                 if destination:
@@ -163,13 +163,13 @@ class StoreInCache:
                         "animations": element['source_id__data']['animation'],
                         "data": {
                             "type": "warpzone",
-                            "name": element["name"],
+                            "name": element["data__name"],
                             "coordinates": element['coordinates'],
                             "size": element['source_id__size'],
                             "description": element['data']["description"],
                             "warp_home_id": destination["warp_home_id"],
                             "destination_id": destination['warp_destination_id'],
-                            "destination_name": destination['warp_destination_id__name'],
+                            "destination_name": destination['warp_destination_id__data__name'],
                         },
                         "size": element['source_id__size'],
                     })
