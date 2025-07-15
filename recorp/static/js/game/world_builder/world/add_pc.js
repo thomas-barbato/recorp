@@ -1,6 +1,4 @@
 function add_pc(data) {
-    console.log("dans add_pc")
-    console.log(data)
     const coordinatesArrayToDisableButton = [];
     
     data.forEach(playerData => {
@@ -150,6 +148,7 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', playerInfo.ship.sizeX);
     cell.setAttribute('size_y', playerInfo.ship.sizeY);
+    cell.setAttribute('type', 'pc');
     
     // Setup ship elements
     const { spaceShip, spaceShipReversed } = createShipElements(playerInfo.ship.image, colOffset, rowOffset);
@@ -182,19 +181,21 @@ function createShipElements(shipImage, colOffset, rowOffset) {
 function createShipElement(bgUrl, colOffset, rowOffset, className) {
     const element = document.createElement('div');
     element.style.backgroundImage = `url('${bgUrl}')`;
-    element.classList.add(className, 'w-[32px]', 'h-[32px]', 'cursor-pointer');
+    element.classList.add(className, 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc');
     element.style.backgroundPositionX = `-${colOffset}px`;
     element.style.backgroundPositionY = `-${rowOffset}px`;
     return element;
 }
 
+function createDot(){}
+
 function handleShipDisplay(spaceShip, spaceShipReversed, isReversed) {
     if (isReversed) {
-        spaceShip.style.display = "none";
-        spaceShipReversed.style.display = "block";
+        spaceShip.classList.add('hidden');
+        spaceShip.classList.remove('hidden');
     } else {
-        spaceShip.style.display = "block";
-        spaceShipReversed.style.display = "none";
+        spaceShip.classList.remove('hidden');
+        spaceShip.classList.add('hidden');
     }
 }
 

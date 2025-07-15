@@ -230,11 +230,14 @@ function init_game() {
     // Initialiser la connexion WebSocket
     gameSocket = create_websocket_connection(room);
     setup_websocket_handlers(gameSocket, room);
+    setup_window_resize_handler();
     
     // Initialiser les composants du jeu
     init_sector_generation();
-    setup_window_resize_handler();
     init_logout_events();
+    // Initialisation
+    const fogOfWar = new FogOfWar();
+
 }
 
 // Initialisation au chargement de la page

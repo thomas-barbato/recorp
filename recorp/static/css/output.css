@@ -1139,6 +1139,10 @@ video {
   height: 80vh;
 }
 
+.h-\[8px\] {
+  height: 8px;
+}
+
 .h-\[calc\(100\%-1rem\)\] {
   height: calc(100% - 1rem);
 }
@@ -1305,6 +1309,10 @@ video {
 
 .w-\[80vw\] {
   width: 80vw;
+}
+
+.w-\[8px\] {
+  width: 8px;
 }
 
 .w-\[90\%\] {
@@ -1478,6 +1486,17 @@ video {
 
 .transform-none {
   transform: none;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 @keyframes pulse {
@@ -2763,6 +2782,11 @@ video {
   background-color: rgb(255 255 255 / 0.5);
 }
 
+.bg-yellow-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
+}
+
 .bg-yellow-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(202 138 4 / var(--tw-bg-opacity));
@@ -2771,6 +2795,10 @@ video {
 .bg-zinc-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(212 212 216 / var(--tw-bg-opacity));
+}
+
+.bg-zinc-300\/30 {
+  background-color: rgb(212 212 216 / 0.3);
 }
 
 .bg-zinc-950\/0 {
@@ -4206,14 +4234,6 @@ button .ql-stroke,
 
 .hover\:box-border:hover {
   box-sizing: border-box;
-}
-
-.hover\:h-\[30px\]:hover {
-  height: 30px;
-}
-
-.hover\:w-\[30px\]:hover {
-  width: 30px;
 }
 
 @keyframes pulse {

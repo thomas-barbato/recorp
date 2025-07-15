@@ -1,5 +1,5 @@
 const type_element = document.querySelector("#id_type");
-type_element.style.display = "none";
+type_element.classList.add('hidden');
 let img_preview = document.querySelector('#img-preview');
 let img_input = document.querySelector('#id_img_input');
 const reader = new FileReader();
@@ -16,9 +16,9 @@ img_input.addEventListener('change', e => {
 let category = document.querySelector("#id_category")
 category.addEventListener('change', function() {
     const value = this.options[this.selectedIndex].text;
-    if (value === "foreground") {
-        type_element.style.display = "block";
-    } else { type_element.style.display = "none" }
+    if (value !== "foreground") {
+        type_element.classList.add('hidden');
+    } 
 });
 
 var element = document.querySelector('.messagelist');
@@ -31,7 +31,7 @@ function fadeOut(el) {
             el.style.opacity = opacity;
         } else {
             clearInterval(interval); // Stop the interval when opacity reaches 0
-            el.style.display = 'none'; // Hide the element
+            el.classList.add('hidden'); // Hide the element
         }
     }, 50);
 }

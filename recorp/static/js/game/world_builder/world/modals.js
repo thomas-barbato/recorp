@@ -104,7 +104,7 @@ function create_foreground_modal(id, data) {
         item_resource_content_p_resource.classList.add('text-white', 'font-shadow', 'text-justify', 'text-xs', 'p-2', 'lg:p-1');
         item_resource_content_p_resource.id = "resource-name";
         item_resource_content_p_resource.textContent = `${data.resources.name}`;
-        item_resource_content_p_resource.style.display = "none";
+        item_resource_content_p_resource.classList.add('hidden');
 
 
         let item_resource_content_p_quantity = document.createElement('p');
@@ -116,7 +116,7 @@ function create_foreground_modal(id, data) {
         }
         item_resource_content_p_quantity.id = "resource-quantity";
         item_resource_content_p_quantity.textContent = `${data.resources.translated_quantity_str.toUpperCase()}`
-        item_resource_content_p_quantity.style.display = "none";
+        item_resource_content_p_quantity.classList.add('hidden');
 
         item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'my-1', 'py-1', 'text-xs');
         item_description_p.textContent = data.description;

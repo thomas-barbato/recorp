@@ -117,6 +117,7 @@ function setupNpcCell(cell, border, npcData, npcInfo) {
     cell.classList.add("npc", "uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
+    cell.setAttribute('type', 'npc');
     
     // Configure border
     border.setAttribute('data-title', 
@@ -150,7 +151,7 @@ function createSpaceShipElement(bgUrl, colOffset, rowOffset) {
     const spaceShip = document.createElement('div');
     
     spaceShip.style.backgroundImage = `url('${bgUrl}')`;
-    spaceShip.classList.add('ship', 'w-[32px]', 'h-[32px]', 'cursor-pointer');
+    spaceShip.classList.add('ship', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'npc');
     spaceShip.style.backgroundPositionX = `-${colOffset}px`;
     spaceShip.style.backgroundPositionY = `-${rowOffset}px`;
     

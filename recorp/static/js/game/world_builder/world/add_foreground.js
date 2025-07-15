@@ -138,10 +138,11 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
     cell.classList.add('uncrossable');
     cell.setAttribute('size_x', sizeX);
     cell.setAttribute('size_y', sizeY);
-    cell.setAttribute('data-type', elementInfo.type)
+    cell.setAttribute('data-type', elementInfo.type);
+    cell.setAttribute('type', 'foreground');
     
     // Configure border
-    border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500";
+    border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500 foreground-element";
     border.setAttribute('data-title', `${elementInfo.name} [y: ${coordY - 1}, x: ${coordX - 1}]`);
     border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
     

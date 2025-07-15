@@ -80,6 +80,9 @@ function update_player_coord(data) {
     }else{
         update_player_pos_display_after_move(data);
     }
+    
+    
+    let fog_of_war = new FogOfWar();
 }
 
 function async_reverse_ship(data) {
@@ -102,11 +105,11 @@ function reverse_ship(data) {
         let element_ship = element.querySelector('.ship');
         let element_ship_reversed = element.querySelector('.ship-reversed');
         if (data["is_reversed"] == true) {
-            element_ship.style.display = "none";
-            element_ship_reversed.style.display = "block";
+            element_ship.classList.add('hidden');
+            element_ship_reversed.classList.remove('hidden');
         } else {
-            element_ship.style.display = "block";
-            element_ship_reversed.style.display = "none";
+            element_ship.classList.remove('hidden');
+            element_ship_reversed.classList.add('hidden');
         }
     }
 }
@@ -133,8 +136,10 @@ function update_player_pos_display_after_move(data){
         current_player_ship[i].removeAttribute("onclick");
         current_player_ship[i].removeAttribute("size_x");
         current_player_ship[i].removeAttribute("size_y");
-        current_player_ship[i].querySelector('.ship').remove();
-        current_player_ship[i].querySelector('.ship-reversed').remove();
+        current_player_ship[i].removeAttribute('type');
+        current_player_ship[i].querySelectorAll('.pc').forEach(pc => {
+            pc.remove();
+        });
         current_player_ship[i].querySelector('span').remove();
         
         let current_player_ship_background = current_player_ship[i].querySelector('div');
@@ -147,11 +152,11 @@ function update_player_pos_display_after_move(data){
 
         let old_pos_id_split = current_player_ship[i].id.split('_')
 
-        let span_container = current_player_ship[i].querySelector('div');
+        let div_container = current_player_ship[i].querySelector('div');
         let span = document.createElement('span');
-        span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+        span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer z-1 foreground-element";
         span.title = `${data.sector.name} [y: ${old_pos_id_split[0]} ; x: ${old_pos_id_split[1]}]`;
-        span_container.append(span);
+        div_container.append(span);
 
         current_player_ship[i].className = "relative w-[32px] h-[32px] m-0 p-0 tile";
     }
@@ -182,6 +187,7 @@ function update_player_pos_display_after_move(data){
             entry_point.classList.add('uncrossable');
             entry_point.setAttribute('size_x', ship_size_x);
             entry_point.setAttribute('size_y', ship_size_y);
+            entry_point.setAttribute('type', 'pc');
             entry_point_border.classList.add('border-dashed', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
@@ -192,12 +198,12 @@ function update_player_pos_display_after_move(data){
             entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
 
             space_ship.style.backgroundImage = "url('" + ship_url + "')";
-            space_ship.classList.add('ship');
+            space_ship.classList.add('ship', 'pc');
             space_ship.style.backgroundPositionX = `-${col_i}px`;
             space_ship.style.backgroundPositionY = `-${row_i}px`;
             
             space_ship_reversed.style.backgroundImage = "url('" + ship_url_reversed_img + "')";
-            space_ship_reversed.classList.add('ship-reversed');
+            space_ship_reversed.classList.add('ship-reversed', 'pc');
             space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
             space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 
@@ -246,11 +252,11 @@ function update_player_pos_display_after_move(data){
             space_ship.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
             space_ship_reversed.classList.add('w-[32px]', 'h-[32px]', 'cursor-pointer');
             if (is_reversed) {
-                space_ship.style.display = "none";
-                space_ship_reversed.style.display = "block";
+                space_ship.classList.add('hidden');
+                space_ship_reversed.classList.remove('hidden');
             } else {
-                space_ship.style.display = "block";
-                space_ship_reversed.style.display = "none";
+                space_ship.classList.remove('hidden');
+                space_ship_reversed.classList.add('hidden');
             }
 
             entry_point_div.append(space_ship);

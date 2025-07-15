@@ -1,7 +1,7 @@
 document.querySelector('#player-container').classList.remove('hidden');
 
 let login_policy = document.querySelector('.login-policy');
-login_policy.style.display = "none";
+login_policy.classList.add('hidden');
 
 let login_btn = document.querySelector('#login-btn');
 login_btn.disabled = true;

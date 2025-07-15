@@ -158,8 +158,12 @@
                         <td id="Y_{{ row }}" class="text-center text-emerald-300 font-bold border border-slate-600 bg-gray-600/40 text-shadow w-[32px] h-[32px] md:p-1 text-xs uncrossable">{{ row }}</td>
                         {% for col in map_size_range.cols %}
                             <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row }}_{{ col }}">
-                                <div class="relative w-[32px] h-[32px] coord-zone-div">
+                                <div class="relative w-[32px] h-[32px] z-20 coord-zone-div">
                                     <span class="absolute inline-block w-[32px] h-[32px]"></span>
+                                </div>
+                                <div class="absolute w-[32px] h-[32px] z-10" id="background-out-of-fow"></div>
+                                <div class="relative w-[32px] h-[32px] z-10" id="fog-of-war">
+                                    <span class="absolute inline-block w-[8px] h-[8px] rounded-full animate-ping bg-yellow-300 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
                                 </div>
                             </td>
                         {% endfor %}
@@ -169,6 +173,7 @@
             </table>
         </div>
     </div>
+    <div class="context-menu" id="contextMenu"></div>
     <div id="modal-container" class="z-[100]"></div>
     <div class="w-full flex justify-center items-center z-100 lg:order-99 order-3 lg:hidden" dir="ltr" id="mobile-cross">
         <div class="flex w-full justify-center items-center lg:hidden lg:order-99 order-3">
@@ -407,3 +412,5 @@
 <script src="{% static 'world_builder/async/async_actions.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding_mobile.js'%}" type='text/javascript'></script>
+<script src="{% static 'world_builder/world/fogOfWar.js'%}" type='text/javascript'></script>
+<!--<script src="{% static 'world_builder/world/add_player_see_range.js'%}" type='text/javascript'></script>-->

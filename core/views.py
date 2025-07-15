@@ -346,14 +346,21 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                     "Industry",
                 ],
                 "list": [
-                        {
-                            "id": skill['id'],
-                            "skill_name": skill['skill_id__name'],
-                            "level": skill['level'],
-                            "progress": str(skill['progress']).replace(',', '.'),
-                            "cat": skill['skill_id__category'],
-                            "description": skill['skill_id__description'],
-                        } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values('id', 'level', 'progress', 'skill_id__name', 'skill_id__category', 'skill_id__description')
+                    {
+                        "id": skill['id'],
+                        "skill_name": skill['skill_id__name'],
+                        "level": skill['level'],
+                        "progress": str(skill['progress']).replace(',', '.'),
+                        "cat": skill['skill_id__category'],
+                        "description": skill['skill_id__description'],
+                    } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values(
+                            'id', 
+                            'level', 
+                            'progress', 
+                            'skill_id__name', 
+                            'skill_id__category', 
+                            'skill_id__description'
+                        )
                 ],
             }
             

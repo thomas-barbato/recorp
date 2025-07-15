@@ -23,33 +23,34 @@ let display_animation_file_choice = function() {
     fg_item = this.value;
     switch (fg_item) {
         case "planet":
-            atlas.col = atlas.row = size[0]["planet_data"]["size"]["x"];
+            atlas.col = atlas.row = size[0]["planet_data"].x;
             append_select_field(planet_url);
             break;
         case "station":
-            atlas.col = atlas.row = size[1]["station_data"]["size"]["x"];
+            atlas.col = atlas.row = size[1]["station_data"].x;
             append_select_field(station_url);
             break;
         case "asteroid":
-            atlas.col = atlas.row = size[2]["asteroid_data"]["size"]["x"];
+            console.log(size[2]["asteroid_data"].x)
+            atlas.col = atlas.row = size[2]["asteroid_data"].x;
             append_select_field(asteroid_url);
             break;
         case "satellite":
-            atlas.col = atlas.row = size[3]["satellite_data"]["size"]["x"];
+            atlas.col = atlas.row = size[3]["satellite_data"].x;
             append_select_field(satellite_url);
             break;
         case "blackhole":
-            atlas.col = size[4]["blackhole_data"]["size"]["x"];
-            atlas.row = size[4]["blackhole_data"]["size_y"];
+            atlas.col = size[4]["blackhole_data"].x;
+            atlas.row = size[4]["blackhole_data"].y;
             append_select_field(blackhole_url);
             break;
         case "star":
-            atlas.col = atlas.row = size[5]["star_data"]["size"]["x"];
+            atlas.col = atlas.row = size[5]["star_data"].x;
             append_select_field(star_url);
             break;
         case "warpzone":
-            atlas.col = atlas.row = size[6]["warpzone_data"]["size"]["x"];
-            atlas.row = atlas.row = size[6]["warpzone_data"]["size_y"];
+            atlas.col = atlas.row = size[6]["warpzone_data"].x;
+            atlas.row = atlas.row = size[6]["warpzone_data"].y;
             append_select_field(warpzone_url);
             break;
         default:
@@ -92,9 +93,8 @@ let display_animation_preview = function(e) {
                 index++;
             }
         }
-        element.querySelector('#preview-animation').style.display = "block";
     } else {
-        element.querySelector('#preview-animation').style.display = "none";
+        element.querySelector('#preview-animation').classList.add('hidden');
     }
 }
 
