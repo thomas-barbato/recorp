@@ -34,6 +34,8 @@ class StoreInCache:
         self.room = room_name
         self.sector_pk = self._extract_sector_id(room_name)
         self.user_calling = user_calling
+        self.from_DB = GetDataFromDB
+        self.user_view_coordinates = self.from_DB.current_player_observable_zone(self.user_calling.id)
 
     def _extract_sector_id(self, room_name: str) -> str:
         """Extrait l'ID du secteur depuis le nom de la room."""
@@ -74,8 +76,8 @@ class StoreInCache:
         """
         try:
             # Récupération des données de base
-            planets, asteroids, stations, warpzones = GetDataFromDB.get_items_from_sector(pk)
-            sector_pc, sector_npc = GetDataFromDB.get_pc_from_sector(pk)
+            planets, asteroids, stations, warpzones = self.from_DB.get_items_from_sector(pk)
+            sector_pc, sector_npc = self.from_DB.get_pc_from_sector(pk)
             sector = Sector.objects.get(id=pk)
 
             # Structure des données du secteur
@@ -138,7 +140,7 @@ class StoreInCache:
     def _build_warpzone_elements(self, sector_data: Dict[str, Any], table_key: str) -> None:
         """Construit les éléments de type warpzone."""
         try:
-            _, elementResource, elementZone = GetDataFromDB.get_table(table_key)
+            _, elementResource, elementZone = self.from_DB.get_table(table_key)
             
             map_elements = elementResource.objects.filter(
                 sector_id=self.sector_pk
@@ -179,7 +181,7 @@ class StoreInCache:
     def _build_standard_elements(self, sector_data: Dict[str, Any], table_key: str) -> None:
         """Construit les éléments standards (planètes, astéroïdes, stations)."""
         try:
-            _, elementResource = GetDataFromDB.get_table(table_key)
+            _, elementResource = self.from_DB.get_table(table_key)
             resources = elementResource.objects.filter(
                 sector_id=self.sector_pk
             ).values(
@@ -188,7 +190,7 @@ class StoreInCache:
             )
             
             for resource in resources:
-                resource_quantity = GetDataFromDB.get_resource_quantity_value(
+                resource_quantity = self.from_DB.get_resource_quantity_value(
                     resource["quantity"], 100
                 )
                 
@@ -254,7 +256,7 @@ class StoreInCache:
                         "category_description": npc_data["npc_template_id__ship_id__ship_category_id__description"],
                         "size": npc_data["npc_template_id__ship_id__ship_category_id__size"],
                         "modules": module_list,
-                        "modules_range": GetDataFromDB.is_in_range(
+                        "modules_range": self.from_DB.is_in_range(
                             sector_data["sector"]["id"], npc_data["id"], is_npc=True
                         ),
                     },
@@ -306,7 +308,7 @@ class StoreInCache:
                         "module_slot_available": pc_data["player_ship_id__ship_id__module_slot_available"],
                         "module_slot_already_in_use": len(module_list),
                         "modules": module_list,
-                        "modules_range": GetDataFromDB.is_in_range(
+                        "modules_range": self.from_DB.is_in_range(
                             sector_data["sector"]["id"], 
                             pc_data["player_ship_id__player_id__user_id"], 
                             is_npc=False
@@ -493,7 +495,7 @@ class StoreInCache:
                 return
             
             found_player_index = player_position.index(found_player)
-            player_position[found_player_index]["ship"]["modules_range"] = GetDataFromDB.is_in_range(
+            player_position[found_player_index]["ship"]["modules_range"] = self.from_DB.is_in_range(
                 player.get_player_sector(), self.user_calling, is_npc=False
             )
             

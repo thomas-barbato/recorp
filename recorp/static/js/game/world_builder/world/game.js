@@ -235,9 +235,6 @@ function init_game() {
     // Initialiser les composants du jeu
     init_sector_generation();
     init_logout_events();
-    // Initialisation
-    const fogOfWar = new FogOfWar();
-
 }
 
 // Initialisation au chargement de la page

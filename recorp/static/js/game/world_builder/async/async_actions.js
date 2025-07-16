@@ -80,9 +80,6 @@ function update_player_coord(data) {
     }else{
         update_player_pos_display_after_move(data);
     }
-    
-    
-    let fog_of_war = new FogOfWar();
 }
 
 function async_reverse_ship(data) {

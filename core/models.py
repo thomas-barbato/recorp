@@ -615,6 +615,7 @@ class PlayerShip(models.Model):
     max_thermal_defense = models.SmallIntegerField(default=0)
     max_ballistic_defense = models.SmallIntegerField(default=0)
     current_cargo_size = models.SmallIntegerField(default=2)
+    view_range = models.SmallIntegerField(default=6)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )

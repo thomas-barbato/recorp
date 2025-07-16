@@ -64,6 +64,8 @@ class GetDataFromDB:
     }
     
     WEAPONRY_MODULE_TYPES = ["WEAPONRY", "ELECTRONIC_WARFARE"]
+    
+    CURRENT_USER_VISIBILITY_COORD_RANGE = None
 
     def __init__(self):
         pass
@@ -343,7 +345,8 @@ class GetDataFromDB:
         try:
             return NpcTemplate.objects.filter(id=template_id).values(
                 "id", "ship_id", "ship_id__name", "ship_id__image",
-                "ship_id__ship_category_id__size", "displayed_name"
+                "ship_id__ship_category_id__size", "displayed_name",
+                "view_range",
             ).first()
         except (NpcTemplate.DoesNotExist, IndexError):
             return {}
@@ -418,7 +421,6 @@ class GetDataFromDB:
     def is_in_range(sector_id: int, current_user_id: int, is_npc: bool = False) -> Dict[str, List[Dict]]:
         """
         Détermine quels éléments sont à portée d'un joueur ou NPC
-        Méthode complexe refactorisée pour plus de lisibilité
         """
         try:
             current_player_data = GetDataFromDB._get_current_player_data(current_user_id, is_npc)
@@ -430,6 +432,82 @@ class GetDataFromDB:
         except Exception as e:
             # Log de l'erreur en production
             return {}
+        
+    def current_player_observable_zone(current_user_id: int) -> dict:
+        """
+        Détermine la zone de visibilité du joueur,
+        La stock dans une variable de la classe.
+        """
+        try:
+            current_user_data = GetDataFromDB._get_player_ship_view_range(current_user_id)
+            GetDataFromDB.CURRENT_USER_VISIBILITY_COORD_RANGE = GetDataFromDB._calculate_view_range(current_user_data)
+            return GetDataFromDB.CURRENT_USER_VISIBILITY_COORD_RANGE
+            
+        except Exception as e:
+            # Log de l'erreur en production
+            return {}
+        
+        
+    def is_visible_from_current_user(sector_id: int, current_user_id: int) -> Dict[str, List[dict]]:
+        """
+        Détermine quels éléments sont visibles du joueur.
+        """
+        try:
+            current_player_data = GetDataFromDB._get_player_ship_view_range(current_user_id)
+        except Exception as e:
+            # Log de l'erreur en production
+            return {}
+            
+    @staticmethod
+    def _get_player_ship_view_range(user_id: int) -> dict:
+        """Récupère les données de visibilité d'un joueur"""
+        player_data = PlayerShipModule.objects.filter(
+            player_ship_id__player_id__user_id=user_id,
+            player_ship_id__is_current_ship=True
+        ).values(
+            "player_ship_id__view_range",
+            "player_ship_id__player_id__coordinates",
+            "player_ship_id__ship_id__ship_category_id__size"
+        ).first()
+
+        if not player_data:
+            return {}
+
+        return {
+            "range" : player_data["player_ship_id__view_range"],
+            "coordinates": player_data["player_ship_id__player_id__coordinates"],
+            "size": player_data["player_ship_id__ship_id__ship_category_id__size"],
+        }
+        
+    @staticmethod
+    def _calculate_view_range(data : dict) -> dict:
+        coordinates = data['coordinates']
+        size = data['size']
+        view_range = data['range']  # Renommé 'range' en 'view_range'
+        
+        start_x = GetDataFromDB._calculate_range_start(coordinates['x'], size['x'], view_range)
+        end_x = GetDataFromDB._calculate_range_end(coordinates['x'], size['x'], view_range)
+        start_y = GetDataFromDB._calculate_range_start(coordinates['y'], size['y'], view_range)
+        end_y = GetDataFromDB._calculate_range_end(coordinates['y'], size['y'], view_range)
+        
+        # Limitation aux bordes de la carte
+        start_x = max(0, start_x)
+        end_x = min(GetDataFromDB.MAP_SIZE["cols"], end_x)
+        start_y = max(0, start_y)
+        end_y = min(GetDataFromDB.MAP_SIZE["rows"], end_y)
+        
+        return ([
+            f"{y}_{x}"
+            for y in range(start_y, end_y)  # Maintenant 'range' fait référence à la fonction built-in
+            for x in range(start_x, end_x)
+        ])
+        
+        # Génération de la zone de portée
+        GetDataFromDB.CURRENT_USER_VISIBILITY_COORD_RANGE = [
+            f"{y}_{x}"
+            for y in range(start_y, end_y)
+            for x in range(start_x, end_x)
+        ]
 
     @staticmethod
     def _get_current_player_data(current_user_id: int, is_npc: bool) -> Dict:
@@ -448,6 +526,7 @@ class GetDataFromDB:
         ).values(
             "player_ship_id__ship_id__ship_category_id__size",
             "player_ship_id__player_id__coordinates",
+            "player_ship_id__view_range",
             "player_ship_id__player_id"
         ).first()
 
@@ -661,7 +740,7 @@ class GetDataFromDB:
             for y in range(start_y, end_y)
             for x in range(start_x, end_x)
         ]
-
+        
     @staticmethod
     def _calculate_range_start(coord: int, size: int, module_range: int) -> int:
         """Calcule la coordonnée de début de portée"""
