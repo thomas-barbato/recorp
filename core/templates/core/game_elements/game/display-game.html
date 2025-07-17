@@ -149,9 +149,9 @@
                             <span class="flex w-[32px] hidden" id="Y_X_y"></span>
                         </td>
                         {% for col in map_size_range.cols %}
-                            <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] md:p-1 text-xs uncrossable">
-                                {{ col }}
-                            </td>
+                        <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] md:p-1 text-xs uncrossable">
+                            {{ col }}
+                        </td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
@@ -159,13 +159,9 @@
                         {% for col in map_size_range.cols %}
                             <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row }}_{{ col }}">
                                 <div class="relative w-[32px] h-[32px] z-20 coord-zone-div">
+                                    <div class="absolute w-[32px] h-[32px] bg-emerald-400/50 hidden" id="background-out-of-fow"></div>
                                     <span class="absolute inline-block w-[32px] h-[32px]"></span>
                                 </div>
-                                <!--
-                                <div class="absolute w-[32px] h-[32px] z-10" id="background-out-of-fow"></div>
-                                <div class="relative w-[32px] h-[32px] z-10" id="fog-of-war">
-                                    <span class="absolute inline-block w-[8px] h-[8px] rounded-full animate-ping bg-yellow-300 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
-                                </div>-->
                             </td>
                         {% endfor %}
                     </tr>
@@ -406,12 +402,10 @@
 <script src="{% static 'world_builder/world/add_borders.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_npc.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_pc.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/world/add_pc.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_sector_overflow.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/update_user_coordinates.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/async/async_actions.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding.js'%}" type='text/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding_mobile.js'%}" type='text/javascript'></script>
-<!--<script src="{% static 'world_builder/world/fogOfWar.js'%}" type='text/javascript'></script>
-<script src="{% static 'world_builder/world/add_player_see_range.js'%}" type='text/javascript'></script>-->
+<script src="{% static 'world_builder/world/show_view_range.js'%}" type='text/javascript'></script>

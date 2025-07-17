@@ -192,12 +192,54 @@ function handle_websocket_message(data) {
  */
 function init_sector_generation() {
     generate_sector(
-        map_informations.sector.image,
+        map_informations.sector,
         map_informations.sector_element, 
         map_informations.npc, 
         map_informations.pc
     );
+
+    document.querySelectorAll('.ship-pos').forEach(player => {
+        player.addEventListener('mouseover', displayObservableZone);
+        player.addEventListener('mouseout', HideObservableZone);
+    })
 }
+
+let observable_zone = getObservableZone();
+
+function getObservableZone(){
+    
+    const elements = [];
+    let ids = map_informations.sector.visible_zone;
+
+    for (let i = 0; i < ids.length; i++) {
+        const element = document.getElementById(ids[i]);
+        console.log(element.className)
+        if(!element.classList.contains('ship-pos')){
+            const zone = element.querySelector('#background-out-of-fow');
+            if (zone) {
+                elements.push(zone);
+            }
+        }else{
+            console.log(`dedans : ${ids[i]}`)
+        }
+        
+    }
+    return elements;
+}
+
+function displayObservableZone(){
+    for(let i = 0; i < observable_zone.length; i++){
+        observable_zone[i].classList.remove('hidden');
+    }
+}
+
+function HideObservableZone(){
+    for(let i = 0; i < observable_zone.length; i++){
+        observable_zone[i].classList.add('hidden');
+    }
+}
+
+
 
 /**
  * Configure le gestionnaire de redimensionnement de fenêtre

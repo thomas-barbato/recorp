@@ -125,6 +125,7 @@ class StoreInCache:
                     "is_faction_level_starter": sector.is_faction_level_starter,
                     "translated_text_faction_level_starter": [],
                 },
+                "visible_zone": self.from_DB.CURRENT_USER_VISIBILITY_COORD_RANGE
             }
         }
 
@@ -227,9 +228,9 @@ class StoreInCache:
         for npc_data in sector_npc:
             try:
                 module_list = self._get_module_list(npc_data["npc_template_id__module_id_list"])
-                
                 max_hp = int(npc_data["npc_template_id__max_hp"])
                 max_movement = int(npc_data["npc_template_id__max_movement"])
+                still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(self.user_view_coordinates, npc_data["id"], True)
                 sector_data["npc"].append({
                     "npc": {
                         "id": npc_data["id"],
@@ -259,6 +260,8 @@ class StoreInCache:
                         "modules_range": self.from_DB.is_in_range(
                             sector_data["sector"]["id"], npc_data["id"], is_npc=True
                         ),
+                        "is_visible": is_visible,
+                        "still_visible_part": json.dumps(still_visible_ship_part, default=list)
                     },
                 })
             except Exception as e:
@@ -269,7 +272,10 @@ class StoreInCache:
         for pc_data in sector_pc:
             try:
                 module_list = self._get_player_module_list(pc_data["player_ship_id"])
-                
+                still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(
+                    self.user_view_coordinates, pc_data["player_ship_id__player_id"], 
+                        False
+                    )
                 sector_data["pc"].append({
                     "user": {
                         "user": pc_data["player_ship_id__player_id__user_id"],
@@ -318,6 +324,8 @@ class StoreInCache:
                         "category_description": pc_data["player_ship_id__ship_id__ship_category__description"],
                         "size": pc_data["player_ship_id__ship_id__ship_category__size"],
                         "is_reversed": pc_data["player_ship_id__is_reversed"],
+                        "is_visible": is_visible,
+                        "still_visible_part": json.dumps(still_visible_ship_part, default=list)
                     },
                 })
             except Exception as e:

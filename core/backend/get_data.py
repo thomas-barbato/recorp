@@ -448,15 +448,64 @@ class GetDataFromDB:
             return {}
         
         
-    def is_visible_from_current_user(sector_id: int, current_user_id: int) -> Dict[str, List[dict]]:
+    def is_visible_from_current_user(current_user_view_zone : list, target_id : int, is_npc : bool = False) -> tuple:
         """
         Détermine quels éléments sont visibles du joueur.
+        Retourne un tuple (visible_parts, is_visible) où :
+        - visible_parts : set des parties visibles ou None pour les éléments 1x1
+        - is_visible : bool indiquant si l'élément est visible
+        """
+        data = GetDataFromDB._get_target_coord_size(target_id, is_npc)
+        
+        if not data:
+            return None, False
+        
+        element_x, element_y = int(data['coordinates']['x']), int(data['coordinates']['y'])
+        size_x, size_y = int(data['size']["x"]), int(data['size']["y"])
+        
+        if size_x == 1 and size_y == 1:
+            # Élément de taille 1x1
+            is_visible = f"{element_y}_{element_x}" in current_user_view_zone
+            return None, is_visible
+        else:
+            # Élément de taille supérieure - génération de sa zone
+            element_zone = [
+                f"{y}_{x}"
+                for y in range(element_y, element_y + size_y)
+                for x in range(element_x, element_x + size_x)
+            ]
+            
+            # Vérification de l'intersection
+            still_visible_part = set(current_user_view_zone).intersection(element_zone)
+            is_visible = len(still_visible_part) > 0
+            return still_visible_part, is_visible
+        
+    @staticmethod
+    def _get_target_coord_size(target_id : int, is_npc : bool = False) -> bool:
+        """
+        Recoltes les données (size, coord) du pc / npc.
         """
         try:
-            current_player_data = GetDataFromDB._get_player_ship_view_range(current_user_id)
+            ship = []
+            if is_npc:
+                ship = [
+                        {'coordinates' : e['coordinates'], 'size': e['npc_template_id__ship_id__ship_category_id__size']} 
+                        for e in Npc.objects.filter(id=target_id).values(
+                            'coordinates',
+                            'npc_template_id__ship_id__ship_category_id__size'
+                    )][0]
+            else:
+                ship = [
+                        {'coordinates' : e['coordinates'], 'size': e['ship_id___ship_category_id__size']} 
+                        for e in PlayerShip.objects.filter(player_id=target_id).values(
+                            'player_id__coordinates',
+                            'ship_id___ship_category_id__size'
+                    )][0]
+            return ship
         except Exception as e:
             # Log de l'erreur en production
             return {}
+        
             
     @staticmethod
     def _get_player_ship_view_range(user_id: int) -> dict:
@@ -483,7 +532,7 @@ class GetDataFromDB:
     def _calculate_view_range(data : dict) -> dict:
         coordinates = data['coordinates']
         size = data['size']
-        view_range = data['range']  # Renommé 'range' en 'view_range'
+        view_range = data['range']
         
         start_x = GetDataFromDB._calculate_range_start(coordinates['x'], size['x'], view_range)
         end_x = GetDataFromDB._calculate_range_end(coordinates['x'], size['x'], view_range)
@@ -498,16 +547,9 @@ class GetDataFromDB:
         
         return ([
             f"{y}_{x}"
-            for y in range(start_y, end_y)  # Maintenant 'range' fait référence à la fonction built-in
-            for x in range(start_x, end_x)
-        ])
-        
-        # Génération de la zone de portée
-        GetDataFromDB.CURRENT_USER_VISIBILITY_COORD_RANGE = [
-            f"{y}_{x}"
             for y in range(start_y, end_y)
             for x in range(start_x, end_x)
-        ]
+        ])
 
     @staticmethod
     def _get_current_player_data(current_user_id: int, is_npc: bool) -> Dict:

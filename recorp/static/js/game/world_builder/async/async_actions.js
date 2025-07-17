@@ -181,26 +181,25 @@ function update_player_pos_display_after_move(data){
             let space_ship = document.createElement('div');
             let space_ship_reversed = document.createElement('div');
 
-            entry_point.classList.add('uncrossable');
+            entry_point.classList.add('uncrossable','bg-orange-400/30');
             entry_point.setAttribute('size_x', ship_size_x);
             entry_point.setAttribute('size_y', ship_size_y);
-            entry_point.setAttribute('type', 'pc');
             entry_point_border.classList.add('border-dashed', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
 
-            entry_point_div.classList.add('bg-orange-400/30');
+            entry_point_div.classList.add();
 
             entry_point_border.removeAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
             entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
 
             space_ship.style.backgroundImage = "url('" + ship_url + "')";
-            space_ship.classList.add('ship', 'pc');
+            space_ship.classList.add('ship', 'z-1', 'absolute');
             space_ship.style.backgroundPositionX = `-${col_i}px`;
             space_ship.style.backgroundPositionY = `-${row_i}px`;
             
             space_ship_reversed.style.backgroundImage = "url('" + ship_url_reversed_img + "')";
-            space_ship_reversed.classList.add('ship-reversed', 'pc');
+            space_ship_reversed.classList.add('ship-reversed', 'z-1', 'absolute');
             space_ship_reversed.style.backgroundPositionX = `-${col_i}px`;
             space_ship_reversed.style.backgroundPositionY = `-${row_i}px`;
 

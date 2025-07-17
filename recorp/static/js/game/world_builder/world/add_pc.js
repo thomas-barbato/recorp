@@ -31,7 +31,10 @@ function extractPlayerInfo(playerData) {
             sizeY: playerData.ship.size.y,
             image: playerData.ship.image,
             isReversed: playerData.ship.is_reversed,
-            currentMovement: playerData.ship.current_movement
+            currentMovement: playerData.ship.current_movement,
+            is_visible: playerData.ship.is_visible,
+            till_visible_part : playerData.ship.till_visible_part
+
         },
         user: {
             id: playerData.user.player,
@@ -148,7 +151,6 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', playerInfo.ship.sizeX);
     cell.setAttribute('size_y', playerInfo.ship.sizeY);
-    cell.setAttribute('type', 'pc');
     
     // Setup ship elements
     const { spaceShip, spaceShipReversed } = createShipElements(playerInfo.ship.image, colOffset, rowOffset);
@@ -178,24 +180,32 @@ function createShipElements(shipImage, colOffset, rowOffset) {
     return { spaceShip, spaceShipReversed };
 }
 
-function createShipElement(bgUrl, colOffset, rowOffset, className) {
+function createOutOfBoundShipElement(bgUrl, colOffset, rowOffset, className){
     const element = document.createElement('div');
     element.style.backgroundImage = `url('${bgUrl}')`;
     element.classList.add(className, 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc');
     element.style.backgroundPositionX = `-${colOffset}px`;
     element.style.backgroundPositionY = `-${rowOffset}px`;
     return element;
+    
 }
 
-function createDot(){}
+function createShipElement(bgUrl, colOffset, rowOffset, className) {
+    const element = document.createElement('div');
+    element.style.backgroundImage = `url('${bgUrl}')`;
+    element.classList.add(className, 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc', 'z-1');
+    element.style.backgroundPositionX = `-${colOffset}px`;
+    element.style.backgroundPositionY = `-${rowOffset}px`;
+    return element;
+}
 
 function handleShipDisplay(spaceShip, spaceShipReversed, isReversed) {
     if (isReversed) {
         spaceShip.classList.add('hidden');
-        spaceShip.classList.remove('hidden');
+        spaceShipReversed.classList.remove('hidden');
     } else {
         spaceShip.classList.remove('hidden');
-        spaceShip.classList.add('hidden');
+        spaceShipReversed.classList.add('hidden');
     }
 }
 

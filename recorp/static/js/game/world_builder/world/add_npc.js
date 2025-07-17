@@ -26,7 +26,10 @@ function extractNpcInfo(npcData) {
         ship: {
             sizeX: npcData.ship.size.x,
             sizeY: npcData.ship.size.y,
-            image: npcData.ship.image
+            image: npcData.ship.image,
+            is_visible: npcData.ship.is_visible,
+            till_visible_part : npcData.ship.till_visible_part,
+            borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         npc: {
             id: npcData.npc.id,
@@ -94,9 +97,20 @@ function renderNpcShip(npcData, npcInfo) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
             const cellDiv = cell.querySelector('div');
-            
-            setupNpcCell(cell, border, npcData, npcInfo);
-            const spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+            let spaceShip = undefined;
+            border.classList.add('cursor-crosshair','border-dashed');
+            if(npcInfo.ship.is_visible){
+                setupNpcCell(cell, border, npcInfo);
+                spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+            }else{
+                if(npcInfo.ship.till_visible_part !== undefined){
+                    setupNpcCell(cell, border, npcInfo);
+                    spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+                }else{
+                    setupUnkownCell(cell, border, npcInfo);
+                    spaceShip = createUnknownElement();
+                }
+            }
             
             handleShipPositioning(cell, npcInfo.ship.sizeY, npcInfo.ship.sizeX, rowOffset, colOffset);
             
@@ -112,18 +126,18 @@ function getTableCell(rowIndex, colIndex) {
     return document.querySelector('.tabletop-view').rows[rowIndex].cells[colIndex];
 }
 
-function setupNpcCell(cell, border, npcData, npcInfo) {
+function setupNpcCell(cell, border, npcInfo) {
     // Configure cell
-    cell.classList.add("npc", "uncrossable");
+    cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
-    cell.setAttribute('type', 'npc');
     
     // Configure border
     border.setAttribute('data-title', 
         `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );
     border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
+    border.classList.add('border-red-600');
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     
     // Add event listeners
@@ -147,15 +161,63 @@ function setupNpcCell(cell, border, npcData, npcInfo) {
     });
 }
 
+function setupUnkownCell(cell, border, npcInfo) {
+    // Configure cell
+    cell.classList.add("uncrossable");
+    cell.setAttribute('size_x', npcInfo.ship.sizeX);
+    cell.setAttribute('size_y', npcInfo.ship.sizeY);
+    
+    // Configure border
+    border.setAttribute('data-title', 
+        `${"Unknown"} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
+    );
+    border.setAttribute('data-modal-target', `modal-unknown_npc_${npcInfo.npc.id}`);
+    border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+    border.classList.add('hover:border-yellow-600');
+    // Add event listeners
+    border.addEventListener("mouseover", () => {
+        generate_border(
+            npcInfo.ship.sizeY, 
+            npcInfo.ship.sizeX, 
+            npcInfo.coordinates.baseY + 1, 
+            npcInfo.coordinates.baseX + 1
+        );
+    });
+    
+    border.addEventListener("mouseout", () => {
+        remove_border(
+            npcInfo.ship.sizeY, 
+            npcInfo.ship.sizeX, 
+            npcInfo.coordinates.baseY + 1, 
+            npcInfo.coordinates.baseX + 1, 
+            'border-yellow-300'
+        );
+    });
+}
+
+
 function createSpaceShipElement(bgUrl, colOffset, rowOffset) {
     const spaceShip = document.createElement('div');
     
     spaceShip.style.backgroundImage = `url('${bgUrl}')`;
-    spaceShip.classList.add('ship', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'npc');
+    spaceShip.classList.add('ship', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'z-1');
     spaceShip.style.backgroundPositionX = `-${colOffset}px`;
     spaceShip.style.backgroundPositionY = `-${rowOffset}px`;
     
     return spaceShip;
+}
+
+function createUnknownElement(){
+    const spaceShip = document.createElement('div');
+    
+    spaceShip.classList.add(
+        'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
+        'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
+        '-translate-y-1/2', 'z-1'
+    );
+    
+    return spaceShip;
+
 }
 
 function handleShipPositioning(cell, sizeY, sizeX, rowOffset, colOffset) {
