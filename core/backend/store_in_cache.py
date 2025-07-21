@@ -101,6 +101,33 @@ class StoreInCache:
         except Exception as e:
             logger.error(f"Erreur lors de l'initialisation des données du secteur {pk}: {e}")
             raise
+        
+    def update_sector_player_visibility_zone(self) -> None:
+        
+        try:
+            in_cache = cache.get(self.room)
+            if not in_cache:
+                return None, None
+                
+            pc_cache = in_cache["pc"]
+
+            player = next(
+                (p for p in pc_cache if self.user_calling.id == p["user"]["user"]), 
+                None
+            )
+            
+            if not player:
+                return None, None
+
+            player_index = pc_cache.index(player)
+            pc_cache[player_index]["ship"]["visible_zone"] = self.from_DB.current_player_observable_zone(self.user_calling.id)
+            in_cache["pc"] = pc_cache
+            print(in_cache["pc"])
+            cache.set(self.room, in_cache)
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération de l'index 'sector' du cache: {e}")
+            return None
 
     def _initialize_sector_structure(self, sector: Sector, pk: str) -> Dict[str, Any]:
         """Initialise la structure de base des données du secteur."""
@@ -125,7 +152,6 @@ class StoreInCache:
                     "is_faction_level_starter": sector.is_faction_level_starter,
                     "translated_text_faction_level_starter": [],
                 },
-                "visible_zone": self.from_DB.CURRENT_USER_VISIBILITY_COORD_RANGE
             }
         }
 
@@ -261,7 +287,7 @@ class StoreInCache:
                             sector_data["sector"]["id"], npc_data["id"], is_npc=True
                         ),
                         "is_visible": is_visible,
-                        "still_visible_part": json.dumps(still_visible_ship_part, default=list)
+                        "still_visible_part": json.dumps(still_visible_ship_part, default=list),
                     },
                 })
             except Exception as e:
@@ -272,9 +298,9 @@ class StoreInCache:
         for pc_data in sector_pc:
             try:
                 module_list = self._get_player_module_list(pc_data["player_ship_id"])
+                visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id__user_id"])
                 still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(
-                    self.user_view_coordinates, pc_data["player_ship_id__player_id"], 
-                        False
+                    visible_zone, pc_data["player_ship_id__player_id"], False
                     )
                 sector_data["pc"].append({
                     "user": {
@@ -325,7 +351,8 @@ class StoreInCache:
                         "size": pc_data["player_ship_id__ship_id__ship_category__size"],
                         "is_reversed": pc_data["player_ship_id__is_reversed"],
                         "is_visible": is_visible,
-                        "still_visible_part": json.dumps(still_visible_ship_part, default=list)
+                        "still_visible_part": json.dumps(still_visible_ship_part, default=list),
+                        "visible_zone": json.dumps(visible_zone, default=List)
                     },
                 })
             except Exception as e:
@@ -367,6 +394,36 @@ class StoreInCache:
     def _has_scanning_module(self, module_list: List[Dict[str, Any]]) -> bool:
         """Vérifie si le joueur possède un module de scan."""
         return any(module['name'] == "spaceship probe" for module in module_list)
+    
+    def get_visible_zone(self) -> Optional[Any]:
+        """
+        Récupère la zone de visibilité du joueur
+        
+        Args:
+            
+        Returns:
+            Données du joueur ou None si non trouvé
+        """
+        try:
+            in_cache = cache.get(self.room)
+            if not in_cache:
+                return None
+                
+            cache_data = in_cache[category]
+            
+            found_player = next(
+                (p for p in cache_data if player_id == p["user"]["player"]), 
+                None
+            )
+            if not found_player:
+                return None
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des données de visibilité : {e}")
+            return None
+        
+            
+        
 
     def get_specific_player_data(
         self, player_id: int, category: str = "", subcategory: str = "", search: str = ""
@@ -394,7 +451,6 @@ class StoreInCache:
                 (p for p in cache_data if player_id == p["user"]["player"]), 
                 None
             )
-            
             if not found_player:
                 return None
                 
@@ -459,6 +515,11 @@ class StoreInCache:
             
             # Mise à jour du mouvement
             player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
+            
+            # Mise à jour de la visibilité du joueur
+            still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(self.user_view_coordinates, player_id, False)
+            player_position[found_player_index]["ship"]["is_visible"] = is_visible 
+            player_position[found_player_index]["ship"]["still_visible_part"] = still_visible_ship_part
 
             # Nettoyage des anciens duplicatas
             self._remove_duplicate_players(player_position, found_player, pos)

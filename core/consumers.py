@@ -158,6 +158,7 @@ class GameConsumer(WebsocketConsumer):
         if self._can_move_to_destination(player_action, message):
             if self._register_move(player_action, message):
                 self._update_player_state(store, message)
+                store.update_sector_player_visibility_zone()
                 return self._create_own_move_response(player_action, store, message, player_id)
         
         return {}
@@ -203,6 +204,7 @@ class GameConsumer(WebsocketConsumer):
                 "size": store.get_specific_player_data(
                     player_id, "pc", "ship", "size"
                 ),
+                
             },
         }
 
@@ -215,7 +217,6 @@ class GameConsumer(WebsocketConsumer):
     ) -> Dict[str, Any]:
         """Gère le mouvement d'un autre joueur."""
         store.update_player_range_finding()
-        
         return {
             "type": "player_move",
             "message": {
@@ -238,6 +239,15 @@ class GameConsumer(WebsocketConsumer):
                 ),
                 "size": store.get_specific_player_data(
                     message["player"], "pc", "ship", "size"
+                ),
+                "is_visible": store.get_specific_player_data(
+                    message["player"], "pc", "ship", "is_visible"
+                ),
+                "still_visible_part": store.get_specific_player_data(
+                    message["player"], "pc", "ship", "still_visible_part"
+                ),
+                "visible_zone": store.get_specific_player_data(
+                    message["player"], "pc", "ship", "visible_zone"
                 ),
             },
         }
@@ -304,10 +314,8 @@ class GameConsumer(WebsocketConsumer):
         print(f"destination room key : {destination_room_key}")
         print("dans _process_warp_travel")
         if self._is_other_player(user):
-            print("if")
             self._handle_other_player_warp(coordinates, size, player_id)
         else:
-            print("else")
             self._handle_own_player_warp(destination_room_key, player_id)
 
     def _remove_player_from_current_sector(self, user: int) -> None:

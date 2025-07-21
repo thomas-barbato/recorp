@@ -2,6 +2,7 @@
 let gameSocket = null;
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
+let observable_zone = [];
 
 const atlas = {
     col: 40,
@@ -204,40 +205,9 @@ function init_sector_generation() {
     })
 }
 
-let observable_zone = getObservableZone();
+observable_zone = getObservableZone();
 
-function getObservableZone(){
-    
-    const elements = [];
-    let ids = map_informations.sector.visible_zone;
 
-    for (let i = 0; i < ids.length; i++) {
-        const element = document.getElementById(ids[i]);
-        console.log(element.className)
-        if(!element.classList.contains('ship-pos')){
-            const zone = element.querySelector('#background-out-of-fow');
-            if (zone) {
-                elements.push(zone);
-            }
-        }else{
-            console.log(`dedans : ${ids[i]}`)
-        }
-        
-    }
-    return elements;
-}
-
-function displayObservableZone(){
-    for(let i = 0; i < observable_zone.length; i++){
-        observable_zone[i].classList.remove('hidden');
-    }
-}
-
-function HideObservableZone(){
-    for(let i = 0; i < observable_zone.length; i++){
-        observable_zone[i].classList.add('hidden');
-    }
-}
 
 
 

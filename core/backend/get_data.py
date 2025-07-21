@@ -64,8 +64,6 @@ class GetDataFromDB:
     }
     
     WEAPONRY_MODULE_TYPES = ["WEAPONRY", "ELECTRONIC_WARFARE"]
-    
-    CURRENT_USER_VISIBILITY_COORD_RANGE = None
 
     def __init__(self):
         pass
@@ -440,8 +438,7 @@ class GetDataFromDB:
         """
         try:
             current_user_data = GetDataFromDB._get_player_ship_view_range(current_user_id)
-            GetDataFromDB.CURRENT_USER_VISIBILITY_COORD_RANGE = GetDataFromDB._calculate_view_range(current_user_data)
-            return GetDataFromDB.CURRENT_USER_VISIBILITY_COORD_RANGE
+            return GetDataFromDB._calculate_view_range(current_user_data)
             
         except Exception as e:
             # Log de l'erreur en production
@@ -477,7 +474,7 @@ class GetDataFromDB:
             
             # Vérification de l'intersection
             still_visible_part = set(current_user_view_zone).intersection(element_zone)
-            is_visible = len(still_visible_part) > 0
+            is_visible = len(still_visible_part) == size_x * size_y
             return still_visible_part, is_visible
         
     @staticmethod

@@ -134,9 +134,12 @@ function update_player_pos_display_after_move(data){
         current_player_ship[i].removeAttribute("size_x");
         current_player_ship[i].removeAttribute("size_y");
         current_player_ship[i].removeAttribute('type');
-        current_player_ship[i].querySelectorAll('.pc').forEach(pc => {
-            pc.remove();
-        });
+        current_player_ship[i].removeEventListener('mouseover', displayObservableZone);
+        current_player_ship[i].removeEventListener('mouseout', HideObservableZone);
+        current_player_ship[i].classList.remove('uncrossable', 'ship-pos', 'player-ship-start-pos', 'border-dashed');
+        current_player_ship[i].querySelector('.player-ship').remove();
+        current_player_ship[i].querySelector('.player-ship-reversed').remove();
+
         current_player_ship[i].querySelector('span').remove();
         
         let current_player_ship_background = current_player_ship[i].querySelector('div');
@@ -151,7 +154,7 @@ function update_player_pos_display_after_move(data){
 
         let div_container = current_player_ship[i].querySelector('div');
         let span = document.createElement('span');
-        span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer z-1 foreground-element";
+        span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-crosshair z-1 foreground-element";
         span.title = `${data.sector.name} [y: ${old_pos_id_split[0]} ; x: ${old_pos_id_split[1]}]`;
         div_container.append(span);
 
@@ -187,11 +190,16 @@ function update_player_pos_display_after_move(data){
             entry_point_border.classList.add('border-dashed', 'cursor-pointer');
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
+            
+            observable_zone = getObservableZone(data.player.ship.visible_zone);
+
+            entry_point.addEventListener('mouseover', displayObservableZone);
+            entry_point.addEventListener('mouseout', HideObservableZone);
 
             entry_point_div.classList.add();
 
             entry_point_border.removeAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
-            entry_point_border.removeAttribute(attribute_touch_click, 'display_pathfinding()');
+            entry_point_border.removeEventListener(attribute_touch_click, display_pathfinding);
 
             space_ship.style.backgroundImage = "url('" + ship_url + "')";
             space_ship.classList.add('ship', 'z-1', 'absolute');

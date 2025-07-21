@@ -5,10 +5,16 @@ function add_pc(data) {
         const playerInfo = extractPlayerInfo(playerData);
         
         if (!playerInfo.isCurrentUser) {
-            createAndAppendPlayerModal(playerData, playerInfo);
+            if(playerInfo.ship.is_visible){
+                createAndAppendPlayerModal(playerData, playerInfo);
+            }else{
+                //createAndAppendUnknownModal();
+            }
+            renderOtherPlayerShip(playerData, playerInfo);
+        }else{
+            renderPlayerShip(playerData, playerInfo);
         }
         
-        renderPlayerShip(playerData, playerInfo);
     });
     
     handleMobileButtonDisabling(coordinatesArrayToDisableButton);
@@ -34,7 +40,6 @@ function extractPlayerInfo(playerData) {
             currentMovement: playerData.ship.current_movement,
             is_visible: playerData.ship.is_visible,
             till_visible_part : playerData.ship.till_visible_part
-
         },
         user: {
             id: playerData.user.player,
@@ -95,6 +100,39 @@ function createPlayerModalData(playerData) {
     };
 }
 
+function renderOtherPlayerShip(playerData, playerInfo) {
+    let coordX = playerInfo.coordinates.x;
+    let coordY = playerInfo.coordinates.y;
+    for (let rowOffset = 0; rowOffset < (atlas.tilesize * playerInfo.ship.sizeY); rowOffset += atlas.tilesize) {
+        for (let colOffset = 0; colOffset < (atlas.tilesize * playerInfo.ship.sizeX); colOffset += atlas.tilesize) {
+            const cell = getTableCell(coordY, coordX);
+            const border = cell.querySelector('span');
+            if(playerInfo.ship.is_visible){
+                setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
+            }else{
+                if(playerInfo.ship.till_visible_part !== undefined){
+                    for(let i = 0 ; i < playerInfo.ship.till_visible_part.length ; i++){
+                        if(playerInfo.ship.till_visible_part[i] == cell.id){
+                            setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
+                            spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+                        }else{
+                            setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
+                            spaceShip = createUnknownElement();
+                        }
+                    }
+                }else{
+                    setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
+                    spaceShip = createUnknownElement();
+                }
+            }
+            
+            coordX++;
+        }
+        coordY++;
+        coordX = playerInfo.coordinates.x;
+    }
+}
+
 function renderPlayerShip(playerData, playerInfo) {
     let coordX = playerInfo.coordinates.x;
     let coordY = playerInfo.coordinates.y;
@@ -102,7 +140,7 @@ function renderPlayerShip(playerData, playerInfo) {
     for (let rowOffset = 0; rowOffset < (atlas.tilesize * playerInfo.ship.sizeY); rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < (atlas.tilesize * playerInfo.ship.sizeX); colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
-            
+            const border = cell.querySelector('span');
             handleTooltipCreation(cell, playerInfo, rowOffset, colOffset);
             setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
             
@@ -170,6 +208,40 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     cellDiv.append(spaceShipReversed);
 }
 
+function setupUnknownCell(cell, border, playerInfo) {
+    // Configure cell
+    cell.classList.add("uncrossable");
+    cell.setAttribute('size_x', playerInfo.ship.sizeX);
+    cell.setAttribute('size_y', playerInfo.ship.sizeY);
+    
+    // Configure border
+    border.setAttribute('data-title', 
+        `${"Unknown"} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
+    );
+    border.setAttribute('data-modal-target', `modal-unknown_pc_${playerInfo.user.id}`);
+    border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+    border.classList.add('hover:border-yellow-600');
+    // Add event listeners
+    border.addEventListener("mouseover", () => {
+        generate_border(
+            playerInfo.ship.sizeY, 
+            playerInfo.ship.sizeX, 
+            playerInfo.coordinates.baseY + 1, 
+            playerInfo.coordinates.baseX + 1
+        );
+    });
+    
+    border.addEventListener("mouseout", () => {
+        remove_border(
+            playerInfo.ship.sizeY, 
+            playerInfo.ship.sizeX, 
+            playerInfo.coordinates.baseY + 1, 
+            playerInfo.coordinates.baseX + 1, 
+            'border-yellow-300'
+        );
+    });
+}
+
 function createShipElements(shipImage, colOffset, rowOffset) {
     const bgUrl = `/static/img/foreground/SHIPS/${shipImage}.png`;
     const bgUrlReversed = `/static/img/foreground/SHIPS/${shipImage}-reversed.png`;
@@ -178,6 +250,19 @@ function createShipElements(shipImage, colOffset, rowOffset) {
     const spaceShipReversed = createShipElement(bgUrlReversed, colOffset, rowOffset, 'ship-reversed');
     
     return { spaceShip, spaceShipReversed };
+}
+
+function createUnknownElement(){
+    const spaceShip = document.createElement('div');
+    
+    spaceShip.classList.add(
+        'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
+        'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
+        '-translate-y-1/2', 'z-1'
+    );
+    
+    return spaceShip;
+
 }
 
 function createOutOfBoundShipElement(bgUrl, colOffset, rowOffset, className){
