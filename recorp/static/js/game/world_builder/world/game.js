@@ -175,7 +175,6 @@ function handle_websocket_message(data) {
             console.log('Message received:', data.message);
         },
         "user_leave": () => {
-            // TODO: Implémenter userLeave(data)
             console.log('User left:', data.message);
         }
     };
@@ -199,17 +198,12 @@ function init_sector_generation() {
         map_informations.pc
     );
 
+    observable_zone = getObservableZone();
     document.querySelectorAll('.ship-pos').forEach(player => {
         player.addEventListener('mouseover', displayObservableZone);
         player.addEventListener('mouseout', HideObservableZone);
     })
 }
-
-observable_zone = getObservableZone();
-
-
-
-
 
 /**
  * Configure le gestionnaire de redimensionnement de fenêtre

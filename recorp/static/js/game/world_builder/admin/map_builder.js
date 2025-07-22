@@ -502,8 +502,6 @@ class MapElementsManager {
                 const totalTileSizeY = sizeY * tileSize;
                 const uuid = data?.temp_uuid;
 
-                console.log(uuid)
-
                 let indexCol = parseInt(data.coordinates.x) + 1;
                 let indexRow = parseInt(data.coordinates.y) + 1;
                 sizeX == 1 && sizeY == 1 ? this.drawSingleSizedElement(indexRow, indexCol, imagePath, uuid) : this.drawBigSizedElement(totalTileSizeX, totalTileSizeY, tileSize, indexRow, indexCol, imagePath, uuid);

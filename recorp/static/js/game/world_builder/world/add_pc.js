@@ -39,7 +39,7 @@ function extractPlayerInfo(playerData) {
             isReversed: playerData.ship.is_reversed,
             currentMovement: playerData.ship.current_movement,
             is_visible: playerData.ship.is_visible,
-            till_visible_part : playerData.ship.till_visible_part
+            still_visible_part : playerData.ship.still_visible_part
         },
         user: {
             id: playerData.user.player,
@@ -110,18 +110,16 @@ function renderOtherPlayerShip(playerData, playerInfo) {
             if(playerInfo.ship.is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
             }else{
-                if(playerInfo.ship.till_visible_part !== undefined){
-                    for(let i = 0 ; i < playerInfo.ship.till_visible_part.length ; i++){
-                        if(playerInfo.ship.till_visible_part[i] == cell.id){
-                            setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
-                            spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
-                        }else{
-                            setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
-                            spaceShip = createUnknownElement();
-                        }
+                if(typeof playerInfo.ship.still_visible_part !== undefined){
+                    if(playerInfo.ship.still_visible_part.includes(cell.id)){
+                        setupPcCell(cell, border, playerInfo);
+                        spaceShip = createShipElement(bgUrl, colOffset, rowOffset);
+                    }else{
+                        setupUnknownPcCell(cell, border, playerInfo);
+                        spaceShip = createUnknownElement();
                     }
                 }else{
-                    setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
+                    setupUnknownPcCell(cell, border, playerInfo);
                     spaceShip = createUnknownElement();
                 }
             }
@@ -208,7 +206,7 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     cellDiv.append(spaceShipReversed);
 }
 
-function setupUnknownCell(cell, border, playerInfo) {
+function setupUnknownPcCell(cell, border, playerInfo) {
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', playerInfo.ship.sizeX);

@@ -122,7 +122,6 @@ class StoreInCache:
             player_index = pc_cache.index(player)
             pc_cache[player_index]["ship"]["visible_zone"] = self.from_DB.current_player_observable_zone(self.user_calling.id)
             in_cache["pc"] = pc_cache
-            print(in_cache["pc"])
             cache.set(self.room, in_cache)
             
         except Exception as e:
@@ -352,7 +351,7 @@ class StoreInCache:
                         "is_reversed": pc_data["player_ship_id__is_reversed"],
                         "is_visible": is_visible,
                         "still_visible_part": json.dumps(still_visible_ship_part, default=list),
-                        "visible_zone": json.dumps(visible_zone, default=List)
+                        "visible_zone": visible_zone
                     },
                 })
             except Exception as e:
@@ -394,35 +393,6 @@ class StoreInCache:
     def _has_scanning_module(self, module_list: List[Dict[str, Any]]) -> bool:
         """Vérifie si le joueur possède un module de scan."""
         return any(module['name'] == "spaceship probe" for module in module_list)
-    
-    def get_visible_zone(self) -> Optional[Any]:
-        """
-        Récupère la zone de visibilité du joueur
-        
-        Args:
-            
-        Returns:
-            Données du joueur ou None si non trouvé
-        """
-        try:
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return None
-                
-            cache_data = in_cache[category]
-            
-            found_player = next(
-                (p for p in cache_data if player_id == p["user"]["player"]), 
-                None
-            )
-            if not found_player:
-                return None
-            
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération des données de visibilité : {e}")
-            return None
-        
-            
         
 
     def get_specific_player_data(

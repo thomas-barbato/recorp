@@ -4,7 +4,6 @@ function add_npc(data) {
     data.forEach(npcData => {
         const npcInfo = extractNpcInfo(npcData);
         const modalData = createNpcModalData(npcData);
-        
         createAndAppendNpcModal(npcData.npc.id, modalData, npcInfo);
         renderNpcShip(npcData, npcInfo);
     });
@@ -15,7 +14,6 @@ function add_npc(data) {
 function extractNpcInfo(npcData) {
     const baseCoordX = parseInt(npcData.npc.coordinates.x);
     const baseCoordY = parseInt(npcData.npc.coordinates.y);
-    
     return {
         coordinates: {
             x: baseCoordX + 1,
@@ -28,7 +26,7 @@ function extractNpcInfo(npcData) {
             sizeY: npcData.ship.size.y,
             image: npcData.ship.image,
             is_visible: npcData.ship.is_visible,
-            till_visible_part : npcData.ship.till_visible_part,
+            still_visible_part : npcData.ship.still_visible_part,
             borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         npc: {
@@ -103,11 +101,16 @@ function renderNpcShip(npcData, npcInfo) {
                 setupNpcCell(cell, border, npcInfo);
                 spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
             }else{
-                if(npcInfo.ship.till_visible_part !== undefined){
-                    setupNpcCell(cell, border, npcInfo);
-                    spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+                if(typeof npcInfo.ship.still_visible_part !== undefined){
+                    if(npcInfo.ship.still_visible_part.includes(cell.id)){
+                        setupNpcCell(cell, border, npcInfo);
+                        spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+                    }else{
+                        setupUnkownNpcCell(cell, border, npcInfo);
+                        spaceShip = createUnknownElement();
+                    }
                 }else{
-                    setupUnkownCell(cell, border, npcInfo);
+                    setupUnkownNpcCell(cell, border, npcInfo);
                     spaceShip = createUnknownElement();
                 }
             }
@@ -161,7 +164,10 @@ function setupNpcCell(cell, border, npcInfo) {
     });
 }
 
-function setupUnkownCell(cell, border, npcInfo) {
+function setupUnkownNpcCell(cell, border, npcInfo) {
+    console.log("dans setupUnknown")
+    console.log(npcInfo)
+    console.log("==================")
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
@@ -170,7 +176,8 @@ function setupUnkownCell(cell, border, npcInfo) {
     // Configure border
     border.setAttribute('data-title', 
         `${"Unknown"} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-    );
+    )
+
     border.setAttribute('data-modal-target', `modal-unknown_npc_${npcInfo.npc.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     border.classList.add('hover:border-yellow-600');

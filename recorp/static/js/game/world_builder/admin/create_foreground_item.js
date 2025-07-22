@@ -31,7 +31,6 @@ let display_animation_file_choice = function() {
             append_select_field(station_url);
             break;
         case "asteroid":
-            console.log(size[2]["asteroid_data"].x)
             atlas.col = atlas.row = size[2]["asteroid_data"].x;
             append_select_field(asteroid_url);
             break;
