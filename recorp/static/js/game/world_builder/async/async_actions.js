@@ -47,10 +47,9 @@ function update_player_coord(data) {
             entry_point.querySelector('.pathfinding-zone').title = `${map_informations["sector"]["name"]} [y: ${get_start_coord[0]} ; x: ${get_start_coord[1]}]`;
             entry_point.classList.remove('pc', 'uncrossable');
             end_point.classList.add('pc', 'uncrossable');
-            /*
             end_point.addEventListener(attribute_touch_click, function(){
                 open_close(`modal-pc_${target_player_id}`);
-            })*/
+            })
             let end_point_border = end_point.querySelector('span');
             end_point_border.addEventListener("mouseover", function(){
                 generate_border(size["y"], size["x"], parseInt(data.end_y + 1), parseInt(data.end_x + 1));
@@ -191,10 +190,11 @@ function update_player_pos_display_after_move(data){
             entry_point_border.setAttribute('title', `${data.player.user.name}`);
             entry_point_border.setAttribute('data-modal-target', `modal-pc_${data.player.user.player}`);
             
-            observable_zone = getObservableZone(data.player.ship.visible_zone);
-
+            [observable_zone, observable_zone_id] = getObservableZone(data.player.ship.visible_zone);
+            /*
             entry_point.addEventListener('mouseover', displayObservableZone);
             entry_point.addEventListener('mouseout', HideObservableZone);
+            */
 
             entry_point_div.classList.add();
 

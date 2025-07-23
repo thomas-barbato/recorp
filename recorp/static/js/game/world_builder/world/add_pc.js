@@ -8,6 +8,7 @@ function add_pc(data) {
             if(playerInfo.ship.is_visible){
                 createAndAppendPlayerModal(playerData, playerInfo);
             }else{
+                createAndAppendPlayerModal(playerData, playerInfo)
                 //createAndAppendUnknownModal();
             }
             renderOtherPlayerShip(playerData, playerInfo);
@@ -38,8 +39,7 @@ function extractPlayerInfo(playerData) {
             image: playerData.ship.image,
             isReversed: playerData.ship.is_reversed,
             currentMovement: playerData.ship.current_movement,
-            is_visible: playerData.ship.is_visible,
-            still_visible_part : playerData.ship.still_visible_part
+            //borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         user: {
             id: playerData.user.player,
@@ -103,25 +103,22 @@ function createPlayerModalData(playerData) {
 function renderOtherPlayerShip(playerData, playerInfo) {
     let coordX = playerInfo.coordinates.x;
     let coordY = playerInfo.coordinates.y;
-    for (let rowOffset = 0; rowOffset < (atlas.tilesize * playerInfo.ship.sizeY); rowOffset += atlas.tilesize) {
-        for (let colOffset = 0; colOffset < (atlas.tilesize * playerInfo.ship.sizeX); colOffset += atlas.tilesize) {
+    let sizeX  = playerInfo.ship.sizeX;
+    let sizeY = playerInfo.ship.sizeY;
+
+    let is_visible = ship_is_visible(coordY, coordX, sizeY, sizeX);
+
+    console.log(is_visible)
+
+    for (let rowOffset = 0; rowOffset < (atlas.tilesize * sizeY); rowOffset += atlas.tilesize) {
+        for (let colOffset = 0; colOffset < (atlas.tilesize * sizeX); colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
-            if(playerInfo.ship.is_visible){
+            if(is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
             }else{
-                if(typeof playerInfo.ship.still_visible_part !== undefined){
-                    if(playerInfo.ship.still_visible_part.includes(cell.id)){
-                        setupPcCell(cell, border, playerInfo);
-                        spaceShip = createShipElement(bgUrl, colOffset, rowOffset);
-                    }else{
-                        setupUnknownPcCell(cell, border, playerInfo);
-                        spaceShip = createUnknownElement();
-                    }
-                }else{
-                    setupUnknownPcCell(cell, border, playerInfo);
-                    spaceShip = createUnknownElement();
-                }
+                setupUnknownPcCell(cell, border, playerInfo);
+                spaceShip = createUnknownElement();
             }
             
             coordX++;
@@ -252,7 +249,6 @@ function createShipElements(shipImage, colOffset, rowOffset) {
 
 function createUnknownElement(){
     const spaceShip = document.createElement('div');
-    
     spaceShip.classList.add(
         'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
         'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
@@ -300,14 +296,13 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
     border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
     
     // Set click behavior for non-mobile devices
-    /*
     if (!is_user_is_on_mobile_device()) {
         const clickAction = playerInfo.isCurrentUser 
             ? "reverse_player_ship_display()" 
             : `open_close_modal('modal-pc_${playerInfo.user.id}')`;
         border.setAttribute(attribute_touch_click, clickAction);
     }
-    */
+    
     if (!is_user_is_on_mobile_device()) {
         if(playerInfo.isCurrentUser){
             border.setAttribute(attribute_touch_click, "reverse_player_ship_display()");    

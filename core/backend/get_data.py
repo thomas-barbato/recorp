@@ -1,6 +1,7 @@
 import json
 import os
 from typing import Dict, List, Tuple, Any, Optional, Union
+import math
 
 from django.core import serializers
 from django.contrib.auth.models import User
@@ -444,39 +445,6 @@ class GetDataFromDB:
             # Log de l'erreur en production
             return {}
         
-        
-    def is_visible_from_current_user(current_user_view_zone : list, target_id : int, is_npc : bool = False) -> tuple:
-        """
-        Détermine quels éléments sont visibles du joueur.
-        Retourne un tuple (visible_parts, is_visible) où :
-        - visible_parts : set des parties visibles ou None pour les éléments 1x1
-        - is_visible : bool indiquant si l'élément est visible
-        """
-        data = GetDataFromDB._get_target_coord_size(target_id, is_npc)
-        
-        if not data:
-            return None, False
-        
-        element_x, element_y = int(data['coordinates']['x']), int(data['coordinates']['y'])
-        size_x, size_y = int(data['size']["x"]), int(data['size']["y"])
-        
-        if size_x == 1 and size_y == 1:
-            # Élément de taille 1x1
-            is_visible = f"{element_y}_{element_x}" in current_user_view_zone
-            return None, is_visible
-        else:
-            # Élément de taille supérieure - génération de sa zone
-            element_zone = [
-                f"{y}_{x}"
-                for y in range(element_y, element_y + size_y)
-                for x in range(element_x, element_x + size_x)
-            ]
-            
-            # Vérification de l'intersection
-            still_visible_part = set(current_user_view_zone).intersection(element_zone)
-            is_visible = len(still_visible_part) == size_x * size_y
-            return still_visible_part, is_visible
-        
     @staticmethod
     def _get_target_coord_size(target_id : int, is_npc : bool = False) -> bool:
         """
@@ -531,6 +499,7 @@ class GetDataFromDB:
         size = data['size']
         view_range = data['range']
         
+        
         start_x = GetDataFromDB._calculate_range_start(coordinates['x'], size['x'], view_range)
         end_x = GetDataFromDB._calculate_range_end(coordinates['x'], size['x'], view_range)
         start_y = GetDataFromDB._calculate_range_start(coordinates['y'], size['y'], view_range)
@@ -542,11 +511,23 @@ class GetDataFromDB:
         start_y = max(0, start_y)
         end_y = min(GetDataFromDB.MAP_SIZE["rows"], end_y)
         
+        result = []
+        for y in range(start_y, end_y):
+            for x in range(start_x, end_x):
+                # Calculer la distance entre le point (x,y) et le centre du joueur
+                distance = math.sqrt((x - coordinates['x']) ** 2 + (y - coordinates['y']) ** 2)
+                
+                # Si la distance est <= view_range, inclure cette coordonnée
+                if distance <= view_range:
+                    result.append(f"{y}_{x}")
+    
+        return result
+        """
         return ([
             f"{y}_{x}"
             for y in range(start_y, end_y)
             for x in range(start_x, end_x)
-        ])
+        ])"""
 
     @staticmethod
     def _get_current_player_data(current_user_id: int, is_npc: bool) -> Dict:
@@ -781,20 +762,20 @@ class GetDataFromDB:
         ]
         
     @staticmethod
-    def _calculate_range_start(coord: int, size: int, module_range: int) -> int:
+    def _calculate_range_start(coord: int, size: int, view_range: int) -> int:
         """Calcule la coordonnée de début de portée"""
         if size > 1:
             offset = -1 if size == 2 else -1
-            return coord - module_range + offset
-        return coord - module_range
+            return coord - view_range + offset
+        return coord - view_range
 
     @staticmethod
-    def _calculate_range_end(coord: int, size: int, module_range: int) -> int:
+    def _calculate_range_end(coord: int, size: int, view_range: int) -> int:
         """Calcule la coordonnée de fin de portée"""
         if size > 1:
             offset = 2 if size == 2 else 3
-            return coord + module_range + offset
-        return coord + module_range + 1
+            return coord + view_range + offset
+        return coord + view_range + 1
 
     @staticmethod
     def _is_element_in_range_zone(element_coords: Tuple[int, int], element_size: Dict[str, int], 

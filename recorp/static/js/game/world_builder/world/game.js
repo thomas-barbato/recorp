@@ -3,6 +3,7 @@ let gameSocket = null;
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
 let observable_zone = [];
+let observable_zone_id = [];
 
 const atlas = {
     col: 40,
@@ -191,18 +192,24 @@ function handle_websocket_message(data) {
  * Initialise la génération du secteur
  */
 function init_sector_generation() {
+    
+    [observable_zone, observable_zone_id] = getObservableZone();
+
     generate_sector(
         map_informations.sector,
         map_informations.sector_element, 
         map_informations.npc, 
         map_informations.pc
     );
-
-    observable_zone = getObservableZone();
+    /*
     document.querySelectorAll('.ship-pos').forEach(player => {
         player.addEventListener('mouseover', displayObservableZone);
         player.addEventListener('mouseout', HideObservableZone);
-    })
+    })*/
+    const p = document.querySelector('.player-ship-start-pos').id.split('_')
+    console.log(p)
+    coord = {y : p[0], x : p[1]};
+    new Sonar(observable_zone, coord, 5);
 }
 
 /**

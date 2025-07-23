@@ -25,9 +25,7 @@ function extractNpcInfo(npcData) {
             sizeX: npcData.ship.size.x,
             sizeY: npcData.ship.size.y,
             image: npcData.ship.image,
-            is_visible: npcData.ship.is_visible,
-            still_visible_part : npcData.ship.still_visible_part,
-            borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
+            //borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         npc: {
             id: npcData.npc.id,
@@ -89,30 +87,24 @@ function renderNpcShip(npcData, npcInfo) {
     const bgUrl = `/static/img/foreground/SHIPS/${npcInfo.ship.image}.png`;
     let coordX = npcInfo.coordinates.x;
     let coordY = npcInfo.coordinates.y;
+    let sizeX  = npcInfo.ship.sizeX;
+    let sizeY = npcInfo.ship.sizeY;
+
+    let is_visible = ship_is_visible(coordY, coordX, sizeY, sizeX);
     
-    for (let rowOffset = 0; rowOffset < (atlas.tilesize * npcInfo.ship.sizeY); rowOffset += atlas.tilesize) {
-        for (let colOffset = 0; colOffset < (atlas.tilesize * npcInfo.ship.sizeX); colOffset += atlas.tilesize) {
+    for (let rowOffset = 0; rowOffset < (atlas.tilesize * sizeY); rowOffset += atlas.tilesize) {
+        for (let colOffset = 0; colOffset < (atlas.tilesize * sizeX); colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
             const cellDiv = cell.querySelector('div');
             let spaceShip = undefined;
             border.classList.add('cursor-crosshair','border-dashed');
-            if(npcInfo.ship.is_visible){
+            if(is_visible){
                 setupNpcCell(cell, border, npcInfo);
                 spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
             }else{
-                if(typeof npcInfo.ship.still_visible_part !== undefined){
-                    if(npcInfo.ship.still_visible_part.includes(cell.id)){
-                        setupNpcCell(cell, border, npcInfo);
-                        spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
-                    }else{
-                        setupUnkownNpcCell(cell, border, npcInfo);
-                        spaceShip = createUnknownElement();
-                    }
-                }else{
-                    setupUnkownNpcCell(cell, border, npcInfo);
-                    spaceShip = createUnknownElement();
-                }
+                setupUnkownNpcCell(cell, border, npcInfo);
+                spaceShip = createUnknownElement();
             }
             
             handleShipPositioning(cell, npcInfo.ship.sizeY, npcInfo.ship.sizeX, rowOffset, colOffset);
@@ -165,9 +157,6 @@ function setupNpcCell(cell, border, npcInfo) {
 }
 
 function setupUnkownNpcCell(cell, border, npcInfo) {
-    console.log("dans setupUnknown")
-    console.log(npcInfo)
-    console.log("==================")
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);

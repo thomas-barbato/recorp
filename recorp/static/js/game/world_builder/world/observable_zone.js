@@ -13,13 +13,13 @@ function getObservableZone(data = []){
     for (let i = 0; i < ids.length; i++) {
         const element = document.getElementById(ids[i]);
         if(!element.classList.contains('ship-pos')){
-            const zone = element.querySelector('#background-out-of-fow');
+            const zone = element.querySelector('#field-of-view');
             if (zone) {
                 observable_zone.push(zone);
             }
         }
     }
-    return observable_zone;
+    return [observable_zone, ids];
 }
 
 function displayObservableZone(){

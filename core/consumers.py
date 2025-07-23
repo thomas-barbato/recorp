@@ -240,12 +240,6 @@ class GameConsumer(WebsocketConsumer):
                 "size": store.get_specific_player_data(
                     message["player"], "pc", "ship", "size"
                 ),
-                "is_visible": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "is_visible"
-                ),
-                "still_visible_part": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "still_visible_part"
-                ),
                 "visible_zone": store.get_specific_player_data(
                     message["player"], "pc", "ship", "visible_zone"
                 ),

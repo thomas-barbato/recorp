@@ -255,7 +255,6 @@ class StoreInCache:
                 module_list = self._get_module_list(npc_data["npc_template_id__module_id_list"])
                 max_hp = int(npc_data["npc_template_id__max_hp"])
                 max_movement = int(npc_data["npc_template_id__max_movement"])
-                still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(self.user_view_coordinates, npc_data["id"], True)
                 sector_data["npc"].append({
                     "npc": {
                         "id": npc_data["id"],
@@ -285,8 +284,6 @@ class StoreInCache:
                         "modules_range": self.from_DB.is_in_range(
                             sector_data["sector"]["id"], npc_data["id"], is_npc=True
                         ),
-                        "is_visible": is_visible,
-                        "still_visible_part": json.dumps(still_visible_ship_part, default=list),
                     },
                 })
             except Exception as e:
@@ -298,9 +295,6 @@ class StoreInCache:
             try:
                 module_list = self._get_player_module_list(pc_data["player_ship_id"])
                 visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id__user_id"])
-                still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(
-                    visible_zone, pc_data["player_ship_id__player_id"], False
-                    )
                 sector_data["pc"].append({
                     "user": {
                         "user": pc_data["player_ship_id__player_id__user_id"],
@@ -349,8 +343,6 @@ class StoreInCache:
                         "category_description": pc_data["player_ship_id__ship_id__ship_category__description"],
                         "size": pc_data["player_ship_id__ship_id__ship_category__size"],
                         "is_reversed": pc_data["player_ship_id__is_reversed"],
-                        "is_visible": is_visible,
-                        "still_visible_part": json.dumps(still_visible_ship_part, default=list),
                         "visible_zone": visible_zone
                     },
                 })
@@ -485,11 +477,6 @@ class StoreInCache:
             
             # Mise à jour du mouvement
             player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
-            
-            # Mise à jour de la visibilité du joueur
-            still_visible_ship_part, is_visible = self.from_DB.is_visible_from_current_user(self.user_view_coordinates, player_id, False)
-            player_position[found_player_index]["ship"]["is_visible"] = is_visible 
-            player_position[found_player_index]["ship"]["still_visible_part"] = still_visible_ship_part
 
             # Nettoyage des anciens duplicatas
             self._remove_duplicate_players(player_position, found_player, pos)

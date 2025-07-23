@@ -71,7 +71,7 @@ class FogOfWar {
 
     displayVisibleZone(cell) {
         const fogElement = cell.querySelector('#fog-of-war');
-        const visibilityZone = cell.querySelector('#background-out-of-fow');
+        const visibilityZone = cell.querySelector('#field-of-view');
 
         if (fogElement) {
             fogElement.classList.add('hidden');
@@ -90,7 +90,7 @@ class FogOfWar {
         const fogCell = cell.querySelector('#fog-of-war');
         const fogCellSpan = fogCell?.querySelector('span');
         const element = cell.querySelector('.coord-zone-div');
-        const visibilityZone = cell.querySelector('#background-out-of-fow');
+        const visibilityZone = cell.querySelector('#field-of-view');
 
         // Masquer la zone de visibilité
         if (visibilityZone) {
