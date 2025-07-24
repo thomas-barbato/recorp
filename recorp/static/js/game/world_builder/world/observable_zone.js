@@ -1,7 +1,7 @@
 function getObservableZone(data = []){
     observable_zone = [];
     let ids = [];
-    if(data.length > 0){
+    if(data.length > 0 ){
         ids = data;
     }else{
         for(let i = 0; i < map_informations.pc.length; i++){
@@ -20,16 +20,4 @@ function getObservableZone(data = []){
         }
     }
     return [observable_zone, ids];
-}
-
-function displayObservableZone(){
-    for(let i = 0; i < observable_zone.length; i++){
-        observable_zone[i].classList.remove('hidden');
-    }
-}
-
-function HideObservableZone(){
-    for(let i = 0; i < observable_zone.length; i++){
-        observable_zone[i].classList.add('hidden');
-    }
 }

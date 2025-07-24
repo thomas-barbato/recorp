@@ -307,7 +307,7 @@ function handlePlayerMovement() {
 function get_pathfinding(element) {
     cleanCss();
     
-    const shipIsReversed = document.querySelectorAll('.player-ship-reversed')[0]?.style.display === "block";
+    const shipIsReversed = document.querySelectorAll('.player-ship-reversed')[0].classList.contains('hidden');
     current_player.set_is_reversed(shipIsReversed);
     
     const playerObj = map_informations['pc'].find(a => a['user']['user'] === current_user_id);
@@ -337,7 +337,6 @@ function initializePlayer(playerObj, sizeElement, startNodeId, destinationNodeId
     };
 
     current_player.set_ship_size(shipSize.x, shipSize.y);
-    
     const startCoord = calculateStartCoordinates(startNodeId, shipSize);
     
     current_player.set_start_coord(startCoord.x, startCoord.y);
@@ -354,18 +353,17 @@ function initializePlayer(playerObj, sizeElement, startNodeId, destinationNodeId
 function calculateStartCoordinates(startNodeId, shipSize) {
     const baseX = parseInt(startNodeId[1]);
     const baseY = parseInt(startNodeId[0]) + 1;
-    
     const sizeConfigs = {
         '1x1': { x: baseX + 1, y: baseY },
         '2x1': current_player.reversed_ship_status 
-            ? { x: baseX + 1, y: baseY }
-            : { x: baseX + 2, y: baseY },
+            ? { x: baseX + 2, y: baseY }
+            : { x: baseX + 1, y: baseY },
         '3x1': current_player.reversed_ship_status 
-            ? { x: baseX, y: baseY }
-            : { x: baseX + 2, y: baseY },
+            ? { x: baseX + 2, y: baseY }
+            : { x: baseX, y: baseY },
         '3x3': current_player.reversed_ship_status 
-            ? { x: baseX, y: baseY }
-            : { x: baseX + 2, y: baseY }
+            ? { x: baseX + 2, y: baseY }
+            : { x: baseX, y: baseY }
     };
     
     const sizeKey = `${shipSize.x}x${shipSize.y}`;

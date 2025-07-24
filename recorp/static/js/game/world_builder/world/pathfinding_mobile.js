@@ -398,7 +398,7 @@ function define_user_values() {
 
             let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
             let size = document.querySelector('.player-ship-start-pos');
-            let ship_is_reversed = true ? document.querySelectorAll('.player-ship-reversed')[0].style.display === "block" : false;
+            let ship_is_reversed = document.querySelectorAll('.player-ship-reversed')[0].classList.contains('hidden');
 
             current_player.set_player_id(
                 map_informations['pc'][i]['user']['player']

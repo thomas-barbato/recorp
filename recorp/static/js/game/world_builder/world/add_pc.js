@@ -39,6 +39,7 @@ function extractPlayerInfo(playerData) {
             image: playerData.ship.image,
             isReversed: playerData.ship.is_reversed,
             currentMovement: playerData.ship.current_movement,
+            viewRange: playerData.ship.view_range
             //borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         user: {
@@ -108,8 +109,6 @@ function renderOtherPlayerShip(playerData, playerInfo) {
 
     let is_visible = ship_is_visible(coordY, coordX, sizeY, sizeX);
 
-    console.log(is_visible)
-
     for (let rowOffset = 0; rowOffset < (atlas.tilesize * sizeY); rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < (atlas.tilesize * sizeX); colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
@@ -117,8 +116,8 @@ function renderOtherPlayerShip(playerData, playerInfo) {
             if(is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
             }else{
-                setupUnknownPcCell(cell, border, playerInfo);
                 spaceShip = createUnknownElement();
+                setupUnknownPcCell(cell, border, playerInfo, spaceShip);
             }
             
             coordX++;
@@ -195,6 +194,7 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     // Handle current user specific setup
     if (playerInfo.isCurrentUser) {
         setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spaceShip, spaceShipReversed, rowOffset, colOffset);
+        renderPlayerSonar(playerInfo.coordinates, playerInfo.ship.viewRange);
     } else {
         setupOtherPlayerCell(cell, playerInfo.borderColor);
     }
@@ -203,7 +203,7 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     cellDiv.append(spaceShipReversed);
 }
 
-function setupUnknownPcCell(cell, border, playerInfo) {
+function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', playerInfo.ship.sizeX);
@@ -235,6 +235,9 @@ function setupUnknownPcCell(cell, border, playerInfo) {
             'border-yellow-300'
         );
     });
+    
+    
+    cell.append(spaceship);
 }
 
 function createShipElements(shipImage, colOffset, rowOffset) {

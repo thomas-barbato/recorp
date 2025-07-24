@@ -191,6 +191,8 @@ class GameConsumer(WebsocketConsumer):
         player_id: int
     ) -> Dict[str, Any]:
         """Crée la réponse pour le mouvement du propre joueur."""
+        store.update_player_range_finding()
+        store.update_sector_player_visibility_zone()
         return {
             "type": "player_move",
             "message": {
@@ -200,6 +202,9 @@ class GameConsumer(WebsocketConsumer):
                 "move_cost": message["move_cost"],
                 "modules_range": store.get_specific_player_data(
                     player_id, "pc", "ship", "modules_range"
+                ),
+                "visible_zone": store.get_specific_player_data(
+                    message["player"], "pc", "ship", "visible_zone"
                 ),
                 "size": store.get_specific_player_data(
                     player_id, "pc", "ship", "size"
@@ -239,9 +244,6 @@ class GameConsumer(WebsocketConsumer):
                 ),
                 "size": store.get_specific_player_data(
                     message["player"], "pc", "ship", "size"
-                ),
-                "visible_zone": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "visible_zone"
                 ),
             },
         }

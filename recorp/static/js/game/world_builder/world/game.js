@@ -201,15 +201,6 @@ function init_sector_generation() {
         map_informations.npc, 
         map_informations.pc
     );
-    /*
-    document.querySelectorAll('.ship-pos').forEach(player => {
-        player.addEventListener('mouseover', displayObservableZone);
-        player.addEventListener('mouseout', HideObservableZone);
-    })*/
-    const p = document.querySelector('.player-ship-start-pos').id.split('_')
-    console.log(p)
-    coord = {y : p[0], x : p[1]};
-    new Sonar(observable_zone, coord, 5);
 }
 
 /**

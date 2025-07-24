@@ -288,7 +288,8 @@ class GetDataFromDB:
             "player_ship_id__ship_id__module_slot_available",
             "player_ship_id__ship_id__ship_category__name",
             "player_ship_id__ship_id__ship_category__description",
-            "player_ship_id__ship_id__ship_category__size"
+            "player_ship_id__ship_id__ship_category__size",
+            "player_ship_id__view_range",
         ).distinct()
 
         npcs = Npc.objects.filter(sector_id=pk).values(
@@ -522,12 +523,6 @@ class GetDataFromDB:
                     result.append(f"{y}_{x}")
     
         return result
-        """
-        return ([
-            f"{y}_{x}"
-            for y in range(start_y, end_y)
-            for x in range(start_x, end_x)
-        ])"""
 
     @staticmethod
     def _get_current_player_data(current_user_id: int, is_npc: bool) -> Dict:

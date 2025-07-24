@@ -343,7 +343,8 @@ class StoreInCache:
                         "category_description": pc_data["player_ship_id__ship_id__ship_category__description"],
                         "size": pc_data["player_ship_id__ship_id__ship_category__size"],
                         "is_reversed": pc_data["player_ship_id__is_reversed"],
-                        "visible_zone": visible_zone
+                        "visible_zone": visible_zone,
+                        "view_range": pc_data["player_ship_id__view_range"]
                     },
                 })
             except Exception as e:

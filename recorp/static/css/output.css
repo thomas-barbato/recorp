@@ -4206,7 +4206,7 @@ button .ql-stroke,
   }
 
   100% {
-    transform: scale(4);
+    transform: scale(0);
     opacity: 0;
   }
 }
