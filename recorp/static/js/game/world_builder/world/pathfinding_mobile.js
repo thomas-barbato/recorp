@@ -393,32 +393,27 @@ function disable_button(direction_array) {
 }
 
 function define_user_values() {
-    for (let i = 0; i < map_informations['pc'].length; i++) {
-        if (map_informations['pc'][i]['user']['user'] == current_user_id) {
 
-            let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
-            let size = document.querySelector('.player-ship-start-pos');
-            let ship_is_reversed = document.querySelectorAll('.player-ship-reversed')[0].classList.contains('hidden');
+        let start_node_id = document.querySelector('.player-ship-start-pos').id.split('_');
+        let size = document.querySelector('.player-ship-start-pos');
+        let ship_is_reversed = document.querySelectorAll('.player-ship-reversed')[0].classList.contains('hidden');
 
-            current_player.set_player_id(
-                map_informations['pc'][i]['user']['player']
-            );
+        current_player.set_player_id(
+            currentPlayer['user']['player']
+        );
 
-            current_player.set_is_reversed(ship_is_reversed);
-            current_player.set_ship_size(
-                parseInt(size.getAttribute('size_x')),
-                parseInt(size.getAttribute('size_y'))
-            );
+        current_player.set_is_reversed(ship_is_reversed);
+        current_player.set_ship_size(
+            parseInt(size.getAttribute('size_x')),
+            parseInt(size.getAttribute('size_y'))
+        );
 
-            // we use start_node_id to get destination coord.
-            // we check ship size to define itterator.
-            current_player.set_start_coord(
-                parseInt(start_node_id[1]),
-                parseInt(start_node_id[0]),
-            );
-
-        }
-    }
+        // we use start_node_id to get destination coord.
+        // we check ship size to define itterator.
+        current_player.set_start_coord(
+            parseInt(start_node_id[1]),
+            parseInt(start_node_id[0]),
+        );
 }
 
 function define_position_preview(ship_arrival_coordinates, can_be_crossed, direction) {

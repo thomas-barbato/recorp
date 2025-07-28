@@ -310,7 +310,7 @@ function get_pathfinding(element) {
     const shipIsReversed = document.querySelectorAll('.player-ship-reversed')[0].classList.contains('hidden');
     current_player.set_is_reversed(shipIsReversed);
     
-    const playerObj = map_informations['pc'].find(a => a['user']['user'] === current_user_id);
+    const playerObj = currentPlayer;
     const startNodeId = document.querySelector('.player-ship-start-pos').id.split('_');
     const destinationNodeId = element.parentNode.parentNode.id.split('_');
     const sizeElement = document.querySelector('.player-ship-start-pos');

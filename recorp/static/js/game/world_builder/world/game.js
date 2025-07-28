@@ -2,6 +2,9 @@
 let gameSocket = null;
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_user_id = JSON.parse(document.getElementById('script_user_id').textContent);
+const currentPlayer = map_informations.pc.find(p => p.user.user === current_user_id);
+const otherPlayers = map_informations.pc.filter(p => p.user.user !== current_user_id);
+const npcs = map_informations.npc || [];
 let observable_zone = [];
 let observable_zone_id = [];
 
@@ -201,6 +204,8 @@ function init_sector_generation() {
         map_informations.npc, 
         map_informations.pc
     );
+    
+    initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
 }
 
 /**

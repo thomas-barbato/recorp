@@ -59,7 +59,5 @@ function setupCurrentPlayer() {
 }
 
 function findCurrentPlayer() {
-    return map_informations.pc.find(player => 
-        player.user.user === current_user_id
-    );
+    return currentPlayer
 }

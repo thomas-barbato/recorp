@@ -206,6 +206,9 @@ class GameConsumer(WebsocketConsumer):
                 "visible_zone": store.get_specific_player_data(
                     message["player"], "pc", "ship", "visible_zone"
                 ),
+                "view_range": store.get_specific_player_data(
+                    message["player"], "pc", "ship", "view_range" 
+                ),
                 "size": store.get_specific_player_data(
                     player_id, "pc", "ship", "size"
                 ),

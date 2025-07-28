@@ -383,6 +383,7 @@ function update_player_pos_display_after_move(data) {
     const coord_y = coordinates.y + 1;
     const ship_size_x = size.x;
     const ship_size_y = size.y;
+    console.log(view_range)
     const isMobile = is_user_is_on_mobile_device();
     
     // Variables globales
@@ -502,7 +503,6 @@ function update_player_pos_display_after_move(data) {
                 const entryPoint = tabletopView.rows[currentCoordY].cells[currentCoordX];
                 
                 setupShipTileElement(entryPoint, col_i, row_i, shipImageUrl, shipReversedImageUrl);
-                
                 // Gestion spéciale pour le tooltip (uniquement sur la dernière case)
                 if (isLastTile(row_i, col_i, tileSizeY)) {
                     attachTooltipToShip(entryPoint);
@@ -522,6 +522,10 @@ function update_player_pos_display_after_move(data) {
             currentCoordY++;
             currentCoordX = coord_x;
         }
+
+        renderPlayerSonar({y: coord_y, x: coord_x}, view_range);
+        onPlayerMoved({x: coordinates.x, y: coordinates.y}, view_range);
+        initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
     }
     
     function setupShipTileElement(entryPoint, col_i, row_i, shipImageUrl, shipReversedImageUrl) {
@@ -535,14 +539,15 @@ function update_player_pos_display_after_move(data) {
         
         // Configuration du border
         entryPointBorder.classList.add('border-dashed', 'cursor-pointer', border_color);
-        entryPointBorder.setAttribute('title', playerName);
+        entryPointBorder.title = "";
+        entryPointBorder.setAttribute('data-title', `${playerName} [x : ${coord_y}, y: ${coord_x}]`);
         entryPointBorder.setAttribute('data-modal-target', `modal-pc_${player.user.player}`);
         
         // Suppression des anciens événements de pathfinding
         entryPointBorder.removeAttribute(attribute_touch_mouseover);
         entryPointBorder.removeEventListener(attribute_touch_click, display_pathfinding);
 
-
+        entryPointDiv.classList.add('bg-orange-400/30');
         
         // Création et configuration des éléments de vaisseau
         const [spaceShip, spaceShipReversed] = createShipElements(shipImageUrl, shipReversedImageUrl, col_i, row_i);

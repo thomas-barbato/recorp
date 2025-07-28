@@ -5,7 +5,6 @@ function update_user_coord_display(x, y) {
 
 function update_target_coord_display(element) {
     const targetData = extractTargetData(element);
-    console.log(targetData)
     updateCoordinateDisplay(targetData);
     handleMobileInteraction(element);
 }
@@ -24,7 +23,6 @@ function updateCoordinateDisplay({ targetName, coordX, coordY }) {
     
     elements.coordX.classList.remove('invisible');
     elements.coordY.classList.remove('invisible');
-    console.log(targetName)
     elements.coordName.textContent = targetName;
     elements.coordX.textContent = coordX.toString();
     elements.coordY.textContent = coordY.toString();

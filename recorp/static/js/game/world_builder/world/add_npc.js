@@ -25,7 +25,7 @@ function extractNpcInfo(npcData) {
             sizeX: npcData.ship.size.x,
             sizeY: npcData.ship.size.y,
             image: npcData.ship.image,
-            //borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
+            borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         npc: {
             id: npcData.npc.id,

@@ -500,7 +500,6 @@ class GetDataFromDB:
         size = data['size']
         view_range = data['range']
         
-        
         start_x = GetDataFromDB._calculate_range_start(coordinates['x'], size['x'], view_range)
         end_x = GetDataFromDB._calculate_range_end(coordinates['x'], size['x'], view_range)
         start_y = GetDataFromDB._calculate_range_start(coordinates['y'], size['y'], view_range)

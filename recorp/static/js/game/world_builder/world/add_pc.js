@@ -4,6 +4,7 @@ function add_pc(data) {
     data.forEach(playerData => {
         const playerInfo = extractPlayerInfo(playerData);
         
+        
         if (!playerInfo.isCurrentUser) {
             if(playerInfo.ship.is_visible){
                 createAndAppendPlayerModal(playerData, playerInfo);

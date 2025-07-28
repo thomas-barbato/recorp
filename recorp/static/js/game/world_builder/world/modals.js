@@ -727,207 +727,202 @@ function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_sh
     ship_offensive_module_container_cat_2_div.classList.add('hidden');
     ship_offensive_module_container_cat_2_div.setAttribute('aria-labelledby', "offensive-module-heading-2");
 
-    for (let ship_i in map_informations.pc) {
-        if (map_informations.pc[ship_i].user.user == current_user_id) {
+        if(currentPlayer.ship.ship_scanning_module_available){
+            ship_statistics_container_div.classList.add('hidden');
+            ship_detailed_statistics_container_div.classList.remove('hidden');
+            ship_statistics_warning_msg_container_p.classList.add('hidden');
+        }else{
+            ship_statistics_container_div.classList.remove('hidden');
+            ship_detailed_statistics_container_div.classList.add('hidden');
+            ship_statistics_warning_msg_container_p.classList.remove('hidden');
+        }
+        for (let module_i in currentPlayer.ship.modules) {
+            let module_item_content = document.createElement('div');
+            let module_item_p = document.createElement('p');
 
-            if(map_informations.pc[ship_i].ship.ship_scanning_module_available){
-                ship_statistics_container_div.classList.add('hidden');
-                ship_detailed_statistics_container_div.classList.remove('hidden');
-                ship_statistics_warning_msg_container_p.classList.add('hidden');
-            }else{
-                ship_statistics_container_div.classList.remove('hidden');
-                ship_detailed_statistics_container_div.classList.add('hidden');
-                ship_statistics_warning_msg_container_p.classList.remove('hidden');
-            }
-            for (let module_i in map_informations.pc[ship_i].ship.modules) {
-                let module_item_content = document.createElement('div');
-                let module_item_p = document.createElement('p');
+            module_item_content.classList.add(
+                'flex',
+                'flex-col',
+                'py-2',
+                'px-4',
+                'mb-1',
+                'rounded-md',
+                'border',
+                'hover:border-gray-800',
+                'border-slate-400',
+                'hover:bg-slate-300',
+                'bg-gray-800',
+                'text-white',
+                'hover:text-gray-800',
+                'cursor-pointer',
+                'divide-y',
+                'divide-dashed',
+                'divide-white',
+                'hover:divide-gray-800',
+            );
+            module_item_p.classList.add('font-bold');
+            module_item_p.textContent = currentPlayer.ship.modules[module_i]["name"];
+            module_item_content.append(module_item_p);
+            module_item_content.classList.add('module-container')
+            module_item_content.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
+            module_item_content.addEventListener('click', function() {
+                check_radio_btn_and_swap_color(e.id, module_item_content.id);
+            })
 
-                module_item_content.classList.add(
-                    'flex',
-                    'flex-col',
-                    'py-2',
-                    'px-4',
-                    'mb-1',
-                    'rounded-md',
-                    'border',
-                    'hover:border-gray-800',
-                    'border-slate-400',
-                    'hover:bg-slate-300',
-                    'bg-gray-800',
-                    'text-white',
-                    'hover:text-gray-800',
-                    'cursor-pointer',
-                    'divide-y',
-                    'divide-dashed',
-                    'divide-white',
-                    'hover:divide-gray-800',
-                );
-                module_item_p.classList.add('font-bold');
-                module_item_p.textContent = map_informations.pc[ship_i].ship.modules[module_i]["name"];
-                module_item_content.append(module_item_p);
-                module_item_content.classList.add('module-container')
-                module_item_content.id = `module-${map_informations.pc[ship_i].ship.modules[module_i]["id"]}`;
-                module_item_content.addEventListener('click', function() {
-                    check_radio_btn_and_swap_color(e.id, module_item_content.id);
-                })
+            let radio_btn = document.createElement('input');
+            radio_btn.type = "radio";
+            radio_btn.name = "module_choice";
+            radio_btn.value = currentPlayer.ship.modules[module_i]["id"];
+            radio_btn.classList.add('hidden');
 
-                let radio_btn = document.createElement('input');
-                radio_btn.type = "radio";
-                radio_btn.name = "module_choice";
-                radio_btn.value = map_informations.pc[ship_i].ship.modules[module_i]["id"];
-                radio_btn.classList.add('hidden');
+            if (currentPlayer.ship.modules[module_i]["type"] == "WEAPONRY") {
 
-                if (map_informations.pc[ship_i].ship.modules[module_i]["type"] == "WEAPONRY") {
-
-                    if ("damage_type" in map_informations.pc[ship_i].ship.modules[module_i]["effect"]) {
-                        let damage_type_span = document.createElement('span');
-                        let damage_type_small = document.createElement('small');
-                        let damage_type_small_value = document.createElement('small');
-                        let damage_span = document.createElement('span');
-                        let damage_small = document.createElement('small');
-                        let damage_small_value = document.createElement('small');
-                        let range_span = document.createElement('span');
-                        let range_small = document.createElement('small');
-                        let range_small_value = document.createElement('small');
-                        let range_finder_span = document.createElement('span');
-                        let chance_to_hit_span = document.createElement('span');
-                        let chance_to_hit_small = document.createElement('small');
-                        let chance_to_hit_small_value = document.createElement('small');
-                        let damage_type_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["damage_type"];
-                        let range_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["range"];
-                        let min_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["min_damage"];
-                        let max_damage_value = map_informations.pc[ship_i].ship.modules[module_i]["effect"]["max_damage"];
-                        
-                        let id_splitted = id.split('_');
-                        let target_id = id_splitted[1];
-                        let target_type = id_splitted[0];
-
-                        damage_type_small.textContent = "Damage type : ";
-                        damage_type_small.classList.add('font-sans');
-                        damage_type_small_value.textContent = damage_type_value;
-                        damage_type_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                        damage_type_span.append(damage_type_small);
-                        damage_type_span.append(damage_type_small_value);
-
-                        damage_small.textContent = "Damages : ";
-                        damage_small.classList.add('font-sans');
-                        damage_small_value.textContent = `${min_damage_value} - ${max_damage_value}`;
-                        damage_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                        damage_span.append(damage_small);
-                        damage_span.append(damage_small_value);
-
-                        range_small.textContent = "Range : ";
-                        range_small.classList.add('font-sans');
-                        range_small_value.textContent = `${range_value}`;
-                        range_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                        range_span.append(range_small);
-                        range_span.append(range_small_value);
-
-                        chance_to_hit_small.textContent = "Chance to hit : ";
-                        chance_to_hit_small.classList.add('font-sans');
-                        chance_to_hit_small_value.textContent = "100%";
-                        chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                        chance_to_hit_span.append(chance_to_hit_small); 
-                        chance_to_hit_span.append(chance_to_hit_small_value);
-
-                        range_finder_span.textContent = "Your target is out of range";
-                        range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                        range_finder_span.id = "range-finder-warning-msg";
-                        if(map_informations.pc[ship_i].ship.modules_range.length > 0){
-                            let array_module = Array.from(map_informations.pc[ship_i].ship.modules_range[target_type])
-                            module_path = array_module.filter(function (module, index) {
-                                if(module.target_id == target_id){
-                                    return module
-                                }
-                            });
-                                
-                            for(let module_container in module_path){
-                                if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
-                                    if (module_path[module_container]['is_in_range']) {
-                                        range_finder_span.classList.add('hidden');
-                                    }else{
-                                        range_finder_span.classList.remove('hidden');
-                                    }
-                                }
-                            }
-
-                            module_item_content.append(radio_btn);
-                            module_item_content.append(damage_type_span);
-                            module_item_content.append(damage_span);
-                            module_item_content.append(range_span);
-                            module_item_content.append(chance_to_hit_span);
-                            module_item_content.append(range_finder_span);
-                        }
-
-                    } else {
-
-                        let other_bonus_span = document.createElement('span');
-                        let other_bonus_small = document.createElement('small');
-                        let other_bonus_small_value = document.createElement('small');
-
-                        other_bonus_small.textContent = "accuracy bonus : ";
-                        other_bonus_small_value.textContent = `${map_informations.pc[ship_i].ship.modules[module_i]["effect"]["aiming_increase"]} %`;
-                        other_bonus_small_value.classList.add('text-blue-500', 'font-bold');
-
-                        module_item_content.append(radio_btn);
-                        other_bonus_span.append(other_bonus_small);
-                        other_bonus_span.append(other_bonus_small_value);
-
-                        module_item_content.append(other_bonus_span);
-
-                    }
-
-                    ship_offensive_module_container_cat_1_div.append(module_item_content);
-
-                } else if (map_informations.pc[ship_i].ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
-                    module_item_p.textContent = map_informations.pc[ship_i].ship.modules[module_i]["name"];
-                    module_item_p.classList.add('font-bold');
-                    module_item_p.id = `module-${map_informations.pc[ship_i].ship.modules[module_i]["id"]}`;
-                    module_item_content.append(module_item_p);
-
-                    for (const [key, value] of Object.entries(map_informations.pc[ship_i].ship.modules[module_i]["effect"])) {
-                        let module_item_small_effect = document.createElement('span');
-                        let module_item_small_effect_name = document.createElement('small');
-                        let module_item_small_effect_value = document.createElement('small');
-                        module_item_small_effect_name.classList.add('italic');
-                        module_item_small_effect_value.classList.add('text-blue-500', 'font-bold');
-                        module_item_small_effect_name.textContent = `${key.replace('_',' ')}: `;
-                        module_item_small_effect_value.textContent = `${value}`;
-
-                        module_item_content.append(radio_btn);
-                        module_item_small_effect.append(module_item_small_effect_name);
-                        module_item_small_effect.append(module_item_small_effect_value);
-                        module_item_content.append(module_item_small_effect);
-                    }
-                        
+                if ("damage_type" in currentPlayer.ship.modules[module_i]["effect"]) {
+                    let damage_type_span = document.createElement('span');
+                    let damage_type_small = document.createElement('small');
+                    let damage_type_small_value = document.createElement('small');
+                    let damage_span = document.createElement('span');
+                    let damage_small = document.createElement('small');
+                    let damage_small_value = document.createElement('small');
+                    let range_span = document.createElement('span');
+                    let range_small = document.createElement('small');
+                    let range_small_value = document.createElement('small');
+                    let range_finder_span = document.createElement('span');
+                    let chance_to_hit_span = document.createElement('span');
+                    let chance_to_hit_small = document.createElement('small');
+                    let chance_to_hit_small_value = document.createElement('small');
+                    let damage_type_value = currentPlayer.ship.modules[module_i]["effect"]["damage_type"];
+                    let range_value = currentPlayer.ship.modules[module_i]["effect"]["range"];
+                    let min_damage_value = currentPlayer.ship.modules[module_i]["effect"]["min_damage"];
+                    let max_damage_value = currentPlayer.ship.modules[module_i]["effect"]["max_damage"];
+                    
                     let id_splitted = id.split('_');
                     let target_id = id_splitted[1];
                     let target_type = id_splitted[0];
-                        
-                    let module_item_small_effect_range_finder_span = document.createElement('span');
-                    module_item_small_effect_range_finder_span.textContent = "Your target is out of range";
-                    module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                    module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
 
-                    module_range_array = map_informations.pc[ship_i].ship.modules_range[target_type]
-                    if(typeof(module_range_array) != "undefined"){
-                        for(const module in module_range_array){
-                            is_in_range = module_range_array[module].is_in_range;
-                            if(is_in_range){
-                                module_item_small_effect_range_finder_span.classList.add('hidden');
-                            }else{
-                                module_item_small_effect_range_finder_span.classList.remove('hidden');
+                    damage_type_small.textContent = "Damage type : ";
+                    damage_type_small.classList.add('font-sans');
+                    damage_type_small_value.textContent = damage_type_value;
+                    damage_type_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
+                    damage_type_span.append(damage_type_small);
+                    damage_type_span.append(damage_type_small_value);
+
+                    damage_small.textContent = "Damages : ";
+                    damage_small.classList.add('font-sans');
+                    damage_small_value.textContent = `${min_damage_value} - ${max_damage_value}`;
+                    damage_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
+                    damage_span.append(damage_small);
+                    damage_span.append(damage_small_value);
+
+                    range_small.textContent = "Range : ";
+                    range_small.classList.add('font-sans');
+                    range_small_value.textContent = `${range_value}`;
+                    range_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
+                    range_span.append(range_small);
+                    range_span.append(range_small_value);
+
+                    chance_to_hit_small.textContent = "Chance to hit : ";
+                    chance_to_hit_small.classList.add('font-sans');
+                    chance_to_hit_small_value.textContent = "100%";
+                    chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
+                    chance_to_hit_span.append(chance_to_hit_small); 
+                    chance_to_hit_span.append(chance_to_hit_small_value);
+
+                    range_finder_span.textContent = "Your target is out of range";
+                    range_finder_span.classList.add('text-red-600', 'animate-pulse');
+                    range_finder_span.id = "range-finder-warning-msg";
+                    if(currentPlayer.ship.modules_range.length > 0){
+                        let array_module = Array.from(currentPlayer.ship.modules_range[target_type])
+                        module_path = array_module.filter(function (module, index) {
+                            if(module.target_id == target_id){
+                                return module
                             }
-                            module_item_content.append(module_item_small_effect_range_finder_span)
-                            ship_offensive_module_container_cat_2_div.append(module_item_content);
+                        });
+                            
+                        for(let module_container in module_path){
+                            if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
+                                if (module_path[module_container]['is_in_range']) {
+                                    range_finder_span.classList.add('hidden');
+                                }else{
+                                    range_finder_span.classList.remove('hidden');
+                                }
+                            }
                         }
+
+                        module_item_content.append(radio_btn);
+                        module_item_content.append(damage_type_span);
+                        module_item_content.append(damage_span);
+                        module_item_content.append(range_span);
+                        module_item_content.append(chance_to_hit_span);
+                        module_item_content.append(range_finder_span);
+                    }
+
+                } else {
+
+                    let other_bonus_span = document.createElement('span');
+                    let other_bonus_small = document.createElement('small');
+                    let other_bonus_small_value = document.createElement('small');
+
+                    other_bonus_small.textContent = "accuracy bonus : ";
+                    other_bonus_small_value.textContent = `${currentPlayer.ship.modules[module_i]["effect"]["aiming_increase"]} %`;
+                    other_bonus_small_value.classList.add('text-blue-500', 'font-bold');
+
+                    module_item_content.append(radio_btn);
+                    other_bonus_span.append(other_bonus_small);
+                    other_bonus_span.append(other_bonus_small_value);
+
+                    module_item_content.append(other_bonus_span);
+
+                }
+
+                ship_offensive_module_container_cat_1_div.append(module_item_content);
+
+            } else if (currentPlayer.ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
+                module_item_p.textContent = currentPlayer.ship.modules[module_i]["name"];
+                module_item_p.classList.add('font-bold');
+                module_item_p.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
+                module_item_content.append(module_item_p);
+
+                for (const [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
+                    let module_item_small_effect = document.createElement('span');
+                    let module_item_small_effect_name = document.createElement('small');
+                    let module_item_small_effect_value = document.createElement('small');
+                    module_item_small_effect_name.classList.add('italic');
+                    module_item_small_effect_value.classList.add('text-blue-500', 'font-bold');
+                    module_item_small_effect_name.textContent = `${key.replace('_',' ')}: `;
+                    module_item_small_effect_value.textContent = `${value}`;
+
+                    module_item_content.append(radio_btn);
+                    module_item_small_effect.append(module_item_small_effect_name);
+                    module_item_small_effect.append(module_item_small_effect_value);
+                    module_item_content.append(module_item_small_effect);
+                }
+                    
+                let id_splitted = id.split('_');
+                let target_id = id_splitted[1];
+                let target_type = id_splitted[0];
+                    
+                let module_item_small_effect_range_finder_span = document.createElement('span');
+                module_item_small_effect_range_finder_span.textContent = "Your target is out of range";
+                module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
+                module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
+
+                module_range_array = currentPlayer.ship.modules_range[target_type]
+                if(typeof(module_range_array) != "undefined"){
+                    for(const module in module_range_array){
+                        is_in_range = module_range_array[module].is_in_range;
+                        if(is_in_range){
+                            module_item_small_effect_range_finder_span.classList.add('hidden');
+                        }else{
+                            module_item_small_effect_range_finder_span.classList.remove('hidden');
+                        }
+                        module_item_content.append(module_item_small_effect_range_finder_span)
+                        ship_offensive_module_container_cat_2_div.append(module_item_content);
                     }
                 }
             }
-            item_action_container_img_attack_btn_container.append(item_action_container_img_attack_btn_img);
         }
-    }
+        item_action_container_img_attack_btn_container.append(item_action_container_img_attack_btn_img);
 
     ship_offensive_module_container_h3_cat_1_btn_svg.append(ship_offensive_module_container_h3_cat_1_btn_svg_path);
     ship_offensive_module_container_h3_cat_2_btn_svg.append(ship_offensive_module_container_h3_cat_2_btn_svg_path);

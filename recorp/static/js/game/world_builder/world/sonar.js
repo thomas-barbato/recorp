@@ -16,6 +16,14 @@ class Sonar {
         this.setupEventListeners();
     }
 
+    updateObservableZone(observable_zone){
+        this.observable_zone = observable_zone;
+    }
+
+    updateMainPlayerPos(){
+        this.mainPlayerPos = document.getElementsByClassName('player-ship-start-pos');
+    }
+
     setupEventListeners() {
         const playerCell = document.querySelectorAll('.ship-pos');
         this.playerCells = Array.from(playerCell);
@@ -46,6 +54,7 @@ class Sonar {
                 type: 'mouseleave',
                 handler: mouseLeaveHandler
             });
+
         }
     }
 
@@ -124,7 +133,6 @@ class Sonar {
         const angleRad = (this.sonarAngle * Math.PI) / 180;
         const sweepWidth = 30; // Largeur du faisceau en degrés
 
-                        console.log(this.playerSize)
         // Appliquer l'effet sonar aux cellules dans le faisceau
         for (let y = 0; y < this.boardSize; y++) {
             for (let x = 0; x < this.boardSize; x++) {

@@ -7,19 +7,10 @@
     <div id="mobile-info-player-container" class="flex flex-col h-full w-full item-center lg:hidden inline gap-1 z-30">
       {% for pc in map_informations.pc %}
       {% if pc.user.user == request.user.id %}
-      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-1">
+      <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-row border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-1">
         <div class="flex w-full mx-auto lg:flex-row flex-row lg:justify-center lg:items-center justify-start items-start lg:gap-1">
-          <img class="w-[56.4px] h-auto h-auto max-w-xl rounded-lg" alt="image description" {% if pc.user.image %} srcset="/static/img/users/{{pc.user.player}}/0.gif" {% else %} srcset="{% static 'ux/default-user.svg' %}" {% endif %}>
-          <div class="flex w-full flex-col self-center p-2">
-            <div class="flex w-full flex-row text-xs gap-1">
-                <label for="player-name" class="text-white font-bold">{% translate "Name" %}:</label>
-                <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.name }}</div>
-            </div>
-            <div class="flex w-full flex-row text-xs gap-1">
-                <label for="player-name" class="text-white font-bold">{% translate "Archetype" %}:</label>
-                <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.archetype_name }}</div>
-            </div>
-          </div>
+          <img class="w-[88px] h-auto h-auto max-w-xl rounded-lg" alt="image description" {% if pc.user.image %} srcset="/static/img/users/{{pc.user.player}}/0.gif" {% else %} srcset="{% static 'ux/default-user.svg' %}" {% endif %}>
+          
         </div>
       </fieldset>
       <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-col border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md">
@@ -168,11 +159,15 @@
   </div>
   {% endif %}
   {% endfor %}
-  <div class="flex w-full lg:hidden flex-row p-2">
-    <span class="flex w-1/2 justify-center items-center">
+  <div class="flex w-full lg:hidden flex-row p-2 justify-around">
+    <span class="flex justify-center items-center">
       <i class="fa-solid fa-id-badge fa-2x mx-auto text-emerald-400" id="character-full-info-btn"></i>
     </span>
-    <span class="flex w-1/2 justify-center items-center">
+    <span class="flex justify-center items-center">
+      <!-- fa-2x == 2em -->
+      <i class="iconify w-[2em] h-[2em] text-emerald-400 game-icons--radar-sweep" id="radar-sweep"></i>
+    </span>
+    <span class="flex justify-center items-center">
       <i class="fa-solid fa-2x fa-walkie-talkie text-emerald-400" id="chat-btn"></i>
     </span>
   </div>
