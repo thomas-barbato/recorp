@@ -358,7 +358,6 @@ player_modal_container_header_img.classList.add(
     'w-24',
     'box-content',
     'py-1',
-    
 );
 
 player_modal_container_header_ul.classList.add('text-white', 'flex', 'flex-col', 'gap-1', 'justify-center');

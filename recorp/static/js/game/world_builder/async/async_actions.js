@@ -151,7 +151,7 @@ function update_player_coord(data) {
         const pathfindingZone = entryPoint.querySelector('.pathfinding-zone');
         if (pathfindingZone) {
             const coordinates = startId.split('_');
-            pathfindingZone.title = `${map_informations?.sector?.name || 'Secteur'} [y: ${coordinates[0]} ; x: ${coordinates[1]}]`;
+            pathfindingZone.setAttribute('data-title',`${map_informations?.sector?.name || 'Secteur'} [y: ${coordinates[0]} ; x: ${coordinates[1]}]`);
         }
         
         // Nettoyage des classes et événements
@@ -383,7 +383,6 @@ function update_player_pos_display_after_move(data) {
     const coord_y = coordinates.y + 1;
     const ship_size_x = size.x;
     const ship_size_y = size.y;
-    console.log(view_range)
     const isMobile = is_user_is_on_mobile_device();
     
     // Variables globales
@@ -474,7 +473,7 @@ function update_player_pos_display_after_move(data) {
         const span = document.createElement('span');
         
         span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-crosshair z-1 foreground-element";
-        span.title = `${sector.name} [y: ${oldPosIdSplit[0]} ; x: ${oldPosIdSplit[1]}]`;
+        span.setAttribute('data-title', `${sector.name} [y: ${oldPosIdSplit[0]} ; x: ${oldPosIdSplit[1]}]`);
         
         containerDiv.appendChild(span);
     }
@@ -539,9 +538,9 @@ function update_player_pos_display_after_move(data) {
         
         // Configuration du border
         entryPointBorder.classList.add('border-dashed', 'cursor-pointer', border_color);
-        entryPointBorder.title = "";
         entryPointBorder.setAttribute('data-title', `${playerName} [x : ${coord_y}, y: ${coord_x}]`);
         entryPointBorder.setAttribute('data-modal-target', `modal-pc_${player.user.player}`);
+        entryPointBorder.id = "ship-data-title";
         
         // Suppression des anciens événements de pathfinding
         entryPointBorder.removeAttribute(attribute_touch_mouseover);

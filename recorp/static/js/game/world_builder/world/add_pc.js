@@ -3,10 +3,8 @@ function add_pc(data) {
     
     data.forEach(playerData => {
         const playerInfo = extractPlayerInfo(playerData);
-        
-        
         if (!playerInfo.isCurrentUser) {
-            if(playerInfo.ship.is_visible){
+            if(observable_zone_id.includes(playerInfo.ship.is_visible)){
                 createAndAppendPlayerModal(playerData, playerInfo);
             }else{
                 createAndAppendPlayerModal(playerData, playerInfo)
@@ -41,14 +39,13 @@ function extractPlayerInfo(playerData) {
             isReversed: playerData.ship.is_reversed,
             currentMovement: playerData.ship.current_movement,
             viewRange: playerData.ship.view_range
-            //borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         user: {
             id: playerData.user.player,
             name: playerData.user.name
         },
         isCurrentUser,
-        borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400"
+        borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400",
     };
 }
 
@@ -216,24 +213,23 @@ function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
     );
     border.setAttribute('data-modal-target', `modal-unknown_pc_${playerInfo.user.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    border.classList.add('hover:border-yellow-600');
+
     // Add event listeners
-    border.addEventListener("mouseover", () => {
+    cell.addEventListener("mouseover", () => {
         generate_border(
             playerInfo.ship.sizeY, 
             playerInfo.ship.sizeX, 
             playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1
+            playerInfo.coordinates.baseX + 1,
         );
     });
     
-    border.addEventListener("mouseout", () => {
+    cell.addEventListener("mouseout", () => {
         remove_border(
             playerInfo.ship.sizeY, 
             playerInfo.ship.sizeX, 
             playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1, 
-            'border-yellow-300'
+            playerInfo.coordinates.baseX + 1,
         );
     });
     
@@ -258,6 +254,7 @@ function createUnknownElement(){
         'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
         '-translate-y-1/2', 'z-1'
     );
+    spaceShip.id = "unknown-ship";
     
     return spaceShip;
 
@@ -298,6 +295,8 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
         `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
     );
     border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
+    border.id = "ship-data-title";
+    border.classList.add(playerInfo.borderColor);
     
     // Set click behavior for non-mobile devices
     if (!is_user_is_on_mobile_device()) {
@@ -309,7 +308,7 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
     
     if (!is_user_is_on_mobile_device()) {
         if(playerInfo.isCurrentUser){
-            border.setAttribute(attribute_touch_click, "reverse_player_ship_display()");    
+            border.setAttribute(attribute_touch_click, "reverse_player_ship_display()");
         }
     }
     
@@ -319,7 +318,7 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
             playerInfo.ship.sizeY, 
             playerInfo.ship.sizeX, 
             playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1
+            playerInfo.coordinates.baseX + 1,
         );
     });
     

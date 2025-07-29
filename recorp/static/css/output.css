@@ -2609,6 +2609,11 @@ video {
   border-color: rgb(253 224 71 / var(--tw-border-opacity));
 }
 
+.border-red-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(252 165 165 / var(--tw-border-opacity));
+}
+
 .border-b-\[\#B1F1CB\]\/0 {
   border-bottom-color: rgb(177 241 203 / 0);
 }
@@ -4328,19 +4333,14 @@ button .ql-stroke,
   border-color: rgb(31 41 55 / var(--tw-border-opacity));
 }
 
-.hover\:border-slate-400:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(148 163 184 / var(--tw-border-opacity));
-}
-
-.hover\:border-yellow-600:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(202 138 4 / var(--tw-border-opacity));
-}
-
 .hover\:border-red-600:hover {
   --tw-border-opacity: 1;
   border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+
+.hover\:border-slate-400:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(148 163 184 / var(--tw-border-opacity));
 }
 
 .hover\:bg-\[\#B1F1CB\]\/30:hover {

@@ -135,13 +135,164 @@ class PostMovementDetectionSystem {
     }
 
     /**
+     * Supprime tous les event listeners d'une cellule
+     * @param {HTMLElement} cell - La cellule DOM
+     */
+    removeEventListeners(cell) {
+        const border = cell.querySelector('span');
+        if (border) {
+            // Cloner l'élément pour supprimer tous les event listeners
+            const newBorder = border.cloneNode(true);
+            border.parentNode.replaceChild(newBorder, border);
+        }
+    }
+
+    /**
+     * Ajoute les event listeners appropriés selon la visibilité
+     * @param {HTMLElement} cell - La cellule DOM
+     * @param {Object} entityInfo - Informations sur l'entité (joueur ou NPC)
+     * @param {boolean} isVisible - Si l'entité est visible
+     * @param {boolean} isNpc - Si c'est un NPC
+     */
+    setupEventListeners(cell, entityInfo, isVisible, isNpc = false) {
+        const border = cell.querySelector('span');
+        if (!border) return;
+
+        // Configuration de base commune
+        border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
+        
+        if (isVisible) {
+            // Entité visible - configuration complète
+            if (isNpc) {
+                this.setupVisibleNpcEventListeners(border, entityInfo);
+            } else {
+                this.setupVisiblePlayerEventListeners(border, entityInfo);
+            }
+        } else {
+            // Entité non visible - configuration "unknown"
+            this.setupUnknownEntityEventListeners(border, entityInfo);
+        }
+    }
+
+    /**
+     * Configure les event listeners pour un joueur visible
+     */
+    setupVisiblePlayerEventListeners(border, playerInfo) {
+        border.classList.add('border-cyan-400');
+        border.classList.remove('border-yellow-300');
+        
+        border.setAttribute('data-title', 
+            `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
+        );
+        border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
+        
+        // Event listeners pour joueur visible
+        border.addEventListener("mouseover", () => {
+            generate_border(
+                playerInfo.ship.sizeY, 
+                playerInfo.ship.sizeX, 
+                playerInfo.coordinates.baseY + 1, 
+                playerInfo.coordinates.baseX + 1
+            );
+        });
+        
+        border.addEventListener("mouseout", () => {
+            remove_border(
+                playerInfo.ship.sizeY, 
+                playerInfo.ship.sizeX, 
+                playerInfo.coordinates.baseY + 1, 
+                playerInfo.coordinates.baseX + 1,
+                'border-cyan-400'
+            );
+        });
+
+        // Configuration du clic pour non-mobile
+        if (!is_user_is_on_mobile_device()) {
+            border.setAttribute(attribute_touch_click, `open_close_modal('modal-pc_${playerInfo.user.id}')`);
+        }
+    }
+
+    /**
+     * Configure les event listeners pour un NPC visible
+     */
+    setupVisibleNpcEventListeners(border, npcInfo) {
+        border.classList.add('border-red-600');
+        border.classList.remove('border-yellow-300');
+        
+        border.setAttribute('data-title', 
+            `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
+        );
+        border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
+        
+        // Event listeners pour NPC visible
+        border.addEventListener("mouseover", () => {
+            generate_border(
+                npcInfo.ship.sizeY, 
+                npcInfo.ship.sizeX, 
+                npcInfo.coordinates.baseY + 1, 
+                npcInfo.coordinates.baseX + 1
+            );
+        });
+        
+        border.addEventListener("mouseout", () => {
+            remove_border(
+                npcInfo.ship.sizeY, 
+                npcInfo.ship.sizeX, 
+                npcInfo.coordinates.baseY + 1, 
+                npcInfo.coordinates.baseX + 1,
+                'border-red-600'
+            );
+        });
+
+        // Configuration du clic pour non-mobile
+        if (!is_user_is_on_mobile_device()) {
+            border.setAttribute(attribute_touch_click, `open_close_modal('modal-npc_${npcInfo.npc.id}')`);
+        }
+    }
+
+    /**
+     * Configure les event listeners pour une entité non visible (unknown)
+     */
+    setupUnknownEntityEventListeners(border, entityInfo) {
+        border.classList.add('border-yellow-300');
+        border.classList.remove('border-cyan-400', 'border-red-600');
+        
+        border.setAttribute('data-title', 
+            `Unknown [x : ${entityInfo.coordinates.baseY}, y: ${entityInfo.coordinates.baseX}]`
+        );
+        
+        // Supprimer les attributs de modal pour les entités inconnues
+        border.removeAttribute('data-modal-target');
+        border.removeAttribute('onmouseover');
+        
+        // Event listeners pour entité inconnue
+        border.addEventListener("mouseover", () => {
+            generate_border(
+                entityInfo.ship.sizeY, 
+                entityInfo.ship.sizeX, 
+                entityInfo.coordinates.baseY + 1, 
+                entityInfo.coordinates.baseX + 1
+            );
+        });
+        
+        border.addEventListener("mouseout", () => {
+            remove_border(
+                entityInfo.ship.sizeY, 
+                entityInfo.ship.sizeX, 
+                entityInfo.coordinates.baseY + 1, 
+                entityInfo.coordinates.baseX + 1,
+                'border-yellow-300'
+            );
+        });
+    }
+
+    /**
      * Met à jour l'affichage d'un joueur selon sa visibilité
      * @param {Object} playerData - Données du joueur
      * @param {boolean} isVisible - Si le joueur est visible
      */
     updatePlayerDisplay(playerData, isVisible) {
         const playerInfo = this.extractPlayerInfo(playerData);
-        const playerId = playerInfo.user.id;
 
         // Parcourir toutes les cellules du vaisseau
         let coordX = playerInfo.coordinates.x;
@@ -154,16 +305,22 @@ class PostMovementDetectionSystem {
                     coordX++;
                     continue;
                 }
+                
+                // Supprimer les anciens event listeners
+                this.removeEventListeners(cell);
+                
+                // Supprimer l'ancien contenu visuel
+                this.removeOldContent(cell);
 
-                const border = cell.querySelector('span');
-                const cellDiv = cell.querySelector('div');
+                // Configurer les nouveaux event listeners
+                this.setupEventListeners(cell, playerInfo, isVisible, false);
 
                 if (isVisible) {
                     // Afficher l'image du vaisseau
-                    this.displayShipImage(cell, playerData, playerInfo, colOffset * 32, rowOffset * 32);
+                    this.displayShipImage(cell, playerInfo, colOffset * 32, rowOffset * 32);
                 } else {
                     // Afficher le cercle jaune
-                    this.displayUnknownShip(cell, border, playerInfo);
+                    this.displayUnknownShip(cell, playerInfo.coordinates);
                 }
 
                 coordX++;
@@ -180,7 +337,6 @@ class PostMovementDetectionSystem {
      */
     updateNpcDisplay(npcData, isVisible) {
         const npcInfo = this.extractNpcInfo(npcData);
-        const npcId = npcInfo.npc.id;
 
         // Parcourir toutes les cellules du vaisseau NPC
         let coordX = npcInfo.coordinates.x;
@@ -194,15 +350,21 @@ class PostMovementDetectionSystem {
                     continue;
                 }
 
-                const border = cell.querySelector('span');
-                const cellDiv = cell.querySelector('div');
+                // Supprimer les anciens event listeners
+                this.removeEventListeners(cell);
+                
+                // Supprimer l'ancien contenu visuel
+                this.removeOldContent(cell);
+
+                // Configurer les nouveaux event listeners
+                this.setupEventListeners(cell, npcInfo, isVisible, true);
 
                 if (isVisible) {
                     // Afficher l'image du vaisseau NPC
-                    this.displayNpcImage(cell, border, npcData, npcInfo, colOffset * 32, rowOffset * 32);
+                    this.displayNpcImage(cell, npcInfo, colOffset * 32, rowOffset * 32);
                 } else {
                     // Afficher le cercle jaune
-                    this.displayUnknownNpc(cell, border, npcInfo);
+                    this.displayUnknownShip(cell, npcInfo.coordinates);
                 }
 
                 coordX++;
@@ -215,11 +377,8 @@ class PostMovementDetectionSystem {
     /**
      * Affiche l'image d'un vaisseau joueur
      */
-    displayShipImage(cell, playerData, playerInfo, colOffset, rowOffset) {
+    displayShipImage(cell, playerInfo, colOffset, rowOffset) {
         const cellDiv = cell.querySelector('div');
-        
-        // Supprimer tous les anciens éléments de vaisseau (ship, ship-reversed, pc)
-        this.removeOldContent(cellDiv)
 
         // Créer les éléments de vaisseau
         const { spaceShip, spaceShipReversed } = this.createShipElements(
@@ -242,69 +401,25 @@ class PostMovementDetectionSystem {
     /**
      * Affiche l'image d'un vaisseau NPC
      */
-    displayNpcImage(cell, border, npcData, npcInfo, colOffset, rowOffset) {
+    displayNpcImage(cell, npcInfo, colOffset, rowOffset) {
         const cellDiv = cell.querySelector('div');
-        
-        // Supprimer tous les anciens éléments de vaisseau (ship, ship-reversed, pc)
-        this.removeOldContent(cellDiv)
 
         // Créer l'élément de vaisseau NPC
         const bgUrl = `/static/img/foreground/SHIPS/${npcInfo.ship.image}.png`;
         const spaceShip = this.createSpaceShipElement(bgUrl, colOffset, rowOffset);
 
-        // Mettre à jour les attributs du border
-        if (border) {
-            border.setAttribute('data-title', 
-                `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.y}, y: ${npcInfo.coordinates.x}]`
-            );
-            border.classList.add('hover:border-red-600');
-        }    
-
         cellDiv.appendChild(spaceShip);
     }
 
     /**
-     * Affiche un cercle jaune pour un joueur non identifié
+     * Affiche un cercle jaune pour un joueur / personnage non joueur non identifié
      */
-    displayUnknownShip(cell, border, playerInfo) {
+    displayUnknownShip(cell, coordinates) {
         const cellDiv = cell.querySelector('div');
-        
-        // Supprimer tous les anciens éléments de vaisseau (ship, ship-reversed, pc)
-        this.removeOldContent(cellDiv)
 
         // Créer le cercle jaune
         const unknownElement = this.createUnknownElement();
         cellDiv.appendChild(unknownElement);
-
-        // Mettre à jour les attributs du border
-        if (border) {
-            border.setAttribute('data-title', 
-                `Unknown [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
-            );
-            border.classList.add('hover:border-yellow-600');
-        }
-    }
-
-    /**
-     * Affiche un cercle jaune pour un NPC non identifié
-     */
-    displayUnknownNpc(cell, border, npcInfo) {
-        const cellDiv = cell.querySelector('div');
-        
-        // Supprimer tous les anciens éléments de vaisseau (ship, ship-reversed, pc)
-        this.removeOldContent(cellDiv)
-
-        // Créer le cercle jaune
-        const unknownElement = this.createUnknownElement();
-        cellDiv.appendChild(unknownElement);
-
-        // Mettre à jour les attributs du border
-        if (border) {
-            border.setAttribute('data-title', 
-                `Unknown [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-            );
-            border.classList.add('hover:border-yellow-600');
-        }
     }
 
     /**
@@ -376,7 +491,7 @@ class PostMovementDetectionSystem {
                 name: playerData.user.name
             },
             isCurrentUser,
-            borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400"
+            borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400",
         };
     }
 
@@ -399,7 +514,7 @@ class PostMovementDetectionSystem {
                 id: npcData.npc.id,
                 name: npcData.npc.name,
                 displayed_name: npcData.npc.displayed_name
-            }
+            },
         };
     }
 
@@ -444,21 +559,24 @@ class PostMovementDetectionSystem {
             'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', 
             '-translate-x-1/2', '-translate-y-1/2', 'z-1'
         );
+        spaceShip.id = "unknown-ship";
         return spaceShip;
     }
 
-    removeOldContent(cellDiv){
-        // Supprimer tous les anciens éléments de vaisseau (ship, ship-reversed, pc)
+    removeOldContent(cell) {
+        const cellDiv = cell.querySelector('div');
+        if (!cellDiv) return;
+        
+        // Supprimer tous les anciens éléments de vaisseau
         const existingShip = cellDiv.querySelector('.ship');
         const existingShipReversed = cellDiv.querySelector('.ship-reversed');
         const existingPc = cellDiv.querySelector('.pc');
-        const existingPulse = cellDiv.querySelector('.animate-ping');
+        const existingPulse = cellDiv.querySelector('#unknown-ship');
         
         if (existingShip) existingShip.remove();
         if (existingShipReversed) existingShipReversed.remove();
         if (existingPc) existingPc.remove();
         if (existingPulse) existingPulse.remove();
-
     }
 }
 

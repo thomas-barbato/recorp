@@ -81,7 +81,7 @@ function generate_border_className(size_y, size_x){
     }
 }
 
-function remove_border(size_y, size_x, coord_y, coord_x, color_class){
+function remove_border(size_y, size_x, coord_y, coord_x, colorClass){
     let c_y = coord_y;
     let c_x = coord_x;
 
@@ -89,7 +89,7 @@ function remove_border(size_y, size_x, coord_y, coord_x, color_class){
         for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
             let parent_e = document.querySelector('.tabletop-view').rows[c_y].cells[c_x];
             let child_e = parent_e.querySelector('span');
-            child_e.className = `absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer ${color_class}`;
+            child_e.className = `absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer ${colorClass}`;
             c_x++;
         }
         c_y++;
@@ -102,7 +102,6 @@ function generate_border(size_y, size_x, coord_y, coord_x){
     let c_x = coord_x;
     let classList = generate_border_className(size_y, size_x);
     let element_list = [];
-
     for (let row_i = 0; row_i < (atlas.tilesize * size_y); row_i += atlas.tilesize) {
         for (let col_i = 0; col_i < (atlas.tilesize * size_x); col_i += atlas.tilesize) {
             let parent_e = document.querySelector('.tabletop-view').rows[c_y].cells[c_x];
@@ -117,7 +116,7 @@ function generate_border(size_y, size_x, coord_y, coord_x){
         let child_e = element_list[index].querySelector('span');
         for(border_class in classList[index]){
             if(classList[index][border_class] != "none"){
-                child_e.classList.add(classList[index][border_class])
+                child_e.classList.add(classList[index][border_class]);
             }
         }
     }

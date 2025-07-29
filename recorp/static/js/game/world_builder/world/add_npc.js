@@ -4,7 +4,13 @@ function add_npc(data) {
     data.forEach(npcData => {
         const npcInfo = extractNpcInfo(npcData);
         const modalData = createNpcModalData(npcData);
-        createAndAppendNpcModal(npcData.npc.id, modalData, npcInfo);
+        const id = `${npcInfo.coordinates.y}_${npcInfo.coordinates.x}`;
+        if(observable_zone_id.includes(id)){
+            createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
+        }else{
+            createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
+            //createAndAppendUnknownModal()(npcData.npc.id, modalData, npcInfo);
+        }
         renderNpcShip(npcData, npcInfo);
     });
     
@@ -25,13 +31,12 @@ function extractNpcInfo(npcData) {
             sizeX: npcData.ship.size.x,
             sizeY: npcData.ship.size.y,
             image: npcData.ship.image,
-            borderColor: npcData.ship.is_visible ? "border-red-600" : "border-yellow-300"
         },
         npc: {
             id: npcData.npc.id,
             name: npcData.npc.name,
             displayed_name: npcData.npc.displayed_name,
-        }
+        },
     };
 }
 
@@ -132,26 +137,25 @@ function setupNpcCell(cell, border, npcInfo) {
         `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );
     border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
-    border.classList.add('border-red-600');
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    
+    border.id = "ship-data-title";
+
     // Add event listeners
-    border.addEventListener("mouseover", () => {
+    cell.addEventListener("mouseover", () => {
         generate_border(
             npcInfo.ship.sizeY, 
             npcInfo.ship.sizeX, 
             npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1
+            npcInfo.coordinates.baseX + 1,
         );
     });
     
-    border.addEventListener("mouseout", () => {
+    cell.addEventListener("mouseout", () => {
         remove_border(
             npcInfo.ship.sizeY, 
             npcInfo.ship.sizeX, 
             npcInfo.coordinates.baseY + 1, 
             npcInfo.coordinates.baseX + 1, 
-            'border-red-600'
         );
     });
 }
@@ -164,12 +168,11 @@ function setupUnkownNpcCell(cell, border, npcInfo) {
     
     // Configure border
     border.setAttribute('data-title', 
-        `${"Unknown"} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-    )
+        `Unknown [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
+    );
 
     border.setAttribute('data-modal-target', `modal-unknown_npc_${npcInfo.npc.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    border.classList.add('hover:border-yellow-600');
     // Add event listeners
     border.addEventListener("mouseover", () => {
         generate_border(
@@ -185,8 +188,7 @@ function setupUnkownNpcCell(cell, border, npcInfo) {
             npcInfo.ship.sizeY, 
             npcInfo.ship.sizeX, 
             npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1, 
-            'border-yellow-300'
+            npcInfo.coordinates.baseX + 1,
         );
     });
 }
@@ -211,6 +213,7 @@ function createUnknownElement(){
         'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
         '-translate-y-1/2', 'z-1'
     );
+    spaceShip.id = "unknown-ship";
     
     return spaceShip;
 

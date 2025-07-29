@@ -145,12 +145,13 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
     border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500 foreground-element";
     border.setAttribute('data-title', `${elementInfo.name} [y: ${coordY - 1}, x: ${coordX - 1}]`);
     border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
+    border.id = "ship-data-title";
     
     border.setAttribute(attribute_touch_click, `open_close_modal('modal-${elementInfo.name}')`);
     
     // Add event listeners
     border.addEventListener("mouseover", () => {
-        generate_border(sizeY, sizeX, coordY, coordX);
+        generate_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
     });
     
     border.addEventListener("mouseout", () => {
