@@ -269,9 +269,8 @@ class GetDataFromDB:
             "player_ship_id__ship_id",
             "player_ship_id__player_id__name", "player_ship_id__player_id__coordinates",
             "player_ship_id__player_id__image", "player_ship_id__player_id__description",
-            "player_ship_id__player_id__is_npc", "player_ship_id__player_id__user_id",
-            "player_ship_id__player_id__current_ap", "player_ship_id__player_id__max_ap",
-            "player_ship_id__player_id__faction_id__name",
+            "player_ship_id__player_id__is_npc", "player_ship_id__player_id__current_ap", 
+            "player_ship_id__player_id__max_ap", "player_ship_id__player_id__faction_id__name",
             "player_ship_id__player_id__archetype_id__name",
             "player_ship_id__player_id__archetype_id__data",
             "player_ship_id__player_id__sector_id__name",
@@ -418,13 +417,13 @@ class GetDataFromDB:
     # === Système de portée et combat ===
     
     @staticmethod
-    def is_in_range(sector_id: int, current_user_id: int, is_npc: bool = False) -> Dict[str, List[Dict]]:
+    def is_in_range(sector_id: int, current_player_id: int, is_npc: bool = False) -> Dict[str, List[Dict]]:
         """
         Détermine quels éléments sont à portée d'un joueur ou NPC
         """
         try:
-            current_player_data = GetDataFromDB._get_current_player_data(current_user_id, is_npc)
-            sector_elements = GetDataFromDB._get_sector_elements(sector_id, current_user_id)
+            current_player_data = GetDataFromDB._get_current_player_data(current_player_id, is_npc)
+            sector_elements = GetDataFromDB._get_sector_elements(sector_id, current_player_id)
             
             return GetDataFromDB._calculate_range_for_all_elements(
                 current_player_data, sector_elements
@@ -433,13 +432,13 @@ class GetDataFromDB:
             # Log de l'erreur en production
             return {}
         
-    def current_player_observable_zone(current_user_id: int) -> dict:
+    def current_player_observable_zone(current_player_id: int) -> dict:
         """
         Détermine la zone de visibilité du joueur,
         La stock dans une variable de la classe.
         """
         try:
-            current_user_data = GetDataFromDB._get_player_ship_view_range(current_user_id)
+            current_user_data = GetDataFromDB._get_player_ship_view_range(current_player_id)
             return GetDataFromDB._calculate_view_range(current_user_data)
             
         except Exception as e:
@@ -474,17 +473,18 @@ class GetDataFromDB:
         
             
     @staticmethod
-    def _get_player_ship_view_range(user_id: int) -> dict:
+    def _get_player_ship_view_range(player_id: int) -> dict:
         """Récupère les données de visibilité d'un joueur"""
+        
         player_data = PlayerShipModule.objects.filter(
-            player_ship_id__player_id__user_id=user_id,
+            player_ship_id__player_id=player_id,
             player_ship_id__is_current_ship=True
         ).values(
             "player_ship_id__view_range",
             "player_ship_id__player_id__coordinates",
             "player_ship_id__ship_id__ship_category_id__size"
         ).first()
-
+        
         if not player_data:
             return {}
 
@@ -524,18 +524,18 @@ class GetDataFromDB:
         return result
 
     @staticmethod
-    def _get_current_player_data(current_user_id: int, is_npc: bool) -> Dict:
+    def _get_current_player_data(current_player_id: int, is_npc: bool) -> Dict:
         """Récupère les données du joueur/NPC courant"""
         if is_npc:
-            return GetDataFromDB._get_npc_player_data(current_user_id)
+            return GetDataFromDB._get_npc_player_data(current_player_id)
         else:
-            return GetDataFromDB._get_human_player_data(current_user_id)
+            return GetDataFromDB._get_human_player_data(current_player_id)
 
     @staticmethod
-    def _get_human_player_data(user_id: int) -> Dict:
+    def _get_human_player_data(player_id: int) -> Dict:
         """Récupère les données d'un joueur humain"""
         player_data = PlayerShipModule.objects.filter(
-            player_ship_id__player_id__user_id=user_id,
+            player_ship_id__player_id=player_id,
             player_ship_id__is_current_ship=True
         ).values(
             "player_ship_id__ship_id__ship_category_id__size",

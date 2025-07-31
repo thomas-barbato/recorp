@@ -2,7 +2,7 @@
 {% load customtags %}
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
-{{ request.user.id|json_script:"script_user_id" }}
+{{ current_player_id|json_script:"script_current_player_id" }}
 <div id="chat" class="flex z-20 lg:inline hidden order-1 w-2/12 no-scrollbar place-content-center">
     <div class="inline-block md:mx-auto text-center text-emerald-300 text-sm p-2" id="chat-item-container">
         <fieldset class="relative flex-col text-xs mx-auto  w-auto border border-b-[#B1F1CB]/0 border-[#B1F1CB] text-start bg-gray-800 p-1">
@@ -212,7 +212,7 @@
 </div>
 <div class="flex z-20 lg:inline hidden order-3 w-2/12 no-scrollbar h-full m-1" id="player-infos">
     {% for pc in map_informations.pc %}
-        {% if pc.user.user == request.user.id %}
+        {% if pc.user.player == current_player_id %}
             <div id="player-info-item-container" class="w-full flex items-center justify-center gap-2 flex-row md:block h-full place-content-center thin-semi-transparent-scrollbar">
                 <fieldset id="player-fieldset" class="flex text-xs items-start justify-center mx-auto gap-2 p-2 w-auto text-start flex-row border border-[#B1F1CB] rounded bg-gray-800 mb-2 min-h-[50px]">
                     <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw] ">

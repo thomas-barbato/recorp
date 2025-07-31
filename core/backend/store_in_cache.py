@@ -102,7 +102,7 @@ class StoreInCache:
             logger.error(f"Erreur lors de l'initialisation des données du secteur {pk}: {e}")
             raise
         
-    def update_sector_player_visibility_zone(self) -> None:
+    def update_sector_player_visibility_zone(self, player_id) -> None:
         
         try:
             in_cache = cache.get(self.room)
@@ -112,7 +112,7 @@ class StoreInCache:
             pc_cache = in_cache["pc"]
 
             player = next(
-                (p for p in pc_cache if self.user_calling.id == p["user"]["user"]), 
+                (p for p in pc_cache if player_id == p["user"]["player"]), 
                 None
             )
             
@@ -120,7 +120,7 @@ class StoreInCache:
                 return None, None
 
             player_index = pc_cache.index(player)
-            pc_cache[player_index]["ship"]["visible_zone"] = self.from_DB.current_player_observable_zone(self.user_calling.id)
+            pc_cache[player_index]["ship"]["visible_zone"] = self.from_DB.current_player_observable_zone(player_id)
             in_cache["pc"] = pc_cache
             cache.set(self.room, in_cache)
             
@@ -294,10 +294,9 @@ class StoreInCache:
         for pc_data in sector_pc:
             try:
                 module_list = self._get_player_module_list(pc_data["player_ship_id"])
-                visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id__user_id"])
+                visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id"])
                 sector_data["pc"].append({
                     "user": {
-                        "user": pc_data["player_ship_id__player_id__user_id"],
                         "player": pc_data["player_ship_id__player_id"],
                         "name": pc_data["player_ship_id__player_id__name"],
                         "coordinates": pc_data["player_ship_id__player_id__coordinates"],
@@ -335,7 +334,7 @@ class StoreInCache:
                         "modules": module_list,
                         "modules_range": self.from_DB.is_in_range(
                             sector_data["sector"]["id"], 
-                            pc_data["player_ship_id__player_id__user_id"], 
+                            pc_data["player_ship_id__player_id"], 
                             is_npc=False
                         ),
                         "ship_scanning_module_available": self._has_scanning_module(module_list),
@@ -409,7 +408,6 @@ class StoreInCache:
                 return None
                 
             cache_data = in_cache[category]
-            
             found_player = next(
                 (p for p in cache_data if player_id == p["user"]["player"]), 
                 None
@@ -512,9 +510,10 @@ class StoreInCache:
                 
             player_position = in_cache["pc"]
             player = PlayerAction(self.user_calling)
+            player_id = player.get_player_id()
 
             found_player = next(
-                (p for p in player_position if player.get_player_id() == p["user"]["player"]), 
+                (p for p in player_position if player_id == p["user"]["player"]), 
                 None
             )
             
@@ -523,7 +522,7 @@ class StoreInCache:
             
             found_player_index = player_position.index(found_player)
             player_position[found_player_index]["ship"]["modules_range"] = self.from_DB.is_in_range(
-                player.get_player_sector(), self.user_calling, is_npc=False
+                player.get_player_sector(), player_id, is_npc=False
             )
             
             in_cache["pc"] = player_position
@@ -533,7 +532,7 @@ class StoreInCache:
             logger.error(f"Erreur lors de la mise à jour des portées: {e}")
 
     def update_ship_is_reversed(
-        self, data: Dict[str, Any], user_id: int, status: bool
+        self, data: Dict[str, Any], player_id: int, status: bool
     ) -> Tuple[bool, Optional[int]]:
         """
         Met à jour le statut "inversé" d'un vaisseau.
@@ -552,10 +551,9 @@ class StoreInCache:
                 return None, None
                 
             pc_cache = in_cache["pc"]
-            user = data["user"]
 
             player = next(
-                (p for p in pc_cache if user == p["user"]["user"]), 
+                (p for p in pc_cache if player_id == p["user"]["player"]), 
                 None
             )
             

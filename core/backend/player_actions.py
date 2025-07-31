@@ -50,7 +50,7 @@ class PlayerAction:
 
     def is_player_exists(self) -> bool:
         """Vérifie si le joueur existe."""
-        return Player.objects.filter(user_id=self.id).exists()
+        return Player.objects.filter(id=self.player_id).exists()
         
     def get_player_id(self) -> Optional[int]:
         """
@@ -317,7 +317,7 @@ class PlayerAction:
             bool: True si le mouvement a été enregistré
         """
         if self._check_if_player_can_move_and_update(move_cost):
-            updated_count = Player.objects.filter(user_id=self.id).update(
+            updated_count = Player.objects.filter(id=self.player_id).update(
                 coordinates={"x": end_x, "y": end_y}
             )
             return updated_count > 0

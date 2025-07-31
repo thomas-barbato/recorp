@@ -39,7 +39,7 @@ class PostMovementDetectionSystem {
             return;
         }
         this.allPlayersData = playersData.filter(player => 
-            player.user.user !== current_user_id
+            player.user.user !== current_player_id
         );
     }
 
@@ -476,7 +476,7 @@ class PostMovementDetectionSystem {
     extractPlayerInfo(playerData) {
         const baseCoordX = parseInt(playerData.user.coordinates.x);
         const baseCoordY = parseInt(playerData.user.coordinates.y);
-        const isCurrentUser = playerData.user.user === current_user_id;
+        const isCurrentUser = playerData.user.user === current_player_id;
         
         return {
             coordinates: {

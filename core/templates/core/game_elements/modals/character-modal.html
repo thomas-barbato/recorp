@@ -9,7 +9,7 @@
                 </h3>
             </div>
             {% for player in map_informations.pc %}
-            {% if player.user.user == request.user.id %}
+            {% if player.user.player == current_player_id %}
             <div class="flex w-full mt-1 md:gap-1 gap-4 lg:flex-row flex-col">
                 <div class="lg:w-1/5 w-4/4 order-1 p-1 lg:flex-row flex-col">
                     <div class="w-2/2 lg:h-full mt-1 flex flex-col gap-2 bg-gray-800 border border-[#B1F1CB] p-2 rounded-md">

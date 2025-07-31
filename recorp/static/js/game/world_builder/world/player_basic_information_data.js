@@ -427,7 +427,7 @@ character_other_modules_fieldset.append(character_other_modules_fieldset_legend)
 
 
 for (let i = 0; i < map_informations['pc'].length; i++) {
-    if (map_informations['pc'][i].user.user == current_user_id) {
+    if (map_informations['pc'][i].user.user == current_player_id) {
 
         let hp_percent = `${Math.round((map_informations['pc'][i].ship.current_hp * 100) / (map_informations['pc'][i].ship.max_hp))}%`;
         let move_percent = `${Math.round((map_informations['pc'][i].ship.current_movement * 100) / (map_informations['pc'][i].ship.max_movement))}%`;

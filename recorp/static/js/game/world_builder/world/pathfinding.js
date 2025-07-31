@@ -291,7 +291,7 @@ function handlePlayerMovement() {
         .map(element => element.id);
     
     const moveData = {
-        player: current_player.player,
+        player: current_player_id,
         end_y: current_player.coord.end_x - 1,
         end_x: current_player.coord.end_y - 1,
         is_reversed: current_player.reversed_ship_status,

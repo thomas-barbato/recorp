@@ -10,7 +10,6 @@ const img_input = document.querySelector('.hidden-input-file');
 let elem_popover = document.querySelectorAll('.popover-element')
 
 // CHARACTER BACKGROUND EDITOR
-
 editor_btn.addEventListener('click', function(){
     ClassicEditor.create( document.querySelector('#usr-background'),{
         toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],

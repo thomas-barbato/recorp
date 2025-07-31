@@ -597,7 +597,7 @@ function update_player_coord_fixed(data) {
     } = data;
     
     // Détermination du type de traitement selon l'utilisateur
-    if (current_user_id !== targetUserId) {
+    if (current_player_id !== targetUserId) {
         // *** UTILISER LE SYSTÈME AMÉLIORÉ POUR LES AUTRES JOUEURS ***
         enhancedDetectionSystem.updateOtherPlayerAfterMove(data);
     } else {

@@ -400,6 +400,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["npc"] = data["npc"]
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
+            context["current_player_id"] = player.get_player_id()
             return context
         
         else:

@@ -623,7 +623,7 @@ function mobile_movement_action() {
         });
         direction_array.slice(0, -1);
         async_move({
-            player: current_player.player,
+            player: current_player_id,
             end_x: current_player.coord.end_x - 1,
             end_y: current_player.coord.end_y - 1,
             is_reversed: current_player.reversed_ship_status,

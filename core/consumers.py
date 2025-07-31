@@ -158,7 +158,7 @@ class GameConsumer(WebsocketConsumer):
         if self._can_move_to_destination(player_action, message):
             if self._register_move(player_action, message):
                 self._update_player_state(store, message)
-                store.update_sector_player_visibility_zone()
+                store.update_sector_player_visibility_zone(player_id)
                 return self._create_own_move_response(player_action, store, message, player_id)
         
         return {}
@@ -192,11 +192,11 @@ class GameConsumer(WebsocketConsumer):
     ) -> Dict[str, Any]:
         """Crée la réponse pour le mouvement du propre joueur."""
         store.update_player_range_finding()
-        store.update_sector_player_visibility_zone()
+        store.update_sector_player_visibility_zone(player_id)
         return {
             "type": "player_move",
             "message": {
-                "user_id": player_action.get_other_player_user_id(message["player"]),
+                "player_id": message["player"],
                 "player": store.get_specific_player_data(player_id, "pc"),
                 "sector": store.get_specific_sector_data("sector"),
                 "move_cost": message["move_cost"],
@@ -230,7 +230,6 @@ class GameConsumer(WebsocketConsumer):
             "message": {
                 "player": player_action.get_other_player_name(message["player"]),
                 "player_id": message["player"],
-                "user_id": player_action.get_other_player_user_id(message["player"]),
                 "is_reversed": message["is_reversed"],
                 "start_id_array": message["start_id_array"],
                 "destination_id_array": message["destination_id_array"],
@@ -270,10 +269,9 @@ class GameConsumer(WebsocketConsumer):
         """Traite l'inversion du vaisseau."""
         store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
         player_action = PlayerAction(self.user.id)
-        
         player_action.set_reverse_ship_status()
         data = store.update_ship_is_reversed(
-            message, self.user.id, player_action.get_reverse_ship_status()
+            message, message["player"], player_action.get_reverse_ship_status()
         )
 
         return {

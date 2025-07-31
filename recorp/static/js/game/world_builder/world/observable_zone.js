@@ -1,7 +1,6 @@
 function getObservableZone(data = []) {
     // Utilise directement les données fournies ou la zone visible du joueur
     const ids = data.length > 0 ? data : currentPlayer.ship.visible_zone;
-    
     // Utilise reduce pour construire le tableau en une seule passe
     const observable_zone = ids.reduce((zones, id) => {
         const element = document.getElementById(id);

@@ -6,7 +6,7 @@
 
     <div id="mobile-info-player-container" class="flex flex-col h-full w-full item-center lg:hidden inline gap-1 z-30">
       {% for pc in map_informations.pc %}
-      {% if pc.user.user == request.user.id %}
+      {% if pc.user.player == current_player_id %}
       <fieldset class="flex w-full p-2 items-start justify-center gap-1 flex-row border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-1">
         <div class="flex w-full mx-auto lg:flex-row flex-row lg:justify-center lg:items-center justify-start items-start lg:gap-1">
           <img class="w-[88px] h-auto h-auto max-w-xl rounded-lg" alt="image description" {% if pc.user.image %} srcset="/static/img/users/{{pc.user.player}}/0.gif" {% else %} srcset="{% static 'ux/default-user.svg' %}" {% endif %}>

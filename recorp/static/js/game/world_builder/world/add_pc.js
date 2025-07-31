@@ -23,7 +23,7 @@ function add_pc(data) {
 function extractPlayerInfo(playerData) {
     const baseCoordX = parseInt(playerData.user.coordinates.x);
     const baseCoordY = parseInt(playerData.user.coordinates.y);
-    const isCurrentUser = playerData.user.user === current_user_id;
+    const isCurrentUser = playerData.user.player === current_player_id;
     
     return {
         coordinates: {
@@ -294,7 +294,9 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
     border.setAttribute('data-title', 
         `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
     );
-    border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
+    if(currentPlayer.user.player != playerInfo.user.id){
+        border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
+    }
     border.id = "ship-data-title";
     border.classList.add(playerInfo.borderColor);
     

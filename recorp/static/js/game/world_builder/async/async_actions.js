@@ -23,9 +23,9 @@ function update_player_coord(data) {
     clear_path();
     
     // Extraction et validation des données
+    
     const {
         size,
-        user_id: targetUserId,
         player_id: targetPlayerId,
         start_id_array: startPosArray,
         destination_id_array: endPosArray,
@@ -35,14 +35,14 @@ function update_player_coord(data) {
         end_y,
         modules_range
     } = data;
-    
+
     const parsedSize = {
-        y: parseInt(size.y),
-        x: parseInt(size.x)
+        y: parseInt(data.size.y),
+        x: parseInt(data.size.x)
     };
     
     // Détermination du type de traitement selon l'utilisateur
-    if (current_user_id !== targetUserId) {
+    if (current_player_id !== data.player_id) {
         handleOtherPlayerMove({
             targetPlayerId,
             startPosArray,
@@ -71,14 +71,12 @@ function update_player_coord(data) {
             size,
             modulesRange
         } = params;
-        
         // Cache des éléments DOM pour éviter les recherches répétées
         const modalElement = document.getElementById(`modal-pc_${targetPlayerId}`);
         if (!modalElement) {
             console.warn(`Modal non trouvée pour le joueur ${targetPlayerId}`);
             return;
         }
-        
         // Traitement des positions en batch pour optimiser les performances
         processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY);
         
@@ -166,6 +164,7 @@ function update_player_coord(data) {
         
         // Configuration des événements de survol
         setupHoverEvents(endPoint, size, endX, endY);
+
     }
     
     // CONFIGURATION DES ÉVÉNEMENTS DE CLIC
@@ -175,10 +174,13 @@ function update_player_coord(data) {
         endPoint.parentNode.replaceChild(newEndPoint, endPoint);
         
         // Ajout du nouvel événement
-        newEndPoint.addEventListener(attribute_touch_click, function(event) {
-            event.preventDefault();
-            open_close(`modal-pc_${targetPlayerId}`);
-        });
+        if(targetPlayerId != currentPlayer.user.player){
+            newEndPoint.addEventListener(attribute_touch_click, function(event) {
+                event.preventDefault();
+                open_close(`modal-pc_${targetPlayerId}`);
+            });
+        }
+        
         
         return newEndPoint;
     }
@@ -286,33 +288,13 @@ function validatePlayerCoordData(data) {
 /**
  * Cache pour les éléments DOM fréquemment utilisés
  */
-const DOMCache = {
-    cache: new Map(),
-    
-    get(id) {
-        if (!this.cache.has(id)) {
-            const element = document.getElementById(id);
-            if (element) {
-                this.cache.set(id, element);
-            }
-        }
-        return this.cache.get(id);
-    },
-    
-    clear() {
-        this.cache.clear();
-    },
-    
-    remove(id) {
-        this.cache.delete(id);
-    }
-};
 
 /**
  * Version optimisée avec validation et cache DOM
  * @param {Object} data - Données du joueur
  */
 function update_player_coord_optimized(data) {
+    console.log("DEDANS")
     // Validation préalable
     if (!validatePlayerCoordData(data)) {
         console.error('Données invalides pour update_player_coord:', data);
@@ -330,7 +312,7 @@ function async_reverse_ship(data) {
     clear_path();
     gameSocket.send(JSON.stringify({
         message: JSON.stringify({
-            "user": data.user,
+            "player": data.player,
             "id_array": data.id_array,
         }),
         type: "async_reverse_ship"
@@ -528,6 +510,8 @@ function update_player_pos_display_after_move(data) {
     function setupShipTileElement(entryPoint, col_i, row_i, shipImageUrl, shipReversedImageUrl) {
         const entryPointBorder = entryPoint.querySelector('span');
         const entryPointDiv = entryPoint.querySelector('div');
+
+        const coord = entryPoint.id.split('_')
         
         // Configuration des attributs et classes de base
         entryPoint.classList.add('uncrossable', 'bg-orange-400/30', 'ship-pos');
@@ -536,7 +520,7 @@ function update_player_pos_display_after_move(data) {
         
         // Configuration du border
         entryPointBorder.classList.add('border-dashed', 'cursor-pointer', border_color);
-        entryPointBorder.setAttribute('data-title', `${playerName} [x : ${coord_y}, y: ${coord_x}]`);
+        entryPointBorder.setAttribute('data-title', `${playerName} [x : ${coord[0]}, y: ${coord[1]}]`);
         entryPointBorder.setAttribute('data-modal-target', `modal-pc_${player.user.player}`);
         entryPointBorder.id = "ship-data-title";
         
