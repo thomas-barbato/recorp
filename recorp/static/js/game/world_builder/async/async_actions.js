@@ -93,12 +93,10 @@ function update_player_coord(data) {
     function processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY) {
         // Validation des tableaux
         if (!Array.isArray(startPosArray) || !Array.isArray(endPosArray)) {
-            console.error('Les tableaux de positions sont invalides');
             return;
         }
         
         if (startPosArray.length !== endPosArray.length) {
-            console.error('Les tableaux de positions ont des tailles différentes');
             return;
         }
         
@@ -523,7 +521,7 @@ function update_player_pos_display_after_move(data) {
         }
 
         renderPlayerSonar({y: coord_y, x: coord_x}, view_range);
-        onPlayerMoved({x: coordinates.x, y: coordinates.y}, view_range);
+        onPlayerMoved({x: coord_y, y: coord_x}, view_range);
         initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
     }
     

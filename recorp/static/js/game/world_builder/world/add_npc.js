@@ -155,7 +155,7 @@ function setupNpcCell(cell, border, npcInfo) {
             npcInfo.ship.sizeY, 
             npcInfo.ship.sizeX, 
             npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1, 
+            npcInfo.coordinates.baseX + 1,
         );
     });
 }
@@ -179,7 +179,7 @@ function setupUnkownNpcCell(cell, border, npcInfo) {
             npcInfo.ship.sizeY, 
             npcInfo.ship.sizeX, 
             npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1
+            npcInfo.coordinates.baseX + 1,
         );
     });
     

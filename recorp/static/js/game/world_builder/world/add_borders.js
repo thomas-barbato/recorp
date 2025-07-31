@@ -97,7 +97,7 @@ function remove_border(size_y, size_x, coord_y, coord_x, colorClass){
     }
 }
 
-function generate_border(size_y, size_x, coord_y, coord_x){
+function generate_border(size_y, size_x, coord_y, coord_x, colorClass){
     let c_y = coord_y;
     let c_x = coord_x;
     let classList = generate_border_className(size_y, size_x);
@@ -117,6 +117,7 @@ function generate_border(size_y, size_x, coord_y, coord_x){
         for(border_class in classList[index]){
             if(classList[index][border_class] != "none"){
                 child_e.classList.add(classList[index][border_class]);
+                child_e.classList.add(colorClass);
             }
         }
     }

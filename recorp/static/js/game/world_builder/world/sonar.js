@@ -76,7 +76,6 @@ class Sonar {
         });
     }
 
-
     activateSonar() {
         if (this.sonarActive) return;
         

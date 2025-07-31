@@ -328,7 +328,6 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
             playerInfo.ship.sizeX, 
             playerInfo.coordinates.baseY + 1, 
             playerInfo.coordinates.baseX + 1, 
-            playerInfo.borderColor
         );
     });
 }

@@ -2430,6 +2430,10 @@ video {
   border-top-right-radius: 0.25rem;
 }
 
+.\!border {
+  border-width: 1px !important;
+}
+
 .border {
   border-width: 1px;
 }
@@ -2607,11 +2611,6 @@ video {
 .border-yellow-300 {
   --tw-border-opacity: 1;
   border-color: rgb(253 224 71 / var(--tw-border-opacity));
-}
-
-.border-red-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(252 165 165 / var(--tw-border-opacity));
 }
 
 .border-b-\[\#B1F1CB\]\/0 {
@@ -4331,11 +4330,6 @@ button .ql-stroke,
 .hover\:border-gray-800:hover {
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity));
-}
-
-.hover\:border-red-600:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(220 38 38 / var(--tw-border-opacity));
 }
 
 .hover\:border-slate-400:hover {

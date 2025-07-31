@@ -206,6 +206,7 @@ function init_sector_generation() {
     );
     
     initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
+    initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, npcs);
 }
 
 /**

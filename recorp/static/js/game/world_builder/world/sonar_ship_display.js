@@ -178,8 +178,6 @@ class PostMovementDetectionSystem {
      * Configure les event listeners pour un joueur visible
      */
     setupVisiblePlayerEventListeners(border, playerInfo) {
-        border.classList.add('border-cyan-400');
-        border.classList.remove('border-yellow-300');
         
         border.setAttribute('data-title', 
             `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
@@ -192,8 +190,11 @@ class PostMovementDetectionSystem {
                 playerInfo.ship.sizeY, 
                 playerInfo.ship.sizeX, 
                 playerInfo.coordinates.baseY + 1, 
-                playerInfo.coordinates.baseX + 1
+                playerInfo.coordinates.baseX + 1,
+                'border-cyan-400'
             );
+            border.classList.remove('border-yellow-300');
+            border.classList.add('border-cyan-400');
         });
         
         border.addEventListener("mouseout", () => {
@@ -204,6 +205,8 @@ class PostMovementDetectionSystem {
                 playerInfo.coordinates.baseX + 1,
                 'border-cyan-400'
             );
+            border.classList.remove('border-yellow-300');
+            border.classList.add('border-cyan-400');
         });
 
         // Configuration du clic pour non-mobile
@@ -216,8 +219,6 @@ class PostMovementDetectionSystem {
      * Configure les event listeners pour un NPC visible
      */
     setupVisibleNpcEventListeners(border, npcInfo) {
-        border.classList.add('border-red-600');
-        border.classList.remove('border-yellow-300');
         
         border.setAttribute('data-title', 
             `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
@@ -230,8 +231,11 @@ class PostMovementDetectionSystem {
                 npcInfo.ship.sizeY, 
                 npcInfo.ship.sizeX, 
                 npcInfo.coordinates.baseY + 1, 
-                npcInfo.coordinates.baseX + 1
+                npcInfo.coordinates.baseX + 1,
+                'border-red-600'
             );
+            border.classList.remove('border-yellow-300');
+            border.classList.add('border-red-600');
         });
         
         border.addEventListener("mouseout", () => {
@@ -254,8 +258,6 @@ class PostMovementDetectionSystem {
      * Configure les event listeners pour une entité non visible (unknown)
      */
     setupUnknownEntityEventListeners(border, entityInfo) {
-        border.classList.add('border-yellow-300');
-        border.classList.remove('border-cyan-400', 'border-red-600');
         
         border.setAttribute('data-title', 
             `Unknown [x : ${entityInfo.coordinates.baseY}, y: ${entityInfo.coordinates.baseX}]`
@@ -271,8 +273,11 @@ class PostMovementDetectionSystem {
                 entityInfo.ship.sizeY, 
                 entityInfo.ship.sizeX, 
                 entityInfo.coordinates.baseY + 1, 
-                entityInfo.coordinates.baseX + 1
+                entityInfo.coordinates.baseX + 1,
+                'border-yellow-300'
             );
+            border.classList.remove('border-cyan-400', 'border-red-600');
+            border.classList.add('border-yellow-300');
         });
         
         border.addEventListener("mouseout", () => {
@@ -283,6 +288,8 @@ class PostMovementDetectionSystem {
                 entityInfo.coordinates.baseX + 1,
                 'border-yellow-300'
             );
+            border.classList.remove('border-cyan-400', 'border-red-600');
+            border.classList.add('border-yellow-300');
         });
     }
 
@@ -604,5 +611,6 @@ function initializeDetectionSystem(currentPlayerData, allPlayersData, allNpcsDat
  * @param {number} newRange - Nouvelle portée de détection (optionnel)
  */
 function onPlayerMoved(newPosition, newRange = null) {
+    console.log("Mise à jour position joueur et event listeners");
     detectionSystem.updatePlayerPosition(newPosition, newRange);
 }
