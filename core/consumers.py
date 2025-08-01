@@ -42,6 +42,7 @@ class GameConsumer(WebsocketConsumer):
         self.room = self.scope["url_route"]["kwargs"]["room"]
         self.room_group_name = f"play_{self.room}"
         self.user = self.scope["user"]
+        self.player_id = PlayerAction(self.user.id).get_player_id()
         self.accept()
 
     def _join_room_group(self) -> None:
@@ -117,9 +118,8 @@ class GameConsumer(WebsocketConsumer):
             message = json.loads(event["message"])
             player_action = PlayerAction(self.user.id)
             store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-            player_id = player_action.get_player_id()
-            
-            response = self._process_player_move(message, player_action, store, player_id)
+            current_player_id = player_action.get_player_id()
+            response = self._process_player_move(message, player_action, store, current_player_id)
             self._send_response(response)
             
         except (json.JSONDecodeError, KeyError) as e:
@@ -130,7 +130,7 @@ class GameConsumer(WebsocketConsumer):
         message: Dict[str, Any], 
         player_action: PlayerAction, 
         store: StoreInCache, 
-        player_id: int
+        current_player_id: int
     ) -> Dict[str, Any]:
         """
         Traite le mouvement d'un joueur.
@@ -138,10 +138,12 @@ class GameConsumer(WebsocketConsumer):
         Returns:
             Dict contenant la réponse à envoyer
         """
-        if self._is_own_player_move(player_id, message):
-            return self._handle_own_player_move(message, player_action, store, player_id)
-        else:
-            return self._handle_other_player_move(message, player_action, store, player_id)
+        if self._can_move_to_destination(player_action, message):
+            if self._register_move(player_action, message):
+                store.update_player_position(message)
+                if self._is_own_player_move(self.player_id, message):
+                    return self._handle_own_player_move(message, player_action, store, self.player_id)
+                return self._handle_other_player_move(message, player_action, store, self.player_id)
 
     def _is_own_player_move(self, player_id: int, message: Dict[str, Any]) -> bool:
         """Vérifie si le mouvement concerne le joueur actuel."""
@@ -155,19 +157,17 @@ class GameConsumer(WebsocketConsumer):
         player_id: int
     ) -> Dict[str, Any]:
         """Gère le mouvement du propre joueur."""
-        if self._can_move_to_destination(player_action, message):
-            if self._register_move(player_action, message):
-                self._update_player_state(store, message)
-                store.update_sector_player_visibility_zone(player_id)
-                return self._create_own_move_response(player_action, store, message, player_id)
-        
-        return {}
+        self._update_player_state(store, message)
+        store.update_sector_player_visibility_zone(player_id)
+        return self._create_own_move_response(player_action, store, message, player_id)
 
     def _can_move_to_destination(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Vérifie si la destination est libre."""
         return not player_action.destination_already_occupied(
             message["end_x"], 
-            message["end_y"]
+            message["end_y"],
+            message["size_x"],
+            message["size_y"],
         )
 
     def _register_move(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
@@ -176,11 +176,11 @@ class GameConsumer(WebsocketConsumer):
             end_x=message["end_x"],
             end_y=message["end_y"],
             move_cost=int(message["move_cost"]),
+            player_id=message["player"]
         )
 
     def _update_player_state(self, store: StoreInCache, message: Dict[str, Any]) -> None:
         """Met à jour l'état du joueur."""
-        store.update_player_position(message)
         store.update_player_range_finding()
 
     def _create_own_move_response(
@@ -191,8 +191,6 @@ class GameConsumer(WebsocketConsumer):
         player_id: int
     ) -> Dict[str, Any]:
         """Crée la réponse pour le mouvement du propre joueur."""
-        store.update_player_range_finding()
-        store.update_sector_player_visibility_zone(player_id)
         return {
             "type": "player_move",
             "message": {

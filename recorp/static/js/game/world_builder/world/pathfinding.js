@@ -289,11 +289,13 @@ function handlePlayerMovement() {
     
     const playerCoordArray = Array.from(document.querySelectorAll('.ship-pos'))
         .map(element => element.id);
-    
+    console.log(current_player)
     const moveData = {
         player: current_player_id,
         end_y: current_player.coord.end_x - 1,
         end_x: current_player.coord.end_y - 1,
+        size_x : current_player.size_x,
+        size_y : current_player.size_y,
         is_reversed: current_player.reversed_ship_status,
         start_id_array: playerCoordArray,
         move_cost: current_player.player_move_cost,

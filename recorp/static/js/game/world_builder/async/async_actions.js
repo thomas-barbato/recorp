@@ -7,6 +7,8 @@ function async_move(pos) {
             "player": pos.player,
             "end_x": pos.end_x,
             "end_y": pos.end_y,
+            "size_x": pos.size_x,
+            "size_y": pos.size_y,
             "is_reversed": pos.is_reversed,
             "start_id_array": pos.start_id_array,
             "move_cost": pos.move_cost,
@@ -23,7 +25,6 @@ function update_player_coord(data) {
     clear_path();
     
     // Extraction et validation des données
-    
     const {
         size,
         player_id: targetPlayerId,
@@ -294,7 +295,6 @@ function validatePlayerCoordData(data) {
  * @param {Object} data - Données du joueur
  */
 function update_player_coord_optimized(data) {
-    console.log("DEDANS")
     // Validation préalable
     if (!validatePlayerCoordData(data)) {
         console.error('Données invalides pour update_player_coord:', data);
@@ -501,7 +501,6 @@ function update_player_pos_display_after_move(data) {
             currentCoordY++;
             currentCoordX = coord_x;
         }
-
         renderPlayerSonar({y: coord_y, x: coord_x}, view_range);
         onPlayerMoved({x: coord_y, y: coord_x}, view_range);
         initializeDetectionSystem(currentPlayer, otherPlayers, npcs);

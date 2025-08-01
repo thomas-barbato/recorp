@@ -728,7 +728,6 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                         )   
                     elif index == "npc":
                         source_id = map_elements[index][element]["data__animation"].split('_')[1]
-                        print(source_id)
                         ThisNpcTemplate = NpcTemplate.objects.filter(id=source_id)
                         Npc.objects.create(
                             coordinates=map_elements[index][element]['coordinates'],

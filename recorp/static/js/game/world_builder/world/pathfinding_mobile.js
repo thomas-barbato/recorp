@@ -623,9 +623,11 @@ function mobile_movement_action() {
         });
         direction_array.slice(0, -1);
         async_move({
-            player: current_player_id,
+            player: currentPlayer.user.id,
             end_x: current_player.coord.end_x - 1,
             end_y: current_player.coord.end_y - 1,
+            size_x: current_player.size_x,
+            size_y: current_player.size_y,
             is_reversed: current_player.reversed_ship_status,
             start_id_array: player_coord_array,
             move_cost: current_player.player_move_cost,
