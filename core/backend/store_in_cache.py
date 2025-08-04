@@ -385,8 +385,47 @@ class StoreInCache:
     def _has_scanning_module(self, module_list: List[Dict[str, Any]]) -> bool:
         """Vérifie si le joueur possède un module de scan."""
         return any(module['name'] == "spaceship probe" for module in module_list)
+    
+    def get_other_player_data(self, player_id : int) -> List[dict[str, Any]]:
         
-
+        try:
+            in_cache = cache.get(self.room)
+            if not in_cache or "pc" not in in_cache:
+                return None
+                
+            cache_data = in_cache["pc"]
+            players_data = [p for p in cache_data if player_id != p["user"]["player"]]
+            
+            if not players_data:
+                return None
+                
+            return players_data
+        
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des données des joueurs présents")
+            return None
+    
+    
+    def get_current_player_data(self, player_id : int) -> List[dict[str, Any]]:
+        
+        try:
+            in_cache = cache.get(self.room)
+            if not in_cache or "pc" not in in_cache:
+                return None
+                
+            cache_data = in_cache["pc"]
+            current_player_data = [p for p in cache_data if player_id == p["user"]["player"]]
+            
+            if not current_player_data:
+                return None
+                
+            return current_player_data
+        
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des données des joueurs présents")
+            return None
+            
+        
     def get_specific_player_data(
         self, player_id: int, category: str = "", subcategory: str = "", search: str = ""
     ) -> Optional[Any]:
@@ -501,17 +540,27 @@ class StoreInCache:
         for i in reversed(players_to_remove):
             player_position.pop(i)
 
-    def update_player_range_finding(self) -> None:
-        """Met à jour les portées des modules d'un joueur."""
+    def update_player_range_finding(self, target_player_id: Optional[int] = None) -> None:
+        """
+        Met à jour les portées des modules d'un joueur spécifique.
+        
+        Args:
+            target_player_id: ID du joueur dont il faut recalculer les portées.
+            Si None, utilise self.user_calling
+        """
         try:
+            # Utiliser le joueur spécifié ou le joueur appelant par défaut
+            if target_player_id is None:
+                player = PlayerAction(self.user_calling)
+                player_id = player.get_player_id()
+            else:
+                player_id = target_player_id
+            
             in_cache = cache.get(self.room)
             if not in_cache:
                 return
                 
             player_position = in_cache["pc"]
-            player = PlayerAction(self.user_calling)
-            player_id = player.get_player_id()
-
             found_player = next(
                 (p for p in player_position if player_id == p["user"]["player"]), 
                 None
@@ -521,15 +570,27 @@ class StoreInCache:
                 return
             
             found_player_index = player_position.index(found_player)
-            player_position[found_player_index]["ship"]["modules_range"] = self.from_DB.is_in_range(
-                player.get_player_sector(), player_id, is_npc=False
-            )
             
-            in_cache["pc"] = player_position
-            cache.set(self.room, in_cache)
+            # Recalculer les portées pour ce joueur spécifique
+            player_sector = None
+            if target_player_id:
+                # Pour un joueur spécifique, récupérer son secteur
+                player_sector = Player.objects.filter(id=target_player_id).values_list('sector_id', flat=True).first()
+            else:
+                # Pour le joueur appelant
+                player = PlayerAction(self.user_calling)
+                player_sector = player.get_player_sector()
             
+            if player_sector:
+                player_position[found_player_index]["ship"]["modules_range"] = self.from_DB.is_in_range(
+                    player_sector, player_id, is_npc=False
+                )
+                
+                in_cache["pc"] = player_position
+                cache.set(self.room, in_cache)
+                
         except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour des portées: {e}")
+            logger.error(f"Erreur lors de la mise à jour des portées pour le joueur {target_player_id or self.user_calling}: {e}")
 
     def update_ship_is_reversed(
         self, data: Dict[str, Any], player_id: int, status: bool

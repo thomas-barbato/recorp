@@ -18,11 +18,14 @@ function async_move(pos) {
     }));
 }
 
-// VERSION OPTIMISÉE DE update_player_coord
-
 function update_player_coord(data) {
     // Nettoyage initial
     clear_path();
+
+    // updated players data.
+    currentPlayer = data.updated_current_player_data[0];
+    otherPlayers = data.updated_other_player_data;
+
     
     // Extraction et validation des données
     const {
@@ -37,13 +40,19 @@ function update_player_coord(data) {
         modules_range
     } = data;
 
+
+
     const parsedSize = {
         y: parseInt(data.size.y),
         x: parseInt(data.size.x)
     };
     
+    // CORRECTION 1: Nettoyer l'ancien affichage du joueur AVANT de le redessiner
+    cleanupPlayerOldPositions(targetPlayerId, startPosArray);
+
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
+        player_data = otherPlayers.find(p => p.user.player === data.player_id);
         handleOtherPlayerMove({
             targetPlayerId,
             startPosArray,
@@ -59,7 +68,83 @@ function update_player_coord(data) {
         update_player_pos_display_after_move(data);
     }
     
-    // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR
+    // NOUVELLE FONCTION : Nettoyage complet des anciennes positions d'un joueur
+    function cleanupPlayerOldPositions(playerId, startPosArray) {
+        if (!Array.isArray(startPosArray)) return;
+        
+        startPosArray.forEach(startId => {
+            const element = document.getElementById(startId);
+            if (!element) return;
+            
+            // Supprimer tous les éléments de vaisseau de ce joueur spécifiquement
+            const shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed');
+            shipElements.forEach(ship => {
+                // Vérifier si c'est bien le vaisseau du joueur concerné
+                const shipParent = ship.closest('.pc, .ship-pos');
+                if (shipParent) {
+                    ship.remove();
+                }
+            });
+            
+            // Supprimer les tooltips spécifiques à ce joueur
+            const tooltip = element.querySelector(`#tooltip-pc_${playerId}`);
+            if (tooltip) {
+                tooltip.remove();
+            }
+            
+            // Supprimer les classes liées au joueur
+            element.classList.remove('pc', 'uncrossable', 'ship-pos');
+            element.removeAttribute('size_x');
+            element.removeAttribute('size_y');
+            
+            // Réinitialiser la cellule comme une cellule normale
+            resetCellToDefault(element, startId);
+        });
+    }
+    
+    // NOUVELLE FONCTION : Réinitialiser une cellule à son état par défaut
+    function resetCellToDefault(element, cellId) {
+        const coordinates = cellId.split('_');
+        const containerDiv = element.querySelector('.coord-zone-div');
+        const border = element.querySelector('span');
+        
+        if (containerDiv) {
+            // Nettoyer le contenu du conteneur
+            const childrenToKeep = Array.from(containerDiv.children).filter(child => 
+                !child.classList.contains('ship') && 
+                !child.classList.contains('ship-reversed') &&
+                !child.classList.contains('player-ship') &&
+                !child.classList.contains('player-ship-reversed')
+            );
+            
+            containerDiv.innerHTML = '';
+            childrenToKeep.forEach(child => containerDiv.appendChild(child));
+            
+            // S'assurer qu'il y a un span pour le pathfinding
+            if (!containerDiv.querySelector('span')) {
+                const newSpan = document.createElement('span');
+                newSpan.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+                newSpan.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordinates[0]} ; x: ${coordinates[1]}]`);
+                newSpan.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
+                newSpan.setAttribute(attribute_touch_click, 'display_pathfinding()');
+                containerDiv.appendChild(newSpan);
+            }
+        }
+        
+        // Réinitialiser les classes de l'élément principal
+        element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
+        
+        // Réinitialiser les attributs du border/span
+        if (border) {
+            border.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+            border.removeAttribute('data-modal-target');
+            border.removeAttribute('onclick');
+            border.removeAttribute('ontouchstart');
+            border.id = '';
+        }
+    }
+    
+    // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR (modifiée)
     function handleOtherPlayerMove(params) {
         const {
             targetPlayerId,
@@ -72,23 +157,24 @@ function update_player_coord(data) {
             size,
             modulesRange
         } = params;
+        
         // Cache des éléments DOM pour éviter les recherches répétées
         const modalElement = document.getElementById(`modal-pc_${targetPlayerId}`);
         if (!modalElement) {
             console.warn(`Modal non trouvée pour le joueur ${targetPlayerId}`);
             return;
         }
-        // Traitement des positions en batch pour optimiser les performances
-        processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY);
         
-        // Mise à jour de l'interface utilisateur
-        updatePlayerMovementUI(modalElement, movementRemaining, maxMovement);
-        
-        // Mise à jour des portées des modules
-        update_player_range_in_modal(modulesRange);
+        // CORRECTION 2: S'assurer que les anciennes positions sont complètement nettoyées
+        // avant de traiter les nouvelles positions
+        setTimeout(() => {
+            processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY);
+            updatePlayerMovementUI(modalElement, movementRemaining, maxMovement);
+            update_player_range_in_modal(modulesRange);
+        }, 0);
     }
     
-    // TRAITEMENT OPTIMISÉ DES POSITIONS
+    // TRAITEMENT OPTIMISÉ DES POSITIONS (modifié)
     function processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY) {
         // Validation des tableaux
         if (!Array.isArray(startPosArray) || !Array.isArray(endPosArray)) {
@@ -99,64 +185,28 @@ function update_player_coord(data) {
             return;
         }
         
-        // Fragment DOM pour optimiser les manipulations
-        const fragment = document.createDocumentFragment();
-        
-        // Traitement des positions par batch
-        const positionUpdates = startPosArray.map((startId, index) => {
-            const endId = endPosArray[index];
-            return processPositionPair(startId, endId, targetPlayerId, size, endX, endY);
-        });
-        
-        // Application des mises à jour en une seule fois
-        positionUpdates.forEach(update => {
-            if (update) {
-                update();
+        // CORRECTION 3: Traitement séquentiel pour éviter les conflits
+        endPosArray.forEach((endId, index) => {
+            const endPoint = document.getElementById(endId);
+            if (!endPoint) {
+                console.warn(`Point de destination non trouvé: ${endId}`);
+                return;
             }
+            
+            // Mise à jour de la nouvelle position
+            updateNewPosition(endPoint, targetPlayerId, size, endX, endY);
         });
     }
     
-    // TRAITEMENT D'UNE PAIRE DE POSITIONS
-    function processPositionPair(startId, endId, targetPlayerId, size, endX, endY) {
-        const entryPoint = document.getElementById(startId);
-        const endPoint = document.getElementById(endId);
-        
-        if (!entryPoint || !endPoint) {
-            console.warn(`Éléments DOM non trouvés: ${startId} ou ${endId}`);
-            return null;
-        }
-        
-        // Cache du contenu pour éviter les accès DOM répétés
-        const tempContent = endPoint.innerHTML;
-        const entryContent = entryPoint.innerHTML;
-        
-        return () => {
-            // Échange des contenus
-            endPoint.innerHTML = entryContent;
-            entryPoint.innerHTML = tempContent;
-            
-            // Mise à jour des propriétés de l'ancien point
-            updateOldPosition(entryPoint, startId);
-            
-            // Mise à jour des propriétés du nouveau point
-            updateNewPosition(endPoint, targetPlayerId, size, endX, endY);
-        };
-    }
-    
-    // MISE À JOUR DE L'ANCIENNE POSITION
-    function updateOldPosition(entryPoint, startId) {
-        const pathfindingZone = entryPoint.querySelector('.pathfinding-zone');
-        if (pathfindingZone) {
-            const coordinates = startId.split('_');
-            pathfindingZone.setAttribute('data-title',`${map_informations?.sector?.name || 'Secteur'} [y: ${coordinates[0]} ; x: ${coordinates[1]}]`);
-        }
-        
-        // Nettoyage des classes et événements
-        entryPoint.classList.remove('pc', 'uncrossable');
-    }
-    
-    // MISE À JOUR DE LA NOUVELLE POSITION
+    // MISE À JOUR DE LA NOUVELLE POSITION (simplifiée et corrigée)
     function updateNewPosition(endPoint, targetPlayerId, size, endX, endY) {
+        // CORRECTION 4: Vérifier d'abord que la cellule n'est pas déjà occupée par ce joueur
+        const existingShip = endPoint.querySelector(`#tooltip-pc_${targetPlayerId}`);
+        if (existingShip) {
+            console.warn(`Le joueur ${targetPlayerId} est déjà présent à cette position`);
+            return;
+        }
+        
         // Ajout des classes nécessaires
         endPoint.classList.add('pc', 'uncrossable');
         
@@ -165,28 +215,69 @@ function update_player_coord(data) {
         
         // Configuration des événements de survol
         setupHoverEvents(endPoint, size, endX, endY);
-
+        
+        // Créer et ajouter les éléments de vaisseau
+        createAndAddShipElements(endPoint, targetPlayerId, size);
     }
     
-    // CONFIGURATION DES ÉVÉNEMENTS DE CLIC
-    function setupClickEvent(endPoint, targetPlayerId) {
-        // Suppression des anciens événements pour éviter les doublons
-        const newEndPoint = endPoint.cloneNode(true);
-        endPoint.parentNode.replaceChild(newEndPoint, endPoint);
+    // NOUVELLE FONCTION : Créer et ajouter les éléments de vaisseau
+    function createAndAddShipElements(endPoint, targetPlayerId, size) {
+        // Récupérer les informations du joueur depuis le cache
+        const playerData = map_informations.pc.find(p => p.user.player === targetPlayerId);
+        if (!playerData) {
+            console.warn(`Données du joueur ${targetPlayerId} non trouvées`);
+            return;
+        }
         
-        // Ajout du nouvel événement
+        const containerDiv = endPoint.querySelector('.coord-zone-div');
+        if (!containerDiv) return;
+        
+        // Créer les éléments de vaisseau
+        const shipImage = playerData.ship.image;
+        const bgUrl = `/static/img/foreground/SHIPS/${shipImage}.png`;
+        const bgUrlReversed = `/static/img/foreground/SHIPS/${shipImage}-reversed.png`;
+        
+        const spaceShip = document.createElement('div');
+        spaceShip.style.backgroundImage = `url('${bgUrl}')`;
+        spaceShip.classList.add('ship', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc', 'z-1');
+        spaceShip.style.backgroundPositionX = '0px';
+        spaceShip.style.backgroundPositionY = '0px';
+        
+        const spaceShipReversed = document.createElement('div');
+        spaceShipReversed.style.backgroundImage = `url('${bgUrlReversed}')`;
+        spaceShipReversed.classList.add('ship-reversed', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc', 'z-1');
+        spaceShipReversed.style.backgroundPositionX = '0px';
+        spaceShipReversed.style.backgroundPositionY = '0px';
+        
+        // Affichage conditionnel selon l'orientation
+        if (playerData.ship.is_reversed) {
+            spaceShip.classList.add('hidden');
+            spaceShipReversed.classList.remove('hidden');
+        } else {
+            spaceShip.classList.remove('hidden');
+            spaceShipReversed.classList.add('hidden');
+        }
+        
+        containerDiv.appendChild(spaceShip);
+        containerDiv.appendChild(spaceShipReversed);
+    }
+    
+    // CONFIGURATION DES ÉVÉNEMENTS DE CLIC (inchangée)
+    function setupClickEvent(endPoint, targetPlayerId) {
+        const border = endPoint.querySelector('span');
+        if (!border) return;
+        
         if(targetPlayerId != currentPlayer.user.player){
-            newEndPoint.addEventListener(attribute_touch_click, function(event) {
+            border.addEventListener(action_listener_touch_click, function(event) {
                 event.preventDefault();
                 open_close(`modal-pc_${targetPlayerId}`);
             });
         }
         
-        
-        return newEndPoint;
+        return endPoint;
     }
     
-    // CONFIGURATION DES ÉVÉNEMENTS DE SURVOL
+    // CONFIGURATION DES ÉVÉNEMENTS DE SURVOL (inchangée)
     function setupHoverEvents(endPoint, size, endX, endY) {
         const endPointBorder = endPoint.querySelector('span');
         if (!endPointBorder) return;
@@ -205,21 +296,17 @@ function update_player_coord(data) {
         endPointBorder.addEventListener("mouseout", mouseoutHandler);
     }
     
-    // MISE À JOUR DE L'INTERFACE UTILISATEUR DU MOUVEMENT
+    // MISE À JOUR DE L'INTERFACE UTILISATEUR DU MOUVEMENT (inchangée)
     function updatePlayerMovementUI(modalElement, movementRemaining, maxMovement) {
         try {
-            // Mise à jour de la barre de progression détaillée
             updateDetailedMovementBar(modalElement, movementRemaining, maxMovement);
-            
-            // Mise à jour de l'indicateur de statut du mouvement
             updateMovementStatus(modalElement, movementRemaining, maxMovement);
-            
         } catch (error) {
             console.error('Erreur lors de la mise à jour de l\'interface utilisateur:', error);
         }
     }
     
-    // MISE À JOUR DE LA BARRE DE PROGRESSION DÉTAILLÉE
+    // MISE À JOUR DE LA BARRE DE PROGRESSION DÉTAILLÉE (inchangée)
     function updateDetailedMovementBar(modalElement, movementRemaining, maxMovement) {
         const detailedContainer = modalElement.querySelector('#movement-container-detailed');
         if (!detailedContainer) return;
@@ -234,7 +321,7 @@ function update_player_coord(data) {
         }
     }
     
-    // MISE À JOUR DU STATUT DE MOUVEMENT
+    // MISE À JOUR DU STATUT DE MOUVEMENT (inchangée)
     function updateMovementStatus(modalElement, movementRemaining, maxMovement) {
         const movementContainer = modalElement.querySelector('#movement-container');
         if (!movementContainer) return;
@@ -242,15 +329,12 @@ function update_player_coord(data) {
         const movementText = movementContainer.querySelector('p');
         if (!movementText) return;
         
-        // Calcul optimisé du statut avec cache
         const movementValue = color_per_percent(movementRemaining, maxMovement);
         
-        // Mise à jour en une seule opération
         movementText.className = `text-xs ${movementValue.color} font-shadow`;
         movementText.textContent = movementValue.status;
     }
 }
-
 // FONCTIONS UTILITAIRES POUR L'OPTIMISATION
 
 /**
@@ -272,41 +356,8 @@ function debounce(func, wait) {
 }
 
 /**
- * Validation rapide des données d'entrée
- * @param {Object} data - Données à valider
- * @returns {boolean}
- */
-function validatePlayerCoordData(data) {
-    const requiredFields = [
-        'size', 'user_id', 'player_id', 
-        'start_id_array', 'destination_id_array',
-        'movement_remaining', 'max_movement'
-    ];
-    
-    return requiredFields.every(field => data.hasOwnProperty(field));
-}
-
-/**
  * Cache pour les éléments DOM fréquemment utilisés
  */
-
-/**
- * Version optimisée avec validation et cache DOM
- * @param {Object} data - Données du joueur
- */
-function update_player_coord_optimized(data) {
-    // Validation préalable
-    if (!validatePlayerCoordData(data)) {
-        console.error('Données invalides pour update_player_coord:', data);
-        return;
-    }
-    
-    // Utilisation du cache DOM
-    const targetModal = DOMCache.get(`modal-pc_${data.player_id}`);
-    
-    // Appel de la fonction principale
-    update_player_coord(data);
-}
 
 function async_reverse_ship(data) {
     clear_path();
@@ -348,6 +399,7 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 // VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
 function update_player_pos_display_after_move(data) {
+    console.log(otherPlayers)
     // Cache des éléments DOM fréquemment utilisés
     const tabletopView = document.querySelector('.tabletop-view');
     const movementPercent = document.querySelector('#movement-percent');
@@ -356,8 +408,8 @@ function update_player_pos_display_after_move(data) {
     
     // Extraction des données principales
     const { player, sector } = data;
-    const { coordinates, name: playerName } = player.user;
-    const { size, is_reversed, current_movement, max_movement, image, visible_zone, view_range } = player.ship;
+    const { coordinates, name: playerName } = currentPlayer.user;
+    const { size, is_reversed, current_movement, max_movement, image, visible_zone, view_range } = currentPlayer.ship;
     
     const coord_x = coordinates.x + 1;
     const coord_y = coordinates.y + 1;
@@ -383,7 +435,7 @@ function update_player_pos_display_after_move(data) {
     if (!isMobile) {
         set_pathfinding_event();
     }
-    
+
     // 5. Placement du vaisseau aux nouvelles coordonnées (optimisé)
     placeShipAtNewPosition();
     
@@ -649,32 +701,6 @@ function update_player_pos_display_after_move(data) {
     }
 }
 
-// FONCTIONS UTILITAIRES SUPPLÉMENTAIRES (si nécessaires)
-
-/**
- * Vérifie si un élément DOM existe avant de le manipuler
- * @param {string} selector - Sélecteur CSS
- * @returns {Element|null}
- */
-function safeQuerySelector(selector) {
-    try {
-        return document.querySelector(selector);
-    } catch (error) {
-        console.warn(`Sélecteur invalide: ${selector}`, error);
-        return null;
-    }
-}
-
-/**
- * Optimisation pour les opérations DOM batch
- * @param {Function} operations - Fonction contenant les opérations DOM
- */
-function batchDOMOperations(operations) {
-    // Utilisation de requestAnimationFrame pour optimiser les performances
-    requestAnimationFrame(() => {
-        operations();
-    });
-}
 
 function occured_event_display_on_map(event_type, is_using_timer, user_id, value=0){ 
     

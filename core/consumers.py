@@ -108,58 +108,36 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def async_move(self, event: Dict[str, Any]) -> None:
-        """
-        Gère les mouvements asynchrones des joueurs.
-        
-        Args:
-            event: Événement contenant les données de mouvement
-        """
         try:
             message = json.loads(event["message"])
             player_action = PlayerAction(self.user.id)
             store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-            current_player_id = player_action.get_player_id()
-            response = self._process_player_move(message, player_action, store, current_player_id)
-            self._send_response(response)
             
+            # Traiter le mouvement
+            if self._can_move_to_destination(player_action, message):
+                if self._register_move(player_action, message):
+                    store.update_player_position(message)
+                    # ✅ CORRECTION : Toujours mettre à jour la portée du joueur connecté
+                    store.update_player_range_finding()
+                    
+                    # Préparer la réponse selon le type de mouvement
+                    if self._is_own_player_move(self.player_id, message):
+                        # Le joueur connecté a bougé
+                        store.update_sector_player_visibility_zone(self.player_id)
+                        response = self._create_own_move_response(player_action, store, message, self.player_id)
+                    else:
+                        # Un autre joueur a bougé
+                        response = self._handle_other_player_move(message, player_action, store, self.player_id)
+                    
+                    # Envoyer la réponse personnalisée au joueur connecté
+                    self._send_response(response)
+                
         except (json.JSONDecodeError, KeyError) as e:
             logger.error(f"Erreur lors du traitement du mouvement: {e}")
-
-    def _process_player_move(
-        self, 
-        message: Dict[str, Any], 
-        player_action: PlayerAction, 
-        store: StoreInCache, 
-        current_player_id: int
-    ) -> Dict[str, Any]:
-        """
-        Traite le mouvement d'un joueur.
-        
-        Returns:
-            Dict contenant la réponse à envoyer
-        """
-        if self._can_move_to_destination(player_action, message):
-            if self._register_move(player_action, message):
-                store.update_player_position(message)
-                if self._is_own_player_move(self.player_id, message):
-                    return self._handle_own_player_move(message, player_action, store, self.player_id)
-                return self._handle_other_player_move(message, player_action, store, self.player_id)
 
     def _is_own_player_move(self, player_id: int, message: Dict[str, Any]) -> bool:
         """Vérifie si le mouvement concerne le joueur actuel."""
         return player_id == message["player"]
-
-    def _handle_own_player_move(
-        self, 
-        message: Dict[str, Any], 
-        player_action: PlayerAction, 
-        store: StoreInCache, 
-        player_id: int
-    ) -> Dict[str, Any]:
-        """Gère le mouvement du propre joueur."""
-        self._update_player_state(store, message)
-        store.update_sector_player_visibility_zone(player_id)
-        return self._create_own_move_response(player_action, store, message, player_id)
 
     def _can_move_to_destination(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Vérifie si la destination est libre."""
@@ -179,10 +157,6 @@ class GameConsumer(WebsocketConsumer):
             player_id=message["player"]
         )
 
-    def _update_player_state(self, store: StoreInCache, message: Dict[str, Any]) -> None:
-        """Met à jour l'état du joueur."""
-        store.update_player_range_finding()
-
     def _create_own_move_response(
         self, 
         player_action: PlayerAction, 
@@ -195,6 +169,8 @@ class GameConsumer(WebsocketConsumer):
             "type": "player_move",
             "message": {
                 "player_id": message["player"],
+                "updated_other_player_data": store.get_other_player_data(self.player_id),
+                "updated_current_player_data": store.get_current_player_data(self.player_id),
                 "player": store.get_specific_player_data(player_id, "pc"),
                 "sector": store.get_specific_sector_data("sector"),
                 "move_cost": message["move_cost"],
@@ -227,6 +203,8 @@ class GameConsumer(WebsocketConsumer):
             "type": "player_move",
             "message": {
                 "player": player_action.get_other_player_name(message["player"]),
+                "updated_other_player_data": store.get_other_player_data(self.player_id),
+                "updated_current_player_data": store.get_current_player_data(self.player_id),
                 "player_id": message["player"],
                 "is_reversed": message["is_reversed"],
                 "start_id_array": message["start_id_array"],

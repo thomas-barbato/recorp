@@ -395,6 +395,7 @@ function createPathfindingOptions() {
 }
 
 // Nettoyage des styles CSS
+
 function cleanCss() {
     const pathfindingZones = document.querySelectorAll('.pathfinding-zone');
     

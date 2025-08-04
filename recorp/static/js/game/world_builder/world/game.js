@@ -2,8 +2,8 @@
 let gameSocket = null;
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_player_id = JSON.parse(document.getElementById('script_current_player_id').textContent);
-const currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
-const otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
+let currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
+let otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
 const npcs = map_informations.npc || [];
 let observable_zone = [];
 let observable_zone_id = [];
