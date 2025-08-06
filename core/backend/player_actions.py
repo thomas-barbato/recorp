@@ -3,6 +3,9 @@ import os
 from typing import Optional, Dict, List, Tuple, Any
 from django.core import serializers
 from recorp.settings import BASE_DIR
+from django.db.models import Q
+from functools import reduce
+import operator
 from django.contrib.auth.models import User
 from core.backend.get_data import GetDataFromDB
 from core.models import (
@@ -155,7 +158,7 @@ class PlayerAction:
         except PlayerShip.DoesNotExist:
             return None
 
-    def destination_already_occupied(self, end_x: int, end_y: int, size_x : int, size_y) -> bool:
+    def destination_already_occupied(self, coordinates_list: list) -> bool:
         """
         Vérifie si une destination est déjà occupée.
         
@@ -166,17 +169,19 @@ class PlayerAction:
         Returns:
             bool: True si occupée, False sinon
         """
-        coordinates = []
-        if size_x == 1 and size_y == 1: 
-            coordinates.append({"x": end_x, "y": end_y})
+        coordinates = [{"x": int(coord.split('_')[1]), "y": int(coord.split('_')[0])} for coord in coordinates_list]
+    
+        if len(coordinates) > 1:
+            # Créer une liste de conditions Q pour chaque coordonnée
+            q_objects = [Q(coordinates=coord) for coord in coordinates]
+            
+            # Combiner avec OR
+            combined_q = reduce(operator.or_, q_objects)
+            
+            return Player.objects.filter(combined_q).exists()
         else:
-            for y in range(end_y, end_y + size_y):
-                for x in range(end_x, end_x + size_x):
-                    coordinates.append({"x": x, "y": y})
-                    
-        return Player.objects.filter(
-            coordinates__in=coordinates
-        ).exists()
+            return Player.objects.filter(coordinates=coordinates).exists()
+        
 
     def get_reverse_ship_status(self) -> Optional[bool]:
         """Récupère le statut de retournement du vaisseau."""
@@ -312,7 +317,7 @@ class PlayerAction:
             pass
         return False
 
-    def move_have_been_registered(self, end_x: int, end_y: int, move_cost: int, player_id: int) -> bool:
+    def move_have_been_registered(self, coordinates, move_cost: int, player_id: int) -> bool:
         """
         Enregistre un mouvement du joueur.
         
@@ -324,9 +329,11 @@ class PlayerAction:
         Returns:
             bool: True si le mouvement a été enregistré
         """
+        coordinates_split = coordinates.split('_')
+        coord = {"x": int(coordinates_split[1]), "y": int(coordinates_split[0])}
         if self._check_if_player_can_move_and_update(move_cost):
             Player.objects.filter(id=player_id).update(
-                coordinates={"x": end_x, "y": end_y}
+                coordinates=coord
             )
             return True
         return False

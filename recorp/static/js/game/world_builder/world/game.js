@@ -41,99 +41,7 @@ const HEALTH_STATUSES = {
 };
 
 // Cache pour optimiser les accès DOM (version améliorée)
-const DOMCache = {
-    _cache: new Map(),
-    _observers: new Map(),
-    
-    get(selector) {
-        if (!this._cache.has(selector)) {
-            const element = document.querySelector(selector);
-            if (element) {
-                this._cache.set(selector, element);
-                this._setupObserver(selector, element);
-            }
-        }
-        return this._cache.get(selector);
-    },
-    
-    getAll(selector) {
-        const cacheKey = `${selector}:all`;
-        if (!this._cache.has(cacheKey)) {
-            const elements = document.querySelectorAll(selector);
-            if (elements.length > 0) {
-                this._cache.set(cacheKey, Array.from(elements));
-            }
-        }
-        return this._cache.get(cacheKey) || [];
-    },
-    
-    getElementById(id) {
-        const cacheKey = `#${id}`;
-        return this.get(cacheKey);
-    },
-    
-    _setupObserver(selector, element) {
-        // Observer pour détecter si l'élément est retiré du DOM
-        if (!this._observers.has(selector)) {
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'childList') {
-                        mutation.removedNodes.forEach((node) => {
-                            if (node === element || (node.contains && node.contains(element))) {
-                                this.remove(selector);
-                                observer.disconnect();
-                                this._observers.delete(selector);
-                            }
-                        });
-                    }
-                });
-            });
-            
-            observer.observe(document.body, { 
-                childList: true, 
-                subtree: true 
-            });
-            
-            this._observers.set(selector, observer);
-        }
-    },
-    
-    clear() {
-        this._cache.clear();
-        this._observers.forEach(observer => observer.disconnect());
-        this._observers.clear();
-    },
-    
-    remove(selector) {
-        this._cache.delete(selector);
-        const observer = this._observers.get(selector);
-        if (observer) {
-            observer.disconnect();
-            this._observers.delete(selector);
-        }
-    },
-    
-    // Méthode pour précharger les éléments critiques
-    preload() {
-        const criticalSelectors = [
-            '.tabletop-view',
-            '.ship-pos',
-            '.player-ship-start-pos',
-            '#movement-percent',
-            '#movement-container-value-max',
-            '#movement-container-value-current',
-            '#modal-container'
-        ];
-        
-        criticalSelectors.forEach(selector => {
-            try {
-                this.get(selector);
-            } catch (error) {
-                console.warn(`Impossible de précharger l'élément: ${selector}`, error);
-            }
-        });
-    }
-};
+
 
 // Pool d'objets pour réduire les allocations (version améliorée)
 const ObjectPool = {
@@ -382,8 +290,8 @@ function color_per_percent(current_val, max_val) {
  */
 function reverse_player_ship_display() {
     // Utilisation du cache DOM pour éviter les requêtes répétées
-    const shipElements = DOMCache.getAll('.ship-pos');
-    const ids = shipElements.map(element => element.id);
+    const shipElements = document.querySelectorAll('.ship-pos');
+    const ids = Array.from(shipElements).map(element => element.id);
 
     return async_reverse_ship({
         player: current_player_id,
@@ -394,6 +302,7 @@ function reverse_player_ship_display() {
 /**
  * Initialise les événements de déconnexion (version optimisée)
  */
+/*
 function init_logout_events() {
     const body = document.body;
     
@@ -408,7 +317,7 @@ function init_logout_events() {
         }
     });
 }
-
+*/
 /**
  * Crée une connexion WebSocket avec gestion améliorée
  * @param {string} room - ID de la salle
@@ -519,7 +428,7 @@ function setup_websocket_handlers(socket, room) {
  */
 function showConnectionError() {
     // Créer ou afficher une notification d'erreur de connexion
-    const errorNotification = DOMCache.get('#connection-error') || createConnectionErrorNotification();
+    const errorNotification = document.querySelector('#connection-error') || createConnectionErrorNotification();
     if (errorNotification) {
         errorNotification.style.display = 'block';
     }
@@ -588,7 +497,6 @@ function handleUserLeave(message) {
  */
 function init_sector_generation() {
     // Précharger les éléments DOM critiques
-    DOMCache.preload();
     
     // Regroupement des opérations DOM pour de meilleures performances
     PerformanceManager.scheduleOperation(() => {
@@ -630,7 +538,7 @@ function setup_window_resize_handler() {
         }
         
         resizeTimeout = setTimeout(() => {
-            const player_start_element = DOMCache.get('.player-ship-start-pos');
+            const player_start_element = document.querySelector('.player-ship-start-pos');
             if (!player_start_element) {
                 console.warn('Player start position element not found');
                 return;
@@ -683,10 +591,11 @@ function init_game() {
             init_sector_generation();
         }, true);
         
+        /*
         PerformanceManager.scheduleOperation(() => {
             init_logout_events();
         });
-        
+        */
         console.log('Jeu initialisé avec succès');
         
     } catch (error) {
@@ -709,8 +618,6 @@ function cleanup_game() {
     // Nettoyer les managers
     PerformanceManager.clear();
     EventManager.cleanup();
-    DOMCache.clear();
-    
     console.log('Nettoyage terminé');
 }
 

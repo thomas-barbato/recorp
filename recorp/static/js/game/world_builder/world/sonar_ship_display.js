@@ -183,9 +183,8 @@ class PostMovementDetectionSystem {
             `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
         );
         border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
-        
-        // Event listeners pour joueur visible
-        border.addEventListener("mouseover", () => {
+
+        function handleBorderGeneration() {
             generate_border(
                 playerInfo.ship.sizeY, 
                 playerInfo.ship.sizeX, 
@@ -195,9 +194,9 @@ class PostMovementDetectionSystem {
             );
             border.classList.remove('border-yellow-300');
             border.classList.add('border-cyan-400');
-        });
-        
-        border.addEventListener("mouseout", () => {
+        }
+
+        function handleBorderRemove() {
             remove_border(
                 playerInfo.ship.sizeY, 
                 playerInfo.ship.sizeX, 
@@ -207,12 +206,18 @@ class PostMovementDetectionSystem {
             );
             border.classList.remove('border-yellow-300');
             border.classList.add('border-cyan-400');
-        });
-
-        // Configuration du clic pour non-mobile
-        if (!is_user_is_on_mobile_device()) {
-            border.setAttribute(attribute_touch_click, `open_close_modal('modal-pc_${playerInfo.user.id}')`);
+            // Configuration du clic pour non-mobile
+            if (!is_user_is_on_mobile_device()) {
+                border.setAttribute(attribute_touch_click, `open_close_modal('modal-pc_${playerInfo.user.id}')`);
+            }
         }
+
+    
+        // Événements optimisés avec les valeurs pré-calculées
+
+        // Add event listeners
+        border.addEventListener("mouseover", handleBorderGeneration);
+        border.addEventListener("mouseout", handleBorderRemove);
     }
 
     /**
@@ -424,9 +429,14 @@ class PostMovementDetectionSystem {
     displayUnknownShip(cell, coordinates) {
         const cellDiv = cell.querySelector('div');
 
-        // Créer le cercle jaune
-        const unknownElement = this.createUnknownElement();
-        cellDiv.appendChild(unknownElement);
+        let unknownShip = cellDiv.querySelector('#unknown-ship')
+
+        if(!unknownShip){
+            // Créer le cercle jaune
+            const unknownElement = this.createUnknownElement();
+            cellDiv.appendChild(unknownElement);
+        }
+        
     }
 
     /**

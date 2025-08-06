@@ -1,4 +1,5 @@
 function add_pc(data) {
+
     const coordinatesArrayToDisableButton = [];
     
     data.forEach(playerData => {
@@ -12,7 +13,9 @@ function add_pc(data) {
             }
             renderOtherPlayerShip(playerData, playerInfo);
         }else{
+            console.log(data)
             renderPlayerShip(playerData, playerInfo);
+            createAndAppendPlayerModal(playerData, playerInfo)
         }
         
     });
@@ -111,11 +114,9 @@ function renderOtherPlayerShip(playerData, playerInfo) {
         for (let colOffset = 0; colOffset < (atlas.tilesize * sizeX); colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
+
             if(is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
-            }else{
-                spaceShip = createUnknownElement();
-                setupUnknownPcCell(cell, border, playerInfo, spaceShip);
             }
             
             coordX++;
@@ -245,19 +246,6 @@ function createShipElements(shipImage, colOffset, rowOffset) {
     const spaceShipReversed = createShipElement(bgUrlReversed, colOffset, rowOffset, 'ship-reversed');
     
     return { spaceShip, spaceShipReversed };
-}
-
-function createUnknownElement(){
-    const spaceShip = document.createElement('div');
-    spaceShip.classList.add(
-        'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
-        'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
-        '-translate-y-1/2', 'z-1'
-    );
-    spaceShip.id = "unknown-ship";
-    
-    return spaceShip;
-
 }
 
 function createOutOfBoundShipElement(bgUrl, colOffset, rowOffset, className){

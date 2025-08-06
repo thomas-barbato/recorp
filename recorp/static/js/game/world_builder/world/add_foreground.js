@@ -149,14 +149,13 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
     
     border.setAttribute(attribute_touch_click, `open_close_modal('modal-${elementInfo.name}')`);
     
+    // Événements optimisés avec les valeurs pré-calculées
+    const mouseoverHandler = () => generate_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
+    const mouseoutHandler = () => remove_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
+
     // Add event listeners
-    border.addEventListener("mouseover", () => {
-        generate_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
-    });
-    
-    border.addEventListener("mouseout", () => {
-        remove_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
-    });
+    border.addEventListener("mouseover", mouseoverHandler);
+    border.addEventListener("mouseout", mouseoutHandler);
 }
 
 function createImageDiv(elementInfo, bgUrl, colOffset, rowOffset, colIndex, rowIndex) {

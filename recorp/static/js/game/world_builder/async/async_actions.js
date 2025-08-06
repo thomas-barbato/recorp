@@ -18,6 +18,17 @@ function async_move(pos) {
     }));
 }
 
+function async_reverse_ship(data) {
+    clear_path();
+    gameSocket.send(JSON.stringify({
+        message: JSON.stringify({
+            "player": data.player,
+            "id_array": data.id_array,
+        }),
+        type: "async_reverse_ship"
+    }));
+}
+
 function update_player_coord(data) {
     // Nettoyage initial
     clear_path();
@@ -25,34 +36,13 @@ function update_player_coord(data) {
     // updated players data.
     currentPlayer = data.updated_current_player_data[0];
     otherPlayers = data.updated_other_player_data;
-
-    
-    // Extraction et validation des données
-    const {
-        size,
-        player_id: targetPlayerId,
-        start_id_array: startPosArray,
-        destination_id_array: endPosArray,
-        movement_remaining: movementRemaining,
-        max_movement: maxMovement,
-        end_x,
-        end_y,
-        modules_range
-    } = data;
-
-
-
-    const parsedSize = {
-        y: parseInt(data.size.y),
-        x: parseInt(data.size.x)
-    };
-    
-    // CORRECTION 1: Nettoyer l'ancien affichage du joueur AVANT de le redessiner
-    cleanupPlayerOldPositions(targetPlayerId, startPosArray);
+    console.log(data.start_id_array)
+    cleanupPlayerOldPositions(data.start_id_array, data.size);
 
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
-        player_data = otherPlayers.find(p => p.user.player === data.player_id);
+        otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
+        /*
         handleOtherPlayerMove({
             targetPlayerId,
             startPosArray,
@@ -64,117 +54,157 @@ function update_player_coord(data) {
             size: parsedSize,
             modulesRange: modules_range
         });
+        */
     } else {
-        update_player_pos_display_after_move(data);
+        //update_player_pos_display_after_move(currentPlayer);
     }
-    
+    /*
     // NOUVELLE FONCTION : Nettoyage complet des anciennes positions d'un joueur
-    function cleanupPlayerOldPositions(playerId, startPosArray) {
-        if (!Array.isArray(startPosArray)) return;
-        
-        startPosArray.forEach(startId => {
-            const element = document.getElementById(startId);
-            if (!element) return;
-            
-            // Supprimer tous les éléments de vaisseau de ce joueur spécifiquement
-            const shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed');
-            shipElements.forEach(ship => {
-                // Vérifier si c'est bien le vaisseau du joueur concerné
-                const shipParent = ship.closest('.pc, .ship-pos');
-                if (shipParent) {
-                    ship.remove();
-                }
-            });
-            
-            // Supprimer les tooltips spécifiques à ce joueur
-            const tooltip = element.querySelector(`#tooltip-pc_${playerId}`);
-            if (tooltip) {
-                tooltip.remove();
-            }
-            
-            // Supprimer les classes liées au joueur
-            element.classList.remove('pc', 'uncrossable', 'ship-pos');
-            element.removeAttribute('size_x');
-            element.removeAttribute('size_y');
-            
-            // Réinitialiser la cellule comme une cellule normale
-            resetCellToDefault(element, startId);
-        });
+    function cleanupPlayerOldPositions(startPosArray) {
+        startPosArray.forEach(pos => {
+            resetCellToDefault(pos);
+        })
     }
     
     // NOUVELLE FONCTION : Réinitialiser une cellule à son état par défaut
-    function resetCellToDefault(element, cellId) {
-        const coordinates = cellId.split('_');
-        const containerDiv = element.querySelector('.coord-zone-div');
+    function resetCellToDefault(coordinates) {
+        const id = `${coordinates}`;
+        const element = document.getElementById(id);
+        const coordZone = element.querySelector('.coord-zone-div');
         const border = element.querySelector('span');
+        const fieldOfView = element.querySelector('#field-of-view');
+        const toolTip = element.querySelector('ul');
         
-        if (containerDiv) {
-            // Nettoyer le contenu du conteneur
-            const childrenToKeep = Array.from(containerDiv.children).filter(child => 
-                !child.classList.contains('ship') && 
-                !child.classList.contains('ship-reversed') &&
-                !child.classList.contains('player-ship') &&
-                !child.classList.contains('player-ship-reversed')
-            );
-            
-            containerDiv.innerHTML = '';
-            childrenToKeep.forEach(child => containerDiv.appendChild(child));
-            
-            // S'assurer qu'il y a un span pour le pathfinding
-            if (!containerDiv.querySelector('span')) {
-                const newSpan = document.createElement('span');
-                newSpan.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-                newSpan.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordinates[0]} ; x: ${coordinates[1]}]`);
-                newSpan.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
-                newSpan.setAttribute(attribute_touch_click, 'display_pathfinding()');
-                containerDiv.appendChild(newSpan);
+        if(!element) return ;
+
+        sonar.removeEventListeners(element);
+        
+        const shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed');
+        shipElements.forEach(ship => {
+            const shipParent = ship.closest('.pc, .ship-pos');
+            if (shipParent) {
+                ship.remove();
+            }
+        });
+        
+        // Supprimer les classes liées au joueur
+        element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
+        element.removeAttribute('size_x');
+        element.removeAttribute('size_y');
+
+        coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
+        
+        if(border){
+            border.remove()
+        }
+
+        if(toolTip){
+            toolTip.remove();
+        }
+
+        if(fieldOfView){
+            if(observable_zone_id.includes(id)){
+                fieldOfView.classList.add('in-range');
+            }else{
+                fieldOfView.classList.remove('in-range');
             }
         }
+
+        let newBorderZone = document.createElement('span');
+        newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+        newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
+
+        coordZone.append(newBorderZone);
+    }
+        */
+
+    // Version ultra-optimisée si vous traitez beaucoup d'éléments
+    function cleanupPlayerOldPositions(startPosArray) {
+        // Désactivation temporaire du rendu pour améliorer les performances
+        const shouldBatch = startPosArray.length > 10;
         
-        // Réinitialiser les classes de l'élément principal
-        element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
-        
-        // Réinitialiser les attributs du border/span
-        if (border) {
-            border.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-            border.removeAttribute('data-modal-target');
-            border.removeAttribute('onclick');
-            border.removeAttribute('ontouchstart');
-            border.id = '';
+        if (shouldBatch) {
+            document.body.style.display = 'none';
         }
+        
+        try {
+            startPosArray.forEach(pos => {
+                resetCellToDefault(pos);
+            });
+        } finally {
+            if (shouldBatch) {
+                document.body.style.display = '';
+            }
+        }
+    }
+
+    function resetCellToDefault(coordinates) {
+        const id = `${coordinates}`;
+        const element = document.getElementById(id);
+        
+        if (!element) return;
+        
+        // Mise en cache de tous les sélecteurs en une fois
+        const selectors = {
+            coordZone: element.querySelector('.coord-zone-div'),
+            border: element.querySelector('span'),
+            fieldOfView: element.querySelector('#field-of-view'),
+            toolTip: element.querySelector('ul'),
+            shipElements: element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship')
+        };
+        
+        sonar.removeEventListeners(element);
+        
+        // Suppression optimisée des ships
+        selectors.shipElements.forEach(ship => {
+            if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
+                ship.remove();
+            }
+        });
+        
+        // Batch des modifications DOM
+        element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile");
+        element.removeAttribute('size_x');
+        element.removeAttribute('size_y');
+        
+        if (selectors.coordZone) {
+            selectors.coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
+        }
+        
+        // Suppression en lot
+        selectors.border?.remove();
+        selectors.toolTip?.remove();
+        
+        // Field of view optimisé
+        if (selectors.fieldOfView) {
+            selectors.fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
+        }
+        
+        // Création et ajout du nouveau border
+        const [coordY, coordX] = coordinates.split('_');
+        const newBorderZone = document.createElement('span');
+        newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+        newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
+        
+        selectors.coordZone?.appendChild(newBorderZone);
     }
     
     // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR (modifiée)
-    function handleOtherPlayerMove(params) {
-        const {
-            targetPlayerId,
-            startPosArray,
-            endPosArray,
-            movementRemaining,
-            maxMovement,
-            endX,
-            endY,
-            size,
-            modulesRange
-        } = params;
+    function handleOtherPlayerMove(start_pos_array, player_data) {
+
+        const targetPlayerId = player_data.user.player; 
         
-        // Cache des éléments DOM pour éviter les recherches répétées
         const modalElement = document.getElementById(`modal-pc_${targetPlayerId}`);
         if (!modalElement) {
             console.warn(`Modal non trouvée pour le joueur ${targetPlayerId}`);
             return;
         }
         
-        // CORRECTION 2: S'assurer que les anciennes positions sont complètement nettoyées
-        // avant de traiter les nouvelles positions
-        setTimeout(() => {
-            processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY);
-            updatePlayerMovementUI(modalElement, movementRemaining, maxMovement);
-            update_player_range_in_modal(modulesRange);
-        }, 0);
+        processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY);
+        updatePlayerMovementUI(modalElement, movementRemaining, maxMovement);
+        update_player_range_in_modal(modulesRange);
     }
     
-    // TRAITEMENT OPTIMISÉ DES POSITIONS (modifié)
     function processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, endX, endY) {
         // Validation des tableaux
         if (!Array.isArray(startPosArray) || !Array.isArray(endPosArray)) {
@@ -185,7 +215,7 @@ function update_player_coord(data) {
             return;
         }
         
-        // CORRECTION 3: Traitement séquentiel pour éviter les conflits
+        // Traitement séquentiel pour éviter les conflits
         endPosArray.forEach((endId, index) => {
             const endPoint = document.getElementById(endId);
             if (!endPoint) {
@@ -200,7 +230,7 @@ function update_player_coord(data) {
     
     // MISE À JOUR DE LA NOUVELLE POSITION (simplifiée et corrigée)
     function updateNewPosition(endPoint, targetPlayerId, size, endX, endY) {
-        // CORRECTION 4: Vérifier d'abord que la cellule n'est pas déjà occupée par ce joueur
+        // Vérifier d'abord que la cellule n'est pas déjà occupée par ce joueur
         const existingShip = endPoint.querySelector(`#tooltip-pc_${targetPlayerId}`);
         if (existingShip) {
             console.warn(`Le joueur ${targetPlayerId} est déjà présent à cette position`);
@@ -355,21 +385,6 @@ function debounce(func, wait) {
     };
 }
 
-/**
- * Cache pour les éléments DOM fréquemment utilisés
- */
-
-function async_reverse_ship(data) {
-    clear_path();
-    gameSocket.send(JSON.stringify({
-        message: JSON.stringify({
-            "player": data.player,
-            "id_array": data.id_array,
-        }),
-        type: "async_reverse_ship"
-    }));
-}
-
 function reverse_ship(data) {
     let id_list = data["id_array"];
     update_reverse_ship_in_cache_array(data["player_id"], data["is_reversed"]);
@@ -399,7 +414,7 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 // VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
 function update_player_pos_display_after_move(data) {
-    console.log(otherPlayers)
+    
     // Cache des éléments DOM fréquemment utilisés
     const tabletopView = document.querySelector('.tabletop-view');
     const movementPercent = document.querySelector('#movement-percent');
@@ -445,6 +460,9 @@ function update_player_pos_display_after_move(data) {
     // 7. Affichage de l'événement de mouvement
     occured_event_display_on_map("movement", false, player.user.player, data.move_cost);
     update_player_range_in_modal(data.modules_range);
+
+    
+    console.log(document.querySelectorAll(".player-ship-start-pos").length)
     
     // 8. Désactivation des boutons pour mobile
     if (isMobile) {
@@ -853,7 +871,7 @@ function remove_ship_display(data){
             }
         }
     }
-
+    
     var modal = document.querySelector('#modal-pc_' + player_id);
     if(modal){
         modal.parentNode.removeChild(modal);

@@ -464,7 +464,7 @@ class StoreInCache:
             logger.error(f"Erreur lors de la récupération des données du joueur {player_id}: {e}")
             return None
 
-    def get_specific_sector_data(self, search_item: str) -> Any:
+    def get_sector_data(self) -> Any:
         """
         Récupère des données spécifiques du secteur.
         
@@ -477,7 +477,7 @@ class StoreInCache:
         try:
             if not cache.get(self.room):
                 self.set_sector_data(self.sector_pk)
-            return cache.get(self.room, {}).get(search_item)
+            return cache.get(self.room, {}).get("sector")
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des données du secteur: {e}")
             return None

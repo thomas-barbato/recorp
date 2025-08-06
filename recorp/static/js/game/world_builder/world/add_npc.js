@@ -139,25 +139,14 @@ function setupNpcCell(cell, border, npcInfo) {
     border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     border.id = "ship-data-title";
+        
+    // Événements optimisés avec les valeurs pré-calculées
+    const mouseoverHandler = () => generate_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
+    const mouseoutHandler = () => remove_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
 
     // Add event listeners
-    cell.addEventListener("mouseover", () => {
-        generate_border(
-            npcInfo.ship.sizeY, 
-            npcInfo.ship.sizeX, 
-            npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1,
-        );
-    });
-    
-    cell.addEventListener("mouseout", () => {
-        remove_border(
-            npcInfo.ship.sizeY, 
-            npcInfo.ship.sizeX, 
-            npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1,
-        );
-    });
+    cell.addEventListener("mouseover", mouseoverHandler);
+    cell.addEventListener("mouseout", mouseoutHandler);
 }
 
 function setupUnkownNpcCell(cell, border, npcInfo) {

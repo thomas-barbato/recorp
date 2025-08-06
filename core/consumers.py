@@ -117,7 +117,7 @@ class GameConsumer(WebsocketConsumer):
             if self._can_move_to_destination(player_action, message):
                 if self._register_move(player_action, message):
                     store.update_player_position(message)
-                    # ✅ CORRECTION : Toujours mettre à jour la portée du joueur connecté
+                    # Toujours mettre à jour la portée du joueur connecté
                     store.update_player_range_finding()
                     
                     # Préparer la réponse selon le type de mouvement
@@ -142,17 +142,13 @@ class GameConsumer(WebsocketConsumer):
     def _can_move_to_destination(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Vérifie si la destination est libre."""
         return not player_action.destination_already_occupied(
-            message["end_x"], 
-            message["end_y"],
-            message["size_x"],
-            message["size_y"],
+            message['destination_id_array']
         )
 
     def _register_move(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Enregistre le mouvement du joueur."""
         return player_action.move_have_been_registered(
-            end_x=message["end_x"],
-            end_y=message["end_y"],
+            coordinates=message['destination_id_array'][0],
             move_cost=int(message["move_cost"]),
             player_id=message["player"]
         )
@@ -165,14 +161,16 @@ class GameConsumer(WebsocketConsumer):
         player_id: int
     ) -> Dict[str, Any]:
         """Crée la réponse pour le mouvement du propre joueur."""
+        print(message["start_id_array"])
         return {
             "type": "player_move",
             "message": {
                 "player_id": message["player"],
+                "start_id_array": message["start_id_array"],
                 "updated_other_player_data": store.get_other_player_data(self.player_id),
                 "updated_current_player_data": store.get_current_player_data(self.player_id),
-                "player": store.get_specific_player_data(player_id, "pc"),
-                "sector": store.get_specific_sector_data("sector"),
+                "is_reversed": message["is_reversed"],
+                "sector": store.get_sector_data(),
                 "move_cost": message["move_cost"],
                 "modules_range": store.get_specific_player_data(
                     player_id, "pc", "ship", "modules_range"
@@ -183,9 +181,7 @@ class GameConsumer(WebsocketConsumer):
                 "view_range": store.get_specific_player_data(
                     message["player"], "pc", "ship", "view_range" 
                 ),
-                "size": store.get_specific_player_data(
-                    player_id, "pc", "ship", "size"
-                ),
+                "size": {"x" : message["size_x"], "y" : message["size_y"]},
                 
             },
         }
@@ -202,15 +198,13 @@ class GameConsumer(WebsocketConsumer):
         return {
             "type": "player_move",
             "message": {
-                "player": player_action.get_other_player_name(message["player"]),
+                "player_id": message["player"],
                 "updated_other_player_data": store.get_other_player_data(self.player_id),
                 "updated_current_player_data": store.get_current_player_data(self.player_id),
-                "player_id": message["player"],
+                "otherPlayerData": player_action.get_other_player_name(message["player"]),
                 "is_reversed": message["is_reversed"],
+                "sector": store.get_sector_data(),
                 "start_id_array": message["start_id_array"],
-                "destination_id_array": message["destination_id_array"],
-                "end_x": message["end_x"],
-                "end_y": message["end_y"],
                 "movement_remaining": player_action.get_other_player_movement_remaining(
                     message["player"]
                 ),
@@ -220,9 +214,7 @@ class GameConsumer(WebsocketConsumer):
                 "modules_range": store.get_specific_player_data(
                     player_id, "pc", "ship", "modules_range"
                 ),
-                "size": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "size"
-                ),
+                "size": {"x" : message["size_x"], "y" : message["size_y"]},
             },
         }
 
