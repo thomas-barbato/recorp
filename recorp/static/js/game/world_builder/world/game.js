@@ -40,193 +40,6 @@ const HEALTH_STATUSES = {
     LOW: { threshold: 0, color: "text-red-600" }
 };
 
-// Cache pour optimiser les accès DOM (version améliorée)
-
-
-// Pool d'objets pour réduire les allocations (version améliorée)
-const ObjectPool = {
-    _fadeEffectPool: [],
-    _eventHandlerPool: [],
-    _elementPool: new Map(),
-    
-    getFadeEffect() {
-        return this._fadeEffectPool.pop() || { 
-            intervalId: null, 
-            target: null, 
-            timer: 0,
-            opacity: 1
-        };
-    },
-    
-    returnFadeEffect(obj) {
-        obj.intervalId = null;
-        obj.target = null;
-        obj.timer = 0;
-        obj.opacity = 1;
-        this._fadeEffectPool.push(obj);
-    },
-    
-    getElement(tagName) {
-        const poolKey = tagName.toLowerCase();
-        if (!this._elementPool.has(poolKey)) {
-            this._elementPool.set(poolKey, []);
-        }
-        
-        const pool = this._elementPool.get(poolKey);
-        return pool.pop() || document.createElement(tagName);
-    },
-    
-    returnElement(element) {
-        if (!element || !element.tagName) return;
-        
-        const poolKey = element.tagName.toLowerCase();
-        if (!this._elementPool.has(poolKey)) {
-            this._elementPool.set(poolKey, []);
-        }
-        
-        // Nettoyer l'élément
-        element.className = '';
-        element.removeAttribute('style');
-        element.innerHTML = '';
-        
-        // Supprimer tous les event listeners
-        const newElement = element.cloneNode(false);
-        if (element.parentNode) {
-            element.parentNode.replaceChild(newElement, element);
-        }
-        
-        this._elementPool.get(poolKey).push(newElement);
-    }
-};
-
-// Gestionnaire d'événements optimisé (version améliorée)
-const EventManager = {
-    _handlers: new WeakMap(),
-    _delegatedEvents: new Map(),
-    
-    addEventListener(element, event, handler, options = false) {
-        if (!element || typeof handler !== 'function') {
-            console.warn('EventManager: Invalid element or handler');
-            return;
-        }
-        
-        if (!this._handlers.has(element)) {
-            this._handlers.set(element, new Map());
-        }
-        
-        const elementHandlers = this._handlers.get(element);
-        const key = `${event}_${handler.name || 'anonymous'}`;
-        
-        if (!elementHandlers.has(key)) {
-            element.addEventListener(event, handler, options);
-            elementHandlers.set(key, { handler, options });
-        }
-    },
-    
-    removeEventListener(element, event, handler) {
-        if (!this._handlers.has(element)) return;
-        
-        const elementHandlers = this._handlers.get(element);
-        const key = `${event}_${handler.name || 'anonymous'}`;
-        
-        if (elementHandlers.has(key)) {
-            const { options } = elementHandlers.get(key);
-            element.removeEventListener(event, handler, options);
-            elementHandlers.delete(key);
-        }
-    },
-    
-    // Délégation d'événements pour de meilleures performances
-    delegate(parent, eventType, selector, handler) {
-        const delegateKey = `${eventType}_${selector}`;
-        
-        if (!this._delegatedEvents.has(delegateKey)) {
-            const delegateHandler = (event) => {
-                const target = event.target.closest(selector);
-                if (target && parent.contains(target)) {
-                    handler.call(target, event);
-                }
-            };
-            
-            parent.addEventListener(eventType, delegateHandler, true);
-            this._delegatedEvents.set(delegateKey, delegateHandler);
-        }
-    },
-    
-    // Nettoyer tous les event listeners
-    cleanup() {
-        this._handlers = new WeakMap();
-        this._delegatedEvents.clear();
-    }
-};
-
-// Gestionnaire de performances (version améliorée)
-const PerformanceManager = {
-    _frameId: null,
-    _pendingOperations: [],
-    _highPriorityOperations: [],
-    _isProcessing: false,
-    
-    scheduleOperation(operation, highPriority = false) {
-        if (highPriority) {
-            this._highPriorityOperations.push(operation);
-        } else {
-            this._pendingOperations.push(operation);
-        }
-        
-        if (!this._frameId && !this._isProcessing) {
-            this._frameId = requestAnimationFrame(() => this._processOperations());
-        }
-    },
-    
-    _processOperations() {
-        this._isProcessing = true;
-        const startTime = performance.now();
-        const maxExecutionTime = 16; // 16ms pour maintenir 60fps
-        
-        // Traiter d'abord les opérations haute priorité
-        while (this._highPriorityOperations.length > 0 && 
-            (performance.now() - startTime) < maxExecutionTime) {
-            const operation = this._highPriorityOperations.shift();
-            try {
-                operation();
-            } catch (error) {
-                console.error('Erreur lors de l\'exécution d\'une opération haute priorité:', error);
-            }
-        }
-        
-        // Traiter ensuite les opérations normales
-        while (this._pendingOperations.length > 0 && 
-            (performance.now() - startTime) < maxExecutionTime) {
-            const operation = this._pendingOperations.shift();
-            try {
-                operation();
-            } catch (error) {
-                console.error('Erreur lors de l\'exécution d\'une opération:', error);
-            }
-        }
-        
-        this._frameId = null;
-        this._isProcessing = false;
-        
-        // S'il reste des opérations, programmer la prochaine frame
-        if (this._pendingOperations.length > 0 || this._highPriorityOperations.length > 0) {
-            this._frameId = requestAnimationFrame(() => this._processOperations());
-        }
-    },
-    
-    // Nettoyer toutes les opérations en attente
-    clear() {
-        if (this._frameId) {
-            cancelAnimationFrame(this._frameId);
-            this._frameId = null;
-        }
-        this._pendingOperations = [];
-        this._highPriorityOperations = [];
-        this._isProcessing = false;
-    }
-};
-
 /**
  * Applique un effet de fondu à un élément avant de le supprimer (version optimisée)
  * @param {HTMLElement} target - L'élément cible
@@ -238,7 +51,6 @@ function fade_effect(target, timer) {
         return;
     }
 
-    const fadeObj = ObjectPool.getFadeEffect();
     fadeObj.target = target;
     fadeObj.timer = timer;
     fadeObj.opacity = parseFloat(target.style.opacity || '1');
@@ -252,7 +64,6 @@ function fade_effect(target, timer) {
             if (fadeObj.target.parentNode) {
                 fadeObj.target.remove();
             }
-            ObjectPool.returnFadeEffect(fadeObj);
         }
     }, timer);
 }
@@ -299,25 +110,6 @@ function reverse_player_ship_display() {
     });
 }
 
-/**
- * Initialise les événements de déconnexion (version optimisée)
- */
-/*
-function init_logout_events() {
-    const body = document.body;
-    
-    // Utilisation de la délégation d'événements pour de meilleures performances
-    EventManager.delegate(body, action_listener_touch_click, '.logout', function(event) {
-        event.preventDefault();
-        const logout_submit_btn = this.querySelector('#logout-btn');
-        if (logout_submit_btn) {
-            logout_submit_btn.click();
-        } else {
-            console.warn('Logout submit button not found');
-        }
-    });
-}
-*/
 /**
  * Crée une connexion WebSocket avec gestion améliorée
  * @param {string} room - ID de la salle
@@ -404,15 +196,13 @@ function setup_websocket_handlers(socket, room) {
 
     socket.onmessage = (e) => {
         try {
+
             const data = JSON.parse(e.data);
             
             // Ignorer les pings/pongs
             if (data.type === 'pong') return;
-            
-            // Traitement asynchrone pour éviter de bloquer l'interface
-            PerformanceManager.scheduleOperation(() => {
-                handle_websocket_message(data);
-            }, data.type === 'player_move'); // Haute priorité pour les mouvements
+            handle_websocket_message(data);
+
         } catch (error) {
             console.error('Erreur lors du parsing du message WebSocket:', error);
         }
@@ -428,7 +218,7 @@ function setup_websocket_handlers(socket, room) {
  */
 function showConnectionError() {
     // Créer ou afficher une notification d'erreur de connexion
-    const errorNotification = document.querySelector('#connection-error') || createConnectionErrorNotification();
+    //const errorNotification = document.querySelector('#connection-error') || createConnectionErrorNotification();
     if (errorNotification) {
         errorNotification.style.display = 'block';
     }
@@ -437,6 +227,7 @@ function showConnectionError() {
 /**
  * Crée une notification d'erreur de connexion
  */
+/*
 function createConnectionErrorNotification() {
     const notification = ObjectPool.getElement('div');
     notification.id = 'connection-error';
@@ -452,7 +243,7 @@ function createConnectionErrorNotification() {
     notification.style.display = 'none';
     document.body.appendChild(notification);
     return notification;
-}
+}*/
 
 /**
  * Gère les messages WebSocket entrants (version optimisée)
@@ -497,33 +288,29 @@ function handleUserLeave(message) {
  */
 function init_sector_generation() {
     // Précharger les éléments DOM critiques
-    
-    // Regroupement des opérations DOM pour de meilleures performances
-    PerformanceManager.scheduleOperation(() => {
-        try {
-            [observable_zone, observable_zone_id] = getObservableZone();
+    try {
+        [observable_zone, observable_zone_id] = getObservableZone();
 
-            generate_sector(
-                map_informations.sector,
-                map_informations.sector_element, 
-                map_informations.npc, 
-                map_informations.pc
-            );
-            
-            // Vérifier que les fonctions existent avant de les appeler
-            if (typeof initializeDetectionSystem === 'function') {
-                initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
-            }
-            
-            if (typeof initializeEnhancedDetectionSystem === 'function') {
-                initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, npcs);
-            }
-            
-            console.log('Secteur généré avec succès');
-        } catch (error) {
-            console.error('Erreur lors de la génération du secteur:', error);
+        generate_sector(
+            map_informations.sector,
+            map_informations.sector_element, 
+            map_informations.npc, 
+            map_informations.pc
+        );
+        
+        // Vérifier que les fonctions existent avant de les appeler
+        if (typeof initializeDetectionSystem === 'function') {
+            initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
         }
-    }, true); // Haute priorité
+        
+        if (typeof initializeEnhancedDetectionSystem === 'function') {
+            initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, npcs);
+        }
+        
+        console.log('Secteur généré avec succès');
+    } catch (error) {
+        console.error('Erreur lors de la génération du secteur:', error);
+    }
 }
 
 /**
@@ -538,29 +325,26 @@ function setup_window_resize_handler() {
         }
         
         resizeTimeout = setTimeout(() => {
+
             const player_start_element = document.querySelector('.player-ship-start-pos');
+
             if (!player_start_element) {
                 console.warn('Player start position element not found');
                 return;
             }
 
             const user_id = player_start_element.id.split('_');
-            
-            // Regroupement des opérations pour de meilleures performances
-            PerformanceManager.scheduleOperation(() => {
-                try {
-                    hide_sector_overflow(user_id[1], user_id[0]);
-                    if (!user_is_on_mobile_bool && typeof set_pathfinding_event === 'function') {
-                        set_pathfinding_event();
-                    }
-                } catch (error) {
-                    console.error('Erreur lors du redimensionnement:', error);
+            try {
+                hide_sector_overflow(user_id[1], user_id[0]);
+                if (!user_is_on_mobile_bool && typeof set_pathfinding_event === 'function') {
+                    set_pathfinding_event();
                 }
-            });
+            } catch (error) {
+                console.error('Erreur lors du redimensionnement:', error);
+            }
+
         }, WS_CONFIG.RESIZE_DELAY);
     };
-    
-    EventManager.addEventListener(window, 'resize', handleResize, { passive: true });
 }
 
 /**
@@ -587,15 +371,8 @@ function init_game() {
         setup_window_resize_handler();
         
         // Initialiser les composants du jeu de manière asynchrone
-        PerformanceManager.scheduleOperation(() => {
-            init_sector_generation();
-        }, true);
+        init_sector_generation();
         
-        /*
-        PerformanceManager.scheduleOperation(() => {
-            init_logout_events();
-        });
-        */
         console.log('Jeu initialisé avec succès');
         
     } catch (error) {
@@ -616,8 +393,6 @@ function cleanup_game() {
     }
     
     // Nettoyer les managers
-    PerformanceManager.clear();
-    EventManager.cleanup();
     console.log('Nettoyage terminé');
 }
 
@@ -641,27 +416,4 @@ window.addEventListener('beforeunload', cleanup_game);
 // Nettoyage lors du changement de page (SPA)
 window.addEventListener('pagehide', cleanup_game);
 
-// Gestion de la visibilité de la page pour optimiser les performances
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        // Réduire l'activité quand la page n'est pas visible
-        PerformanceManager.clear();
-    } else {
-        // Reprendre l'activité normale
-        if (gameSocket && gameSocket.readyState !== WebSocket.OPEN) {
-            // Essayer de reconnecter si nécessaire
-            const room = map_informations.sector.id;
-            gameSocket = create_websocket_connection(room);
-            setup_websocket_handlers(gameSocket, room);
-        }
-    }
-});
-
-// Initialisation au chargement de la page avec vérification de l'état du DOM
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init_game);
-} else {
-    // DOM déjà chargé - initialiser immédiatement
-    // Mais attendre un peu pour s'assurer que tous les scripts sont chargés
-    setTimeout(init_game, 0);
-}
+window.addEventListener('load', init_game);

@@ -110,6 +110,7 @@ class GameConsumer(WebsocketConsumer):
     def async_move(self, event: Dict[str, Any]) -> None:
         try:
             message = json.loads(event["message"])
+            print(message)
             player_action = PlayerAction(self.user.id)
             store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
             
@@ -161,7 +162,6 @@ class GameConsumer(WebsocketConsumer):
         player_id: int
     ) -> Dict[str, Any]:
         """Crée la réponse pour le mouvement du propre joueur."""
-        print(message["start_id_array"])
         return {
             "type": "player_move",
             "message": {

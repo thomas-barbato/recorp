@@ -36,8 +36,7 @@ function update_player_coord(data) {
     // updated players data.
     currentPlayer = data.updated_current_player_data[0];
     otherPlayers = data.updated_other_player_data;
-    console.log(data.start_id_array)
-    cleanupPlayerOldPositions(data.start_id_array, data.size);
+    resetCellToDefault(data.start_id_array);
 
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
@@ -56,137 +55,62 @@ function update_player_coord(data) {
         });
         */
     } else {
-        //update_player_pos_display_after_move(currentPlayer);
+        update_player_pos_display_after_move(currentPlayer);
     }
-    /*
-    // NOUVELLE FONCTION : Nettoyage complet des anciennes positions d'un joueur
-    function cleanupPlayerOldPositions(startPosArray) {
-        startPosArray.forEach(pos => {
-            resetCellToDefault(pos);
-        })
-    }
-    
-    // NOUVELLE FONCTION : Réinitialiser une cellule à son état par défaut
-    function resetCellToDefault(coordinates) {
-        const id = `${coordinates}`;
-        const element = document.getElementById(id);
-        const coordZone = element.querySelector('.coord-zone-div');
-        const border = element.querySelector('span');
-        const fieldOfView = element.querySelector('#field-of-view');
-        const toolTip = element.querySelector('ul');
-        
-        if(!element) return ;
 
-        sonar.removeEventListeners(element);
-        
-        const shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed');
-        shipElements.forEach(ship => {
-            const shipParent = ship.closest('.pc, .ship-pos');
-            if (shipParent) {
-                ship.remove();
-            }
-        });
-        
-        // Supprimer les classes liées au joueur
-        element.className = "relative w-[32px] h-[32px] m-0 p-0 tile";
-        element.removeAttribute('size_x');
-        element.removeAttribute('size_y');
 
-        coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
-        
-        if(border){
-            border.remove()
-        }
-
-        if(toolTip){
-            toolTip.remove();
-        }
-
-        if(fieldOfView){
-            if(observable_zone_id.includes(id)){
-                fieldOfView.classList.add('in-range');
-            }else{
-                fieldOfView.classList.remove('in-range');
-            }
-        }
-
-        let newBorderZone = document.createElement('span');
-        newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-        newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
-
-        coordZone.append(newBorderZone);
-    }
-        */
-
-    // Version ultra-optimisée si vous traitez beaucoup d'éléments
-    function cleanupPlayerOldPositions(startPosArray) {
-        // Désactivation temporaire du rendu pour améliorer les performances
-        const shouldBatch = startPosArray.length > 10;
-        
-        if (shouldBatch) {
-            document.body.style.display = 'none';
-        }
-        
-        try {
-            startPosArray.forEach(pos => {
-                resetCellToDefault(pos);
+    function resetCellToDefault(startPosArray) {
+        for(let i = 0; i < startPosArray.length; i++){
+            let id = startPosArray[i];
+            let element = document.getElementById(id);
+            
+            if (!element) return;
+            
+            // Mise en cache de tous les sélecteurs en une fois
+            let selectors = {
+                coordZone: element.querySelector('.coord-zone-div'),
+                border: element.querySelector('span'),
+                fieldOfView: element.querySelector('#field-of-view'),
+                toolTip: element.querySelector('ul'),
+                shipElements: element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship')
+            };
+            
+            sonar.removeEventListeners(element);
+            
+            // Suppression optimisée des ships
+            selectors.shipElements.forEach(ship => {
+                if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
+                    ship.remove();
+                }
             });
-        } finally {
-            if (shouldBatch) {
-                document.body.style.display = '';
+            
+            // Batch des modifications DOM
+            element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile");
+            element.removeAttribute('size_x');
+            element.removeAttribute('size_y');
+            
+            if (selectors.coordZone) {
+                selectors.coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
             }
-        }
-    }
-
-    function resetCellToDefault(coordinates) {
-        const id = `${coordinates}`;
-        const element = document.getElementById(id);
-        
-        if (!element) return;
-        
-        // Mise en cache de tous les sélecteurs en une fois
-        const selectors = {
-            coordZone: element.querySelector('.coord-zone-div'),
-            border: element.querySelector('span'),
-            fieldOfView: element.querySelector('#field-of-view'),
-            toolTip: element.querySelector('ul'),
-            shipElements: element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship')
-        };
-        
-        sonar.removeEventListeners(element);
-        
-        // Suppression optimisée des ships
-        selectors.shipElements.forEach(ship => {
-            if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
-                ship.remove();
+            
+            // Suppression en lot
+            selectors.border?.remove();
+            selectors.toolTip?.remove();
+            
+            // Field of view optimisé
+            if (selectors.fieldOfView) {
+                selectors.fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
             }
-        });
-        
-        // Batch des modifications DOM
-        element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile");
-        element.removeAttribute('size_x');
-        element.removeAttribute('size_y');
-        
-        if (selectors.coordZone) {
-            selectors.coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
+            
+            // Création et ajout du nouveau border
+            let [coordY, coordX] = id.split('_');
+            let newBorderZone = document.createElement('span');
+            newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+            newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
+            
+            selectors.coordZone?.appendChild(newBorderZone);
         }
         
-        // Suppression en lot
-        selectors.border?.remove();
-        selectors.toolTip?.remove();
-        
-        // Field of view optimisé
-        if (selectors.fieldOfView) {
-            selectors.fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
-        }
-        
-        // Création et ajout du nouveau border
-        const [coordY, coordX] = coordinates.split('_');
-        const newBorderZone = document.createElement('span');
-        newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-        newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
-        
-        selectors.coordZone?.appendChild(newBorderZone);
     }
     
     // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR (modifiée)
@@ -388,7 +312,6 @@ function debounce(func, wait) {
 function reverse_ship(data) {
     let id_list = data["id_array"];
     update_reverse_ship_in_cache_array(data["player_id"], data["is_reversed"]);
-
     for (let i = 0; i < id_list.length; i++) {
         let element = document.getElementById(id_list[i]);
         let element_ship = element.querySelector('.ship');
@@ -414,7 +337,8 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 // VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
 function update_player_pos_display_after_move(data) {
-    
+    console.log(currentPlayer)
+
     // Cache des éléments DOM fréquemment utilisés
     const tabletopView = document.querySelector('.tabletop-view');
     const movementPercent = document.querySelector('#movement-percent');
@@ -458,11 +382,8 @@ function update_player_pos_display_after_move(data) {
     updateMovementUI();
     
     // 7. Affichage de l'événement de mouvement
-    occured_event_display_on_map("movement", false, player.user.player, data.move_cost);
+    occured_event_display_on_map("movement", false, currentPlayer.user.player, data.move_cost);
     update_player_range_in_modal(data.modules_range);
-
-    
-    console.log(document.querySelectorAll(".player-ship-start-pos").length)
     
     // 8. Désactivation des boutons pour mobile
     if (isMobile) {
@@ -519,11 +440,9 @@ function update_player_pos_display_after_move(data) {
     }
     
     function createPathfindingSpan(shipElement, containerDiv) {
-        const oldPosIdSplit = shipElement.id.split('_');
         const span = document.createElement('span');
-        
         span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-crosshair z-1 foreground-element";
-        span.setAttribute('data-title', `${sector.name} [y: ${oldPosIdSplit[0]} ; x: ${oldPosIdSplit[1]}]`);
+        span.setAttribute('data-title', `${currentPlayer.user.sector_name} [y: ${currentPlayer.user.coordinates.y} ; x: ${currentPlayer.user.coordinates.x}]`);
         
         containerDiv.appendChild(span);
     }
@@ -540,12 +459,12 @@ function update_player_pos_display_after_move(data) {
         const shipImageUrl = `/static/img/foreground/SHIPS/${image}.png`;
         const shipReversedImageUrl = `/static/img/foreground/SHIPS/${image}-reversed.png`;
         
-        let currentCoordX = coord_x;
-        let currentCoordY = coord_y;
+        let currentCoordX = currentPlayer.user.coordinates.x;
+        let currentCoordY = currentPlayer.user.coordinates.y;
         
         // Optimisation: calcul unique des tailles
-        const tileSizeY = atlas.tilesize * ship_size_y;
-        const tileSizeX = atlas.tilesize * ship_size_x;
+        const tileSizeY = atlas.tilesize * currentPlayer.ship.size.y;
+        const tileSizeX = atlas.tilesize * currentPlayer.ship.size.x;
         
         for (let row_i = 0; row_i < tileSizeY; row_i += atlas.tilesize) {
             for (let col_i = 0; col_i < tileSizeX; col_i += atlas.tilesize) {
@@ -569,10 +488,10 @@ function update_player_pos_display_after_move(data) {
             }
             
             currentCoordY++;
-            currentCoordX = coord_x;
+            currentCoordX = currentPlayer.user.coordinates.x;
         }
-        renderPlayerSonar({y: coord_y, x: coord_x}, view_range);
-        onPlayerMoved({x: coord_y, y: coord_x}, view_range);
+        renderPlayerSonar({y: currentPlayer.user.coordinates.y, x: currentPlayer.user.coordinates.x}, view_range);
+        onPlayerMoved({y: currentPlayer.user.coordinates.y, x: currentPlayer.user.coordinates.x}, view_range);
         initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
     }
     
@@ -590,7 +509,7 @@ function update_player_pos_display_after_move(data) {
         // Configuration du border
         entryPointBorder.classList.add('border-dashed', 'cursor-pointer', border_color);
         entryPointBorder.setAttribute('data-title', `${playerName} [x : ${coord[0]}, y: ${coord[1]}]`);
-        entryPointBorder.setAttribute('data-modal-target', `modal-pc_${player.user.player}`);
+        entryPointBorder.setAttribute('data-modal-target', `modal-pc_${currentPlayer.user.player}`);
         entryPointBorder.id = "ship-data-title";
         
         // Suppression des anciens événements de pathfinding

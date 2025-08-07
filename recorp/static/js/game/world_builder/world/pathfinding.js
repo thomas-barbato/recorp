@@ -289,7 +289,7 @@ function handlePlayerMovement() {
     
     const playerCoordArray = Array.from(document.querySelectorAll('.ship-pos'))
         .map(element => element.id);
-    console.log(current_player)
+        
     const moveData = {
         player: current_player_id,
         end_y: current_player.coord.end_x - 1,

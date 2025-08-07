@@ -142,8 +142,11 @@ class PostMovementDetectionSystem {
         const border = cell.querySelector('span');
         if (border) {
             // Cloner l'élément pour supprimer tous les event listeners
+            border.replaceWith(border.cloneNode(true));
+            /*
             const newBorder = border.cloneNode(true);
             border.parentNode.replaceChild(newBorder, border);
+            */
         }
     }
 

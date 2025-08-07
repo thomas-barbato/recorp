@@ -13,7 +13,6 @@ function add_pc(data) {
             }
             renderOtherPlayerShip(playerData, playerInfo);
         }else{
-            console.log(data)
             renderPlayerShip(playerData, playerInfo);
             createAndAppendPlayerModal(playerData, playerInfo)
         }
