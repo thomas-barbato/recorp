@@ -4,12 +4,13 @@ function add_pc(data) {
     
     data.forEach(playerData => {
         const playerInfo = extractPlayerInfo(playerData);
+        const modalData = createPlayerModalData(playerData);
         if (!playerInfo.isCurrentUser) {
             if(observable_zone_id.includes(playerInfo.ship.is_visible)){
-                createAndAppendPlayerModal(playerData, playerInfo);
+                createAndAppendPlayerModal(modalData, playerInfo);
             }else{
-                createAndAppendPlayerModal(playerData, playerInfo)
-                //createAndAppendUnknownModal();
+                console.log(playerInfo)
+                createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
             }
             renderOtherPlayerShip(playerData, playerInfo);
         }else{
@@ -51,21 +52,58 @@ function extractPlayerInfo(playerData) {
     };
 }
 
+function checkIfModalExists(modalId, is_hidden){
+    let id_with_prefix = is_hidden === true ? `modal-unknown_${modalId}` : `modal-${modalId}`;
+    console.log(id_with_prefix)
+    let element = document.getElementById(id_with_prefix)
+    if(element) return true;
+    return false;
+}
+
 function createAndAppendPlayerModal(playerData, playerInfo) {
-    const modalData = createPlayerModalData(playerData);
+
     const modalId = `pc_${playerInfo.user.id}`;
-    const coordString = `${playerInfo.coordinates.y - 1}_${playerInfo.coordinates.x - 1}`;
+
+    if(!checkIfModalExists(modalId, false)){
+        const modalData = createPlayerModalData(playerData);
+        const coordString = `${playerInfo.coordinates.y - 1}_${playerInfo.coordinates.x - 1}`;
+        
+        const modal = create_pc_npc_modal(
+            modalId,
+            modalData,
+            coordString,
+            playerInfo.ship.sizeY,
+            playerInfo.ship.sizeX,
+            false
+        );
+        
+        document.querySelector('#modal-container').append(modal);
+    }
     
-    const modal = create_pc_npc_modal(
-        modalId,
-        modalData,
-        coordString,
-        playerInfo.ship.sizeY,
-        playerInfo.ship.sizeX,
-        false
-    );
+    return;
+}
+
+function createAndAppendUnknownPcModal(modalData, playerInfo, playerId) {
+
+    const modalId = `pc_${playerId}`;
+
+    if(!checkIfModalExists(modalId, true)){
+
+        const coordString = `${playerInfo.coordinates.y - 1}_${playerInfo.coordinates.x - 1}`;
+        const modal = createUnknownModal(
+            modalId, 
+            modalData, 
+            coordString, 
+            playerInfo.ship.sizeY, 
+            playerInfo.ship.sizeX, 
+            true
+        );
+        
+        document.querySelector('#modal-container').append(modal);
+    }
     
-    document.querySelector('#modal-container').append(modal);
+    return;
+    
 }
 
 function createPlayerModalData(playerData) {
@@ -301,24 +339,14 @@ function setupBorderAndInteractions(border, playerData, playerInfo) {
         }
     }
     
-    // Add hover events
-    border.addEventListener("mouseover", () => {
-        generate_border(
-            playerInfo.ship.sizeY, 
-            playerInfo.ship.sizeX, 
-            playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1,
-        );
-    });
-    
-    border.addEventListener("mouseout", () => {
-        remove_border(
-            playerInfo.ship.sizeY, 
-            playerInfo.ship.sizeX, 
-            playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1, 
-        );
-    });
+        
+    // Événements optimisés avec les valeurs pré-calculées
+    const mouseoverHandler = () => generate_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
+    const mouseoutHandler = () => remove_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
+
+    // Add event listeners
+    border.addEventListener("mouseover", mouseoverHandler);
+    border.addEventListener("mouseout", mouseoutHandler);
 }
 
 function setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spaceShip, spaceShipReversed, rowOffset, colOffset) {

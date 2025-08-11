@@ -4,15 +4,9 @@ function add_npc(data) {
     data.forEach(npcData => {
         const npcInfo = extractNpcInfo(npcData);
         const modalData = createNpcModalData(npcData);
-        const id = `${npcInfo.coordinates.y}_${npcInfo.coordinates.x}`;
-        if(observable_zone_id.includes(id)){
-            createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
-        }else{
-            createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
-            //createAndAppendUnknownModal()(npcData.npc.id, modalData, npcInfo);
-        }
-        renderNpcShip(npcData, npcInfo);
+        renderNpcShip(npcData, npcInfo, modalData);
     });
+
     
     handleMobileButtonDisabling(coordinatesArrayToDisableButton);
 }
@@ -72,23 +66,59 @@ function createNpcModalData(npcData) {
     };
 }
 
-function createAndAppendNpcModal(npcId, modalData, npcInfo) {
-    const modalId = `npc_${npcId}`;
-    const coordString = `${npcInfo.coordinates.y - 1}_${npcInfo.coordinates.x - 1}`;
-    
-    const modal = create_pc_npc_modal(
-        modalId, 
-        modalData, 
-        coordString, 
-        npcInfo.ship.sizeY, 
-        npcInfo.ship.sizeX, 
-        true
-    );
-    
-    document.querySelector('#modal-container').append(modal);
+function checkIfModalExists(modalId, is_hidden){
+    let id_with_prefix = is_hidden === true ? `modal-unknown_${modalId}` : `modal-${modalId}`;
+    let element = document.getElementById(id_with_prefix)
+    if(element) return true;
+    return false;
 }
 
-function renderNpcShip(npcData, npcInfo) {
+function createAndAppendNpcModal(npcId, modalData, npcInfo) {
+
+    const modalId = `npc_${npcId}`;
+
+    if(!checkIfModalExists(modalId, false)){
+
+        const coordString = `${npcInfo.coordinates.y - 1}_${npcInfo.coordinates.x - 1}`;
+        const modal = create_pc_npc_modal(
+            modalId, 
+            modalData, 
+            coordString, 
+            npcInfo.ship.sizeY, 
+            npcInfo.ship.sizeX, 
+            true
+        );
+        
+        document.querySelector('#modal-container').append(modal);
+    }
+    
+    return;
+    
+}
+
+function createAndAppendUnknownNpcModal(npcId, modalData, npcInfo) {
+
+    const modalId = `npc_${npcId}`;
+
+    if(!checkIfModalExists(modalId, true)){
+
+        const coordString = `${npcInfo.coordinates.y - 1}_${npcInfo.coordinates.x - 1}`;
+        
+        const modal = createUnknownModal(
+            modalId, 
+            modalData, 
+            coordString, 
+            npcInfo.ship.sizeY, 
+            npcInfo.ship.sizeX, 
+            true
+        );
+        
+        document.querySelector('#modal-container').append(modal);
+    }
+    return;
+}
+
+function renderNpcShip(npcData, npcInfo, modalData) {
     const bgUrl = `/static/img/foreground/SHIPS/${npcInfo.ship.image}.png`;
     let coordX = npcInfo.coordinates.x;
     let coordY = npcInfo.coordinates.y;
@@ -107,11 +137,15 @@ function renderNpcShip(npcData, npcInfo) {
             if(is_visible){
                 setupNpcCell(cell, border, npcInfo);
                 spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
+                createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
             }else{
                 setupUnkownNpcCell(cell, border, npcInfo);
                 spaceShip = createUnknownElement();
+                createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
             }
             
+            const clickAction = is_visible === true ? `open_close_modal('modal-npc_${npcData.npc.id}')`: `open_close_modal('modal-unknown_npc_${npcData.npc.id}')`;
+            border.setAttribute(attribute_touch_click, clickAction);
             handleShipPositioning(cell, npcInfo.ship.sizeY, npcInfo.ship.sizeX, rowOffset, colOffset);
             
             cellDiv.append(spaceShip);
@@ -150,40 +184,32 @@ function setupNpcCell(cell, border, npcInfo) {
 }
 
 function setupUnkownNpcCell(cell, border, npcInfo) {
+
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
     
     // Configure border
+    border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+    border.setAttribute('data-modal-target', `modal-unknown-npc_${npcInfo.npc.id}`);
     border.setAttribute('data-title', 
         `Unknown [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );
+        
+    // Événements optimisés avec les valeurs pré-calculées
+    const mouseoverHandler = () => generate_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
+    const mouseoutHandler = () => remove_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
 
-    border.setAttribute('data-modal-target', `modal-unknown_npc_${npcInfo.npc.id}`);
-    border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     // Add event listeners
-    border.addEventListener("mouseover", () => {
-        generate_border(
-            npcInfo.ship.sizeY, 
-            npcInfo.ship.sizeX, 
-            npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1,
-        );
-    });
-    
-    border.addEventListener("mouseout", () => {
-        remove_border(
-            npcInfo.ship.sizeY, 
-            npcInfo.ship.sizeX, 
-            npcInfo.coordinates.baseY + 1, 
-            npcInfo.coordinates.baseX + 1,
-        );
-    });
+    cell.addEventListener("mouseover", mouseoverHandler);
+    cell.addEventListener("mouseout", mouseoutHandler);
+
 }
 
 
 function createSpaceShipElement(bgUrl, colOffset, rowOffset) {
+
     const spaceShip = document.createElement('div');
     
     spaceShip.style.backgroundImage = `url('${bgUrl}')`;

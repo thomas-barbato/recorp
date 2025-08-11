@@ -41,19 +41,14 @@ function update_player_coord(data) {
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
         otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
-        /*
-        handleOtherPlayerMove({
-            targetPlayerId,
-            startPosArray,
-            endPosArray,
-            movementRemaining: parseInt(movementRemaining),
-            maxMovement: parseInt(maxMovement),
-            endX: end_x,
-            endY: end_y,
-            size: parsedSize,
-            modulesRange: modules_range
-        });
-        */
+        let size = {'x' : data.size_x, 'y': data.size_y}
+        handleOtherPlayerMove(
+            data.start_id_array, 
+            data.destination_id_array,
+            size,
+            data.is_reversed,
+            otherPlayerData
+        );
     } else {
         update_player_pos_display_after_move(currentPlayer);
     }
@@ -114,12 +109,14 @@ function update_player_coord(data) {
     }
     
     // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR (modifiée)
-    function handleOtherPlayerMove(start_pos_array, player_data) {
+    function handleOtherPlayerMove(startPosArray, endPosArray, size_x, size_y, is_reversed, otherPlayerData) {
 
-        const targetPlayerId = player_data.user.player; 
+        const targetPlayerId = otherPlayerData.user.player; 
         
         const modalElement = document.getElementById(`modal-pc_${targetPlayerId}`);
-        if (!modalElement) {
+        const modalUnknownElement = document.getElementById(`modal-pc_${targetPlayerId}`);
+
+        if (!modalElement && !modalUnknownElement) {
             console.warn(`Modal non trouvée pour le joueur ${targetPlayerId}`);
             return;
         }
@@ -337,7 +334,6 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 // VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
 function update_player_pos_display_after_move(data) {
-    console.log(currentPlayer)
 
     // Cache des éléments DOM fréquemment utilisés
     const tabletopView = document.querySelector('.tabletop-view');
@@ -376,7 +372,7 @@ function update_player_pos_display_after_move(data) {
     }
 
     // 5. Placement du vaisseau aux nouvelles coordonnées (optimisé)
-    placeShipAtNewPosition();
+    placeShipAtNewPosition(ship_size_x, ship_size_y);
     
     // 6. Mise à jour de l'interface utilisateur
     updateMovementUI();
@@ -455,13 +451,13 @@ function update_player_pos_display_after_move(data) {
         observable_zone_id = observableZoneId;
     }
     
-    function placeShipAtNewPosition() {
+    function placeShipAtNewPosition(size_x, size_y) {
         const shipImageUrl = `/static/img/foreground/SHIPS/${image}.png`;
         const shipReversedImageUrl = `/static/img/foreground/SHIPS/${image}-reversed.png`;
         
-        let currentCoordX = currentPlayer.user.coordinates.x;
-        let currentCoordY = currentPlayer.user.coordinates.y;
-        
+        let currentCoordX = currentPlayer.user.coordinates.x + 1;
+        let currentCoordY = currentPlayer.user.coordinates.y + 1;
+
         // Optimisation: calcul unique des tailles
         const tileSizeY = atlas.tilesize * currentPlayer.ship.size.y;
         const tileSizeX = atlas.tilesize * currentPlayer.ship.size.x;
@@ -488,10 +484,10 @@ function update_player_pos_display_after_move(data) {
             }
             
             currentCoordY++;
-            currentCoordX = currentPlayer.user.coordinates.x;
+            currentCoordX = currentPlayer.user.coordinates.x + 1;
         }
-        renderPlayerSonar({y: currentPlayer.user.coordinates.y, x: currentPlayer.user.coordinates.x}, view_range);
-        onPlayerMoved({y: currentPlayer.user.coordinates.y, x: currentPlayer.user.coordinates.x}, view_range);
+        renderPlayerSonar({y: currentPlayer.user.coordinates.y + 1, x: currentPlayer.user.coordinates.x + 1}, view_range);
+        onPlayerMoved({y: currentPlayer.user.coordinates.y + 1, x: currentPlayer.user.coordinates.x + 1}, view_range);
         initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
     }
     
