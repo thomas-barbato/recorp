@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import environ
 from django.utils.translation import gettext_lazy as _
+import mimetypes
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -91,6 +92,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# Traite l'erreur MIME TYPE de JS.
+mimetypes.add_type("application/javascript", ".js", True)
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.recorp.com",

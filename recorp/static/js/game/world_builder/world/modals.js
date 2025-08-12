@@ -190,7 +190,7 @@ function create_foreground_modal(id, data) {
         let modal_name = e.id; 
 
         item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
-            async_travel(data.home_sector, current_player_id, id);
+            async_travel(data.home_sector, currentPlayer.user.player, id);
         })
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 
@@ -335,7 +335,6 @@ function create_foreground_modal(id, data) {
 }
 
 function createUnknownModal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x, is_npc){
-    console.log()
     let e = document.createElement('div');
     e.id = "modal-unknown_" + id;
     e.setAttribute('aria-hidden', true);

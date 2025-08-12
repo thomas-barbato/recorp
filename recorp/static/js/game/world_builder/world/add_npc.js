@@ -192,7 +192,7 @@ function setupUnkownNpcCell(cell, border, npcInfo) {
     
     // Configure border
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    border.setAttribute('data-modal-target', `modal-unknown-npc_${npcInfo.npc.id}`);
+    border.setAttribute('data-modal-target', `modal-unknown_npc_${npcInfo.npc.id}`);
     border.setAttribute('data-title', 
         `Unknown [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );

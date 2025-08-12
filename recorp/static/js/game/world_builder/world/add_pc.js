@@ -1,24 +1,44 @@
 function add_pc(data) {
-
+    console.log(data)   
     const coordinatesArrayToDisableButton = [];
-    
-    data.forEach(playerData => {
-        const playerInfo = extractPlayerInfo(playerData);
-        const modalData = createPlayerModalData(playerData);
+
+    if(data.length > 1){
+        data.forEach(playerData => {
+            const playerInfo = extractPlayerInfo(playerData);
+            const modalData = createPlayerModalData(playerData);
+            const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x } 
+            const id = `${coordinates.y}_${coordinates.x}`;
+            if (!playerInfo.isCurrentUser) {
+                if(observable_zone_id.includes(id)){
+                    createAndAppendPlayerModal(modalData, playerInfo);
+                }else{
+                    createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
+                }
+                renderOtherPlayerShip(playerData, playerInfo);
+            }else{
+                renderPlayerShip(playerData, playerInfo);
+                createAndAppendPlayerModal(modalData, playerInfo)
+            }
+        });
+    }else{
+        const playerInfo = extractPlayerInfo(data);
+        const modalData = createPlayerModalData(data);
+        const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x } 
+        const id = `${coordinates.y}_${coordinates.x}`;
         if (!playerInfo.isCurrentUser) {
-            if(observable_zone_id.includes(playerInfo.ship.is_visible)){
+            if(observable_zone_id.includes(id)){
                 createAndAppendPlayerModal(modalData, playerInfo);
             }else{
-                console.log(playerInfo)
                 createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
             }
-            renderOtherPlayerShip(playerData, playerInfo);
+            renderOtherPlayerShip(data, playerInfo);
         }else{
-            renderPlayerShip(playerData, playerInfo);
-            createAndAppendPlayerModal(playerData, playerInfo)
+            renderPlayerShip(data, playerInfo);
+            createAndAppendPlayerModal(modalData, playerInfo)
         }
-        
-    });
+    }
+    
+    
     
     handleMobileButtonDisabling(coordinatesArrayToDisableButton);
 }
@@ -54,20 +74,17 @@ function extractPlayerInfo(playerData) {
 
 function checkIfModalExists(modalId, is_hidden){
     let id_with_prefix = is_hidden === true ? `modal-unknown_${modalId}` : `modal-${modalId}`;
-    console.log(id_with_prefix)
     let element = document.getElementById(id_with_prefix)
     if(element) return true;
     return false;
 }
 
-function createAndAppendPlayerModal(playerData, playerInfo) {
+function createAndAppendPlayerModal(modalData, playerInfo) {
 
     const modalId = `pc_${playerInfo.user.id}`;
 
     if(!checkIfModalExists(modalId, false)){
-        const modalData = createPlayerModalData(playerData);
         const coordString = `${playerInfo.coordinates.y - 1}_${playerInfo.coordinates.x - 1}`;
-        
         const modal = create_pc_npc_modal(
             modalId,
             modalData,
@@ -83,12 +100,11 @@ function createAndAppendPlayerModal(playerData, playerInfo) {
     return;
 }
 
-function createAndAppendUnknownPcModal(modalData, playerInfo, playerId) {
+function createAndAppendUnknownPcModal(modalData, playerInfo) {
 
-    const modalId = `pc_${playerId}`;
+    const modalId = `pc_${playerInfo.user.id}`;
 
     if(!checkIfModalExists(modalId, true)){
-
         const coordString = `${playerInfo.coordinates.y - 1}_${playerInfo.coordinates.x - 1}`;
         const modal = createUnknownModal(
             modalId, 
@@ -154,6 +170,9 @@ function renderOtherPlayerShip(playerData, playerInfo) {
 
             if(is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
+            }else{
+                spaceShip = createUnknownElement();
+                setupUnknownPcCell(cell, border, playerInfo, spaceShip);
             }
             
             coordX++;
@@ -251,26 +270,23 @@ function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
     );
     border.setAttribute('data-modal-target', `modal-unknown_pc_${playerInfo.user.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
+    
+    // Set click behavior for non-mobile devices
+    if (!is_user_is_on_mobile_device()) {
+        const clickAction = playerInfo.isCurrentUser 
+            ? "reverse_player_ship_display()" 
+            : `open_close_modal('modal-unknown_pc_${playerInfo.user.id}')`;
+        border.setAttribute(attribute_touch_click, clickAction);
+    }
+
+        
+    // Événements optimisés avec les valeurs pré-calculées
+    const mouseoverHandler = () => generate_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
+    const mouseoutHandler = () => remove_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
 
     // Add event listeners
-    cell.addEventListener("mouseover", () => {
-        generate_border(
-            playerInfo.ship.sizeY, 
-            playerInfo.ship.sizeX, 
-            playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1,
-        );
-    });
-    
-    cell.addEventListener("mouseout", () => {
-        remove_border(
-            playerInfo.ship.sizeY, 
-            playerInfo.ship.sizeX, 
-            playerInfo.coordinates.baseY + 1, 
-            playerInfo.coordinates.baseX + 1,
-        );
-    });
-    
+    border.addEventListener("mouseover", mouseoverHandler);
+    border.addEventListener("mouseout", mouseoutHandler);
     
     cell.append(spaceship);
 }
@@ -302,6 +318,20 @@ function createShipElement(bgUrl, colOffset, rowOffset, className) {
     element.style.backgroundPositionX = `-${colOffset}px`;
     element.style.backgroundPositionY = `-${rowOffset}px`;
     return element;
+}
+
+function createUnknownElement(){
+    const spaceShip = document.createElement('div');
+    
+    spaceShip.classList.add(
+        'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
+        'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
+        '-translate-y-1/2', 'z-1'
+    );
+    spaceShip.id = "unknown-ship";
+    
+    return spaceShip;
+
 }
 
 function handleShipDisplay(spaceShip, spaceShipReversed, isReversed) {
