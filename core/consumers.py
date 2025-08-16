@@ -110,8 +110,6 @@ class GameConsumer(WebsocketConsumer):
     def async_move(self, event: Dict[str, Any]) -> None:
         try:
             message = json.loads(event["message"])
-            print(message)
-            print(f"self.user.id = {self.user.id}")
             player_action = PlayerAction(self.user.id)
             store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
             

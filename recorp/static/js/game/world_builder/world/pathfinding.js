@@ -280,6 +280,7 @@ function applyBorderConfiguration(coordinates, config, tealZoneSize) {
 }
 
 function handlePlayerMovement() {
+    
     cleanCss();
     current_player.set_selected_cell_bool(false);
     

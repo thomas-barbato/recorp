@@ -66,20 +66,23 @@ function createNpcModalData(npcData) {
     };
 }
 
-function checkIfModalExists(modalId, is_hidden){
-    let id_with_prefix = is_hidden === true ? `modal-unknown_${modalId}` : `modal-${modalId}`;
+function checkIfModalExists(id_with_prefix){
     let element = document.getElementById(id_with_prefix)
-    if(element) return true;
-    return false;
+    if (typeof(element) !== 'undefined' && element !== null){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function createAndAppendNpcModal(npcId, modalData, npcInfo) {
 
+    const modalIdWithPrefix = `modal-pc_${npcId}`;
     const modalId = `npc_${npcId}`;
 
-    if(!checkIfModalExists(modalId, false)){
+    if(!checkIfModalExists(modalIdWithPrefix)){
 
-        const coordString = `${npcInfo.coordinates.y - 1}_${npcInfo.coordinates.x - 1}`;
+        const coordString = `${npcInfo.coordinates.y}_${npcInfo.coordinates.x}`;
         const modal = create_pc_npc_modal(
             modalId, 
             modalData, 
@@ -98,11 +101,12 @@ function createAndAppendNpcModal(npcId, modalData, npcInfo) {
 
 function createAndAppendUnknownNpcModal(npcId, modalData, npcInfo) {
 
+    const modalIdWithPrefix = `modal-unknown-pc_${npcId}`;
     const modalId = `npc_${npcId}`;
 
-    if(!checkIfModalExists(modalId, true)){
+    if(!checkIfModalExists(modalIdWithPrefix)){
 
-        const coordString = `${npcInfo.coordinates.y - 1}_${npcInfo.coordinates.x - 1}`;
+        const coordString = `${npcInfo.coordinates.y}_${npcInfo.coordinates.x}`;
         
         const modal = createUnknownModal(
             modalId, 
@@ -144,7 +148,7 @@ function renderNpcShip(npcData, npcInfo, modalData) {
                 createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
             }
             
-            const clickAction = is_visible === true ? `open_close_modal('modal-npc_${npcData.npc.id}')`: `open_close_modal('modal-unknown_npc_${npcData.npc.id}')`;
+            const clickAction = is_visible === true ? `open_close_modal('modal-npc_${npcData.npc.id}')`: `open_close_modal('modal-unknown-npc_${npcData.npc.id}')`;
             border.setAttribute(attribute_touch_click, clickAction);
             handleShipPositioning(cell, npcInfo.ship.sizeY, npcInfo.ship.sizeX, rowOffset, colOffset);
             
@@ -192,7 +196,7 @@ function setupUnkownNpcCell(cell, border, npcInfo) {
     
     // Configure border
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    border.setAttribute('data-modal-target', `modal-unknown_npc_${npcInfo.npc.id}`);
+    border.setAttribute('data-modal-target', `modal-unknown-npc_${npcInfo.npc.id}`);
     border.setAttribute('data-title', 
         `Unknown [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     );

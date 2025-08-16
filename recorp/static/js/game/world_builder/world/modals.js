@@ -336,7 +336,7 @@ function create_foreground_modal(id, data) {
 
 function createUnknownModal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x, is_npc){
     let e = document.createElement('div');
-    e.id = "modal-unknown_" + id;
+    e.id = "modal-unknown-" + id;
     e.setAttribute('aria-hidden', true);
     e.setAttribute('tabindex', -1);
     e.classList.add(

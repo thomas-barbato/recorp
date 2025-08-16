@@ -5,30 +5,28 @@ function update_player_coord(data) {
     // updated players data.
     currentPlayer = data.updated_current_player_data[0];
     otherPlayers = data.updated_other_player_data;
+
     resetCellToDefault(data.start_id_array);
-    console.log("prout")
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
         otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
-        let size = {'x' : data.size_x, 'y': data.size_y}
-        handleOtherPlayerMove(
-            data.start_id_array, 
-            data.destination_id_array,
-            size,
-            data.is_reversed,
-            otherPlayerData
-        );
+        handleOtherPlayerMove(otherPlayerData);
+        renderPlayerSonar(currentPlayer.user.coordinates, currentPlayer.ship.view_range);
     } else {
-        update_player_pos_display_after_move(currentPlayer);
+        update_player_pos_display_after_move(currentPlayer, data);
     }
 
 
     function resetCellToDefault(startPosArray) {
+
         for(let i = 0; i < startPosArray.length; i++){
+
             let id = startPosArray[i];
             let element = document.getElementById(id);
             
             if (!element) return;
+
+            sonar.removeEventListeners(element);
             
             // Mise en cache de tous les sélecteurs en une fois
             let selectors = {
@@ -39,7 +37,6 @@ function update_player_coord(data) {
                 shipElements: element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship')
             };
             
-            sonar.removeEventListeners(element);
             
             // Suppression optimisée des ships
             selectors.shipElements.forEach(ship => {
@@ -78,22 +75,7 @@ function update_player_coord(data) {
     }
     
     // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR (modifiée)
-    function handleOtherPlayerMove(startPosArray, endPosArray, size, is_reversed, otherPlayerData) {
-        console.log(otherPlayerData)
-        /*
-        console.log(otherPlayerData.ship)
-        const targetPlayerId = otherPlayerData.user.player; 
-        
-        const modalElement = document.getElementById(`modal-pc_${targetPlayerId}`) || document.getElementById(`modal-unknown_pc_${targetPlayerId}`);
-
-        if (!modalElement) {
-            console.warn(`Modal non trouvée pour le joueur ${targetPlayerId}`);
-            return;
-        }
-        processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size, );
-        updatePlayerMovementUI(modalElement, movementRemaining, maxMovement);
-        update_player_range_in_modal(modulesRange);
-        */
+    function handleOtherPlayerMove(otherPlayerData) {
         add_pc(otherPlayerData)
     }
     
@@ -198,9 +180,7 @@ function update_player_coord(data) {
     
     // CONFIGURATION DES ÉVÉNEMENTS DE SURVOL (inchangée)
     function setupHoverEvents(endPoint, size) {
-        console.log(endPoint.id)
         const {endY : y, endX: x} = endPoint.id.split('_');
-        console.log(endY, endX)
         const endPointBorder = endPoint.querySelector('span');
         if (!endPointBorder) return;
         
@@ -278,34 +258,45 @@ function debounce(func, wait) {
 }
 
 function reverse_ship(data) {
+    
+    console.log(data)
+    
+    let player_id = data["player_id"];
     let id_list = data["id_array"];
-    update_reverse_ship_in_cache_array(data["player_id"], data["is_reversed"]);
-    for (let i = 0; i < id_list.length; i++) {
-        let element = document.getElementById(id_list[i]);
-        let element_ship = element.querySelector('.ship');
-        let element_ship_reversed = element.querySelector('.ship-reversed');
-        if (data["is_reversed"] == true) {
-            element_ship.classList.add('hidden');
-            element_ship_reversed.classList.remove('hidden');
-        } else {
-            element_ship.classList.remove('hidden');
-            element_ship_reversed.classList.add('hidden');
+    let is_reversed = data["is_reversed"];
+    let is_visible = id_list.some(element => observable_zone_id.includes(element));
+    update_reverse_ship_in_cache_array(player_id, is_reversed);
+    if(is_visible){
+        for (let i = 0; i < id_list.length; i++) {
+            let element = document.getElementById(id_list[i]);
+            let element_ship = element.querySelector('.ship');
+            let element_ship_reversed = element.querySelector('.ship-reversed');
+            if (data["is_reversed"] == true) {
+                element_ship.classList.add('hidden');
+                element_ship_reversed.classList.remove('hidden');
+            } else {
+                element_ship.classList.remove('hidden');
+                element_ship_reversed.classList.add('hidden');
+            }
         }
+        
     }
+    
 }
 
 function update_reverse_ship_in_cache_array(player_id, status) {
-    for (let i = 0; i < map_informations.pc.length; i++) {
-        if (map_informations.pc[i].user.player == player_id) {
-            map_informations.pc[i].ship.is_reversed = status;
-        }
+    if(player_id == currentPlayer.user.player){
+        currentPlayer.user.is_reversed = status;
+    }else{
+        otherPlayerData = otherPlayers.find(p => p.user.player === player_id);
+        otherPlayerData.user.is_reversed = status;
     }
 }
 
 // VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
-function update_player_pos_display_after_move(data) {
-
+function update_player_pos_display_after_move(data, recieved_data) {
+    console.log(1)
     // Cache des éléments DOM fréquemment utilisés
     const tabletopView = document.querySelector('.tabletop-view');
     const movementPercent = document.querySelector('#movement-percent');
@@ -314,6 +305,7 @@ function update_player_pos_display_after_move(data) {
         '#movement-container-value-current, #movement-container-value-min'
     );
     
+    console.log(2)
     // Extraction des données principales
     const { player, sector } = data;
     const { coordinates, name: playerName } = currentPlayer.user;
@@ -345,13 +337,14 @@ function update_player_pos_display_after_move(data) {
     }
 
     // 5. Placement du vaisseau aux nouvelles coordonnées (optimisé)
-    placeShipAtNewPosition(ship_size_x, ship_size_y);
+    //placeShipAtNewPosition(ship_size_x, ship_size_y);
+    add_pc(currentPlayer)
     
     // 6. Mise à jour de l'interface utilisateur
     updateMovementUI();
     
     // 7. Affichage de l'événement de mouvement
-    occured_event_display_on_map("movement", false, currentPlayer.user.player, data.move_cost);
+    occured_event_display_on_map("movement", false, currentPlayer.user.player, recieved_data.move_cost);
     update_player_range_in_modal(data.modules_range);
     
     // 8. Désactivation des boutons pour mobile
@@ -360,7 +353,6 @@ function update_player_pos_display_after_move(data) {
     }
     
     // FONCTIONS INTERNES OPTIMISÉES
-    
     function cleanupOldPlayerPositions() {
         const currentPlayerShips = document.querySelectorAll('.ship-pos');
         
@@ -609,7 +601,6 @@ function update_player_pos_display_after_move(data) {
 
 
 function occured_event_display_on_map(event_type, is_using_timer, user_id, value=0){ 
-    
     if(event_type == "movement"){
         
         let element = document.querySelector(`#tooltip-pc_${user_id}`);
@@ -669,4 +660,8 @@ function update_player_range_in_modal(data){
             }
         }
     }
+}
+
+function update_modals(){
+
 }

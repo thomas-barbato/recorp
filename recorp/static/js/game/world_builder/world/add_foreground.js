@@ -111,9 +111,11 @@ function renderForegroundElement(elementInfo, sectorData) {
     
     let rowIndex = coordY;
     let colIndex = coordX;
+    let full_size_y = atlas.tilesize * sizeY;
+    let full_size_x = atlas.tilesize * sizeX;
 
-    for (let rowOffset = 0; rowOffset < (atlas.tilesize * sizeY); rowOffset += atlas.tilesize) {
-        for (let colOffset = 0; colOffset < (atlas.tilesize * sizeX); colOffset += atlas.tilesize) {
+    for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
+        for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
             const cell = getTableCell(rowIndex, colIndex);
             const cellDiv = cell.querySelector('div');
             const border = cellDiv.querySelector('span');

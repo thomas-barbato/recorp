@@ -283,6 +283,92 @@ function handleUserLeave(message) {
     // par exemple: removePlayerFromDisplay(message.player_id);
 }
 
+// Pool d'objets pour réduire les allocations (version améliorée)
+const ObjectPool = {
+    _fadeEffectPool: [],
+    _eventHandlerPool: [],
+    _elementPool: new Map(),
+    
+    getFadeEffect() {
+        return this._fadeEffectPool.pop() || { 
+            intervalId: null, 
+            target: null, 
+            timer: 0,
+            opacity: 1
+        };
+    },
+    
+    returnFadeEffect(obj) {
+        obj.intervalId = null;
+        obj.target = null;
+        obj.timer = 0;
+        obj.opacity = 1;
+        this._fadeEffectPool.push(obj);
+    },
+    
+    getElement(tagName) {
+        const poolKey = tagName.toLowerCase();
+        if (!this._elementPool.has(poolKey)) {
+            this._elementPool.set(poolKey, []);
+        }
+        
+        const pool = this._elementPool.get(poolKey);
+        return pool.pop() || document.createElement(tagName);
+    },
+    
+    returnElement(element) {
+        if (!element || !element.tagName) return;
+        
+        const poolKey = element.tagName.toLowerCase();
+        if (!this._elementPool.has(poolKey)) {
+            this._elementPool.set(poolKey, []);
+        }
+        
+        // Nettoyer l'élément
+        element.className = '';
+        element.removeAttribute('style');
+        element.innerHTML = '';
+        
+        // Supprimer tous les event listeners
+        const newElement = element.cloneNode(false);
+        if (element.parentNode) {
+            element.parentNode.replaceChild(newElement, element);
+        }
+        
+        this._elementPool.get(poolKey).push(newElement);
+    }
+};
+
+/**
+ * Applique un effet de fondu à un élément avant de le supprimer (version optimisée)
+ * @param {HTMLElement} target - L'élément cible
+ * @param {number} timer - Intervalle en millisecondes pour l'animation
+ */
+function fade_effect(target, timer) {
+    if (!target || !target.parentNode) {
+        console.warn('fade_effect: target element is null or not in DOM');
+        return;
+    }
+
+    const fadeObj = ObjectPool.getFadeEffect();
+    fadeObj.target = target;
+    fadeObj.timer = timer;
+    fadeObj.opacity = parseFloat(target.style.opacity || '1');
+
+    fadeObj.intervalId = setInterval(() => {
+        if (fadeObj.opacity > 0 && fadeObj.target.parentNode) {
+            fadeObj.opacity = Math.max(0, fadeObj.opacity - 0.05);
+            fadeObj.target.style.opacity = fadeObj.opacity.toString();
+        } else {
+            clearInterval(fadeObj.intervalId);
+            if (fadeObj.target.parentNode) {
+                fadeObj.target.remove();
+            }
+            ObjectPool.returnFadeEffect(fadeObj);
+        }
+    }, timer);
+}
+
 /**
  * Initialise la génération du secteur (version optimisée)
  */
