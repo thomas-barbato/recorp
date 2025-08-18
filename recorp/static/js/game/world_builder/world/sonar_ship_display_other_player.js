@@ -169,7 +169,7 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
                 
                 // Créer et ajouter l'image du vaisseau à la nouvelle position
                 this.addShipImageToCell(endPoint, shipImageUrl, shipReversedImageUrl, 
-                                      colOffset, rowOffset, playerInfo.ship.isReversed);
+                                    colOffset, rowOffset, playerInfo.ship.isReversed);
                 
                 // Configurer la nouvelle position
                 this.setupNewPlayerPosition(endPoint, targetPlayerId, size, newPosition);

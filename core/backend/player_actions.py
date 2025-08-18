@@ -329,15 +329,21 @@ class PlayerAction:
         Returns:
             bool: True si le mouvement a été enregistré
         """
+        
         coordinates_split = coordinates.split('_')
         coord = {"x": int(coordinates_split[1]), "y": int(coordinates_split[0])}
-        if self._check_if_player_can_move_and_update(move_cost):
-            Player.objects.filter(id=player_id).update(
-                coordinates=coord
-            )
-            return True
-        return False
         
+        if player_id == self.player_id:
+            
+            if self._check_if_player_can_move_and_update(move_cost):
+                
+                Player.objects.filter(id=player_id).update(
+                    coordinates=coord
+                )
+                return True
+        
+        else:
+            return Player.objects.filter(id=player_id, coordinates=coord).exists()
     
     def player_travel_to_destination(self, warpzone_home_name: str, warpzone_home_id: int) -> Optional[Tuple[int, Dict[str, int]]]:
         """

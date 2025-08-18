@@ -13,6 +13,7 @@ class Sonar {
         this.eventListeners = [];
         this.playerCells = [];
         
+        //this.removeEventListeners();
         this.setupEventListeners();
     }
 

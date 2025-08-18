@@ -6,19 +6,24 @@ function update_player_coord(data) {
     currentPlayer = data.updated_current_player_data[0];
     otherPlayers = data.updated_other_player_data;
 
+    let view_range = currentPlayer.ship.view_range;
+    let new_coordinates = {y : currentPlayer.user.coordinates.y + 1, x: currentPlayer.user.coordinates.x + 1};
+
     resetCellToDefault(data.start_id_array);
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
-        otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
+        let otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
         handleOtherPlayerMove(otherPlayerData);
-        renderPlayerSonar(currentPlayer.user.coordinates, currentPlayer.ship.view_range);
     } else {
         update_player_pos_display_after_move(currentPlayer, data);
+        //onPlayerMoved(new_coordinates, view_range);
     }
-
+    
+    //renderPlayerSonar(new_coordinates, currentPlayer.ship.view_range);
+    initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, view_range)
+    //refreshDetectionSystem()
 
     function resetCellToDefault(startPosArray) {
-
         for(let i = 0; i < startPosArray.length; i++){
 
             let id = startPosArray[i];
@@ -28,18 +33,14 @@ function update_player_coord(data) {
 
             sonar.removeEventListeners(element);
             
-            // Mise en cache de tous les sélecteurs en une fois
-            let selectors = {
-                coordZone: element.querySelector('.coord-zone-div'),
-                border: element.querySelector('span'),
-                fieldOfView: element.querySelector('#field-of-view'),
-                toolTip: element.querySelector('ul'),
-                shipElements: element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship')
-            };
-            
+            let coordZone = element.querySelector('.coord-zone-div');
+            let border = element.querySelector('span');
+            let fieldOfView = element.querySelector('#field-of-view');
+            let toolTip = element.querySelector('ul');
+            let shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship');
             
             // Suppression optimisée des ships
-            selectors.shipElements.forEach(ship => {
+            shipElements.forEach(ship => {
                 if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
                     ship.remove();
                 }
@@ -50,17 +51,17 @@ function update_player_coord(data) {
             element.removeAttribute('size_x');
             element.removeAttribute('size_y');
             
-            if (selectors.coordZone) {
-                selectors.coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
+            if (coordZone) {
+                coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
             }
             
             // Suppression en lot
-            selectors.border?.remove();
-            selectors.toolTip?.remove();
+            border?.remove();
+            toolTip?.remove();
             
             // Field of view optimisé
-            if (selectors.fieldOfView) {
-                selectors.fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
+            if (fieldOfView) {
+                fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
             }
             
             // Création et ajout du nouveau border
@@ -69,7 +70,7 @@ function update_player_coord(data) {
             newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
             newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
             
-            selectors.coordZone?.appendChild(newBorderZone);
+            coordZone?.appendChild(newBorderZone);
         }
         
     }
@@ -258,9 +259,6 @@ function debounce(func, wait) {
 }
 
 function reverse_ship(data) {
-    
-    console.log(data)
-    
     let player_id = data["player_id"];
     let id_list = data["id_array"];
     let is_reversed = data["is_reversed"];
@@ -296,7 +294,7 @@ function update_reverse_ship_in_cache_array(player_id, status) {
 // VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
 function update_player_pos_display_after_move(data, recieved_data) {
-    console.log(1)
+
     // Cache des éléments DOM fréquemment utilisés
     const tabletopView = document.querySelector('.tabletop-view');
     const movementPercent = document.querySelector('#movement-percent');
@@ -304,15 +302,13 @@ function update_player_pos_display_after_move(data, recieved_data) {
     const movementContainerValueCurrentElements = document.querySelectorAll(
         '#movement-container-value-current, #movement-container-value-min'
     );
-    
-    console.log(2)
     // Extraction des données principales
     const { player, sector } = data;
     const { coordinates, name: playerName } = currentPlayer.user;
     const { size, is_reversed, current_movement, max_movement, image, visible_zone, view_range } = currentPlayer.ship;
-    
     const coord_x = coordinates.x + 1;
     const coord_y = coordinates.y + 1;
+    const currentCoord = {y: coord_y, x: coord_x};
     const ship_size_x = size.x;
     const ship_size_y = size.y;
     const isMobile = is_user_is_on_mobile_device();
@@ -328,17 +324,17 @@ function update_player_pos_display_after_move(data, recieved_data) {
     // 2. Configuration du sonar et de la zone observable
     setupObservableZone();
     
-    // 3. Masquage du débordement de secteur
+    // 3. Placement du vaisseau aux nouvelles coordonnées (optimisé)
+    //placeShipAtNewPosition(ship_size_x, ship_size_y);
+    add_pc(currentPlayer);
+
+    // 4. Masquage du débordement de secteur
     hide_sector_overflow(coordinates.x, coordinates.y);
     
-    // 4. Configuration des événements de pathfinding
+    // 5. Configuration des événements de pathfinding
     if (!isMobile) {
         set_pathfinding_event();
     }
-
-    // 5. Placement du vaisseau aux nouvelles coordonnées (optimisé)
-    //placeShipAtNewPosition(ship_size_x, ship_size_y);
-    add_pc(currentPlayer)
     
     // 6. Mise à jour de l'interface utilisateur
     updateMovementUI();
@@ -422,6 +418,7 @@ function update_player_pos_display_after_move(data, recieved_data) {
         
         let currentCoordX = currentPlayer.user.coordinates.x + 1;
         let currentCoordY = currentPlayer.user.coordinates.y + 1;
+        let currentCoord = {y : currentCoordY, x: currentCoordX};
 
         // Optimisation: calcul unique des tailles
         const tileSizeY = atlas.tilesize * currentPlayer.ship.size.y;
@@ -451,8 +448,8 @@ function update_player_pos_display_after_move(data, recieved_data) {
             currentCoordY++;
             currentCoordX = currentPlayer.user.coordinates.x + 1;
         }
-        renderPlayerSonar({y: currentPlayer.user.coordinates.y + 1, x: currentPlayer.user.coordinates.x + 1}, view_range);
-        onPlayerMoved({y: currentPlayer.user.coordinates.y + 1, x: currentPlayer.user.coordinates.x + 1}, view_range);
+        renderPlayerSonar(currentCoord, view_range);
+        onPlayerMoved(currentCoord, view_range);
         initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
     }
     
@@ -609,15 +606,13 @@ function occured_event_display_on_map(event_type, is_using_timer, user_id, value
             let movement_li_icon = document.createElement('img');
             let movement_li_value = document.createElement('span');
 
-            movement_li.classList.add('flex', 'flex-row', 'gap-1');
+            movement_li.classList.add('flex', 'flex-row', 'gap-1', 'text-2xl', 'font-bold');
             movement_li.id = "movement-information-display";
 
             movement_li_icon.src = '/static/img/ux/movement-icon.svg';
             movement_li_icon.classList.add(
-                'lg:w-[2vw]',
-                'lg:h-[2vh]',
                 'w-[4vw]',
-                'h-[4vh]'
+                'h-[4vh]',
             )
             
             movement_li_value.classList.add('text-teal-300', 'p-1', 'w-full', 'font-shadow')

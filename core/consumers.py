@@ -113,19 +113,26 @@ class GameConsumer(WebsocketConsumer):
             player_action = PlayerAction(self.user.id)
             store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
             
+            print(self.player_id)
+            print("=====")
+            
             # Traiter le mouvement
             if self._can_move_to_destination(player_action, message):
+                print(f"dans self._can_move_to_destination : {self.player_id}")
                 if self._register_move(player_action, message):
-                    store.update_player_position(message)
+                    print(f"dans self._register_move : {self.player_id}")
+                    store.update_player_position(message, self.player_id)
                     # Toujours mettre à jour la portée du joueur connecté
                     store.update_player_range_finding()
                     
                     # Préparer la réponse selon le type de mouvement
                     if self._is_own_player_move(self.player_id, message):
+                        print(f"dans _is_own_player_move: {self.player_id}")
                         # Le joueur connecté a bougé
                         store.update_sector_player_visibility_zone(self.player_id)
                         response = self._create_own_move_response(player_action, store, message, self.player_id)
                     else:
+                        print(f"dans else: {self.player_id}")
                         # Un autre joueur a bougé
                         response = self._handle_other_player_move(message, player_action, store, self.player_id)
                     
@@ -150,7 +157,7 @@ class GameConsumer(WebsocketConsumer):
         return player_action.move_have_been_registered(
             coordinates=message['destination_id_array'][0],
             move_cost=int(message["move_cost"]),
-            player_id=message["player"]
+            player_id=message["player"],
         )
 
     def _create_own_move_response(

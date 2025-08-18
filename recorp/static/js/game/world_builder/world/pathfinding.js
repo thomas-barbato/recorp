@@ -302,7 +302,7 @@ function handlePlayerMovement() {
         move_cost: current_player.player_move_cost,
         destination_id_array: current_player.fullsize_coordinate,
     };
-    
+    console.log(moveData)
     async_move(moveData);
 }
 

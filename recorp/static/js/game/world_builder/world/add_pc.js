@@ -49,7 +49,7 @@ function add_pc(data) {
 }
 
 function extractPlayerInfo(playerData) {
-    console.log(playerData)
+
     const baseCoordX = parseInt(playerData.user.coordinates.x);
     const baseCoordY = parseInt(playerData.user.coordinates.y);
     const isCurrentUser = playerData.user.player === current_player_id;
@@ -402,6 +402,14 @@ function setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spa
     
     spaceShip.classList.add("player-ship");
     spaceShipReversed.classList.add("player-ship-reversed");
+
+    if(playerData.ship.is_reversed == true){
+        spaceShip.classList.add('hidden');
+        spaceShipReversed.classList.remove('hidden');
+    }else{
+        spaceShip.classList.remove('hidden');
+        spaceShipReversed.classList.add('hidden');
+    }
     
     handleCurrentUserMovement(playerInfo.ship.currentMovement);
     current_player.set_remaining_move_points(playerInfo.ship.currentMovement);

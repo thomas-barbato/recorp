@@ -11,7 +11,8 @@ from core.models import (
     Sector,
     Player,
     Module,
-    PlayerShipModule
+    PlayerShipModule,
+    PlayerShip
 )
 
 logger = logging.getLogger(__name__)
@@ -482,7 +483,7 @@ class StoreInCache:
             logger.error(f"Erreur lors de la récupération des données du secteur: {e}")
             return None
 
-    def update_player_position(self, pos: Dict[str, Any]) -> None:
+    def update_player_position(self, pos: Dict[str, Any], current_player_id : int) -> None:
         """
         Met à jour la position d'un joueur dans le cache.
         
@@ -503,10 +504,10 @@ class StoreInCache:
             )
             
             if not found_player:
-                return
-
+                return False
+        
             found_player_index = player_position.index(found_player)
-            
+                
             # Mise à jour des coordonnées
             player_position[found_player_index]["user"]["coordinates"] = {
                 "x": int(pos["end_x"]),
@@ -514,13 +515,18 @@ class StoreInCache:
             }
             
             # Mise à jour du mouvement
-            player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
+            if current_player_id == player_id:
+                player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
+            else:
+                player_position[found_player_index]["ship"]["current_movement"] = PlayerShip.objects.filter(player_id=player_id, is_current_ship=True).values('current_movement')[0]['current_movement']
 
             # Nettoyage des anciens duplicatas
             self._remove_duplicate_players(player_position, found_player, pos)
 
             in_cache["pc"] = player_position
             cache.set(self.room, in_cache)
+            
+            return True
             
         except Exception as e:
             logger.error(f"Erreur lors de la mise à jour de la position du joueur: {e}")
