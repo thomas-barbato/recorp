@@ -19,7 +19,7 @@ function update_player_coord(data) {
         //onPlayerMoved(new_coordinates, view_range);
     }
     
-    //renderPlayerSonar(new_coordinates, currentPlayer.ship.view_range);
+    renderPlayerSonar(new_coordinates, currentPlayer.ship.view_range);
     initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, view_range)
     //refreshDetectionSystem()
 
@@ -57,6 +57,9 @@ function update_player_coord(data) {
             
             // Suppression en lot
             border?.remove();
+            if(border && border.parentNode){
+                console.log("existing")
+            }else{console.log("NOT ANYMORE !")}
             toolTip?.remove();
             
             // Field of view optimisé

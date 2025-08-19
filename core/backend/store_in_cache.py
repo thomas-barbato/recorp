@@ -484,6 +484,9 @@ class StoreInCache:
             return None
 
     def update_player_position(self, pos: Dict[str, Any], current_player_id : int) -> None:
+        print("dans update_player_position(self, pos: Dict[str, Any], current_player_id : int) -> None")
+        print(f"current_player_id : {current_player_id}")
+        print(f"dans dos : {pos}")
         """
         Met à jour la position d'un joueur dans le cache.
         
@@ -516,8 +519,10 @@ class StoreInCache:
             
             # Mise à jour du mouvement
             if current_player_id == player_id:
+                print("dans le if current_player_id == player_id")
                 player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
             else:
+                print("dans le else de if current_player_id == player_id")
                 player_position[found_player_index]["ship"]["current_movement"] = PlayerShip.objects.filter(player_id=player_id, is_current_ship=True).values('current_movement')[0]['current_movement']
 
             # Nettoyage des anciens duplicatas

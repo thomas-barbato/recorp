@@ -314,8 +314,7 @@ class PlayerAction:
                 playership.save()
                 return True
         except PlayerShip.DoesNotExist:
-            pass
-        return False
+            return False
 
     def move_have_been_registered(self, coordinates, move_cost: int, player_id: int) -> bool:
         """
@@ -333,17 +332,11 @@ class PlayerAction:
         coordinates_split = coordinates.split('_')
         coord = {"x": int(coordinates_split[1]), "y": int(coordinates_split[0])}
         
-        if player_id == self.player_id:
-            
-            if self._check_if_player_can_move_and_update(move_cost):
-                
-                Player.objects.filter(id=player_id).update(
-                    coordinates=coord
-                )
-                return True
-        
-        else:
-            return Player.objects.filter(id=player_id, coordinates=coord).exists()
+        if self._check_if_player_can_move_and_update(move_cost):
+            Player.objects.filter(id=player_id).update(
+                coordinates=coord
+            )
+            return True
     
     def player_travel_to_destination(self, warpzone_home_name: str, warpzone_home_id: int) -> Optional[Tuple[int, Dict[str, int]]]:
         """
