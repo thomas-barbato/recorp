@@ -1,14 +1,16 @@
 function add_pc(data) {
+
     const coordinatesArrayToDisableButton = [];
 
     if(data.length > 1){
+
         data.forEach(playerData => {
             const playerInfo = extractPlayerInfo(playerData);
             const modalData = createPlayerModalData(playerData);
-            const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x } 
-            const id = `${coordinates.y}_${coordinates.x}`;
+            const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x };
+
             if (!playerInfo.isCurrentUser) {
-                if(observable_zone_id.includes(id) == true){
+                if(checkIfCoordinateIsVisible(playerInfo)){
                     createAndAppendPlayerModal(modalData, playerInfo);
                 }else{
                     createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
@@ -19,6 +21,7 @@ function add_pc(data) {
                 createAndAppendPlayerModal(modalData, playerInfo)
             }
         });
+
     }else{
 
         const playerInfo = extractPlayerInfo(data);
@@ -28,7 +31,7 @@ function add_pc(data) {
 
         if (!playerInfo.isCurrentUser) {
 
-            if(observable_zone_id.includes(id) == true){
+            if(checkIfCoordinateIsVisible(playerInfo)){
                 createAndAppendPlayerModal(modalData, playerInfo);
             }else{
                 createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
@@ -42,8 +45,6 @@ function add_pc(data) {
             
         }
     }
-    
-    
     
     handleMobileButtonDisabling(coordinatesArrayToDisableButton);
 }
@@ -76,6 +77,30 @@ function extractPlayerInfo(playerData) {
         isCurrentUser,
         borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400",
     };
+}
+
+function checkIfCoordinateIsVisible(playerInfo){
+
+        const shipSizeX = parseInt(playerInfo.ship.sizeX);
+        const shipSizeY = parseInt(playerInfo.ship.sizeY);
+        const startCoordX = parseInt(playerInfo.coordinates.x) - 1;
+        const startCoordY = parseInt(playerInfo.coordinates.y) - 1;
+        const endCoordX = parseInt(startCoordX + shipSizeX);
+        const endCoordY = parseInt(startCoordY + shipSizeY);
+
+        let coordinates_array = [];
+
+        if(shipSizeY == 1 && shipSizeX == 1){
+            coordinates_array.push(`${startCoordY}_${startCoordX}`)
+        }else{
+            for(let row = startCoordY; row < endCoordY; row++){
+                for(let col = startCoordX; col < endCoordX; col++){
+                    coordinates_array.push(`${row}_${col}`);
+                }
+            }
+        }
+
+        return coordinates_array.some(id=> observable_zone_id.indexOf(id) !== -1);
 }
 
 function checkIfModalExists(id_with_prefix){
@@ -179,6 +204,9 @@ function renderOtherPlayerShip(playerData, playerInfo) {
         for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
+            let unknownShip = cell.querySelector('#unknown-ship');
+
+            unknownShip?.remove()
 
             if(is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
@@ -202,9 +230,9 @@ function renderPlayerShip(playerData, playerInfo) {
         for (let colOffset = 0; colOffset < (atlas.tilesize * playerInfo.ship.sizeX); colOffset += atlas.tilesize) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
+
             handleTooltipCreation(cell, playerInfo, rowOffset, colOffset);
             setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
-            
             coordX++;
         }
         coordY++;
