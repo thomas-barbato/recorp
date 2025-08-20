@@ -14,14 +14,12 @@ function update_player_coord(data) {
     if (current_player_id !== data.player_id) {
         let otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
         handleOtherPlayerMove(otherPlayerData);
+        renderPlayerSonar(currentPlayer, currentPlayer.ship.view_range);
     } else {
         update_player_pos_display_after_move(currentPlayer, data);
-        //onPlayerMoved(new_coordinates, view_range);
     }
     
-    renderPlayerSonar(new_coordinates, currentPlayer.ship.view_range);
     initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, view_range)
-    //refreshDetectionSystem()
 
     function resetCellToDefault(startPosArray) {
         for(let i = 0; i < startPosArray.length; i++){
@@ -40,11 +38,14 @@ function update_player_coord(data) {
             let shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship');
             
             // Suppression optimisée des ships
+            //shipElements.forEach(ship => ship?.remove());
+            
             shipElements.forEach(ship => {
                 if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
                     ship.remove();
                 }
             });
+            
             
             // Batch des modifications DOM
             element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile");
@@ -57,9 +58,6 @@ function update_player_coord(data) {
             
             // Suppression en lot
             border?.remove();
-            if(border && border.parentNode){
-                console.log("existing")
-            }else{console.log("NOT ANYMORE !")}
             toolTip?.remove();
             
             // Field of view optimisé

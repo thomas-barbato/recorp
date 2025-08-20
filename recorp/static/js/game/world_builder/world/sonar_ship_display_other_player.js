@@ -523,6 +523,12 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
 
         // Vérifier si l'image du vaisseau existe déjà
         const existingShip = cellDiv.querySelector('.ship, .ship-reversed');
+
+        // Supprimer le cercle jaune s'il existe
+        const unknownElement = cellDiv.querySelector('#unknown-ship');
+        if (unknownElement) {
+            unknownElement.remove();
+        }
         
         if (!existingShip) {
             // Créer et ajouter l'image du vaisseau
@@ -546,12 +552,6 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
                 }
             }
         }
-
-        // Supprimer le cercle jaune s'il existe
-        const unknownElement = cellDiv.querySelector('#unknown-ship');
-        if (unknownElement) {
-            unknownElement.remove();
-        }
     }
 
     /**
@@ -563,11 +563,15 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
         if (cellDiv) {
             // Supprimer les éléments de vaisseau visible
             const shipElements = cellDiv.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed');
+            const unknownElement = cellDiv.querySelector('#unknown-ship');
+            
             shipElements.forEach(el => el.remove());
             
-            // Ajouter le cercle jaune
-            const unknownElement = this.createUnknownElement();
-            cellDiv.appendChild(unknownElement);
+            if (!unknownElement) {
+                cellDiv.appendChild(this.createUnknownElement());
+                unknownElement.remove();
+            }
+            
         }
     }
 }
