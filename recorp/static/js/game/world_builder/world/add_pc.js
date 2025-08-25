@@ -21,6 +21,7 @@ function add_pc(data) {
                 createAndAppendPlayerModal(modalData, playerInfo)
             }
         });
+        
 
     }else{
 
@@ -238,10 +239,10 @@ function renderPlayerShip(playerData, playerInfo) {
         coordY++;
         coordX = playerInfo.coordinates.x;
     }
-}
-
-function getTableCell(rowIndex, colIndex) {
-    return document.querySelector('.tabletop-view').rows[rowIndex].cells[colIndex];
+    
+    // NOUVEAU : Utiliser updatePlayerSonar au lieu de renderPlayerSonar
+    const coordinates = {y: playerInfo.coordinates.y, x: playerInfo.coordinates.x};
+    updatePlayerSonar(coordinates, playerInfo.ship.viewRange);
 }
 
 function handleTooltipCreation(cell, playerInfo, rowOffset, colOffset) {
@@ -289,7 +290,6 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     // Handle current user specific setup
     if (playerInfo.isCurrentUser) {
         setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spaceShip, spaceShipReversed, rowOffset, colOffset);
-        renderPlayerSonar(playerInfo.coordinates, playerInfo.ship.viewRange);
     } else {
         setupOtherPlayerCell(cell, playerInfo.borderColor);
     }

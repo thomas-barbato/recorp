@@ -11,52 +11,53 @@ function update_player_coord(data) {
     const tabletopView = document.querySelector('.tabletop-view');
 
     resetCellToDefault(data.start_id_array);
-    console.log("current_player_id, data.player_id")
-    console.log(current_player_id, data.player_id)
+
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
         let otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
         handleOtherPlayerMove(otherPlayerData);
-        renderPlayerSonar(new_coordinates, currentPlayer.ship.view_range);
+        updatePlayerSonar(new_coordinates, currentPlayer.ship.view_range);
     } else {
         update_player_pos_display_after_move(currentPlayer, data);
     }
     
     initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, view_range)
 
+    // Dans la fonction update_player_coord, remplacer la section resetCellToDefault
     function resetCellToDefault(startPosArray) {
+        // NOUVEAU : Nettoyer le sonar AVANT de réinitialiser les cellules
+        if (typeof cleanupSonar === 'function') {
+            cleanupSonar();
+        }
+        
         for(let i = 0; i < startPosArray.length; i++){
-            
             let id_split = startPosArray[i].split('_');
             let id_split_y = parseInt(id_split[0]) + 1;
             let id_split_x = parseInt(id_split[1]) + 1;
             const element = tabletopView.rows[id_split_y].cells[id_split_x];
             
-            if (!element) return;
+            if (!element) continue;
 
-            //sonar.removeEventListeners(element);
-            sonar.removeEventListeners();
-
+            // SUPPRIMÉ : sonar.removeEventListeners(); (maintenant géré par cleanupSonar)
+            
             let coordZone = element.querySelector('.coord-zone-div');
             let border = element.querySelector('span');
             let fieldOfView = element.querySelector('#field-of-view');
             let toolTip = element.querySelector('ul');
             let shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship');
             
-            // Suppression optimisée des ships
-            //shipElements.forEach(ship => ship?.remove());
-            
+            // Suppression des ships
             shipElements.forEach(ship => {
                 if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
                     ship.remove();
                 }
             });
             
-            
             // Batch des modifications DOM
             element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile");
             element.removeAttribute('size_x');
             element.removeAttribute('size_y');
+            element.removeAttribute('data-has-sonar'); // NOUVEAU : supprimer l'attribut sonar
             
             if (coordZone) {
                 coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
@@ -79,7 +80,6 @@ function update_player_coord(data) {
             
             coordZone?.appendChild(newBorderZone);
         }
-        
     }
     
     // FONCTION POUR GÉRER LE MOUVEMENT D'UN AUTRE JOUEUR (modifiée)
@@ -355,17 +355,21 @@ function update_player_pos_display_after_move(data, recieved_data) {
         handleMobileButtonDisabling();
     }
     
-    // FONCTIONS INTERNES OPTIMISÉES
+    // Dans la fonction update_player_pos_display_after_move, remplacer cleanupOldPlayerPositions
     function cleanupOldPlayerPositions() {
+        // NOUVEAU : Nettoyer le sonar AVANT de supprimer les cellules
+        if (typeof cleanupSonar === 'function') {
+            cleanupSonar();
+        }
+        
         const currentPlayerShips = document.querySelectorAll('.ship-pos');
         
         currentPlayerShips.forEach(shipElement => {
             // Nettoyage des attributs et événements
-            const attributesToRemove = ['mouseenter', 'mouseleave','onclick', 'size_x', 'size_y', 'type'];
-
+            const attributesToRemove = ['mouseenter', 'mouseleave','onclick', 'size_x', 'size_y', 'type', 'data-has-sonar'];
             attributesToRemove.forEach(attr => shipElement.removeAttribute(attr));
             
-            sonar.removeEventListeners();
+            // SUPPRIMÉ : sonar.removeEventListeners(); (maintenant géré par cleanupSonar)
 
             // Nettoyage des classes
             const classesToRemove = ['uncrossable', 'ship-pos', 'player-ship-start-pos', 'border-dashed'];
@@ -381,6 +385,7 @@ function update_player_pos_display_after_move(data, recieved_data) {
             cleanupShipElementDOM(shipElement);
         });
     }
+
     
     function cleanupShipElementDOM(shipElement) {
         // Suppression des éléments enfants spécifiques
@@ -455,7 +460,7 @@ function update_player_pos_display_after_move(data, recieved_data) {
             currentCoordY++;
             currentCoordX = currentPlayer.user.coordinates.x + 1;
         }
-        renderPlayerSonar(currentCoord, view_range);
+        updatePlayerSonar(currentCoord, view_range);
         onPlayerMoved(currentCoord, view_range);
         initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
     }

@@ -13,7 +13,8 @@ class Sonar {
         this.eventListeners = [];
         this.playerCells = [];
         
-        this.removeEventListeners();
+        // Nettoyer d'abord les anciens listeners s'ils existent
+        this.cleanupAllSonarListeners();
         this.setupEventListeners();
     }
 
@@ -25,11 +26,27 @@ class Sonar {
         this.mainPlayerPos = document.getElementsByClassName('player-ship-start-pos');
     }
 
+    // Nouvelle méthode pour nettoyer tous les listeners sonar existants sur la grille
+    cleanupAllSonarListeners() {
+        // Récupérer TOUTES les cellules qui pourraient avoir des listeners sonar
+        const allShipCells = document.querySelectorAll('.ship-pos');
+        
+        allShipCells.forEach(cell => {
+            // Cloner l'élément pour supprimer tous ses event listeners
+            const newCell = cell.cloneNode(true);
+            cell.parentNode.replaceChild(newCell, cell);
+        });
+        
+        // Vider le tableau des listeners
+        this.eventListeners = [];
+    }
+
     setupEventListeners() {
+        // Récupérer les cellules actuelles du joueur
         const playerCell = document.querySelectorAll('.ship-pos');
-        console.log(`playerCell.length : ${playerCell.length}`)
+        console.log(`playerCell.length : ${playerCell.length}`);
         this.playerCells = Array.from(playerCell);
-        console.log(`playerCells : ${this.playerCells}`)
+        console.log(`playerCells : ${this.playerCells}`);
 
         for(let i = 0; i < playerCell.length; i++){
             // Créer des fonctions nommées pour pouvoir les supprimer
@@ -57,27 +74,48 @@ class Sonar {
                 type: 'mouseleave',
                 handler: mouseLeaveHandler
             });
-
         }
         console.log(`this.eventListeners :`);
         console.log(this.eventListeners);
     }
 
     removeEventListeners() {
-        console.log("dedans")
+        console.log("Suppression des event listeners");
         this.eventListeners.forEach(listener => {
-            console.log("listener.type, listener.handler");
-            console.log(listener.type, listener.handler);
-            listener.element.removeEventListener(listener.type, listener.handler);
+            // Vérifier que l'élément existe encore dans le DOM
+            if (listener.element && listener.element.parentNode) {
+                console.log("Suppression:", listener.type, listener.handler);
+                listener.element.removeEventListener(listener.type, listener.handler);
+            }
         });
         this.eventListeners = []; // Vider le tableau
+    }
+
+    // Méthode pour réinitialiser complètement le sonar
+    reinitialize(observable_zone, coordinates, view_range) {
+        // Désactiver le sonar en cours
+        this.deactivateSonar();
+        
+        // Supprimer les anciens listeners
+        this.removeEventListeners();
+        
+        // Mettre à jour les propriétés
+        this.observable_zone = observable_zone;
+        this.playerPos = coordinates;
+        this.range = view_range;
+        
+        // Nettoyer et reconfigurer
+        this.cleanupAllSonarListeners();
+        this.setupEventListeners();
     }
 
     // Méthode pour supprimer un event listener spécifique
     removeSonarEventListeners() {
         this.eventListeners = this.eventListeners.filter(listener => {
             if (listener.type === 'mouseenter' || listener.type === 'mouseleave') {
-                listener.element.removeEventListener(listener.type, listener.handler);
+                if (listener.element && listener.element.parentNode) {
+                    listener.element.removeEventListener(listener.type, listener.handler);
+                }
                 return false; // Supprimer de la liste
             }
             return true; // Garder dans la liste
@@ -132,8 +170,8 @@ class Sonar {
 
     updateSonarSweep() {
         // Retirer l'effet sonar de toutes les cellules
-        for (let i = 0 ; i < observable_zone.length; i++){
-            observable_zone[i].classList.remove('sonar-sweep')
+        for (let i = 0; i < this.observable_zone.length; i++){
+            this.observable_zone[i].classList.remove('sonar-sweep')
         }
 
         const { x: px, y: py } = this.playerPos;
@@ -157,17 +195,62 @@ class Sonar {
                     
                     if (angleDiff <= sweepWidth / 2) {
                         let cell = document.getElementById(`${y}_${x}`);
-                        cell.querySelector('#field-of-view').classList.add('sonar-sweep');
+                        if (cell && cell.querySelector('#field-of-view')) {
+                            cell.querySelector('#field-of-view').classList.add('sonar-sweep');
+                        }
                     }
                 }
             }
         }
+    }
+
+    // Méthode de nettoyage à appeler avant de détruire l'instance
+    destroy() {
+        this.deactivateSonar();
+        this.removeEventListeners();
+        this.cleanupAllSonarListeners();
     }
 }
 
 let sonar = "";
 
 function renderPlayerSonar(coordinates, viewRange){
-    const coord = {y: coordinates.y - 1, x: coordinates.x - 1}
+    const coord = {y: coordinates.y - 1, x: coordinates.x - 1};
+    
+    // Si un sonar existe déjà, le nettoyer proprement
+    if (sonar && typeof sonar.destroy === 'function') {
+        sonar.destroy();
+    }
+    
     sonar = new Sonar(observable_zone, coord, viewRange);
+}
+
+// Fonction alternative pour réutiliser l'instance existante
+function updatePlayerSonar(coordinates, viewRange) {
+    const coord = {y: coordinates.y - 1, x: coordinates.x - 1};
+    
+    if (sonar && typeof sonar.reinitialize === 'function') {
+        sonar.reinitialize(observable_zone, coord, viewRange);
+    } else {
+        renderPlayerSonar(coordinates, viewRange);
+    }
+}
+
+// Fonction pour réinitialiser le sonar lors d'un mouvement
+function onPlayerMoved(newCoordinates, viewRange) {
+    if (typeof updatePlayerSonar === 'function') {
+        updatePlayerSonar(newCoordinates, viewRange);
+    }
+}
+
+// Fonction pour vérifier si le sonar est actif
+function isSonarActive() {
+    return sonar && sonar.sonarActive === true;
+}
+
+// Fonction pour forcer la désactivation du sonar
+function forceSonarDeactivation() {
+    if (sonar && typeof sonar.deactivateSonar === 'function') {
+        sonar.deactivateSonar();
+    }
 }

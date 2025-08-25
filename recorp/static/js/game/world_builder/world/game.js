@@ -383,6 +383,13 @@ function init_sector_generation() {
             map_informations.npc, 
             map_informations.pc
         );
+
+        // MODIFIÉ : Utiliser updatePlayerSonar avec les bonnes coordonnées
+        const playerCoords = {
+            y: currentPlayer.user.coordinates.y + 1,
+            x: currentPlayer.user.coordinates.x + 1
+        };
+        updatePlayerSonar(playerCoords, currentPlayer.ship.view_range);
         
         // Vérifier que les fonctions existent avant de les appeler
         if (typeof initializeDetectionSystem === 'function') {
@@ -392,7 +399,7 @@ function init_sector_generation() {
         if (typeof initializeEnhancedDetectionSystem === 'function') {
             initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, npcs);
         }
-        
+
         console.log('Secteur généré avec succès');
     } catch (error) {
         console.error('Erreur lors de la génération du secteur:', error);
@@ -473,12 +480,16 @@ function init_game() {
 function cleanup_game() {
     console.log('Nettoyage des ressources...');
     
+    // NOUVEAU : Nettoyer le sonar
+    if (typeof cleanupSonar === 'function') {
+        cleanupSonar();
+    }
+    
     // Fermer la connexion WebSocket
     if (gameSocket && gameSocket.readyState === WebSocket.OPEN) {
         gameSocket.close(1000, 'Page unloading');
     }
     
-    // Nettoyer les managers
     console.log('Nettoyage terminé');
 }
 
