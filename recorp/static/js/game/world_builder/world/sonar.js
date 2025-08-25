@@ -27,7 +27,9 @@ class Sonar {
 
     setupEventListeners() {
         const playerCell = document.querySelectorAll('.ship-pos');
+        console.log(`playerCell.length : ${playerCell.length}`)
         this.playerCells = Array.from(playerCell);
+        console.log(`playerCells : ${this.playerCells}`)
 
         for(let i = 0; i < playerCell.length; i++){
             // Créer des fonctions nommées pour pouvoir les supprimer
@@ -57,10 +59,15 @@ class Sonar {
             });
 
         }
+        console.log(`this.eventListeners :`);
+        console.log(this.eventListeners);
     }
 
     removeEventListeners() {
+        console.log("dedans")
         this.eventListeners.forEach(listener => {
+            console.log("listener.type, listener.handler");
+            console.log(listener.type, listener.handler);
             listener.element.removeEventListener(listener.type, listener.handler);
         });
         this.eventListeners = []; // Vider le tableau

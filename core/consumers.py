@@ -112,31 +112,24 @@ class GameConsumer(WebsocketConsumer):
             message = json.loads(event["message"])
             player_action = PlayerAction(self.user.id)
             store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-            
-            print(self.player_id)
-            print("=====")
-            
             # Traiter le mouvement
             if self._can_move_to_destination(player_action, message):
-                print(f"dans self._can_move_to_destination : {self.player_id}")
                 if self._register_move(player_action, message):
-                    print(f"dans self._register_move : {self.player_id}")
                     store.update_player_position(message, self.player_id)
                     # Toujours mettre à jour la portée du joueur connecté
                     store.update_player_range_finding()
                     
                     # Préparer la réponse selon le type de mouvement
                     if self._is_own_player_move(self.player_id, message):
-                        print(f"dans _is_own_player_move: {self.player_id}")
                         # Le joueur connecté a bougé
                         store.update_sector_player_visibility_zone(self.player_id)
-                        response = self._create_own_move_response(player_action, store, message, self.player_id)
+                        response = self._create_own_move_response(message, store, self.player_id)
                     else:
-                        print(f"dans else: {self.player_id}")
                         # Un autre joueur a bougé
                         response = self._handle_other_player_move(message, player_action, store, self.player_id)
                     
                     # Envoyer la réponse personnalisée au joueur connecté
+                    #print(self.player_id)
                     self._send_response(response)
                 
         except (json.JSONDecodeError, KeyError) as e:
@@ -155,16 +148,15 @@ class GameConsumer(WebsocketConsumer):
     def _register_move(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Enregistre le mouvement du joueur."""
         return player_action.move_have_been_registered(
-            coordinates=message['destination_id_array'][0],
+            coordinates=message['destination_id_array'],
             move_cost=int(message["move_cost"]),
             player_id=message["player"],
         )
 
     def _create_own_move_response(
         self, 
-        player_action: PlayerAction, 
-        store: StoreInCache, 
         message: Dict[str, Any], 
+        store: StoreInCache, 
         player_id: int
     ) -> Dict[str, Any]:
         """Crée la réponse pour le mouvement du propre joueur."""
@@ -364,5 +356,6 @@ class GameConsumer(WebsocketConsumer):
 
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
+        
         if response:  # Évite d'envoyer des réponses vides
             self.send(text_data=json.dumps(response))

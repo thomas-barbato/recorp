@@ -8,13 +8,16 @@ function update_player_coord(data) {
 
     let view_range = currentPlayer.ship.view_range;
     let new_coordinates = {y : currentPlayer.user.coordinates.y + 1, x: currentPlayer.user.coordinates.x + 1};
+    const tabletopView = document.querySelector('.tabletop-view');
 
     resetCellToDefault(data.start_id_array);
+    console.log("current_player_id, data.player_id")
+    console.log(current_player_id, data.player_id)
     // Détermination du type de traitement selon l'utilisateur
     if (current_player_id !== data.player_id) {
         let otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
         handleOtherPlayerMove(otherPlayerData);
-        renderPlayerSonar(currentPlayer, currentPlayer.ship.view_range);
+        renderPlayerSonar(new_coordinates, currentPlayer.ship.view_range);
     } else {
         update_player_pos_display_after_move(currentPlayer, data);
     }
@@ -23,14 +26,17 @@ function update_player_coord(data) {
 
     function resetCellToDefault(startPosArray) {
         for(let i = 0; i < startPosArray.length; i++){
-
-            let id = startPosArray[i];
-            let element = document.getElementById(id);
+            
+            let id_split = startPosArray[i].split('_');
+            let id_split_y = parseInt(id_split[0]) + 1;
+            let id_split_x = parseInt(id_split[1]) + 1;
+            const element = tabletopView.rows[id_split_y].cells[id_split_x];
             
             if (!element) return;
 
-            sonar.removeEventListeners(element);
-            
+            //sonar.removeEventListeners(element);
+            sonar.removeEventListeners();
+
             let coordZone = element.querySelector('.coord-zone-div');
             let border = element.querySelector('span');
             let fieldOfView = element.querySelector('#field-of-view');
@@ -66,7 +72,7 @@ function update_player_coord(data) {
             }
             
             // Création et ajout du nouveau border
-            let [coordY, coordX] = id.split('_');
+            let [coordY, coordX] = id_split;
             let newBorderZone = document.createElement('span');
             newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
             newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
