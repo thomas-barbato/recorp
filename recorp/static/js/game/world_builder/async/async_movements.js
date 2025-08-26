@@ -86,164 +86,6 @@ function update_player_coord(data) {
     function handleOtherPlayerMove(otherPlayerData) {
         add_pc(otherPlayerData)
     }
-    
-    function processPlayerPositions(startPosArray, endPosArray, targetPlayerId, size) {
-        // Validation des tableaux
-        if (!Array.isArray(startPosArray) || !Array.isArray(endPosArray)) {
-            return;
-        }
-        if (startPosArray.length !== endPosArray.length) {
-            return;
-        }
-        
-        // Traitement séquentiel pour éviter les conflits
-        endPosArray.forEach((endId, index) => {
-            const endPoint = document.getElementById(endId);
-            if (!endPoint) {
-                console.warn(`Point de destination non trouvé: ${endId}`);
-                return;
-            }
-            // Mise à jour de la nouvelle position
-            updateNewPosition(endPoint, targetPlayerId, size);
-        });
-    }
-    
-    // MISE À JOUR DE LA NOUVELLE POSITION (simplifiée et corrigée)
-    function updateNewPosition(endPoint, targetPlayerId, size) {
-        // Vérifier d'abord que la cellule n'est pas déjà occupée par ce joueur
-        const existingShip = endPoint.querySelector(`#tooltip-pc_${targetPlayerId}`);
-        if (existingShip) {
-            console.warn(`Le joueur ${targetPlayerId} est déjà présent à cette position`);
-            return;
-        }
-        // Ajout des classes nécessaires
-        endPoint.classList.add('pc', 'uncrossable');
-        
-        // Configuration de l'événement de clic
-        setupClickEvent(endPoint, targetPlayerId);
-        
-        // Configuration des événements de survol
-        setupHoverEvents(endPoint, size);
-        
-        // Créer et ajouter les éléments de vaisseau
-        createAndAddShipElements(endPoint, targetPlayerId, size);
-    }
-    
-    // NOUVELLE FONCTION : Créer et ajouter les éléments de vaisseau
-    function createAndAddShipElements(endPoint, targetPlayerId, size) {
-        // Récupérer les informations du joueur depuis le cache
-        const playerData = map_informations.pc.find(p => p.user.player === targetPlayerId);
-        if (!playerData) {
-            console.warn(`Données du joueur ${targetPlayerId} non trouvées`);
-            return;
-        }
-        
-        const containerDiv = endPoint.querySelector('.coord-zone-div');
-        if (!containerDiv) return;
-        
-        // Créer les éléments de vaisseau
-        const shipImage = playerData.ship.image;
-        const bgUrl = `/static/img/foreground/SHIPS/${shipImage}.png`;
-        const bgUrlReversed = `/static/img/foreground/SHIPS/${shipImage}-reversed.png`;
-        
-        const spaceShip = document.createElement('div');
-        spaceShip.style.backgroundImage = `url('${bgUrl}')`;
-        spaceShip.classList.add('ship', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc', 'z-1');
-        spaceShip.style.backgroundPositionX = '0px';
-        spaceShip.style.backgroundPositionY = '0px';
-        
-        const spaceShipReversed = document.createElement('div');
-        spaceShipReversed.style.backgroundImage = `url('${bgUrlReversed}')`;
-        spaceShipReversed.classList.add('ship-reversed', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc', 'z-1');
-        spaceShipReversed.style.backgroundPositionX = '0px';
-        spaceShipReversed.style.backgroundPositionY = '0px';
-        
-        // Affichage conditionnel selon l'orientation
-        if (playerData.ship.is_reversed) {
-            spaceShip.classList.add('hidden');
-            spaceShipReversed.classList.remove('hidden');
-        } else {
-            spaceShip.classList.remove('hidden');
-            spaceShipReversed.classList.add('hidden');
-        }
-        
-        containerDiv.appendChild(spaceShip);
-        containerDiv.appendChild(spaceShipReversed);
-    }
-    
-    // CONFIGURATION DES ÉVÉNEMENTS DE CLIC (inchangée)
-    function setupClickEvent(endPoint, targetPlayerId) {
-        const border = endPoint.querySelector('span');
-        if (!border) return;
-        
-        if(targetPlayerId != currentPlayer.user.player){
-            border.addEventListener(action_listener_touch_click, function(event) {
-                event.preventDefault();
-                open_close(`modal-pc_${targetPlayerId}`);
-            });
-        }
-        
-        return endPoint;
-    }
-    
-    // CONFIGURATION DES ÉVÉNEMENTS DE SURVOL (inchangée)
-    function setupHoverEvents(endPoint, size) {
-        const {endY : y, endX: x} = endPoint.id.split('_');
-        const endPointBorder = endPoint.querySelector('span');
-        if (!endPointBorder) return;
-        
-        // Calcul des coordonnées une seule fois
-        const adjustedEndY = parseInt(endY) + 1;
-        const adjustedEndX = parseInt(endX) + 1;
-        const sizeY = size.y;
-        const sizeX = size.x;
-        
-        // Événements optimisés avec les valeurs pré-calculées
-        const mouseoverHandler = () => generate_border(sizeY, sizeX, adjustedEndY, adjustedEndX);
-        const mouseoutHandler = () => remove_border(sizeY, sizeX, adjustedEndY, adjustedEndX, 'border-cyan-400');
-        
-        endPointBorder.addEventListener("mouseover", mouseoverHandler);
-        endPointBorder.addEventListener("mouseout", mouseoutHandler);
-    }
-    
-    // MISE À JOUR DE L'INTERFACE UTILISATEUR DU MOUVEMENT (inchangée)
-    function updatePlayerMovementUI(modalElement, movementRemaining, maxMovement) {
-        try {
-            updateDetailedMovementBar(modalElement, movementRemaining, maxMovement);
-            updateMovementStatus(modalElement, movementRemaining, maxMovement);
-        } catch (error) {
-            console.error('Erreur lors de la mise à jour de l\'interface utilisateur:', error);
-        }
-    }
-    
-    // MISE À JOUR DE LA BARRE DE PROGRESSION DÉTAILLÉE (inchangée)
-    function updateDetailedMovementBar(modalElement, movementRemaining, maxMovement) {
-        const detailedContainer = modalElement.querySelector('#movement-container-detailed');
-        if (!detailedContainer) return;
-        
-        const progressBar = detailedContainer.querySelector('div');
-        const progressText = detailedContainer.querySelector('span');
-        
-        if (progressBar && progressText) {
-            const percentage = Math.round((movementRemaining * 100) / maxMovement);
-            progressBar.style.width = `${percentage}%`;
-            progressText.textContent = `${movementRemaining} / ${maxMovement}`;
-        }
-    }
-    
-    // MISE À JOUR DU STATUT DE MOUVEMENT (inchangée)
-    function updateMovementStatus(modalElement, movementRemaining, maxMovement) {
-        const movementContainer = modalElement.querySelector('#movement-container');
-        if (!movementContainer) return;
-        
-        const movementText = movementContainer.querySelector('p');
-        if (!movementText) return;
-        
-        const movementValue = color_per_percent(movementRemaining, maxMovement);
-        
-        movementText.className = `text-xs ${movementValue.color} font-shadow`;
-        movementText.textContent = movementValue.status;
-    }
 }
 // FONCTIONS UTILITAIRES POUR L'OPTIMISATION
 
@@ -264,6 +106,14 @@ function debounce(func, wait) {
         timeout = setTimeout(later, wait);
     };
 }
+
+/* EXEMPLE UTILISATION : 
+const debouncedMouseover = debounce(() => {
+    generate_border(sizeY, sizeX, coordY, coordX);
+}, 100);
+
+border.addEventListener("mouseover", debouncedMouseover);
+*/
 
 function reverse_ship(data) {
     let player_id = data["player_id"];
@@ -332,7 +182,6 @@ function update_player_pos_display_after_move(data, recieved_data) {
     setupObservableZone();
     
     // 3. Placement du vaisseau aux nouvelles coordonnées (optimisé)
-    //placeShipAtNewPosition(ship_size_x, ship_size_y);
     add_pc(currentPlayer);
 
     // 4. Masquage du débordement de secteur

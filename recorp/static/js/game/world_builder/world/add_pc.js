@@ -214,14 +214,16 @@ function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
 
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
-            let unknownShip = cell.querySelector('#unknown-ship');
-
-            unknownShip?.remove()
+            
+            // SOLUTION CORRIGÉE: Nettoyer TOUS les éléments unknown-ship existants
+            const existingUnknownShips = cell.querySelectorAll('#unknown-ship');
+            existingUnknownShips.forEach(ship => ship.remove());
 
             if(is_visible){
                 setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset);
             }else{
-                spaceShip = createUnknownElement();
+                // Créer UN NOUVEAU élément pour CETTE cellule spécifique
+                const spaceShip = createUnknownElement(coordY, coordX);
                 setupUnknownPcCell(cell, border, playerInfo, spaceShip);
             }
             
@@ -231,6 +233,7 @@ function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
         coordX = playerInfo.coordinates.x;
     }
 }
+
 
 function renderPlayerShip(playerData, playerInfo) {
     let coordX = playerInfo.coordinates.x;
@@ -284,7 +287,7 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     const border = cell.querySelector('span');
     const cellDiv = cell.querySelector('div');
 
-    let unknownShipDiv = cell.querySelector('#unknown-ship')
+    let unknownShipDiv = cell.querySelector('#unknown-ship');
     unknownShipDiv?.remove();
     
     // Configure cell
@@ -311,6 +314,10 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
 }
 
 function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
+    // Nettoyage préventif au début de la fonction
+    const existingUnknown = cell.querySelectorAll('.ship.animate-ping.bg-yellow-300, .ship[id*="unknown-ship"]');
+    existingUnknown.forEach(ship => ship.remove());
+    
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', playerInfo.ship.sizeX);
@@ -331,16 +338,12 @@ function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
         border.setAttribute(attribute_touch_click, clickAction);
     }
 
-        
-    // Événements optimisés avec les valeurs pré-calculées
+    // Événements optimisés
     const mouseoverHandler = () => generate_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
     const mouseoutHandler = () => remove_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
 
-    // Add event listeners
     border.addEventListener("mouseover", mouseoverHandler);
     border.addEventListener("mouseout", mouseoutHandler);
-    
-    cell.append(spaceship);
 }
 
 function createShipElements(shipImage, colOffset, rowOffset) {
@@ -370,20 +373,6 @@ function createShipElement(bgUrl, colOffset, rowOffset, className) {
     element.style.backgroundPositionX = `-${colOffset}px`;
     element.style.backgroundPositionY = `-${rowOffset}px`;
     return element;
-}
-
-function createUnknownElement(){
-    const spaceShip = document.createElement('div');
-    
-    spaceShip.classList.add(
-        'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
-        'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
-        '-translate-y-1/2', 'z-1'
-    );
-    spaceShip.id = "unknown-ship";
-    
-    return spaceShip;
-
 }
 
 function handleShipDisplay(spaceShip, spaceShipReversed, isReversed) {
@@ -482,26 +471,5 @@ function handleCurrentUserMovement(currentMovement) {
 function handleMobileButtonDisabling(coordinatesArray) {
     if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinatesArray));
-    }
-}
-
-function ship_is_visible(coordY, coordX, sizeY, sizeX){
-    let temp_coordX = coordX - 1;
-    let temp_coordY = coordY - 1;
-    let max_size_y = atlas.tilesize * sizeY;
-    let max_size_x = atlas.tilesize * sizeX;
-    if(sizeY == 1 && sizeX == 1){
-        return observable_zone_id.includes(`${temp_coordY}_${temp_coordX}`);
-    }else{
-        for (let rowOffset = 0; rowOffset < max_size_y; rowOffset += atlas.tilesize) {
-            for (let colOffset = 0; colOffset < max_size_x; colOffset += atlas.tilesize) {
-                if(observable_zone_id.includes(`${temp_coordY}_${temp_coordX}`)){
-                    return true;
-                }
-                temp_coordX++;
-            }
-            temp_coordY++;
-            temp_coordX = coordX;
-        }
     }
 }

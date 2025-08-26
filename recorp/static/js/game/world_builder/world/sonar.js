@@ -44,9 +44,7 @@ class Sonar {
     setupEventListeners() {
         // Récupérer les cellules actuelles du joueur
         const playerCell = document.querySelectorAll('.ship-pos');
-        console.log(`playerCell.length : ${playerCell.length}`);
         this.playerCells = Array.from(playerCell);
-        console.log(`playerCells : ${this.playerCells}`);
 
         for(let i = 0; i < playerCell.length; i++){
             // Créer des fonctions nommées pour pouvoir les supprimer
