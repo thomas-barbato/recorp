@@ -8,14 +8,15 @@ function add_pc(data) {
             const playerInfo = extractPlayerInfo(playerData);
             const modalData = createPlayerModalData(playerData);
             const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x };
+            const is_visible = checkIfCoordinateIsVisible(playerInfo);
 
             if (!playerInfo.isCurrentUser) {
-                if(checkIfCoordinateIsVisible(playerInfo)){
+                if(is_visible == true){
                     createAndAppendPlayerModal(modalData, playerInfo);
                 }else{
                     createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
                 }
-                renderOtherPlayerShip(playerData, playerInfo);
+                renderOtherPlayerShip(playerData, playerInfo, is_visible);
             }else{
                 renderPlayerShip(playerData, playerInfo);
                 createAndAppendPlayerModal(modalData, playerInfo)
@@ -29,15 +30,16 @@ function add_pc(data) {
         const modalData = createPlayerModalData(data);
         const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x } 
         const id = `${coordinates.y}_${coordinates.x}`;
+        const is_visible = checkIfCoordinateIsVisible(playerInfo);
 
         if (!playerInfo.isCurrentUser) {
 
-            if(checkIfCoordinateIsVisible(playerInfo)){
+            if(is_visible == true){
                 createAndAppendPlayerModal(modalData, playerInfo);
             }else{
                 createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
             }
-            renderOtherPlayerShip(data, playerInfo);
+            renderOtherPlayerShip(data, playerInfo, is_visible);
 
         }else{
 
@@ -118,6 +120,11 @@ function createAndAppendPlayerModal(modalData, playerInfo) {
     const modalIdWithPrefix = `modal-pc_${playerInfo.user.id}`;
     const modalId = `pc_${playerInfo.user.id}`;
 
+    let unknowModalId = `modal-unknown-pc_${playerInfo.user.id}`;
+
+    let unknownModal = document.getElementById(unknowModalId);
+    unknownModal?.remove();
+
     if(!checkIfModalExists(modalIdWithPrefix)){
         const coordString = `${playerInfo.coordinates.y}_${playerInfo.coordinates.x}`;
         const modal = create_pc_npc_modal(
@@ -139,6 +146,9 @@ function createAndAppendUnknownPcModal(modalData, playerInfo) {
 
     const modalIdWithPrefix = `modal-unknown-pc_${playerInfo.user.id}`;
     const modalId = `pc_${playerInfo.user.id}`;
+
+    let visiblePlayerModal = document.getElementById(modalId);
+    visiblePlayerModal?.remove();
 
     if(!checkIfModalExists(modalIdWithPrefix)){
         const coordString = `${playerInfo.coordinates.y}_${playerInfo.coordinates.x}`;
@@ -191,7 +201,7 @@ function createPlayerModalData(playerData) {
     };
 }
 
-function renderOtherPlayerShip(playerData, playerInfo) {
+function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
     let coordX = playerInfo.coordinates.x;
     let coordY = playerInfo.coordinates.y;
     let sizeX  = playerInfo.ship.sizeX;
@@ -199,10 +209,9 @@ function renderOtherPlayerShip(playerData, playerInfo) {
     let full_size_y = atlas.tilesize * sizeY;
     let full_size_x = atlas.tilesize * sizeX;
 
-    let is_visible = ship_is_visible(coordY, coordX, sizeY, sizeX);
-
     for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
+
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
             let unknownShip = cell.querySelector('#unknown-ship');
@@ -274,6 +283,9 @@ function createTooltipContainer(cell, playerId) {
 function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     const border = cell.querySelector('span');
     const cellDiv = cell.querySelector('div');
+
+    let unknownShipDiv = cell.querySelector('#unknown-ship')
+    unknownShipDiv?.remove();
     
     // Configure cell
     cell.classList.add("uncrossable");
@@ -470,5 +482,26 @@ function handleCurrentUserMovement(currentMovement) {
 function handleMobileButtonDisabling(coordinatesArray) {
     if (is_user_is_on_mobile_device()) {
         disable_button(get_direction_to_disable_button(coordinatesArray));
+    }
+}
+
+function ship_is_visible(coordY, coordX, sizeY, sizeX){
+    let temp_coordX = coordX - 1;
+    let temp_coordY = coordY - 1;
+    let max_size_y = atlas.tilesize * sizeY;
+    let max_size_x = atlas.tilesize * sizeX;
+    if(sizeY == 1 && sizeX == 1){
+        return observable_zone_id.includes(`${temp_coordY}_${temp_coordX}`);
+    }else{
+        for (let rowOffset = 0; rowOffset < max_size_y; rowOffset += atlas.tilesize) {
+            for (let colOffset = 0; colOffset < max_size_x; colOffset += atlas.tilesize) {
+                if(observable_zone_id.includes(`${temp_coordY}_${temp_coordX}`)){
+                    return true;
+                }
+                temp_coordX++;
+            }
+            temp_coordY++;
+            temp_coordX = coordX;
+        }
     }
 }
