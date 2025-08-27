@@ -13,6 +13,9 @@ class Sonar {
         this.eventListeners = [];
         this.playerCells = [];
         
+        // Détection des appareils mobiles
+        this.isMobile = this.detectMobileDevice();
+        
         // Nettoyer d'abord les anciens listeners s'ils existent
         this.cleanupAllSonarListeners();
         this.setupEventListeners();
@@ -54,11 +57,26 @@ class Sonar {
             cell.parentNode.replaceChild(newCell, cell);
         });
         
+        // Nettoyer aussi le bouton radar s'il existe
+        const radarButton = document.querySelector('#radar-sweep');
+        if (radarButton) {
+            const newButton = radarButton.cloneNode(true);
+            radarButton.parentNode.replaceChild(newButton, radarButton);
+        }
+        
         // Vider le tableau des listeners
         this.eventListeners = [];
     }
 
     setupEventListeners() {
+        if (this.isMobile) {
+            this.setupMobileEventListeners();
+        } else {
+            this.setupDesktopEventListeners();
+        }
+    }
+
+    setupDesktopEventListeners() {
         // Récupérer les cellules actuelles du joueur
         const playerCell = document.querySelectorAll('.ship-pos');
         this.playerCells = Array.from(playerCell);
@@ -92,6 +110,47 @@ class Sonar {
         }
     }
 
+    setupMobileEventListeners() {
+        // Sur mobile, utiliser le bouton radar-sweep
+        const radarButton = document.querySelector('#radar-sweep');
+        
+        if (radarButton) {
+            // Gestionnaire pour l'activation/désactivation du sonar par bouton
+            const buttonClickHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (this.sonarActive) {
+                    this.deactivateSonar();
+                } else {
+                    this.activateSonar();
+                }
+            };
+
+            // Ajouter l'event listener au bouton
+            radarButton.addEventListener('click', buttonClickHandler);
+            radarButton.addEventListener('touchend', buttonClickHandler);
+
+            // Stocker les références
+            this.eventListeners.push({
+                element: radarButton,
+                type: 'click',
+                handler: buttonClickHandler
+            });
+
+            this.eventListeners.push({
+                element: radarButton,
+                type: 'touchend',
+                handler: buttonClickHandler
+            });
+
+            // Optionnel : Ajouter une classe pour indiquer que le bouton est actif
+            radarButton.classList.add('sonar-control-active');
+        } else {
+            console.warn('Bouton #radar-sweep non trouvé pour le contrôle mobile du sonar');
+        }
+    }
+
     removeEventListeners() {
         this.eventListeners.forEach(listener => {
             // Vérifier que l'élément existe encore dans le DOM
@@ -99,6 +158,13 @@ class Sonar {
                 listener.element.removeEventListener(listener.type, listener.handler);
             }
         });
+        
+        // Retirer la classe du bouton radar si elle existe
+        const radarButton = document.querySelector('#radar-sweep');
+        if (radarButton) {
+            radarButton.classList.remove('sonar-control-active');
+        }
+        
         this.eventListeners = []; // Vider le tableau
     }
 
@@ -115,6 +181,9 @@ class Sonar {
         this.playerPos = coordinates;
         this.range = view_range;
         
+        // Re-détecter le type d'appareil (au cas où l'utilisateur aurait changé d'orientation ou de device)
+        this.isMobile = this.detectMobileDevice();
+        
         // Nettoyer et reconfigurer
         this.cleanupAllSonarListeners();
         this.setupEventListeners();
@@ -123,7 +192,8 @@ class Sonar {
     // Méthode pour supprimer un event listener spécifique
     removeSonarEventListeners() {
         this.eventListeners = this.eventListeners.filter(listener => {
-            if (listener.type === 'mouseenter' || listener.type === 'mouseleave') {
+            if (listener.type === 'mouseenter' || listener.type === 'mouseleave' || 
+                listener.type === 'click' || listener.type === 'touchend') {
                 if (listener.element && listener.element.parentNode) {
                     listener.element.removeEventListener(listener.type, listener.handler);
                 }
@@ -139,12 +209,28 @@ class Sonar {
         this.sonarActive = true;
         this.showRange();
         this.startSonarSweep();
+        
+        // Mettre à jour l'apparence du bouton sur mobile
+        if (this.isMobile) {
+            const radarButton = document.querySelector('#radar-sweep');
+            if (radarButton) {
+                radarButton.classList.add('sonar-active');
+            }
+        }
     }
 
     deactivateSonar() {
         this.sonarActive = false;
         this.hideRange();
         this.stopSonarSweep();
+        
+        // Mettre à jour l'apparence du bouton sur mobile
+        if (this.isMobile) {
+            const radarButton = document.querySelector('#radar-sweep');
+            if (radarButton) {
+                radarButton.classList.remove('sonar-active');
+            }
+        }
     }
 
     showRange() {
@@ -215,6 +301,21 @@ class Sonar {
         }
     }
 
+    // Méthode pour forcer le mode mobile/desktop
+    setMobileMode(isMobile) {
+        if (this.isMobile !== isMobile) {
+            this.isMobile = isMobile;
+            // Réinitialiser les event listeners avec le nouveau mode
+            this.removeEventListeners();
+            this.setupEventListeners();
+        }
+    }
+
+    // Méthode pour obtenir le statut du mode mobile
+    getMobileMode() {
+        return this.isMobile;
+    }
+
     // Méthode de nettoyage à appeler avant de détruire l'instance
     destroy() {
         this.deactivateSonar();
@@ -264,4 +365,22 @@ function forceSonarDeactivation() {
     if (sonar && typeof sonar.deactivateSonar === 'function') {
         sonar.deactivateSonar();
     }
+}
+
+// Fonction utilitaire pour basculer entre les modes mobile/desktop
+function toggleSonarMobileMode(forceMobile = null) {
+    if (sonar && typeof sonar.setMobileMode === 'function') {
+        const newMode = forceMobile !== null ? forceMobile : !sonar.getMobileMode();
+        sonar.setMobileMode(newMode);
+        return newMode;
+    }
+    return false;
+}
+
+// Fonction pour vérifier le mode actuel
+function getSonarMode() {
+    if (sonar && typeof sonar.getMobileMode === 'function') {
+        return sonar.getMobileMode() ? 'mobile' : 'desktop';
+    }
+    return 'unknown';
 }
