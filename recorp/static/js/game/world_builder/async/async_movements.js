@@ -87,33 +87,6 @@ function update_player_coord(data) {
         add_pc(otherPlayerData)
     }
 }
-// FONCTIONS UTILITAIRES POUR L'OPTIMISATION
-
-/**
- * Débounce pour limiter les appels fréquents à une fonction
- * @param {Function} func - Fonction à debouncer
- * @param {number} wait - Temps d'attente en ms
- * @returns {Function}
- */
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-/* EXEMPLE UTILISATION : 
-const debouncedMouseover = debounce(() => {
-    generate_border(sizeY, sizeX, coordY, coordX);
-}, 100);
-
-border.addEventListener("mouseover", debouncedMouseover);
-*/
 
 function reverse_ship(data) {
     let player_id = data["player_id"];

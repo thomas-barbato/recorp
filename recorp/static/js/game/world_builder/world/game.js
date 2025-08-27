@@ -7,6 +7,7 @@ let otherPlayers = map_informations.pc.filter(p => p.user.player !== current_pla
 const npcs = map_informations.npc || [];
 let observable_zone = [];
 let observable_zone_id = [];
+let mobile_radar_sweep_bool = true;
 
 const atlas = {
     col: 40,
@@ -150,7 +151,6 @@ function setup_websocket_handlers(socket, room) {
     let isReconnecting = false;
     
     socket.onopen = () => {
-        console.log("WebSocket connecté");
         reconnectAttempts = 0;
         isReconnecting = false;
         
@@ -169,7 +169,6 @@ function setup_websocket_handlers(socket, room) {
 
     socket.onclose = (event) => {
         console.log("WebSocket fermé:", event.code, event.reason);
-        console.log(`Attempt nb : ${reconnectAttempts}`)
         if (heartbeatInterval) {
             clearInterval(heartbeatInterval);
             heartbeatInterval = null;
@@ -278,7 +277,6 @@ function handle_websocket_message(data) {
  * @param {Object} message - Message de départ
  */
 function handleUserLeave(message) {
-    console.log('Utilisateur parti:', message);
     // Ici, vous pourriez ajouter la logique pour supprimer le joueur de l'affichage
     // par exemple: removePlayerFromDisplay(message.player_id);
 }
@@ -399,8 +397,6 @@ function init_sector_generation() {
         if (typeof initializeEnhancedDetectionSystem === 'function') {
             initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, npcs);
         }
-
-        console.log('Secteur généré avec succès');
     } catch (error) {
         console.error('Erreur lors de la génération du secteur:', error);
     }
@@ -447,8 +443,6 @@ function init_game() {
     const room = map_informations.sector.id;
     
     try {
-        console.log('Initialisation du jeu...');
-        
         // Vérifier les prérequis
         if (!room) {
             throw new Error('ID de salle manquant');
@@ -466,19 +460,43 @@ function init_game() {
         // Initialiser les composants du jeu de manière asynchrone
         init_sector_generation();
         
-        console.log('Jeu initialisé avec succès');
-        
     } catch (error) {
         console.error('Erreur lors de l\'initialisation du jeu:', error);
         showConnectionError();
     }
 }
 
+// FONCTIONS UTILITAIRES POUR L'OPTIMISATION
+/**
+ * Débounce pour limiter les appels fréquents à une fonction
+ * @param {Function} func - Fonction à debouncer
+ * @param {number} wait - Temps d'attente en ms
+ * @returns {Function}
+ */
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+/* EXEMPLE UTILISATION : 
+const debouncedMouseover = debounce(() => {
+    generate_border(sizeY, sizeX, coordY, coordX);
+}, 100);
+
+border.addEventListener("mouseover", debouncedMouseover);
+*/
+
 /**
  * Fonction de nettoyage à appeler lors de la fermeture
  */
 function cleanup_game() {
-    console.log('Nettoyage des ressources...');
     
     // NOUVEAU : Nettoyer le sonar
     if (typeof cleanupSonar === 'function') {
@@ -489,8 +507,6 @@ function cleanup_game() {
     if (gameSocket && gameSocket.readyState === WebSocket.OPEN) {
         gameSocket.close(1000, 'Page unloading');
     }
-    
-    console.log('Nettoyage terminé');
 }
 
 // Gestion des erreurs globales

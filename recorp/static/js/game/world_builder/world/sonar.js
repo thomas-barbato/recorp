@@ -18,6 +18,23 @@ class Sonar {
         this.setupEventListeners();
     }
 
+    // Méthode pour détecter si l'utilisateur est sur mobile
+    detectMobileDevice() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        
+        // Vérification par user agent
+        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+        const isMobileUserAgent = mobileRegex.test(userAgent);
+        
+        // Vérification par taille d'écran
+        const isMobileScreen = window.innerWidth <= 768;
+        
+        // Vérification du support tactile
+        const hasTouchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        return isMobileUserAgent || (isMobileScreen && hasTouchSupport);
+    }
+
     updateObservableZone(observable_zone){
         this.observable_zone = observable_zone;
     }
@@ -73,16 +90,12 @@ class Sonar {
                 handler: mouseLeaveHandler
             });
         }
-        console.log(`this.eventListeners :`);
-        console.log(this.eventListeners);
     }
 
     removeEventListeners() {
-        console.log("Suppression des event listeners");
         this.eventListeners.forEach(listener => {
             // Vérifier que l'élément existe encore dans le DOM
             if (listener.element && listener.element.parentNode) {
-                console.log("Suppression:", listener.type, listener.handler);
                 listener.element.removeEventListener(listener.type, listener.handler);
             }
         });

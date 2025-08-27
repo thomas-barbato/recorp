@@ -252,7 +252,6 @@ function renderPlayerShip(playerData, playerInfo) {
         coordX = playerInfo.coordinates.x;
     }
     
-    // NOUVEAU : Utiliser updatePlayerSonar au lieu de renderPlayerSonar
     const coordinates = {y: playerInfo.coordinates.y, x: playerInfo.coordinates.x};
     updatePlayerSonar(coordinates, playerInfo.ship.viewRange);
 }
@@ -269,7 +268,7 @@ function createTooltipContainer(cell, playerId) {
     const tooltipContainer = document.createElement('ul');
     tooltipContainer.id = `tooltip-pc_${playerId}`;
     tooltipContainer.classList.add(
-        'absolute', 'z-10', 'px-1', 'py-1', 'text-xs', 'inline-block',
+        'absolute', 'z-1', 'px-1', 'py-1', 'text-xs', 'inline-block',
         'font-bold', 'text-white', 'rounded-sm', 'shadow-sm', 'text-center',
         'list-none', 'text-justify', 'm-w-[100%]', 'tooltip'
     );
@@ -342,8 +341,29 @@ function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
     const mouseoverHandler = () => generate_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
     const mouseoutHandler = () => remove_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
 
-    border.addEventListener("mouseover", mouseoverHandler);
-    border.addEventListener("mouseout", mouseoutHandler);
+    if(!is_user_is_on_mobile_device()){
+        border.addEventListener("mouseover", mouseoverHandler);
+        border.addEventListener("mouseout", mouseoutHandler);
+
+    }else{
+
+        const radarSweepButton = document.querySelector('#radar-sweep');
+        if (!radarSweepButton){
+            return
+        }
+
+        radarSweepButton.addEventListener('touchstart', function(){
+            console.log("DANS LE TOUCHSTART")
+            console.log(mobile_radar_sweep_bool)
+            if(mobile_radar_sweep_bool == false){
+                generate_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
+                mobile_radar_sweep_bool = true;
+            }else{
+                remove_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
+                mobile_radar_sweep_bool = false;
+            }
+        })
+    }
 }
 
 function createShipElements(shipImage, colOffset, rowOffset) {

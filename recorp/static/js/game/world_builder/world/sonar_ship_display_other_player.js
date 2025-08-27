@@ -54,8 +54,6 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
             // 6. Recalculer UNIQUEMENT la visibilité (sans replacer les joueurs)
             this.performDetectionCheckWithoutReplacement();
 
-            console.log(`Joueur ${targetPlayerId} mis à jour de [${oldPosition.x},${oldPosition.y}] vers [${newPosition.x},${newPosition.y}]`);
-
         } finally {
             this.isProcessingMove = false;
         }
@@ -618,8 +616,6 @@ function initializeEnhancedDetectionSystem(currentPlayerData, allPlayersData, al
     enhancedDetectionSystem.updatePlayersData(allPlayersData);
     enhancedDetectionSystem.updateNpcsData(allNpcsData);
     enhancedDetectionSystem.performDetectionCheck();
-    
-    console.log('Système de détection amélioré initialisé');
 }
 
 function updateAllPlayersData(updatedPlayersData) {
@@ -629,7 +625,6 @@ function updateAllPlayersData(updatedPlayersData) {
 
 function refreshDetectionSystem() {
     enhancedDetectionSystem.performDetectionCheckWithoutReplacement();
-    console.log('Système de détection rafraîchi');
 }
 
 // Export pour utilisation externe

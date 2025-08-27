@@ -305,3 +305,13 @@ button .ql-stroke,
         opacity: 0;
     }
 }
+
+#radar-sweep.sonar-control-active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#radar-sweep.sonar-active {
+    background-color: #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
