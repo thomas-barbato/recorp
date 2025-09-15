@@ -37,8 +37,6 @@ function update_player_coord(data) {
             const element = tabletopView.rows[id_split_y].cells[id_split_x];
             
             if (!element) continue;
-
-            // SUPPRIMÉ : sonar.removeEventListeners(); (maintenant géré par cleanupSonar)
             
             let coordZone = element.querySelector('.coord-zone-div');
             let border = element.querySelector('span');
@@ -54,13 +52,13 @@ function update_player_coord(data) {
             });
             
             // Batch des modifications DOM
-            element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile");
+            element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile z-10");
             element.removeAttribute('size_x');
             element.removeAttribute('size_y');
             element.removeAttribute('data-has-sonar'); // NOUVEAU : supprimer l'attribut sonar
             
             if (coordZone) {
-                coordZone.className = "relative w-[32px] h-[32px] z-20 coord-zone-div";
+                coordZone.className = "relative w-[32px] h-[32px] z-10 coord-zone-div";
             }
             
             // Suppression en lot
@@ -329,7 +327,7 @@ function update_player_pos_display_after_move(data, recieved_data) {
         const spaceShipReversed = document.createElement('div');
         
         // Configuration commune
-        const commonClasses = ['z-1', 'absolute', 'cursor-pointer', 'w-[32px]', 'h-[32px]'];
+        const commonClasses = ['absolute', 'cursor-pointer', 'w-[32px]', 'h-[32px]', 'z-10'];
         const commonStyles = {
             backgroundPositionX: `-${col_i}px`,
             backgroundPositionY: `-${row_i}px`
@@ -431,35 +429,7 @@ function update_player_pos_display_after_move(data, recieved_data) {
 }
 
 
-function occured_event_display_on_map(event_type, is_using_timer, user_id, value=0){ 
-    if(event_type == "movement"){
-        
-        let element = document.querySelector(`#tooltip-pc_${user_id}`);
-        if(element){
-            let movement_li = document.createElement('li');
-            let movement_li_icon = document.createElement('img');
-            let movement_li_value = document.createElement('span');
 
-            movement_li.classList.add('flex', 'flex-row', 'gap-1', 'text-2xl', 'font-bold');
-            movement_li.id = "movement-information-display";
-
-            movement_li_icon.src = '/static/img/ux/movement-icon.svg';
-            movement_li_icon.classList.add(
-                'w-[4vw]',
-                'h-[4vh]',
-            )
-            
-            movement_li_value.classList.add('text-teal-300', 'p-1', 'w-full', 'font-shadow')
-            movement_li_value.textContent = `-${value}`;
-
-            movement_li.append(movement_li_value);
-            movement_li.append(movement_li_icon);
-
-            element.append(movement_li);
-            fade_effect(element.querySelector("#movement-information-display"), 100)
-        }
-    }
-}
 
 
 function set_range_finding(data) {

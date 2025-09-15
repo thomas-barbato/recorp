@@ -157,7 +157,7 @@
                     <tr class="rows">
                         <td id="Y_{{ row }}" class="text-center text-emerald-300 font-bold border border-slate-600 bg-gray-600/40 text-shadow w-[32px] h-[32px] md:p-1 text-xs uncrossable">{{ row }}</td>
                         {% for col in map_size_range.cols %}
-                            <td class="relative w-[32px] h-[32px] m-0 p-0 tile" id="{{ row }}_{{ col }}">
+                            <td class="relative w-[32px] h-[32px] m-0 p-0 tile z-10" id="{{ row }}_{{ col }}">
                                 <div class="relative w-[32px] h-[32px] z-20 coord-zone-div">
                                     <div class="absolute w-[32px] h-[32px] hidden" id="field-of-view"></div>
                                     <span class="absolute inline-block w-[32px] h-[32px]"></span>
@@ -298,7 +298,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-user fa-lg"></i>
                             </div>
-                            <div id="character-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="character-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Character" %}
                                 <div class="map-arrow" data-popper-arrow></div>
                             </div>
@@ -307,7 +307,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-box fa-lg"></i>
                             </div>
-                            <div id="inventory-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="inventory-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Inventory" %}
                                 <div class="map-arrow" data-popper-arrow></div>
                             </div>
@@ -316,7 +316,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-people-group fa-lg"></i>
                             </div>
-                            <div id="faction-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="faction-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Faction" %}
                                 <div class="map-arrow" data-popper-arrow></div>
                             </div>
@@ -325,7 +325,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-brain fa-lg"></i>
                             </div>
-                            <div id="research-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="research-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Research" %}
                                 <div class="map-arrow" data-popper-arrow></div>
                             </div>
@@ -334,7 +334,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-map fa-lg"></i>
                             </div>
-                            <div id="map-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="map-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Map" %}
                                 <div class="map-arrow" data-popper-arrow></div>
                             </div>
@@ -343,7 +343,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-list-check fa-lg"></i>
                             </div>
-                            <div id="task-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="task-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Tasks" %}
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
@@ -352,7 +352,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-mobile-screen-button fa-lg"></i>
                             </div>
-                            <div id="event-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="event-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Events" %}
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
@@ -361,7 +361,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-envelope fa-lg"></i>
                             </div>
-                            <div id="message-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="message-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Message" %}
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
@@ -370,7 +370,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-comments fa-lg"></i>
                             </div>
-                            <div id="forum-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="forum-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Forum" %}
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
@@ -380,7 +380,7 @@
                             <div class="w-auto flex items-center">
                                 <i class="fa-solid fa-home fa-lg"></i>
                             </div>
-                            <div id="logout-tooltip" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                            <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Logout" %}
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
@@ -410,6 +410,7 @@
 <script src="{% static 'world_builder/world/add_sector_overflow.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/update_user_coordinates.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/world/occured_event_display.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/async/async_movements.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/async/async_actions.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding.js'%}" type='application/javascript'></script>

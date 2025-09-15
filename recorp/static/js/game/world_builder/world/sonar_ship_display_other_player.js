@@ -1,5 +1,5 @@
 /**
- * SYSTÈME CORRIGÉ DE MISE À JOUR DES JOUEURS APRÈS MOUVEMENT
+ * SYSTÈME DE MISE À JOUR DES JOUEURS APRÈS MOUVEMENT
  * Évite les affichages multiples en gérant proprement les mises à jour
  */
 
@@ -90,7 +90,7 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
     removeAllShipElements(element) {
         const elementsToRemove = [
             '.ship', '.ship-reversed', '.player-ship', '.player-ship-reversed',
-            '.pc', '#unknown-ship', 'ul' // tooltip
+            '.pc', '#unknown-ship', 'ul'
         ];
         
         elementsToRemove.forEach(selector => {

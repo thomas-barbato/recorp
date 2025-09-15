@@ -258,7 +258,6 @@ function renderPlayerShip(playerData, playerInfo) {
 
 function handleTooltipCreation(cell, playerInfo, rowOffset, colOffset) {
     const isLastRowFirstCol = rowOffset === ((atlas.tilesize * playerInfo.ship.sizeY) - atlas.tilesize) && colOffset === 0;
-    
     if (isLastRowFirstCol) {
         createTooltipContainer(cell, playerInfo.user.id);
     }
@@ -268,17 +267,24 @@ function createTooltipContainer(cell, playerId) {
     const tooltipContainer = document.createElement('ul');
     tooltipContainer.id = `tooltip-pc_${playerId}`;
     tooltipContainer.classList.add(
-        'absolute', 'z-1', 'px-1', 'py-1', 'text-xs', 'inline-block',
+        'absolute', 'z-[9999]', 'px-1', 'py-1', 'text-xs',
         'font-bold', 'text-white', 'rounded-sm', 'shadow-sm', 'text-center',
         'list-none', 'text-justify', 'm-w-[100%]', 'tooltip'
     );
+
+    // Positionnement explicite au-dessus de la cellule
+    tooltipContainer.style.top = '30px';  // En dessous de la cellule
+    tooltipContainer.style.left = '0px';   // Aligné à gauche de la cellule
+    tooltipContainer.style.transform = 'translateY(-100%)';
+    tooltipContainer.style.pointerEvents = 'none'; // Évite les conflits d'événements
+    tooltipContainer.style.zIndex = '10000';
     
     // Remove existing tooltips if there are too many
     const existingTooltips = cell.querySelectorAll('ul');
     if (existingTooltips.length >= 3) {
         existingTooltips[0].remove();
     }
-    
+    console.log("tooltipContainer")
     cell.append(tooltipContainer);
 }
 
@@ -353,8 +359,6 @@ function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
         }
 
         radarSweepButton.addEventListener('touchstart', function(){
-            console.log("DANS LE TOUCHSTART")
-            console.log(mobile_radar_sweep_bool)
             if(mobile_radar_sweep_bool == false){
                 generate_border(playerInfo.ship.sizeY, playerInfo.ship.sizeX, playerInfo.coordinates.baseY + 1, playerInfo.coordinates.baseX + 1);
                 mobile_radar_sweep_bool = true;
@@ -389,7 +393,7 @@ function createOutOfBoundShipElement(bgUrl, colOffset, rowOffset, className){
 function createShipElement(bgUrl, colOffset, rowOffset, className) {
     const element = document.createElement('div');
     element.style.backgroundImage = `url('${bgUrl}')`;
-    element.classList.add(className, 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc', 'z-1');
+    element.classList.add(className, 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'pc');
     element.style.backgroundPositionX = `-${colOffset}px`;
     element.style.backgroundPositionY = `-${rowOffset}px`;
     return element;

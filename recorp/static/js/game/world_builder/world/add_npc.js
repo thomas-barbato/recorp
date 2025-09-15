@@ -217,7 +217,7 @@ function createSpaceShipElement(bgUrl, colOffset, rowOffset) {
     const spaceShip = document.createElement('div');
     
     spaceShip.style.backgroundImage = `url('${bgUrl}')`;
-    spaceShip.classList.add('ship', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'z-1');
+    spaceShip.classList.add('ship', 'absolute', 'w-[32px]', 'h-[32px]', 'cursor-pointer', 'z-10');
     spaceShip.style.backgroundPositionX = `-${colOffset}px`;
     spaceShip.style.backgroundPositionY = `-${rowOffset}px`;
     
@@ -228,9 +228,9 @@ function createUnknownElement(){
     const spaceShip = document.createElement('div');
     
     spaceShip.classList.add(
-        'ship', 'absolute', 'inline-block', 'w-[8px]', 'h-[8px]', 'rounded-full',
+        'ship', 'absolute', 'w-[8px]', 'h-[8px]', 'rounded-full',
         'animate-ping', 'bg-yellow-300', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2',
-        '-translate-y-1/2', 'z-1'
+        '-translate-y-1/2', 'z-10'
     );
     spaceShip.id = "unknown-ship";
     

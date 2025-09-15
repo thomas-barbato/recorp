@@ -113,16 +113,16 @@ function renderForegroundElement(elementInfo, sectorData) {
     let colIndex = coordX;
     let full_size_y = atlas.tilesize * sizeY;
     let full_size_x = atlas.tilesize * sizeX;
-
+    
     for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
             const cell = getTableCell(rowIndex, colIndex);
             const cellDiv = cell.querySelector('div');
             const border = cellDiv.querySelector('span');
-            
+
             setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY);
             const imageDiv = createImageDiv(elementInfo, bgUrl, colOffset, rowOffset, colIndex, rowIndex);
-            
+
             cellDiv.append(imageDiv);
             colIndex++;
         }
@@ -144,7 +144,7 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
     cell.setAttribute('type', 'foreground');
     
     // Configure border
-    border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500 foreground-element";
+    border.className = "absolute z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500 foreground-element";
     border.setAttribute('data-title', `${elementInfo.name} [y: ${coordY - 1}, x: ${coordX - 1}]`);
     border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
     border.id = "ship-data-title";
