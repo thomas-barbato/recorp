@@ -169,14 +169,13 @@ function setupNpcCell(cell, border, npcInfo) {
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
+
+    let pathFindingSpan = cell.querySelector('.pathfinding-zone');
+    pathFindingSpan.title = `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     
     // Configure border
-    border.setAttribute('data-title', 
-        `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-    );
     border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    border.id = "ship-data-title";
         
     // Événements optimisés avec les valeurs pré-calculées
     const mouseoverHandler = () => generate_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
@@ -193,13 +192,13 @@ function setupUnkownNpcCell(cell, border, npcInfo) {
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
+
+    let pathFindingSpan = cell.querySelector('.pathfinding-zone');
+    pathFindingSpan.title = `${"Unknown"} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
     
     // Configure border
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     border.setAttribute('data-modal-target', `modal-unknown-npc_${npcInfo.npc.id}`);
-    border.setAttribute('data-title', 
-        `Unknown [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-    );
         
     // Événements optimisés avec les valeurs pré-calculées
     const mouseoverHandler = () => generate_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);

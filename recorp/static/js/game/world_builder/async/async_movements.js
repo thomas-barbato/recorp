@@ -74,7 +74,7 @@ function update_player_coord(data) {
             let [coordY, coordX] = id_split;
             let newBorderZone = document.createElement('span');
             newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-            newBorderZone.setAttribute('data-title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
+            newBorderZone.setAttribute('title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
             
             coordZone?.appendChild(newBorderZone);
         }
@@ -230,9 +230,9 @@ function update_player_pos_display_after_move(data, recieved_data) {
     
     function createPathfindingSpan(shipElement, containerDiv) {
         const span = document.createElement('span');
+
         span.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-crosshair z-1 foreground-element";
-        span.setAttribute('data-title', `${currentPlayer.user.sector_name} [y: ${currentPlayer.user.coordinates.y} ; x: ${currentPlayer.user.coordinates.x}]`);
-        
+        span.setAttribute('title', `${currentPlayer.user.sector_name} [y: ${currentPlayer.user.coordinates.y} ; x: ${currentPlayer.user.coordinates.x}]`);
         containerDiv.appendChild(span);
     }
     
@@ -298,9 +298,8 @@ function update_player_pos_display_after_move(data, recieved_data) {
         
         // Configuration du border
         entryPointBorder.classList.add('border-dashed', 'cursor-pointer', border_color);
-        entryPointBorder.setAttribute('data-title', `${playerName} [x : ${coord[0]}, y: ${coord[1]}]`);
         entryPointBorder.setAttribute('data-modal-target', `modal-pc_${currentPlayer.user.player}`);
-        entryPointBorder.id = "ship-data-title";
+        entryPointBorder.title = `${playerName} [x : ${coord[0]}, y: ${coord[1]}]`;
         
         // Suppression des anciens événements de pathfinding
         entryPointBorder.removeAttribute(attribute_touch_mouseover);

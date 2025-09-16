@@ -159,6 +159,7 @@ class PostMovementDetectionSystem {
      */
     setupEventListeners(cell, entityInfo, isVisible, isNpc = false) {
         const border = cell.querySelector('span');
+        const pathfindingZoneSpan = cell.querySelector('.pathfinding-zone')
         if (!border) return;
 
         // Configuration de base commune
@@ -168,12 +169,15 @@ class PostMovementDetectionSystem {
             // Entité visible - configuration complète
             if (isNpc) {
                 this.setupVisibleNpcEventListeners(border, entityInfo);
+                pathfindingZoneSpan.title = `${entityInfo.npc.displayed_name} [x: ${entityInfo.coordinates.baseX}, y: ${entityInfo.coordinates.baseY}]`;
             } else {
                 this.setupVisiblePlayerEventListeners(border, entityInfo);
+                pathfindingZoneSpan.title = `${entityInfo.user.name} [x: ${entityInfo.coordinates.baseX}, y: ${entityInfo.coordinates.baseY}]`;
             }
         } else {
             // Entité non visible - configuration "unknown"
             this.setupUnknownEntityEventListeners(border, entityInfo);
+            pathfindingZoneSpan.title = `${"Unknown"} [x: ${entityInfo.coordinates.baseX}, y: ${entityInfo.coordinates.baseY}]`;
         }
     }
 
@@ -181,10 +185,7 @@ class PostMovementDetectionSystem {
      * Configure les event listeners pour un joueur visible
      */
     setupVisiblePlayerEventListeners(border, playerInfo) {
-        
-        border.setAttribute('data-title', 
-            `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
-        );
+
         border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
 
         function handleBorderGeneration() {
@@ -228,9 +229,6 @@ class PostMovementDetectionSystem {
      */
     setupVisibleNpcEventListeners(border, npcInfo) {
         
-        border.setAttribute('data-title', 
-            `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-        );
         border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
         
         // Event listeners pour NPC visible
@@ -266,10 +264,8 @@ class PostMovementDetectionSystem {
      * Configure les event listeners pour une entité non visible (unknown)
      */
     setupUnknownEntityEventListeners(border, entityInfo) {
-        
-        border.setAttribute('data-title', 
-            `Unknown [x : ${entityInfo.coordinates.baseY}, y: ${entityInfo.coordinates.baseX}]`
-        );
+        console.log("TEST")
+        console.log(entityInfo)
         
         // Supprimer les attributs de modal pour les entités inconnues
         border.removeAttribute('data-modal-target');

@@ -284,7 +284,6 @@ function createTooltipContainer(cell, playerId) {
     if (existingTooltips.length >= 3) {
         existingTooltips[0].remove();
     }
-    console.log("tooltipContainer")
     cell.append(tooltipContainer);
 }
 
@@ -311,7 +310,7 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     if (playerInfo.isCurrentUser) {
         setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spaceShip, spaceShipReversed, rowOffset, colOffset);
     } else {
-        setupOtherPlayerCell(cell, playerInfo.borderColor);
+        setupOtherPlayerCell(cell, playerInfo.borderColor, playerInfo.user.name, playerInfo.coordinates);
     }
     
     cellDiv.append(spaceShip);
@@ -321,17 +320,17 @@ function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
 function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
     // Nettoyage préventif au début de la fonction
     const existingUnknown = cell.querySelectorAll('.ship.animate-ping.bg-yellow-300, .ship[id*="unknown-ship"]');
+    let pathFindingSpan = cell.querySelector('.pathfinding-zone');
     existingUnknown.forEach(ship => ship.remove());
     
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', playerInfo.ship.sizeX);
     cell.setAttribute('size_y', playerInfo.ship.sizeY);
+
+    pathFindingSpan.title = `${"Unknown"} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`;
     
     // Configure border
-    border.setAttribute('data-title', 
-        `${"Unknown"} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
-    );
     border.setAttribute('data-modal-target', `modal-unknown-pc_${playerInfo.user.id}`);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
     
@@ -411,13 +410,10 @@ function handleShipDisplay(spaceShip, spaceShipReversed, isReversed) {
 
 function setupBorderAndInteractions(border, playerData, playerInfo) {
     border.className = "absolute block z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-    border.setAttribute('data-title', 
-        `${playerInfo.user.name} [x : ${playerInfo.coordinates.baseY}, y: ${playerInfo.coordinates.baseX}]`
-    );
+
     if(currentPlayer.user.player != playerInfo.user.id){
         border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
     }
-    border.id = "ship-data-title";
     border.classList.add(playerInfo.borderColor);
     
     // Set click behavior for non-mobile devices
@@ -468,8 +464,10 @@ function setupCurrentUserCell(cell, cellDiv, border, playerData, playerInfo, spa
     current_player.set_remaining_move_points(playerInfo.ship.currentMovement);
 }
 
-function setupOtherPlayerCell(cell, borderColor) {
+function setupOtherPlayerCell(cell, borderColor, playerName, coordinates) {
+    let pathFindingSpan = cell.querySelector('.pathfinding-zone');
     cell.classList.add("pc", borderColor);
+    pathFindingSpan.title = `${playerName} [x : ${coordinates.x}, y: ${coordinates.y}]`;
 }
 
 function handleCurrentUserShipPositioning(cell, sizeY, sizeX, rowOffset, colOffset) {

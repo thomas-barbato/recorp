@@ -116,7 +116,7 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
             // Recréer le span de pathfinding
             const pathfindingSpan = document.createElement('span');
             pathfindingSpan.className = "absolute hover:box-border block z-10 w-[32px] h-[32px] pathfinding-zone cursor-crosshair z-1 foreground-element";
-            pathfindingSpan.setAttribute('data-title', 
+            pathfindingSpan.setAttribute('title', 
                 `${map_informations?.sector?.name || 'Secteur'} [y: ${y} ; x: ${x}]`
             );
             
@@ -237,7 +237,7 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
         const pathfindingZone = entryPoint.querySelector('.pathfinding-zone');
         if (pathfindingZone) {
             const coordinates = startId.split('_');
-            pathfindingZone.setAttribute('data-title',
+            pathfindingZone.setAttribute('title',
                 `${map_informations?.sector?.name || 'Secteur'} [y: ${coordinates[0]} ; x: ${coordinates[1]}]`);
         }
         

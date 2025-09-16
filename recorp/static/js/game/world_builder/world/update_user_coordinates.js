@@ -11,7 +11,7 @@ function update_target_coord_display(element) {
 
 function extractTargetData(element) {
     const span = element.querySelector('span');
-    let targetName = span.getAttribute('data-title').split(' ')[0] || '';
+    let targetName = span.getAttribute('title').split(' ')[0] || '';
     const coordX = element.cellIndex - 1;
     const coordY = element.parentNode.rowIndex - 1;
     
