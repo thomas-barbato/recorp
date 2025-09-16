@@ -193,12 +193,10 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
         const newEndPoint = endPoint.cloneNode(true);
         endPoint.parentNode.replaceChild(newEndPoint, endPoint);
         
-        if (!is_user_is_on_mobile_device()) {
-            newEndPoint.addEventListener(attribute_touch_click, function(event) {
-                event.preventDefault();
-                open_close_modal(`modal-pc_${targetPlayerId}`);
-            });
-        }
+        newEndPoint.addEventListener(attribute_touch_click, function(event) {
+            event.preventDefault();
+            open_close_modal(`modal-pc_${targetPlayerId}`);
+        });
         
         // Configurer les événements de survol
         this.setupHoverEvents(newEndPoint, size, newPosition);

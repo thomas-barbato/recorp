@@ -77,18 +77,14 @@ function checkIfModalExists(id_with_prefix){
 
 function createAndAppendNpcModal(npcId, modalData, npcInfo) {
 
-    const modalIdWithPrefix = `modal-pc_${npcId}`;
+    const modalIdWithPrefix = `modal-npc_${npcId}`;
     const modalId = `npc_${npcId}`;
 
     if(!checkIfModalExists(modalIdWithPrefix)){
 
-        const coordString = `${npcInfo.coordinates.y}_${npcInfo.coordinates.x}`;
         const modal = create_pc_npc_modal(
             modalId, 
             modalData, 
-            coordString, 
-            npcInfo.ship.sizeY, 
-            npcInfo.ship.sizeX, 
             true
         );
         
@@ -105,15 +101,10 @@ function createAndAppendUnknownNpcModal(npcId, modalData, npcInfo) {
     const modalId = `npc_${npcId}`;
 
     if(!checkIfModalExists(modalIdWithPrefix)){
-
-        const coordString = `${npcInfo.coordinates.y}_${npcInfo.coordinates.x}`;
         
         const modal = createUnknownModal(
             modalId, 
             modalData, 
-            coordString, 
-            npcInfo.ship.sizeY, 
-            npcInfo.ship.sizeX, 
             true
         );
         
@@ -138,14 +129,14 @@ function renderNpcShip(npcData, npcInfo, modalData) {
             const cellDiv = cell.querySelector('div');
             let spaceShip = undefined;
             border.classList.add('cursor-crosshair','border-dashed');
+                createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
+                createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
             if(is_visible){
                 setupNpcCell(cell, border, npcInfo);
                 spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
-                createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
             }else{
                 setupUnkownNpcCell(cell, border, npcInfo);
                 spaceShip = createUnknownElement();
-                createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
             }
             
             const clickAction = is_visible === true ? `open_close_modal('modal-npc_${npcData.npc.id}')`: `open_close_modal('modal-unknown-npc_${npcData.npc.id}')`;

@@ -10,16 +10,13 @@ function add_pc(data) {
             const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x };
             const is_visible = checkIfCoordinateIsVisible(playerInfo);
 
+            createAndAppendPlayerModal(modalData, playerInfo);
+            createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
+
             if (!playerInfo.isCurrentUser) {
-                if(is_visible == true){
-                    createAndAppendPlayerModal(modalData, playerInfo);
-                }else{
-                    createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
-                }
                 renderOtherPlayerShip(playerData, playerInfo, is_visible);
             }else{
                 renderPlayerShip(playerData, playerInfo);
-                createAndAppendPlayerModal(modalData, playerInfo)
             }
         });
         
@@ -32,19 +29,13 @@ function add_pc(data) {
         const id = `${coordinates.y}_${coordinates.x}`;
         const is_visible = checkIfCoordinateIsVisible(playerInfo);
 
+        createAndAppendPlayerModal(modalData, playerInfo);
+        createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
+
         if (!playerInfo.isCurrentUser) {
-
-            if(is_visible == true){
-                createAndAppendPlayerModal(modalData, playerInfo);
-            }else{
-                createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
-            }
             renderOtherPlayerShip(data, playerInfo, is_visible);
-
         }else{
-
             renderPlayerShip(data, playerInfo);
-            createAndAppendPlayerModal(modalData, playerInfo);
             
         }
     }
@@ -126,13 +117,10 @@ function createAndAppendPlayerModal(modalData, playerInfo) {
     unknownModal?.remove();
 
     if(!checkIfModalExists(modalIdWithPrefix)){
-        const coordString = `${playerInfo.coordinates.y}_${playerInfo.coordinates.x}`;
+
         const modal = create_pc_npc_modal(
             modalId,
             modalData,
-            coordString,
-            playerInfo.ship.sizeY,
-            playerInfo.ship.sizeX,
             false
         );
         
@@ -151,13 +139,10 @@ function createAndAppendUnknownPcModal(modalData, playerInfo) {
     visiblePlayerModal?.remove();
 
     if(!checkIfModalExists(modalIdWithPrefix)){
-        const coordString = `${playerInfo.coordinates.y}_${playerInfo.coordinates.x}`;
+        
         const modal = createUnknownModal(
             modalId, 
             modalData, 
-            coordString, 
-            playerInfo.ship.sizeY, 
-            playerInfo.ship.sizeX, 
             true
         );
         

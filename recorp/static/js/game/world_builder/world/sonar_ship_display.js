@@ -186,7 +186,10 @@ class PostMovementDetectionSystem {
      */
     setupVisiblePlayerEventListeners(border, playerInfo) {
 
-        border.setAttribute('data-modal-target', `modal-pc_${playerInfo.user.id}`);
+        let unknown_id = `modal-unknown-pc_${playerInfo.user.id}`;
+        let known_id = `modal-pc_${playerInfo.user.id}`;
+
+        border.setAttribute('data-modal-target', known_id);
 
         function handleBorderGeneration() {
             generate_border(
@@ -211,9 +214,8 @@ class PostMovementDetectionSystem {
             border.classList.remove('border-yellow-300');
             border.classList.add('border-cyan-400');
             // Configuration du clic pour non-mobile
-            if (!is_user_is_on_mobile_device()) {
-                border.setAttribute(attribute_touch_click, `open_close_modal('modal-pc_${playerInfo.user.id}')`);
-            }
+            border.removeAttribute(attribute_touch_click, `open_close_modal('${unknown_id}')`);
+            border.setAttribute(attribute_touch_click, `open_close_modal('${known_id}')`);
         }
 
     
@@ -228,8 +230,11 @@ class PostMovementDetectionSystem {
      * Configure les event listeners pour un NPC visible
      */
     setupVisibleNpcEventListeners(border, npcInfo) {
+
+        let unknown_id = `modal-unknown-npc_${npcInfo.npc.id}`;
+        let known_id = `modal-npc_${npcInfo.npc.id}`;
         
-        border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
+        border.setAttribute('data-modal-target', known_id);
         
         // Event listeners pour NPC visible
         border.addEventListener("mouseover", () => {
@@ -255,21 +260,24 @@ class PostMovementDetectionSystem {
         });
 
         // Configuration du clic pour non-mobile
-        if (!is_user_is_on_mobile_device()) {
-            border.setAttribute(attribute_touch_click, `open_close_modal('modal-npc_${npcInfo.npc.id}')`);
-        }
+        border.removeAttribute(attribute_touch_click, `open_close_modal('${unknown_id}')`);
+        border.setAttribute(attribute_touch_click, `open_close_modal('${known_id}')`);
     }
 
     /**
      * Configure les event listeners pour une entité non visible (unknown)
      */
     setupUnknownEntityEventListeners(border, entityInfo) {
-        console.log("TEST")
-        console.log(entityInfo)
+
+        const entityString = entityInfo?.user ? `pc_${entityInfo.user.id}` : `npc_${entityInfo.npc.id}`;
+        let unknown_id = `modal-unknown-${entityString}`;
+        let known_id = `modal-${entityString}`;
         
         // Supprimer les attributs de modal pour les entités inconnues
         border.removeAttribute('data-modal-target');
         border.removeAttribute('onmouseover');
+        
+        border.setAttribute('data-modal-target', known_id);
         
         // Event listeners pour entité inconnue
         border.addEventListener("mouseover", () => {
@@ -295,6 +303,9 @@ class PostMovementDetectionSystem {
             border.classList.remove('border-cyan-400', 'border-red-600');
             border.classList.add('border-yellow-300');
         });
+        
+        border.removeAttribute(attribute_touch_click, `open_close_modal('${known_id}')`);
+        border.setAttribute(attribute_touch_click, `open_close_modal('${unknown_id}')`);
     }
 
     /**

@@ -142,12 +142,13 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
     cell.setAttribute('size_y', sizeY);
     cell.setAttribute('data-type', elementInfo.type);
     cell.setAttribute('type', 'foreground');
-    cell.title =  `${elementInfo.name} [y: ${coordY - 1}, x: ${coordX - 1}]`;
+
+    let pathfindingSpan = cell.querySelector('.pathfinding-zone');
+    pathfindingSpan.title =  `${elementInfo.name} [y: ${coordY - 1}, x: ${coordX - 1}]`;
     
     // Configure border
     border.className = "absolute z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500 foreground-element";
     border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
-    //border.id = "ship-data-title";
     
     border.setAttribute(attribute_touch_click, `open_close_modal('modal-${elementInfo.name}')`);
     

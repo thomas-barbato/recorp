@@ -334,7 +334,7 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function createUnknownModal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x, is_npc){
+function createUnknownModal(id, data, is_npc){
     let e = document.createElement('div');
     e.id = "modal-unknown-" + id;
     e.setAttribute('aria-hidden', true);
@@ -962,7 +962,7 @@ function createUnknownModal(id, data, this_ship_id, other_ship_size_y, other_shi
     
 }
 
-function create_pc_npc_modal(id, data, this_ship_id, other_ship_size_y, other_ship_size_x, is_npc) {
+function create_pc_npc_modal(id, data, is_npc) {
     let e = document.createElement('div');
     e.id = "modal-" + id;
     e.setAttribute('aria-hidden', true);
