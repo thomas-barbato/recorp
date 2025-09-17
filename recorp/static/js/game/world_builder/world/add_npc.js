@@ -3,8 +3,9 @@ function add_npc(data) {
     
     data.forEach(npcData => {
         const npcInfo = extractNpcInfo(npcData);
-        const modalData = createNpcModalData(npcData);
-        renderNpcShip(npcData, npcInfo, modalData);
+        //const modalData = createNpcModalData(npcData);
+        //renderNpcShip(npcData, npcInfo, modalData);
+        renderNpcShip(npcData, npcInfo);
     });
 
     
@@ -33,7 +34,7 @@ function extractNpcInfo(npcData) {
         },
     };
 }
-
+/*
 function createNpcModalData(npcData) {
     return {
         player: {
@@ -66,6 +67,8 @@ function createNpcModalData(npcData) {
     };
 }
 
+*/
+
 function checkIfModalExists(id_with_prefix){
     let element = document.getElementById(id_with_prefix)
     if (typeof(element) !== 'undefined' && element !== null){
@@ -94,7 +97,7 @@ function createAndAppendNpcModal(npcId, modalData, npcInfo) {
     return;
     
 }
-
+/*
 function createAndAppendUnknownNpcModal(npcId, modalData, npcInfo) {
 
     const modalIdWithPrefix = `modal-unknown-pc_${npcId}`;
@@ -111,9 +114,9 @@ function createAndAppendUnknownNpcModal(npcId, modalData, npcInfo) {
         document.querySelector('#modal-container').append(modal);
     }
     return;
-}
+}*/
 
-function renderNpcShip(npcData, npcInfo, modalData) {
+function renderNpcShip(npcData, npcInfo, modalData="") {
     const bgUrl = `/static/img/foreground/SHIPS/${npcInfo.ship.image}.png`;
     let coordX = npcInfo.coordinates.x;
     let coordY = npcInfo.coordinates.y;
@@ -129,8 +132,8 @@ function renderNpcShip(npcData, npcInfo, modalData) {
             const cellDiv = cell.querySelector('div');
             let spaceShip = undefined;
             border.classList.add('cursor-crosshair','border-dashed');
-                createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
-                createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
+                //createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
+                //createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
             if(is_visible){
                 setupNpcCell(cell, border, npcInfo);
                 spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);

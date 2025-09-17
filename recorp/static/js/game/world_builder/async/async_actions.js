@@ -119,8 +119,6 @@ function remove_ship_display(data){
         }
     }
     
-    var modal = document.querySelector('#modal-pc_' + player_id) || document.querySelector('#modal-unknown-pc_' + player_id);
-    if(modal){
-        modal.parentNode.removeChild(modal);
-    }
+    document.querySelector('#modal-pc_' + player_id)?.remove();
+    document.querySelector('#modal-unknown-pc_' + player_id)?.remove();
 }

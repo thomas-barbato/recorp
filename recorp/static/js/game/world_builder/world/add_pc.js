@@ -6,12 +6,12 @@ function add_pc(data) {
 
         data.forEach(playerData => {
             const playerInfo = extractPlayerInfo(playerData);
-            const modalData = createPlayerModalData(playerData);
+            //const modalData = createPlayerModalData(playerData);
             const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x };
             const is_visible = checkIfCoordinateIsVisible(playerInfo);
 
-            createAndAppendPlayerModal(modalData, playerInfo);
-            createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
+            //createAndAppendPlayerModal(modalData, playerInfo);
+            //createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
 
             if (!playerInfo.isCurrentUser) {
                 renderOtherPlayerShip(playerData, playerInfo, is_visible);
@@ -29,8 +29,8 @@ function add_pc(data) {
         const id = `${coordinates.y}_${coordinates.x}`;
         const is_visible = checkIfCoordinateIsVisible(playerInfo);
 
-        createAndAppendPlayerModal(modalData, playerInfo);
-        createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
+        //createAndAppendPlayerModal(modalData, playerInfo);
+        //createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
 
         if (!playerInfo.isCurrentUser) {
             renderOtherPlayerShip(data, playerInfo, is_visible);
@@ -129,7 +129,7 @@ function createAndAppendPlayerModal(modalData, playerInfo) {
     
     return;
 }
-
+/*
 function createAndAppendUnknownPcModal(modalData, playerInfo) {
 
     const modalIdWithPrefix = `modal-unknown-pc_${playerInfo.user.id}`;
@@ -185,6 +185,7 @@ function createPlayerModalData(playerData) {
         }
     };
 }
+    */
 
 function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
     let coordX = playerInfo.coordinates.x;

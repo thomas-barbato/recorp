@@ -1,16 +1,20 @@
 function add_foreground(data) {
     data.forEach(sectorData => {
-        const elementInfo = extractElementInfo(sectorData);
-        const modalData = createModalData(elementInfo, sectorData);
-        
-        if (modalData) {
-            const modal = create_foreground_modal(elementInfo.name, modalData);
-            document.querySelector('#modal-container').append(modal);
+        /*
+            const modalData = createModalData(elementInfo, sectorData);
             
-            renderForegroundElement(elementInfo, sectorData);
-        }
+            if (modalData) {
+                const modal = create_foreground_modal(elementInfo.name, modalData);
+                document.querySelector('#modal-container').append(modal);
+                
+                renderForegroundElement(elementInfo, sectorData);
+            }
+        */
+        const elementInfo = extractElementInfo(sectorData);
+        renderForegroundElement(elementInfo, sectorData);
     });
 }
+
 
 function extractElementInfo(sectorData) {
     return {
@@ -29,7 +33,7 @@ function extractElementInfo(sectorData) {
         }
     };
 }
-
+/*
 function createModalData(elementInfo, sectorData) {
     const baseModalData = {
         type: elementInfo.type,
@@ -89,7 +93,6 @@ function createModalData(elementInfo, sectorData) {
             return null;
     }
 }
-
 function extractResourceInfo(resource) {
     if (!resource) return null;
     
@@ -103,6 +106,7 @@ function extractResourceInfo(resource) {
         translated_scan_msg_str: resource.translated_scan_msg_str
     };
 }
+*/
 
 function renderForegroundElement(elementInfo, sectorData) {
     const bgUrl = `/static/img/foreground/${elementInfo.type}/${elementInfo.animationName}/0.gif`;

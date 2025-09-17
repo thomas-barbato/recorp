@@ -1,13 +1,315 @@
-function open_close_modal(id) {
-    let e = document.querySelector('#' + id);
-    if (e) {
-        e.classList.contains('hidden') == true ? e.classList.remove('hidden') : e.classList.add('hidden');
+function define_modal_type(modalId){
+
+    const result = {
+        isUnknown: false,
+        type: null,
+        id: null,
+        elementName: null,
+        isForegroundElement: false
+    };
+
+    if (!modalId || !modalId.startsWith('modal-')){
+        return;
     }
+
+    let remaining = modalId.replace('modal-', '');
+
+    if(remaining.startsWith('unknown')){
+        result.isUnknown = true;
+        remaining = remaining.replace('unknown-', '');
+    }
+
+    if (remaining.includes('pc_') || remaining.includes('npc_')) {
+
+        const match = remaining.match(/^(pc|npc)_(\d+)$/);  
+        if (match) {
+            result.type = match[1];
+            result.id = parseInt(match[2]);
+        }else {
+            return;
+        }
+        
+    } else {
+        result.isStatic = true;
+        result.elementName = remaining;
+    }
+
+    return result;
+}
+
+function extract_data_for_modal(data){
+    if(data.error){
+        return { error: data.error };
+    }
+    if (data.isStatic) {
+        // Recherche dans sector_element
+        const element = map_informations.sector_element.filter(el => el.data.name === data.elementName);
+        return {
+            found: !!element,
+            type: element[0].data.type,
+            data: element[0],
+            searchInfo: data
+        };
+    } else {
+        // Recherche PC ou NPC
+        const searchArray = map_informations[data.type] || [];
+        let foundEntity = null;
+
+        if (data.type === 'pc') {
+            foundEntity = searchArray.find(pc => 
+                pc.user.player === data.id
+            );
+        } else if (data.type === 'npc') {
+            foundEntity = searchArray.find(npc => 
+                npc.npc.id === data.id
+            );
+        }
+
+        return {
+            found: !!foundEntity,
+            type: data.type,
+            data: foundEntity,
+            searchInfo: data
+        };
+    }
+}
+
+function createNpcModalData(npcData) {
+    return {
+        player: {
+            name: npcData.npc.displayed_name,
+            image: npcData.npc.image,
+            faction_name: npcData.faction.name
+        },
+        ship: {
+            name: npcData.ship.name,
+            category: npcData.ship.category_name,
+            description: npcData.ship.category_description,
+            max_hp: npcData.ship.max_hp,
+            current_hp: npcData.ship.current_hp,
+            current_thermal_defense: npcData.ship.current_thermal_defense,
+            current_missile_defense: npcData.ship.current_missile_defense,
+            current_ballistic_defense: npcData.ship.current_ballistic_defense,
+            max_movement: npcData.ship.max_movement,
+            current_movement: npcData.ship.current_movement,
+            status: npcData.ship.status,
+            modules: npcData.ship.modules,
+            modules_range: npcData.ship.modules_range,
+        },
+        actions: {
+            action_label: map_informations.actions.translated_action_label_msg,
+            close: map_informations.actions.translated_close_msg,
+            player_in_same_faction: map_informations.actions.player_is_same_faction,
+            translated_statistics_label: map_informations.actions.translated_statistics_msg_label,
+            translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
+        }
+    };
+}
+
+
+function createPlayerModalData(playerData) {
+    return {
+        player: {
+            name: playerData.user.name,
+            is_npc: playerData.user.is_npc,
+            image: playerData.user.image,
+            faction_name: playerData.faction.name
+        },
+        ship: {
+            name: playerData.ship.name,
+            category: playerData.ship.category_name,
+            description: playerData.ship.category_description,
+            max_hp: playerData.ship.max_hp,
+            current_hp: playerData.ship.current_hp,
+            current_thermal_defense: playerData.ship.current_thermal_defense,
+            current_missile_defense: playerData.ship.current_missile_defense,
+            current_ballistic_defense: playerData.ship.current_ballistic_defense,
+            max_movement: playerData.ship.max_movement,
+            current_movement: playerData.ship.current_movement,
+            status: playerData.ship.status,
+            modules: playerData.ship.modules,
+            modules_range: playerData.ship.modules_range,
+        },
+        actions: {
+            action_label: map_informations.actions.translated_action_label_msg,
+            close: map_informations.actions.translated_close_msg,
+            player_in_same_faction: map_informations.actions.player_is_same_faction,
+            translated_statistics_label: map_informations.actions.translated_statistics_msg_label,
+            translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
+        }
+    };
+}
+
+function extractForegroundModalData(foregroundData) {
+    return {
+        type: foregroundData.data.data.type,
+        translatedType: foregroundData.data.type_translated || null,
+        animationName: foregroundData.data.animations,
+        name: foregroundData.data.data.name,
+        description: foregroundData.data.data.description,
+        coordinates: {
+            x: foregroundData.data.data.coordinates.x,
+            y: foregroundData.data.data.coordinates.y
+        },
+        size: {
+            x: foregroundData.data.data.size.x,
+            y: foregroundData.data.data.size.y
+        }
+    };
+}
+
+function extractResourceInfo(resource) {
+    if (!resource) return null;
+    
+    return {
+        id: resource.id,
+        name: resource.name,
+        quantity_str: resource.quantity_str,
+        quantity: resource.quantity,
+        translated_text_resource: resource.translated_text_resource,
+        translated_quantity_str: resource.translated_quantity_str,
+        translated_scan_msg_str: resource.translated_scan_msg_str
+    };
+}
+
+function extractElementInfo(sectorData) {
+    return {
+        type: sectorData.data.type,
+        translatedType: sectorData.data.type_translated || null,
+        animationName: sectorData.animations,
+        name: sectorData.data.name,
+        description: sectorData.data.description,
+        coordinates: {
+            x: sectorData.data.coordinates.x,
+            y: sectorData.data.coordinates.y
+        },
+        size: {
+            x: sectorData.size.x,
+            y: sectorData.size.y
+        }
+    };
+}
+
+function createForegroundModalData(elementInfo, sectorData) {
+    const baseModalData = {
+        type: elementInfo.type,
+        translated_type: elementInfo.translatedType,
+        animation: {
+            dir: elementInfo.type,
+            img: elementInfo.animationName,
+        },
+        name: elementInfo.name,
+        description: elementInfo.description,
+        coord: elementInfo.coordinates,
+        actions: {
+            action_label: map_informations.actions.translated_action_label_msg,
+            close: map_informations.actions.translated_close_msg,
+        }
+    };
+    switch (elementInfo.type) {
+        case "warpzone":
+            return {
+                ...baseModalData,
+                home_sector: sectorData.data.warp_home_id,
+                destination: {
+                    id: sectorData.data.destination_id,
+                    name: sectorData.data.destination_name
+                        .replaceAll('-', ' ')
+                        .replaceAll('_', ' ')
+                }
+            };
+
+        case "asteroid":
+            console.log(sectorData)
+            return {
+                ...baseModalData,
+                resources: extractResourceInfo(sectorData.resource),
+                actions: {
+                    ...baseModalData.actions,
+                    player_in_same_faction: map_informations.actions.player_is_same_faction
+                }
+            };
+
+        case "planet":
+        case "station":
+            return {
+                ...baseModalData,
+                faction: {
+                    starter: map_informations.sector.faction.is_faction_level_starter,
+                    name: map_informations.sector.faction.name,
+                    translated_str: map_informations.sector.faction.translated_text_faction_level_starter
+                },
+                actions: {
+                    ...baseModalData.actions,
+                    player_in_same_faction: map_informations.actions.player_is_same_faction
+                }
+            };
+
+        default:
+            return null;
+    }
+}
+
+function open_close_modal(id) {
+    
+    let extractDataFromId = define_modal_type(id);
+    let extractedDataForModal = extract_data_for_modal(extractDataFromId);
+    
+    let modal = document.querySelector('#' + id);
+
+    if (modal) {
+
+        modal.classList.add('hidden');
+        // delete content from modal-container.
+        document.querySelector('#modal-container').textContent = "";
+
+    }else{
+        create_modal(id, extractDataFromId, extractedDataForModal);
+        document.querySelector('#' + id).classList.remove('hidden');
+
+    }
+}
+
+function create_modal(modalId, extractDataFromId, extractedDataForModal){
+    const element_type = extractDataFromId.type;
+    let modal = "";
+    let modalData = "";
+
+    switch(element_type){
+        case "pc":
+            if(extractDataFromId.isUnknown == true){
+                modalData = createPlayerModalData(extractedDataForModal.data)
+                modal = createUnknownPcModal(modalId, modalData, extractedDataForModal.data);
+            }else{
+                modalData = createPlayerModalData(extractedDataForModal.data)
+                modal = create_pc_npc_modal(modalId, modalData, extractedDataForModal.data);
+            }
+            break;
+        case "npc":
+            if(extractDataFromId.isUnknown == true){
+                modalData = createNpcModalData(extractedDataForModal.data)
+                modal = createUnknownNpcModal(modalId, modalData, extractedDataForModal.data);
+            }else{
+                modalData = createNpcModalData(extractedDataForModal.data)
+                modal = create_pc_npc_modal(modalId, modalData, extractedDataForModal.data);
+            }
+            break;
+        default:
+            let foregroundData = extractForegroundModalData(extractedDataForModal)
+            console.log(foregroundData)
+            console.log(extractedDataForModal)
+            modalData = createForegroundModalData(foregroundData, extractedDataForModal.data)
+            modal = create_foreground_modal(modalId, modalData)
+            break;
+    }
+
+    document.querySelector("#modal-container").append(modal);
+
 }
 
 function create_foreground_modal(id, data) {
     let e = document.createElement('div');
-    e.id = "modal-" + id;
+    e.id = id;
     e.setAttribute('aria-hidden', true);
     e.setAttribute('tabindex', -1);
     e.classList.add(
@@ -334,9 +636,9 @@ function create_foreground_modal(id, data) {
     return e;
 }
 
-function createUnknownModal(id, data, is_npc){
+function createUnknownModal(modalId, data, is_npc){
     let e = document.createElement('div');
-    e.id = "modal-unknown-" + id;
+    e.id = modalId;
     e.setAttribute('aria-hidden', true);
     e.setAttribute('tabindex', -1);
     e.classList.add(
@@ -356,7 +658,7 @@ function createUnknownModal(id, data, is_npc){
         'bg-black/20',
         'border-1',
     );
-    let player_id = id.split('_')[1];
+    let player_id = modalId.split('_')[1];
 
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
@@ -962,9 +1264,9 @@ function createUnknownModal(id, data, is_npc){
     
 }
 
-function create_pc_npc_modal(id, data, is_npc) {
+function create_pc_npc_modal(modalId, data, is_npc) {
     let e = document.createElement('div');
-    e.id = "modal-" + id;
+    e.id = modalId;
     e.setAttribute('aria-hidden', true);
     e.setAttribute('tabindex', -1);
     e.classList.add(
@@ -984,7 +1286,7 @@ function create_pc_npc_modal(id, data, is_npc) {
         'bg-black/20',
         'border-1',
     );
-    let player_id = id.split('_')[1];
+    let player_id = modalId.split('_')[1];
 
     let container_div = document.createElement('div');
     container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
@@ -1715,4 +2017,44 @@ function create_chat_modal(data){
     e.append(container_div);
 
     modal_container.append(e)
+}
+
+function createUnknownPcModal(modalId, modalData, playerInfo) {
+    const modalIdWithPrefix = modalId;
+
+    let visiblePlayerModal = document.getElementById(modalId);
+    visiblePlayerModal?.remove();
+
+    if(!checkIfModalExists(modalIdWithPrefix)){
+        
+        const modal = createUnknownModal(
+            modalIdWithPrefix, 
+            modalData, 
+            true
+        );
+        
+        document.querySelector('#modal-container').append(modal);
+    }
+    
+    return;
+    
+}
+
+
+function createUnknownNpcModal(modalData, npcInfo) {
+
+    const modalIdWithPrefix = `modal-unknown-pc_${modalData.npc.id}`;
+    const modalId = `npc_${modalData.npc.id}`;
+
+    if(!checkIfModalExists(modalIdWithPrefix)){
+        
+        const modal = createUnknownModal(
+            modalId, 
+            modalData, 
+            true
+        );
+        
+        document.querySelector('#modal-container').append(modal);
+    }
+    return;
 }
