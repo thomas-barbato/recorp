@@ -280,6 +280,7 @@ class Sonar {
             for (let x = 0; x < this.boardSize; x++) {
                 if (x === px && y === py) continue;
                 
+                console.log(x, px)
                 const distance = Math.sqrt(Math.pow(x - px, 2) + Math.pow(y - py, 2));
                 if (distance <= this.range) {
                     const cellAngle = Math.atan2(y - py, x - px) * 180 / Math.PI;

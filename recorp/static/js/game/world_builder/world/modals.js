@@ -45,8 +45,8 @@ function extract_data_for_modal(data){
         // Recherche dans sector_element
         const element = map_informations.sector_element.filter(el => el.data.name === data.elementName);
         return {
-            found: !!element,
-            type: element[0].data.type,
+            found: element.length > 0,
+            type: element[0]?.data?.type,
             data: element[0],
             searchInfo: data
         };
@@ -141,6 +141,7 @@ function createPlayerModalData(playerData) {
 }
 
 function extractForegroundModalData(foregroundData) {
+    const sizeData = foregroundData.data.data.size || { x: 1, y: 1 };
     return {
         type: foregroundData.data.data.type,
         translatedType: foregroundData.data.type_translated || null,
@@ -152,8 +153,8 @@ function extractForegroundModalData(foregroundData) {
             y: foregroundData.data.data.coordinates.y
         },
         size: {
-            x: foregroundData.data.data.size.x,
-            y: foregroundData.data.data.size.y
+            x: sizeData.x || 1,
+            y: sizeData.y || 1
         }
     };
 }
@@ -191,6 +192,7 @@ function extractElementInfo(sectorData) {
 }
 
 function createForegroundModalData(elementInfo, sectorData) {
+    console.log(elementInfo)
     const baseModalData = {
         type: elementInfo.type,
         translated_type: elementInfo.translatedType,
@@ -219,6 +221,7 @@ function createForegroundModalData(elementInfo, sectorData) {
                 }
             };
 
+        case "star":
         case "asteroid":
             console.log(sectorData)
             return {
@@ -229,7 +232,6 @@ function createForegroundModalData(elementInfo, sectorData) {
                     player_in_same_faction: map_informations.actions.player_is_same_faction
                 }
             };
-
         case "planet":
         case "station":
             return {
@@ -279,26 +281,26 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
         case "pc":
             if(extractDataFromId.isUnknown == true){
                 modalData = createPlayerModalData(extractedDataForModal.data)
-                modal = createUnknownPcModal(modalId, modalData, extractedDataForModal.data);
+                modal = createUnknownPcModal(modalId, modalData, false);
             }else{
                 modalData = createPlayerModalData(extractedDataForModal.data)
-                modal = create_pc_npc_modal(modalId, modalData, extractedDataForModal.data);
+                modal = create_pc_npc_modal(modalId, modalData, false);
             }
             break;
         case "npc":
             if(extractDataFromId.isUnknown == true){
                 modalData = createNpcModalData(extractedDataForModal.data)
-                modal = createUnknownNpcModal(modalId, modalData, extractedDataForModal.data);
+                modal = createUnknownNpcModal(modalId, modalData, true);
             }else{
                 modalData = createNpcModalData(extractedDataForModal.data)
-                modal = create_pc_npc_modal(modalId, modalData, extractedDataForModal.data);
+                modal = create_pc_npc_modal(modalId, modalData, true);
             }
             break;
         default:
             let foregroundData = extractForegroundModalData(extractedDataForModal)
             console.log(foregroundData)
-            console.log(extractedDataForModal)
             modalData = createForegroundModalData(foregroundData, extractedDataForModal.data)
+            console.log(modalData)
             modal = create_foreground_modal(modalId, modalData)
             break;
     }
@@ -308,6 +310,7 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
 }
 
 function create_foreground_modal(id, data) {
+    console.log(data)
     let e = document.createElement('div');
     e.id = id;
     e.setAttribute('aria-hidden', true);
@@ -491,9 +494,18 @@ function create_foreground_modal(id, data) {
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
         let modal_name = e.id; 
 
-        item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
-            async_travel(data.home_sector, currentPlayer.user.player, id);
-        })
+        /*
+            item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
+                async_travel(data.home_sector, currentPlayer.user.player, id);
+            });
+        */
+
+        item_action_container_img_warpzone.addEventListener('click', function(){
+            if (typeof async_travel === 'function' && typeof currentPlayer !== 'undefined') {
+                async_travel(data.home_sector, currentPlayer.user.player, id);
+            }
+        }, { passive: true });
+
         item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
 
         let item_action_container_img_warpzone_figcaption = document.createElement('figcaption');
@@ -1097,8 +1109,8 @@ function createUnknownModal(modalId, data, is_npc){
                     let range_value = currentPlayer.ship.modules[module_i]["effect"]["range"];
                     let min_damage_value = currentPlayer.ship.modules[module_i]["effect"]["min_damage"];
                     let max_damage_value = currentPlayer.ship.modules[module_i]["effect"]["max_damage"];
-                    
-                    let id_splitted = id.split('_');
+
+                    let id_splitted = e.id.split('_');
                     let target_id = id_splitted[1];
                     let target_type = id_splitted[0];
 
@@ -1200,7 +1212,7 @@ function createUnknownModal(modalId, data, is_npc){
                     module_item_content.append(module_item_small_effect);
                 }
                     
-                let id_splitted = id.split('_');
+                let id_splitted = e.id.split('_');
                 let target_id = id_splitted[1];
                 let target_type = id_splitted[0];
                     
@@ -1279,31 +1291,33 @@ function create_pc_npc_modal(modalId, data, is_npc) {
         'z-50',
         'justify-center',
         'items-center',
+        'mx-auto',
         'w-full',
         'h-full',
         'md:inset-0',
-        'backdrop-blur-sm',
         'bg-black/20',
         'border-1',
+        'bg-black/70',
+        'backdrop-blur-sm'
     );
     let player_id = modalId.split('_')[1];
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
+    container_div.classList.add("flex", "md:p-3", "z-50", "w-full", 'h-auto', 'max-h-full', 'justify-center', 'items-center', "md:inset-0", "gap-2");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4'  , 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'gap-2');
+    content_div.classList.add('rounded-lg', 'shadow', 'w-[90vw]', 'lg:w-1/4'  , 'rounded-t', 'flex', 'flex-col', 'border-2', 'border-slate-600','items-center', 'gap-2');
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'rounded-t', 'p-1', 'flex', 'w-[95%]', 'justify-center', 'text-white');
+    header_div.classList.add('flex', 'lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'rounded-t', 'p-1', 'w-[95%]', 'justify-center', 'text-white');
 
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-center', 'align-right');
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
@@ -1561,7 +1575,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
             module_content_detailed.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
             module_content_detailed_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
             module_content_detailed_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
-            module_content_detailed.style.width = defense_value_detailed;
+            module_content_detailed.style.width = parseInt(defense_value_detailed.split('%')) > 100 ? "100%" : defense_value_detailed;
 
             module_element_detailed.append(module_content_detailed_text);
             module_element_detailed.append(module_content_detailed);
@@ -1726,7 +1740,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                     let min_damage_value = currentPlayer.ship.modules[module_i]["effect"]["min_damage"];
                     let max_damage_value = currentPlayer.ship.modules[module_i]["effect"]["max_damage"];
                     
-                    let id_splitted = id.split('_');
+                    let id_splitted = e.id.split('_');
                     let target_id = id_splitted[1];
                     let target_type = id_splitted[0];
 
@@ -1827,8 +1841,8 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                     module_item_small_effect.append(module_item_small_effect_value);
                     module_item_content.append(module_item_small_effect);
                 }
-                    
-                let id_splitted = id.split('_');
+                let id_splitted = e.id.split('_');
+                console.log(data)
                 let target_id = id_splitted[1];
                 let target_type = id_splitted[0];
                     
