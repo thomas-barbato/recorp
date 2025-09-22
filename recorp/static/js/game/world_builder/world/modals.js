@@ -79,7 +79,8 @@ function createNpcModalData(npcData) {
         player: {
             name: npcData.npc.displayed_name,
             image: npcData.npc.image,
-            faction_name: npcData.faction.name
+            faction_name: npcData.faction.name,
+            id: npcData.npc.id,
         },
         ship: {
             name: npcData.ship.name,
@@ -192,7 +193,6 @@ function extractElementInfo(sectorData) {
 }
 
 function createForegroundModalData(elementInfo, sectorData) {
-    console.log(elementInfo)
     const baseModalData = {
         type: elementInfo.type,
         translated_type: elementInfo.translatedType,
@@ -223,7 +223,6 @@ function createForegroundModalData(elementInfo, sectorData) {
 
         case "star":
         case "asteroid":
-            console.log(sectorData)
             return {
                 ...baseModalData,
                 resources: extractResourceInfo(sectorData.resource),
@@ -281,7 +280,7 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
         case "pc":
             if(extractDataFromId.isUnknown == true){
                 modalData = createPlayerModalData(extractedDataForModal.data)
-                modal = createUnknownPcModal(modalId, modalData, false);
+                modal = createUnknownPcModal(modalId, modalData);
             }else{
                 modalData = createPlayerModalData(extractedDataForModal.data)
                 modal = create_pc_npc_modal(modalId, modalData, false);
@@ -290,7 +289,7 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
         case "npc":
             if(extractDataFromId.isUnknown == true){
                 modalData = createNpcModalData(extractedDataForModal.data)
-                modal = createUnknownNpcModal(modalId, modalData, true);
+                modal = createUnknownNpcModal(modalId, modalData);
             }else{
                 modalData = createNpcModalData(extractedDataForModal.data)
                 modal = create_pc_npc_modal(modalId, modalData, true);
@@ -298,21 +297,20 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
             break;
         default:
             let foregroundData = extractForegroundModalData(extractedDataForModal)
-            console.log(foregroundData)
             modalData = createForegroundModalData(foregroundData, extractedDataForModal.data)
-            console.log(modalData)
             modal = create_foreground_modal(modalId, modalData)
             break;
     }
-
-    document.querySelector("#modal-container").append(modal);
+    
+    if(modal){
+        document.querySelector("#modal-container").append(modal);
+    }
 
 }
 
-function create_foreground_modal(id, data) {
-    console.log(data)
+function create_foreground_modal(modalId, data) {
     let e = document.createElement('div');
-    e.id = id;
+    e.id = modalId;
     e.setAttribute('aria-hidden', true);
     e.setAttribute('tabindex', -1);
     e.classList.add(
@@ -328,22 +326,22 @@ function create_foreground_modal(id, data) {
         'w-full',
         'h-full',
         'md:inset-0',
-        'backdrop-blur-sm',
-        'backdrop-brightness-50',
         'border-1',
+        'backdrop-brightness-50', 
+        'backdrop-blur-sm'
     );
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]");
+    container_div.classList.add("fixed", "md:p-3", "top-50", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
+    content_div.classList.add('flex', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
 
     let header_div = document.createElement('h3');
     header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
@@ -667,27 +665,27 @@ function createUnknownModal(modalId, data, is_npc){
         'h-full',
         'md:inset-0',
         'backdrop-blur-sm',
-        'bg-black/20',
+        'backdrop-brightness-50',
         'border-1',
     );
     let player_id = modalId.split('_')[1];
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]", "bg-black/70", "gap-2");
+    container_div.classList.add("fixed", "md:p-3", "top-50", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4'  , 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'gap-2');
+    content_div.classList.add('flex', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600','items-center', 'gap-2');
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'rounded-t', 'p-1', 'flex', 'w-[95%]', 'justify-center', 'text-white');
+    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
 
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
 
     let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
 
     let footer_close_button = document.createElement("div");
     footer_close_button.textContent = `${data.actions.close}`;
@@ -768,7 +766,7 @@ function createUnknownModal(modalId, data, is_npc){
     hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
     hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
-    hp_progress_bar_container_content.style.width = hp_percent;
+    hp_progress_bar_container_content.style.width = parseInt(hp_percent.split('%')) > 100 ? "100%" : hp_percent;
 
     hp_progress_bar_container_div.append(hp_progress_bar_container_text);
     hp_progress_bar_container_div.append(hp_progress_bar_container_content);
@@ -786,7 +784,7 @@ function createUnknownModal(modalId, data, is_npc){
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
-    movement_progress_bar_container_content.style.width = move_percent;
+    movement_progress_bar_container_content.style.width = parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
 
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
@@ -945,7 +943,7 @@ function createUnknownModal(modalId, data, is_npc){
             module_content_detailed.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
             module_content_detailed_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
             module_content_detailed_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
-            module_content_detailed.style.width = defense_value_detailed;
+            module_content_detailed.style.width = parseInt(defense_value_detailed.split('%')) > 100 ? "100%" : defense_value_detailed;
 
             module_element_detailed.append(module_content_detailed_text);
             module_element_detailed.append(module_content_detailed);
@@ -1291,22 +1289,20 @@ function create_pc_npc_modal(modalId, data, is_npc) {
         'z-50',
         'justify-center',
         'items-center',
-        'mx-auto',
         'w-full',
         'h-full',
         'md:inset-0',
-        'bg-black/20',
+        'backdrop-blur-sm',
+        'backdrop-brightness-50',
         'border-1',
-        'bg-black/70',
-        'backdrop-blur-sm'
     );
     let player_id = modalId.split('_')[1];
 
     let container_div = document.createElement('div');
-    container_div.classList.add("flex", "md:p-3", "z-50", "w-full", 'h-auto', 'max-h-full', 'justify-center', 'items-center', "md:inset-0", "gap-2");
+    container_div.classList.add("fixed", "md:p-3", "top-50", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
 
     let content_div = document.createElement('div');
-    content_div.classList.add('rounded-lg', 'shadow', 'w-[90vw]', 'lg:w-1/4'  , 'rounded-t', 'flex', 'flex-col', 'border-2', 'border-slate-600','items-center', 'gap-2');
+    content_div.classList.add('flex', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4'  , 'rounded-t', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600','items-center', 'gap-2');
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
@@ -1398,7 +1394,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
     hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
-    hp_progress_bar_container_content.style.width = hp_percent;
+    hp_progress_bar_container_content.style.width = parseInt(hp_percent.split('%')) > 100 ? "100%" : hp_percent;
 
     hp_progress_bar_container_div.append(hp_progress_bar_container_text);
     hp_progress_bar_container_div.append(hp_progress_bar_container_content);
@@ -1416,7 +1412,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
-    movement_progress_bar_container_content.style.width = move_percent;
+    movement_progress_bar_container_content.style.width = parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
 
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
@@ -1842,7 +1838,6 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                     module_item_content.append(module_item_small_effect);
                 }
                 let id_splitted = e.id.split('_');
-                console.log(data)
                 let target_id = id_splitted[1];
                 let target_type = id_splitted[0];
                     
@@ -2012,7 +2007,7 @@ function create_chat_modal(data){
     );
     
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-[100vh]");
+    container_div.classList.add("fixed", "md:p-3", "top-0", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
@@ -2022,7 +2017,7 @@ function create_chat_modal(data){
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
 
     let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-right');
+    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
 
     container_div.append(header_container_div);
     container_div.append(content_div);
@@ -2055,10 +2050,9 @@ function createUnknownPcModal(modalId, modalData, playerInfo) {
 }
 
 
-function createUnknownNpcModal(modalData, npcInfo) {
-
-    const modalIdWithPrefix = `modal-unknown-pc_${modalData.npc.id}`;
-    const modalId = `npc_${modalData.npc.id}`;
+function createUnknownNpcModal(modalId, modalData) {
+    
+    const modalIdWithPrefix = `modal-unknown-pc_${modalData.player.id}`;
 
     if(!checkIfModalExists(modalIdWithPrefix)){
         

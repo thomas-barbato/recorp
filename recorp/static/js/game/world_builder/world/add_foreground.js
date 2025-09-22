@@ -1,15 +1,5 @@
 function add_foreground(data) {
     data.forEach(sectorData => {
-        /*
-            const modalData = createModalData(elementInfo, sectorData);
-            
-            if (modalData) {
-                const modal = create_foreground_modal(elementInfo.name, modalData);
-                document.querySelector('#modal-container').append(modal);
-                
-                renderForegroundElement(elementInfo, sectorData);
-            }
-        */
         const elementInfo = extractElementInfo(sectorData);
         renderForegroundElement(elementInfo, sectorData);
     });

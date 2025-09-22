@@ -249,30 +249,6 @@ function handleTooltipCreation(cell, playerInfo, rowOffset, colOffset) {
     }
 }
 
-function createTooltipContainer(cell, playerId) {
-    const tooltipContainer = document.createElement('ul');
-    tooltipContainer.id = `tooltip-pc_${playerId}`;
-    tooltipContainer.classList.add(
-        'absolute', 'z-[9999]', 'px-1', 'py-1', 'text-xs',
-        'font-bold', 'text-white', 'rounded-sm', 'shadow-sm', 'text-center',
-        'list-none', 'text-justify', 'm-w-[100%]', 'tooltip'
-    );
-
-    // Positionnement explicite au-dessus de la cellule
-    tooltipContainer.style.top = '30px';  // En dessous de la cellule
-    tooltipContainer.style.left = '0px';   // Aligné à gauche de la cellule
-    tooltipContainer.style.transform = 'translateY(-100%)';
-    tooltipContainer.style.pointerEvents = 'none'; // Évite les conflits d'événements
-    tooltipContainer.style.zIndex = '10000';
-    
-    // Remove existing tooltips if there are too many
-    const existingTooltips = cell.querySelectorAll('ul');
-    if (existingTooltips.length >= 3) {
-        existingTooltips[0].remove();
-    }
-    cell.append(tooltipContainer);
-}
-
 function setupPlayerCell(cell, playerData, playerInfo, rowOffset, colOffset) {
     const border = cell.querySelector('span');
     const cellDiv = cell.querySelector('div');

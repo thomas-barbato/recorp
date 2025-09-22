@@ -3,8 +3,6 @@ function add_npc(data) {
     
     data.forEach(npcData => {
         const npcInfo = extractNpcInfo(npcData);
-        //const modalData = createNpcModalData(npcData);
-        //renderNpcShip(npcData, npcInfo, modalData);
         renderNpcShip(npcData, npcInfo);
     });
 
@@ -34,48 +32,10 @@ function extractNpcInfo(npcData) {
         },
     };
 }
-/*
-function createNpcModalData(npcData) {
-    return {
-        player: {
-            name: npcData.npc.displayed_name,
-            image: npcData.npc.image,
-            faction_name: npcData.faction.name
-        },
-        ship: {
-            name: npcData.ship.name,
-            category: npcData.ship.category_name,
-            description: npcData.ship.category_description,
-            max_hp: npcData.ship.max_hp,
-            current_hp: npcData.ship.current_hp,
-            current_thermal_defense: npcData.ship.current_thermal_defense,
-            current_missile_defense: npcData.ship.current_missile_defense,
-            current_ballistic_defense: npcData.ship.current_ballistic_defense,
-            max_movement: npcData.ship.max_movement,
-            current_movement: npcData.ship.current_movement,
-            status: npcData.ship.status,
-            modules: npcData.ship.modules,
-            modules_range: npcData.ship.modules_range,
-        },
-        actions: {
-            action_label: map_informations.actions.translated_action_label_msg,
-            close: map_informations.actions.translated_close_msg,
-            player_in_same_faction: map_informations.actions.player_is_same_faction,
-            translated_statistics_label: map_informations.actions.translated_statistics_msg_label,
-            translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
-        }
-    };
-}
-
-*/
 
 function checkIfModalExists(id_with_prefix){
     let element = document.getElementById(id_with_prefix)
-    if (typeof(element) !== 'undefined' && element !== null){
-        return true;
-    }else{
-        return false;
-    }
+    return (typeof(element) !== 'undefined' && element !== null) ?  true : false;
 }
 
 function createAndAppendNpcModal(npcId, modalData, npcInfo) {
@@ -97,24 +57,6 @@ function createAndAppendNpcModal(npcId, modalData, npcInfo) {
     return;
     
 }
-/*
-function createAndAppendUnknownNpcModal(npcId, modalData, npcInfo) {
-
-    const modalIdWithPrefix = `modal-unknown-pc_${npcId}`;
-    const modalId = `npc_${npcId}`;
-
-    if(!checkIfModalExists(modalIdWithPrefix)){
-        
-        const modal = createUnknownModal(
-            modalId, 
-            modalData, 
-            true
-        );
-        
-        document.querySelector('#modal-container').append(modal);
-    }
-    return;
-}*/
 
 function renderNpcShip(npcData, npcInfo, modalData="") {
     const bgUrl = `/static/img/foreground/SHIPS/${npcInfo.ship.image}.png`;
@@ -132,15 +74,9 @@ function renderNpcShip(npcData, npcInfo, modalData="") {
             const cellDiv = cell.querySelector('div');
             let spaceShip = undefined;
             border.classList.add('cursor-crosshair','border-dashed');
-                //createAndAppendNpcModal(npcInfo.npc.id, modalData, npcInfo);
-                //createAndAppendUnknownNpcModal(npcData.npc.id, modalData, npcInfo); 
-            if(is_visible){
-                setupNpcCell(cell, border, npcInfo);
-                spaceShip = createSpaceShipElement(bgUrl, colOffset, rowOffset);
-            }else{
-                setupUnkownNpcCell(cell, border, npcInfo);
-                spaceShip = createUnknownElement();
-            }
+
+            setupNpcCell(cell, border, npcInfo, is_visible);
+            spaceShip = is_visible == true ? createSpaceShipElement(bgUrl, colOffset, rowOffset) : createUnknownElement();
             
             const clickAction = is_visible === true ? `open_close_modal('modal-npc_${npcData.npc.id}')`: `open_close_modal('modal-unknown-npc_${npcData.npc.id}')`;
             border.setAttribute(attribute_touch_click, clickAction);
@@ -158,17 +94,18 @@ function getTableCell(rowIndex, colIndex) {
     return document.querySelector('.tabletop-view').rows[rowIndex].cells[colIndex];
 }
 
-function setupNpcCell(cell, border, npcInfo) {
+function setupNpcCell(cell, border, npcInfo, is_visible = true) {
     // Configure cell
     cell.classList.add("uncrossable");
     cell.setAttribute('size_x', npcInfo.ship.sizeX);
     cell.setAttribute('size_y', npcInfo.ship.sizeY);
 
     let pathFindingSpan = cell.querySelector('.pathfinding-zone');
-    pathFindingSpan.title = `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
+    pathFindingSpan.title = `${npcInfo.npc.displayed_name} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`;
     
     // Configure border
-    border.setAttribute('data-modal-target', `modal-npc_${npcInfo.npc.id}`);
+    let full_id = is_visible == true ? `modal-npc_${npcInfo.npc.id}`: `modal-unknown-npc_${npcInfo.npc.id}`;
+    border.setAttribute('data-modal-target', full_id);
     border.removeAttribute('onmouseover', 'get_pathfinding(this)');
         
     // Événements optimisés avec les valeurs pré-calculées
@@ -178,30 +115,6 @@ function setupNpcCell(cell, border, npcInfo) {
     // Add event listeners
     cell.addEventListener("mouseover", mouseoverHandler);
     cell.addEventListener("mouseout", mouseoutHandler);
-}
-
-function setupUnkownNpcCell(cell, border, npcInfo) {
-
-    // Configure cell
-    cell.classList.add("uncrossable");
-    cell.setAttribute('size_x', npcInfo.ship.sizeX);
-    cell.setAttribute('size_y', npcInfo.ship.sizeY);
-
-    let pathFindingSpan = cell.querySelector('.pathfinding-zone');
-    pathFindingSpan.title = `${"Unknown"} [x : ${npcInfo.coordinates.baseY}, y: ${npcInfo.coordinates.baseX}]`
-    
-    // Configure border
-    border.removeAttribute('onmouseover', 'get_pathfinding(this)');
-    border.setAttribute('data-modal-target', `modal-unknown-npc_${npcInfo.npc.id}`);
-        
-    // Événements optimisés avec les valeurs pré-calculées
-    const mouseoverHandler = () => generate_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
-    const mouseoutHandler = () => remove_border(npcInfo.ship.sizeY, npcInfo.ship.sizeX, npcInfo.coordinates.baseY + 1, npcInfo.coordinates.baseX + 1);
-
-    // Add event listeners
-    cell.addEventListener("mouseover", mouseoverHandler);
-    cell.addEventListener("mouseout", mouseoutHandler);
-
 }
 
 
@@ -218,6 +131,7 @@ function createSpaceShipElement(bgUrl, colOffset, rowOffset) {
 }
 
 function createUnknownElement(){
+    
     const spaceShip = document.createElement('div');
     
     spaceShip.classList.add(
