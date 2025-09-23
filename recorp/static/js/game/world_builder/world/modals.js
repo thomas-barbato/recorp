@@ -492,15 +492,10 @@ function create_foreground_modal(modalId, data) {
         item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
         let modal_name = e.id; 
 
-        /*
-            item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
-                async_travel(data.home_sector, currentPlayer.user.player, id);
-            });
-        */
-
-        item_action_container_img_warpzone.addEventListener('click', function(){
+        item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
             if (typeof async_travel === 'function' && typeof currentPlayer !== 'undefined') {
-                async_travel(data.home_sector, currentPlayer.user.player, id);
+                let warpzone_name = e.id.split('-')[1];
+                async_travel(data.home_sector, currentPlayer.user.player, warpzone_name);
             }
         }, { passive: true });
 

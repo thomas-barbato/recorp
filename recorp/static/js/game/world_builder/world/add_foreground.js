@@ -1,7 +1,7 @@
 function add_foreground(data) {
     data.forEach(sectorData => {
         const elementInfo = extractElementInfo(sectorData);
-        renderForegroundElement(elementInfo, sectorData);
+        renderForegroundElement(elementInfo);
     });
 }
 
@@ -22,107 +22,6 @@ function extractElementInfo(sectorData) {
             y: sectorData.size.y
         }
     };
-}
-/*
-function createModalData(elementInfo, sectorData) {
-    const baseModalData = {
-        type: elementInfo.type,
-        translated_type: elementInfo.translatedType,
-        animation: {
-            dir: elementInfo.type,
-            img: elementInfo.animationName,
-        },
-        name: elementInfo.name,
-        description: elementInfo.description,
-        coord: elementInfo.coordinates,
-        actions: {
-            action_label: map_informations.actions.translated_action_label_msg,
-            close: map_informations.actions.translated_close_msg,
-        }
-    };
-
-    switch (elementInfo.type) {
-        case "warpzone":
-            return {
-                ...baseModalData,
-                home_sector: sectorData.data.warp_home_id,
-                destination: {
-                    id: sectorData.data.destination_id,
-                    name: sectorData.data.destination_name
-                        .replaceAll('-', ' ')
-                        .replaceAll('_', ' ')
-                }
-            };
-
-        case "asteroid":
-            return {
-                ...baseModalData,
-                resources: extractResourceInfo(sectorData.resource),
-                actions: {
-                    ...baseModalData.actions,
-                    player_in_same_faction: map_informations.actions.player_is_same_faction
-                }
-            };
-
-        case "planet":
-        case "station":
-            return {
-                ...baseModalData,
-                faction: {
-                    starter: map_informations.sector.faction.is_faction_level_starter,
-                    name: map_informations.sector.faction.name,
-                    translated_str: map_informations.sector.faction.translated_text_faction_level_starter
-                },
-                actions: {
-                    ...baseModalData.actions,
-                    player_in_same_faction: map_informations.actions.player_is_same_faction
-                }
-            };
-
-        default:
-            return null;
-    }
-}
-function extractResourceInfo(resource) {
-    if (!resource) return null;
-    
-    return {
-        id: resource.id,
-        name: resource.name,
-        quantity_str: resource.quantity_str,
-        quantity: resource.quantity,
-        translated_text_resource: resource.translated_text_resource,
-        translated_quantity_str: resource.translated_quantity_str,
-        translated_scan_msg_str: resource.translated_scan_msg_str
-    };
-}
-*/
-
-function renderForegroundElement(elementInfo, sectorData) {
-    const bgUrl = `/static/img/foreground/${elementInfo.type}/${elementInfo.animationName}/0.gif`;
-    const { x: coordX, y: coordY } = elementInfo.coordinates;
-    const { x: sizeX, y: sizeY } = elementInfo.size;
-    
-    let rowIndex = coordY;
-    let colIndex = coordX;
-    let full_size_y = atlas.tilesize * sizeY;
-    let full_size_x = atlas.tilesize * sizeX;
-    
-    for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
-        for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
-            const cell = getTableCell(rowIndex, colIndex);
-            const cellDiv = cell.querySelector('div');
-            const border = cellDiv.querySelector('span');
-
-            setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY);
-            const imageDiv = createImageDiv(elementInfo, bgUrl, colOffset, rowOffset, colIndex, rowIndex);
-
-            cellDiv.append(imageDiv);
-            colIndex++;
-        }
-        rowIndex++;
-        colIndex = coordX;
-    }
 }
 
 function getTableCell(rowIndex, colIndex) {
@@ -174,4 +73,31 @@ function createImageDiv(elementInfo, bgUrl, colOffset, rowOffset, colIndex, rowI
     imageDiv.style.backgroundPositionY = `-${rowOffset}px`;
     
     return imageDiv;
+}
+
+function renderForegroundElement(elementInfo) {
+    const bgUrl = `/static/img/foreground/${elementInfo.type}/${elementInfo.animationName}/0.gif`;
+    const { x: coordX, y: coordY } = elementInfo.coordinates;
+    const { x: sizeX, y: sizeY } = elementInfo.size;
+    
+    let rowIndex = coordY;
+    let colIndex = coordX;
+    let full_size_y = atlas.tilesize * sizeY;
+    let full_size_x = atlas.tilesize * sizeX;
+    
+    for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
+        for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
+            const cell = getTableCell(rowIndex, colIndex);
+            const cellDiv = cell.querySelector('div');
+            const border = cellDiv.querySelector('span');
+
+            setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY);
+            const imageDiv = createImageDiv(elementInfo, bgUrl, colOffset, rowOffset, colIndex, rowIndex);
+
+            cellDiv.append(imageDiv);
+            colIndex++;
+        }
+        rowIndex++;
+        colIndex = coordX;
+    }
 }

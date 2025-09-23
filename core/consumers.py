@@ -30,6 +30,7 @@ class GameConsumer(WebsocketConsumer):
         self.game = None
         self.game_cache = None
         self.player_id: Optional[int] = None
+        self._cache_store = None
 
     def connect(self) -> None:
         """Établit la connexion WebSocket et joint l'utilisateur au groupe de salle."""
@@ -43,6 +44,7 @@ class GameConsumer(WebsocketConsumer):
         self.room_group_name = f"play_{self.room}"
         self.user = self.scope["user"]
         self.player_id = PlayerAction(self.user.id).get_player_id()
+        self._cache_store = StoreInCache(self.room_group_name, self.user)
         self.accept()
 
     def _join_room_group(self) -> None:
@@ -55,8 +57,9 @@ class GameConsumer(WebsocketConsumer):
     def _handle_authenticated_user(self) -> None:
         """Traite les utilisateurs authentifiés en initialisant le cache."""
         if self.user.is_authenticated:
-            store = StoreInCache(self.room_group_name, self.user)
-            store.get_or_set_cache(need_to_be_recreated=False)
+            # store = StoreInCache(self.room_group_name, self.user)
+            # store.get_or_set_cache(need_to_be_recreated=False)
+            self._cache_store.get_or_set_cache(need_to_be_recreated=False)
 
     def disconnect(self, close_code: int) -> None:
         """Gère la déconnexion WebSocket."""
@@ -102,6 +105,7 @@ class GameConsumer(WebsocketConsumer):
 
     def _broadcast_message(self, message_data: Dict[str, Any]) -> None:
         """Diffuse le message à tous les membres du groupe."""
+        #await self.channel_layer.group_send(self.room_group_name, message_data)
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             message_data,
@@ -111,22 +115,27 @@ class GameConsumer(WebsocketConsumer):
         try:
             message = json.loads(event["message"])
             player_action = PlayerAction(self.user.id)
-            store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+            # store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
             # Traiter le mouvement
             if self._can_move_to_destination(player_action, message):
                 if self._register_move(player_action, message):
-                    store.update_player_position(message, self.player_id)
+                    self._cache_store.update_player_position(message, self.player_id)
+                    self._cache_store.update_player_range_finding()
+                    # store.update_player_position(message, self.player_id)
                     # Toujours mettre à jour la portée du joueur connecté
-                    store.update_player_range_finding()
+                    # store.update_player_range_finding()
                     
                     # Préparer la réponse selon le type de mouvement
                     if self._is_own_player_move(self.player_id, message):
                         # Le joueur connecté a bougé
-                        store.update_sector_player_visibility_zone(self.player_id)
-                        response = self._create_own_move_response(message, store, self.player_id)
+                        self._cache_store.update_sector_player_visibility_zone(self.player_id)
+                        response = self._create_own_move_response(message, self._cache_store, self.player_id)
+                        #store.update_sector_player_visibility_zone(self.player_id)
+                        #response = self._create_own_move_response(message, store, self.player_id)
                     else:
                         # Un autre joueur a bougé
-                        response = self._handle_other_player_move(message, player_action, store, self.player_id)
+                        # response = self._handle_other_player_move(message, player_action, store, self.player_id)
+                        response = self._handle_other_player_move(message, player_action, self._cache_store, self.player_id)
                     
                     # Envoyer la réponse personnalisée au joueur connecté
                     #print(self.player_id)
@@ -233,12 +242,15 @@ class GameConsumer(WebsocketConsumer):
 
     def _process_ship_reversal(self, message: Dict[str, Any]) -> Dict[str, Any]:
         """Traite l'inversion du vaisseau."""
-        store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
+        # store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
         player_action = PlayerAction(self.user.id)
         player_action.set_reverse_ship_status()
-        data = store.update_ship_is_reversed(
+        data = self._cache_store.update_ship_is_reversed(
             message, message["player"], player_action.get_reverse_ship_status()
         )
+        # data = store.update_ship_is_reversed(
+        #    message, message["player"], player_action.get_reverse_ship_status()
+        # )
 
         return {
             "type": "async_reverse_ship",
@@ -256,6 +268,7 @@ class GameConsumer(WebsocketConsumer):
         Args:
             event: Événement contenant les données de voyage
         """
+        print("Dedans")
         try:
             warp_data = json.loads(event["message"])["data"]
             self._process_warp_travel(warp_data)
