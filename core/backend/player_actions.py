@@ -8,6 +8,10 @@ from functools import reduce
 import operator
 from django.contrib.auth.models import User
 from core.backend.get_data import GetDataFromDB
+# Ajouter ces imports en haut du fichier player_actions.py
+from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async
+
 from core.models import (
     Planet,
     Asteroid,
@@ -170,7 +174,6 @@ class PlayerAction:
             bool: True si occupée, False sinon
         """
         coordinates = [{"x": int(coord.split('_')[1]), "y": int(coord.split('_')[0])} for coord in coordinates_list]
-    
         if len(coordinates) > 1:
             # Créer une liste de conditions Q pour chaque coordonnée
             q_objects = [Q(coordinates=coord) for coord in coordinates]

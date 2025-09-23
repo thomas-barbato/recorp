@@ -27,3 +27,7 @@ to install redis on docker :
 
 open docker terminal and type : 
 - ```docker run -d --name redis -p 6379:6379 redis:latest```
+
+to start celery on windows env:
+
+celery -A recorp worker -l info --pool=solo

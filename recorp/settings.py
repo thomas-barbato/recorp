@@ -13,6 +13,8 @@ env = environ.Env(
 )
 environ.Env.read_env()
 
+# os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
 SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@"
 
 LOGIN_REDIRECT_URL = "/"
@@ -122,6 +124,10 @@ CACHES = {
         "TIMEOUT": 60 * 60 * 24,
     }
 }
+
+# CELERY
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
 
 USER_AGENTS_CACHE = "default"
 

@@ -7,6 +7,10 @@ from django.core import serializers
 from django.contrib.auth.models import User
 from django.db.models import Q, QuerySet
 
+# Ajouter ces imports en haut du fichier get_data.py
+from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async
+
 from recorp.settings import BASE_DIR
 from core.models import (
     Planet, Asteroid, Station, Warp, WarpZone, SectorWarpZone,

@@ -38,16 +38,30 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
 
     let pathfindingSpan = cell.querySelector('.pathfinding-zone');
     pathfindingSpan.title =  `${elementInfo.name} [y: ${coordY - 1}, x: ${coordX - 1}]`;
+
+    let borderColor = "";
+    let backgroundColor = "";
+    let isForegroundTooFar = false;
+    let cursorType = "";
+
+    if(observable_zone_id.includes(cell.id)){
+        borderColor = 'border-amber-500';
+        border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
+        border.setAttribute(attribute_touch_click, `open_close_modal('modal-${elementInfo.name}')`);
+        cursorType = "cursor-pointer";
+    }else{
+        borderColor = 'border-red-600';
+        backgroundColor = 'bg-red-600/30';
+        isForegroundTooFar = true;
+        cursorType = "cursor-not-allowed";
+    }
     
     // Configure border
-    border.className = "absolute z-10 w-[32px] h-[32px] pathfinding-zone cursor-pointer border-amber-500 foreground-element";
-    border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
-    
-    border.setAttribute(attribute_touch_click, `open_close_modal('modal-${elementInfo.name}')`);
+    border.className = `absolute z-10 w-[32px] h-[32px] pathfinding-zone ${cursorType} ${borderColor} foreground-element`;
     
     // Événements optimisés avec les valeurs pré-calculées
-    const mouseoverHandler = () => generate_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
-    const mouseoutHandler = () => remove_border(sizeY, sizeX, coordY, coordX, 'border-amber-500');
+    const mouseoverHandler = () => generate_border(sizeY, sizeX, coordY, coordX, borderColor, isForegroundTooFar);
+    const mouseoutHandler = () => remove_border(sizeY, sizeX, coordY, coordX, borderColor, isForegroundTooFar);
 
     // Add event listeners
     border.addEventListener("mouseover", mouseoverHandler);

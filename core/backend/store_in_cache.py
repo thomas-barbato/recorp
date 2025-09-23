@@ -7,6 +7,10 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from core.backend.get_data import GetDataFromDB
 from core.backend.player_actions import PlayerAction
+# Ajouter ces imports en haut du fichier store_in_cache.py
+from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async
+
 from core.models import (
     Sector,
     Player,
@@ -821,3 +825,5 @@ class StoreInCache:
             })
         except Exception as e:
             logger.error(f"Erreur lors de la notification des utilisateurs de la room {room_id}: {e}")
+            
+    

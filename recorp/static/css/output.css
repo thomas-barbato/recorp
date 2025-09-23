@@ -1533,6 +1533,10 @@ video {
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .touch-auto {
   touch-action: auto;
 }
@@ -2775,6 +2779,10 @@ video {
 .bg-red-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
+.bg-red-600\/30 {
+  background-color: rgb(220 38 38 / 0.3);
 }
 
 .bg-red-600\/50 {

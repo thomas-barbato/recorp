@@ -259,7 +259,8 @@ function handle_websocket_message(data) {
         ["send_message", () => console.log('Message reçu:', data.message)],
         ["user_leave", () => handleUserLeave(data.message)]
     ]);
-
+    console.log(data)
+    console.log(data.type)
     const handler = messageHandlers.get(data.type);
     if (handler) {
         try {
