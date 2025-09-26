@@ -1,22 +1,20 @@
 import datetime
 import json
 import logging
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any, Tuple, Union
+from functools import lru_cache
 from django.core.cache import cache
 from django.contrib.auth.models import User
-from django.utils.translation import gettext as _
+from django.db import transaction
+from django.db.models import Prefetch, Q
+
 from core.backend.get_data import GetDataFromDB
 from core.backend.player_actions import PlayerAction
-# Ajouter ces imports en haut du fichier store_in_cache.py
-from channels.db import database_sync_to_async
-from asgiref.sync import sync_to_async
 
 from core.models import (
-    Sector,
-    Player,
-    Module,
-    PlayerShipModule,
-    PlayerShip
+    Sector, Player, Module, PlayerShipModule, PlayerShip,
+    Npc, NpcTemplate, PlanetResource, AsteroidResource, 
+    StationResource, WarpZone
 )
 
 logger = logging.getLogger(__name__)
@@ -24,806 +22,744 @@ logger = logging.getLogger(__name__)
 
 class StoreInCache:
     """
-    Gestionnaire de cache pour les données de secteur d'un jeu spatial.
-    Gère la mise en cache des données de secteur, joueurs, NPCs et éléments du secteur.
+    Gestionnaire de cache optimisé pour les données de secteur d'un jeu spatial.
+    Optimisations: cache multi-niveau, requêtes bulk, réduction des appels DB.
     """
     
-    def __init__(self, room_name: str, user_calling: int):
-        """
-        Initialise le gestionnaire de cache.
-        
-        Args:
-            room_name: Nom de la room (format: "play_{sector_id}")
-            user_calling: ID de l'utilisateur appelant
-        """
+    # Cache de classe pour les données statiques
+    _static_cache = {}
+    _cache_timeout = 300  # 5 minutes
+    
+    def __init__(self, room_name: str, user_calling: Union[User, int]):
+        """Initialise le gestionnaire avec optimisations."""
         self.room = room_name
         self.sector_pk = self._extract_sector_id(room_name)
-        self.user_calling = user_calling
+        self.user_calling = user_calling if isinstance(user_calling, int) else user_calling.id
         self.from_DB = GetDataFromDB
-        self.user_view_coordinates = self.from_DB.current_player_observable_zone(self.user_calling.id)
+        
+        # Cache local pour éviter les recalculs répétés
+        self._local_cache = {}
+        self._last_cache_update = {}
 
-    def _extract_sector_id(self, room_name: str) -> str:
-        """Extrait l'ID du secteur depuis le nom de la room."""
+    @staticmethod
+    def _extract_sector_id(room_name: str) -> str:
+        """Extrait l'ID du secteur avec validation."""
         try:
-            return room_name.split("_")[1]
-        except IndexError:
+            parts = room_name.split("_")
+            if len(parts) < 2 or not parts[1].isdigit():
+                raise ValueError(f"Format de room_name invalide: {room_name}")
+            return parts[1]
+        except (IndexError, AttributeError):
             logger.error(f"Format de room_name invalide: {room_name}")
             raise ValueError(f"Format de room_name invalide: {room_name}")
 
-    def get_or_set_cache(self, need_to_be_recreated: bool = False) -> Dict[str, Any]:
-        """
-        Récupère ou initialise les données du cache.
-        
-        Args:
-            need_to_be_recreated: Force la recréation du cache si True
-            
-        Returns:
-            Dict contenant les données du secteur
-        """
-        try:
-            if need_to_be_recreated:
-                cache.set(self.room, [])
-                self.set_sector_data(self.sector_pk)
-            else:
-                if not cache.get(self.room):
-                    self.set_sector_data(self.sector_pk)
-            return cache.get(self.room)
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération/création du cache: {e}")
-            raise
-
-    def set_sector_data(self, pk: str) -> None:
-        """
-        Initialise les données complètes du secteur dans le cache.
-        
-        Args:
-            pk: ID du secteur
-        """
-        try:
-            # Récupération des données de base
-            planets, asteroids, stations, warpzones = self.from_DB.get_items_from_sector(pk)
-            sector_pc, sector_npc = self.from_DB.get_pc_from_sector(pk)
-            sector = Sector.objects.get(id=pk)
-
-            # Structure des données du secteur
-            sector_data = self._initialize_sector_structure(sector, pk)
-            
-            # Construction des éléments du secteur
-            self._build_sector_elements(sector_data, {
-                "planet": planets,
-                "asteroid": asteroids,
-                "station": stations,
-                "warpzone": warpzones,
-            })
-            
-            # Construction des NPCs et PCs
-            self._build_npc_data(sector_data, sector_npc)
-            self._build_pc_data(sector_data, sector_pc)
-            
-            # Mise en cache
-            cache.set(self.room, sector_data)
-            
-        except Exception as e:
-            logger.error(f"Erreur lors de l'initialisation des données du secteur {pk}: {e}")
-            raise
-        
-    def update_sector_player_visibility_zone(self, player_id) -> None:
+    def get_or_set_cache(self, need_to_be_recreated: bool = False) -> Optional[Dict[str, Any]]:
+        """Version optimisée avec gestion d'erreurs et cache intelligent."""
+        cache_key = self.room
         
         try:
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return None, None
+            # Vérification du cache existant
+            if not need_to_be_recreated:
+                cached_data = cache.get(cache_key)
+                if cached_data and self._is_cache_valid(cached_data):
+                    return cached_data
+            
+            # Création/recréation du cache avec transaction
+            with transaction.atomic():
+                sector_data = self._build_sector_data_optimized(self.sector_pk)
+                if sector_data:
+                    cache.set(cache_key, sector_data, self._cache_timeout)
+                    self._last_cache_update[cache_key] = datetime.datetime.now()
+                return sector_data
                 
-            pc_cache = in_cache["pc"]
-
-            player = next(
-                (p for p in pc_cache if player_id == p["user"]["player"]), 
-                None
-            )
-            
-            if not player:
-                return None, None
-
-            player_index = pc_cache.index(player)
-            pc_cache[player_index]["ship"]["visible_zone"] = self.from_DB.current_player_observable_zone(player_id)
-            in_cache["pc"] = pc_cache
-            cache.set(self.room, in_cache)
-            
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération de l'index 'sector' du cache: {e}")
+            logger.error(f"Erreur lors de la gestion du cache pour {cache_key}: {e}")
+            # En cas d'erreur, tenter de retourner un cache existant
+            return cache.get(cache_key)
+
+    def _is_cache_valid(self, cached_data: Dict[str, Any]) -> bool:
+        """Vérifie la validité du cache."""
+        try:
+            # Vérifications de base
+            required_keys = ["sector", "pc", "npc", "sector_element"]
+            return all(key in cached_data for key in required_keys)
+        except Exception:
+            return False
+
+    def _get_sector_basic_info(self, sector_id: str) -> Optional[Dict[str, Any]]:
+        """Cache des informations de base du secteur."""
+        try:
+            return Sector.objects.filter(id=sector_id).select_related(
+                'security', 'faction'
+            ).values(
+                'id', 'name', 'description', 'image',
+                'security_id', 'security__name',
+                'faction_id', 'faction_id__name',
+                'is_faction_level_starter'
+            ).first()
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération du secteur {sector_id}: {e}")
             return None
 
-    def _initialize_sector_structure(self, sector: Sector, pk: str) -> Dict[str, Any]:
-        """Initialise la structure de base des données du secteur."""
+    def _build_sector_data_optimized(self, pk: str) -> Optional[Dict[str, Any]]:
+        """Version optimisée de la construction des données secteur."""
+        try:
+            # Récupération des données de base avec cache
+            sector_info = self._get_sector_basic_info(pk)
+            if not sector_info:
+                logger.error(f"Secteur {pk} introuvable")
+                return None
+
+            # Initialisation de la structure
+            sector_data = self._initialize_sector_structure_optimized(sector_info)
+            
+            # Construction optimisée des éléments avec requêtes bulk
+            self._build_sector_elements_bulk(sector_data, pk)
+            self._build_characters_bulk(sector_data, pk)
+            
+            return sector_data
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la construction du secteur {pk}: {e}")
+            return None
+
+    def _initialize_sector_structure_optimized(self, sector_info: Dict[str, Any]) -> Dict[str, Any]:
+        """Version optimisée de l'initialisation de structure."""
         return {
             "sector_element": [],
             "pc": [],
             "npc": [],
             "messages": [],
             "sector": {
-                "id": pk,
-                "name": sector.name,
-                "description": sector.description,
-                "image": sector.image,
+                "id": sector_info["id"],
+                "name": sector_info["name"],
+                "description": sector_info["description"],
+                "image": sector_info["image"],
                 "security": {
-                    "id": sector.security_id,
-                    "name": sector.security.name,
-                    "translated_name": sector.security.name,
+                    "id": sector_info["security_id"],
+                    "name": sector_info["security__name"],
+                    "translated_name": sector_info["security__name"],
                 },
                 "faction": {
-                    "id": sector.faction_id,
-                    "name": sector.faction.name,
-                    "is_faction_level_starter": sector.is_faction_level_starter,
+                    "id": sector_info["faction_id"],
+                    "name": sector_info["faction_id__name"],
+                    "is_faction_level_starter": sector_info["is_faction_level_starter"],
                     "translated_text_faction_level_starter": [],
                 },
             }
         }
 
-    def _build_sector_elements(self, sector_data: Dict[str, Any], foreground_table_set: Dict[str, Any]) -> None:
-        """Construit les éléments du secteur (planètes, astéroïdes, stations, warpzones)."""
-        for table_key, table_value in foreground_table_set.items():
-            for table in table_value:
-                if table_key == "warpzone":
-                    self._build_warpzone_elements(sector_data, table_key)
+    def _build_sector_elements_bulk(self, sector_data: Dict[str, Any], sector_id: str) -> None:
+        """Construction optimisée des éléments du secteur avec requêtes bulk."""
+        try:
+            # Requêtes bulk pour tous les types d'éléments
+            elements_data = self._fetch_all_sector_elements(sector_id)
+            
+            # Traitement des différents types
+            for element_type, elements in elements_data.items():
+                if element_type == "warpzones":
+                    self._process_warpzones_bulk(sector_data, elements)
                 else:
-                    self._build_standard_elements(sector_data, table_key)
-
-    def _build_warpzone_elements(self, sector_data: Dict[str, Any], table_key: str) -> None:
-        """Construit les éléments de type warpzone."""
-        try:
-            _, elementResource, elementZone = self.from_DB.get_table(table_key)
-            
-            map_elements = elementResource.objects.filter(
-                sector_id=self.sector_pk
-            ).values(
-                "id", "data", "sector_id", "source_id", "data__name",
-                "source_id__name", "source_id__size", "source_id__data", "coordinates"
-            )
-            
-            for element in map_elements:
-                destination = elementZone.objects.filter(
-                    warp_home_id=element["id"]
-                ).values(
-                    "warp_destination_id", "warp_destination_id__data__name", "warp_home_id"
-                ).first()
-                
-                if destination:
-                    sector_data["sector_element"].append({
-                        "item_id": element["id"],
-                        "item_name": element['source_id__name'],
-                        "source_id": element['source_id'],
-                        "sector_id": element['sector_id'],
-                        "animations": element['source_id__data']['animation'],
-                        "data": {
-                            "type": "warpzone",
-                            "name": element["data__name"],
-                            "coordinates": element['coordinates'],
-                            "size": element['source_id__size'],
-                            "description": element['data']["description"],
-                            "warp_home_id": destination["warp_home_id"],
-                            "destination_id": destination['warp_destination_id'],
-                            "destination_name": destination['warp_destination_id__data__name'],
-                        },
-                        "size": element['source_id__size'],
-                    })
-        except Exception as e:
-            logger.error(f"Erreur lors de la construction des warpzones: {e}")
-
-    def _build_standard_elements(self, sector_data: Dict[str, Any], table_key: str) -> None:
-        """Construit les éléments standards (planètes, astéroïdes, stations)."""
-        try:
-            _, elementResource = self.from_DB.get_table(table_key)
-            resources = elementResource.objects.filter(
-                sector_id=self.sector_pk
-            ).values(
-                'id', 'data', 'coordinates', 'quantity', 'source_id', 'sector_id',
-                'source_id__size', 'source_id__name', 'source_id__data'
-            )
-            
-            for resource in resources:
-                resource_quantity = self.from_DB.get_resource_quantity_value(
-                    resource["quantity"], 100
-                )
-                
-                element_data = {
-                    "item_id": resource["id"],
-                    "item_name": resource["data"]["name"],
-                    "resource": {
-                        "id": resource["source_id"],
-                        "name": resource["source_id__name"],
-                        "quantity": resource["quantity"],
-                        "quantity_str": resource_quantity,
-                        "translated_quantity_str": resource_quantity,
-                    },
-                    "source_id": resource["source_id"],
-                    "sector_id": resource["sector_id"],
-                    "animations": resource["source_id__data"]["animation"],
-                    "data": {
-                        "type": resource["source_id__data"]["type"],
-                        "name": resource["data"]["name"],
-                        "coordinates": resource["coordinates"],
-                        "description": resource["data"]["description"],
-                    },
-                    "size": resource["source_id__size"],
-                }
-                
-                if element_data not in sector_data["sector_element"]:
-                    sector_data["sector_element"].append(element_data)
+                    self._process_standard_elements_bulk(sector_data, elements, element_type)
                     
         except Exception as e:
-            logger.error(f"Erreur lors de la construction des éléments {table_key}: {e}")
+            logger.error(f"Erreur lors de la construction des éléments du secteur: {e}")
 
-    def _build_npc_data(self, sector_data: Dict[str, Any], sector_npc: List[Dict]) -> None:
-        """Construit les données des NPCs."""
-        for npc_data in sector_npc:
+    def _fetch_all_sector_elements(self, sector_id: str) -> Dict[str, List]:
+        """Récupère tous les éléments du secteur en une seule série de requêtes."""
+        elements = {}
+        
+        try:
+            # Planètes/éléments spatiaux
+            elements["planets"] = list(PlanetResource.objects.filter(
+                sector_id=sector_id
+            ).select_related('source', 'resource').values(
+                'id', 'data', 'coordinates', 'quantity', 'source_id',
+                'source__size', 'source__name', 'source__data'
+            ))
+            
+            # Astéroïdes
+            elements["asteroids"] = list(AsteroidResource.objects.filter(
+                sector_id=sector_id
+            ).select_related('source', 'resource').values(
+                'id', 'data', 'coordinates', 'quantity', 'source_id',
+                'source__size', 'source__name', 'source__data'
+            ))
+            
+            # Stations
+            elements["stations"] = list(StationResource.objects.filter(
+                sector_id=sector_id
+            ).select_related('source', 'resource').values(
+                'id', 'data', 'coordinates', 'source_id',
+                'source__size', 'source__name', 'source__data'
+            ))
+            
+            # Warpzones avec destination
+            elements["warpzones"] = list(WarpZone.objects.filter(
+                sector_id=sector_id
+            ).select_related('source').prefetch_related(
+                Prefetch(
+                    'warp_home__warp_destination',
+                    queryset=WarpZone.objects.select_related('source')
+                )
+            ).values(
+                'id', 'data', 'coordinates', 'source_id',
+                'source__name', 'source__size', 'source__data'
+            ))
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des éléments: {e}")
+            
+        return elements
+
+    def _process_standard_elements_bulk(self, sector_data: Dict[str, Any], 
+                                    elements: List[Dict], element_type: str) -> None:
+        """Traite les éléments standards en bulk."""
+        for element in elements:
             try:
-                module_list = self._get_module_list(npc_data["npc_template_id__module_id_list"])
-                max_hp = int(npc_data["npc_template_id__max_hp"])
-                max_movement = int(npc_data["npc_template_id__max_movement"])
-                sector_data["npc"].append({
-                    "npc": {
-                        "id": npc_data["id"],
-                        "name": npc_data["npc_template_id__name"],
-                        "displayed_name": npc_data["npc_template_id__displayed_name"],
-                        "coordinates": npc_data["coordinates"],
-                    },
-                    "faction": {
-                        "name": npc_data["faction_id__name"],
-                    },
-                    "ship": {
-                        "name": npc_data["npc_template_id__ship_id__name"],
-                        "image": npc_data["npc_template_id__ship_id__image"],
-                        "ship_id": npc_data["npc_template_id__ship_id"], 
-                        "current_hp": int(npc_data["hp"]),
-                        "max_hp": max_hp,
-                        "current_movement": int(npc_data["movement"]),
-                        "max_movement": max_movement,
-                        "current_ballistic_defense": npc_data["ballistic_defense"],
-                        "current_thermal_defense": npc_data["thermal_defense"],
-                        "current_missile_defense": npc_data["missile_defense"],
-                        "status": npc_data["status"],
-                        "category_name": npc_data["npc_template_id__ship_id__ship_category_id__name"],
-                        "category_description": npc_data["npc_template_id__ship_id__ship_category_id__description"],
-                        "size": npc_data["npc_template_id__ship_id__ship_category_id__size"],
-                        "modules": module_list,
-                        "modules_range": self.from_DB.is_in_range(
-                            sector_data["sector"]["id"], npc_data["id"], is_npc=True
-                        ),
-                    },
-                })
-            except Exception as e:
-                logger.error(f"Erreur lors de la construction des données NPC {npc_data.get('id', 'unknown')}: {e}")
+                resource_quantity = "unknown"
+                if 'quantity' in element and element['quantity'] is not None:
+                    resource_quantity = self.from_DB.get_resource_quantity_value(
+                        element["quantity"], 100
+                    )
 
-    def _build_pc_data(self, sector_data: Dict[str, Any], sector_pc: List[Dict]) -> None:
-        """Construit les données des joueurs (PC)."""
-        for pc_data in sector_pc:
-            try:
-                module_list = self._get_player_module_list(pc_data["player_ship_id"])
-                visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id"])
-                sector_data["pc"].append({
-                    "user": {
-                        "player": pc_data["player_ship_id__player_id"],
-                        "name": pc_data["player_ship_id__player_id__name"],
-                        "coordinates": pc_data["player_ship_id__player_id__coordinates"],
-                        "image": pc_data["player_ship_id__player_id__image"],
-                        "description": pc_data["player_ship_id__player_id__description"],
-                        "is_npc": pc_data["player_ship_id__player_id__is_npc"],
-                        "current_ap": pc_data["player_ship_id__player_id__current_ap"],
-                        "max_ap": pc_data["player_ship_id__player_id__max_ap"],
-                        "archetype_name": pc_data["player_ship_id__player_id__archetype_id__name"],
-                        "archetype_data": pc_data["player_ship_id__player_id__archetype_id__data"],
-                        "sector_name": pc_data["player_ship_id__player_id__sector_id__name"],
+                element_data = {
+                    "item_id": element["id"],
+                    "item_name": element["data"].get("name", "Unknown") if element["data"] else "Unknown",
+                    "source_id": element["source_id"],
+                    "sector_id": element.get("sector_id"),
+                    "animations": element.get("source__data", {}).get("animation", []),
+                    "data": {
+                        "type": element.get("source__data", {}).get("type", element_type),
+                        "name": element["data"].get("name", "Unknown") if element["data"] else "Unknown",
+                        "coordinates": element["coordinates"],
+                        "description": element["data"].get("description", "") if element["data"] else "",
                     },
-                    "faction": {
-                        "name": pc_data["player_ship_id__player_id__faction_id__name"],
-                    },
-                    "ship": {
-                        "name": pc_data["player_ship_id__ship_id__name"],
-                        "image": pc_data["player_ship_id__ship_id__image"],
-                        "ship_id": pc_data["player_ship_id__ship_id"],
-                        "description": pc_data["player_ship_id__ship_id__description"],
-                        "max_hp": pc_data["player_ship_id__max_hp"],
-                        "current_hp": int(pc_data["player_ship_id__current_hp"]),
-                        "max_movement": int(pc_data["player_ship_id__max_movement"]),
-                        "current_movement": int(pc_data["player_ship_id__current_movement"]),
-                        "current_ballistic_defense": pc_data["player_ship_id__current_ballistic_defense"],
-                        "current_thermal_defense": pc_data["player_ship_id__current_thermal_defense"],
-                        "current_missile_defense": pc_data["player_ship_id__current_missile_defense"],
-                        "max_ballistic_defense": pc_data["player_ship_id__max_ballistic_defense"],
-                        "max_thermal_defense": pc_data["player_ship_id__max_thermal_defense"],
-                        "max_missile_defense": pc_data["player_ship_id__max_missile_defense"],
-                        "current_cargo_size": pc_data["player_ship_id__current_cargo_size"],
-                        "status": pc_data["player_ship_id__status"],
-                        "module_slot_available": pc_data["player_ship_id__ship_id__module_slot_available"],
-                        "module_slot_already_in_use": len(module_list),
-                        "modules": module_list,
-                        "modules_range": self.from_DB.is_in_range(
-                            sector_data["sector"]["id"], 
-                            pc_data["player_ship_id__player_id"], 
-                            is_npc=False
-                        ),
-                        "ship_scanning_module_available": self._has_scanning_module(module_list),
-                        "category_name": pc_data["player_ship_id__ship_id__ship_category__name"],
-                        "category_description": pc_data["player_ship_id__ship_id__ship_category__description"],
-                        "size": pc_data["player_ship_id__ship_id__ship_category__size"],
-                        "is_reversed": pc_data["player_ship_id__is_reversed"],
-                        "visible_zone": visible_zone,
-                        "view_range": pc_data["player_ship_id__view_range"]
-                    },
-                })
+                    "size": element.get("source__size", {"x": 1, "y": 1}),
+                }
+                
+                # Ajout des données de ressource si applicable
+                if 'quantity' in element:
+                    element_data["resource"] = {
+                        "id": element["source_id"],
+                        "name": element.get("source__name", "Unknown"),
+                        "quantity": element["quantity"],
+                        "quantity_str": resource_quantity,
+                        "translated_quantity_str": resource_quantity,
+                    }
+                
+                sector_data["sector_element"].append(element_data)
+                
             except Exception as e:
-                logger.error(f"Erreur lors de la construction des données PC: {e}")
+                logger.error(f"Erreur lors du traitement de l'élément {element.get('id', 'unknown')}: {e}")
 
-    def _get_module_list(self, module_id_list: List[int]) -> List[Dict[str, Any]]:
-        """Récupère la liste des modules pour les NPCs."""
-        return [
-            {
-                "name": module["name"],
-                "effect": module["effect"],
-                "description": module["description"],
-                "type": module["type"],
-                "id": module["id"],
-            }
-            for module in Module.objects.filter(id__in=module_id_list).values(
-                "name", "description", "effect", "type", "id"
+    def _process_warpzones_bulk(self, sector_data: Dict[str, Any], warpzones: List[Dict]) -> None:
+        """Traite les warpzones avec leurs destinations."""
+        from core.models import SectorWarpZone
+        
+        # Récupération bulk des destinations
+        warpzone_ids = [wz["id"] for wz in warpzones]
+        destinations = {
+            dest["warp_home_id"]: dest for dest in 
+            SectorWarpZone.objects.filter(
+                warp_home_id__in=warpzone_ids
+            ).select_related('warp_destination').values(
+                "warp_home_id", "warp_destination_id", 
+                "warp_destination__data__name"
             )
-        ]
+        }
+        
+        for warpzone in warpzones:
+            try:
+                destination = destinations.get(warpzone["id"])
+                if destination:
+                    sector_data["sector_element"].append({
+                        "item_id": warpzone["id"],
+                        "item_name": warpzone.get('source__name', 'Unknown'),
+                        "source_id": warpzone['source_id'],
+                        "sector_id": warpzone.get('sector_id'),
+                        "animations": warpzone.get('source__data', {}).get('animation', []),
+                        "data": {
+                            "type": "warpzone",
+                            "name": warpzone["data"].get("name", "Unknown") if warpzone["data"] else "Unknown",
+                            "coordinates": warpzone['coordinates'],
+                            "size": warpzone.get('source__size', {"x": 2, "y": 3}),
+                            "description": warpzone["data"].get("description", "") if warpzone["data"] else "",
+                            "warp_home_id": destination["warp_home_id"],
+                            "destination_id": destination['warp_destination_id'],
+                            "destination_name": destination.get('warp_destination__data__name', 'Unknown'),
+                        },
+                        "size": warpzone.get('source__size', {"x": 2, "y": 3}),
+                    })
+            except Exception as e:
+                logger.error(f"Erreur lors du traitement de la warpzone {warpzone.get('id', 'unknown')}: {e}")
 
-    def _get_player_module_list(self, player_ship_id: int) -> List[Dict[str, Any]]:
-        """Récupère la liste des modules pour un joueur."""
+    def _build_characters_bulk(self, sector_data: Dict[str, Any], sector_id: str) -> None:
+        """Construction optimisée des personnages (PC et NPC) avec requêtes bulk."""
+        try:
+            # Récupération bulk des NPCs
+            npcs = self._fetch_npcs_bulk(sector_id)
+            
+            for npc_data in npcs:
+                self._process_single_npc(sector_data, npc_data)
+            
+            # Récupération bulk des PCs
+            pcs = self._fetch_pcs_bulk(sector_id)
+            for pc_data in pcs:
+                self._process_single_pc(sector_data, pc_data)
+                
+        except Exception as e:
+            logger.error(f"Erreur lors de la construction des personnages: {e}")
+
+    def _fetch_npcs_bulk(self, sector_id: str) -> List[Dict]:
+        """Récupère tous les NPCs du secteur avec leurs données."""
+        return list(Npc.objects.filter(
+            sector_id=sector_id
+        ).select_related(
+            'npc_template', 'npc_template_id__ship', 
+            'npc_template_id__ship_id__ship_category', 'faction'
+        ).values(
+            "id", "coordinates", "status", "hp", "movement",
+            "ballistic_defense", "thermal_defense", "missile_defense",
+            "npc_template_id", "npc_template_id__max_hp", "npc_template_id__max_movement",
+            "npc_template_id__module_id_list", "npc_template_id__name", "npc_template_id__displayed_name",
+            "faction_id__name", "npc_template_id__ship_id__image", "npc_template_id__ship_id__name",
+            "npc_template_id__ship_id__ship_category_id__size", "npc_template_id__ship_id__ship_category_id__name",
+            "npc_template_id__ship_id__ship_category_id__description", "npc_template_id__ship_id"
+        ))
+
+    def _fetch_pcs_bulk(self, sector_id: str) -> List[Dict]:
+        """Récupère tous les PCs du secteur avec leurs données."""
+        return list(PlayerShipModule.objects.filter(
+            player_ship_id__player_id__sector_id=sector_id,
+            player_ship_id__is_current_ship=True
+        ).select_related(
+            'player_ship', 'player_ship_id__player', 'player_ship_id__ship',
+            'player_ship_id__ship_id__ship_category', 'player_ship_id__player_id__faction',
+            'player_ship_id__player_id__archetype'
+        ).values(
+            "player_ship_id", "player_ship_id__player_id", "player_ship_id__ship_id",
+            "player_ship_id__player_id__name", "player_ship_id__player_id__coordinates",
+            "player_ship_id__player_id__image", "player_ship_id__player_id__description",
+            "player_ship_id__player_id__is_npc", "player_ship_id__player_id__current_ap",
+            "player_ship_id__player_id__max_ap", "player_ship_id__player_id__faction_id__name",
+            "player_ship_id__player_id__archetype__name", "player_ship_id__player_id__archetype__data",
+            "player_ship_id__player_id__sector__name", "player_ship_id__ship_id__name",
+            "player_ship_id__ship_id__image", "player_ship_id__ship_id__description",
+            "player_ship_id__is_current_ship", "player_ship_id__is_reversed",
+            "player_ship_id__current_hp", "player_ship_id__max_hp",
+            "player_ship_id__current_movement", "player_ship_id__max_movement",
+            "player_ship_id__current_missile_defense", "player_ship_id__current_ballistic_defense",
+            "player_ship_id__current_thermal_defense", "player_ship_id__max_missile_defense",
+            "player_ship_id__max_ballistic_defense", "player_ship_id__max_thermal_defense",
+            "player_ship_id__current_cargo_size", "player_ship_id__status",
+            "player_ship_id__ship_id__module_slot_available",
+            "player_ship_id__ship_id__ship_category_id__name",
+            "player_ship_id__ship_id__ship_category_id__description",
+            "player_ship_id__ship_id__ship_category_id__size",
+            "player_ship_id__view_range"
+        ).distinct())
+
+    def _process_single_npc(self, sector_data: Dict[str, Any], npc_data: Dict) -> None:
+        """Traite un NPC individuel."""
+        try:
+            module_list = self._get_module_list_cached(npc_data["npc_template_id__module_id_list"])
+            sector_data["npc"].append({
+                "npc": {
+                    "id": npc_data["id"],
+                    "name": npc_data["npc_template_id__name"],
+                    "displayed_name": npc_data["npc_template_id__displayed_name"],
+                    "coordinates": npc_data["coordinates"],
+                },
+                "faction": {
+                    "name": npc_data["faction_id__name"],
+                },
+                "ship": {
+                    "name": npc_data["npc_template_id__ship_id__name"],
+                    "image": npc_data["npc_template_id__ship_id__image"],
+                    "ship_id": npc_data["npc_template_id"],
+                    "current_hp": int(npc_data["hp"]),
+                    "max_hp": int(npc_data["npc_template_id__max_hp"]),
+                    "current_movement": int(npc_data["movement"]),
+                    "max_movement": int(npc_data["npc_template_id__max_movement"]),
+                    "current_ballistic_defense": npc_data["ballistic_defense"],
+                    "current_thermal_defense": npc_data["thermal_defense"],
+                    "current_missile_defense": npc_data["missile_defense"],
+                    "status": npc_data["status"],
+                    "category_name": npc_data["npc_template_id__ship_id__ship_category_id__name"],
+                    "category_description": npc_data["npc_template_id__ship_id__ship_category_id__description"],
+                    "size": npc_data["npc_template_id__ship_id__ship_category_id__size"],
+                    "modules": module_list,
+                    "modules_range": self.from_DB.is_in_range(
+                        sector_data["sector"]["id"], npc_data["id"], is_npc=True
+                    ),
+                },
+            })
+        except Exception as e:
+            logger.error(f"Erreur lors du traitement du NPC {npc_data.get('id', 'unknown')}: {e}")
+
+    def _process_single_pc(self, sector_data: Dict[str, Any], pc_data: Dict) -> None:
+        """Traite un PC individuel."""
+        try:
+            module_list = self._get_player_module_list_cached(pc_data["player_ship_id"])
+            visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id"])
+            
+            sector_data["pc"].append({
+                "user": {
+                    "player": pc_data["player_ship_id__player_id"],
+                    "name": pc_data["player_ship_id__player_id__name"],
+                    "coordinates": pc_data["player_ship_id__player_id__coordinates"],
+                    "image": pc_data["player_ship_id__player_id__image"],
+                    "description": pc_data["player_ship_id__player_id__description"],
+                    "is_npc": pc_data["player_ship_id__player_id__is_npc"],
+                    "current_ap": pc_data["player_ship_id__player_id__current_ap"],
+                    "max_ap": pc_data["player_ship_id__player_id__max_ap"],
+                    "archetype_name": pc_data["player_ship_id__player_id__archetype__name"],
+                    "archetype_data": pc_data["player_ship_id__player_id__archetype__data"],
+                    "sector_name": pc_data["player_ship_id__player_id__sector__name"],
+                },
+                "faction": {
+                    "name": pc_data["player_ship_id__player_id__faction_id__name"],
+                },
+                "ship": {
+                    "name": pc_data["player_ship_id__ship_id__name"],
+                    "image": pc_data["player_ship_id__ship_id__image"],
+                    "ship_id": pc_data["player_ship_id__ship_id"],
+                    "description": pc_data["player_ship_id__ship_id__description"],
+                    "max_hp": pc_data["player_ship_id__max_hp"],
+                    "current_hp": int(pc_data["player_ship_id__current_hp"]),
+                    "max_movement": int(pc_data["player_ship_id__max_movement"]),
+                    "current_movement": int(pc_data["player_ship_id__current_movement"]),
+                    "current_ballistic_defense": pc_data["player_ship_id__current_ballistic_defense"],
+                    "current_thermal_defense": pc_data["player_ship_id__current_thermal_defense"],
+                    "current_missile_defense": pc_data["player_ship_id__current_missile_defense"],
+                    "max_ballistic_defense": pc_data["player_ship_id__max_ballistic_defense"],
+                    "max_thermal_defense": pc_data["player_ship_id__max_thermal_defense"],
+                    "max_missile_defense": pc_data["player_ship_id__max_missile_defense"],
+                    "current_cargo_size": pc_data["player_ship_id__current_cargo_size"],
+                    "status": pc_data["player_ship_id__status"],
+                    "module_slot_available": pc_data["player_ship_id__ship_id__module_slot_available"],
+                    "module_slot_already_in_use": len(module_list),
+                    "modules": module_list,
+                    "modules_range": self.from_DB.is_in_range(
+                        sector_data["sector"]["id"],
+                        pc_data["player_ship_id__player_id"],
+                        is_npc=False
+                    ),
+                    "ship_scanning_module_available": self._has_scanning_module(module_list),
+                    "category_name": pc_data["player_ship_id__ship_id__ship_category_id__name"],
+                    "category_description": pc_data["player_ship_id__ship_id__ship_category_id__description"],
+                    "size": pc_data["player_ship_id__ship_id__ship_category_id__size"],
+                    "is_reversed": pc_data["player_ship_id__is_reversed"],
+                    "visible_zone": visible_zone,
+                    "view_range": pc_data["player_ship_id__view_range"]
+                },
+            })
+        except Exception as e:
+            logger.error(f"Erreur lors du traitement du PC: {e}")
+
+    def _get_module_list_cached(self, module_id_list: tuple) -> List[Dict[str, Any]]:
+        
+        """Version cachée de la récupération des modules pour NPCs."""
+        if not module_id_list:
+            return []
+        
+        return list(Module.objects.filter(
+            id__in=module_id_list
+        ).values("name", "description", "effect", "type", "id"))
+
+    def _get_player_module_list_cached(self, player_ship_id: int) -> List[Dict[str, Any]]:
+        """Version optimisée pour les modules des joueurs."""
+        cache_key = f"player_modules_{player_ship_id}"
+        cached_modules = self._local_cache.get(cache_key)
+        
+        if cached_modules is None:
+            cached_modules = list(PlayerShipModule.objects.filter(
+                player_ship_id=player_ship_id
+            ).select_related('module').values(
+                "module__name", "module__description",
+                "module__effect", "module__type", "module_id"
+            ))
+            self._local_cache[cache_key] = cached_modules
+            
         return [
             {
-                "name": module["module_id__name"],
-                "effect": module["module_id__effect"],
-                "description": module["module_id__description"],
-                "type": module["module_id__type"],
+                "name": module["module__name"],
+                "effect": module["module__effect"],
+                "description": module["module__description"],
+                "type": module["module__type"],
                 "id": module["module_id"],
             }
-            for module in PlayerShipModule.objects.filter(
-                player_ship_id=player_ship_id
-            ).values(
-                "module_id__name", "module_id__description", 
-                "module_id__effect", "module_id__type", "module_id"
-            )
+            for module in cached_modules
         ]
 
     def _has_scanning_module(self, module_list: List[Dict[str, Any]]) -> bool:
-        """Vérifie si le joueur possède un module de scan."""
-        return any(module['name'] == "spaceship probe" for module in module_list)
-    
-    def get_other_player_data(self, player_id : int) -> List[dict[str, Any]]:
-        
+        """Vérifie la présence d'un module de scan."""
+        return any(module.get('name') == "spaceship probe" for module in module_list)
+
+    # === Méthodes d'accès aux données optimisées ===
+
+    def get_other_player_data(self, player_id: int) -> Optional[List[Dict[str, Any]]]:
+        """Version optimisée avec gestion d'erreurs."""
         try:
-            in_cache = cache.get(self.room)
-            if not in_cache or "pc" not in in_cache:
-                return None
-                
-            cache_data = in_cache["pc"]
-            players_data = [p for p in cache_data if player_id != p["user"]["player"]]
-            
-            if not players_data:
-                return None
-                
-            return players_data
-        
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération des données des joueurs présents")
-            return None
-    
-    
-    def get_current_player_data(self, player_id : int) -> List[dict[str, Any]]:
-        
-        try:
-            in_cache = cache.get(self.room)
-            if not in_cache or "pc" not in in_cache:
-                return None
-                
-            cache_data = in_cache["pc"]
-            current_player_data = [p for p in cache_data if player_id == p["user"]["player"]]
-            
-            if not current_player_data:
-                return None
-                
-            return current_player_data
-        
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération des données des joueurs présents")
-            return None
-            
-        
-    def get_specific_player_data(
-        self, player_id: int, category: str = "", subcategory: str = "", search: str = ""
-    ) -> Optional[Any]:
-        """
-        Récupère les données spécifiques d'un joueur depuis le cache.
-        
-        Args:
-            player_id: ID du joueur
-            category: Catégorie de données (ex: "pc")
-            subcategory: Sous-catégorie (ex: "ship")
-            search: Clé de recherche spécifique
-            
-        Returns:
-            Données du joueur ou None si non trouvé
-        """
-        try:
-            in_cache = cache.get(self.room)
-            if not in_cache or category not in in_cache:
-                return None
-                
-            cache_data = in_cache[category]
-            found_player = next(
-                (p for p in cache_data if player_id == p["user"]["player"]), 
-                None
-            )
-            if not found_player:
-                return None
-                
-            found_player_index = cache_data.index(found_player)
-            
-            if subcategory and search:
-                return cache_data[found_player_index].get(subcategory, {}).get(search)
-            return cache_data[found_player_index]
-            
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération des données du joueur {player_id}: {e}")
-            return None
-
-    def get_sector_data(self) -> Any:
-        """
-        Récupère des données spécifiques du secteur.
-        
-        Args:
-            search_item: Clé de recherche dans les données du secteur
-            
-        Returns:
-            Données demandées ou None
-        """
-        try:
-            if not cache.get(self.room):
-                self.set_sector_data(self.sector_pk)
-            return cache.get(self.room, {}).get("sector")
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération des données du secteur: {e}")
-            return None
-
-    def update_player_position(self, pos: Dict[str, Any], current_player_id : int) -> None:
-        """
-        Met à jour la position d'un joueur dans le cache.
-        
-        Args:
-            pos: Dictionnaire contenant les nouvelles coordonnées et le coût de mouvement
-        """
-        try:
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return
-                
-            player_position = in_cache["pc"]
-            player_id = pos["player"]
-
-            found_player = next(
-                (p for p in player_position if player_id == p["user"]["player"]), 
-                None
-            )
-            
-            if not found_player:
-                return False
-        
-            found_player_index = player_position.index(found_player)
-                
-            # Mise à jour des coordonnées
-            player_position[found_player_index]["user"]["coordinates"] = {
-                "x": int(pos["end_x"]),
-                "y": int(pos["end_y"]),
-            }
-            
-            # Mise à jour du mouvement
-            if current_player_id == player_id:
-                player_position[found_player_index]["ship"]["current_movement"] -= pos["move_cost"]
-            else:
-                player_position[found_player_index]["ship"]["current_movement"] = PlayerShip.objects.filter(player_id=player_id, is_current_ship=True).values('current_movement')[0]['current_movement']
-
-            # Nettoyage des anciens duplicatas
-            self._remove_duplicate_players(player_position, found_player, pos)
-
-            in_cache["pc"] = player_position
-            cache.set(self.room, in_cache)
-            
-            return True
-            
-        except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour de la position du joueur: {e}")
-
-    def _remove_duplicate_players(
-        self, player_position: List[Dict], found_player: Dict, pos: Dict[str, Any]
-    ) -> None:
-        """Supprime les duplicatas de joueurs avec des positions différentes."""
-        players_to_remove = []
-        for i, player in enumerate(player_position):
-            if (player["user"]["player"] == found_player["user"]["player"] and
-                (player["user"]["coordinates"]["y"] != int(pos["end_y"]) or
-                player["user"]["coordinates"]["x"] != int(pos["end_x"]))):
-                players_to_remove.append(i)
-        
-        # Suppression en ordre inverse pour éviter les problèmes d'index
-        for i in reversed(players_to_remove):
-            player_position.pop(i)
-
-    def update_player_range_finding(self, target_player_id: Optional[int] = None) -> None:
-        """
-        Met à jour les portées des modules d'un joueur spécifique.
-        
-        Args:
-            target_player_id: ID du joueur dont il faut recalculer les portées.
-            Si None, utilise self.user_calling
-        """
-        try:
-            # Utiliser le joueur spécifié ou le joueur appelant par défaut
-            if target_player_id is None:
-                player = PlayerAction(self.user_calling)
-                player_id = player.get_player_id()
-            else:
-                player_id = target_player_id
-            
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return
-                
-            player_position = in_cache["pc"]
-            found_player = next(
-                (p for p in player_position if player_id == p["user"]["player"]), 
-                None
-            )
-            
-            if not found_player:
-                return
-            
-            found_player_index = player_position.index(found_player)
-            
-            # Recalculer les portées pour ce joueur spécifique
-            player_sector = None
-            if target_player_id:
-                # Pour un joueur spécifique, récupérer son secteur
-                player_sector = Player.objects.filter(id=target_player_id).values_list('sector_id', flat=True).first()
-            else:
-                # Pour le joueur appelant
-                player = PlayerAction(self.user_calling)
-                player_sector = player.get_player_sector()
-            
-            if player_sector:
-                player_position[found_player_index]["ship"]["modules_range"] = self.from_DB.is_in_range(
-                    player_sector, player_id, is_npc=False
-                )
-                
-                in_cache["pc"] = player_position
-                cache.set(self.room, in_cache)
-                
-        except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour des portées pour le joueur {target_player_id or self.user_calling}: {e}")
-
-    def update_ship_is_reversed(
-        self, data: Dict[str, Any], player_id: int, status: bool
-    ) -> Tuple[bool, Optional[int]]:
-        """
-        Met à jour le statut "inversé" d'un vaisseau.
-        
-        Args:
-            data: Données contenant l'ID utilisateur
-            user_id: ID de l'utilisateur
-            status: Nouveau statut inversé
-            
-        Returns:
-            Tuple (nouveau_statut, player_id) ou (None, None) si erreur
-        """
-        try:
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return None, None
-                
-            pc_cache = in_cache["pc"]
-
-            player = next(
-                (p for p in pc_cache if player_id == p["user"]["player"]), 
-                None
-            )
-            
-            if not player:
-                return None, None
-
-            player_index = pc_cache.index(player)
-            player_id = pc_cache[player_index]["user"]["player"]
-            pc_cache[player_index]["ship"]["is_reversed"] = status
-            
-            in_cache["pc"] = pc_cache
-            cache.set(self.room, in_cache)
-
-            return pc_cache[player_index]["ship"]["is_reversed"], player_id
-            
-        except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour du statut inversé: {e}")
-            return None, None
-
-    def get_user_index(self, player_id: int) -> Optional[int]:
-        """
-        Récupère l'index d'un joueur dans la liste des PC.
-        
-        Args:
-            player_id: ID du joueur
-            
-        Returns:
-            Index du joueur ou None si non trouvé
-        """
-        try:
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return None
-                
-            player_data = in_cache["pc"]
-
-            found_player = next(
-                (p for p in player_data if player_id == p["user"]["player"]), 
-                None
-            )
-            
-            if not found_player:
-                return None
-                
-            return player_data.index(found_player)
-            
-        except Exception as e:
-            logger.error(f"Erreur lors de la récupération de l'index du joueur {player_id}: {e}")
-            return None
-
-    def transfert_player_to_other_cache(
-        self, destination_sector: str, new_coordinates: Dict[str, int]
-    ) -> str:
-        """
-        Transfère un joueur vers un autre secteur/cache.
-        
-        Args:
-            destination_sector: ID du secteur de destination
-            new_coordinates: Nouvelles coordonnées du joueur
-            
-        Returns:
-            Nom de la nouvelle room
-        """
-        try:
-            PlayerAction(self.user_calling).set_player_sector(
-                destination_sector, new_coordinates
-            )
-            return f"play_{destination_sector}"
-        except Exception as e:
-            logger.error(f"Erreur lors du transfert du joueur: {e}")
-            raise
-
-    def get_user(self, player_id: int, room_name: Optional[str] = None) -> List[Dict]:
-        """
-        Récupère les données d'un utilisateur depuis une room spécifique.
-        
-        Args:
-            player_id: ID du joueur
-            room_name: Nom de la room (utilise self.room si None)
-            
-        Returns:
-            Liste des données du joueur
-        """
-        try:
-            target_room = room_name or self.room
-            in_cache = cache.get(target_room)
-            
-            if not in_cache:
+            cached_data = cache.get(self.room)
+            if not cached_data or "pc" not in cached_data:
                 return []
-                
+            
             return [
-                key for key in in_cache.get('pc', []) 
-                if key["user"]["player"] == player_id
+                player for player in cached_data["pc"] 
+                if player.get("user", {}).get("player") != player_id
             ]
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération de l'utilisateur {player_id}: {e}")
+            logger.error(f"Erreur lors de la récupération des autres joueurs: {e}")
             return []
 
-    def delete_player_from_cache(self, player_id: int, old_room: Optional[str] = None) -> None:
-        """
-        Supprime un joueur du cache.
-        
-        Args:
-            player_id: ID du joueur à supprimer
-            old_room: Room de laquelle supprimer le joueur
-        """
-        if player_id == self.user_calling:
-            return
-            
+    def get_current_player_data(self, player_id: int) -> Optional[List[Dict[str, Any]]]:
+        """Version optimisée pour le joueur actuel."""
         try:
-            target_room = old_room or self.room
-            in_cache = cache.get(target_room)
+            cached_data = cache.get(self.room)
+            if not cached_data or "pc" not in cached_data:
+                return []
             
-            if not in_cache:
-                return
-                
-            in_cache["pc"] = [
-                key for key in in_cache.get('pc', []) 
-                if key["user"]["player"] != player_id
+            return [
+                player for player in cached_data["pc"] 
+                if player.get("user", {}).get("player") == player_id
             ]
-            cache.set(target_room, in_cache)
-            
         except Exception as e:
-            logger.error(f"Erreur lors de la suppression du joueur {player_id}: {e}")
+            logger.error(f"Erreur lors de la récupération du joueur actuel: {e}")
+            return []
 
-    def add_msg(self, user: str) -> None:
-        """
-        Ajoute un message au cache.
+    def get_specific_player_data(self, player_id: int, category: str = "", subcategory: str = "", search: str = "") -> Any:
+        """Version optimisée avec cache local."""
+        cache_key = f"player_data_{player_id}_{category}_{subcategory}_{search}"
         
-        Args:
-            user: Nom d'utilisateur ayant envoyé le message
-        """
+        # Vérification du cache local
+        if cache_key in self._local_cache:
+            cache_time = self._last_cache_update.get(cache_key)
+            if cache_time and (datetime.datetime.now() - cache_time).seconds < 30:
+                return self._local_cache[cache_key]
+        
         try:
-            in_cache = cache.get(self.room)
-            if not in_cache:
-                return
-                
-            new_msg = in_cache.get("messages", [])
-            new_msg.append({
-                "username": user,
-                "value": self.user_calling,
-                "created_date": self.get_datetime_json(datetime.datetime.now()),
-            })
+            cached_data = cache.get(self.room)
+            if not cached_data or category not in cached_data:
+                return None
             
-            in_cache["messages"] = new_msg
-            cache.set(self.room, in_cache)
+            player_data = next(
+                (p for p in cached_data[category] 
+                if p.get("user", {}).get("player") == player_id),
+                None
+            )
+            
+            if not player_data:
+                return None
+            
+            result = player_data
+            if subcategory and search:
+                result = player_data.get(subcategory, {}).get(search)
+            elif subcategory:
+                result = player_data.get(subcategory)
+            
+            # Mise en cache locale
+            self._local_cache[cache_key] = result
+            self._last_cache_update[cache_key] = datetime.datetime.now()
+            
+            return result
             
         except Exception as e:
-            logger.error(f"Erreur lors de l'ajout du message: {e}")
+            logger.error(f"Erreur lors de la récupération des données spécifiques: {e}")
+            return None
 
-    def get_sorted_messages(self) -> List[Dict]:
-        """
-        Récupère les messages triés par date de création.
-        
-        Returns:
-            Liste des messages triés
-        """
+    def get_sector_data(self) -> Optional[Dict[str, Any]]:
+        """Version optimisée de la récupération des données secteur."""
         try:
             cached_data = cache.get(self.room)
             if not cached_data:
-                return []
-                
-            messages = cached_data.get("messages", [])
-            return sorted(messages, key=lambda d: d["created_date"])
+                # Tentative de reconstruction du cache
+                cached_data = self.get_or_set_cache(need_to_be_recreated=True)
+            
+            return cached_data.get("sector") if cached_data else None
             
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des messages: {e}")
-            return []
+            logger.error(f"Erreur lors de la récupération des données secteur: {e}")
+            return None
 
-    def get_datetime_json(self, date_time: datetime.datetime) -> str:
-        """
-        Convertit un datetime en JSON.
+    # === Méthodes de mise à jour optimisées ===
+
+    def update_player_position(self, pos: Dict[str, Any], current_player_id: int) -> bool:
+        """Version optimisée avec transaction atomique."""
+        try:
+            with cache.lock(f"{self.room}_position_lock", timeout=5):
+                cached_data = cache.get(self.room)
+                if not cached_data:
+                    return False
+                
+                player_list = cached_data["pc"]
+                player_id = pos["player"]
+                
+                # Recherche optimisée du joueur
+                player_index = next(
+                    (i for i, p in enumerate(player_list) 
+                     if p.get("user", {}).get("player") == player_id),
+                    None
+                )
+                
+                if player_index is None:
+                    return False
+                
+                # Mise à jour atomique des coordonnées
+                player_list[player_index]["user"]["coordinates"] = {
+                    "x": int(pos["end_x"]),
+                    "y": int(pos["end_y"]),
+                }
+                
+                # Mise à jour du mouvement
+                if current_player_id == player_id:
+                    player_list[player_index]["ship"]["current_movement"] -= pos["move_cost"]
+                else:
+                    # Récupération depuis la DB pour les autres joueurs
+                    current_movement = PlayerShip.objects.filter(
+                        player_id=player_id, is_current_ship=True
+                    ).values_list('current_movement', flat=True).first()
+                    
+                    if current_movement is not None:
+                        player_list[player_index]["ship"]["current_movement"] = current_movement
+                
+                # Nettoyage des doublons
+                self._remove_duplicate_players_optimized(player_list, player_index, pos)
+                
+                cached_data["pc"] = player_list
+                cache.set(self.room, cached_data, self._cache_timeout)
+                
+                # Nettoyage du cache local
+                self._invalidate_local_cache()
+                
+                return True
+                
+        except Exception as e:
+            logger.error(f"Erreur lors de la mise à jour de la position: {e}")
+            return False
+
+    def _remove_duplicate_players_optimized(self, player_list: List[Dict], 
+                                          updated_index: int, pos: Dict[str, Any]) -> None:
+        """Version optimisée du nettoyage des doublons."""
+        target_player_id = pos["player"]
+        target_x, target_y = int(pos["end_x"]), int(pos["end_y"])
         
-        Args:
-            date_time: Objet datetime à convertir
+        # Suppression en une seule passe
+        indices_to_remove = []
+        for i, player in enumerate(player_list):
+            if (i != updated_index and 
+                player.get("user", {}).get("player") == target_player_id):
+                coords = player.get("user", {}).get("coordinates", {})
+                if coords.get("x") != target_x or coords.get("y") != target_y:
+                    indices_to_remove.append(i)
+        
+        # Suppression en ordre inverse
+        for i in reversed(indices_to_remove):
+            player_list.pop(i)
+
+    def update_sector_player_visibility_zone(self, player_id: int) -> None:
+        """Mise à jour optimisée de la zone de visibilité."""
+        try:
+            with cache.lock(f"{self.room}_visibility_lock", timeout=5):
+                cached_data = cache.get(self.room)
+                if not cached_data:
+                    return
+                
+                player_list = cached_data["pc"]
+                player_index = next(
+                    (i for i, p in enumerate(player_list) 
+                     if p.get("user", {}).get("player") == player_id),
+                    None
+                )
+                
+                if player_index is not None:
+                    new_visibility = self.from_DB.current_player_observable_zone(player_id)
+                    player_list[player_index]["ship"]["visible_zone"] = new_visibility
+                    
+                    cached_data["pc"] = player_list
+                    cache.set(self.room, cached_data, self._cache_timeout)
+                    
+                    # Invalidation du cache local
+                    self._invalidate_local_cache()
+                    
+        except Exception as e:
+            logger.error(f"Erreur lors de la mise à jour de la visibilité: {e}")
+
+    def update_player_range_finding(self, target_player_id: Optional[int] = None) -> None:
+        """Mise à jour optimisée des portées avec cache."""
+        try:
+            player_id = target_player_id or self.user_calling
             
-        Returns:
-            Représentation JSON du datetime
-        """
-        return json.dumps(date_time, indent=4, sort_keys=True, default=str)
+            with cache.lock(f"{self.room}_range_lock", timeout=5):
+                cached_data = cache.get(self.room)
+                if not cached_data:
+                    return
+                
+                player_list = cached_data["pc"]
+                player_index = next(
+                    (i for i, p in enumerate(player_list) 
+                    if p.get("user", {}).get("player") == player_id),
+                    None
+                )
+                
+                if player_index is not None:
+                    # Récupération du secteur
+                    if target_player_id:
+                        player_sector = Player.objects.filter(
+                            id=target_player_id
+                        ).values_list('sector_id', flat=True).first()
+                    else:
+                        player_action = PlayerAction(self.user_calling)
+                        player_sector = player_action.get_player_sector()
+                    
+                    if player_sector:
+                        new_range = self.from_DB.is_in_range(
+                            player_sector, player_id, is_npc=False
+                        )
+                        player_list[player_index]["ship"]["modules_range"] = new_range
+                        
+                        cached_data["pc"] = player_list
+                        cache.set(self.room, cached_data, self._cache_timeout)
+                        
+                        # Invalidation du cache local
+                        self._invalidate_local_cache()
+                        
+        except Exception as e:
+            logger.error(f"Erreur lors de la mise à jour des portées: {e}")
+
+    def _invalidate_local_cache(self) -> None:
+        """Invalide le cache local."""
+        self._local_cache.clear()
+        self._last_cache_update.clear()
+
+    # === Méthodes utilitaires optimisées ===
+
+    def delete_player_from_cache(self, player_id: int, old_room: Optional[str] = None) -> None:
+        """Suppression optimisée d'un joueur du cache."""
+        if player_id == self.user_calling:
+            return
+        
+        target_room = old_room or self.room
+        
+        try:
+            with cache.lock(f"{target_room}_delete_lock", timeout=5):
+                cached_data = cache.get(target_room)
+                if not cached_data:
+                    return
+                
+                # Filtrage optimisé
+                cached_data["pc"] = [
+                    player for player in cached_data.get('pc', [])
+                    if player.get("user", {}).get("player") != player_id
+                ]
+                
+                cache.set(target_room, cached_data, self._cache_timeout)
+                
+        except Exception as e:
+            logger.error(f"Erreur lors de la suppression du joueur {player_id}: {e}")
 
     @staticmethod
-    def notify_room_users(room_id: str, message: str) -> None:
-        """
-        Notifie les utilisateurs d'une room.
-        
-        Args:
-            room_id: ID de la room
-            message: Message à envoyer
-        """
-        try:
-            from channels.layers import get_channel_layer
-            
-            channel_layer = get_channel_layer()
-            channel_layer.group_send(f"room_{room_id}", {
-                "type": "async_remove_ship",
-                "message": message
-            })
-        except Exception as e:
-            logger.error(f"Erreur lors de la notification des utilisateurs de la room {room_id}: {e}")
-            
-    
+    def get_datetime_json(date_time: datetime.datetime) -> str:
+        """Conversion optimisée datetime vers JSON."""
+        return date_time.isoformat()

@@ -28,3 +28,19 @@ class OneSessionPerUserMiddleware:
         # For this tutorial, we're not adding any code so we just return the response
 
         return response
+    
+    
+class WebSocketSessionMiddleware:
+    """Middleware pour maintenir les sessions WebSocket actives."""
+    
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        
+        # Maintenir la session active pour les requêtes WebSocket
+        if hasattr(request, 'session') and request.session.session_key:
+            request.session.save()
+            
+        return response

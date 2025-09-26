@@ -41,6 +41,7 @@ MIDDLEWARE = [
     "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "core.middleware.WebSocketSessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -106,11 +107,20 @@ CSRF_TRUSTED_ORIGINS = [
 WSGI_APPLICATION = "recorp.routing.application"
 ASGI_APPLICATION = "recorp.routing.application"
 
+# Session settings
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 semaine
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [("127.0.0.1", 6379)],
+            "capacity": 1500,  # Maximum number of messages to store
+            "expiry": 60,      # Message expiry in seconds
+            "group_expiry": 86400,  # Group expiry in seconds (24h)
+            "symmetric_encryption_keys": [SECRET_KEY],
         },
     },
 }
@@ -119,15 +129,35 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "socket_keepalive": True,
+                "socket_keepalive_options": {},
+                "health_check_interval": 30,
+            }
+        },
         "KEY_PREFIX": "recorp_game",
         "TIMEOUT": 60 * 60 * 24,
     }
 }
 
-# CELERY
+# WebSocket settings
+WEBSOCKET_ACCEPT_ALL = True
+WEBSOCKET_TIMEOUT = 30
+
+
+
+# Configuration Celery pour éviter les timeouts
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600,
+    'fanout_prefix': True,
+    'fanout_patterns': True,
+    'socket_keepalive': True,
+}
 
 USER_AGENTS_CACHE = "default"
 
