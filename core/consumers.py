@@ -4,6 +4,7 @@ from typing import Dict, Any, Optional
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
+import datetime
 
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
@@ -31,6 +32,7 @@ class GameConsumer(WebsocketConsumer):
         self.game_cache = None
         self.player_id: Optional[int] = None
         self._cache_store = None
+
 
     def connect(self) -> None:
         """Établit la connexion WebSocket et joint l'utilisateur au groupe de salle."""
@@ -98,8 +100,13 @@ class GameConsumer(WebsocketConsumer):
                 self.scope['session'].save()
         
             # Gestion du heartbeat
-            if data.get("type") == "ping":
+            if data["type"] == "ping":
                 self._send_response({"type": "pong"})
+                return
+            
+            # NOUVEAU : Gestion de la synchronisation des données
+            if data["type"] == "request_data_sync":
+                self._handle_data_sync_request(data)
                 return
             
             message_data = self._extract_message_data(data)
@@ -126,6 +133,170 @@ class GameConsumer(WebsocketConsumer):
             self.room_group_name,
             message_data,
         )
+        
+    # méthode pour gérer les demandes de synchronisation
+    def _handle_data_sync_request(self, data: Dict[str, Any]) -> None:
+        """
+        Gère les demandes de synchronisation des données client.
+        
+        Args:
+            data: Données de la demande de synchronisation
+        """
+        try:
+            # Parser les données de la demande
+            request_data = json.loads(data.get("message", "{}"))
+            player_id = request_data.get("player_id", self.player_id)
+            sector_id = request_data.get("sector_id")
+            
+            logger.info(f"Demande de synchronisation pour le joueur {player_id}, secteur {sector_id}")
+            
+            # Construire la réponse de synchronisation
+            sync_response = self._build_sync_response(player_id, sector_id)
+            
+            # Envoyer la réponse directement au client demandeur
+            self._send_response({
+                "type": "data_sync_response",
+                "message": sync_response
+            })
+            
+            logger.info(f"Réponse de synchronisation envoyée pour le joueur {player_id}")
+            
+        except Exception as e:
+            logger.error(f"Erreur lors du traitement de la demande de synchronisation: {e}")
+            # Envoyer une réponse d'erreur
+            self._send_response({
+                "type": "data_sync_error",
+                "message": {"error": "Erreur lors de la synchronisation des données"}
+            })
+            
+    # 3. NOUVELLE méthode pour construire la réponse de synchronisation
+    def _build_sync_response(self, player_id: int, sector_id: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Construit la réponse de synchronisation avec toutes les données nécessaires.
+        
+        Args:
+            player_id: ID du joueur demandant la synchronisation
+            sector_id: ID du secteur (optionnel)
+            
+        Returns:
+            Dict contenant toutes les données de synchronisation
+        """
+        try:
+            # Récupérer ou reconstruire le cache si nécessaire
+            self._cache_store.get_or_set_cache(need_to_be_recreated=False)
+            
+            # Construire les données de synchronisation
+            sync_data = {
+                "current_player": self._get_current_player_sync_data(player_id),
+                "other_players": self._get_other_players_sync_data(player_id),
+                "map_informations": self._get_map_informations_sync_data(),
+                "sector_data": self._cache_store.get_sector_data(),
+                "npcs": self._get_npcs_sync_data(),
+                "sector_elements": self._get_sector_elements_sync_data(),
+                "sync_timestamp": self._cache_store.get_datetime_json(
+                    datetime.datetime.now()
+                )
+            }
+            
+            return sync_data
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la construction de la réponse de sync: {e}")
+            return {"error": "Erreur lors de la construction des données"}
+
+    # 4. MÉTHODES HELPER pour construire les données de synchronisation
+    def _get_current_player_sync_data(self, player_id: int) -> Optional[Dict[str, Any]]:
+        """Récupère les données du joueur actuel."""
+        try:
+            current_player_data = self._cache_store.get_current_player_data(player_id)
+            return current_player_data[0] if current_player_data else None
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération du joueur actuel: {e}")
+            return None
+
+    def _get_other_players_sync_data(self, player_id: int) -> list[Dict[str, Any]]:
+        """Récupère les données des autres joueurs."""
+        try:
+            return self._cache_store.get_other_player_data(player_id) or []
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des autres joueurs: {e}")
+            return []
+
+    def _get_map_informations_sync_data(self) -> Dict[str, Any]:
+        """Récupère les informations de la carte."""
+        try:
+            cached_data = cache.get(self.room_group_name)
+            if not cached_data:
+                return {}
+            
+            return {
+                "sector": cached_data.get("sector", {}),
+                "pc": cached_data.get("pc", []),
+                "npc": cached_data.get("npc", []),
+                "sector_element": cached_data.get("sector_element", []),
+                "messages": cached_data.get("messages", [])
+            }
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des informations de carte: {e}")
+            return {}
+
+    def _get_npcs_sync_data(self) -> list[Dict[str, Any]]:
+        """Récupère les données des NPCs."""
+        try:
+            cached_data = cache.get(self.room_group_name)
+            return cached_data.get("npc", []) if cached_data else []
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des NPCs: {e}")
+            return []
+
+    def _get_sector_elements_sync_data(self) -> list[Dict[str, Any]]:
+        """Récupère les éléments du secteur."""
+        try:
+            cached_data = cache.get(self.room_group_name)
+            return cached_data.get("sector_element", []) if cached_data else []
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des éléments du secteur: {e}")
+            return []
+
+    # 5. MÉTHODE UTILITAIRE pour valider les données avant envoi
+    def _validate_sync_data(self, sync_data: Dict[str, Any]) -> bool:
+        """
+        Valide les données de synchronisation avant envoi.
+        
+        Args:
+            sync_data: Données à valider
+            
+        Returns:
+            True si les données sont valides, False sinon
+        """
+        required_keys = ["current_player", "other_players", "map_informations"]
+        
+        try:
+            # Vérifier la présence des clés requises
+            if not all(key in sync_data for key in required_keys):
+                logger.warning("Clés manquantes dans les données de synchronisation")
+                return False
+            
+            # Vérifier que current_player n'est pas None si on s'attend à ce qu'il existe
+            if sync_data["current_player"] is None:
+                logger.warning("current_player est None dans les données de synchronisation")
+                # Ce n'est pas forcément une erreur, le joueur pourrait ne pas être dans ce secteur
+            
+            # Vérifier que other_players est une liste
+            if not isinstance(sync_data["other_players"], list):
+                logger.warning("other_players n'est pas une liste")
+                return False
+            
+            # Vérifier que map_informations est un dictionnaire
+            if not isinstance(sync_data["map_informations"], dict):
+                logger.warning("map_informations n'est pas un dictionnaire")
+                return False
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la validation des données de sync: {e}")
+            return False
 
     def async_move(self, event: Dict[str, Any]) -> None:
         try:
@@ -148,7 +319,6 @@ class GameConsumer(WebsocketConsumer):
                         response = self._handle_other_player_move(message, player_action, self._cache_store, self.player_id)
                     
                     # Envoyer la réponse personnalisée au joueur connecté
-                    #print(self.player_id)
                     self._send_response(response)
                 
         except (json.JSONDecodeError, KeyError) as e:
@@ -378,4 +548,20 @@ class GameConsumer(WebsocketConsumer):
         """Envoie une réponse via WebSocket."""
         
         if response:  # Évite d'envoyer des réponses vides
-            self.send(text_data=json.dumps(response))
+            try:
+                # Log spécial pour les réponses de synchronisation
+                if response.get("type") == "data_sync_response":
+                    message_size = len(json.dumps(response))
+                    logger.info(f"Envoi de réponse de synchronisation - Taille: {message_size} bytes")
+                    
+                    # Log des données incluses
+                    sync_message = response.get("message", {})
+                    if isinstance(sync_message, dict):
+                        logger.info(f"Sync data inclus - current_player: {bool(sync_message.get('current_player'))}, "
+                                f"other_players: {len(sync_message.get('other_players', []))}, "
+                                f"map_informations: {bool(sync_message.get('map_informations'))}")
+                
+                self.send(text_data=json.dumps(response))
+                
+            except Exception as e:
+                logger.error(f"Erreur lors de l'envoi de la réponse: {e}")

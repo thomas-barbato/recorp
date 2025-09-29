@@ -1,6 +1,131 @@
 function update_player_coord(data) {
+    clear_path();
+
+    // CORRECTION : Vérification robuste avec sync si nécessaire
+    if (!currentPlayer || !currentPlayer.ship) {
+        console.error('❌ currentPlayer invalide dans update_player_coord');
+        
+        // Créer une action en attente
+        const retryAction = {
+            type: 'player_move',
+            data: { message: data },
+            execute: () => update_player_coord(data)
+        };
+        
+        requestDataSync(retryAction);
+        return;
+    }
+
+    // Mise à jour des données AVANT traitement
+    if (data.updated_current_player_data && data.updated_current_player_data[0]) {
+        currentPlayer = data.updated_current_player_data[0];
+    }
+    
+    if (data.updated_other_player_data) {
+        otherPlayers = data.updated_other_player_data;
+    }
+
+    // CORRECTION : Double vérification après mise à jour
+    if (!currentPlayer || !currentPlayer.ship) {
+        console.error('❌ currentPlayer toujours invalide après mise à jour');
+        return;
+    }
+
+    let view_range = currentPlayer.ship.view_range;
+    let new_coordinates = {
+        y: currentPlayer.user.coordinates.y + 1, 
+        x: currentPlayer.user.coordinates.x + 1
+    };
+    const tabletopView = document.querySelector('.tabletop-view');
+
+    resetCellToDefault(data.start_id_array);
+
+    // Traitement selon le type d'utilisateur
+    if (current_player_id !== data.player_id) {
+        let otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
+        if (otherPlayerData) {
+            handleOtherPlayerMove(otherPlayerData);
+        }
+        updatePlayerSonar(new_coordinates, currentPlayer.ship.view_range);
+    } else {
+        update_player_pos_display_after_move(currentPlayer, data);
+    }
+    
+    initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, view_range);
+
+    function resetCellToDefault(startPosArray) {
+        if (typeof cleanupSonar === 'function') {
+            cleanupSonar();
+        }
+        
+        if (!startPosArray || !Array.isArray(startPosArray)) {
+            console.warn('⚠️ startPosArray invalide');
+            return;
+        }
+        
+        for(let i = 0; i < startPosArray.length; i++){
+            let id_split = startPosArray[i].split('_');
+            let id_split_y = parseInt(id_split[0]) + 1;
+            let id_split_x = parseInt(id_split[1]) + 1;
+            
+            if (!tabletopView.rows[id_split_y]) continue;
+            
+            const element = tabletopView.rows[id_split_y].cells[id_split_x];
+            if (!element) continue;
+            
+            let coordZone = element.querySelector('.coord-zone-div');
+            let border = element.querySelector('span');
+            let fieldOfView = element.querySelector('#field-of-view');
+            let toolTip = element.querySelector('ul');
+            let shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship');
+            
+            shipElements.forEach(ship => {
+                if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
+                    ship.remove();
+                }
+            });
+            
+            element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile z-10");
+            element.removeAttribute('size_x');
+            element.removeAttribute('size_y');
+            element.removeAttribute('data-has-sonar');
+            
+            if (coordZone) {
+                coordZone.className = "relative w-[32px] h-[32px] z-10 coord-zone-div";
+            }
+            
+            border?.remove();
+            toolTip?.remove();
+            
+            if (fieldOfView) {
+                fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
+            }
+            
+            let [coordY, coordX] = id_split;
+            let newBorderZone = document.createElement('span');
+            newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+            newBorderZone.setAttribute('title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
+            
+            coordZone?.appendChild(newBorderZone);
+        }
+    }
+    
+    function handleOtherPlayerMove(otherPlayerData) {
+        add_pc(otherPlayerData);
+    }
+}
+
+/*
+function update_player_coord(data) {
     // Nettoyage initial
     clear_path();
+
+    // Vérification préalable des données
+    if (!currentPlayer || !currentPlayer.ship) {
+        console.error('currentPlayer non défini lors du traitement player_move');
+        requestDataSync();
+        return;
+    }
 
     // updated players data.
     currentPlayer = data.updated_current_player_data[0];
@@ -84,7 +209,7 @@ function update_player_coord(data) {
     function handleOtherPlayerMove(otherPlayerData) {
         add_pc(otherPlayerData)
     }
-}
+}*/
 
 function reverse_ship(data) {
     let player_id = data["player_id"];
@@ -118,8 +243,6 @@ function update_reverse_ship_in_cache_array(player_id, status) {
         otherPlayerData.user.is_reversed = status;
     }
 }
-
-// VERSION OPTIMISÉE DE update_player_pos_display_after_move
 
 function update_player_pos_display_after_move(data, recieved_data) {
 
@@ -169,8 +292,10 @@ function update_player_pos_display_after_move(data, recieved_data) {
     // 7. Affichage de l'événement de mouvement
     occured_event_display_on_map("movement", false, currentPlayer.user.player, recieved_data.move_cost);
     update_player_range_in_modal(data.modules_range);
+
+    // 8. Met à jour les affichages des bordures des elements statiques.
     
-    // 8. Désactivation des boutons pour mobile
+    // 9. Désactivation des boutons pour mobile
     if (isMobile) {
         handleMobileButtonDisabling();
     }
@@ -458,8 +583,4 @@ function update_player_range_in_modal(data){
             }
         }
     }
-}
-
-function update_modals(){
-
 }

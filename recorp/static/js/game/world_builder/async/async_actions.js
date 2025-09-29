@@ -1,80 +1,91 @@
 // ASYNC GAME LOGIC
-
 function async_move(pos) {
     cleanCss();
-    gameSocket.send(JSON.stringify({
-        message: JSON.stringify({
-            "player": pos.player,
-            "end_x": pos.end_x,
-            "end_y": pos.end_y,
-            "size_x": pos.size_x,
-            "size_y": pos.size_y,
-            "is_reversed": pos.is_reversed,
-            "start_id_array": pos.start_id_array,
-            "move_cost": pos.move_cost,
-            "destination_id_array": pos.destination_id_array,
-        }),
-        type: "async_move"
-    }));
+    if (wsManager && wsManager.isConnected) {
+        wsManager.send({
+            message: JSON.stringify({
+                "player": pos.player,
+                "end_x": pos.end_x,
+                "end_y": pos.end_y,
+                "size_x": pos.size_x,
+                "size_y": pos.size_y,
+                "is_reversed": pos.is_reversed,
+                "start_id_array": pos.start_id_array,
+                "move_cost": pos.move_cost,
+                "destination_id_array": pos.destination_id_array,
+            }),
+            type: "async_move"
+        });
+    } else {
+        console.error('WebSocket non connecté pour async_move');
+    }
 }
 
 function async_reverse_ship(data) {
     clear_path();
-    gameSocket.send(JSON.stringify({
-        message: JSON.stringify({
-            "player": data.player,
-            "id_array": data.id_array,
-        }),
-        type: "async_reverse_ship"
-    }));
+    if (wsManager && wsManager.isConnected) {
+        wsManager.send({
+            message: JSON.stringify({
+                "player": data.player,
+                "id_array": data.id_array,
+            }),
+            type: "async_reverse_ship"
+        });
+    } else {
+        console.error('WebSocket non connecté pour async_reverse_ship');
+    }
 }
 
 
 function async_travel(id, user_id, warpzone_name){
-    let spaceship = document.querySelector('.player-ship-start-pos');
-    let coordinates = spaceship.getAttribute('id').split('_')
-    let size_x = spaceship.getAttribute('size_x');
-    let size_y = spaceship.getAttribute('size_y');
-    let data = {
-        "user": user_id,
-        "source_id": id,
-        "warpzone_name": warpzone_name,
-        "coordinates": {
-            y : coordinates[0],
-            x : coordinates[1]
-        },
-        "size": {
-            x : size_x,
-            y : size_y
+    if (wsManager && wsManager.isConnected) {
+        let spaceship = document.querySelector('.player-ship-start-pos');
+        let coordinates = spaceship.getAttribute('id').split('_')
+        let size_x = spaceship.getAttribute('size_x');
+        let size_y = spaceship.getAttribute('size_y');
+        let data = {
+            "user": user_id,
+            "source_id": id,
+            "warpzone_name": warpzone_name,
+            "coordinates": {
+                y : coordinates[0],
+                x : coordinates[1]
+            },
+            "size": {
+                x : size_x,
+                y : size_y
+            }
         }
-    }
 
-    let url = "warp"
+        let url = "warp"
 
-    const headers = new Headers({
-    'Content-Type': 'x-www-form-urlencoded',
-    'Accept': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRFToken': csrf_token
-    });
+        const headers = new Headers({
+        'Content-Type': 'x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': csrf_token
+        });
 
-    fetch(url, {
-        method: 'POST',
-        headers,
-        credentials: 'include',
-        body: JSON.stringify({
-            data
-        })
-    }).then(() => {
-        gameSocket.send(JSON.stringify({
-            message: JSON.stringify({
+        fetch(url, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({
                 data
-            }),
-            type: "async_warp_travel"
-        }));
-        window.location.reload();
+            })
+        }).then(() => {
+            wsManager.send(JSON.stringify({
+                message: JSON.stringify({
+                    data
+                }),
+                type: "async_warp_travel"
+            }));
+            window.location.reload();
 
-    });
+        });
+    } else {
+        console.error('WebSocket non connecté pour async_reverse_ship');
+    }
 }
 
 function remove_ship_display(data){
