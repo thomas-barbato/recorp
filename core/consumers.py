@@ -79,6 +79,13 @@ class GameConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name,
         )
+        
+    def _refresh_session(self) -> None:
+        """Rafraîchit la session Django pour éviter l'expiration."""
+        if hasattr(self.scope, 'session'):
+            # Forcer la mise à jour du timestamp de session
+            self.scope['session'].modified = True
+            self.scope['session'].save()
 
     def receive(self, text_data: Optional[str] = None, bytes_data: Optional[bytes] = None) -> None:
         """
@@ -88,23 +95,23 @@ class GameConsumer(WebsocketConsumer):
             text_data: Données texte reçues
             bytes_data: Données binaires reçues
         """
-        if not self._is_valid_request(text_data):
+        data = json.loads(text_data)
+        if not self._is_valid_request(data):
             return
 
         try:
             
-            data = json.loads(text_data)
-        
-            # Maintenir la session active à chaque message
-            if hasattr(self.scope, 'session'):
-                self.scope['session'].save()
+    
+            # Rafraîchir la session à CHAQUE message
+            self._refresh_session()
         
             # Gestion du heartbeat
             if data["type"] == "ping":
-                self._send_response({"type": "pong"})
+                response = self._handle_ping_with_validation(data)
+                self._send_response(response)
                 return
             
-            # NOUVEAU : Gestion de la synchronisation des données
+            # Gestion de la synchronisation des données
             if data["type"] == "request_data_sync":
                 self._handle_data_sync_request(data)
                 return
@@ -118,6 +125,68 @@ class GameConsumer(WebsocketConsumer):
     def _is_valid_request(self, text_data: Optional[str]) -> bool:
         """Vérifie si la requête est valide."""
         return text_data is not None and self.user.is_authenticated
+    
+    def _handle_ping_with_validation(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Gère le ping et vérifie si une synchronisation est nécessaire."""
+        client_hash = data.get("client_data_hash")
+        player_id = data.get("player_id", self.player_id)
+        
+        # Générer le hash côté serveur
+        server_hash = self._generate_server_data_hash(player_id)
+        
+        sync_required = (client_hash != server_hash) if client_hash else False
+        
+        if sync_required:
+            logger.warning(f"Désynchronisation détectée pour joueur {player_id} - Client: {client_hash}, Serveur: {server_hash}")
+        
+        return {
+            "type": "pong",
+            "sync_required": sync_required
+        }
+        
+    def _generate_server_data_hash(self, player_id: int) -> str:
+        """Génère un hash des données critiques côté serveur."""
+        try:
+            cached_data = cache.get(self.room_group_name)
+            if not cached_data:
+                return "no_cache"
+            
+            # Trouver le joueur actuel
+            current_player_data = None
+            for pc in cached_data.get("pc", []):
+                if pc.get("user", {}).get("player") == player_id:
+                    current_player_data = pc
+                    break
+            
+            critical_data = {
+                "currentPlayer": player_id if current_player_data else None,
+                "otherPlayersCount": len([p for p in cached_data.get("pc", []) if p.get("user", {}).get("player") != player_id]),
+                "sectorId": cached_data.get("sector", {}).get("id")
+            }
+            
+            str_data = json.dumps(critical_data, sort_keys=True)
+            hash_val = 0
+            for char in str_data:
+                hash_val = ((hash_val << 5) - hash_val) + ord(char)
+                hash_val = hash_val & 0xFFFFFFFF  # 32bit
+            
+            # Convertir en base 36 comme en JS
+            return self._to_base36(abs(hash_val))
+            
+        except Exception as e:
+                logger.error(f"Erreur génération hash serveur: {e}")
+                return "error"
+            
+    def _to_base36(self, num: int) -> str:
+        """Convertit un nombre en base 36."""
+        chars = "0123456789abcdefghijklmnopqrstuvwxyz"
+        if num == 0:
+            return "0"
+        result = ""
+        while num:
+            num, remainder = divmod(num, 36)
+            result = chars[remainder] + result
+        return result
 
     def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Extrait les données du message."""
@@ -169,7 +238,7 @@ class GameConsumer(WebsocketConsumer):
                 "message": {"error": "Erreur lors de la synchronisation des données"}
             })
             
-    # 3. NOUVELLE méthode pour construire la réponse de synchronisation
+    # construire la réponse de synchronisation
     def _build_sync_response(self, player_id: int, sector_id: Optional[str] = None) -> Dict[str, Any]:
         """
         Construit la réponse de synchronisation avec toutes les données nécessaires.

@@ -19,6 +19,7 @@ from django.template import RequestContext, loader
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import TemplateView, View, RedirectView, FormView
+from django.views.decorators.http import require_http_methods
 from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse
 from core.backend.tiles import UploadThisImage
@@ -442,3 +443,12 @@ class LogoutView(LogoutView):
         except KeyError:
             pass
         return HttpResponseRedirect(LOGIN_REDIRECT_URL)
+
+@require_http_methods(["GET"])
+def session_check(request):
+    """Vérifie si la session est toujours active."""
+    if request.user.is_authenticated:
+        # Rafraîchir la session
+        request.session.modified = True
+        return JsonResponse({'authenticated': True})
+    return JsonResponse({'authenticated': False}, status=401)

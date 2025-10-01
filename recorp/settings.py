@@ -107,10 +107,18 @@ CSRF_TRUSTED_ORIGINS = [
 WSGI_APPLICATION = "recorp.routing.application"
 ASGI_APPLICATION = "recorp.routing.application"
 
-# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
+# Configuration session
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 semaine
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_SAVE_EVERY_REQUEST = True
+SESSION_SAVE_EVERY_REQUEST = False  # ⚠️ Désactiver pour WebSocket
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Timeout session plus long pour WebSocket
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 jours
 
 CHANNEL_LAYERS = {
     "default": {

@@ -47,4 +47,5 @@ urlpatterns = [
         http_method_names = ['post']
         ), 
         name='logout_view'),
+    path('play/session-check', core_views.session_check, name='session_check')
 ]

@@ -6,12 +6,8 @@ function add_pc(data) {
 
         data.forEach(playerData => {
             const playerInfo = extractPlayerInfo(playerData);
-            //const modalData = createPlayerModalData(playerData);
             const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x };
             const is_visible = checkIfCoordinateIsVisible(playerInfo);
-
-            //createAndAppendPlayerModal(modalData, playerInfo);
-            //createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
 
             if (!playerInfo.isCurrentUser) {
                 renderOtherPlayerShip(playerData, playerInfo, is_visible);
@@ -28,9 +24,6 @@ function add_pc(data) {
         const coordinates = {y : playerInfo.coordinates.y, x : playerInfo.coordinates.x } 
         const id = `${coordinates.y}_${coordinates.x}`;
         const is_visible = checkIfCoordinateIsVisible(playerInfo);
-
-        //createAndAppendPlayerModal(modalData, playerInfo);
-        //createAndAppendUnknownPcModal(modalData, playerInfo, playerInfo.user.id);
 
         if (!playerInfo.isCurrentUser) {
             renderOtherPlayerShip(data, playerInfo, is_visible);
@@ -129,63 +122,6 @@ function createAndAppendPlayerModal(modalData, playerInfo) {
     
     return;
 }
-/*
-function createAndAppendUnknownPcModal(modalData, playerInfo) {
-
-    const modalIdWithPrefix = `modal-unknown-pc_${playerInfo.user.id}`;
-    const modalId = `pc_${playerInfo.user.id}`;
-
-    let visiblePlayerModal = document.getElementById(modalId);
-    visiblePlayerModal?.remove();
-
-    if(!checkIfModalExists(modalIdWithPrefix)){
-        
-        const modal = createUnknownModal(
-            modalId, 
-            modalData, 
-            true
-        );
-        
-        document.querySelector('#modal-container').append(modal);
-    }
-    
-    return;
-    
-}
-
-function createPlayerModalData(playerData) {
-    return {
-        player: {
-            name: playerData.user.name,
-            is_npc: playerData.user.is_npc,
-            image: playerData.user.image,
-            faction_name: playerData.faction.name
-        },
-        ship: {
-            name: playerData.ship.name,
-            category: playerData.ship.category_name,
-            description: playerData.ship.category_description,
-            max_hp: playerData.ship.max_hp,
-            current_hp: playerData.ship.current_hp,
-            current_thermal_defense: playerData.ship.current_thermal_defense,
-            current_missile_defense: playerData.ship.current_missile_defense,
-            current_ballistic_defense: playerData.ship.current_ballistic_defense,
-            max_movement: playerData.ship.max_movement,
-            current_movement: playerData.ship.current_movement,
-            status: playerData.ship.status,
-            modules: playerData.ship.modules,
-            modules_range: playerData.ship.modules_range,
-        },
-        actions: {
-            action_label: map_informations.actions.translated_action_label_msg,
-            close: map_informations.actions.translated_close_msg,
-            player_in_same_faction: map_informations.actions.player_is_same_faction,
-            translated_statistics_label: map_informations.actions.translated_statistics_msg_label,
-            translated_statistics_str: map_informations.actions.translated_statistics_msg_str,
-        }
-    };
-}
-    */
 
 function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
     let coordX = playerInfo.coordinates.x;

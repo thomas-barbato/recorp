@@ -4,10 +4,13 @@ const map_informations = JSON.parse(document.getElementById('script_map_informat
 const current_player_id = JSON.parse(document.getElementById('script_current_player_id').textContent);
 let currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
 let otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
-const npcs = map_informations.npc || [];
+let npcs = map_informations.npc || [];
 let observable_zone = [];
 let observable_zone_id = [];
 let mobile_radar_sweep_bool = true;
+let pendingAction = null;
+// Instance globale
+const actionManager = new ActionManager();
 
 const atlas = {
     col: 40,
@@ -131,7 +134,6 @@ function color_per_percent(current_val, max_val) {
 
     const current_percent = Math.round((current_val * 100) / max_val);
     
-    // Optimisation: utilisation d'un for...of plus rapide
     for (const [statusName, config] of Object.entries(HEALTH_STATUSES)) {
         if (current_percent >= config.threshold) {
             return { 
@@ -231,7 +233,7 @@ const WS_CONFIG = {
     RECONNECT_DELAY: 2000,
     RESIZE_DELAY: 300,
     MAX_RECONNECT_ATTEMPTS: 15,
-    HEARTBEAT_INTERVAL: 30000,
+    HEARTBEAT_INTERVAL: 25000,
     CONNECTION_TIMEOUT: 15000,
     PING_TIMEOUT: 15000
 };
@@ -335,9 +337,8 @@ class WebSocketManager {
         try {
             const data = JSON.parse(event.data);
             
-            // Gestion des pongs
             if (data.type === 'pong') {
-                this.handlePong();
+                this.handlePong(data);
                 return;
             }
             
@@ -406,25 +407,94 @@ class WebSocketManager {
     sendPing() {
         if (this.socket.readyState === WebSocket.OPEN) {
             this.lastPingTime = Date.now();
-            this.socket.send(JSON.stringify({ type: 'ping' }));
-            console.log('Ping envoyé');
             
-            // CORRECTION : Timeout plus long et vérification plus robuste
+            // Envoyer un hash des données critiques
+            const dataHash = this.generateDataHash();
+            
+            this.socket.send(JSON.stringify({ 
+                type: 'ping',
+                client_data_hash: dataHash,
+                player_id: current_player_id
+            }));
+            
+            console.log('Ping envoyé avec hash:', dataHash);
+            
             setTimeout(() => {
-                // Vérifier si on attend encore une réponse ET que la connexion est toujours ouverte
                 if (this.lastPingTime > 0 && 
                     Date.now() - this.lastPingTime > WS_CONFIG.PING_TIMEOUT && 
                     this.socket.readyState === WebSocket.OPEN) {
-                    console.log('Ping timeout détecté, fermeture de la connexion');
+                    console.log('Ping timeout détecté');
                     this.socket.close(1001, 'Ping timeout');
                 }
-            }, WS_CONFIG.PING_TIMEOUT + 1000); // +1s de marge
+            }, WS_CONFIG.PING_TIMEOUT + 1000);
         }
     }
-    
-    handlePong() {
+
+    handlePong(data) {
         console.log('Pong reçu');
-        this.lastPingTime = 0; // Reset ping timer
+        this.lastPingTime = 0;
+        
+        // ⚠️ NOUVEAU : Vérifier si le serveur signale une désynchronisation
+        if (data.sync_required) {
+            console.warn('⚠️ Serveur détecte une désynchronisation, sync...');
+            if (!window._syncInProgress) {
+                requestDataSync();
+            }
+        }
+    }
+
+    // Générer un hash simple des données critiques
+    generateDataHash() {
+        try {
+            const criticalData = {
+                currentPlayer: currentPlayer?.user?.player || null,
+                otherPlayersCount: otherPlayers?.length || 0,
+                sectorId: map_informations?.sector?.id || null
+            };
+            
+            // Hash simple basé sur JSON.stringify
+            const str = JSON.stringify(criticalData);
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash.toString(36);
+        } catch (e) {
+            return 'error';
+        }
+    }
+
+    verifyAuthentication() {
+        // Faire une micro-requête pour vérifier la session
+        fetch('session-check', {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok || response.status === 401) {
+                console.error('Session expirée, rechargement nécessaire');
+                this.showSessionExpiredError();
+            }
+        })
+        .catch(error => {
+            console.warn('Impossible de vérifier la session:', error);
+        });
+    }
+
+    showSessionExpiredError() {
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-4 right-4 bg-orange-600 text-white p-4 rounded shadow-lg z-50';
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <span>Votre session a expiré. Veuillez recharger la page.</span>
+                <button onclick="location.reload()" class="ml-2 bg-orange-800 px-2 py-1 rounded text-sm">
+                    Recharger
+                </button>
+            </div>
+        `;
+        document.body.appendChild(notification);
     }
     
     send(data) {
@@ -440,7 +510,7 @@ class WebSocketManager {
             this.messageQueue.push(data);
             console.log('Message ajouté à la queue (connexion fermée)');
             
-            // CORRECTION : Déclencher une reconnexion si nécessaire
+            // Déclencher une reconnexion si nécessaire
             if (!this.isConnected && !this.isReconnecting && this.shouldReconnect) {
                 console.log('Déclenchement d\'une reconnexion suite à tentative d\'envoi');
                 this.attemptReconnection();
@@ -561,6 +631,7 @@ function init_game() {
         
         setup_window_resize_handler();
         init_sector_generation();
+        initializeActionSystem()
         
     } catch (error) {
         console.error('Erreur lors de l\'initialisation du jeu:', error);
@@ -570,66 +641,26 @@ function init_game() {
     }
 }
 
-// Modifier les fonctions qui utilisent gameSocket
-function async_reverse_ship(data) {
-    if (wsManager) {
-        wsManager.send({
-            type: "async_reverse_ship",
-            message: JSON.stringify(data)
-        });
-    }
-}
-
 function handle_websocket_message(data) {
-    console.log('📨 Message WebSocket reçu:', data.type);
+    console.log('Message recu:', data.type);
     
     try {
-        if (data.type !== 'data_sync_response') {
-            if (!validateCriticalData(true)) {
-                console.warn('⚠️ Données invalides pour', data.type);
-                
-                // NOUVEAU : Créer une action en attente
-                const pendingAction = {
-                    type: data.type,
-                    data: data,
-                    execute: () => {
-                        const handler = messageHandlers[data.type];
-                        if (handler) handler();
-                    }
-                };
-                
-                if (!window._syncInProgress) {
-                    console.log('🔄 Déclenchement sync avec action en attente');
-                    requestDataSync(pendingAction);
-                } else {
-                    // Ajouter à la queue si sync déjà en cours
-                    window._pendingActions = window._pendingActions || [];
-                    window._pendingActions.push(pendingAction);
-                }
-                return; // Important : ne pas traiter maintenant
-            }
-        }
+        // Extraire les données du message
+        const messageData = data.message;
         
-        // Gestionnaire de messages
-        const messageHandlers = setup_message_handlers(data);
+        // Exécuter l'action via le gestionnaire
+        actionManager.execute(data.type, messageData);
         
-        const handler = messageHandlers[data.type];
-        if (handler) {
-            handler();
-        } else {
-            console.log('❓ Type de message non géré:', data.type);
-        }
-
     } catch (error) {
-        console.error('❌ Erreur traitement message:', error);
+        console.error('Erreur traitement message:', error);
         
-        if (!window._syncInProgress && 
-            (error.message.includes('undefined') || error.message.includes('null'))) {
-            console.warn('🔄 Tentative de sync suite à erreur...');
-            requestDataSync();
+        // Gérer les erreurs critiques
+        if (actionManager.isDataError(error) && !actionManager.syncInProgress) {
+            actionManager.requestSync();
         }
     }
 }
+
 
 function requestDataSync() {
 
@@ -650,7 +681,8 @@ function requestDataSync() {
     if (pendingAction) {
         window._pendingActions = [pendingAction];
     }
-    
+
+    // Timeout de sécurité
     setTimeout(() => {
         if (window._syncInProgress) {
             console.warn('⚠️ Timeout de synchronisation, reset...');
@@ -673,30 +705,66 @@ function requestDataSync() {
     }
 }
 
-// fonction pour traiter les actions en attente
-function processPendingActions() {
-    if (!window._pendingActions || window._pendingActions.length === 0) {
-        return;
+function executeUserAction(actionFunction) {
+    // Vérifier les données avant l'action
+    if (!validateCriticalData(true)) {
+        console.warn('⚠️ Données invalides détectées avant action');
+        
+        // Stocker l'action pour exécution après sync
+        pendingAction = {
+            execute: actionFunction,
+            timestamp: Date.now(),
+            type: actionFunction.name || 'unknown'
+        };
+        
+        // Demander la synchronisation
+        if (!window._syncInProgress) {
+            requestDataSync();
+        }
+        
+        return false; // Action bloquée
     }
     
-    console.log(`🔄 Traitement de ${window._pendingActions.length} action(s) en attente...`);
-    
-    // Traiter chaque action en attente
-    while (window._pendingActions.length > 0) {
-        const action = window._pendingActions.shift();
+    // Exécuter l'action si données valides
+    actionFunction();
+    return true;
+}   
+
+// fonction pour traiter les actions en attente
+function processPendingActions() {
+    if (pendingAction && !window._syncInProgress) {
+        console.log('🔄 Exécution de l\'action en attente:', pendingAction.type);
         
-        try {
-            if (validateCriticalData(true)) {
-                console.log('✅ Exécution de l\'action en attente:', action.type);
-                action.execute();
-            } else {
-                console.error('❌ Impossible d\'exécuter l\'action, données toujours invalides');
-                // Remettre l'action dans la queue
-                window._pendingActions.unshift(action);
-                break;
+        if (validateCriticalData(true)) {
+            try {
+                pendingAction.execute();
+                pendingAction = null;
+            } catch (error) {
+                console.error('❌ Erreur exécution action:', error);
+                pendingAction = null;
             }
-        } catch (error) {
-            console.error('❌ Erreur lors de l\'exécution de l\'action en attente:', error);
+        } else {
+            console.error('❌ Données toujours invalides après sync');
+            pendingAction = null;
+        }
+    }
+    
+    // Traiter aussi les actions de la queue
+    if (window._pendingActions && window._pendingActions.length > 0) {
+        console.log(`🔄 Traitement de ${window._pendingActions.length} action(s) en queue...`);
+        
+        while (window._pendingActions.length > 0) {
+            const action = window._pendingActions.shift();
+            
+            try {
+                if (validateCriticalData(true)) {
+                    action.execute();
+                } else {
+                    console.error('❌ Données invalides, action abandonnée');
+                }
+            } catch (error) {
+                console.error('❌ Erreur action queue:', error);
+            }
         }
     }
 }
@@ -766,59 +834,76 @@ function validateCriticalData(skipLogging = false) {
 
 // traiter les actions après sync
 function handleDataSyncResponse(data) {
-    console.log('📥 Réponse de synchronisation reçue');
+    console.log('📥 Synchronisation reçue');
     
     try {
-        const syncData = data;
-        
-        // Restauration des données
-        if (syncData.current_player) {
-            currentPlayer = syncData.current_player;
+        // Restaurer les données globales
+        if (data.current_player) {
+            currentPlayer = data.current_player;
             console.log('✅ currentPlayer restauré');
-        } else {
-            console.warn('⚠️ current_player manquant');
         }
         
-        if (syncData.other_players && Array.isArray(syncData.other_players)) {
-            otherPlayers = syncData.other_players;
+        if (data.other_players && Array.isArray(data.other_players)) {
+            otherPlayers = data.other_players;
             console.log('✅ otherPlayers restauré:', otherPlayers.length);
-        } else {
-            otherPlayers = [];
         }
         
-        if (syncData.map_informations) {
-            map_informations = {
-                ...map_informations,
-                ...syncData.map_informations,
-                pc: syncData.map_informations.pc || [],
-                npc: syncData.map_informations.npc || [],
-                sector: syncData.map_informations.sector,
-                sector_element: syncData.map_informations.sector_element || []
-            };
+        if (data.map_informations) {
+            Object.assign(map_informations, data.map_informations);
             console.log('✅ map_informations mis à jour');
         }
         
-        if (syncData.npcs && Array.isArray(syncData.npcs)) {
+        if (data.npcs && Array.isArray(data.npcs)) {
             npcs.length = 0;
-            npcs.push(...syncData.npcs);
+            npcs.push(...data.npcs);
             console.log('✅ NPCs mis à jour:', npcs.length);
         }
         
-        // Redémarrer les systèmes
-        if (typeof initializeDetectionSystem === 'function' && currentPlayer) {
-            initializeDetectionSystem(currentPlayer, otherPlayers, npcs);
+        // CRITIQUE : Nettoyer et redessiner TOUS les joueurs
+        console.log('🧹 Nettoyage de toutes les positions...');
+        cleanAllPlayerPositions();
+        
+        console.log('🎨 Redessin de tous les joueurs...');
+        
+        // Redessiner le joueur actuel
+        if (currentPlayer) {
+            console.log('Dessin joueur actuel:', currentPlayer.user.player);
+            add_pc(currentPlayer);
         }
         
-        console.log('✅ Synchronisation terminée');
+        // Redessiner tous les autres joueurs
+        otherPlayers.forEach(player => {
+            console.log('Dessin autre joueur:', player.user.player);
+            add_pc(player);
+        });
         
-        // CRITIQUE : Marquer la fin et traiter les actions en attente
-        window._syncInProgress = false;
-        processPendingActions();
+        // Mettre à jour le sonar si disponible
+        if (currentPlayer && typeof updatePlayerSonar === 'function') {
+            const coords = {
+                y: currentPlayer.user.coordinates.y + 1,
+                x: currentPlayer.user.coordinates.x + 1
+            };
+            updatePlayerSonar(coords, currentPlayer.ship.view_range);
+        }
+        
+        console.log('✅ Synchronisation terminée avec succès');
+        
+        // Marquer la fin de la sync
+        actionManager.onSyncComplete();
         
     } catch (error) {
         console.error('❌ Erreur lors de la synchronisation:', error);
-        window._syncInProgress = false;
+        actionManager.syncInProgress = false;
     }
+}
+
+
+function initializeActionSystem() {
+    // Enregistrer toutes les actions
+    registerAllActions();
+    
+    // Logger pour debug
+    console.log(`Systeme d'actions initialise: ${ActionRegistry.handlers.size} actions`);
 }
 
 // Fonction de nettoyage mise à jour
@@ -857,6 +942,18 @@ window.syncData = () => {
         console.warn('Sync déjà en cours');
     }
 };
+
+window.debugActions = () => {
+    console.log('=== SYSTEME D\'ACTIONS ===');
+    console.log('Etat:', actionManager.getState());
+    console.log('Actions enregistrees:', Array.from(ActionRegistry.handlers.keys()));
+    console.log('========================');
+};
+
+window.forceProcessActions = () => {
+    actionManager.processPendingActions();
+};
+
 window._syncInProgress = false;
 window._pendingActions = [];
 window.debugData = debugDataState;
