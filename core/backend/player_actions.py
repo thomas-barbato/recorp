@@ -47,7 +47,7 @@ class PlayerAction:
         Args:
             user_id (int): ID de l'utilisateur
         """
-        self.id = user_id
+        self.id = user_id or None
         self.player = self._get_player_queryset()
         self.player_id = self.get_player_id()
 

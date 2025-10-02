@@ -130,6 +130,13 @@ class GetDataFromDB:
     def get_table(table_name: str) -> Union[List, type]:
         """Retourne la ou les tables correspondant au nom donné"""
         return GetDataFromDB.TABLE_MAPPING.get(table_name)
+    
+    @staticmethod
+    def get_warpzone_destination_id(warpzone_name: str, home_sector_id: int):
+        return SectorWarpZone.objects.filter(
+            warp_home_id=home_sector_id, 
+            warp_home_id__data__contains={"name": warpzone_name}
+            ).values_list('warp_home_id')
 
     # === Méthodes de sérialisation et requêtes ===
     
@@ -647,6 +654,10 @@ class GetDataFromDB:
         return list(PlanetResource.objects.filter(sector_id=sector_id).values(
             "id", "source_id__size", "coordinates", "data__name"
         ))
+        
+    @staticmethod
+    def get_user_id_from_player_id(player_id: int):
+        return Player.objects.filter(id=player_id).values_list('user_id', flat=True).first()
 
     @staticmethod
     def _calculate_range_for_all_elements(player_data: Dict, sector_elements: Dict) -> Dict[str, List[Dict]]:

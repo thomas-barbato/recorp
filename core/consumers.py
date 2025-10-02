@@ -100,12 +100,12 @@ class GameConsumer(WebsocketConsumer):
             return
 
         try:
-            
     
             # Rafraîchir la session à CHAQUE message
             self._refresh_session()
         
             # Gestion du heartbeat
+            
             if data["type"] == "ping":
                 response = self._handle_ping_with_validation(data)
                 self._send_response(response)
@@ -515,7 +515,7 @@ class GameConsumer(WebsocketConsumer):
             event: Événement contenant les données de voyage
         """
         try:
-            warp_data = json.loads(event["message"])["data"]
+            warp_data = json.loads(event["message"])
             self._process_warp_travel(warp_data)
             
         except (json.JSONDecodeError, KeyError) as e:
@@ -523,36 +523,38 @@ class GameConsumer(WebsocketConsumer):
 
     def _process_warp_travel(self, warp_data: Dict[str, Any]) -> None:
         """Traite le voyage par distorsion."""
+        
+        print(warp_data)
         coordinates = warp_data["coordinates"]
         size = warp_data["size"]
-        user = warp_data["user"]
+        player_id = warp_data["player_id"]
+        sector_id = warp_data["source_id"]
+        warpzone_name = warp_data["warpzone_name"]
+        user_id = GetDataFromDB.get_user_id_from_player_id(player_id)
         
-        player_action = PlayerAction(user)
-        player_id = player_action.get_player_id()
-
-        self._remove_player_from_current_sector(user)
-        destination_room_key = self._get_destination_room_key(player_action)
+        destination_room_key = self._get_destination_room_key(user_id, warpzone_name)
+        print(f"destination_rooom_key {destination_room_key}")
+        self._remove_player_from_current_sector(user_id)
         
-        if self._is_other_player(user):
-            self._handle_other_player_warp(coordinates, size, player_id)
+        if self._is_other_player(user_id):
+            self._handle_other_player_warp(coordinates, size, user_id)
         else:
-            self._handle_own_player_warp(destination_room_key, player_id)
+            self._handle_own_player_warp(destination_room_key, user_id)
 
-    def _remove_player_from_current_sector(self, user: int) -> None:
+    def _remove_player_from_current_sector(self, user_id: int) -> None:
         """Retire le joueur du secteur actuel."""
         StoreInCache(
             room_name=self.room_group_name, 
-            user_calling=self.user.id
-        ).delete_player_from_cache(user, self.room_group_name)
+            user_calling=self.user
+        ).delete_player_from_cache(user_id, self.room_group_name)   
 
-    def _get_destination_room_key(self, player_action: PlayerAction) -> str:
+    def _get_destination_room_key(self, sector_id: int, warpzone_name: str) -> str:
         """Obtient la clé de la salle de destination."""
-        destination_sector_id = player_action.get_player_sector()
-        return f"play_{destination_sector_id}"
+        return f"play_{new_sector_id}"
 
-    def _is_other_player(self, user: int) -> bool:
+    def _is_other_player(self, user_id: int) -> bool:
         """Vérifie si c'est un autre joueur."""
-        return user != self.user.id
+        return user_id != self.user.id
 
     def _handle_other_player_warp(self, coordinates: Any, size: Any, player_id: int) -> None:
         """Gère le voyage d'un autre joueur."""
@@ -573,6 +575,7 @@ class GameConsumer(WebsocketConsumer):
         self._notify_destination_room(destination_room_key, player_id)
 
     def _setup_destination_cache(self, destination_room_key: str) -> None:
+        print("_setup_destination_cache")
         """Configure le cache de destination."""
         StoreInCache(
             room_name=destination_room_key, 
@@ -580,6 +583,7 @@ class GameConsumer(WebsocketConsumer):
         ).get_or_set_cache(need_to_be_recreated=True)
 
     def _update_source_cache(self) -> None:
+        print("self._update_source_cache()")
         """Met à jour le cache source."""
         StoreInCache(
             room_name=self.room_group_name, 
@@ -587,6 +591,7 @@ class GameConsumer(WebsocketConsumer):
         ).update_player_range_finding()
 
     def _notify_destination_room(self, destination_room_key: str, player_id: int) -> None:
+        print("_notify_destination_room")
         """Notifie la salle de destination de l'arrivée du joueur."""
         in_cache = cache.get(destination_room_key)
         

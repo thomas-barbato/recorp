@@ -28,6 +28,7 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
 from core.models import (
+    LoggedInUser,
     Player,
     Sector,
     Archetype,
@@ -92,6 +93,10 @@ class IndexView(TemplateView):
             if user is not None and user.is_active and user.is_staff is False:
                 login(self.request, user)
                 player_id = PlayerAction(self.request.user).get_player_id()
+                LoggedInUser.objects.get_or_create(
+                    user=user,
+                    defaults={'session_key': self.request.session.session_key}
+                )
                 if player_id:
                     url = "/"
                     return redirect(url, data_to_send)
@@ -146,6 +151,11 @@ class CreateAccountView(SuccessMessageMixin, TemplateView):
                 )
                 if user is not None and user.is_active:
                     login(self.request, user)
+                    
+                    LoggedInUser.objects.get_or_create(
+                        user=user,
+                        defaults={'session_key': self.request.session.session_key}
+                    )
                     url = "index_view"
                     msg_part_one = _(
                         "Your account has been successfully created with username"

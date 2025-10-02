@@ -14,7 +14,7 @@ from core.backend.player_actions import PlayerAction
 from core.models import (
     Sector, Player, Module, PlayerShipModule, PlayerShip,
     Npc, NpcTemplate, PlanetResource, AsteroidResource, 
-    StationResource, WarpZone
+    StationResource, WarpZone, SectorWarpZone
 )
 
 logger = logging.getLogger(__name__)
@@ -254,27 +254,48 @@ class StoreInCache:
                 logger.error(f"Erreur lors du traitement de l'élément {element.get('id', 'unknown')}: {e}")
 
     def _process_warpzones_bulk(self, sector_data: Dict[str, Any], warpzones: List[Dict]) -> None:
-        """Traite les warpzones avec leurs destinations."""
-        from core.models import SectorWarpZone
+        """Traite les warpzones avec leurs destinations multiples."""
         
-        # Récupération bulk des destinations
+        # Récupération bulk des destinations (TOUTES les destinations par warpzone)
         warpzone_ids = [wz["id"] for wz in warpzones]
-        destinations = {
-            dest["warp_home_id"]: dest for dest in 
-            SectorWarpZone.objects.filter(
-                warp_home_id__in=warpzone_ids
-            ).select_related('warp_destination').values(
-                "warp_home_id", "warp_destination_id", 
-                "warp_destination__data__name"
-            )
-        }
         
+        # Récupération de toutes les destinations pour chaque warpzone
+        destinations_queryset = SectorWarpZone.objects.filter(
+            warp_home_id__in=warpzone_ids
+        ).select_related('warp_destination').values(
+            "warp_home_id", 
+            "warp_destination_id", 
+            "warp_destination__data",
+            "id"
+        )
+        
+        # Regroupement des destinations par warpzone (une warpzone peut avoir plusieurs destinations)
+        destinations_by_warpzone = {}
+        for dest in destinations_queryset:
+            warp_home_id = dest["warp_home_id"]
+            if warp_home_id not in destinations_by_warpzone:
+                destinations_by_warpzone[warp_home_id] = []
+            
+            destinations_by_warpzone[warp_home_id].append({
+                "id": dest["warp_destination_id"],
+                "name": dest["warp_destination__data"].get("name", "Unknown") if dest["warp_destination__data"] else "Unknown",
+                "warp_link_id": dest["id"]  # ID de la liaison SectorWarpZone
+            })
+        
+        # Traitement de chaque warpzone
         for warpzone in warpzones:
             try:
-                destination = destinations.get(warpzone["id"])
-                if destination:
+                warpzone_id = warpzone["id"]
+                destinations = destinations_by_warpzone.get(warpzone_id, [])
+                
+                # On n'ajoute la warpzone que si elle a au moins une destination
+                if destinations:
+                    # Extraction des IDs et noms pour faciliter l'accès
+                    destination_ids = [dest["id"] for dest in destinations]
+                    destination_names = [dest["name"] for dest in destinations]
+                    
                     sector_data["sector_element"].append({
-                        "item_id": warpzone["id"],
+                        "item_id": warpzone_id,
                         "item_name": warpzone.get('source__name', 'Unknown'),
                         "source_id": warpzone['source_id'],
                         "sector_id": warpzone.get('sector_id'),
@@ -283,14 +304,25 @@ class StoreInCache:
                             "type": "warpzone",
                             "name": warpzone["data"].get("name", "Unknown") if warpzone["data"] else "Unknown",
                             "coordinates": warpzone['coordinates'],
-                            "size": warpzone.get('source__size', {"x": 2, "y": 3}),
                             "description": warpzone["data"].get("description", "") if warpzone["data"] else "",
-                            "warp_home_id": destination["warp_home_id"],
-                            "destination_id": destination['warp_destination_id'],
-                            "destination_name": destination.get('warp_destination__data__name', 'Unknown'),
+                            
+                            # Nouvelle structure pour gérer plusieurs destinations
+                            "warp_home_id": warpzone_id,
+                            "destinations": destinations,  # Liste complète avec tous les détails
+                            "destination_ids": destination_ids,  # Liste simple des IDs
+                            "destination_names": destination_names,  # Liste simple des noms
+                            "destination_count": len(destinations),  # Nombre de destinations
+                            
+                            # Conservation de la compatibilité avec l'ancien format (première destination)
+                            "destination_id": destination_ids[0] if destination_ids else None,
+                            "destination_name": destination_names[0] if destination_names else "Unknown",
                         },
                         "size": warpzone.get('source__size', {"x": 2, "y": 3}),
                     })
+                else:
+                    # Log optionnel pour les warpzones sans destination
+                    logger.warning(f"Warpzone {warpzone_id} n'a aucune destination configurée")
+                    
             except Exception as e:
                 logger.error(f"Erreur lors du traitement de la warpzone {warpzone.get('id', 'unknown')}: {e}")
 
@@ -640,7 +672,7 @@ class StoreInCache:
             return False
 
     def _remove_duplicate_players_optimized(self, player_list: List[Dict], 
-                                          updated_index: int, pos: Dict[str, Any]) -> None:
+                                            updated_index: int, pos: Dict[str, Any]) -> None:
         """Version optimisée du nettoyage des doublons."""
         target_player_id = pos["player"]
         target_x, target_y = int(pos["end_x"]), int(pos["end_y"])
@@ -669,7 +701,7 @@ class StoreInCache:
                 player_list = cached_data["pc"]
                 player_index = next(
                     (i for i, p in enumerate(player_list) 
-                     if p.get("user", {}).get("player") == player_id),
+                    if p.get("user", {}).get("player") == player_id),
                     None
                 )
                 
@@ -689,7 +721,6 @@ class StoreInCache:
     def update_player_range_finding(self, target_player_id: Optional[int] = None) -> None:
         """Mise à jour optimisée des portées avec cache."""
         try:
-            player_id = target_player_id or self.user_calling
             
             with cache.lock(f"{self.room}_range_lock", timeout=5):
                 cached_data = cache.get(self.room)
@@ -699,9 +730,11 @@ class StoreInCache:
                 player_list = cached_data["pc"]
                 player_index = next(
                     (i for i, p in enumerate(player_list) 
-                    if p.get("user", {}).get("player") == player_id),
+                    if p.get("user", {}).get("user") == self.user_calling),
                     None
                 )
+                
+                print(player_index)
                 
                 if player_index is not None:
                     # Récupération du secteur
@@ -715,7 +748,7 @@ class StoreInCache:
                     
                     if player_sector:
                         new_range = self.from_DB.is_in_range(
-                            player_sector, player_id, is_npc=False
+                            player_sector, self.user_calling, is_npc=False
                         )
                         player_list[player_index]["ship"]["modules_range"] = new_range
                         
@@ -755,6 +788,8 @@ class StoreInCache:
                 ]
                 
                 cache.set(target_room, cached_data, self._cache_timeout)
+                
+                print("delete_player_from_cache == DONE")
                 
         except Exception as e:
             logger.error(f"Erreur lors de la suppression du joueur {player_id}: {e}")

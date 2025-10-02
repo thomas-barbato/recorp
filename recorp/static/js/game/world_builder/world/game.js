@@ -840,40 +840,31 @@ function handleDataSyncResponse(data) {
         // Restaurer les données globales
         if (data.current_player) {
             currentPlayer = data.current_player;
-            console.log('✅ currentPlayer restauré');
         }
         
         if (data.other_players && Array.isArray(data.other_players)) {
             otherPlayers = data.other_players;
-            console.log('✅ otherPlayers restauré:', otherPlayers.length);
         }
         
         if (data.map_informations) {
             Object.assign(map_informations, data.map_informations);
-            console.log('✅ map_informations mis à jour');
         }
         
         if (data.npcs && Array.isArray(data.npcs)) {
             npcs.length = 0;
             npcs.push(...data.npcs);
-            console.log('✅ NPCs mis à jour:', npcs.length);
         }
         
         // CRITIQUE : Nettoyer et redessiner TOUS les joueurs
-        console.log('🧹 Nettoyage de toutes les positions...');
         cleanAllPlayerPositions();
-        
-        console.log('🎨 Redessin de tous les joueurs...');
         
         // Redessiner le joueur actuel
         if (currentPlayer) {
-            console.log('Dessin joueur actuel:', currentPlayer.user.player);
             add_pc(currentPlayer);
         }
         
         // Redessiner tous les autres joueurs
         otherPlayers.forEach(player => {
-            console.log('Dessin autre joueur:', player.user.player);
             add_pc(player);
         });
         
