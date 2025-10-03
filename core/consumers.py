@@ -524,20 +524,16 @@ class GameConsumer(WebsocketConsumer):
     def _process_warp_travel(self, warp_data: Dict[str, Any]) -> None:
         """Traite le voyage par distorsion."""
         
-        print(warp_data)
         coordinates = warp_data["coordinates"]
         size = warp_data["size"]
         player_id = warp_data["player_id"]
-        sector_id = warp_data["source_id"]
-        warpzone_name = warp_data["warpzone_name"]
+        sector_warpzone_id = warp_data["sectorwarpzone_id"]
         user_id = GetDataFromDB.get_user_id_from_player_id(player_id)
-        
-        destination_room_key = self._get_destination_room_key(user_id, warpzone_name)
-        print(f"destination_rooom_key {destination_room_key}")
+        destination_room_key = self._get_destination_room_key(sector_warpzone_id)
         self._remove_player_from_current_sector(user_id)
         
         if self._is_other_player(user_id):
-            self._handle_other_player_warp(coordinates, size, user_id)
+            self._handle_other_player_warp(coordinates, size, player_id)
         else:
             self._handle_own_player_warp(destination_room_key, user_id)
 
@@ -548,9 +544,10 @@ class GameConsumer(WebsocketConsumer):
             user_calling=self.user
         ).delete_player_from_cache(user_id, self.room_group_name)   
 
-    def _get_destination_room_key(self, sector_id: int, warpzone_name: str) -> str:
+    def _get_destination_room_key(self, sector_warpzone_id: int) -> str:
         """Obtient la clé de la salle de destination."""
-        return f"play_{new_sector_id}"
+        destination_id = GetDataFromDB.get_destination_sector_id_from_sectorwarpzone(sector_warpzone_id)
+        return f"play_{destination_id}"
 
     def _is_other_player(self, user_id: int) -> bool:
         """Vérifie si c'est un autre joueur."""

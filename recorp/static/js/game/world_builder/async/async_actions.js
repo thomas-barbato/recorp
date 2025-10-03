@@ -39,7 +39,7 @@ function async_reverse_ship(data) {
 }
 
 
-function async_travel(sector_id, warpzone_name){
+function async_travel(sectorWarpZoneId){
     executeUserAction(() => {
         if (wsManager && wsManager.isConnected) {
             let spaceship = document.querySelector('.player-ship-start-pos');
@@ -48,8 +48,7 @@ function async_travel(sector_id, warpzone_name){
             let size_y = spaceship.getAttribute('size_y');
             let data = {
                 "player_id": currentPlayer.user.player,
-                "source_id": sector_id,
-                "warpzone_name": warpzone_name,
+                "sectorwarpzone_id": sectorWarpZoneId,
                 "coordinates": {
                     y : coordinates[0],
                     x : coordinates[1]

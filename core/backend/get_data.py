@@ -656,6 +656,10 @@ class GetDataFromDB:
         ))
         
     @staticmethod
+    def get_destination_sector_id_from_sectorwarpzone(sectorWarpZoneId: int):
+        return SectorWarpZone.objects.filter(id=sectorWarpZoneId).values_list('warp_destination_id', flat=True)[0]
+        
+    @staticmethod
     def get_user_id_from_player_id(player_id: int):
         return Player.objects.filter(id=player_id).values_list('user_id', flat=True).first()
 

@@ -263,10 +263,11 @@ class StoreInCache:
         destinations_queryset = SectorWarpZone.objects.filter(
             warp_home_id__in=warpzone_ids
         ).select_related('warp_destination').values(
+            "id",
             "warp_home_id", 
             "warp_destination_id", 
-            "warp_destination__data",
-            "id"
+            "warp_destination_id__data",
+            "warp_destination_id__sector_id__name",
         )
         
         # Regroupement des destinations par warpzone (une warpzone peut avoir plusieurs destinations)
@@ -278,7 +279,8 @@ class StoreInCache:
             
             destinations_by_warpzone[warp_home_id].append({
                 "id": dest["warp_destination_id"],
-                "name": dest["warp_destination__data"].get("name", "Unknown") if dest["warp_destination__data"] else "Unknown",
+                "name": dest["warp_destination_id__data"].get("name", "Unknown") if dest["warp_destination_id__data"] else "Unknown",
+                "destination_name": dest["warp_destination_id__sector_id__name"],
                 "warp_link_id": dest["id"]  # ID de la liaison SectorWarpZone
             })
         
@@ -291,9 +293,6 @@ class StoreInCache:
                 # On n'ajoute la warpzone que si elle a au moins une destination
                 if destinations:
                     # Extraction des IDs et noms pour faciliter l'accès
-                    destination_ids = [dest["id"] for dest in destinations]
-                    destination_names = [dest["name"] for dest in destinations]
-                    
                     sector_data["sector_element"].append({
                         "item_id": warpzone_id,
                         "item_name": warpzone.get('source__name', 'Unknown'),
@@ -305,17 +304,9 @@ class StoreInCache:
                             "name": warpzone["data"].get("name", "Unknown") if warpzone["data"] else "Unknown",
                             "coordinates": warpzone['coordinates'],
                             "description": warpzone["data"].get("description", "") if warpzone["data"] else "",
-                            
                             # Nouvelle structure pour gérer plusieurs destinations
                             "warp_home_id": warpzone_id,
                             "destinations": destinations,  # Liste complète avec tous les détails
-                            "destination_ids": destination_ids,  # Liste simple des IDs
-                            "destination_names": destination_names,  # Liste simple des noms
-                            "destination_count": len(destinations),  # Nombre de destinations
-                            
-                            # Conservation de la compatibilité avec l'ancien format (première destination)
-                            "destination_id": destination_ids[0] if destination_ids else None,
-                            "destination_name": destination_names[0] if destination_names else "Unknown",
                         },
                         "size": warpzone.get('source__size', {"x": 2, "y": 3}),
                     })

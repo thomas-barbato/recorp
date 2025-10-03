@@ -210,15 +210,20 @@ function createForegroundModalData(elementInfo, sectorData) {
     };
     switch (elementInfo.type) {
         case "warpzone":
+            
+            const formattedDestinations =  sectorData.data.destinations.map(dest => ({
+                id: dest.id,
+                warpzone_name : dest.name,
+                destination_name: dest.destination_name
+                    .replaceAll('-', ' ')
+                    .replaceAll('_', ' '),
+                warp_link_id: dest.warp_link_id,
+                original_name: dest.name // Conservation du nom original si besoin
+            }));
             return {
                 ...baseModalData,
                 home_sector: sectorData.data.warp_home_id,
-                destination: {
-                    id: sectorData.data.destination_id,
-                    name: sectorData.data.destination_name
-                        .replaceAll('-', ' ')
-                        .replaceAll('_', ' ')
-                }
+                destinations: formattedDestinations
             };
 
         case "star":
@@ -482,40 +487,33 @@ function create_foreground_modal(modalId, data) {
         
     } else if(data.type == "warpzone"){
 
-        item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'text-xs', 'my-1', 'py-1');
-        item_description_p.innerHTML = `${data.description} <b>${data.destination.name}</b>`;
-
-        let item_action_container_img_warpzone_container = document.createElement('div');
-        item_action_container_img_warpzone_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]');
-
-        let item_action_container_img_warpzone = document.createElement('img');
-        item_action_container_img_warpzone.src = '/static/img/ux/warpzone_icon_v2.svg';
         let modal_name = e.id; 
+        item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'text-xs', 'my-1', 'py-1');
+        item_description_p.innerHTML = `${data.description}`;
 
-        console.log(data)
+        let item_action_container_warpzone_container = document.createElement('div');
+        item_action_container_warpzone_container.classList.add('flex', 'mt-2');
 
-        item_action_container_img_warpzone.addEventListener(action_listener_touch_click, function(){
-            if (typeof async_travel === 'function' && typeof currentPlayer !== 'undefined') {
-                let warpzone_name = modalId.split('modal-')[1];
-                async_travel(data.home_sector, warpzone_name);
-            }
-        }, { passive: true });
+        let item_action_container_warpzone_ul = document.createElement('ul');
+        item_action_container_warpzone_ul.className ='flex w-full gap-3 text-white flex-col text-xs';
+        console.log(data.destinations)
+        for(let i = 0; i < data.destinations.length; i++){
+            let item_action_container_warpzone_ul_item = document.createElement('li');
+            item_action_container_warpzone_ul_item.classList.add('hover:font-bold')
+            item_action_container_warpzone_ul_item.textContent = `Travel to ${data.destinations[i].destination_name.replaceAll('-',' ').replaceAll('_', ' ')} (0 AP)`;
+            item_action_container_warpzone_ul_item.addEventListener(action_listener_touch_click, function(){
+                if (typeof async_travel === 'function' && typeof currentPlayer !== 'undefined') {
+                    async_travel(data.destinations[i].warp_link_id);
+                }
+            }, { passive: true });
+            item_action_container_warpzone_ul.append(item_action_container_warpzone_ul_item)
+        }
 
-        item_action_container_img_warpzone.classList.add('cursor-pointer', 'flex', 'justify-center');
+        item_action_container_warpzone_container.classList.add('cursor-pointer', 'flex', 'justify-center');
 
-        let item_action_container_img_warpzone_figcaption = document.createElement('figcaption');
-        item_action_container_img_warpzone_figcaption.textContent = "Travel";
-        item_action_container_img_warpzone_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
+        item_action_container_warpzone_container.append(item_action_container_warpzone_ul);
 
-        let item_action_container_img_warpzone_figcaption_ap = document.createElement('figcaption');
-        item_action_container_img_warpzone_figcaption_ap.textContent = "0 AP";
-        item_action_container_img_warpzone_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
-
-        item_action_container_img_warpzone_container.append(item_action_container_img_warpzone);
-        item_action_container_img_warpzone_container.append(item_action_container_img_warpzone_figcaption);
-        item_action_container_img_warpzone_container.append(item_action_container_img_warpzone_figcaption_ap);
-
-        item_action_container_div.append(item_action_container_img_warpzone_container);
+        item_action_container_div.append(item_action_container_warpzone_container);
 
         item_action_container.append(item_action_container_div);
 
