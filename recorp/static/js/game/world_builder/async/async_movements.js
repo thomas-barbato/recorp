@@ -52,66 +52,77 @@ function update_player_coord(data) {
     }
     
     initializeEnhancedDetectionSystem(currentPlayer, otherPlayers, view_range);
-
-    function resetCellToDefault(startPosArray) {
-        if (typeof cleanupSonar === 'function') {
-            cleanupSonar();
-        }
-        
-        if (!startPosArray || !Array.isArray(startPosArray)) {
-            console.warn('⚠️ startPosArray invalide');
-            return;
-        }
-        
-        for(let i = 0; i < startPosArray.length; i++){
-            let id_split = startPosArray[i].split('_');
-            let id_split_y = parseInt(id_split[0]) + 1;
-            let id_split_x = parseInt(id_split[1]) + 1;
-            
-            if (!tabletopView.rows[id_split_y]) continue;
-            
-            const element = tabletopView.rows[id_split_y].cells[id_split_x];
-            if (!element) continue;
-            
-            let coordZone = element.querySelector('.coord-zone-div');
-            let border = element.querySelector('span');
-            let fieldOfView = element.querySelector('#field-of-view');
-            let toolTip = element.querySelector('ul');
-            let shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship');
-            
-            shipElements.forEach(ship => {
-                if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
-                    ship.remove();
-                }
-            });
-            
-            element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile z-10");
-            element.removeAttribute('size_x');
-            element.removeAttribute('size_y');
-            element.removeAttribute('data-has-sonar');
-            
-            if (coordZone) {
-                coordZone.className = "relative w-[32px] h-[32px] z-10 coord-zone-div";
-            }
-            
-            border?.remove();
-            toolTip?.remove();
-            
-            if (fieldOfView) {
-                fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
-            }
-            
-            let [coordY, coordX] = id_split;
-            let newBorderZone = document.createElement('span');
-            newBorderZone.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-            newBorderZone.setAttribute('title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
-            
-            coordZone?.appendChild(newBorderZone);
-        }
-    }
     
     function handleOtherPlayerMove(otherPlayerData) {
         add_pc(otherPlayerData);
+    }
+}
+
+function resetCellToDefault(startPosArray, listener_need_to_be_recreated=false) {
+    if (typeof cleanupSonar === 'function') {
+        cleanupSonar();
+    }
+    
+    const tabletopView = document.querySelector('.tabletop-view');
+    
+    if (!startPosArray || !Array.isArray(startPosArray)) {
+        console.warn('⚠️ startPosArray invalide');
+        return;
+    }
+    
+    for(let i = 0; i < startPosArray.length; i++){
+        let id_split = startPosArray[i].split('_');
+        let id_split_y = parseInt(id_split[0]) + 1;
+        let id_split_x = parseInt(id_split[1]) + 1;
+        
+        if (!tabletopView.rows[id_split_y]) continue;
+        
+        const element = tabletopView.rows[id_split_y].cells[id_split_x];
+
+        if (!element) continue;
+        
+        let coordZone = element.querySelector('.coord-zone-div');
+        let border = element.querySelector('span');
+        let fieldOfView = element.querySelector('#field-of-view');
+        let toolTip = element.querySelector('ul');
+        let shipElements = element.querySelectorAll('.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship');
+        
+        shipElements.forEach(ship => {
+            if (ship.closest('.pc, .ship-pos, #unknown-ship')) {
+                ship.remove();
+            }
+        });
+        
+        element.setAttribute('class', "relative w-[32px] h-[32px] m-0 p-0 tile z-10");
+        element.removeAttribute('size_x');
+        element.removeAttribute('size_y');
+        element.removeAttribute('data-has-sonar');
+        
+        if (coordZone) {
+            coordZone.className = "relative w-[32px] h-[32px] z-10 coord-zone-div";
+        }
+        
+        border?.remove();
+        toolTip?.remove();
+        
+        if (fieldOfView) {
+            fieldOfView.className = "absolute w-[32px] h-[32px] hidden";
+        }
+        
+        let [coordY, coordX] = id_split;
+        let newBorderZone = document.createElement('span');
+        newBorderZone.className = "absolute w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+        newBorderZone.setAttribute('title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coordY} ; x: ${coordX}]`);
+
+        if(listener_need_to_be_recreated == true){
+            if (!is_user_is_on_mobile_device()) {
+                newBorderZone.setAttribute('onmouseover', 'get_pathfinding(this)');
+                newBorderZone.setAttribute('onclick', 'display_pathfinding()');
+            }
+        }
+        
+        coordZone?.appendChild(newBorderZone);
+
     }
 }
 
@@ -204,7 +215,6 @@ function update_player_pos_display_after_move(data, recieved_data) {
         handleMobileButtonDisabling();
     }
     
-    // Dans la fonction update_player_pos_display_after_move, remplacer cleanupOldPlayerPositions
     function cleanupOldPlayerPositions() {
         // NOUVEAU : Nettoyer le sonar AVANT de supprimer les cellules
         if (typeof cleanupSonar === 'function') {
@@ -538,7 +548,7 @@ function cleanAllPlayerPositions() {
                 const coords = cell.id.split('_');
                 if (coords.length === 2) {
                     const newSpan = document.createElement('span');
-                    newSpan.className = "absolute inline-block w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
+                    newSpan.className = "absolute w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
                     newSpan.setAttribute('title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coords[0]} ; x: ${coords[1]}]`);
                     coordZone.appendChild(newSpan);
                 }
@@ -561,4 +571,79 @@ function cleanAllPlayerPositions() {
     } catch (error) {
         console.error('❌ Erreur lors du nettoyage:', error);
     }
+}
+
+function handleWarpComplete(data) {
+    console.log('🌀 Warp terminé, changement de secteur...');
+    
+    const { new_sector_id, new_room_key, new_sector_data, player_id } = data;
+    
+    // Bloquer les actions pendant la transition
+    window._syncInProgress = true;
+    
+    // Fermer l'ancienne connexion WebSocket proprement
+    if (wsManager) {
+        wsManager.shouldReconnect = false; // Empêcher la reconnexion auto
+        wsManager.close();
+    }
+    
+    // Nettoyer l'ancien secteur
+    cleanupSector();
+    
+    // Mettre à jour les données globales
+    map_informations.sector = new_sector_data.sector;
+    map_informations.sector_element = new_sector_data.sector_element;
+    map_informations.npc = new_sector_data.npc;
+    map_informations.pc = new_sector_data.pc;
+    
+    // Trouver le joueur actuel dans les nouvelles données
+    currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
+    otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
+    npcs = map_informations.npc || [];
+    
+    // Créer une nouvelle connexion WebSocket
+    setTimeout(() => {
+        wsManager = new WebSocketManager(new_sector_id);
+        
+        // Attendre que la connexion soit établie
+        const checkConnection = setInterval(() => {
+            if (wsManager.isConnected) {
+                clearInterval(checkConnection);
+                
+                // Régénérer le secteur
+                init_sector_generation();
+                
+                // Débloquer les actions
+                window._syncInProgress = false;
+                
+                console.log('✅ Transition de secteur terminée');
+            }
+        }, 100);
+    }, 500); // Petit délai pour la transition
+}
+
+function cleanupSector() {
+    // Nettoyer le DOM
+    const gameCanvas = document.querySelectorAll('.tile');
+    for(let i = 0; i < gameCanvas.length; i++){
+        gameCanvas[i].innerHTML = "";
+    }
+    
+    // Nettoyer le sonar
+    if (typeof cleanupSonar === 'function') {
+        cleanupSonar();
+    }
+    
+    // Nettoyer les event listeners
+    document.querySelectorAll('.tile').forEach(tile => {
+        tile.replaceWith(tile.cloneNode(true));
+    });
+    
+    // Réinitialiser les variables
+    observable_zone = [];
+    observable_zone_id = [];
+}
+
+function remove_ship_display(data){
+    resetCellToDefault(data.start_id_array, true);
 }

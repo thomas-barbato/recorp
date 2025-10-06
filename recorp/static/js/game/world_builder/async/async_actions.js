@@ -39,16 +39,19 @@ function async_reverse_ship(data) {
 }
 
 
-function async_travel(sectorWarpZoneId){
+function handleWarpTravel(sectorWarpZoneId){
     executeUserAction(() => {
         if (wsManager && wsManager.isConnected) {
             let spaceship = document.querySelector('.player-ship-start-pos');
             let coordinates = spaceship.getAttribute('id').split('_')
             let size_x = spaceship.getAttribute('size_x');
             let size_y = spaceship.getAttribute('size_y');
+            const playerCoordArray = Array.from(document.querySelectorAll('.ship-pos')).map(element => element.id);;
             let data = {
                 "player_id": currentPlayer.user.player,
                 "sectorwarpzone_id": sectorWarpZoneId,
+                "current_sector_id": map_informations.sector.id,
+                "start_id_array": playerCoordArray,
                 "coordinates": {
                     y : coordinates[0],
                     x : coordinates[1]
@@ -68,50 +71,4 @@ function async_travel(sectorWarpZoneId){
             console.error('WebSocket non connecté pour async_reverse_ship');
         }
     })
-}
-
-function remove_ship_display(data){
-    let coord_x = parseInt(data.position.x);
-    let coord_y = parseInt(data.position.y);
-    let player_id = data.player_id;
-    let size = data.size;
-
-    if(size.x == 1 && size.y == 1){
-        let element = document.getElementById(`${coord_y}_${coord_x}`);
-        let element_div = element.querySelector('div');
-        let element_div_span = document.createElement('span');
-        
-        element.removeAttribute("size_x");
-        element.removeAttribute("size_y");
-        element_div.replaceChildren();
-
-        element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-        element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(coord_y)}; x = ${parseInt(coord_x)}]`);
-        element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
-        element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
-        
-        element_div.append(element_div_span);
-    }else{
-        for(let index_row = parseInt(coord_y) ; index_row <  parseInt(coord_y) + parseInt(size.y) ; index_row++){
-            for(let index_col = parseInt(coord_x) ; index_col < parseInt(coord_x) + parseInt(size.x) ; index_col++){
-                let element = document.querySelector('.tabletop-view').rows[index_row].cells[index_col];
-                let element_div = element.querySelector('div');
-                let element_div_span = document.createElement('span');
-                
-                element.removeAttribute("size_x");
-                element.removeAttribute("size_y");
-                element_div.replaceChildren();
-    
-                element_div_span.className = "absolute hover:box-border hover:border-2 hover:border hover:border-solid inline-block border-white w-[32px] h-[32px] pathfinding-zone cursor-pointer";
-                element_div_span.setAttribute('title', `${map_informations["sector"]["name"]} [y = ${parseInt(index_row)}; x = ${parseInt(index_col)}]`);
-                element_div_span.setAttribute(attribute_touch_mouseover, 'get_pathfinding(this)');
-                element_div_span.setAttribute(attribute_touch_click, 'display_pathfinding()');
-                
-                element_div.append(element_div_span);
-            }
-        }
-    }
-    
-    document.querySelector('#modal-pc_' + player_id)?.remove();
-    document.querySelector('#modal-unknown-pc_' + player_id)?.remove();
 }

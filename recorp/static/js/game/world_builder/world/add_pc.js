@@ -393,3 +393,27 @@ function handleMobileButtonDisabling(coordinatesArray) {
         disable_button(get_direction_to_disable_button(coordinatesArray));
     }
 }
+
+function handleUserJoin(data) {
+    console.log('👤 Nouveau joueur dans le secteur:', data.user?.name);
+    
+    // Vérifier si c'est un autre joueur
+    if (data.user?.player !== current_player_id) {
+        // Ajouter aux autres joueurs
+        const existingIndex = otherPlayers.findIndex(
+            p => p.user.player === data.user.player
+        );
+        
+        if (existingIndex === -1) {
+            otherPlayers.push(data);
+            
+            // Afficher le vaisseau
+            add_pc(data);
+            
+            // Mettre à jour la détection
+            if (typeof updateDetectionForNewPlayer === 'function') {
+                updateDetectionForNewPlayer(data);
+            }
+        }
+    }
+}

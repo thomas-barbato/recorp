@@ -343,7 +343,7 @@ class PlayerAction:
         else:
             return True
     
-    def player_travel_to_destination(self, warpzone_home_name: str, warpzone_home_id: int) -> Optional[Tuple[int, Dict[str, int]]]:
+    def player_travel_to_destination(self, warpzone_home_id, warpzone_destination_id: int) -> Optional[Tuple[int, Dict[str, int]]]:
         """
         Fait voyager le joueur vers une destination via une warpzone.
         
@@ -358,40 +358,35 @@ class PlayerAction:
         if not player_sector_id:
             return None
             
-        try:
-            warpzone_home = SectorWarpZone.objects.filter(
-                warp_home_id=warpzone_home_id,
-                warp_home_id__name=warpzone_home_name,
-                warp_home_id__sector_id=player_sector_id
-            ).values_list('warp_destination_id__sector_id', flat=True).first()
+        warpzone_exists = SectorWarpZone.objects.filter(
+            warp_home_id=warpzone_home_id,
+            warp_destination_id=warpzone_destination_id,
+        ).exists()
+        
+        if warpzone_exists is False:
+            return
+        
+        player_spaceship = self.get_player_ship_size()
+        if not player_spaceship:
+            return None
             
-            destination_sector_id = warpzone_home
-            
-            player_spaceship = self.get_player_ship_size()
-            if not player_spaceship:
-                return None
-                
-            ship_size = player_spaceship['ship_id__ship_category_id__size']
-            spaceship_size_x = ship_size['x']
-            spaceship_size_y = ship_size['y']
+        ship_size = player_spaceship['ship_id__ship_category_id__size']
+        spaceship_size_x = ship_size['x']
+        spaceship_size_y = ship_size['y']
 
-            padding_w = spaceship_size_x + self.MIN_PADDING
-            padding_h = spaceship_size_y + self.MIN_PADDING
-            
-            destination_cell = self._calculate_destination_coord(
-                destination_sector_id, 
-                spaceship_size_x, 
-                spaceship_size_y, 
-                padding_h, 
-                padding_w
-            )
-            
-            if destination_cell:
-                return destination_sector_id, destination_cell
-                
-        except SectorWarpZone.DoesNotExist:
-            pass
-        return None
+        padding_w = spaceship_size_x + self.MIN_PADDING
+        padding_h = spaceship_size_y + self.MIN_PADDING
+        
+        destination_cell = self._calculate_destination_coord(
+            warpzone_destination_id, 
+            spaceship_size_x, 
+            spaceship_size_y, 
+            padding_h, 
+            padding_w
+        )
+        
+        if destination_cell:
+            return warpzone_destination_id, destination_cell
     
     def _calculate_destination_coord(self, destination_sector_id: int, spaceship_size_x: int, 
         spaceship_size_y: int, padding_h: int, padding_w: int) -> Optional[Dict[str, int]]:

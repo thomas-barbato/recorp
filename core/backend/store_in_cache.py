@@ -622,7 +622,7 @@ class StoreInCache:
                 # Recherche optimisée du joueur
                 player_index = next(
                     (i for i, p in enumerate(player_list) 
-                     if p.get("user", {}).get("player") == player_id),
+                    if p.get("user", {}).get("player") == player_id),
                     None
                 )
                 
@@ -725,8 +725,6 @@ class StoreInCache:
                     None
                 )
                 
-                print(player_index)
-                
                 if player_index is not None:
                     # Récupération du secteur
                     if target_player_id:
@@ -772,15 +770,13 @@ class StoreInCache:
                 if not cached_data:
                     return
                 
+                
                 # Filtrage optimisé
                 cached_data["pc"] = [
                     player for player in cached_data.get('pc', [])
                     if player.get("user", {}).get("player") != player_id
                 ]
-                
                 cache.set(target_room, cached_data, self._cache_timeout)
-                
-                print("delete_player_from_cache == DONE")
                 
         except Exception as e:
             logger.error(f"Erreur lors de la suppression du joueur {player_id}: {e}")

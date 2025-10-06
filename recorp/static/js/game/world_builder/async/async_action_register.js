@@ -47,18 +47,30 @@ function registerAllActions(){
     ActionRegistry.register('async_warp_travel',
         (data) => {
             if (data.message && validateCriticalData(true)) {
-                async_travel(data.message);
+                handleWarpTravel(data.message);
             } else {
-                console.error('❌ Impossible de traiter async_travel, données invalides');
+                console.error('❌ Impossible de traiter handleWarpTravel, données invalides');
             }
         },
         { requiresValidation: false }
     );
 
+    ActionRegistry.register('async_warp_complete',
+        (data) => {
+            if (data && validateCriticalData(true)) {
+                handleWarpComplete(data);
+            } else {
+                console.error('❌ Impossible de traiter async_warp_complete, données invalides');
+            }
+        },
+        { requiresValidation: false }
+    );
+
+
     ActionRegistry.register('async_remove_ship',
         (data) => {
-            if (data.message && validateCriticalData(true)) {
-                remove_ship_display(data.message);
+            if (data && validateCriticalData(true)) {
+                remove_ship_display(data);
             } else {
                 console.error('❌ Impossible de traiter remove_ship_display, données invalides');
             }
@@ -69,9 +81,9 @@ function registerAllActions(){
     ActionRegistry.register('user_join',
         (data) => {
             if (data.message && validateCriticalData(true)) {
-                add_pc(data.message);
+                handleUserJoin(data);
             } else {
-                console.error('❌ Impossible de traiter add_pc, données invalide');
+                console.error('❌ Impossible de traiter handleUserJoin, données invalide');
             }
         },
         { requiresValidation: false }
