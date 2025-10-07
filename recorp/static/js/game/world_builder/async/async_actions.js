@@ -72,3 +72,52 @@ function handleWarpTravel(sectorWarpZoneId){
         }
     })
 }
+
+function handleWarpComplete(data) {
+    
+    const { new_sector_id, new_room_key, new_sector_data, player_id } = data;
+    
+    // Bloquer les actions pendant la transition
+    window._syncInProgress = true;
+    
+    // Fermer l'ancienne connexion WebSocket proprement
+    if (wsManager) {
+        wsManager.shouldReconnect = false; // Empêcher la reconnexion auto
+        wsManager.close();
+    }
+    
+    // Nettoyer l'ancien secteur
+    cleanupSector();
+    
+    // Mettre à jour les données globales
+    map_informations.sector = new_sector_data.sector;
+    map_informations.sector_element = new_sector_data.sector_element;
+    map_informations.npc = new_sector_data.npc;
+    map_informations.pc = new_sector_data.pc;
+    
+    // Trouver le joueur actuel dans les nouvelles données
+    currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
+    otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
+    npcs = map_informations.npc || [];
+    
+    // Créer une nouvelle connexion WebSocket
+    setTimeout(() => {
+
+        wsManager = new WebSocketManager(new_sector_id);
+        // Attendre que la connexion soit établie
+        const checkConnection = setInterval(() => {
+            
+            if (wsManager.isConnected) {
+
+                clearInterval(checkConnection);
+                // reset du secteur
+                recreateTileStructure();
+                // Régénérer le secteur
+                init_sector_generation();
+                // Débloquer les actions
+                window._syncInProgress = false;
+            }
+
+        }, 100);
+    }, 500); // Petit délai pour la transition
+}

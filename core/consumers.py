@@ -529,12 +529,16 @@ class GameConsumer(WebsocketConsumer):
         player_id = warp_data["player_id"]
         sector_id = warp_data["current_sector_id"]
         sector_warpzone_id = warp_data["sectorwarpzone_id"]
+        # Retirer le joueur du cache du secteur actuel
         self._remove_player_from_current_sector(player_id)
         
+        # Distinguer le joueur actuel des autres
         if self._is_other_player(player_id):
+            # Un autre joueur quitte le secteur
             start_id_array = warp_data["start_id_array"]
             self._handle_other_player_warp(coordinates, size, player_id, start_id_array)
         else:
+            # Le joueur connecté quitte le secteur
             destination_id, destination_room_key = self._get_destination_room_key(sector_warpzone_id)
             self._handle_own_player_warp(sector_id, destination_id, destination_room_key, player_id)
 
@@ -569,10 +573,15 @@ class GameConsumer(WebsocketConsumer):
 
     def _handle_own_player_warp(self, sector_id: int, destination_id: int, destination_room_key: str, player_id: int) -> None:
         """Gère le voyage du joueur."""
+        # Mettre à jour la base de données
         self._setup_destination_change_in_db(sector_id, destination_id, player_id)
+        # Préparer le cache de la destination (pour que les données soient prêtes)
         self._setup_destination_cache(destination_room_key)
         
-        # Récupérer les données du nouveau secteur
+        # Mettre à jour le cache source (retirer le joueur)
+        self._update_source_cache()
+    
+        # 4. Récupérer les données complètes du nouveau secteur
         new_sector_data = cache.get(destination_room_key)
         
         # Envoyer au client les infos pour changer de room
@@ -585,9 +594,11 @@ class GameConsumer(WebsocketConsumer):
                 "player_id": player_id
             }
         })
-        
-        # Notifier l'ancienne room que le joueur part
-        self._update_source_cache()
+    
+        # Notifier les autres joueurs dans la nouvelle room
+        # Cela se fait après avoir envoyé les données au joueur qui voyage
+        # pour que les autres joueurs voient son arrivée
+        self._notify_destination_room(destination_room_key, player_id)
         
     def _setup_destination_change_in_db(self, sector_id: int, destination_id: int, player_id: int) -> Dict[str, int]:
         """Met à jour la DB, change le secteur du joueur"""
@@ -636,16 +647,16 @@ class GameConsumer(WebsocketConsumer):
         )
         
         if player_data:
-            # Envoyer à tous les joueurs DANS LA NOUVELLE ROOM
+            # Envoyer à tous les joueurs connectés à la NOUVELLE room
             async_to_sync(self.channel_layer.group_send)(
-                destination_room_key,
+                destination_room_key,  # La nouvelle room
                 {
-                    "type": "user_join",
+                    "type": "async_user_join",
                     "message": player_data,
                 },
             )
 
-    def user_join(self, event: Dict[str, Any]) -> None:
+    def async_user_join(self, event: Dict[str, Any]) -> None:
         """
         Gère l'arrivée d'un utilisateur dans la salle.
         
@@ -653,7 +664,7 @@ class GameConsumer(WebsocketConsumer):
             event: Événement contenant les données d'arrivée
         """
         response = {
-            "type": "user_join",
+            "type": "async_user_join",
             "message": event["message"],
         }
         self._send_response(response)
@@ -661,7 +672,7 @@ class GameConsumer(WebsocketConsumer):
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
         
-        if response:  # Évite d'envoyer des réponses vides
+        if response:
             try:
                 # Log spécial pour les réponses de synchronisation
                 if response.get("type") == "data_sync_response":

@@ -78,14 +78,8 @@ function registerAllActions(){
         { requiresValidation: false }
     );
 
-    ActionRegistry.register('user_join',
-        (data) => {
-            if (data.message && validateCriticalData(true)) {
-                handleUserJoin(data);
-            } else {
-                console.error('❌ Impossible de traiter handleUserJoin, données invalide');
-            }
-        },
+    ActionRegistry.register('async_user_join',
+        (data) => { handleUserJoin(data);},
         { requiresValidation: false }
     );
 

@@ -395,10 +395,15 @@ function handleMobileButtonDisabling(coordinatesArray) {
 }
 
 function handleUserJoin(data) {
-    console.log('👤 Nouveau joueur dans le secteur:', data.user?.name);
-    
     // Vérifier si c'est un autre joueur
     if (data.user?.player !== current_player_id) {
+        // Récuperer les coordonnées du joueur recepteur
+        // dans le but de mettre à jour le sonar.
+        let new_coordinates = {
+            y: currentPlayer.user.coordinates.y + 1, 
+            x: currentPlayer.user.coordinates.x + 1
+        };
+
         // Ajouter aux autres joueurs
         const existingIndex = otherPlayers.findIndex(
             p => p.user.player === data.user.player
@@ -406,14 +411,11 @@ function handleUserJoin(data) {
         
         if (existingIndex === -1) {
             otherPlayers.push(data);
-            
-            // Afficher le vaisseau
-            add_pc(data);
-            
-            // Mettre à jour la détection
-            if (typeof updateDetectionForNewPlayer === 'function') {
-                updateDetectionForNewPlayer(data);
-            }
         }
+
+        add_pc(data);
+
+        updatePlayerSonar(new_coordinates, currentPlayer.ship.view_range);
+
     }
 }

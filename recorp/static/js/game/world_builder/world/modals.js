@@ -503,6 +503,7 @@ function create_foreground_modal(modalId, data) {
             item_action_container_warpzone_ul_item.textContent = `Travel to ${data.destinations[i].destination_name.replaceAll('-',' ').replaceAll('_', ' ')} (0 AP)`;
             item_action_container_warpzone_ul_item.addEventListener(action_listener_touch_click, function(){
                 if (typeof handleWarpTravel === 'function' && typeof currentPlayer !== 'undefined') {
+                    open_close_modal(e.id);
                     handleWarpTravel(data.destinations[i].warp_link_id);
                 }
             }, { passive: true });

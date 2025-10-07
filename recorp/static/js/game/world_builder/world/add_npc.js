@@ -1,12 +1,11 @@
 function add_npc(data) {
     const coordinatesArrayToDisableButton = [];
-    
-    data.forEach(npcData => {
-        const npcInfo = extractNpcInfo(npcData);
-        renderNpcShip(npcData, npcInfo);
-    });
 
-    
+    for(let i = 0; i < data.length; i++){
+        const npcInfo = extractNpcInfo(data[i]);
+        renderNpcShip(data[i], npcInfo);
+    }
+
     handleMobileButtonDisabling(coordinatesArrayToDisableButton);
 }
 
