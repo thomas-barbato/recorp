@@ -401,6 +401,7 @@ class WebSocketManager {
             clearInterval(this.heartbeatInterval);
             this.heartbeatInterval = null;
         }
+        this.lastPingTime = 0;
     }
     
     sendPing() {
@@ -837,11 +838,11 @@ function handleDataSyncResponse(data) {
     
     try {
         // Restaurer les données globales
-        if (data.current_player) {
+        if (data.current_player != currentPlayer) {
             currentPlayer = data.current_player;
         }
         
-        if (data.other_players && Array.isArray(data.other_players)) {
+        if ((data.other_players && Array.isArray(data.other_players)) && otherPlayers != data.other_players) {
             otherPlayers = data.other_players;
         }
         
@@ -898,18 +899,48 @@ function initializeActionSystem() {
 
 // Fonction de nettoyage mise à jour
 function cleanup_game() {
-    console.log("Nettoyage du jeu...");
+    console.log("🧹 Nettoyage du jeu...");
     
-    // NOUVEAU : Nettoyer le sonar
-    if (typeof cleanupSonar === 'function') {
-        cleanupSonar();
-    }
-    
-    // Fermer la connexion WebSocket
+    // Arrêter immédiatement le heartbeat
     if (wsManager) {
-        wsManager.close();
-        wsManager = null;
+        wsManager.shouldReconnect = false; // Empêcher toute reconnexion
+        wsManager.stopHeartbeat();
     }
+    
+    // Nettoyer le sonar
+    if (typeof cleanupSonar === 'function') {
+        try {
+            cleanupSonar();
+        } catch (e) {
+            console.error('Erreur cleanup sonar:', e);
+        }
+    }
+    
+    // Vider la queue de messages
+    if (wsManager) {
+        wsManager.messageQueue = [];
+    }
+    
+    // 4. Annuler les timeouts/intervals en cours
+    if (wsManager && wsManager.reconnectTimeout) {
+        clearTimeout(wsManager.reconnectTimeout);
+        wsManager.reconnectTimeout = null;
+    }
+    
+    // Fermer la connexion WebSocket (en dernier)
+    if (wsManager && wsManager.socket) {
+        try {
+            // Forcer la fermeture immédiate sans attendre
+            wsManager.socket.onclose = null; // Désactiver le handler pour éviter la reconnexion
+            wsManager.socket.close(1000, 'Page unloading');
+            wsManager.socket = null;
+        } catch (e) {
+            console.error('Erreur fermeture WebSocket:', e);
+        }
+    }
+    
+    wsManager = null;
+    console.log("✅ Nettoyage terminé");
 }
 
 

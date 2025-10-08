@@ -107,6 +107,8 @@ CSRF_TRUSTED_ORIGINS = [
 WSGI_APPLICATION = "recorp.routing.application"
 ASGI_APPLICATION = "recorp.routing.application"
 
+ASGI_APPLICATION_CLOSE_TIMEOUT = 30
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
@@ -143,6 +145,8 @@ CACHES = {
                 "socket_keepalive": True,
                 "socket_keepalive_options": {},
                 "health_check_interval": 30,
+                "socket_connect_timeout": 5,
+                "socket_timeout": 5, 
             }
         },
         "KEY_PREFIX": "recorp_game",

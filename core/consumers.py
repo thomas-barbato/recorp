@@ -69,9 +69,27 @@ class GameConsumer(WebsocketConsumer):
             self._cache_store.get_or_set_cache(need_to_be_recreated=False)
 
     def disconnect(self, close_code: int) -> None:
-        """Gère la déconnexion WebSocket."""
-        self._leave_room_group()
-        self.close()
+        """Gère la déconnexion WebSocket de manière asynchrone."""
+        try:
+            # Nettoyer les ressources AVANT de quitter le groupe
+            if hasattr(self, '_cache_store'):
+                # Optionnel : retirer le joueur du cache si nécessaire
+                # self._cache_store.cleanup()
+                pass
+            
+            # Quitter le groupe de manière asynchrone
+            self._leave_room_group()
+            
+            logger.info(f"WebSocket déconnecté proprement - Code: {close_code}, Joueur: {self.player_id}")
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la déconnexion: {e}")
+        finally:
+            # Toujours fermer la connexion
+            try:
+                self.close()
+            except:
+                pass
 
     def _leave_room_group(self) -> None:
         """Retire l'utilisateur du groupe de salle."""
