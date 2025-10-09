@@ -496,7 +496,7 @@ function create_foreground_modal(modalId, data) {
 
         let item_action_container_warpzone_ul = document.createElement('ul');
         item_action_container_warpzone_ul.className ='flex w-full gap-3 text-white flex-col text-xs';
-        console.log(data.destinations)
+
         for(let i = 0; i < data.destinations.length; i++){
             let item_action_container_warpzone_ul_item = document.createElement('li');
             item_action_container_warpzone_ul_item.classList.add('hover:font-bold')

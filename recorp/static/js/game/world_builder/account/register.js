@@ -1,66 +1,50 @@
-
-let user_is_on_mobile_bool = is_user_is_on_mobile_device()
-
-let attribute_touch_mouseover = user_is_on_mobile_bool === true ? 'touchstart' : 'mouseover';
-let attribute_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'onclick';
-let action_listener_touch_click = user_is_on_mobile_bool === true ? 'touchstart' : 'click';
-
-let submit_button = document.querySelector("#create-account-submit-button");
-
-submit_button.addEventListener(action_listener_touch_click, function(){
-
-    let first_name = document.querySelector("#id_first_name").value;
-    let last_name = document.querySelector("#id_last_name").value;
-    let user_name = document.querySelector("#id_username").value;
-    let password = document.querySelector("#id_password").value;
-    let password2 = document.querySelector("#id_password2").value;
-    let email = document.querySelector("#id_email").value;
+submit_button.addEventListener(action_listener_touch_click, function() {
+    submit_button.disabled = true;
 
     let data = {
-        'first_name' : first_name.length > 0 ? first_name : "None",
-        'last_name': last_name.length > 0 ? last_name : "None",
-        'username' : user_name,
-        'password' : password,
-        'password2' : password2,
-        'email': email,
+        first_name: document.querySelector("#id_first_name").value || "None",
+        last_name: document.querySelector("#id_last_name").value || "None",
+        username: document.querySelector("#id_username").value,
+        password: document.querySelector("#id_password").value,
+        password2: document.querySelector("#id_password2").value,
+        email: document.querySelector("#id_email").value,
     };
-    
-    url = "create";
-    method = "POST"
 
-    const headers = new Headers({
-        'Content-Type': 'x-www-form-urlencoded',
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRFToken': csrf_token
-    });
-    
-    fetch(url, {
-            method: method,
-            headers,
-            credentials: 'include',
-            body: JSON.stringify(data),
-        }).then(response => response.json())
-        .then(data => {
-            submit_button.disabled = false;
-            if(data.missing){
-                let incorrect_data = [...new Set(data.errors)]
-                let container_array = [];
-                for(let i in incorrect_data){
-                    let help_text_container = document.querySelector(`#${incorrect_data[i]}_help_text`);
+    fetch("/create_account/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": csrf_token,
+        },
+        credentials: "include",
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        submit_button.disabled = false;
+
+        if (data.errors && data.errors.length > 0) {
+            // Affiche les messages d'erreur pour chaque champ
+            let container_array = [];
+            for (let i in data.errors) {
+                let help_text_container = document.querySelector(`#${data.errors[i]}_help_text`);
+                if(help_text_container){
                     help_text_container.classList.remove('hidden');
-                    container_array.push(help_text_container)
+                    container_array.push(help_text_container);
                 }
-
-                setTimeout(() => {
-                    for(let i = 0; i < container_array.length ; i++){
-                        container_array[i].classList.add('hidden')
-                    }
-                }, 5000);
-            }else{
-                window.location.replace('/');
             }
-            
-
-        }).catch(error => console.error(error));
+            setTimeout(() => {
+                container_array.forEach(c => c.classList.add('hidden'));
+            }, 5000);
+        } else if (data.redirect_url) {
+            // Redirection vers index
+            window.location.replace(data.redirect_url);
+        }
+    })
+    .catch(error => {
+        submit_button.disabled = false;
+        console.error(error);
+    });
 });

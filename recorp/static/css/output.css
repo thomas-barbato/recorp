@@ -894,8 +894,8 @@ video {
   margin-inline-end: 0.5rem;
 }
 
-.ml-4 {
-  margin-left: 1rem;
+.ml-2 {
+  margin-left: 0.5rem;
 }
 
 .mr-1 {
@@ -1529,12 +1529,12 @@ video {
   cursor: crosshair;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .cursor-not-allowed {
   cursor: not-allowed;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .touch-auto {
@@ -2774,6 +2774,16 @@ video {
 
 .bg-orange-400\/30 {
   background-color: rgb(251 146 60 / 0.3);
+}
+
+.bg-orange-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 88 12 / var(--tw-bg-opacity));
+}
+
+.bg-orange-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(154 52 18 / var(--tw-bg-opacity));
 }
 
 .bg-red-600 {
@@ -4245,6 +4255,58 @@ button .ql-stroke,
   box-shadow: 0 0 10px #00ff00;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+#sector-loader-canvas-container {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #020410, #000);
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+.loader-text {
+  position: absolute;
+  bottom: 8vh;
+  width: 100%;
+  text-align: center;
+  color: #b7d9ff;
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  font-size: 1.2em;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.loader-dots::after {
+  content: '...';
+  animation: dots 1.4s infinite steps(3);
+}
+
+@keyframes dots {
+  0% {
+    content: '';
+  }
+
+  33% {
+    content: '.';
+  }
+
+  66% {
+    content: '..';
+  }
+
+  100% {
+    content: '...';
+  }
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -4324,10 +4386,6 @@ button .ql-stroke,
 
 .hover\:border-2:hover {
   border-width: 2px;
-}
-
-.hover\:border-solid:hover {
-  border-style: solid;
 }
 
 .hover\:border-\[\#B1F1CB\]:hover {

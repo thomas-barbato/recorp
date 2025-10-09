@@ -173,6 +173,49 @@ class CreateAccountView(SuccessMessageMixin, TemplateView):
         response = data
         return JsonResponse(response, status=200)
 
+class CreateAccountView(TemplateView):
+    template_name = "create-account.html"
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("/")
+        return render(request, self.template_name, {"form": SignupForm()})
+
+    def post(self, request, *args, **kwargs):
+        if request.content_type == "application/json":
+            import json
+            payload = json.loads(request.body.decode("utf-8") or "{}")
+        else:
+            payload = request.POST
+
+        form = SignupForm(payload)
+
+        # Vérification mot de passe
+        if payload.get("password") != payload.get("password2"):
+            if is_ajax(request):
+                return JsonResponse({"errors": ["password2"]}, status=400)
+            messages.error(request, _("Passwords do not match"))
+            return render(request, self.template_name, {"form": form})
+
+        if not form.is_valid():
+            error_fields = list(form.errors.keys())
+            if is_ajax(request):
+                return JsonResponse({"errors": error_fields}, status=400)
+            messages.error(request, _("Please correct the errors below"))
+            return render(request, self.template_name, {"form": form})
+
+        # Création de l'utilisateur **sans login**
+        user = form.save()
+        messages.success(
+            request,
+            _("Your account has been successfully created. Please log in to continue."),
+        )
+
+        if is_ajax(request):
+            return JsonResponse({"success": True, "redirect_url": "/"}, status=200)
+
+        return redirect("/")
+
 
 class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
     
@@ -191,16 +234,17 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         return context
     
     def post(self, request, **kwargs):
-        if request.POST.get('id_name') and request.POST.get('id_faction'):
+        if request.POST.get('name') and request.POST.get('faction'):
             data = {
-                'name' : request.POST.get('id_name'),
-                'faction': request.POST.get('id_faction'),
-                'archetype': request.POST.get('id_archetype'),
+                'name' : request.POST.get('name'),
+                'faction': request.POST.get('faction'),
+                'archetype': request.POST.get('archetype'),
                 'image': request.POST.get('id_image'),
-                'description': request.POST.get('id_description'),
+                'description': request.POST.get('description'),
                 'user' : self.request.user.id,
                 'in_tutoriel_zone': True,
             }
+            
             form = CreateCharacterForm(data, request.FILES)
             if form.is_valid():
                 new_player = Player(
@@ -214,12 +258,16 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     user_id=self.request.user.id
                 )
                 
-                new_player.save()
-                archetype_module_list = ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__type', 'module_id__name', 'module_id__effect', 'module_id__type')
+                try:
+                    new_player.save()
+                except Exception as e:
+                    print("Erreur au save du Player:", e)
+                    
+                archetype_module_list = [e for e in ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__type', 'module_id__name', 'module_id__effect', 'module_id__type')]
                 module_list = [e['module_id'] for e in archetype_module_list]
-                archetype_data = Archetype.objects.filter(id=data["archetype"]).values('ship_id', 'data')[0]
+                archetype_data = [e for e in Archetype.objects.filter(id=data["archetype"]).values('ship_id', 'data')]
                 
-                default_ship_values = Ship.objects.filter(id=archetype_data['ship_id']).values(
+                default_ship_values = Ship.objects.filter(id=archetype_data[0]['ship_id']).values(
                     'default_hp',
                     'default_movement',
                     'default_ballistic_defense',
@@ -228,14 +276,15 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 )[0]
                 
                 current_hp = default_ship_values['default_hp']
+                max_hp = default_ship_values['default_hp']
                 current_movement = default_ship_values['default_movement']
                 current_ballistic_defense = default_ship_values['default_ballistic_defense']
-                current_thermal_defense = default_ship_values['default_ballistic_defense']
-                current_missile_defense = default_ship_values['default_ballistic_defense']
+                current_thermal_defense = default_ship_values['default_thermal_defense']
+                current_missile_defense = default_ship_values['default_missile_defense']
                 max_ballistic_defense = default_ship_values['default_ballistic_defense']
-                max_thermal_defense = default_ship_values['default_ballistic_defense']
-                max_missile_defense = default_ship_values['default_ballistic_defense']
-                max_movement = default_ship_values['max_movement']
+                max_thermal_defense = default_ship_values['default_thermal_defense']
+                max_missile_defense = default_ship_values['default_missile_defense']
+                max_movement = default_ship_values['default_movement']
                 current_cargo_size = 3
                         
                 for module in archetype_module_list:
@@ -257,32 +306,51 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                         max_hp += module["module_id__effect"]['hull_hp']
                     elif "HOLD" in module["module_id__type"]:
                         current_cargo_size += module["module_id__effect"]['capacity']
-                        
-                new_player_ship = PlayerShip(
-                    is_current_ship=True,
-                    is_reversed=False,
-                    current_hp=current_hp,
-                    max_hp=current_hp,
-                    current_cargo_size=current_cargo_size,
-                    current_movement=current_movement,
-                    max_movement=current_movement,
-                    current_missile_defense=current_missile_defense,
-                    current_ballistic_defense=current_ballistic_defense,
-                    current_thermal_defense=current_thermal_defense,
-                    max_missile_defense=max_missile_defense,
-                    max_ballistic_defense=max_ballistic_defense,
-                    max_thermal_defense=max_thermal_defense,
-                    status="FULL",
-                    player_id=new_player.id,
-                    ship_id=archetype_data['ship_id']
-                )
-                
-                new_player_ship.save()
+                try:
+                    PlayerShip.objects.create(
+                        is_current_ship=True,
+                        is_reversed=False,
+                        current_hp=current_hp,
+                        max_hp=current_hp,
+                        current_cargo_size=current_cargo_size,
+                        current_movement=current_movement,
+                        max_movement=current_movement,
+                        current_missile_defense=current_missile_defense,
+                        current_ballistic_defense=current_ballistic_defense,
+                        current_thermal_defense=current_thermal_defense,
+                        max_missile_defense=max_missile_defense,
+                        max_ballistic_defense=max_ballistic_defense,
+                        max_thermal_defense=max_thermal_defense,
+                        status="FULL",
+                        player_id=new_player.id,
+                        ship_id=archetype_data[0]['ship_id']
+                    )
+                    
+                except Exception as e:
+                    print("Erreur au save du PlayerShip:", e)
+                    
+                new_player_ship_id = PlayerShip.objects.filter(
+                        is_current_ship=True,
+                        is_reversed=False,
+                        current_hp=current_hp,
+                        max_hp=current_hp,
+                        current_cargo_size=current_cargo_size,
+                        current_movement=current_movement,
+                        max_movement=current_movement,
+                        current_missile_defense=current_missile_defense,
+                        current_ballistic_defense=current_ballistic_defense,
+                        current_thermal_defense=current_thermal_defense,
+                        max_missile_defense=max_missile_defense,
+                        max_ballistic_defense=max_ballistic_defense,
+                        max_thermal_defense=max_thermal_defense,
+                        status="FULL",
+                        player_id=new_player.id,
+                        ship_id=archetype_data[0]['ship_id']).values_list('id', flat=True)[0]
                 
                 for id in module_list:
                     PlayerShipModule.objects.create(
                         module_id=id,
-                        player_ship_id=new_player_ship.id
+                        player_ship_id=new_player_ship_id
                     )
                 
                 skill_list = [e for e in Skill.objects.values('id', 'name')]
@@ -292,8 +360,8 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     skill_id = skill['id']
                     skill_level = 0
                     
-                    if archetype_data['data'].get(skill_name):
-                        skill_level = archetype_data['data'][skill_name]
+                    if archetype_data[0]['data'].get(skill_name):
+                        skill_level = archetype_data[0]['data'][skill_name]
                         
                     PlayerSkill.objects.create(
                         level = skill_level,

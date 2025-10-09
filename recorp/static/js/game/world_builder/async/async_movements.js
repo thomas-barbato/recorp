@@ -496,83 +496,6 @@ function update_player_range_in_modal(data){
     }
 }
 
-function cleanAllPlayerPositions() {
-    try {
-        const tabletopView = document.querySelector('.tabletop-view');
-        if (!tabletopView) {
-            console.warn('Tabletop view non trouvé');
-            return;
-        }
-        
-        // Trouver toutes les cellules occupées par des joueurs
-        const shipCells = document.querySelectorAll('.ship-pos');
-        
-        console.log(`Nettoyage de ${shipCells.length} cellules`);
-        
-        shipCells.forEach(cell => {
-            // Retirer les classes liées aux vaisseaux
-            cell.classList.remove(
-                'ship-pos', 
-                'uncrossable', 
-                'bg-orange-400/30', 
-                'player-ship-start-pos',
-                'border-dashed'
-            );
-            
-            // Retirer les attributs
-            cell.removeAttribute('size_x');
-            cell.removeAttribute('size_y');
-            cell.removeAttribute('data-player-id');
-            cell.removeAttribute('data-has-sonar');
-            cell.removeAttribute('onclick');
-            cell.removeAttribute('ontouchstart');
-            
-            // Supprimer tous les éléments de vaisseau
-            const ships = cell.querySelectorAll(
-                '.ship, .ship-reversed, .player-ship, .player-ship-reversed, #unknown-ship'
-            );
-            ships.forEach(ship => ship.remove());
-            
-            // Supprimer les tooltips
-            const tooltips = cell.querySelectorAll('ul');
-            tooltips.forEach(tooltip => tooltip.remove());
-            
-            // Réinitialiser le contenu de la cellule
-            const coordZone = cell.querySelector('.coord-zone-div');
-            if (coordZone) {
-                // Supprimer les anciens spans
-                const oldSpans = coordZone.querySelectorAll('span');
-                oldSpans.forEach(span => span.remove());
-                
-                // Recréer le span de pathfinding
-                const coords = cell.id.split('_');
-                if (coords.length === 2) {
-                    const newSpan = document.createElement('span');
-                    newSpan.className = "absolute w-[32px] h-[32px] pathfinding-zone cursor-crosshair";
-                    newSpan.setAttribute('title', `${map_informations?.sector?.name || 'Secteur'} [y: ${coords[0]} ; x: ${coords[1]}]`);
-                    coordZone.appendChild(newSpan);
-                }
-                
-                // Réinitialiser la classe
-                coordZone.className = "relative w-[32px] h-[32px] z-10 coord-zone-div";
-            }
-            
-            // Réinitialiser la classe de la cellule
-            cell.className = "relative w-[32px] h-[32px] m-0 p-0 tile z-10";
-        });
-        
-        // Nettoyer aussi le sonar si la fonction existe
-        if (typeof cleanupSonar === 'function') {
-            cleanupSonar();
-        }
-        
-        console.log('✅ Nettoyage terminé');
-        
-    } catch (error) {
-        console.error('❌ Erreur lors du nettoyage:', error);
-    }
-}
-
 function handleWarpComplete(data) {
     console.log('🌀 Warp terminé, changement de secteur...');
     
@@ -601,6 +524,8 @@ function handleWarpComplete(data) {
     otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
     npcs = map_informations.npc || [];
     
+    // Lance le la loading screen.
+    loadingScreen.show();
     // Créer une nouvelle connexion WebSocket
     setTimeout(() => {
         wsManager = new WebSocketManager(new_sector_id);
@@ -619,7 +544,9 @@ function handleWarpComplete(data) {
                 console.log('✅ Transition de secteur terminée');
             }
         }, 100);
-    }, 500); // Petit délai pour la transition
+    }, 500); // délai pour la transition
+    // cache le la loading screen.
+    loadingScreen.hide();
 }
 
 function cleanupSector() {

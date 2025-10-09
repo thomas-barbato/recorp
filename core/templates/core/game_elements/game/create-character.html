@@ -368,67 +368,48 @@
     submit_btn = document.querySelector('#create-character-submit-button');
 
     submit_btn.addEventListener(action_listener_touch_click, function(){
+        let archetype = document.querySelector('#id_archetype').value;
+        let character_name = document.querySelector('#id_name').value;
+        let description = quill_content || "";
+        
+        if (faction_selected && archetype && character_name) {
+            let data = new FormData();
+            const file = img_input.files[0];
+            if (file) data.append('image', file);
+            data.append('name', character_name);
+            data.append('archetype', archetype);
+            data.append('faction', faction_selected);
+            data.append('description', description);
 
-        let image = undefined;
-        let file = undefined;
-        let archetype = document.querySelector('#id_archetype').selectedIndex;
+            const url = "create_character";
+            const headers = new Headers({
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": csrf_token,
+            });
 
-        if(faction_selected){
-            var data = new FormData()
-
-            for (const file of img_input.files) {
-                data.append('file',file)
-                data.append('id_image', file.name)
-            }
-            
-            let character_name = document.querySelector('#id_name').value;
-            let description = quill_content;
-
-            if(character_name){
-                data.append('id_name', character_name)
-                data.append('id_archetype', archetype)
-                data.append('id_faction', faction_selected)
-                data.append('id_description', description)
-
-                
-                url = "create_character";
-                method = "POST"
-
-                const headers = new Headers({
-                    'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': csrf_token
-                });
-                
-                fetch(url, {
-                        method: method,
-                        headers,
-                        credentials: 'include',
-                        body: data,
-                    }).then(response => response.json())
-                    .then(data => {
-                        submit_btn.disabled = false;
-                        if(data.missing){
-                            let incorrect_data = [...new Set(data.errors)]
-                            let container_array = [];
-                            for(let i in incorrect_data){
-                                let help_text_container = document.querySelector(`#${incorrect_data[i]}_help_text`);
-                                help_text_container.classList.remove('hidden');
-                                container_array.push(help_text_container)
-                            }
-
-                            setTimeout(() => {
-                                for(let i = 0; i < container_array.length ; i++){
-                                    container_array[i].classList.add('hidden')
-                                }
-                            }, 5000);
-                        }else{
-                            window.location.replace('/');
-                        }
-                        
-
-                    }).catch(error => console.error(error));
-            }
+            fetch(url, {
+                method: "POST",
+                headers,
+                credentials: "include",
+                body: data,
+            })
+            .then(async response => {
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    window.location.replace("/");
+                    return;
+                }
+            })
+            .then(data => {
+                if (!data) return;
+                if (data.errors) {
+                    console.error(data.errors);
+                    // affichage erreurs ici
+                }
+            })
+            .catch(error => console.error("Erreur JS:", error));
         }
     });
 </script>

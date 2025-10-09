@@ -76,6 +76,10 @@ function handleWarpTravel(sectorWarpZoneId){
 function handleWarpComplete(data) {
     
     const { new_sector_id, new_room_key, new_sector_data, player_id } = data;
+
+    // 🚀 Afficher le loader pendant la transition
+    let sector_name = new_sector_data.sector.name.replaceAll('-', ' ').replaceAll('_', ' ')
+    loadingScreen.show('Saut en cours vers le secteur ' + sector_name);
     
     // Bloquer les actions pendant la transition
     window._syncInProgress = true;
@@ -102,7 +106,7 @@ function handleWarpComplete(data) {
     
     // Créer une nouvelle connexion WebSocket
     setTimeout(() => {
-
+        
         wsManager = new WebSocketManager(new_sector_id);
         // Attendre que la connexion soit établie
         const checkConnection = setInterval(() => {
@@ -116,6 +120,9 @@ function handleWarpComplete(data) {
                 init_sector_generation();
                 // Débloquer les actions
                 window._syncInProgress = false;
+
+                // ✅ Cacher le loader quand tout est prêt
+                loadingScreen.hide();
             }
 
         }, 100);

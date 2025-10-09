@@ -11,6 +11,8 @@ let mobile_radar_sweep_bool = true;
 let pendingAction = null;
 // Instance globale
 const actionManager = new ActionManager();
+const loadingScreen = new LoadingScreen({ minDisplayDuration: 2000 });
+loadingScreen.show('Connexion au serveur');
 
 const atlas = {
     col: 40,
@@ -837,6 +839,7 @@ function handleDataSyncResponse(data) {
     console.log('📥 Synchronisation reçue');
     
     try {
+        
         // Restaurer les données globales
         if (data.current_player != currentPlayer) {
             currentPlayer = data.current_player;
@@ -855,18 +858,20 @@ function handleDataSyncResponse(data) {
             npcs.push(...data.npcs);
         }
         
+        /*
         // CRITIQUE : Nettoyer et redessiner TOUS les joueurs
         cleanAllPlayerPositions();
         
         // Redessiner le joueur actuel
         if (currentPlayer) {
             add_pc(currentPlayer);
+            otherPlayers.forEach(player => {
+                add_pc(player);
+            });
         }
         
-        // Redessiner tous les autres joueurs
-        otherPlayers.forEach(player => {
-            add_pc(player);
-        });
+        // IMPORTANT: Restaurer les joueurs unknown qui étaient affichés
+        restoreUnknownPlayers(unknownPlayersState);*/
         
         // Mettre à jour le sonar si disponible
         if (currentPlayer && typeof updatePlayerSonar === 'function') {
@@ -987,4 +992,7 @@ window._syncInProgress = false;
 // Event listeners
 window.addEventListener('beforeunload', cleanup_game);
 window.addEventListener('pagehide', cleanup_game);
-window.addEventListener('load', init_game);
+window.addEventListener('load', () => {
+    init_game();
+    loadingScreen.hide();
+});
