@@ -2062,3 +2062,4 @@ function createUnknownNpcModal(modalId, modalData) {
     }
     return;
 }
+

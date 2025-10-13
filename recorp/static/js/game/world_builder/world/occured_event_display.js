@@ -59,7 +59,7 @@ function createTooltipContainer(cell, playerId) {
     );
 
     // Positionnement explicite au-dessus de la cellule
-    tooltipContainer.style.top = '30px';  // En dessous de la cellule
+    tooltipContainer.style.top = '30px';  // Au dessus de la cellule
     tooltipContainer.style.left = '0px';   // Aligné à gauche de la cellule
     tooltipContainer.style.transform = 'translateY(-100%)';
     tooltipContainer.style.pointerEvents = 'none'; // Évite les conflits d'événements

@@ -56,6 +56,7 @@ function display_pathfinding() {
     playerSpan.classList.add('box-border', CSS_CLASSES.BORDER_2, CSS_CLASSES.BORDER);
 
     if (!current_player.selected_cell_bool) {
+        applyCurrentPlayerBorders();
         handlePathfindingDisplay();
     } else {
         handlePlayerMovement();
@@ -120,6 +121,45 @@ function processInvalidPathNode(spanElement, index) {
     spanElement.textContent = index + 1;
 }
 
+function applyCurrentPlayerBorders() {
+    // Récupérer toutes les cellules du joueur actuel
+    const playerCells = Array.from(document.querySelectorAll('.ship-pos, .player-ship-start-pos'))
+        .map(element => element.id);
+
+    
+    
+    if (playerCells.length === 0) return;
+    
+    const shipSize = playerCells.length;
+    
+    const borderConfigs = {
+        9: getBorderConfig9x9(),
+        3: getBorderConfig3x1(),
+        2: getBorderConfig2x1(),
+        1: getBorderConfig1x1()
+    };
+    
+    const config = borderConfigs[shipSize];
+    if (config) {
+        playerCells.forEach((coord, index) => {
+            const element = document.getElementById(coord);
+            if (!element) return;
+            
+            const spanElement = element.querySelector('span');
+            if (!spanElement) return;
+            spanElement.classList.remove('border', 'border-2')
+            const borderConfig = config[index];
+            // Appliquer les classes de bordure
+            spanElement.classList.add(...borderConfig.classes);
+            
+            // Ne pas afficher le coût pour le joueur actuel
+            if (borderConfig.showCost) {
+                spanElement.textContent = "";
+            }
+        });
+    }
+}
+
 function displayShipPreview(pathIndex) {
     const shipCoordinates = calculateShipCoordinates(pathIndex);
     const canBeCrossed = validateShipPlacement(shipCoordinates);
@@ -132,11 +172,12 @@ function displayShipPreview(pathIndex) {
         current_player.set_selected_cell_bool(false);
     }
     
-    applyShipBorders(shipCoordinates);
+    applyPreviewShipBorders(shipCoordinates);
 }
 
 function calculateShipCoordinates(pathIndex) {
     const coordinates = [];
+    console.log(pathfinder_obj.player_cell)
     const lastPathNode = pathfinder_obj.path[pathIndex];
     
     for (let row = lastPathNode.x; row < lastPathNode.x + current_player.s_size.y; row++) {
@@ -168,8 +209,14 @@ function displayValidShipPreview(coordinates) {
         const spanElement = element.querySelector('span');
         
         spanElement.classList.remove(CSS_CLASSES.BG_TEAL, CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.TEAL_ZONE);
-        spanElement.classList.add(CSS_CLASSES.BG_AMBER, CSS_CLASSES.BORDER_AMBER, 
-        CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER);
+        spanElement.classList.add(
+            CSS_CLASSES.BG_AMBER,
+            CSS_CLASSES.BORDER_AMBER,
+            CSS_CLASSES.ANIMATE_PULSE, 
+            CSS_CLASSES.TEXT_WHITE, 
+            CSS_CLASSES.FONT_BOLD, 
+            CSS_CLASSES.TEXT_CENTER
+        );
         spanElement.textContent = "";
     });
 }
@@ -196,7 +243,7 @@ function updatePlayerCoordinates(pathIndex, coordinates) {
     current_player.set_selected_cell_bool(true);
 }
 
-function applyShipBorders(coordinates) {
+function applyPreviewShipBorders(coordinates) {
     const tealZoneSize = document.querySelectorAll('.teal-zone').length + 1;
     const shipSize = coordinates.length;
     
@@ -217,35 +264,35 @@ function applyShipBorders(coordinates) {
 
 function getBorderConfig9x9() {
     return [
-        { classes: ['border-l', 'border-t'], removeBorder: true },
-        { classes: ['border-t'] },
-        { classes: ['border-t', 'border-r'] },
-        { classes: ['border-l'] },
+        { classes: ['border-l-2', 'border-t-2'], removeBorder: true },
+        { classes: ['border-t-2'] },
+        { classes: ['border-t-2', 'border-r-2'] },
+        { classes: ['border-l-2'] },
         { classes: [CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD, CSS_CLASSES.TEXT_CENTER], showCost: true },
-        { classes: ['border-r'] },
-        { classes: ['border-l', 'border-b'] },
-        { classes: ['border-b'] },
-        { classes: ['border-r', 'border-b'] }
+        { classes: ['border-r-2'] },
+        { classes: ['border-l-2', 'border-b-2'] },
+        { classes: ['border-b-2'] },
+        { classes: ['border-r-2', 'border-b-2'] }
     ];
 }
 
 function getBorderConfig3x1() {
     return [
-        { classes: ['border-t', 'border-l', 'border-b'], removeBorder: true },
-        { classes: ['border-t', 'border-b'], showCost: true },
-        { classes: ['border-t', 'border-r', 'border-b'] }
+        { classes: ['border-t-2', 'border-l-2', 'border-b-2'], removeBorder: true },
+        { classes: ['border-t-2', 'border-b-2'], showCost: true },
+        { classes: ['border-t-2', 'border-r-2', 'border-b-2'] }
     ];
 }
 
 function getBorderConfig2x1() {
     return [
         { 
-            classes: ['border-t', 'border-l', 'border-b'], 
+            classes: ['border-t-2', 'border-l-2', 'border-b-2'], 
             removeBorder: true,
             showCost: !current_player.reversed_ship_status 
         },
         { 
-            classes: ['border-t', 'border-r', 'border-b'],
+            classes: ['border-t-2', 'border-r-2', 'border-b-2'],
             showCost: current_player.reversed_ship_status 
         }
     ];
@@ -259,6 +306,7 @@ function applyBorderConfiguration(coordinates, config, tealZoneSize) {
     coordinates.forEach((coord, index) => {
         const element = document.getElementById(coord);
         const spanElement = element.querySelector('span');
+        
         const borderConfig = config[index];
         
         if (element.classList.contains('ship-pos')) {
@@ -395,7 +443,6 @@ function createPathfindingOptions() {
 }
 
 // Nettoyage des styles CSS
-
 function cleanCss() {
     const pathfindingZones = document.querySelectorAll('.pathfinding-zone');
     
@@ -414,7 +461,8 @@ function resetZoneStyles(zone) {
         CSS_CLASSES.ANIMATE_PULSE, CSS_CLASSES.BG_AMBER, CSS_CLASSES.BORDER_AMBER,
         CSS_CLASSES.BORDER_RED, 'finish', 'box-border', CSS_CLASSES.BORDER_2,
         CSS_CLASSES.BORDER, CSS_CLASSES.TEXT_WHITE, CSS_CLASSES.FONT_BOLD,
-        CSS_CLASSES.TEXT_CENTER, 'border-l', 'border-r', 'border-b', 'border-t'
+        CSS_CLASSES.TEXT_CENTER, 'border-l', 'border-r', 'border-b', 'border-t',
+        'border-l-2', 'border-r-2', 'border-b-2', 'border-t-2'
     ];
     
     zone.classList.remove(...classesToRemove);
@@ -423,8 +471,6 @@ function resetZoneStyles(zone) {
 
 function applyDefaultStyles(zone, parent) {
     // uncomment to add border everywhere.
-    //zone.classList.add(CSS_CLASSES.HOVER_BORDER, CSS_CLASSES.HOVER_BORDER_SIMPLE);
-    
     const styleMap = {
         'player-ship-start-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_ORANGE],
         'ship-pos': [CSS_CLASSES.BORDER_DASHED, CSS_CLASSES.BORDER_ORANGE],
