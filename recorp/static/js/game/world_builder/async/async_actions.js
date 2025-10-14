@@ -102,6 +102,7 @@ function handleWarpComplete(data) {
     // Trouver le joueur actuel dans les nouvelles données
     currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
     otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
+    foregroundElement = map_informations.sector_element || [];
     npcs = map_informations.npc || [];
     
     // Créer une nouvelle connexion WebSocket

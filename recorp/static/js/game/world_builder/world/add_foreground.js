@@ -28,7 +28,7 @@ function getTableCell(rowIndex, colIndex) {
     return document.querySelector('.tabletop-view').rows[rowIndex].cells[colIndex];
 }
 
-function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY) {
+function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY, is_visible) {
     // Configure cell
     cell.classList.add('uncrossable');
     cell.setAttribute('size_x', sizeX);
@@ -44,7 +44,7 @@ function setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, s
     let isForegroundTooFar = false;
     let cursorType = "";
 
-    if(observable_zone_id.includes(cell.id)){
+    if(is_visible){
         borderColor = 'border-amber-500';
         border.setAttribute('data-modal-target', `modal-${elementInfo.name}`);
         border.setAttribute(attribute_touch_click, `open_close_modal('modal-${elementInfo.name}')`);
@@ -98,6 +98,8 @@ function renderForegroundElement(elementInfo) {
     let colIndex = coordX;
     let full_size_y = atlas.tilesize * sizeY;
     let full_size_x = atlas.tilesize * sizeX;
+
+    let is_visible = checkIfCoordinateIsVisible(elementInfo, is_npc=false, is_foreground=true)
     
     for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
@@ -105,7 +107,7 @@ function renderForegroundElement(elementInfo) {
             const cellDiv = cell.querySelector('div');
             const border = cellDiv.querySelector('span');
 
-            setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY);
+            setupForegroundCell(cell, border, elementInfo, coordX, coordY, sizeX, sizeY, is_visible);
             const imageDiv = createImageDiv(elementInfo, bgUrl, colOffset, rowOffset, colIndex, rowIndex);
 
             cellDiv.append(imageDiv);
@@ -114,4 +116,72 @@ function renderForegroundElement(elementInfo) {
         rowIndex++;
         colIndex = coordX;
     }
+}
+
+function update_foreground_border_display(foregroundElement){
+
+    foregroundElement.forEach(fg => {
+
+        let is_visible, borderColor, backgroundColor, isForegroundTooFar, cursorType;
+        const { x: coordX, y: coordY } = fg.data.coordinates;
+        const { x: sizeX, y: sizeY } = fg.size;
+    
+        let rowIndex = coordY;
+        let colIndex = coordX;
+        let full_size_y = atlas.tilesize * sizeY;
+        let full_size_x = atlas.tilesize * sizeX;
+
+        let data = {
+            coordinates: fg.data.coordinates,
+            size : fg.size
+        }
+        
+        is_visible = checkIfCoordinateIsVisible(data, is_npc=false, is_foreground=true)
+        isForegroundTooFar = !is_visible;
+
+        for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
+            for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
+                const cell = getTableCell(rowIndex, colIndex);
+                const cellDiv = cell.querySelector('div');
+                const border = cellDiv.querySelector('span');
+
+
+                if (!border) continue;
+
+                // Supprime proprement les anciens events (évite les doublons mémoire)
+                const newBorder = border.cloneNode(true);
+                border.replaceWith(newBorder);
+
+                newBorder.removeAttribute('data-modal-target', `modal-${fg.data.name}`);
+                newBorder.removeAttribute(attribute_touch_click, `open_close_modal('modal-${fg.data.name}')`);
+
+                if (is_visible) {
+                    newBorder.setAttribute('data-modal-target', `modal-${fg.data.name}`);
+                    newBorder.setAttribute(attribute_touch_click, `open_close_modal('modal-${fg.data.name}')`);
+                    cursorType = "cursor-pointer";
+                    borderColor = 'border-amber-500';
+                }else{
+                    borderColor = 'border-red-600';
+                    backgroundColor = 'bg-red-600/30';
+                    isForegroundTooFar = true;
+                    cursorType = "cursor-not-allowed";
+                }
+
+                // Événements optimisés avec les valeurs pré-calculées
+                const mouseoverHandler = () => generate_border(sizeY, sizeX, coordY, coordX, borderColor, isForegroundTooFar);
+                const mouseoutHandler = () => remove_border(sizeY, sizeX, coordY, coordX, borderColor, isForegroundTooFar);
+
+                // Add event listeners
+                newBorder.addEventListener("mouseover", mouseoverHandler);
+                newBorder.addEventListener("mouseout", mouseoutHandler);
+                
+                border.className = `absolute z-10 w-[32px] h-[32px] pathfinding-zone ${cursorType} ${borderColor} foreground-element`;
+
+                colIndex++;
+            }
+            rowIndex++;
+            colIndex = coordX;
+        }
+
+    });
 }

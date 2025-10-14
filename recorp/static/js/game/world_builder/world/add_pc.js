@@ -16,7 +16,6 @@ function add_pc(data) {
             }
         });
         
-
     }else{
 
         const playerInfo = extractPlayerInfo(data);
@@ -66,29 +65,6 @@ function extractPlayerInfo(playerData) {
     };
 }
 
-function checkIfCoordinateIsVisible(playerInfo){
-
-        const shipSizeX = parseInt(playerInfo.ship.sizeX);
-        const shipSizeY = parseInt(playerInfo.ship.sizeY);
-        const startCoordX = parseInt(playerInfo.coordinates.x) - 1;
-        const startCoordY = parseInt(playerInfo.coordinates.y) - 1;
-        const endCoordX = parseInt(startCoordX + shipSizeX);
-        const endCoordY = parseInt(startCoordY + shipSizeY);
-
-        let coordinates_array = [];
-
-        if(shipSizeY == 1 && shipSizeX == 1){
-            coordinates_array.push(`${startCoordY}_${startCoordX}`)
-        }else{
-            for(let row = startCoordY; row < endCoordY; row++){
-                for(let col = startCoordX; col < endCoordX; col++){
-                    coordinates_array.push(`${row}_${col}`);
-                }
-            }
-        }
-
-        return coordinates_array.some(id=> observable_zone_id.indexOf(id) !== -1);
-}
 
 function checkIfModalExists(id_with_prefix){
     let element = document.getElementById(id_with_prefix)
@@ -97,30 +73,6 @@ function checkIfModalExists(id_with_prefix){
     }else{
         return false;
     }
-}
-
-function createAndAppendPlayerModal(modalData, playerInfo) {
-
-    const modalIdWithPrefix = `modal-pc_${playerInfo.user.id}`;
-    const modalId = `pc_${playerInfo.user.id}`;
-
-    let unknowModalId = `modal-unknown-pc_${playerInfo.user.id}`;
-
-    let unknownModal = document.getElementById(unknowModalId);
-    unknownModal?.remove();
-
-    if(!checkIfModalExists(modalIdWithPrefix)){
-
-        const modal = create_pc_npc_modal(
-            modalId,
-            modalData,
-            false
-        );
-        
-        document.querySelector('#modal-container').append(modal);
-    }
-    
-    return;
 }
 
 function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
@@ -137,7 +89,7 @@ function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
             const cell = getTableCell(coordY, coordX);
             const border = cell.querySelector('span');
             
-            // SOLUTION CORRIGÉE: Nettoyer TOUS les éléments unknown-ship existants
+            // Nettoyer TOUS les éléments unknown-ship existants
             const existingUnknownShips = cell.querySelectorAll('#unknown-ship');
             existingUnknownShips.forEach(ship => ship.remove());
 

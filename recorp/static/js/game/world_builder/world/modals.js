@@ -260,6 +260,8 @@ function open_close_modal(id) {
     
     let extractDataFromId = define_modal_type(id);
     let extractedDataForModal = extract_data_for_modal(extractDataFromId);
+
+    document.querySelector('#modal-unknown-' + id)?.delete();
     
     let modal = document.querySelector('#' + id);
 

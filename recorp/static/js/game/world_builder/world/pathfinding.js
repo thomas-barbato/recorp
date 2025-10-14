@@ -177,7 +177,6 @@ function displayShipPreview(pathIndex) {
 
 function calculateShipCoordinates(pathIndex) {
     const coordinates = [];
-    console.log(pathfinder_obj.player_cell)
     const lastPathNode = pathfinder_obj.path[pathIndex];
     
     for (let row = lastPathNode.x; row < lastPathNode.x + current_player.s_size.y; row++) {

@@ -24,25 +24,14 @@ function extractNpcInfo({ npc, ship }) {
     };
 }
 
-
-function createAndAppendNpcModal(npcId, modalData, npcInfo) {
-    const modalIdWithPrefix = `modal-npc_${npcId}`;
-    const modalId = `npc_${npcId}`;
-
-    if (!checkIfModalExists(modalIdWithPrefix)) {
-        const modal = create_pc_npc_modal(modalId, modalData, true);
-        document.querySelector('#modal-container').append(modal);
-    }
-}
-
 function renderNpcShip(npcData, npcInfo, fragment, modalData = "") {
     const { ship, coordinates } = npcInfo;
     const bgUrl = `/static/img/foreground/SHIPS/${ship.image}.png`;
     const { sizeX, sizeY } = ship;
 
     let coordX = coordinates.x;
-    let coordY = coordinates.y;
-    const isVisible = ship_is_visible(coordY, coordX, sizeY, sizeX);
+    let coordY = coordinates.y
+    const isVisible = checkIfCoordinateIsVisible(npcData, is_npc=true);
 
     for (let row = 0; row < sizeY; row++) {
         for (let col = 0; col < sizeX; col++) {

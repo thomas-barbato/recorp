@@ -209,6 +209,7 @@ function update_player_pos_display_after_move(data, recieved_data) {
     update_player_range_in_modal(data.modules_range);
 
     // 8. Met à jour les affichages des bordures des elements statiques.
+    update_foreground_border_display(foregroundElement);
     
     // 9. Désactivation des boutons pour mobile
     if (isMobile) {
@@ -515,9 +516,9 @@ function handleWarpComplete(data) {
     
     // Mettre à jour les données globales
     map_informations.sector = new_sector_data.sector;
-    map_informations.sector_element = new_sector_data.sector_element;
-    map_informations.npc = new_sector_data.npc;
-    map_informations.pc = new_sector_data.pc;
+    map_informations.sector_element = new_sector_data.sector_element || [];
+    map_informations.npc = new_sector_data.npc || [];
+    map_informations.pc = new_sector_data.pc || [];
     
     // Trouver le joueur actuel dans les nouvelles données
     currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);

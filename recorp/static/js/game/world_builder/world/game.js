@@ -4,6 +4,7 @@ const map_informations = JSON.parse(document.getElementById('script_map_informat
 const current_player_id = JSON.parse(document.getElementById('script_current_player_id').textContent);
 let currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
 let otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
+let foregroundElement = map_informations.sector_element || [];
 let npcs = map_informations.npc || [];
 let observable_zone = [];
 let observable_zone_id = [];
