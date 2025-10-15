@@ -24,10 +24,11 @@
     </header>
     <main class="flex main-game-container flex-col w-full h-full">
         {% include "display-game.html" %}
-    </main>
+    </main><!--
     <footer class="flex disclaimer-container m-0">
         {% include "display-disclaimer.html" %}
-    </footer>
+    </footer>-->
+    {% include "footer.html" %}
 {% else %}
     <header class="flex w-full flex-col main-info-container lg:blur-none">
         {% include "top-panel.html" %}
@@ -36,9 +37,11 @@
     <main class="flex main-game-container flex-row w-full h-full flex-row lg:blur-none">
         {% include "display-game.html" %}
     </main>
+    <!--
     <footer class="flex bottom-0 w-full inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 lg:blur-none p-2">
         {% include "display-disclaimer.html" %}
-    </footer>
+    </footer>-->
+    {% include "footer.html" %}
 {% endif %}
 </div>
 {% endblock %}

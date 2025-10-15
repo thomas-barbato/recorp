@@ -4,15 +4,8 @@
 {% load i18n %}
 
 {% block content %}
-<div class="flex justify-between flex-col h-full w-full overflow-hidden">
-    <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
-        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-            {% include "mobile-create-account-top-panel.html" %}
-        {% else %}
-            {% include "mobile-create-account-top-panel.html" %}
-            {% include "create-account-top-panel.html" %}
-        {% endif %}
-    </header>
+<div class="flex justify-between flex-col h-screen w-full overflow-hidden">
+        {% include "index-top-panel.html" %}
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
     <main id="main-index-container" class="flex w-full h-full flex-row items-center lg:blur-none overflow-y-scroll no-scrollbar">
         <form class="flex w-full justify-center items-start p-2">

@@ -4,15 +4,8 @@
 {% load i18n %}
 
 {% block content %}
-<div class="flex flex-col min-h-screen">
-    <header class="relative w-full flex-col index-panel-container lg:blur-none text-shadow">
-        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-            {% include "mobile-create-account-top-panel.html" %}
-        {% else %}
-            {% include "mobile-create-account-top-panel.html" %}
-            {% include "create-account-top-panel.html" %}
-        {% endif %}
-    </header>
+<div class="flex flex-col h-screen">
+    {% include "index-top-panel.html" %}
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
     <main class="flex main-index-container w-full h-full flex-row lg:blur-none overflow-y-scroll  no-scrollbar text-shadow font-shadow p-1">
         <div class="flex w-full justify-center items-start md:mt-[10%] p-1">
@@ -65,9 +58,7 @@
             </form>
         </div>
     </main>
-    <footer class="flex bottom-0 w-full h-10 inline-block disclaimer-container justify-stretch items-bottom bg-zinc-950/70 m-0 lg:blur-none text-shadow p-2">
-        {% include "display-disclaimer.html" %}
-    </footer>
+    {% include "footer.html" %}
 </div>
 <script src="{% static 'js/game/world_builder/account/register.js' %}" type="text/javascript"></script>
 {% endblock %}
