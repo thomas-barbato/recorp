@@ -3,159 +3,24 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ current_player_id|json_script:"script_current_player_id" }}
-<div id="chat" class="flex z-20 lg:inline hidden order-1 w-2/12 no-scrollbar place-content-center">
-    <div class="inline-block md:mx-auto text-center text-emerald-300 text-sm p-2" id="chat-item-container">
-        <fieldset class="relative flex-col text-xs mx-auto  w-auto border border-b-[#B1F1CB]/0 border-[#B1F1CB] text-start bg-gray-800 p-1">
-            <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw]"><p class="text-center">Chat & Log</p></legend>
-            <span id="chat-item-container-element" class="flex flex-col p-2 gap-1 h-[70vh] max-h-[70vh] overflow-y-scroll thin-semi-transparent-scrollbar thin-semi-transparent-scrollbar:hover">
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="flex flex-col text-wrap w-full mx-auto font-shadow text-start bg-slate-600/50 p-1">
-                    <strong class="text-emerald-400 text-xs">Username (D/M/Y - H/M/S):</strong>
-                    <p class="text-emerald-300 text-xs">consectetur adipiscing elit consectetur adipiscing elit Lorem ipsum dolor sit amet</p>
-                </div>
-            </span>
-        </fieldset>
-        <textarea name="chat-area" rows="4" cols="20" maxlength="150" placeholder="{% translate 'Send a message' %}..." class="w-full mx-auto rounded-b border-b border-l border-r border-[#B1F1CB] focus:outline-none bg-gray-800 text-emerald-300 text-xs text-emerald-300 font-bold text-sm p-2 no-scrollbar"></textarea>
-        <input type="submit" id="chat-message-submit" hidden>
-    </div>
-</div>
 <div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2 justify-center items-center">
     <div class="flex z-100 mx-auto mb-2 justify-center lg:items-center">
         <div class="grid">
             <table class="tabletop-view">
-                <tbody>
+                <tbody class="border-collapse border border-emerald-400/30">
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
-                        <td id="Y_X" class="flex text-center text-neutral-400 text-shadow font-bold w-[32px] h-[32px] uncrossable flex-row">
+                        <td id="Y_X" class="text-center text-emerald-300/70 font-orbitron font-bold w-[32px] h-[32px] uncrossable text-xs uppercase tracking-wide">
                             <span class="flex w-[32px] hidden" id="Y_X_y"></span>
                         </td>
                         {% for col in map_size_range.cols %}
-                        <td id="X_{{ col }}" class="text-center text-shadow border border-slate-600 bg-gray-600/40 text-emerald-300 font-bold w-[32px] h-[32px] md:p-1 text-xs uncrossable">
+                        <td id="X_{{ col }}" class="text-center text-emerald-300 font-orbitron font-semibold border border-emerald-400/20 bg-zinc-800/50 w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm hover:bg-emerald-500/10 transition-all duration-200">
                             {{ col }}
                         </td>
                         {% endfor %}
                     {% endif %}
                     <tr class="rows">
-                        <td id="Y_{{ row }}" class="text-center text-emerald-300 font-bold border border-slate-600 bg-gray-600/40 text-shadow w-[32px] h-[32px] md:p-1 text-xs uncrossable">{{ row }}</td>
+                        <td id="Y_{{ row }}" class="text-center text-emerald-300 font-orbitron font-semibold border border-emerald-400/20 bg-zinc-800/50 w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm hover:bg-emerald-500/10 transition-all duration-200">{{ row }}</td>
                         {% for col in map_size_range.cols %}
                             <td class="relative w-[32px] h-[32px] m-0 p-0 tile z-10" id="{{ row }}_{{ col }}">
                                 <div class="relative w-[32px] h-[32px] z-20 coord-zone-div">
@@ -210,41 +75,56 @@
         </div>
     </div>
 </div>
-<div class="flex z-20 lg:inline hidden order-3 w-2/12 no-scrollbar h-full m-1" id="player-infos">
+<div id="player-infos" class="flex z-20 lg:inline hidden order-3 w-2/12 no-scrollbar h-full m-1 bg-emerald-900/20 backdrop-blur-md border border-emerald-400/20 rounded-2xl shadow-lg shadow-emerald-900/40 overflow-y-auto transition-all duration-500 ease-out animate-fade-in">
+    
     {% for pc in map_informations.pc %}
         {% if pc.user.player == current_player_id %}
-            <div id="player-info-item-container" class="w-full flex items-center justify-center gap-2 flex-row md:block h-full place-content-center thin-semi-transparent-scrollbar">
-                <fieldset id="player-fieldset" class="flex text-xs items-start justify-center mx-auto gap-2 p-2 w-auto text-start flex-row border border-[#B1F1CB] rounded bg-gray-800 mb-2 min-h-[50px]">
-                    <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw] ">
-                        <p class="text-center">{% translate "Character" %}</p>
+            <div id="player-info-item-container" class="w-full flex flex-col items-center justify-start gap-4 p-4 text-xs thin-semi-transparent-scrollbar">
+
+                <!-- CHARACTER CARD -->
+                <fieldset id="player-fieldset" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/40 p-3 shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.02]">
+                    <legend class="text-[10px] uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                        {% translate "Character" %}
                     </legend>
-                    <div class="flex justify-start self-center">
-                        <img class="w-24 h-auto h-auto max-w-xl rounded-lg" alt="image description" {% if pc.user.image %} srcset="/static/img/users/{{pc.user.player}}/0.gif" {% else %} srcset="{% static 'ux/default-user.svg' %}" {% endif %}>
-                    </div>
-                    <div class="flex w-full flex-col self-center">
-                        <div class="flex w-full flex-col text-xs">
-                            <label for="player-name" class="text-white">{% translate "Name" %}:</label>
-                            <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.name }}</div>
-                        </div>
-                        <div class="flex w-full flex-col text-xs">
-                            <label for="player-name" class="text-white">{% translate "Archetype" %}:</label>
-                            <div id="player-name" class="text-emerald-300 font-bold">{{ pc.user.archetype_name }}</div>
-                        </div>
-                        <div class="flex w-full flex-col text-xs">
-                            <label for="player-name" class="text-white">{% translate "Faction" %}:</label>
-                            <div id="player-name" class="text-emerald-300 font-bold">{{ pc.faction.name }}</div>
+
+                    <div class="flex flex-col items-center gap-2">
+                        <img class="w-20 h-auto rounded-full shadow-md shadow-emerald-800/50" 
+                            alt="image description"
+                            {% if pc.user.image %}
+                            srcset="/static/img/users/{{pc.user.player}}/0.gif"
+                            {% else %}
+                            srcset="{% static 'ux/default-user.svg' %}"
+                            {% endif %}>
+                        
+                        <div class="flex flex-col items-center gap-1">
+                            <div class="text-emerald-300 font-bold">{{ pc.user.name }}</div>
+                            <div class="text-emerald-200">{{ pc.user.archetype_name }}</div>
+                            <div class="text-emerald-200 italic">{{ pc.faction.name }}</div>
                         </div>
                     </div>
                 </fieldset>
-                <fieldset id="status-fieldset" class="flex text-xs items-start justify-center mx-auto gap-1 p-2 w-auto text-start flex-col border border-[#B1F1CB] rounded bg-gray-800 mb-2 min-h-[75px]">
-                    <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw] ">
-                        <p class="text-center">{% translate "Effects" %}</p>
+
+                <!-- STATUS -->
+                <fieldset id="status-fieldset"class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-2 min-h-[75px]">
+                    <legend class="text-[10px] uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                        {% translate "Effects" %}
                     </legend>
+                    <!-- Future dynamic status effects could go here -->
+                    <p class="text-emerald-400/60 italic text-center">{% translate "No active effects" %}</p>
                 </fieldset>
-                <fieldset id="statistics-fieldset" class="flex text-xs items-start justify-center mx-auto gap-1 p-2 w-auto text-start flex-col border border-[#B1F1CB] rounded bg-gray-800 mb-2 min-h-[50px]">
-                    <legend class="text-xs text-start font-shadow font-bold text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md p-1 min-w-[5vw] ">
-                        <p class="text-center">{% translate "Statistics" %}</p>
+
+                <!-- STATISTICS -->
+                <fieldset id="statistics-fieldset"
+                        class="w-full border border-emerald-400/40 rounded-xl 
+                                bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 
+                                flex flex-col gap-3 min-h-[100px]">
+                    <legend class="text-[10px] uppercase tracking-wider font-bold 
+                                text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 
+                                rounded-md px-2 py-1 shadow-sm">
+                        {% translate "Statistics" %}
                     </legend>
+
+                    <!-- Each stat block -->
                     <div id="container-basic-stats" class="flex border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-2 w-full flex-col gap-1"> 
                         <label for="hp-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Hull points'%}</label> 
                         <div class="w-full bg-red-600 relative h-[15px] text-start">
@@ -293,10 +173,10 @@
                     </div>
                 </fieldset>
                 <div id="button-menu" class="border border-[#B1F1CB] rounded bg-emerald-900/40 p-6">
-                    <ul class="grid grid-cols-3 gap-3">
+                    <ul class="grid grid-cols-4 gap-3">
                         <li data-tooltip-target="character-tooltip" data-tooltip-placement="bottom" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-user fa-lg"></i>
+                                <i class="fa-solid fa-user fa-2xl"></i>
                             </div>
                             <div id="character-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Character" %}
@@ -305,7 +185,7 @@
                         </li>
                         <li data-tooltip-target="inventory-tooltip" data-tooltip-placement="bottom" data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-box fa-lg"></i>
+                                <i class="fa-solid fa-box fa-2xl"></i>
                             </div>
                             <div id="inventory-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Inventory" %}
@@ -314,7 +194,7 @@
                         </li>
                         <li data-tooltip-target="faction-tooltip" data-tooltip-placement="bottom" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-people-group fa-lg"></i>
+                                <i class="fa-solid fa-people-group fa-2xl"></i>
                             </div>
                             <div id="faction-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Faction" %}
@@ -323,7 +203,7 @@
                         </li>
                         <li data-tooltip-target="research-tooltip" data-tooltip-placement="bottom" data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-brain fa-lg"></i>
+                                <i class="fa-solid fa-brain fa-2xl"></i>
                             </div>
                             <div id="research-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Research" %}
@@ -332,7 +212,7 @@
                         </li>
                         <li data-tooltip-target="map-tooltip" data-tooltip-placement="bottom" data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-map fa-lg"></i>
+                                <i class="fa-solid fa-map fa-2xl"></i>
                             </div>
                             <div id="map-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Map" %}
@@ -341,7 +221,7 @@
                         </li>
                         <li data-tooltip-target="task-tooltip" data-tooltip-placement="bottom" data-tooltip-placement="bottom" data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-list-check fa-lg"></i>
+                                <i class="fa-solid fa-list-check fa-2xl"></i>
                             </div>
                             <div id="task-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Tasks" %}
@@ -350,7 +230,7 @@
                         </li>
                         <li data-tooltip-target="event-tooltip" data-tooltip-placement="bottom" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-mobile-screen-button fa-lg"></i>
+                                <i class="fa-solid fa-mobile-screen-button fa-2xl"></i>
                             </div>
                             <div id="event-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Events" %}
@@ -359,7 +239,7 @@
                         </li>
                         <li data-tooltip-target="message-tooltip" data-tooltip-placement="bottom" data-modal-target="message-modal" data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-envelope fa-lg"></i>
+                                <i class="fa-solid fa-envelope fa-2xl"></i>
                             </div>
                             <div id="message-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Message" %}
@@ -368,7 +248,7 @@
                         </li>
                         <li data-tooltip-target="forum-tooltip" data-tooltip-placement="bottom" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-comments fa-lg"></i>
+                                <i class="fa-solid fa-comments fa-2xl"></i>
                             </div>
                             <div id="forum-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Forum" %}
@@ -378,7 +258,7 @@
                         <form data-tooltip-target="logout-tooltip" data-tooltip-placement="bottom" method="post" action="{% url 'core:logout_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center logout">
                             {% csrf_token %}
                             <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-home fa-lg"></i>
+                                <i class="fa-solid fa-home fa-2xl"></i>
                             </div>
                             <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                                 {% translate "Logout" %}
@@ -392,6 +272,7 @@
         {% endif %}
     {% endfor %}
 </div>
+
 <script src="{% static 'world_builder/loading/loading_screen.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/check_visibility.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/sonar.js'%}" type='application/javascript'></script>

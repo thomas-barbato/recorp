@@ -275,20 +275,6 @@
 {% endif %}
 </div>
 {% include "footer.html" %}
-<script>
-    // Menu mobile toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenuLoggedOut = document.getElementById('mobile-menu-logged-out');
-    const mobileMenuLoggedIn = document.getElementById('mobile-menu-logged-in');
-
-    mobileMenuBtn.addEventListener('click', () => {
-        if (isLoggedIn) {
-            mobileMenuLoggedIn.classList.toggle('hidden');
-        } else {
-            mobileMenuLoggedOut.classList.toggle('hidden');
-        }
-    });
-</script>
 {% endblock %}
 {% block js %}
 <script src="{% static 'js/game/world_builder/account/logout.js' %}" type="text/javascript"></script>

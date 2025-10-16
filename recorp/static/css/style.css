@@ -14,10 +14,12 @@ body {
     overflow-x: hidden;
 }
 
+/*
 #main-screen {
     background-image: url("/static/fonts/space_2.jpg");
     background-size: cover;
 }
+    */
 
 #settings-button {
     color: #F5F5F5;
@@ -542,4 +544,56 @@ html, body {
 body {
     scrollbar-gutter: stable;
     scroll-behavior: smooth;
+}
+
+/* Animation du menu mobile pour éviter le décalage */
+#mobile-menu-logged-in,
+#mobile-menu-logged-out {
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* Animation du modal */
+#modal-content {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Amélioration du glow pour les inputs en focus */
+input:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1), 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+/* Effet de blur sur le contenu de la page quand le modal est ouvert */
+#content {
+    transition: filter 0.3s ease;
+}
+
+#content.modal-blur-active {
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+/* Effet de blur sur le contenu de la page quand le menu hamburger est ouvert */
+#content.mobile-menu-blur-active {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+/* === Apparition subtile du formulaire (fade + slide-up + glow) === */
+
+@keyframes formAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+        filter: brightness(0.6) blur(2px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(10px) scale(1.01);
+        filter: brightness(1.1) blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: brightness(1);
+    }
 }

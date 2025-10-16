@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
-<!-- Navigation -->
+
+<!-- Navigation avec gestion authentification -->
 <nav class="fixed top-0 w-full z-50 nav-blur border-b border-emerald-500/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
@@ -9,6 +10,7 @@
                 <i class="fas fa-rocket text-3xl text-emerald-400"></i>
                 <span class="font-orbitron text-2xl font-bold text-shadow gradient-text">RECORP</span>
             </a>
+            
             {% if request.user.is_authenticated %}
             <!-- Navigation Links - Connecté -->
             <div class="flex justify-center items-center text-center">
@@ -18,47 +20,333 @@
             </div>
             <div id="nav-logged-in" class="hidden md:flex items-center gap-6">
                 <a href="/play" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-lg transition-all glow-strong font-orbitron">
-                    <i class="fas fa-play mr-2"></i>{%  translate "Enter" %} 
+                    <i class="fas fa-play mr-2"></i>{% translate "Enter" %} 
                 </a>
-                <a href="" class="text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">
-                    <i class="fas fa-sign-out-alt mr-1"></i>{% translate "Log out" %}
-                </a>
+                <form method="post" action="{% url 'core:logout_view' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">
+                        <i class="fas fa-sign-out-alt mr-1"></i>{% translate "Log out" %}
+                    </button>
+                </form>
             </div>
             {% else %}
             <!-- Navigation Links - Non connecté -->
             <div id="nav-logged-out" class="hidden md:flex items-center gap-6">
-                <a href="" class="text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">{% translate "Log in" %}</a>
-                <a href="{% url 'core:create_account' %}" class="text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">{% translate "Register" %}</a>
-                <a href="" class="text-emerald-300/60 hover:text-emerald-400 transition-colors text-sm">Identifiants oubliés</a>
+                
+                {% if not "/account/create" in request.path %}
+                <button id="login-modal-btn" class="text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">
+                    {% translate "Log in" %}
+                </button>
+                {% endif %}
+
+                <a href="{% url 'core:create_account' %}" class="text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">
+                    {% translate "Register" %}
+                </a>
+                <a href="{% url 'core:password_recovery' %}" class="text-emerald-300/60 hover:text-emerald-400 transition-colors text-sm">
+                    Identifiants oubliés
+                </a>
             </div>
             {% endif %}
             
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-emerald-400 text-2xl">
-                <i class="fas fa-bars"></i>
+            <button id="mobile-menu-btn" class="md:hidden text-emerald-400 text-2xl focus:outline-none transition-transform duration-300">
+                <i class="fas fa-bars" id="menu-icon"></i>
             </button>
         </div>
     </div>
+    
     {% if request.user.is_authenticated %}
     <!-- Mobile Menu - Connecté -->
-    <div id="mobile-menu-logged-in" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20">
+    <div id="mobile-menu-logged-in" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20 overflow-hidden transition-all duration-300 max-h-0">
         <div class="px-4 py-4 space-y-3">
-            <a href="" class="block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-center transition-all glow-strong font-orbitron">
+            <a href="/play" class="block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-center transition-all glow-strong font-orbitron">
                 <i class="fas fa-play mr-2"></i>ENTRER
             </a>
-            <a href="" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2">
-                <i class="fas fa-sign-out-alt mr-1"></i>Déconnexion
-            </a>
+            <form method="post" action="{% url 'core:logout_view' %}">
+                {% csrf_token %}
+                <button type="submit" class="block w-full text-left text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2">
+                    <i class="fas fa-sign-out-alt mr-1"></i>Déconnexion
+                </button>
+            </form>
         </div>
     </div>
     {% else %}
     <!-- Mobile Menu - Non connecté -->
-    <div id="mobile-menu-logged-out" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20">
-        <div class="px-4 py-4 space-y-3">
-            <a href="" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2">Connexion</a>
-            <a href="" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2">Créer un compte</a>
-            <a href="" class="block text-emerald-300/60 hover:text-emerald-400 transition-colors text-sm py-2">Identifiants oubliés</a>
+    <div id="mobile-menu-logged-out" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20 overflow-hidden transition-all duration-300 max-h-0">
+        <div class="px-4 py-4">
+            {% if not "/account/create" in request.path %}
+            <!-- Formulaire de connexion dans le hamburger -->
+            <div class="bg-zinc-900/70 border border-emerald-500/30 rounded-lg p-4 mb-3">
+                <form method="POST" action="" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label for="mobile_username" class="block text-emerald-300 text-sm font-bold mb-1">
+                            {% translate 'username' %}
+                        </label>
+                        <input 
+                            type="text" 
+                            name="username" 
+                            id="mobile_username"
+                            maxlength="150" 
+                            required 
+                            class="w-full px-3 py-2 bg-zinc-800/50 border border-emerald-500/30 rounded-md text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                            placeholder="Votre identifiant"
+                        >
+                    </div>
+                    <div>
+                        <label for="mobile_password" class="block text-emerald-300 text-sm font-bold mb-1">
+                            {% translate 'password' %}
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="mobile_password"
+                            required 
+                            class="w-full px-3 py-2 bg-zinc-800/50 border border-emerald-500/30 rounded-md text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                            placeholder="Mot de passe"
+                        >
+                    </div>
+                    
+                    <!-- Messages d'erreur mobile -->
+                    {% if messages %}
+                    <div class="space-y-2">
+                        {% for message in messages %}
+                        <div class="p-3 rounded-md border {% if message.tags == 'error' %}bg-red-900/20 border-red-500/50 text-red-400{% elif message.tags == 'warning' %}bg-yellow-900/20 border-yellow-500/50 text-yellow-400{% elif message.tags == 'success' %}bg-emerald-900/20 border-emerald-500/50 text-emerald-400{% endif %}">
+                            <p class="text-sm font-semibold">{{ message|safe }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <button 
+                        type="submit" 
+                        class="w-full px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg transition-all glow font-orbitron"
+                    >
+                        <i class="fas fa-sign-in-alt mr-2"></i>SE CONNECTER
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+            <div class="space-y-2 border-t border-emerald-500/20 pt-3">
+                <a href="{% url 'core:create_account' %}" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2 text-center">
+                    <i class="fas fa-user-plus mr-1"></i>Créer un compte
+                </a>
+                <a href="{% url 'core:password_recovery' %}" class="block text-emerald-300/60 hover:text-emerald-400 transition-colors text-sm py-2 text-center">
+                    Identifiants oubliés
+                </a>
+            </div>
         </div>
     </div>
     {% endif %}
 </nav>
+
+{% if not request.user.is_authenticated %}
+<!-- Modal de connexion pour desktop -->
+<div id="login-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <!-- Overlay avec effet de flou -->
+    <div id="modal-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-[9998]"></div>
+    
+    <!-- Contenu du modal -->
+    <div class="relative bg-zinc-900/95 border-2 border-emerald-500/50 rounded-2xl p-8 max-w-md w-full glow transform transition-all duration-300 scale-95 opacity-0 z-[9999]" id="modal-content">
+        <!-- Bouton de fermeture -->
+        <button id="close-modal" class="absolute top-4 right-4 text-emerald-400 hover:text-emerald-300 text-2xl transition-colors">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- En-tête -->
+        <div class="text-center mb-6">
+            <i class="fas fa-user-astronaut text-5xl text-emerald-400 mb-3"></i>
+            <h2 class="font-orbitron text-3xl font-bold text-shadow gradient-text">
+                CONNEXION
+            </h2>
+            <p class="text-emerald-300/70 mt-2">Accédez à votre compte</p>
+        </div>
+        <!-- Formulaire de connexion -->
+        <form method="POST" action="" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="modal_username" class="block text-emerald-300 text-sm font-bold mb-2">
+                    <i class="fas fa-user mr-1"></i>{% translate 'username' %}
+                </label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="modal_username"
+                    maxlength="150" 
+                    required 
+                    class="w-full px-4 py-3 bg-zinc-800/50 border border-emerald-500/30 rounded-lg text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-all"
+                    placeholder="Votre identifiant"
+                >
+            </div>
+            
+            <div>
+                <label for="modal_password" class="block text-emerald-300 text-sm font-bold mb-2">
+                    <i class="fas fa-lock mr-1"></i>{% translate 'password' %}
+                </label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="modal_password"
+                    required 
+                    class="w-full px-4 py-3 bg-zinc-800/50 border border-emerald-500/30 rounded-lg text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-all"
+                    placeholder="Mot de passe"
+                >
+            </div>
+            
+            <!-- Messages d'erreur modal -->
+            {% if messages %}
+            <div class="space-y-2">
+                {% for message in messages %}
+                <div class="p-3 rounded-lg border {% if message.tags == 'error' %}bg-red-900/30 border-red-500/50 text-red-400{% elif message.tags == 'warning' %}bg-yellow-900/30 border-yellow-500/50 text-yellow-400{% elif message.tags == 'success' %}bg-emerald-900/30 border-emerald-500/50 text-emerald-400{% endif %}">
+                    <p class="text-sm font-semibold">{{ message|safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <button 
+                type="submit" 
+                class="w-full px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-lg transition-all glow-strong font-orbitron"
+            >
+                <i class="fas fa-sign-in-alt mr-2"></i>SE CONNECTER
+            </button>
+        </form>
+        <!-- Liens supplémentaires -->
+        <div class="mt-6 pt-4 border-t border-emerald-500/20 space-y-2 text-center">
+            <a href="{% url 'core:password_recovery' %}" class="block text-emerald-300/70 hover:text-emerald-400 transition-colors text-sm">
+                <i class="fas fa-key mr-1"></i>Identifiants oubliés ?
+            </a>
+            <a href="{% url 'core:create_account' %}" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">
+                <i class="fas fa-user-plus mr-1"></i>Créer un compte
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const menuIcon = document.getElementById('menu-icon');
+    const isAuthenticated = {{ request.user.is_authenticated|yesno:"true,false" }};
+    const pageContent = document.getElementById('content');
+    
+    // Gestion du menu hamburger mobile
+    if (mobileMenuBtn) {
+        const mobileMenu = isAuthenticated 
+            ? document.getElementById('mobile-menu-logged-in')
+            : document.getElementById('mobile-menu-logged-out');
+        
+        let isOpen = false;
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            isOpen = !isOpen;
+            
+            if (isOpen) {
+                // Ouvrir le menu
+                mobileMenu.classList.remove('hidden');
+                // Ajouter le blur au contenu de la page
+                if (pageContent) {
+                    pageContent.classList.add('mobile-menu-blur-active');
+                }
+                // Petit délai pour permettre la transition
+                setTimeout(() => {
+                    mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                }, 10);
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+                mobileMenuBtn.style.transform = 'rotate(90deg)';
+            } else {
+                // Fermer le menu
+                mobileMenu.style.maxHeight = '0';
+                // Retirer le blur du contenu de la page
+                if (pageContent) {
+                    pageContent.classList.remove('mobile-menu-blur-active');
+                }
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+                mobileMenuBtn.style.transform = 'rotate(0deg)';
+                // Attendre la fin de la transition avant de masquer
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+            }
+        });
+    }
+    
+    // Gestion du modal de connexion (desktop uniquement)
+    if (!isAuthenticated && window.innerWidth >= 768) {
+        const loginModalBtn = document.getElementById('login-modal-btn');
+        const loginModal = document.getElementById('login-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        // Ouvrir le modal
+        if (loginModalBtn && loginModal) {
+            loginModalBtn.addEventListener('click', function() {
+                loginModal.classList.remove('hidden');
+                // Ajouter le blur au contenu de la page
+                if (pageContent) {
+                    pageContent.classList.add('modal-blur-active');
+                }
+                // Animation d'ouverture
+                setTimeout(() => {
+                    modalContent.style.transform = 'scale(1)';
+                    modalContent.style.opacity = '1';
+                }, 10);
+                // Empêcher le scroll du body
+                document.body.style.overflow = 'hidden';
+            });
+        }
+        
+        // Fermer le modal
+        function closeModal() {
+            modalContent.style.transform = 'scale(0.95)';
+            modalContent.style.opacity = '0';
+            // Retirer le blur du contenu de la page
+            if (pageContent) {
+                pageContent.classList.remove('modal-blur-active');
+            }
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+        
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+        
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', closeModal);
+        }
+        
+        // Fermer avec Échap
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !loginModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+        
+        // Si des messages d'erreur existent, ouvrir automatiquement le modal
+        {% if messages %}
+        if (loginModal) {
+            loginModal.classList.remove('hidden');
+            if (pageContent) {
+                pageContent.classList.add('modal-blur-active');
+            }
+            setTimeout(() => {
+                modalContent.style.transform = 'scale(1)';
+                modalContent.style.opacity = '1';
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        {% endif %}
+    }
+});
+</script>
+
+<style>
+
+</style>
