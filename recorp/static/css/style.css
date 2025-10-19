@@ -619,3 +619,11 @@ input:focus {
     animation: log-entry-appear 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
     will-change: transform, opacity, filter;
 }
+
+@keyframes emerald-pulse {
+    0%, 100% { filter: drop-shadow(0 0 6px #34d399); opacity: 1; }
+    50% { filter: drop-shadow(0 0 12px #6ee7b7); opacity: 0.85; }
+}
+.arrow-icon {
+    animation: emerald-pulse 2.5s ease-in-out infinite;
+}
