@@ -3,11 +3,107 @@
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
 {{ current_player_id|json_script:"script_current_player_id" }}
-<div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2 justify-center items-center">
+<div id="button-menu" class="hidden md:flex justify-center items-center order-1 m-2 w-1/12">
+    <ul class="flex flex-col h-auto gap-6 p-4 bg-emerald-900/40 border border-emerald-400/40">
+        <li data-tooltip-target="character-tooltip" data-tooltip-placement="right" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-user fa-xl"></i>
+            </div>
+            <div id="character-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Character" %}
+                <div class="map-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="inventory-tooltip" data-tooltip-placement="right" data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-box fa-xl"></i>
+            </div>
+            <div id="inventory-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Inventory" %}
+                <div class="map-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="faction-tooltip" data-tooltip-placement="right" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-people-group fa-xl"></i>
+            </div>
+            <div id="faction-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Faction" %}
+                <div class="map-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="research-tooltip" data-tooltip-placement="right" data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-brain fa-xl"></i>
+            </div>
+            <div id="research-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Research" %}
+                <div class="map-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="map-tooltip" data-tooltip-placement="right" data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-map fa-xl"></i>
+            </div>
+            <div id="map-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Map" %}
+                <div class="map-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="task-tooltip" data-tooltip-placement="right" data-tooltip-placement="right" data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-list-check fa-xl"></i>
+            </div>
+            <div id="task-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Tasks" %}
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="event-tooltip" data-tooltip-placement="right" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-mobile-screen-button fa-xl"></i>
+            </div>
+            <div id="event-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Events" %}
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="message-tooltip" data-tooltip-placement="right" data-modal-target="message-modal" data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-envelope fa-xl"></i>
+            </div>
+            <div id="message-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Message" %}
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <li data-tooltip-target="forum-tooltip" data-tooltip-placement="right" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-comments fa-xl"></i>
+            </div>
+            <div id="forum-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Forum" %}
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+        </li>
+        <form data-tooltip-target="logout-tooltip" data-tooltip-placement="right" method="post" action="{% url 'core:logout_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center logout">
+            {% csrf_token %}
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-home fa-xl"></i>
+            </div>
+            <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Logout" %}
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+            <button type="submit" id="logout-btn" class="hidden"></button>
+        </form>
+    </ul>
+</div>
+<div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2 justify-center items-center select-none">
     <div class="flex z-100 mx-auto mb-2 justify-center lg:items-center">
         <div class="grid">
             <table class="tabletop-view">
-                <tbody class="border-collapse border border-emerald-400/30">
+                <tbody class="border-collapse">
                 {% for row in map_size_range.rows %}
                     {% if forloop.first %}
                         <td id="Y_X" class="text-center text-emerald-300/70 font-orbitron font-bold w-[32px] h-[32px] uncrossable text-xs uppercase tracking-wide">
@@ -75,20 +171,19 @@
         </div>
     </div>
 </div>
-<div id="player-infos" class="flex z-20 lg:inline hidden order-3 w-2/12 no-scrollbar h-full m-1 bg-emerald-900/20 backdrop-blur-md border border-emerald-400/20 rounded-2xl shadow-lg shadow-emerald-900/40 overflow-y-auto transition-all duration-500 ease-out animate-fade-in">
-    
+<div id="player-infos" class="flex z-20 lg:inline hidden order-3 w-2/12 h-auto my-2 mx-2 no-scrollbar bg-emerald-900/20 backdrop-blur-md border border-emerald-400/20 rounded-2xl shadow-lg shadow-emerald-900/40 overflow-y-auto transition-all duration-500 ease-out animate-fade-in">
     {% for pc in map_informations.pc %}
         {% if pc.user.player == current_player_id %}
-            <div id="player-info-item-container" class="w-full flex flex-col items-center justify-start gap-4 p-4 text-xs thin-semi-transparent-scrollbar">
+            <div id="player-info-item-container" class="w-full flex flex-col items-center justify-center gap-4 p-4 text-sm thin-semi-transparent-scrollbar">
 
                 <!-- CHARACTER CARD -->
-                <fieldset id="player-fieldset" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/40 p-3 shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.02]">
-                    <legend class="text-[10px] uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                <fieldset id="player-fieldset" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/40 p-3 shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.02] select-none">
+                    <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
                         {% translate "Character" %}
                     </legend>
 
-                    <div class="flex flex-col items-center gap-2">
-                        <img class="w-20 h-auto rounded-full shadow-md shadow-emerald-800/50" 
+                    <div class="flex flex-row justify-center items-center gap-2">
+                        <img class="w-20 h-auto rounded-md shadow-sm justify-center items-center shadow-emerald-800/50" 
                             alt="image description"
                             {% if pc.user.image %}
                             srcset="/static/img/users/{{pc.user.player}}/0.gif"
@@ -105,8 +200,8 @@
                 </fieldset>
 
                 <!-- STATUS -->
-                <fieldset id="status-fieldset"class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-2 min-h-[75px]">
-                    <legend class="text-[10px] uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                <fieldset id="status-fieldset"class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-2 min-h-[75px] select-none">
+                    <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
                         {% translate "Effects" %}
                     </legend>
                     <!-- Future dynamic status effects could go here -->
@@ -114,13 +209,8 @@
                 </fieldset>
 
                 <!-- STATISTICS -->
-                <fieldset id="statistics-fieldset"
-                        class="w-full border border-emerald-400/40 rounded-xl 
-                                bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 
-                                flex flex-col gap-3 min-h-[100px]">
-                    <legend class="text-[10px] uppercase tracking-wider font-bold 
-                                text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 
-                                rounded-md px-2 py-1 shadow-sm">
+                <fieldset id="statistics-fieldset" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-3 min-h-[100px] select-none">
+                    <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
                         {% translate "Statistics" %}
                     </legend>
 
@@ -172,108 +262,30 @@
                         </div>
                     </div>
                 </fieldset>
-                <div id="button-menu" class="border border-[#B1F1CB] rounded bg-emerald-900/40 p-6">
-                    <ul class="grid grid-cols-4 gap-3">
-                        <li data-tooltip-target="character-tooltip" data-tooltip-placement="bottom" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-user fa-2xl"></i>
-                            </div>
-                            <div id="character-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Character" %}
-                                <div class="map-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="inventory-tooltip" data-tooltip-placement="bottom" data-modal-target="inventory-modal" data-modal-toggle="inventory-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-box fa-2xl"></i>
-                            </div>
-                            <div id="inventory-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Inventory" %}
-                                <div class="map-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="faction-tooltip" data-tooltip-placement="bottom" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-people-group fa-2xl"></i>
-                            </div>
-                            <div id="faction-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Faction" %}
-                                <div class="map-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="research-tooltip" data-tooltip-placement="bottom" data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-brain fa-2xl"></i>
-                            </div>
-                            <div id="research-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Research" %}
-                                <div class="map-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="map-tooltip" data-tooltip-placement="bottom" data-modal-target="map-modal" data-modal-toggle="map-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-map fa-2xl"></i>
-                            </div>
-                            <div id="map-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Map" %}
-                                <div class="map-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="task-tooltip" data-tooltip-placement="bottom" data-tooltip-placement="bottom" data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-list-check fa-2xl"></i>
-                            </div>
-                            <div id="task-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Tasks" %}
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="event-tooltip" data-tooltip-placement="bottom" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-mobile-screen-button fa-2xl"></i>
-                            </div>
-                            <div id="event-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Events" %}
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="message-tooltip" data-tooltip-placement="bottom" data-modal-target="message-modal" data-modal-target="message-modal" data-modal-toggle="message-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-envelope fa-2xl"></i>
-                            </div>
-                            <div id="message-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Message" %}
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <li data-tooltip-target="forum-tooltip" data-tooltip-placement="bottom" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center">
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-comments fa-2xl"></i>
-                            </div>
-                            <div id="forum-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Forum" %}
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </li>
-                        <form data-tooltip-target="logout-tooltip" data-tooltip-placement="bottom" method="post" action="{% url 'core:logout_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center logout">
-                            {% csrf_token %}
-                            <div class="w-auto flex items-center">
-                                <i class="fa-solid fa-home fa-2xl"></i>
-                            </div>
-                            <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                                {% translate "Logout" %}
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                            <button type="submit" id="logout-btn" class="hidden"></button>
-                        </form>
+                <fieldset id="action-logs" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto max-h-[200px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
+                    <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                        {% translate "Action Logs" %}
+                    </legend>
+                    <ul id="player-log-container" class="flex flex-col-reverse gap-0.5">
+                        <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
+                        <li class="opacity-80">{% translate "You scanned a ship." %}</li>
+                        <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
+                        <li class="opacity-80">{% translate "You scanned a ship." %}</li>
+                        <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
+                        <li class="opacity-80">{% translate "You scanned a ship." %}</li>
+                        <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
+                        <li class="opacity-80">{% translate "You scanned a ship." %}</li>
+                        <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
+                        <li class="opacity-80">{% translate "You scanned a ship." %}</li>   
                     </ul>
-                </div>
+                </fieldset>
             </div>
         {% endif %}
     {% endfor %}
 </div>
 
 <script src="{% static 'world_builder/loading/loading_screen.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/onlyDom/log_display_style.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/check_visibility.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/sonar.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/sonar_ship_display.js'%}" type='application/javascript'></script>
