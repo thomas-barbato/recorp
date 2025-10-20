@@ -119,7 +119,7 @@ class Security(models.Model):
 
 class Sector(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Sector")
-    image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
+    image = models.CharField(max_length=250, null=False, blank=False, default="default.gif")
     description = models.TextField(max_length=2500, blank=True)
     security = models.ForeignKey(
         Security,

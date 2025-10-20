@@ -3,10 +3,7 @@
 
 {% for pc in map_informations.pc %}
 {% if pc.user.player == current_player_id %}
-<div id="info-container"
-  class="flex w-full flex-col overflow-hidden mx-auto order-1 text-sm text-emerald-200
-        bg-zinc-900/60 border border-emerald-500/30 shadow-lg backdrop-blur-md
-        lg:blur-none">
+<div id="info-container" class="flex w-full flex-col overflow-hidden mx-auto order-1 text-sm text-emerald-200 bg-zinc-900/60 border border-emerald-500/30 shadow-lg backdrop-blur-md lg:blur-none">
 
   <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-2 p-2">
 
@@ -82,12 +79,11 @@
         <!-- Target coords -->
         <div class="flex items-center bg-zinc-800/70 border border-emerald-500/30 rounded-lg overflow-hidden">
           <i class="fa-solid fa-satellite-dish px-2 text-emerald-300"></i>
-          <span id="target-coord-name"
-                class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center">
+          <span id="target-coord-name" class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center w-[125px] m-w-[125px]">
                 {% translate 'Nothing selected' %}
           </span>
-          <span id="target-coord-y" class="flex bg-zinc-900/70 font-bold p-1 invisible">00</span>
-          <span id="target-coord-x" class="flex bg-emerald-400 font-bold p-1 rounded-r invisible">00</span>
+          <span id="target-coord-y" class="flex bg-zinc-900/70 text-emerald-400 font-bold p-1 invisible">00</span>
+          <span id="target-coord-x" class="flex bg-emerald-400 text-zinc-900 font-bold p-1 rounded-r invisible">00</span>
         </div>
         
       </div>
@@ -140,6 +136,14 @@
     </div>
   </div>
 
+  <!-- === CURRENT EFFECTS (MOBILE) === -->
+  <div id="current-effects-mobile"
+    class="flex flex-row w-full lg:hidden justify-center mb-1 px-2">
+    <fieldset class="flex text-sm items-start justify-center mx-auto gap-1 h-[25px] p-2 w-full text-start flex-col border border-emerald-500/30 rounded-md bg-emerald-900/30 shadow-inner shadow-emerald-900/40">
+      <legend class="text-sm font-bold text-emerald-300 truncate">Current effects</legend>
+    </fieldset>
+  </div>
+
   <!-- === MOBILE BOTTOM BUTTONS === -->
   <div class="flex w-full lg:hidden flex-row p-2 justify-around text-emerald-400">
     <i class="fa-solid fa-id-badge fa-2x cursor-pointer hover:text-emerald-300 transition" id="character-full-info-btn"></i>
@@ -147,14 +151,6 @@
     <i class="fa-solid fa-2x fa-walkie-talkie cursor-pointer hover:text-emerald-300 transition" id="chat-btn"></i>
   </div>
 
-  <!-- === CURRENT EFFECTS (MOBILE) === -->
-  <div id="current-effects-mobile"
-    class="flex flex-row w-full lg:hidden justify-center mb-1 px-2">
-    <fieldset class="flex text-sm items-start justify-center mx-auto gap-1 h-[25px] p-2 w-full text-start flex-col
-                    border border-emerald-500/30 rounded-xl bg-emerald-900/30 shadow-inner shadow-emerald-900/40">
-      <legend class="text-sm font-bold text-emerald-300 truncate">Current effects</legend>
-    </fieldset>
-  </div>
 </div>
 {% endif %}
 {% endfor %}

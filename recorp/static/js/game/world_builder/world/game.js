@@ -176,7 +176,6 @@ function setup_window_resize_handler() {
         }
         
         resizeTimeout = setTimeout(() => {
-
             const player_start_element = document.querySelector('.player-ship-start-pos');
 
             if (!player_start_element) {
@@ -193,8 +192,18 @@ function setup_window_resize_handler() {
             } catch (error) {
                 console.error('Erreur lors du redimensionnement:', error);
             }
-
         }, WS_CONFIG.RESIZE_DELAY);
+    };
+    
+    // CORRECTION: Attacher l'événement resize à la fenêtre
+    window.addEventListener('resize', handleResize);
+    
+    // Optionnel: Retourner une fonction de nettoyage
+    return () => {
+        window.removeEventListener('resize', handleResize);
+        if (resizeTimeout) {
+            clearTimeout(resizeTimeout);
+        }
     };
 }
 

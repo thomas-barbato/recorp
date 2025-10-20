@@ -8,22 +8,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if(menu.classList.contains('hidden')){
             document.querySelector('#info-container').classList.add('blur-sm');
             document.querySelector('.main-game-container').classList.add('blur-sm');
-            document.querySelector('.disclaimer-container').classList.add('blur-sm');
         }else{
             document.querySelector('#info-container').classList.remove('blur-sm');
             document.querySelector('.main-game-container').classList.remove('blur-sm');
-            document.querySelector('.disclaimer-container').classList.remove('blur-sm');
         }
     });
     burger.addEventListener('touchstart', function() {
         if(menu.classList.contains('hidden')){
             document.querySelector('#info-container').classList.add('blur-sm');
             document.querySelector('.main-game-container').classList.add('blur-sm');
-            document.querySelector('.disclaimer-container').classList.add('blur-sm');
         }else{
             document.querySelector('#info-container').classList.remove('blur-sm');
             document.querySelector('.main-game-container').classList.remove('blur-sm');
-            document.querySelector('.disclaimer-container').classList.remove('blur-sm');
         }
     });
     

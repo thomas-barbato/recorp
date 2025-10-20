@@ -627,3 +627,181 @@ input:focus {
 .arrow-icon {
     animation: emerald-pulse 2.5s ease-in-out infinite;
 }
+
+/* Scrollbar dans le thème spatial émeraude */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(16,185,129,0.6) 0%, rgba(34,197,94,0.9) 100%);
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(16,185,129,0.5);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(16,185,129,0.8) 0%, rgba(52,211,153,1) 100%);
+}
+.custom-scrollbar {
+  scrollbar-color: rgba(16,185,129,0.6) transparent;
+  scrollbar-width: thin;
+}
+
+/* === Animation Fade-In + Rise === */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in-up-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Animation "pulse énergétique" pour chaque groupe === */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out;
+}
+.fade-in-up-visible {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 0 0 10px 2px rgba(16, 185, 129, 0.3);
+}
+.fade-in-up-visible:hover {
+  box-shadow: 0 0 15px 4px rgba(16, 185, 129, 0.4);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* === Barre de scroll dans le thème === */
+.skill-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.5) transparent;
+}
+.skill-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.skill-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.skill-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(16, 185, 129, 0.6);
+    border-radius: 4px;
+}
+
+/* === Mise en page PC === */
+@media (min-width: 1024px) {
+    #character-modal .skills-container {
+        max-height: 70vh;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+    }
+}
+
+/* === Mise en page mobile === */
+@media (max-width: 1023px) {
+    #character-modal .skills-container {
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    #character-modal fieldset {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    #character-modal .skills {
+        width: 100% !important;
+        min-height: 60px;
+    }
+
+    #character-modal .skills .text-xs,
+    #character-modal .skills p {
+        font-size: 0.9rem;
+    }
+
+    #character-modal .skills .h-3 {
+        height: 0.75rem !important;
+    }
+}
+
+
+/* Tooltip custom — thème émeraude */
+.skill-tooltip {
+    position: fixed;
+    z-index: 99999;
+    max-width: 360px;
+    background: rgba(8, 10, 12, 0.95);
+    color: #DFFFEA;
+    border: 1px solid rgba(16,185,129,0.15);
+    box-shadow: 0 6px 24px rgba(16,185,129,0.06);
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.25;
+    pointer-events: none;
+    transform-origin: top left;
+    transition: opacity 150ms ease, transform 150ms ease;
+    opacity: 0;
+}
+
+/* visible state */
+.skill-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* titre du tooltip */
+.skill-tooltip .tt-title {
+    font-weight: 700;
+    color: #A8FFDB;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+/* meta line (level / progress) */
+.skill-tooltip .tt-meta {
+    font-size: 0.8rem;
+    color: rgba(200,255,230,0.9);
+    margin-bottom: 8px;
+}
+
+/* content */
+.skill-tooltip .tt-body {
+    font-size: 0.85rem;
+    color: #D8FCE6;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+/* Scrollbar inside tooltip (subtil) */
+.skill-tooltip .tt-body::-webkit-scrollbar { width:6px; }
+.skill-tooltip .tt-body::-webkit-scrollbar-track { background: transparent; }
+.skill-tooltip .tt-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(16,185,129,0.45), rgba(52,211,153,0.8));
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(16,185,129,0.2);
+}
+
+/* Inline description box (shown under skill bar on click) */
+.skill-expanded {
+    margin-top: 8px;
+    background: rgba(2,6,7,0.8);
+    border: 1px solid rgba(16,185,129,0.12);
+    color: #DFFFEA;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    animation: expandFade 180ms ease-out;
+}
+@keyframes expandFade {
+    from { opacity: 0; transform: translateY(-6px) scale(0.995); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Small responsive safety: tooltip disabled on small devices via CSS (just in case) */
+@media (max-width: 1023px) {
+    .skill-tooltip { display: none !important; }
+}
