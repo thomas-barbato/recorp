@@ -1,9 +1,9 @@
 {% load static %}
 {% load i18n %}
 
-<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full backdrop-blur-md bg-black/40">
-    <div class="relative md:w-[95vw] w-full md:h-[95vh] h-full max-w-7xl md:max-h-[95vh] md:overflow-hidden overflow-y-auto rounded-xl shadow-lg border border-emerald-800/40 bg-gradient-to-br from-emerald-950/60 via-gray-900/70 to-black/80 flex flex-col">
-
+<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40 backdrop-blur-md animate-modal-fade">
+    <div class="relative md:w-[95vw] w-full md:h-[95vh] h-full max-w-7xl md:max-h-[95vh] md:overflow-hidden overflow-y-auto rounded-xl shadow-lg border border-emerald-800/40 bg-gradient-to-br from-emerald-950/60 via-gray-900/70 to-black/80 flex flex-col animate-modal-rise energy-border">
+        {{  curentPlayer }}
         <!-- Header -->
         <div class="shrink-0 text-center py-3 border-b border-emerald-700/40 bg-black/40 backdrop-blur-sm">
         <h3 class="text-2xl font-bold font-shadow text-emerald-400 tracking-widest uppercase drop-shadow-md">

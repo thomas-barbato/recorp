@@ -1,34 +1,93 @@
 {% load static %}
-<div id="inventory-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0 backdrop-blur-sm">
-    <div class="relative p-4 w-full h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-full h-full">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Terms of Service
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="inventory-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
+{% load i18n %}
+{% load customtags %}
+
+<div id="inventory-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40 backdrop-blur-sm animate-modal-fade">
+
+    <div class="relative w-[95%] max-w-6xl max-h-[90vh] bg-black/70 border border-emerald-400/30 rounded-2xl shadow-lg flex flex-col overflow-hidden animate-modal-rise energy-border">
+
+    <!-- ✅ Halo énergétique -->
+    <div class="absolute inset-0 rounded-2xl pointer-events-none glow-ring"></div>
+
+    <!-- ✅ HEADER -->
+    <div class="w-full text-center py-3 bg-emerald-950/40 border-b border-emerald-400/30 shadow-md relative z-10">
+        <h2 class="text-2xl font-bold text-emerald-300 font-orbitron tracking-wide drop-shadow-lg">
+            {% translate "Inventory" %}
+        </h2>
+    </div>
+
+    <!-- ✅ CONTENU PRINCIPAL -->
+    <div class="flex flex-col lg:flex-row flex-grow overflow-hidden relative z-10">
+
+        <!-- 📦 INVENTAIRE -->
+        <div class="order-1 lg:order-2 lg:w-1/2 w-full p-3  flex flex-col md:custom-scroll gap-2">
+            <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest">{% translate "Inventory" %}</h3>
+            <p class="text-emerald-200 text-xs mb-2">{% translate "Max Capacity" %}: <span class="font-bold text-emerald-400">25 / 100</span></p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1">
+                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-emerald-300">
+                    <span class="font-semibold truncate">Moteur à fusion Mk II</span>
+                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Moteur à fusion Mk II')">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </div>
+                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-blue-300">
+                    <span class="font-semibold truncate">Lingots de titane</span>
+                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Lingots de titane')">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </div>
+                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-yellow-300">
+                    <span class="font-semibold truncate">Données de mission : Exploration</span>
+                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Données de mission : Exploration')">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </div>
+                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-purple-300">
+                    <span class="font-semibold truncate">Artefact inconnu</span>
+                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Artefact inconnu')">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </div>
             </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                </p>
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                </p>
+        </div>
+
+            <div class="order-2 lg:order-1 lg:w-1/2 w-full p-3 flex flex-col overflow-y-auto custom-scroll gap-2">
+                <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest">{% translate "Equipped Modules" %}</h3>
+
+                {% for category in module_categories %}
+                <fieldset class="flex border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all">
+                    <legend class="text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase">
+                        {{ category|from_underscore_to_space }}
+                    </legend>
+                    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
+                        <div class="text-gray-500 text-[10px] italic pl-1 empty-slot">{% translate "Empty slot" %}</div>
+                    </div>
+                </fieldset>
+                {% endfor %}
             </div>
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="inventory-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                <button data-modal-hide="inventory-modal" type="button" class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
-            </div>
+        </div>
+
+        <div class="w-full flex justify-center items-center py-3 border-t border-emerald-400/20 bg-black/50 relative z-10">
+            <button data-modal-hide="inventory-modal" class="text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all">
+                {% translate "Close" %}
+            </button>
         </div>
     </div>
 </div>
+
+<script>
+    function translate_this(arg){
+        return "{% translate 'inventory' %}";
+    }
+    const i18n = {
+        inventory: "{% translate 'Inventory' %}",
+        effects: "{% translate 'Effects' %}",
+        power: "{% translate 'Power' %}",
+        unequip_confirm: "{% translate 'Are you sure you want to unequip' %}",
+        unequipped: "{% translate 'unequipped' %}",
+    };
+</script>
+
+<script src="{% static 'world_builder/onlyDom/inventory_modal.js'%}" type='application/javascript'></script>
+

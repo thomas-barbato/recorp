@@ -335,7 +335,9 @@ function create_foreground_modal(modalId, data) {
         'md:inset-0',
         'border-1',
         'backdrop-brightness-50', 
-        'backdrop-blur-sm'
+        'bg-black/40',
+        'backdrop-blur-md',
+        'animate-modal-fade'
     );
 
     let container_div = document.createElement('div');
@@ -662,9 +664,11 @@ function createUnknownModal(modalId, data, is_npc){
         'w-full',
         'h-full',
         'md:inset-0',
-        'backdrop-blur-sm',
         'backdrop-brightness-50',
         'border-1',
+        'bg-black/40',
+        'backdrop-blur-md',
+        'animate-modal-fade'
     );
     let player_id = modalId.split('_')[1];
 
@@ -1290,9 +1294,11 @@ function create_pc_npc_modal(modalId, data, is_npc) {
         'w-full',
         'h-full',
         'md:inset-0',
-        'backdrop-blur-sm',
         'backdrop-brightness-50',
         'border-1',
+        'bg-black/40',
+        'backdrop-blur-md',
+        'animate-modal-fade'
     );
     let player_id = modalId.split('_')[1];
 
@@ -1999,9 +2005,10 @@ function create_chat_modal(data){
         'w-full',
         'h-full',
         'md:inset-0',
-        'backdrop-blur-sm',
-        'bg-black/20',
         'border-1',
+        'bg-black/40',
+        'backdrop-blur-md',
+        'animate-modal-fade'
     );
     
     let container_div = document.createElement('div');

@@ -38,7 +38,8 @@ from core.models import (
     Skill,
     SkillExperience,
     PlayerShipModule,
-    PlayerSkill
+    PlayerSkill,
+    Module
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
@@ -299,11 +300,11 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                             current_missile_defense += module["module_id__effect"]["defense"]
                             max_missile_defense += module["module_id__effect"]["defense"]
                     elif "MOVEMENT" in module["module_id__type"]:
-                        current_movement += module["module_id__effect"]['bonus_mvt']
-                        max_movement += module["module_id__effect"]['bonus_mvt']
+                        current_movement += module["module_id__effect"]['movement']
+                        max_movement += module["module_id__effect"]['movement']
                     elif "HULL" in module["module_id__type"]:
-                        current_hp += module["module_id__effect"]['hull_hp']
-                        max_hp += module["module_id__effect"]['hull_hp']
+                        current_hp += module["module_id__effect"]['hp']
+                        max_hp += module["module_id__effect"]['hp']
                     elif "HOLD" in module["module_id__type"]:
                         current_cargo_size += module["module_id__effect"]['capacity']
                 try:
@@ -404,6 +405,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data()
         user_agent = self.request.user_agent
         player = PlayerAction(self.request.user.id)
+        modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
         
         if user_agent.is_pc:
             map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
@@ -480,6 +482,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             context["current_player_id"] = player.get_player_id()
+            context["module_categories"] = modules_category
             return context
         
         else:

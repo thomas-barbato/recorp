@@ -207,9 +207,9 @@ npc_submit_button.addEventListener('click', function() {
 
             if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT" || module_info_array[module].type == "HOLD") {
                 if (module_info_array[module].type == "HULL") {
-                    template_hp_module_bonus = module_info_array[module].effects.hull_hp;
+                    template_hp_module_bonus = module_info_array[module].effects.hp;
                 } else if (module_info_array[module].type == "MOVEMENT") {
-                    template_move_module_bonus = module_info_array[module].effects.bonus_mvt;
+                    template_move_module_bonus = module_info_array[module].effects.movement;
                 } else if (module_info_array[module].type == "HOLD") {
                     template_hold_statistics = module_info_array[module].effects.capacity;
                 }

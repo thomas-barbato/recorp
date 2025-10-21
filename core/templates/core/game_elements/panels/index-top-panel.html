@@ -142,12 +142,12 @@
 
 {% if not request.user.is_authenticated %}
 <!-- Modal de connexion pour desktop -->
-<div id="login-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
+<div id="login-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-modal-fade">
     <!-- Overlay avec effet de flou -->
-    <div id="modal-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-[9998]"></div>
+    <div id="modal-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-[9998] animate-modal-rise"></div>
     
     <!-- Contenu du modal -->
-    <div class="relative bg-zinc-900/95 border-2 border-emerald-500/50 rounded-2xl p-8 max-w-md w-full glow transform transition-all duration-300 scale-95 opacity-0 z-[9999]" id="modal-content">
+    <div class="relative bg-zinc-900/95 border border-emerald-400/30 rounded-2xl p-8 max-w-md w-full glow transform transition-all duration-300 scale-95 opacity-0 z-[9999] energy-border" id="modal-content">
         <!-- Bouton de fermeture -->
         <button id="close-modal" class="absolute top-4 right-4 text-emerald-400 hover:text-emerald-300 text-2xl transition-colors">
             <i class="fas fa-times"></i>

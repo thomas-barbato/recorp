@@ -12,6 +12,7 @@
         <div class="stars-layer l3"></div>
     </div>
     {% load static %}
+    {% load i18n %}
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" SameSite=Lax Secure >
@@ -42,6 +43,7 @@
         <script src="{% static 'js/game/world_builder/onlyDom/main_background_color.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/game/world_builder/onlyDom/scrolling_invisible.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/game/world_builder/account/logout.js' %}" type="text/javascript"></script>
+        <script src="{% url 'javascript-catalog' %}"></script>
     {% endblock %}
     </body>
 </html>

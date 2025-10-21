@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from core import views as core_views
 from django.contrib.auth import views as auth_views
+from django.views.i18n import JavaScriptCatalog
 
 app_name = "core"
 
@@ -47,5 +48,6 @@ urlpatterns = [
         http_method_names = ['post']
         ), 
         name='logout_view'),
-    path('play/session-check', core_views.session_check, name='session_check')
+    path('play/session-check', core_views.session_check, name='session_check'),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]

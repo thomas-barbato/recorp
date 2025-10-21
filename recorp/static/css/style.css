@@ -805,3 +805,65 @@ input:focus {
 @media (max-width: 1023px) {
     .skill-tooltip { display: none !important; }
 }
+
+
+/* ✅ Scroll personnalisé */
+.custom-scroll::-webkit-scrollbar { width: 6px; }
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(16,185,129,0.3), rgba(16,185,129,0.6));
+    border-radius: 6px;
+}
+
+/* ✅ Tooltips */
+.module-tooltip {
+    position: fixed; z-index: 9999; max-width: 300px;
+    background: rgba(8,10,12,0.95); color: #DFFFEA;
+    border: 1px solid rgba(16,185,129,0.15);
+    padding: 8px 10px; border-radius: 8px;
+    font-size: 0.8rem; line-height: 1.2;
+    pointer-events: none; opacity: 0; transition: opacity 0.15s;
+}
+.module-tooltip.visible { opacity: 1; }
+
+.module-expanded {
+    background: rgba(2,6,7,0.8);
+    border: 1px solid rgba(16,185,129,0.15);
+    color: #DFFFEA; padding: 6px; border-radius: 6px;
+    font-size: 0.75rem; animation: expandFade 0.2s ease-out;
+}
+
+/* ✅ Animation apparition modal */
+@keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalRise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-modal-fade { animation: modalFade 0.3s ease-out; }
+.animate-modal-rise { animation: modalRise 0.35s ease-out; }
+
+@keyframes expandFade { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ✅ Effet énergétique pulsant */
+.energy-border {
+    position: relative;
+    box-shadow: 0 0 10px rgba(16,185,129,0.3), inset 0 0 10px rgba(16,185,129,0.2);
+    animation: energyPulse 3s infinite ease-in-out;
+}
+@keyframes energyPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(16,185,129,0.3), inset 0 0 10px rgba(16,185,129,0.2); }
+    50% { box-shadow: 0 0 25px rgba(16,185,129,0.6), inset 0 0 20px rgba(16,185,129,0.4); }
+}
+.glow-ring {
+    background: radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%);
+    filter: blur(15px);
+    animation: ringGlow 4s ease-in-out infinite;
+}
+@keyframes ringGlow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.02); }
+}
+
+/* ✅ Layout mobile compact */
+@media (max-width: 768px) {
+    .module-item, .inventory-item { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
+    fieldset legend { font-size: 0.7rem !important; }
+    h2 { font-size: 1.2rem !important; }
+}

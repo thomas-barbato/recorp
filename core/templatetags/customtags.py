@@ -14,3 +14,7 @@ def sub(value, arg):
     except:
         pass
     return ""
+
+@register.filter
+def from_underscore_to_space(value):
+    return value.replace("_"," ")

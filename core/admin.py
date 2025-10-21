@@ -818,9 +818,9 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         spaceship = Ship.objects.filter(id=data_from_post["data"]["ship"]).values(
             "id", "default_hp", "default_movement", "ship_category_id__name"
         )[0]
-        module_bonus_hp = module_dict["HULL"]["hull_hp"] if "HULL" in module_dict else 0
+        module_bonus_hp = module_dict["HULL"]["hp"] if "HULL" in module_dict else 0
         module_bonus_move = (
-            module_dict["MOVEMENT"]["bonus_mvt"] if "MOVEMENT" in module_dict else 0
+            module_dict["MOVEMENT"]["movement"] if "MOVEMENT" in module_dict else 0
         )
         module_ballistic_defense = (
             module_dict["DEFENSE_BALLISTIC"]["defense"]
@@ -939,10 +939,10 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
                 "id", "default_hp", "default_movement", "ship_category_id__name"
             )[0]
             module_bonus_hp = (
-                module_dict["HULL"]["hull_hp"] if "HULL" in module_dict else 0
+                module_dict["HULL"]["hp"] if "HULL" in module_dict else 0
             )
             module_bonus_move = (
-                module_dict["MOVEMENT"]["bonus_mvt"] if "MOVEMENT" in module_dict else 0
+                module_dict["MOVEMENT"]["movement"] if "MOVEMENT" in module_dict else 0
             )
             module_ballistic_defense = (
                 module_dict["DEFENSE_BALLISTIC"]["defense"]
