@@ -6,8 +6,7 @@
 {% block content %}
 <div class="flex flex-col min-h-screen bg-zinc-950 font-rajdhani">
     {% include "index-top-panel.html" %}
-    
-    <main class="flex-1 flex items-center justify-center w-full px-4 py-8 overflow-y-auto">
+    <main class="flex-1 flex items-center justify-center w-full px-4 py-8 overflow-y-auto pt-24 pb-20">
         <form class="w-full max-w-7xl mx-auto">
             <!-- ÉTAPE 1 : Sélection de faction -->
             <div id="character-faction" class="flex flex-col gap-6">
@@ -28,8 +27,7 @@
                 <div id="faction-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
                     {% for faction in factions %}
                         {% if faction.name != "none" %}
-                        <div class="faction glow-card cursor-pointer border-2 border-emerald-500/30 bg-zinc-900/50 rounded-lg overflow-hidden transition-all" 
-                             id="faction-{{ faction.id }}">
+                        <div class="faction glow-card cursor-pointer border-2 border-emerald-500/30 bg-zinc-900/50 rounded-lg overflow-hidden transition-all" id="faction-{{ faction.id }}">
                             <!-- Header de la faction -->
                             <div class="bg-emerald-900/60 border-b border-emerald-500/40 p-3 text-center">
                                 <h3 class="font-orbitron text-base sm:text-lg font-bold text-emerald-300 uppercase">
@@ -59,10 +57,7 @@
 
                 <!-- Bouton suivant -->
                 <div class="flex justify-center mt-4">
-                    <button type="button" 
-                            id="next-btn"
-                            disabled
-                            class="nav-button px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold font-orbitron rounded-lg text-base sm:text-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-3 shadow-lg">
+                    <button type="button" id="next-btn" disabled class="nav-button px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold font-orbitron rounded-lg text-base sm:text-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-3 shadow-lg">
                         <span>SUIVANT</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
@@ -246,192 +241,11 @@
 
 {% block js %}
 <script>
-    let archetype_id = undefined;
-    let archetype_selector = document.querySelectorAll('.archetype-selector');
-
-    // Gestion du changement d'archétype
-    document.getElementById("id_archetype").addEventListener("change", function() {
-        archetype_id = this.options[this.selectedIndex].getAttribute("value");
-        
-        archetype_selector.forEach(selector => {
-            const selector_id = selector.id.split('-')[1];
-            if(archetype_id != selector_id){
-                selector.classList.add('hidden');
-            } else {
-                selector.classList.remove('hidden');
-            }
-        });
-        
-        checkFormValidity();
-    });
-
-    // Vérification de la validité du formulaire
-    function checkFormValidity() {
-        const nameInput = document.querySelector('#id_name');
-        const archetypeSelect = document.querySelector('#id_archetype');
-        const submitBtn = document.querySelector('#create-character-submit-button');
-        
-        const isNameValid = nameInput && nameInput.value.trim().length > 0;
-        const isArchetypeValid = archetypeSelect && archetypeSelect.value !== "---" && archetype_id;
-        
-        if (isNameValid && isArchetypeValid) {
-            submitBtn.disabled = false;
-        } else {
-            submitBtn.disabled = true;
-        }
-    }
-
-    // Écouter les changements du nom
-    document.getElementById('id_name').addEventListener('input', checkFormValidity);
+    
 </script>
 
 <script src="{% static 'js/quill/quill.js' %}" type="text/javascript"></script>
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 <script src="{% static 'js/quill/quill_element.js' %}" type="text/javascript"></script>
-
-<script>
-    let user_is_on_mobile_bool = is_user_is_on_mobile_device();
-    let action_listener_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'click';
-    
-    let faction_element = document.querySelectorAll('.faction');
-    let faction_selected = "";
-
-    let previous_button = document.querySelector("#previous-btn");
-    let next_button = document.querySelector("#next-btn");
-
-    let faction_window = document.querySelector("#character-faction");
-    let stats_window = document.querySelector('#character-stats');
-
-    const reader = new FileReader();
-    const img_user = document.querySelector('#user-avatar');
-    const img_input = document.querySelector('#id_image');
-
-    let quill_content = undefined;
-
-    // Configuration Quill
-    const quill = new Quill('#editor', {
-        modules: {
-            toolbar: toolbarOptions
-        },
-        theme: 'snow'
-    });
-
-    quill.getHTML = () => {
-        return quill.root.innerHTML;
-    };
-
-    quill.on('text-change', () => {
-        quill_content = quill.getHTML();
-    });
-
-    // Style de l'éditeur Quill
-    let toolbar = document.querySelector('.ql-editor');
-    if (toolbar) {
-        toolbar.classList.add('text-justify', 'min-h-[150px]', 'text-base', 'text-emerald-300');
-    }
-
-    // Navigation
-    previous_button.addEventListener(action_listener_touch_click, function(){
-        stats_window.classList.add('hidden');
-        stats_window.classList.remove('flex');
-        faction_window.classList.remove('hidden');
-        faction_window.classList.add('flex');
-    });
-
-    next_button.addEventListener(action_listener_touch_click, function(){
-        if (!this.disabled) {
-            faction_window.classList.add('hidden');
-            faction_window.classList.remove('flex');
-            stats_window.classList.remove('hidden');
-            stats_window.classList.add('flex');
-        }
-    });
-
-    // Sélection de faction
-    faction_element.forEach(faction => {
-        faction.addEventListener(action_listener_touch_click, function(){
-            // Désélectionner toutes les autres factions
-            faction_element.forEach(f => {
-                f.classList.remove('faction-selected');
-            });
-            
-            // Sélectionner cette faction
-            this.classList.add('faction-selected');
-            faction_selected = this.id.split('-')[1];
-            
-            // Activer le bouton suivant
-            next_button.disabled = false;
-        });
-    });
-
-    // Gestion de l'image
-    reader.onload = e => {
-        img_user.src = e.target.result;
-    };
-
-    img_input.addEventListener('change', e => {
-        const f = e.target.files[0];
-        if (f) {
-            reader.readAsDataURL(f);
-            img_user.classList.add('border-emerald-500');
-        }
-    });
-
-    // Soumission du formulaire
-    let submit_btn = document.querySelector('#create-character-submit-button');
-
-    submit_btn.addEventListener(action_listener_touch_click, function(){
-        if (this.disabled) return;
-        
-        this.disabled = true;
-        
-        let archetype = document.querySelector('#id_archetype').value;
-        let character_name = document.querySelector('#id_name').value;
-        let description = quill_content || "";
-        
-        if (faction_selected && archetype && character_name) {
-            let data = new FormData();
-            const file = img_input.files[0];
-            if (file) data.append('image', file);
-            data.append('name', character_name);
-            data.append('archetype', archetype);
-            data.append('faction', faction_selected);
-            data.append('description', description);
-
-            const url = "create_character";
-            const headers = new Headers({
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRFToken": csrf_token,
-            });
-
-            fetch(url, {
-                method: "POST",
-                headers,
-                credentials: "include",
-                body: data,
-            })
-            .then(async response => {
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.includes("application/json")) {
-                    return response.json();
-                } else {
-                    window.location.replace("/");
-                    return;
-                }
-            })
-            .then(data => {
-                if (!data) return;
-                if (data.errors) {
-                    console.error(data.errors);
-                    submit_btn.disabled = false;
-                }
-            })
-            .catch(error => {
-                console.error("Erreur JS:", error);
-                submit_btn.disabled = false;
-            });
-        }
-    });
-</script>
 {% endblock %}
 {% endblock %}

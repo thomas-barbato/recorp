@@ -630,61 +630,61 @@ input:focus {
 
 /* Scrollbar dans le thème spatial émeraude */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(16,185,129,0.6) 0%, rgba(34,197,94,0.9) 100%);
-  border-radius: 8px;
-  box-shadow: 0 0 6px rgba(16,185,129,0.5);
+    background: linear-gradient(180deg, rgba(16,185,129,0.6) 0%, rgba(34,197,94,0.9) 100%);
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(16,185,129,0.5);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(16,185,129,0.8) 0%, rgba(52,211,153,1) 100%);
+    background: linear-gradient(180deg, rgba(16,185,129,0.8) 0%, rgba(52,211,153,1) 100%);
 }
 .custom-scrollbar {
-  scrollbar-color: rgba(16,185,129,0.6) transparent;
-  scrollbar-width: thin;
+    scrollbar-color: rgba(16,185,129,0.6) transparent;
+    scrollbar-width: thin;
 }
 
 /* === Animation Fade-In + Rise === */
 .fade-in-up {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 .fade-in-up-visible {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* === Animation "pulse énergétique" pour chaque groupe === */
 .fade-in-up {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out;
 }
 .fade-in-up-visible {
-  opacity: 1;
-  transform: translateY(0);
-  box-shadow: 0 0 10px 2px rgba(16, 185, 129, 0.3);
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 0 10px 2px rgba(16, 185, 129, 0.3);
 }
 .fade-in-up-visible:hover {
-  box-shadow: 0 0 15px 4px rgba(16, 185, 129, 0.4);
-  transition: box-shadow 0.3s ease-in-out;
+    box-shadow: 0 0 15px 4px rgba(16, 185, 129, 0.4);
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 /* === Barre de scroll dans le thème === */
 .skill-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(16, 185, 129, 0.5) transparent;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 185, 129, 0.5) transparent;
 }
 .skill-scroll::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 .skill-scroll::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 .skill-scroll::-webkit-scrollbar-thumb {
     background-color: rgba(16, 185, 129, 0.6);
@@ -891,50 +891,107 @@ input:focus {
 /************************************/
 /********* CREATE CHARACTER *********/
 .font-orbitron {
-        font-family: 'Orbitron', sans-serif;
-    }
-    
-    .font-rajdhani {
-        font-family: 'Rajdhani', sans-serif;
-    }
-    
-    .text-shadow-strong {
-        text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
-    }
-    
-    .glow-card {
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
-        transition: all 0.3s ease;
-    }
-    
-    .glow-card:hover {
-        box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
-        transform: translateY(-5px);
-    }
-    
-    .faction-selected {
-        box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), inset 0 0 20px rgba(16, 185, 129, 0.2);
-        border-color: #10b981 !important;
-        background: rgba(16, 185, 129, 0.15) !important;
-    }
-    
-    .nav-button {
-        transition: all 0.3s ease;
-    }
-    
-    .nav-button:hover {
-        transform: scale(1.05);
-    }
-    
-    .nav-button:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-    }
-    
-    .gradient-bg {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%);
-    }
-    
-    .stats-container {
-        backdrop-filter: blur(10px);
-    }
+    font-family: 'Orbitron', sans-serif;
+}
+
+.font-rajdhani {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.text-shadow-strong {
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
+}
+
+.glow-card {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    transition: all 0.3s ease;
+}
+
+.glow-card:hover {
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+    transform: translateY(-5px);
+}
+
+.faction-selected {
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), inset 0 0 20px rgba(16, 185, 129, 0.2);
+    border-color: #10b981 !important;
+    background: rgba(16, 185, 129, 0.15) !important;
+}
+
+.nav-button {
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    transform: scale(1.05);
+}
+
+.nav-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%);
+}
+
+.stats-container {
+    backdrop-filter: blur(10px);
+}
+
+/* MAIL */
+.fade-slide { transition: opacity 0.35s ease, transform 0.35s ease; }
+.opacity-0 { opacity: 0; }
+.opacity-100 { opacity: 1; }
+.translate-y-3 { transform: translateY(0.75rem); }
+.translate-y-0 { transform: translateY(0); }
+
+.thin-semi-transparent-scrollbar::-webkit-scrollbar { width: 6px; }
+.thin-semi-transparent-scrollbar::-webkit-scrollbar-thumb {
+background: rgba(16, 185, 129, 0.3);
+border-radius: 8px;
+}
+
+/* Message list items */
+.pm-message-item {
+background-color: rgba(17, 24, 39, 0.6);
+border: 1px solid rgba(16, 185, 129, 0.25);
+border-radius: 0.5rem;
+padding: 0.75rem 1rem;
+margin-bottom: 0.5rem;
+cursor: pointer;
+position: relative;
+overflow: hidden;
+transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+.pm-message-item:hover {
+background-color: rgba(16, 185, 129, 0.1);
+border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Radar ripple effect */
+.pm-message-item::after {
+content: "";
+position: absolute;
+border-radius: 50%;
+transform: scale(0);
+opacity: 0.7;
+background: radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(0,0,0,0) 70%);
+width: 100px; height: 100px;
+pointer-events: none;
+}
+.pm-message-item.ripple::after {
+animation: radarPulse 0.6s ease-out;
+}
+@keyframes radarPulse {
+0% { transform: scale(0); opacity: 0.8; }
+100% { transform: scale(5); opacity: 0; }
+}
+
+/* Emerald pulse for send */
+@keyframes emeraldPulse {
+0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.sending { animation: emeraldPulse 0.8s ease-out; }
