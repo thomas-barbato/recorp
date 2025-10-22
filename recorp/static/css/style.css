@@ -816,14 +816,34 @@ input:focus {
 
 /* ✅ Tooltips */
 .module-tooltip {
-    position: fixed; z-index: 9999; max-width: 300px;
-    background: rgba(8,10,12,0.95); color: #DFFFEA;
-    border: 1px solid rgba(16,185,129,0.15);
-    padding: 8px 10px; border-radius: 8px;
-    font-size: 0.8rem; line-height: 1.2;
-    pointer-events: none; opacity: 0; transition: opacity 0.15s;
+    position: fixed;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    max-width: 260px;
+    pointer-events: none;
 }
-.module-tooltip.visible { opacity: 1; }
+
+.module-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.module-tooltip ul {
+    backdrop-filter: blur(6px);
+    border-radius: 0.5rem;
+}
+
+.module-item {
+    transition: all 0.25s ease;
+}
+
+.module-item:hover {
+    filter: drop-shadow(0 0 6px #00ffcc55);
+}
 
 .module-expanded {
     background: rgba(2,6,7,0.8);
@@ -867,3 +887,54 @@ input:focus {
     fieldset legend { font-size: 0.7rem !important; }
     h2 { font-size: 1.2rem !important; }
 }
+
+/************************************/
+/********* CREATE CHARACTER *********/
+.font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+    }
+    
+    .font-rajdhani {
+        font-family: 'Rajdhani', sans-serif;
+    }
+    
+    .text-shadow-strong {
+        text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
+    }
+    
+    .glow-card {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .glow-card:hover {
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        transform: translateY(-5px);
+    }
+    
+    .faction-selected {
+        box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), inset 0 0 20px rgba(16, 185, 129, 0.2);
+        border-color: #10b981 !important;
+        background: rgba(16, 185, 129, 0.15) !important;
+    }
+    
+    .nav-button {
+        transition: all 0.3s ease;
+    }
+    
+    .nav-button:hover {
+        transform: scale(1.05);
+    }
+    
+    .nav-button:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    
+    .gradient-bg {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%);
+    }
+    
+    .stats-container {
+        backdrop-filter: blur(10px);
+    }

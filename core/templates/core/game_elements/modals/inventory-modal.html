@@ -5,6 +5,7 @@
 <div id="inventory-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40 backdrop-blur-sm animate-modal-fade">
 
     <div class="relative w-[95%] max-w-6xl max-h-[90vh] bg-black/70 border border-emerald-400/30 rounded-2xl shadow-lg flex flex-col overflow-hidden animate-modal-rise energy-border">
+    
 
     <!-- ✅ Halo énergétique -->
     <div class="absolute inset-0 rounded-2xl pointer-events-none glow-ring"></div>
@@ -14,40 +15,56 @@
         <h2 class="text-2xl font-bold text-emerald-300 font-orbitron tracking-wide drop-shadow-lg">
             {% translate "Inventory" %}
         </h2>
+        <!-- Bouton Fermer -->
+        <button class="absolute top-3 right-3 text-gray-400 hover:text-emerald-400 text-xl cursor-pointer">
+            <i data-modal-hide="inventory-modal" class="fa-solid fa-xmark"></i>
+        </button>
     </div>
 
     <!-- ✅ CONTENU PRINCIPAL -->
     <div class="flex flex-col lg:flex-row flex-grow overflow-hidden relative z-10">
 
         <!-- 📦 INVENTAIRE -->
-        <div class="order-1 lg:order-2 lg:w-1/2 w-full p-3  flex flex-col md:custom-scroll gap-2">
+        <div class="order-1 lg:order-2 lg:w-1/2 w-full p-3 flex flex-col md:custom-scroll gap-2">
             <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest">{% translate "Inventory" %}</h3>
             <p class="text-emerald-200 text-xs mb-2">{% translate "Max Capacity" %}: <span class="font-bold text-emerald-400">25 / 100</span></p>
 
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1">
-                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-emerald-300">
-                    <span class="font-semibold truncate">Moteur à fusion Mk II</span>
-                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Moteur à fusion Mk II')">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
+            <div id="inventory-list" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1">
+                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-blue-300 p-2">
+                    <div>
+                        <span class="text-blue-300 font-bold text-xs">Lingots de titane</span>
+                        <span class="ml-2 text-[10px] text-gray-400">(Resource)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-200 text-xs font-semibold">x42</span>
+                        <button class="text-red-500 hover:text-red-400 text-sm" title="{% translate 'Delete item' %}" onclick="deleteItem(event, 'Lingots de titane')">
+                            <i class="fa-solid fa-trash-can cursor-pointer"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-blue-300">
-                    <span class="font-semibold truncate">Lingots de titane</span>
-                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Lingots de titane')">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
+                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-emerald-300 p-2">
+                    <div>
+                        <span class="text-emerald-300 font-bold text-xs">Moteur à fusion Mk II</span>
+                        <span class="ml-2 text-[10px] text-gray-400">(module)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-200 text-xs font-semibold">x1</span>
+                        <button class="text-red-500 hover:text-red-400 text-sm" title="{% translate 'Delete item' %}" onclick="deleteItem(event, 'Moteur à fusion Mk II')">
+                            <i class="fa-solid fa-trash-can cursor-pointer"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-yellow-300">
-                    <span class="font-semibold truncate">Données de mission : Exploration</span>
-                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Données de mission : Exploration')">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
-                </div>
-                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-purple-300">
-                    <span class="font-semibold truncate">Artefact inconnu</span>
-                    <button class="text-red-500 hover:text-red-400" onclick="deleteItem(event, 'Artefact inconnu')">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
+                <div class="flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 text-blue-300 border border border-emerald-800/30 rounded p-2">
+                    <div>
+                        <span class="text-blue-300 font-bold text-xs">Lingots de titane</span>
+                        <span class="ml-2 text-[10px] text-gray-400">(Resource)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-200 text-xs font-semibold">x22</span>
+                        <button class="text-red-500 hover:text-red-400 text-sm" title="{% translate 'Delete item' %}" onclick="deleteItem(event, 'Lingots de titane')">
+                            <i class="fa-solid fa-trash-can cursor-pointer"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,7 +75,7 @@
                 {% for category in module_categories %}
                 <fieldset class="flex border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all">
                     <legend class="text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase">
-                        {{ category|from_underscore_to_space }}
+                        {% translate category|from_underscore_to_space %}
                     </legend>
                     <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
                         <div class="text-gray-500 text-[10px] italic pl-1 empty-slot">{% translate "Empty slot" %}</div>

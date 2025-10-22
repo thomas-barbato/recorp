@@ -344,7 +344,7 @@
         "tier": 1,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 3
+            "capacity": 300
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -359,7 +359,7 @@
         "tier": 2,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 6
+            "capacity": 600
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -374,7 +374,7 @@
         "tier": 3,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 9
+            "capacity": 900
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -389,7 +389,7 @@
         "tier": 4,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 12
+            "capacity": 1200
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -404,7 +404,7 @@
         "tier": 5,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 15
+            "capacity": 1500
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -419,7 +419,7 @@
         "tier": 6,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 18
+            "capacity": 1800
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -434,7 +434,7 @@
         "tier": 7,
         "effect": {
             "label": "Hold capacity",
-            "capacity": 20
+            "capacity": 2000
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"
@@ -1098,9 +1098,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 1,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 15,
             "range": 5
         },
@@ -1116,9 +1114,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 2,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 20,
             "range": 5
         },
@@ -1134,9 +1130,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 3,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 25,
             "range": 5
         },
@@ -1152,9 +1146,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 4,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 30,
             "range": 5
         },
@@ -1170,9 +1162,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 5,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 35,
             "range": 5
         },
@@ -1188,9 +1178,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 6,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 40,
             "range": 5
         },
@@ -1206,9 +1194,7 @@
         "type": "ELECTRONIC_WARFARE",
         "tier": 7,
         "effect": {
-            "label": "Disable targeting",
-            "disabled_targeting": true,
-            "label_2": "Lower aiming skill",
+            "label": "Lower aiming skill",
             "aiming_discrease": 45,
             "range": 5
         },
@@ -1458,7 +1444,7 @@
         "effect": {
             "label": "Display ship data",
             "display_ship_data": true,
-            "range": 50
+            "range": 20
         },
         "created_at": "2024-06-04 12:38:15",
         "updated_at": "2024-06-04 12:38:15"

@@ -17,4 +17,7 @@ def sub(value, arg):
 
 @register.filter
 def from_underscore_to_space(value):
+    splitted_value = value.split("_")
+    if splitted_value[0] == "DEFENSE":
+        return f"{splitted_value[1]} {splitted_value[0]}"
     return value.replace("_"," ")

@@ -1,3 +1,11 @@
+const submit_button = document.querySelector('#create-account-submit-button');
+
+// Configuration des événements tactiles/souris
+const user_is_on_mobile_bool = is_user_is_on_mobile_device();
+const attribute_touch_mouseover = user_is_on_mobile_bool ? 'touchstart' : 'mouseover';
+const attribute_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'onclick';
+const action_listener_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'click';
+
 submit_button.addEventListener(action_listener_touch_click, function() {
     submit_button.disabled = true;
 
@@ -10,7 +18,7 @@ submit_button.addEventListener(action_listener_touch_click, function() {
         email: document.querySelector("#id_email").value,
     };
 
-    fetch("/create_account/", {
+    fetch("create", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -24,7 +32,6 @@ submit_button.addEventListener(action_listener_touch_click, function() {
     .then(response => response.json())
     .then(data => {
         submit_button.disabled = false;
-
         if (data.errors && data.errors.length > 0) {
             // Affiche les messages d'erreur pour chaque champ
             let container_array = [];

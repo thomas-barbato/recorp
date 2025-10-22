@@ -299,6 +299,48 @@ msgstr "Cliquez sur <b>Entrer</b> pour créer votre personnage."
 msgid "Enter"
 msgstr "Entrer"
 
+msgid "Are you sure you want to unequip"
+msgstr "Êtes-vous sûr de vouloir déséquiper"
+
+msgid "Are you sure you want to delete"
+msgstr "Êtes-vous sûr de vouloir jeter"
+
+msgid "Max Capacity"
+msgstr "Capacité maximale"
+
+msgid "Equipped Modules"
+msgstr "Modules équipés"
+
+msgid "MOVEMENT"
+msgstr "MOUVEMENT"
+
+msgid "HULL"
+msgstr "COQUE"
+
+msgid "HOLD"
+msgstr "CALE"
+
+msgid "REPAIRE"
+msgstr "RÉPARATION"
+
+msgid "GATHERING"
+msgstr "RECOLTE"
+
+msgid "RESEARCH"
+msgstr "RECHERCHE"
+
+msgid "CRAFT"
+msgstr "CONSTRUCTION"
+
+msgid "ELECTRONIC WARFARE"
+msgstr "GUERRE ÉLECTRONIQUE"
+
+msgid "WEAPONRY"
+msgstr "ARMEMENT"
+
+msgid "COLONIZATION"
+msgstr "COLONISATION"
+
 #: .\core\templates\core\game_elements\lang.html:5
 msgid "Localization Project"
 msgstr ""
