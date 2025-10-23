@@ -1,109 +1,194 @@
+{% load customtags%}
 {% load static %}
 {% load i18n %}
-{% load static %}
-<div id="message-modal" class="fixed inset-0 bg-zinc-950/90 backdrop-blur-sm flex justify-center items-center z-50 hidden">
-  <div class="w-full max-w-5xl h-[85vh] bg-zinc-900/70 border border-emerald-500/30 rounded-2xl shadow-emerald-900/60 shadow-lg flex flex-col overflow-hidden">
+
+<!-- BACKDROP -->
+<div id="message-modal" class="fixed hidden inset-0 z-[9999] flex items-center md:justify-center justify-start backdrop-blur-md bg-gradient-to-br from-black/80 via-zinc-950/90 to-emerald-950/70 transition-all duration-500 ease-out overflow-hidden">
+
+  <!-- HOLOGRAPHIC HALO -->
+  <div id="holo-ring" class="absolute rounded-full blur-3xl bg-emerald-500/30 w-[60vw] h-[60vw] animate-holo-ring"></div>
+
+  <!-- MODAL CONTENT -->
+  <div id="mail-modal-content" class="relative w-full md:w-[80vw] lg:w-[70vw] h-screen md:h-[85vh] md:max-h-[900px] bg-zinc-950/95 border md:border border-emerald-500/40 md:rounded-2xl shadow-[0_0_30px_rgba(10,185,129,0.4)] flex flex-col transform scale-90 opacity-0 transition-all duration-500 ease-out overflow-hidden backdrop-saturate-150 backdrop-brightness-125">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center p-4 border-b border-emerald-500/20">
-      <h2 class="font-orbitron text-xl sm:text-2xl text-emerald-400 uppercase tracking-wider">
-        <i class="fas fa-envelope mr-2 text-emerald-300"></i> {% translate "Private Messages" %}
+    <div class="flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
+      <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
+        <i class="fa-solid fa-envelope-open-text text-emerald-300 animate-pulse"></i>
+        {% translate "Private Messages" %}
       </h2>
-      <button id="pm-close-btn" data-modal-hide="message-modal" class="text-emerald-400 hover:text-emerald-300 text-2xl">
-        <i class="fas fa-times"></i>
+      <button class="text-emerald-400 hover:text-red-400 text-2xl transition-all duration-200">
+        <i id="close-mail-modal" class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <!-- BODY -->
-    <div class="flex flex-1 flex-col md:flex-row overflow-hidden">
+    <!-- TABS -->
+    <div class="flex justify-around bg-zinc-900/80 border-b border-emerald-500/20 text-sm md:text-base font-orbitron uppercase">
+      <button id="tab-inbox"
+              class="tab-btn flex-1 py-2 border-2 border-emerald-400 text-emerald-300 font-semibold transition-all duration-200">
+        {% translate "Inbox" %}
+      </button>
+      <button id="tab-sent" class="tab-btn flex-1 py-2 text-emerald-300 hover:text-emerald-200">
+        {% translate "Sent" %}
+      </button>
+      <button id="new-message-btn" class="tab-btn flex-1 py-2 border-2 border-transparent text-emerald-300 hover:text-emerald-200">
+        <i class="fa-solid fa-pen-to-square mr-2 text-emerald-400"></i>
+        {% translate "New" %}
+      </button>
+    </div>
 
-      <!-- LEFT: LIST -->
-      <div class="w-full md:w-1/3 border-r border-emerald-500/20 flex flex-col">
-        <div class="p-3 flex items-center gap-2 border-b border-emerald-500/20">
-          <i class="fas fa-search text-emerald-400"></i>
-          <input id="pm-search" type="text" placeholder="{% translate 'Search...' %}" class="w-full bg-zinc-800/40 text-emerald-300 placeholder-emerald-300/40 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-          <button id="pm-compose-btn" class="ml-2 px-3 py-1 bg-emerald-500 text-black font-bold rounded hover:bg-emerald-400 transition">
-            <i class="fas fa-plus"></i> {% translate "New" %}
-          </button>
-        </div>
+    <!-- SEARCH -->
+    <div class="p-3 border-b border-emerald-500/20 bg-zinc-950/60 flex items-center gap-3">
+      <i class="fa-solid fa-magnifying-glass text-emerald-400"></i>
+      <input id="search-message" type="text" placeholder="{% translate 'Search a message...' %}" class="flex-1 bg-transparent outline-none text-sm text-emerald-300 placeholder-emerald-300/40 font-semibold">
+    </div>
 
-        <div id="pm-list" class="flex-1 overflow-y-auto p-3 thin-semi-transparent-scrollbar">
-          {% for mail in received_messages %}
-          <div class="pm-message-item cursor-pointer" data-id="{{ mail.id }}">
-            <div class="flex justify-between items-center">
-              <div>
-                <h3 class="font-bold text-emerald-400">{{ mail.subject }}</h3>
-                <p class="text-xs text-emerald-300/70">
-                  {{ mail.sender.username }} • {{ mail.timestamp|date:"Y-m-d H:i" }}
-                </p>
-              </div>
-              <i class="fas fa-envelope-open text-emerald-400/60"></i>
-            </div>
-          </div>
-          {% empty %}
-          <p class="text-center text-emerald-300/70 text-sm mt-4">{% translate "No messages" %}</p>
-          {% endfor %}
-        </div>
+    <!-- LIST -->
+    <div id="mail-list" class="flex-1 overflow-y-auto thin-semi-transparent-scrollbar p-3 space-y-3 text-sm md:text-base relative">
+      {% include "mail-list.html" %}
+    </div>
 
-        <!-- PAGINATION -->
-        <div id="pm-pagination" class="flex justify-center items-center p-3 border-t border-emerald-500/20 gap-2 text-sm text-emerald-300">
-          {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}&tab=received" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-emerald-600/20 text-emerald-300">{% translate "Previous" %}</a>
-          {% endif %}
-          <span class="px-3 py-1 bg-emerald-500 text-black rounded-lg">{{ page_obj.number }}</span>
-          {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}&tab=received" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-emerald-600/20 text-emerald-300">{% translate "Next" %}</a>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- RIGHT: VIEW / COMPOSE -->
-      <div class="flex-1 relative overflow-hidden">
-        <div id="pm-empty" class="flex flex-col justify-center items-center h-full text-emerald-400 fade-slide">
-          <i class="fas fa-inbox text-5xl mb-3 text-emerald-300/70"></i>
-          <p class="text-lg">{% translate "Select or compose a message" %}</p>
-        </div>
-
-        <!-- Opened Message -->
-        <div id="pm-opened" class="hidden flex-col h-full p-4 fade-slide overflow-y-auto">
-          <div class="flex justify-between items-start border-b border-emerald-500/20 pb-3 mb-3">
-            <div>
-              <h3 id="pm-open-subject" class="text-emerald-400 font-bold text-lg"></h3>
-              <p class="text-emerald-300/80 text-sm">
-                {% translate "From" %} <span id="pm-open-author"></span> — <span id="pm-open-time"></span>
-              </p>
-            </div>
-            <div class="flex gap-2">
-              <button id="pm-reply-btn" class="hidden px-3 py-1 bg-emerald-500 text-black rounded font-bold hover:bg-emerald-400 transition">
-                <i class="fas fa-reply mr-1"></i> {% translate "Reply" %}
-              </button>
-              <button id="pm-delete-btn" class="hidden px-3 py-1 border border-red-500/40 text-red-400 rounded font-bold hover:bg-red-500/20 transition">
-                <i class="fas fa-trash mr-1"></i> {% translate "Delete" %}
-              </button>
-            </div>
-          </div>
-          <p id="pm-open-body" class="text-emerald-300 leading-relaxed whitespace-pre-line"></p>
-        </div>
-
-        <!-- Compose -->
-        <div id="pm-compose-area" class="hidden flex-col h-full p-4 fade-slide overflow-y-auto">
-          <h3 class="text-emerald-400 font-bold text-lg mb-3">
-            <i class="fas fa-pen mr-2"></i> {% translate "New Message" %}
-          </h3>
-          <input id="pm-to" type="text" placeholder="{% translate 'Recipient(s)' %}" class="w-full mb-2 p-2 bg-zinc-800/40 text-emerald-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-          <input id="pm-subject" type="text" placeholder="{% translate 'Subject' %}" class="w-full mb-2 p-2 bg-zinc-800/40 text-emerald-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-          <textarea id="pm-body" placeholder="{% translate 'Your message...' %}" class="w-full h-48 p-2 bg-zinc-800/40 text-emerald-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"></textarea>
-
-          <div class="flex justify-end gap-2 mt-3">
-            <button id="pm-cancel-compose" class="px-4 py-2 border border-red-500/40 text-red-400 rounded hover:bg-red-500/20 font-bold transition">
-              {% translate "Cancel" %}
-            </button>
-            <button id="pm-send" class="px-4 py-2 bg-emerald-500 text-black rounded font-bold hover:bg-emerald-400 transition flex items-center gap-2">
-              <i class="fas fa-paper-plane"></i> {% translate "Send" %}
-            </button>
-          </div>
-        </div>
-      </div>
+    <!-- PAGINATION -->
+    <div class="flex justify-between items-center p-3 border-t border-emerald-500/30 bg-zinc-950/70 text-emerald-300 text-xs sm:text-sm font-semibold">
+      <button id="prev-page" class="hover:text-emerald-400 transition flex items-center gap-1">
+        <i class="fa-solid fa-chevron-left"></i> {% translate "Prev" %}
+      </button>
+      <span id="mail-pagination-info" class="tracking-widest">
+        {% blocktrans %}Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}{% endblocktrans %}
+      </span>
+      <button id="next-page" class="hover:text-emerald-400 transition flex items-center gap-1">
+        {% translate "Next" %} <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
   </div>
 </div>
+
+
+
+<style>
+  @keyframes holo-ring {
+    0% { transform: scale(0.7); opacity: 0.2; }
+    50% { transform: scale(1); opacity: 0.4; }
+    100% { transform: scale(0.7); opacity: 0.2; }
+  }
+  .animate-holo-ring {
+    animation: holo-ring 4s infinite ease-in-out alternate;
+    pointer-events: none;
+  }
+
+  /* === PULSE BUTTON === */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.05); }
+  }
+  .animate-pulse-slow { animation: pulse-slow 2.5s infinite; }
+
+  /* === FADE-IN === */
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in { animation: fade-in 0.3s ease-in-out; }
+
+  /* === RESPONSIVE FIX === */
+  @media (max-width: 768px) {
+  /* Modal backdrop */
+  #message-modal {
+    padding: 0;
+    align-items: flex-start;
+    padding-top: 2vh;
+  }
+
+  /* Modal content */
+  #mail-modal-content {
+    width: 100vw !important;
+    height: 98vh !important;
+    max-height: 98vh !important;
+    border-radius: 0 !important;
+    margin: 0;
+  }
+
+  /* Header */
+  #mail-modal-content h2 {
+    font-size: 1.1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  #close-mail-modal {
+    font-size: 1.5rem !important;
+  }
+
+  /* Tabs */
+  .tab-btn {
+    font-size: 0.75rem !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Search */
+  #search-message {
+    font-size: 0.875rem !important;
+  }
+
+  /* Mail list - plus d'espace */
+  #mail-list {
+    flex: 1;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-height: none !important;
+  }
+
+  /* Mail items */
+  .pm-message-item,
+  .mail-item {
+    padding: 0.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Pagination */
+  #mail-pagination-info {
+    font-size: 0.7rem !important;
+  }
+
+  #prev-page, #next-page {
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+
+  /* Formulaire nouveau message */
+  #mail-list input,
+  #mail-list textarea {
+    font-size: 0.875rem !important;
+    padding: 0.5rem !important;
+  }
+
+  #mail-list button {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  /* Message détaillé */
+  #mail-list h3 {
+    font-size: 1rem !important;
+  }
+
+  #mail-list p {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 480px) {
+  #mail-modal-content h2 {
+    font-size: 0.9rem !important;
+  }
+
+  .tab-btn {
+    font-size: 0.65rem !important;
+    padding: 0.4rem !important;
+  }
+
+  .tab-btn i {
+    display: none; /* Cache l'icône "pen" sur très petits écrans */
+  }
+}
+</style>

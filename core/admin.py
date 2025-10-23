@@ -42,7 +42,6 @@ from core.models import (
     PlayerRecipe,
     PlayerSkill,
     PlayerResearch,
-    PlayerPrivateMessage,
     PlayerShip,
     PlayerShipResource,
     FactionLeader,
@@ -1244,11 +1243,6 @@ class PlayerSkillAdmin(admin.ModelAdmin):
 @admin.register(PlayerResearch, site=admin_site)
 class PlayerResearchAdmin(admin.ModelAdmin):
     model = PlayerResearch
-
-
-@admin.register(PlayerPrivateMessage, site=admin_site)
-class PlayerPrivateMessageAdmin(admin.ModelAdmin):
-    model = PlayerPrivateMessage
 
 
 @admin.register(PlayerShip, site=admin_site)

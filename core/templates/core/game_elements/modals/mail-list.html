@@ -1,13 +1,20 @@
-{% for mail in received_messages %}
-<div class="pm-message-item cursor-pointer" data-id="{{ mail.id }}">
+{% load static %}
+{% load customtags %}
+{% load i18n %}
+{% if received_messages %}
+    {% for msg in received_messages %}
+    <div data-id="{{ msg.id }}" class="mail-item border border-emerald-500/20 bg-zinc-800/40 rounded-lg p-3 hover:bg-zinc-800/60 transition cursor-pointer">
     <div class="flex justify-between items-center">
-        <div>
-        <h3 class="font-bold text-emerald-400">{{ mail.subject }}</h3>
-        <p class="text-xs text-emerald-300/70">{{ mail.sender.username }} • {{ mail.timestamp|date:"Y-m-d H:i" }}</p>
-        </div>
-        <i class="fas fa-envelope-open text-emerald-400/60"></i>
+        <h3 class="font-bold text-emerald-300">{{ msg.name }}</h3>
+        <small class="text-emerald-300/60">{{ msg.timestamp|date:"Y-m-d H:i" }}</small>
     </div>
-</div>
-{% empty %}
-<p class="text-center text-emerald-300/70 text-sm mt-4">{% translate "No messages found" %}</p>
-{% endfor %}
+    <p class="text-emerald-300/80 text-sm">{{ msg.subject }}</p>
+    <div class="flex justify-end mt-2 gap-2">
+        <button class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold reply-btn">{% translate "Reply" %}</button>
+        <button class="text-xs text-red-400 hover:text-red-300 font-semibold delete-btn">{% translate "Delete" %}</button>
+    </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-center text-emerald-300/60 py-6 text-sm">{% translate "No messages found." %}</p>
+{% endif %}

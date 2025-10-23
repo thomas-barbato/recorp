@@ -576,23 +576,6 @@ class PlayerResearch(models.Model):
         return f"{self.player.name} : {self.research.name}"
 
 
-class PlayerPrivateMessage(models.Model):
-    player_sender = models.ForeignKey(
-        Player, related_name="sender", on_delete=models.CASCADE
-    )
-    player_receiver = models.ForeignKey(
-        Player, related_name="receiver", on_delete=models.CASCADE
-    )
-    message = models.TextField(max_length=2500, blank=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return (
-            f"{self.player_sender.name} to {self.player_receiver.name} : {self.message}"
-        )
-
-
 class PlayerShip(models.Model):
     STATUS_CHOICES = (
         ("FULL", "pleine forme"),
@@ -747,4 +730,4 @@ class PrivateMessage(models.Model):
         ordering = ['-timestamp']
 
     def __str__(self):
-        return f"{self.subject} ({self.sender.name})"
+        return f"{self.subject} ({self.sender.username})"

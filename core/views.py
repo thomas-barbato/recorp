@@ -43,7 +43,7 @@ from core.models import (
     PlayerShipModule,
     PlayerSkill,
     Module,
-    PrivateMessage
+    PrivateMessage,
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
@@ -543,20 +543,32 @@ def session_check(request):
 def private_mail_modal(request):
     page_number = request.GET.get('page', 1)
     tab = request.GET.get('tab', 'received')
-
     if tab == "sent":
-        messages_qs = PrivateMessage.objects.filter(sender=request.user)
+        messages_qs = PrivateMessage.objects.filter(sender_id=request.user)
     else:
-        messages_qs = PrivateMessage.objects.filter(recipients=request.user)
+        messages_qs = request.user.received_messages.all()
+        
+    print(f"message_qs = {messages_qs or None}")
+    
+    mp = [{
+        'id': e.id,
+        'user': e.sender.username,
+        'name': Player.objects.filter(user_id=e.sender.id).values_list('name', flat=True)[0],
+        'subject': e.subject,
+        'body': e.body,
+        } for e in messages_qs]
+    
+    
+    print(mp)
 
-    paginator = Paginator(messages_qs, 10)
+    paginator = Paginator(mp, 10)
     page_obj = paginator.get_page(page_number)
 
     context = {
         "received_messages": page_obj.object_list,
         "page_obj": page_obj,
     }
-    return render(request, "private_mail_modal.html", context)
+    return render(request, "mail-list.html", context)
 
 
 @login_required
@@ -566,10 +578,13 @@ def get_message(request, pk):
         return JsonResponse({"error": _("Access denied")}, status=403)
     message.is_read = True
     message.save()
+    print("DEDANS")
+    print(message.sender.id)
     data = {
         "id": message.id,
         "subject": message.subject,
-        "sender": message.sender.username,
+        'sender': Player.objects.filter(user_id=message.sender.id).values_list('name', flat=True)[0],
+        "user": message.sender.username,
         "body": message.body,
         "timestamp": message.timestamp.strftime("%Y-%m-%d %H:%M"),
     }
@@ -582,8 +597,6 @@ def delete_message(request):
         return HttpResponseBadRequest(_("Invalid method"))
     data = json.loads(request.body)
     subject = data.get("subject")
-    
-    player = PlayerAction(request.user.id)
 
     msg = PrivateMessage.objects.filter(sender=request.user, subject=subject).first()
     if not msg:
