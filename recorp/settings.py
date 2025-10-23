@@ -50,7 +50,8 @@ MIDDLEWARE = [
     # "django.middleware.cache.FetchFromCacheMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
-    "core.middleware.OneSessionPerUserMiddleware"
+    "core.middleware.OneSessionPerUserMiddleware",
+    "django.middleware.locale.LocaleMiddleware"
 ]
 
 ROOT_URLCONF = "recorp.urls"
@@ -213,7 +214,6 @@ TIME_ZONE = "UTC"
 LANGUAGE_CODE = "en-US"
 USE_I18N = True
 LANGUAGES = [
-    ("es", _("Spanish")),
     ("fr", _("French")),
     ("en", _("English")),
 ]

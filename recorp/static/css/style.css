@@ -995,3 +995,23 @@ animation: radarPulse 0.6s ease-out;
 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 .sending { animation: emeraldPulse 0.8s ease-out; }
+
+
+.mail-unread {
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03));
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+    animation: glow-pulse 2s infinite ease-in-out;
+}
+@keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(16,185,129,0.4); }
+    50% { box-shadow: 0 0 14px rgba(16,185,129,0.7); }
+}
+
+/* Warp animation for modal */
+#mail-modal.show {
+    display: flex;
+}
+#mail-modal.show #mail-modal-content {
+    opacity: 1;
+    transform: scale(1);
+}

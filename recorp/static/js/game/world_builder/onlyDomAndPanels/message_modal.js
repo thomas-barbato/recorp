@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-    const modal = document.getElementById('message-modal');
+    const modal = document.getElementById('private-mail-modal');
     const composeBtn = document.getElementById('pm-compose-btn');
     const composeArea = document.getElementById('pm-compose-area');
     const cancelCompose = document.getElementById('pm-cancel-compose');

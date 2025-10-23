@@ -1,0 +1,13 @@
+{% for mail in received_messages %}
+<div class="pm-message-item cursor-pointer" data-id="{{ mail.id }}">
+    <div class="flex justify-between items-center">
+        <div>
+        <h3 class="font-bold text-emerald-400">{{ mail.subject }}</h3>
+        <p class="text-xs text-emerald-300/70">{{ mail.sender.username }} • {{ mail.timestamp|date:"Y-m-d H:i" }}</p>
+        </div>
+        <i class="fas fa-envelope-open text-emerald-400/60"></i>
+    </div>
+</div>
+{% empty %}
+<p class="text-center text-emerald-300/70 text-sm mt-4">{% translate "No messages found" %}</p>
+{% endfor %}

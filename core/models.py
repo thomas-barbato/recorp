@@ -733,3 +733,18 @@ class StationResource(models.Model):
 
     def __str__(self):
         return f"{self.source.name} : {self.resource.name}"
+    
+
+class PrivateMessage(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    recipients = models.ManyToManyField(User, related_name='received_messages')
+    subject = models.CharField(max_length=120)
+    body = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"{self.subject} ({self.sender.name})"

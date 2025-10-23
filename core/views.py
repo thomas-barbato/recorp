@@ -6,6 +6,8 @@ import json
 import os
 from PIL import Image
 from pathlib import Path
+from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LogoutView
@@ -21,7 +23,8 @@ from django.utils.translation import gettext as _
 from django.views.generic import TemplateView, View, RedirectView, FormView
 from django.views.decorators.http import require_http_methods
 from django_user_agents.utils import get_user_agent
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.shortcuts import render, get_object_or_404
 from core.backend.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
@@ -39,7 +42,8 @@ from core.models import (
     SkillExperience,
     PlayerShipModule,
     PlayerSkill,
-    Module
+    Module,
+    PrivateMessage
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
@@ -533,3 +537,67 @@ def session_check(request):
         request.session.modified = True
         return JsonResponse({'authenticated': True})
     return JsonResponse({'authenticated': False}, status=401)
+
+
+@login_required
+def private_mail_modal(request):
+    page_number = request.GET.get('page', 1)
+    tab = request.GET.get('tab', 'received')
+
+    if tab == "sent":
+        messages_qs = PrivateMessage.objects.filter(sender=request.user)
+    else:
+        messages_qs = PrivateMessage.objects.filter(recipients=request.user)
+
+    paginator = Paginator(messages_qs, 10)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "received_messages": page_obj.object_list,
+        "page_obj": page_obj,
+    }
+    return render(request, "private_mail_modal.html", context)
+
+
+@login_required
+def get_message(request, pk):
+    message = get_object_or_404(PrivateMessage, pk=pk)
+    if request.user not in message.recipients.all() and request.user != message.sender:
+        return JsonResponse({"error": _("Access denied")}, status=403)
+    message.is_read = True
+    message.save()
+    data = {
+        "id": message.id,
+        "subject": message.subject,
+        "sender": message.sender.username,
+        "body": message.body,
+        "timestamp": message.timestamp.strftime("%Y-%m-%d %H:%M"),
+    }
+    return JsonResponse(data)
+
+
+@login_required
+def delete_message(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest(_("Invalid method"))
+    data = json.loads(request.body)
+    subject = data.get("subject")
+    
+    player = PlayerAction(request.user.id)
+
+    msg = PrivateMessage.objects.filter(sender=request.user, subject=subject).first()
+    if not msg:
+        msg = PrivateMessage.objects.filter(recipients=request.user, subject=subject).first()
+    if msg:
+        msg.delete()
+        return JsonResponse({"success": _("Message deleted.")})
+    return JsonResponse({"error": _("Message not found.")}, status=404)
+
+
+@login_required
+def search_messages(request):
+    query = request.GET.get("q", "")
+    results = PrivateMessage.objects.filter(
+        recipients=request.user, subject__icontains=query
+    )[:20]
+    return render(request, "mail-list.html", {"received_messages": results})
