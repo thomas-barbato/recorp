@@ -809,3 +809,11 @@ class GetDataFromDB:
             ]
             # Vérification de l'intersection
             return len(set(range_zone).intersection(element_zone)) > 0
+        
+
+    @staticmethod
+    def get_mp_recipient_sector_and_id(name) -> bool:
+        """Récupere l'id player du recepteur de mp aisi que son secteur."""
+        recipient = Player.objects.filter(name=name).values('id', 'sector_id')[0]
+        return recipient['id'], recipient['sector_id']
+        

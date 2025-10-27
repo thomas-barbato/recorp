@@ -20,7 +20,7 @@ SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@
 LOGIN_REDIRECT_URL = "/"
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "3799-90-91-227-84.ngrok-free.app"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
     "daphne",
@@ -158,8 +158,6 @@ CACHES = {
 # WebSocket settings
 WEBSOCKET_ACCEPT_ALL = True
 WEBSOCKET_TIMEOUT = 30
-
-
 
 # Configuration Celery pour éviter les timeouts
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'

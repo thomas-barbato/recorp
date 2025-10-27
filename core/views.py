@@ -44,6 +44,7 @@ from core.models import (
     PlayerSkill,
     Module,
     PrivateMessage,
+    PrivateMessageRecipients,
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
@@ -543,24 +544,21 @@ def session_check(request):
 def private_mail_modal(request):
     page_number = request.GET.get('page', 1)
     tab = request.GET.get('tab', 'received')
+    player_id = PlayerAction(request.user.id).get_player_id()
+    print(player_id)
     if tab == "sent":
-        messages_qs = PrivateMessage.objects.filter(sender_id=request.user)
+        messages_qs = PrivateMessage.objects.filter(sender_id=player_id)
     else:
-        messages_qs = request.user.received_messages.all()
-        
-    print(f"message_qs = {messages_qs or None}")
+        messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id )
     
     mp = [{
-        'id': e.id,
-        'user': e.sender.username,
-        'name': Player.objects.filter(user_id=e.sender.id).values_list('name', flat=True)[0],
-        'subject': e.subject,
-        'body': e.body,
+            'id': e.id,
+            'user': e.sender.name,
+            'name': Player.objects.filter(id=e.sender.id).values_list('name', flat=True)[0],
+            'subject': e.subject,
+            'body': e.body,
         } for e in messages_qs]
     
-    
-    print(mp)
-
     paginator = Paginator(mp, 10)
     page_obj = paginator.get_page(page_number)
 
@@ -574,6 +572,8 @@ def private_mail_modal(request):
 @login_required
 def get_message(request, pk):
     message = get_object_or_404(PrivateMessage, pk=pk)
+    player_id = PlayerAction(request.user.id).get_player_id
+    print(player_id )
     if request.user not in message.recipients.all() and request.user != message.sender:
         return JsonResponse({"error": _("Access denied")}, status=403)
     message.is_read = True
@@ -583,7 +583,7 @@ def get_message(request, pk):
     data = {
         "id": message.id,
         "subject": message.subject,
-        'sender': Player.objects.filter(user_id=message.sender.id).values_list('name', flat=True)[0],
+        'sender': Player.objects.filter(id=message.sender.id).values_list('name', flat=True)[0],
         "user": message.sender.username,
         "body": message.body,
         "timestamp": message.timestamp.strftime("%Y-%m-%d %H:%M"),

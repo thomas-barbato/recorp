@@ -24,14 +24,13 @@
 
     <!-- TABS -->
     <div class="flex justify-around bg-zinc-900/80 border-b border-emerald-500/20 text-sm md:text-base font-orbitron uppercase">
-      <button id="tab-inbox"
-              class="tab-btn flex-1 py-2 border-2 border-emerald-400 text-emerald-300 font-semibold transition-all duration-200">
+      <button id="tab-inbox" class="tab-btn flex-1 py-2 border-2 border-emerald-400 text-emerald-300 font-semibold transition-all duration-200">
         {% translate "Inbox" %}
       </button>
       <button id="tab-sent" class="tab-btn flex-1 py-2 text-emerald-300 hover:text-emerald-200">
         {% translate "Sent" %}
       </button>
-      <button id="new-message-btn" class="tab-btn flex-1 py-2 border-2 border-transparent text-emerald-300 hover:text-emerald-200">
+      <button id="new-message-btn" class="tab-btn flex-1 py-2 text-emerald-300 hover:text-emerald-200">
         <i class="fa-solid fa-pen-to-square mr-2 text-emerald-400"></i>
         {% translate "New" %}
       </button>
@@ -41,6 +40,10 @@
     <div class="p-3 border-b border-emerald-500/20 bg-zinc-950/60 flex items-center gap-3">
       <i class="fa-solid fa-magnifying-glass text-emerald-400"></i>
       <input id="search-message" type="text" placeholder="{% translate 'Search a message...' %}" class="flex-1 bg-transparent outline-none text-sm text-emerald-300 placeholder-emerald-300/40 font-semibold">
+    </div>
+
+    <!-- CONFIRMATION MESSAGE -->
+    <div id="toast-container"class="transition-all duration-300 w-full px-3 flex justify-center mt-2 pointer-events-none space-y-2 flex-col">
     </div>
 
     <!-- LIST -->
@@ -66,129 +69,4 @@
 
 
 <style>
-  @keyframes holo-ring {
-    0% { transform: scale(0.7); opacity: 0.2; }
-    50% { transform: scale(1); opacity: 0.4; }
-    100% { transform: scale(0.7); opacity: 0.2; }
-  }
-  .animate-holo-ring {
-    animation: holo-ring 4s infinite ease-in-out alternate;
-    pointer-events: none;
-  }
-
-  /* === PULSE BUTTON === */
-  @keyframes pulse-slow {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(1.05); }
-  }
-  .animate-pulse-slow { animation: pulse-slow 2.5s infinite; }
-
-  /* === FADE-IN === */
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in { animation: fade-in 0.3s ease-in-out; }
-
-  /* === RESPONSIVE FIX === */
-  @media (max-width: 768px) {
-  /* Modal backdrop */
-  #message-modal {
-    padding: 0;
-    align-items: flex-start;
-    padding-top: 2vh;
-  }
-
-  /* Modal content */
-  #mail-modal-content {
-    width: 100vw !important;
-    height: 98vh !important;
-    max-height: 98vh !important;
-    border-radius: 0 !important;
-    margin: 0;
-  }
-
-  /* Header */
-  #mail-modal-content h2 {
-    font-size: 1.1rem !important;
-    gap: 0.5rem !important;
-  }
-
-  #close-mail-modal {
-    font-size: 1.5rem !important;
-  }
-
-  /* Tabs */
-  .tab-btn {
-    font-size: 0.75rem !important;
-    padding: 0.5rem !important;
-  }
-
-  /* Search */
-  #search-message {
-    font-size: 0.875rem !important;
-  }
-
-  /* Mail list - plus d'espace */
-  #mail-list {
-    flex: 1;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-    max-height: none !important;
-  }
-
-  /* Mail items */
-  .pm-message-item,
-  .mail-item {
-    padding: 0.5rem !important;
-    font-size: 0.875rem !important;
-  }
-
-  /* Pagination */
-  #mail-pagination-info {
-    font-size: 0.7rem !important;
-  }
-
-  #prev-page, #next-page {
-    font-size: 0.75rem !important;
-    padding: 0.25rem 0.5rem !important;
-  }
-
-  /* Formulaire nouveau message */
-  #mail-list input,
-  #mail-list textarea {
-    font-size: 0.875rem !important;
-    padding: 0.5rem !important;
-  }
-
-  #mail-list button {
-    font-size: 0.875rem !important;
-    padding: 0.5rem 0.75rem !important;
-  }
-
-  /* Message détaillé */
-  #mail-list h3 {
-    font-size: 1rem !important;
-  }
-
-  #mail-list p {
-    font-size: 0.875rem !important;
-  }
-}
-
-/* Pour les très petits écrans */
-@media (max-width: 480px) {
-  #mail-modal-content h2 {
-    font-size: 0.9rem !important;
-  }
-
-  .tab-btn {
-    font-size: 0.65rem !important;
-    padding: 0.4rem !important;
-  }
-
-  .tab-btn i {
-    display: none; /* Cache l'icône "pen" sur très petits écrans */
-  }
-}
 </style>

@@ -384,6 +384,35 @@ class GameConsumer(WebsocketConsumer):
         except Exception as e:
             logger.error(f"Erreur lors de la validation des données de sync: {e}")
             return False
+        
+    def async_send_mp(self, event: Dict[str, Any]) -> None:
+        try:
+            message = json.loads(event["message"])
+            sender_id = message["senderId"]
+            print("prout")
+            print(sender_id)
+            
+            response = {
+                "type": "none", 
+                "message": {}
+            }
+            
+            if self._is_other_player(sender_id) is False:
+                recipient_name = message["recipient"]
+                mp_subject = message["subject"]
+                mp_body = message["body"]
+                
+                if not recipient_name or not mp_subject or not mp_subject:
+                    return response
+                    
+                recipient_id, recipiant_sector_id = GetDataFromDB.get_mp_recipient_sector_and_id(recipient_name)
+                PlayerAction(self.user.id).create_new_mp(recipient_id, mp_subject, mp_body)
+                return { "type": "none", "message": {} }
+            
+            return response
+                
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.error(f"Erreur lors du traitement du message privé: {e}")
 
     def async_move(self, event: Dict[str, Any]) -> None:
         try:

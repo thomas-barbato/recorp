@@ -2799,10 +2799,6 @@ video {
   border-color: rgb(71 85 105 / var(--tw-border-opacity));
 }
 
-.border-transparent {
-  border-color: transparent;
-}
-
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
@@ -3497,11 +3493,6 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
 }
 
 .py-\[1px\] {
@@ -5459,7 +5450,7 @@ input:focus {
   }
 
   #character-modal .skills .text-xs,
-    #character-modal .skills p {
+  #character-modal .skills p {
     font-size: 0.9rem;
   }
 
@@ -5932,6 +5923,310 @@ input:focus {
 
 .animate-fade-in {
   animation: fade-in 0.3s ease-in-out;
+}
+
+@keyframes holo-ring {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(0.7);
+    opacity: 0.2;
+  }
+}
+
+.animate-holo-ring {
+  animation: holo-ring 4s infinite ease-in-out alternate;
+  pointer-events: none;
+}
+
+/* === PULSE BUTTON === */
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2.5s infinite;
+}
+
+/* === FADE-IN === */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in-out;
+}
+
+/* === RESPONSIVE FIX === */
+
+@media (max-width: 768px) {
+  /* Modal backdrop */
+
+  #message-modal {
+    padding: 0;
+    align-items: flex-start;
+    padding-top: 2vh;
+  }
+
+  /* Modal content */
+
+  #mail-modal-content {
+    width: 100vw !important;
+    height: 98vh !important;
+    max-height: 98vh !important;
+    border-radius: 0 !important;
+    margin: 0;
+  }
+
+  /* Header */
+
+  #mail-modal-content h2 {
+    font-size: 1.1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  #close-mail-modal {
+    font-size: 1.5rem !important;
+  }
+
+  /* Tabs */
+
+  .tab-btn {
+    font-size: 0.75rem !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Search */
+
+  #search-message {
+    font-size: 0.875rem !important;
+  }
+
+  /* Mail list - plus d'espace */
+
+  #mail-list {
+    flex: 1;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-height: none !important;
+  }
+
+  /* Mail items */
+
+  .pm-message-item,
+    .mail-item {
+    padding: 0.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Pagination */
+
+  #mail-pagination-info {
+    font-size: 0.7rem !important;
+  }
+
+  #prev-page, #next-page {
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+
+  /* Formulaire nouveau message */
+
+  #mail-list input,
+    #mail-list textarea {
+    font-size: 0.875rem !important;
+    padding: 0.5rem !important;
+  }
+
+  #mail-list button {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  /* Message détaillé */
+
+  #mail-list h3 {
+    font-size: 1rem !important;
+  }
+
+  #mail-list p {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Pour les très petits écrans */
+
+@media (max-width: 480px) {
+  #mail-modal-content h2 {
+    font-size: 0.9rem !important;
+  }
+
+  .tab-btn {
+    font-size: 0.65rem !important;
+    padding: 0.4rem !important;
+  }
+
+  .tab-btn i {
+    display: none;
+    /* Cache l'icône "pen" sur très petits écrans */
+  }
+}
+
+.toast {
+  background: rgba(16, 185, 129, 0.15);
+  /* Emerald glow */
+  border-left: 3px solid #10b981;
+  color: #a7f3d0;
+  font-size: 0.85rem;
+  animation: fade-slide 0.35s ease forwards;
+  box-shadow: 0 0 12px rgba(16, 185, 129, .4);
+}
+
+.toast.error {
+  background: rgba(240, 82, 82, 0.15);
+  border-left: 3px solid #f05252;
+  color: #fecaca;
+  box-shadow: 0 0 12px rgba(240, 82, 82, .4);
+}
+
+@keyframes fade-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toast-cyber {
+  background: rgba(20, 255, 180, 0.12);
+  border: 1px solid rgba(0, 255, 180, 0.25);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  color: #afffdd;
+  animation: cyber-pop-in 0.35s ease forwards;
+  box-shadow: 0 0 18px rgba(0, 255, 180, 0.35);
+  /* ✅ Crypted-Transmission Layer */
+}
+
+.toast-cyber::before {
+  content: "ϟ 01 A7 D3 9C 4B 88 F2 3E 9B C1 77";
+  /* motif crypté */
+  position: absolute;
+  inset: 0;
+  font-size: 0.65rem;
+  font-weight: bold;
+  opacity: 0.12;
+  color: #45ffc7;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: transmission-stream 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes transmission-stream {
+  0% {
+    transform: translateX(-50%) translateY(-60%) skewX(-18deg);
+  }
+
+  100% {
+    transform: translateX(30%) translateY(100%) skewX(-18deg);
+  }
+}
+
+.toast-cyber.error {
+  background: rgba(255, 60, 60, 0.18);
+  color: #ffcaca;
+  border-color: rgba(255, 60, 60, 0.35);
+  box-shadow: 0 0 15px rgba(255, 50, 50, 0.35);
+}
+
+.toast-cyber.error::before {
+  color: #ff6e6e;
+  opacity: 0.15;
+}
+
+.toast-icon {
+  font-size: 1rem;
+  text-shadow: 0 0 8px currentColor;
+}
+
+.comet {
+  position: absolute;
+  left: -40%;
+  top: 50%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #10ffa2, transparent);
+  transform: translateY(-50%);
+  animation: cyber-comet 1.2s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes cyber-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cyber-comet {
+  0% {
+    transform: translate(-120%, -50%) rotate(0deg);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(220%, -50%) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.cyber-exit {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.9);
+  transition: all .3s ease;
 }
 
 @media (min-width: 640px) {

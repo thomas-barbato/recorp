@@ -352,6 +352,11 @@ class WebSocketManager {
                 this.handlePong(data);
                 return;
             }
+
+            if (data.type === 'none'){
+                console.log("dans none")
+                return;
+            }
             
             handle_websocket_message(data);
             

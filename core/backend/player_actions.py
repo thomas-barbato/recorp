@@ -29,7 +29,9 @@ from core.models import (
     Warp,
     WarpZone,
     SectorWarpZone,
-    LoggedInUser, 
+    LoggedInUser,
+    PrivateMessage,
+    PrivateMessageRecipients,
 )
 
 
@@ -615,6 +617,26 @@ class PlayerAction:
         
         return True
 
+    def create_new_mp(self, recipient_id, subject, body):
+        
+        recipient = Player.objects.get(id=recipient_id)
+        
+        new_mp = PrivateMessage(
+            subject=subject,
+            body=body,
+            sender_id=self.player_id,
+        )
+        
+        new_mp.save()
+        
+        add_recipient = PrivateMessageRecipients(
+            message_id=new_mp.id,
+            recipient_id=recipient.id,
+            is_read=False,
+        )
+        
+        add_recipient.save()
+        
     def set_spaceship_statistics_with_module(self):
         """Placeholder pour les statistiques du vaisseau avec modules."""
         pass

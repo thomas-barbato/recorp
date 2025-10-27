@@ -83,7 +83,18 @@ function registerAllActions(){
         { requiresValidation: false }
     );
 
-    ActionRegistry.register('send_message',
+    ActionRegistry.register('send_mp',
+        (data) => {
+            if (data.message && validateCriticalData(true)) {
+                console.log('💬 Message envoyé:', data.message)
+            } else {
+                console.error('❌ Impossible de traiter send_chat_message, données invalides');
+            }
+        },
+        { requiresValidation: false }
+    );
+
+    ActionRegistry.register('recieve_mp',
         (data) => {
             if (data.message && validateCriticalData(true)) {
                 console.log('💬 Message reçu:', data.message)
