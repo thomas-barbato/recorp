@@ -51,7 +51,7 @@ urlpatterns = [
     path('play/session-check', core_views.session_check, name='session_check'),
     
     path("messages/", core_views.private_mail_modal, name="private_mail_modal"),
-    path("messages/get/<int:pk>/", core_views.get_message, name="get_message"),
+    path("messages/get/<str:pk>/", core_views.get_message, name="get_message"),
     path("messages/delete/", core_views.delete_message, name="delete_message"),
     path("messages/search/", core_views.search_messages, name="search_messages"),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),

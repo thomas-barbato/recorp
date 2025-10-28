@@ -354,7 +354,6 @@ class WebSocketManager {
             }
 
             if (data.type === 'none'){
-                console.log("dans none")
                 return;
             }
             

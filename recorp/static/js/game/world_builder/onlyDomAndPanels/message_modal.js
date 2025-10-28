@@ -52,26 +52,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // === BIND EVENTS ===
     function bindMailEvents() {
         document.querySelectorAll('.mail-item').forEach(item => {
-        item.addEventListener('click', async () => {
-            const id = item.dataset.id;
-            const res = await fetch(`/messages/get/${id}/`);
-            const data = await res.json();
-            showMessage(data);
-        });
+            item.addEventListener('click', async () => {
+                const id = item.dataset.id;
+                const res = await fetch(`/messages/get/${id}/`);
+                const data = await res.json();
+                showMessage(data);
+            });
         });
 
         document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', async e => {
             e.stopPropagation();
             const item = e.target.closest('.mail-item');
-            const subject = item.querySelector('p').textContent;
+            const id = item.dataset.id;
+
+            let data = JSON.stringify({id});
+            const deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
+            console.log(data)
             if (confirm(gettext("Delete this message?"))) {
-            await fetch("/messages/delete/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "X-CSRFToken": csrf_token },
-                body: JSON.stringify({ subject }),
-            });
-            loadMessages();
+                await fetch(deleteUrl, {
+                    method: "POST",
+                    headers: { 
+                        "X-CSRFToken": csrf_token 
+                    },
+                    body: data,
+                });
+                loadMessages();
             }
         });
         });
@@ -92,6 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button id="back" class="px-4 py-2 border border-emerald-400 text-emerald-400 rounded hover:bg-emerald-400 hover:text-zinc-900 transition">${gettext("Back")}</button>
             </div>
         </div>`;
+
+        if(data.is_author){
+            document.getElementById('reply').classList.add('hidden');
+        }
 
         // Retour à la liste
         document.getElementById('back').addEventListener('click', loadMessages);

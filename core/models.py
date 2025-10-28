@@ -722,6 +722,9 @@ class PrivateMessage(models.Model):
     subject = models.CharField(max_length=120)
     body = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    deleted_at = models.DateTimeField("delete date", null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-timestamp']
@@ -733,3 +736,7 @@ class PrivateMessageRecipients(models.Model):
     recipient = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='recipient')
     message = models.ForeignKey(PrivateMessage, on_delete=models.CASCADE, related_name='received_messages') 
     is_read = models.BooleanField(default=False)
+    is_author = models.BooleanField(default=False)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    deleted_at = models.DateTimeField("delete date", null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)

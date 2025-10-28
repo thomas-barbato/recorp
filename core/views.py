@@ -545,18 +545,41 @@ def private_mail_modal(request):
     page_number = request.GET.get('page', 1)
     tab = request.GET.get('tab', 'received')
     player_id = PlayerAction(request.user.id).get_player_id()
-    print(player_id)
-    if tab == "sent":
-        messages_qs = PrivateMessage.objects.filter(sender_id=player_id)
-    else:
-        messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id )
+    mp = []
     
-    mp = [{
-            'id': e.id,
-            'user': e.sender.name,
-            'name': Player.objects.filter(id=e.sender.id).values_list('name', flat=True)[0],
-            'subject': e.subject,
-            'body': e.body,
+    if tab == "sent":
+        messages_qs = PrivateMessageRecipients.objects.filter(message_id__sender_id=player_id, deleted_at__isnull=True, is_author=True).values(
+            'message_id__sender_id__name',
+            'message_id__sender_id',
+            'message_id__subject',
+            'message_id__body',
+            'message_id__timestamp',
+            'message_id',
+        )
+        mp = [{
+                'id': e['message_id'],
+                'user': e['message_id__sender_id'],
+                'name': e['message_id__sender_id__name'],
+                'subject': e['message_id__subject'],
+                'body': e['message_id__body'],
+                'timestamp': e['message_id__timestamp']
+        } for e in messages_qs]
+    else:
+        messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id, is_author=False, deleted_at__isnull=True).values(
+            'message_id__sender_id__name',
+            'message_id__sender_id',
+            'message_id__subject',
+            'message_id__body',
+            'message_id__timestamp',
+            'message_id',
+        )
+        mp = [{
+                'id': e['message_id'],
+                'user': e['message_id__sender_id'],
+                'name': e['message_id__sender_id__name'],
+                'subject': e['message_id__subject'],
+                'body': e['message_id__body'],
+                'timestamp': e['message_id__timestamp']
         } for e in messages_qs]
     
     paginator = Paginator(mp, 10)
@@ -571,40 +594,92 @@ def private_mail_modal(request):
 
 @login_required
 def get_message(request, pk):
-    message = get_object_or_404(PrivateMessage, pk=pk)
-    player_id = PlayerAction(request.user.id).get_player_id
-    print(player_id )
-    if request.user not in message.recipients.all() and request.user != message.sender:
-        return JsonResponse({"error": _("Access denied")}, status=403)
-    message.is_read = True
-    message.save()
-    print("DEDANS")
-    print(message.sender.id)
-    data = {
-        "id": message.id,
-        "subject": message.subject,
-        'sender': Player.objects.filter(id=message.sender.id).values_list('name', flat=True)[0],
-        "user": message.sender.username,
-        "body": message.body,
-        "timestamp": message.timestamp.strftime("%Y-%m-%d %H:%M"),
-    }
-    return JsonResponse(data)
+    try:
+        player_id = PlayerAction(request.user.id).get_player_id()
+        message = PrivateMessage.objects.filter(id=pk, deleted_at__isnull=True)
+        data = {}
+        
+        if not message:
+            return
+        
+        if not player_id:
+            return
+        
+        message_author = [e for e in message.values(
+            'id', 'subject', 'body', 'sender_id__name', 'timestamp'
+        )]
+        
+        message_recipients = [e for e in PrivateMessageRecipients.objects.filter(
+                message_id=pk, 
+                recipient_id=player_id, 
+                deleted_at__isnull=True
+                ).values(
+                'message_id', 'message_id__subject', 'message_id__body',
+                'message_id__sender_id__name', 'message_id__timestamp'
+                )
+            ]
+            
+        if not message_author and not message_recipients:
+            return JsonResponse({"error": _("Access denied")}, status=403)
+        
+        id = f'{message_recipients[0]["message_id"] if message_recipients else message_author[0]["id"]}'
+        subject = f'{message_recipients[0]["message_id__subject"] if message_recipients else message_author[0]["subject"]}'
+        sender = f'{message_recipients[0]["message_id__sender_id__name"] if message_recipients else message_author[0]["sender_id__name"]}'
+        body = f'{message_recipients[0]["message_id__body"] if message_recipients else message_author[0]["body"]}'
+        timestamp = f'{message_recipients[0]["message_id__timestamp"].strftime("%Y-%m-%d %H:%M") if message_recipients else message_author[0]["timestamp"].strftime("%Y-%m-%d %H:%M")}'
+        is_author = PrivateMessage.objects.filter(id=pk, sender_id=player_id).exists()
+        
+        data = {
+            "id": id,
+            "subject": subject,
+            'sender': sender,
+            "body": body,
+            "timestamp": timestamp,
+            "is_author": is_author
+        }
+        
+        if message_recipients:
+            PrivateMessageRecipients.objects.filter(message_id=data['id'], recipient_id=player_id, deleted_at__isnull=True).update(is_read=True)
+        
+        return JsonResponse(data, status=200)
+    
+    except Exception as e:
+        print(e)
+        return JsonResponse({}, status=500)
 
 
 @login_required
 def delete_message(request):
     if request.method != "POST":
         return HttpResponseBadRequest(_("Invalid method"))
-    data = json.loads(request.body)
-    subject = data.get("subject")
-
-    msg = PrivateMessage.objects.filter(sender=request.user, subject=subject).first()
-    if not msg:
-        msg = PrivateMessage.objects.filter(recipients=request.user, subject=subject).first()
-    if msg:
-        msg.delete()
-        return JsonResponse({"success": _("Message deleted.")})
-    return JsonResponse({"error": _("Message not found.")}, status=404)
+    try:
+        data = json.loads(request.body)
+        message_id = data.get('id')
+        
+        player_id = PlayerAction(request.user.id).get_player_id()
+        messageRecipient = PrivateMessageRecipients.objects.filter(message_id=message_id, recipient_id=player_id, deleted_at__isnull=True)
+        
+        print(messageRecipient)
+        
+        if not messageRecipient:
+            return JsonResponse({})
+        
+        if not player_id:
+            return JsonResponse({})
+        
+        messageRecipient.update(
+            deleted_at=datetime.datetime.now()
+        )
+        
+        if PrivateMessageRecipients.objects.filter(message_id=message_id, deleted_at__isnull=True).exists() is False:
+            PrivateMessage.objects.filter(id=message_id).update(
+                deleted_at=datetime.datetime.now()
+            )
+            
+        return JsonResponse({}, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"error": _("Message not found.")}, status=404)
 
 
 @login_required
