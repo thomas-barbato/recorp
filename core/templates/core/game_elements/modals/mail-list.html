@@ -1,19 +1,101 @@
 {% load static %}
 {% load customtags %}
 {% load i18n %}
+
+
 {% if received_messages %}
     {% for msg in received_messages %}
-    <div data-id="{{ msg.id }}" class="mail-item border border-emerald-500/20 bg-zinc-800/40 rounded-lg p-3 hover:bg-zinc-800/60 transition cursor-pointer">
-        <div class="flex justify-between items-center">
-            <h3 class="font-bold text-emerald-300">{{ msg.name }}</h3>
-            <small class="text-emerald-300/60 timestamp">{{ msg.timestamp|date:"Y-m-d H:i" }}</small>
+    <div data-id="{{ msg.id }}"
+         class="mail-item group relative border rounded-xl p-4 cursor-pointer transition
+         {% if not msg.is_read %}
+            border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.35)]
+         {% else %}
+            border-emerald-500/20
+         {% endif %}
+         bg-zinc-900/60 hover:bg-zinc-900/90 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+
+        <!-- === Partie 1 : Badge lu / non-lu === -->
+        <div class="absolute top-2 right-3 text-xs font-bold tracking-wider">
+            {% if not msg.is_read %}
+            <span class="text-emerald-400 animate-pulse">● NEW</span>
+            {% else %}
+            <span class="text-emerald-500/40">●</span>
+            {% endif %}
         </div>
-        <p class="text-emerald-300/80 text-sm">{{ msg.subject }}</p>
-        <div class="flex justify-end mt-2 gap-2">
-            <button class="text-xs text-red-400 hover:text-red-300 font-semibold delete-btn">{% translate "Delete" %}</button>
+
+        <!-- === Partie 2 : Core message section === -->
+        <div class="flex items-center gap-4">
+
+            <!-- Avatar + Scan-->
+            <div class="relative w-14 min-w-14 h-14">
+                <img src='{% static msg.avatar_url %}' alt="{{ msg.name }}" class="w-14 h-14 rounded-lg object-cover border border-emerald-400/50 shadow-lg">
+                <!-- Effet glitch -->
+                <div class="absolute inset-0 bg-emerald-500/20 mix-blend-screen opacity-30 rounded-lg blur-[1px]"></div>
+
+                <!-- Radar scan (hover) -->
+                <div class="absolute inset-0 rounded-lg border border-emerald-400/40 opacity-0
+                    group-hover:opacity-40 animate-radar"></div>
+            </div>
+
+            <div class="flex flex-col flex-1 min-w-0">
+
+                <!-- Ligne Auteur + faction + timestamp -->
+                <div class="flex items-center gap-2 flex-wrap">
+
+                    <!-- Nom du joueur -->
+                    <span class="font-bold text-emerald-200 truncate">
+                        {{ msg.name }}
+                    </span>
+
+                    <!-- Badge faction coloré -->
+                    <span class="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold
+                        border {{ msg.faction_color }}
+                    ">
+                        {{ msg.faction }}
+                    </span>
+
+                    <!-- Timestamp -->
+                    <small class="text-xs text-emerald-500/50 italic">
+                        {{ msg.timestamp|date:"Y-m-d H:i" }}
+                    </small>
+
+                </div>
+
+                <!-- Sujet -->
+                <p class="text-sm font-semibold mt-1 text-emerald-100 truncate">
+                    {{ msg.subject }}
+                </p>
+
+                <!-- Aperçu contenu -->
+                <p class="text-emerald-300/60 text-xs line-clamp-1 italic">
+                    {{ msg.body|truncatechars:70 }}
+                </p>
+
+            </div>
         </div>
+
+        <!-- === Partie 3 : Bouton supprimer === -->
+        <div class="flex justify-end pt-3">
+            <button class="text-xs text-red-400 hover:text-red-300 font-semibold delete-btn">
+                ✖ {% translate "Delete" %}
+            </button>
+        </div>
+
     </div>
     {% endfor %}
 {% else %}
-    <p class="text-center text-emerald-300/60 py-6 text-sm">{% translate "No messages found." %}</p>
+    <p class="text-center text-emerald-300/60 py-6 text-sm">
+        {% translate "No messages found." %}
+    </p>
 {% endif %}
+
+<!-- Radar Animation -->
+<style>
+@keyframes radar-scan {
+    0% { transform: rotate(0deg); opacity: .3; }
+    100% { transform: rotate(360deg); opacity: .6; }
+}
+.animate-radar {
+    animation: radar-scan 2.5s linear infinite;
+}
+</style>

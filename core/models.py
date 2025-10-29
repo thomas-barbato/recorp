@@ -256,7 +256,7 @@ class Player(models.Model):
     is_npc = models.BooleanField(default=False)
     name = models.CharField(max_length=30, null=False, blank=False, default="Faction")
     description = models.TextField(max_length=2500, blank=True)
-    image = models.CharField(max_length=250, null=True, blank=True, default="img.png")
+    image = models.BooleanField(default=False)
     faction_xp = models.PositiveIntegerField(null=False, default=0)
     archetype = models.ForeignKey(
         Archetype,

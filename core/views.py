@@ -4,6 +4,10 @@ import urllib.request
 from urllib import request
 import json
 import os
+from io import BytesIO
+import cairosvg
+from django.core.files import File
+from django.conf import settings
 from PIL import Image
 from pathlib import Path
 from django.core.paginator import Paginator
@@ -254,11 +258,13 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             
             form = CreateCharacterForm(data, request.FILES)
             if form.is_valid():
+                contains_image = True if request.FILES.get('file') else False
+                print(f"contains_image = {contains_image}")
                 new_player = Player(
                     name=data["name"],
                     faction_id=data["faction"],
                     archetype_id=data["archetype"],
-                    image="0.gif",
+                    image=contains_image,
                     sector_id=Sector.objects.filter(name__contains="tuto").values_list('id', flat=True),
                     coordinates = {"x" : 15, "y": 15 },
                     description=data["description"],
@@ -377,8 +383,22 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                         skill_id = skill_id
                     )
                 
-                upload_file = UploadThisImage(request.FILES.get('file'), "users", new_player.id, new_player.id)
-                upload_file.save()
+                if contains_image is True:
+                    
+                    upload_file = UploadThisImage(request.FILES.get('file'), "users", new_player.id, new_player.id)
+                    upload_file.save()
+                    
+                else:
+                    # PILE can't read .svg, so we transform this img in png.
+                    default_svg = os.path.join(settings.STATIC_ROOT, 'img', 'ux', 'default-user.svg')
+                    png_bytes = cairosvg.svg2png(url=default_svg)
+
+                    tmp_file = BytesIO(png_bytes)
+                    tmp_file.name = 'default.png'
+
+                    upload_file = UploadThisImage(tmp_file, "users", new_player.id, new_player.id)
+                    upload_file.save()
+                    
                 
             else:
                 print(form.errors)
@@ -555,15 +575,19 @@ def private_mail_modal(request):
             'message_id__subject',
             'message_id__body',
             'message_id__timestamp',
+            'message_id__sender_id__faction_id__name',
             'message_id',
-        )
+        ).order_by('-message_id__timestamp')
         mp = [{
                 'id': e['message_id'],
                 'user': e['message_id__sender_id'],
                 'name': e['message_id__sender_id__name'],
                 'subject': e['message_id__subject'],
                 'body': e['message_id__body'],
-                'timestamp': e['message_id__timestamp']
+                'timestamp': e['message_id__timestamp'],
+                'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
+                'faction': ['message_id__sender_id__faction_id__name'],
+                'faction_color': GetDataFromDB.get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
         } for e in messages_qs]
     else:
         messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id, is_author=False, deleted_at__isnull=True).values(
@@ -572,15 +596,21 @@ def private_mail_modal(request):
             'message_id__subject',
             'message_id__body',
             'message_id__timestamp',
+            'message_id__sender_id__faction_id__name',
             'message_id',
-        )
+            'is_read'
+        ).order_by('-message_id__timestamp')
         mp = [{
                 'id': e['message_id'],
                 'user': e['message_id__sender_id'],
                 'name': e['message_id__sender_id__name'],
                 'subject': e['message_id__subject'],
                 'body': e['message_id__body'],
-                'timestamp': e['message_id__timestamp']
+                'timestamp': e['message_id__timestamp'],
+                'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
+                'faction': e['message_id__sender_id__faction_id__name'],
+                'faction_color': GetDataFromDB().get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
+                'is_read': e['is_read']
         } for e in messages_qs]
     
     paginator = Paginator(mp, 10)
@@ -607,7 +637,7 @@ def get_message(request, pk):
             return
         
         message_author = [e for e in message.values(
-            'id', 'subject', 'body', 'sender_id__name', 'timestamp'
+            'id', 'subject', 'body', 'sender_id__name', 'timestamp', 'sender_id'
         )]
         
         message_recipients = [e for e in PrivateMessageRecipients.objects.filter(
@@ -616,7 +646,8 @@ def get_message(request, pk):
                 deleted_at__isnull=True
                 ).values(
                 'message_id', 'message_id__subject', 'message_id__body',
-                'message_id__sender_id__name', 'message_id__timestamp'
+                'message_id__sender_id__name', 'message_id__timestamp',
+                'message_id__sender_id', 'message_id__sender_id'
                 )
             ]
             
@@ -626,6 +657,7 @@ def get_message(request, pk):
         id = f'{message_recipients[0]["message_id"] if message_recipients else message_author[0]["id"]}'
         subject = f'{message_recipients[0]["message_id__subject"] if message_recipients else message_author[0]["subject"]}'
         sender = f'{message_recipients[0]["message_id__sender_id__name"] if message_recipients else message_author[0]["sender_id__name"]}'
+        sender_id = f'{message_recipients[0]["message_id__sender_id"] if message_recipients else message_author[0]["sender_id"]}' 
         body = f'{message_recipients[0]["message_id__body"] if message_recipients else message_author[0]["body"]}'
         timestamp = f'{message_recipients[0]["message_id__timestamp"].strftime("%Y-%m-%d %H:%M") if message_recipients else message_author[0]["timestamp"].strftime("%Y-%m-%d %H:%M")}'
         is_author = PrivateMessage.objects.filter(id=pk, sender_id=player_id).exists()
@@ -634,6 +666,7 @@ def get_message(request, pk):
             "id": id,
             "subject": subject,
             'sender': sender,
+            'sender_id': sender_id,
             "body": body,
             "timestamp": timestamp,
             "is_author": is_author
@@ -696,6 +729,7 @@ def search_players(request):
     Retourne jusqu'à 10 joueurs correspondant à la query.
     Résultat JSON: [{id, name, faction}]
     """
+    print("search_players")
     q = request.GET.get('q', '').strip()
     results = []
     if q:

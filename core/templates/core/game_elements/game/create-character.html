@@ -88,7 +88,7 @@
                                 {% translate "Select an archetype" %} <span class="text-red-500">*</span>
                             </label>
                             <select id="id_archetype" 
-                                    class="w-full p-3 bg-emerald-900/60 border border-emerald-500/40 rounded-lg text-emerald-300 font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    class="w-full p-3 bg-zinc-800 border border-emerald-400 text-center rounded-lg text-emerald-300 font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-emerald-500">
                                 <option selected disabled>--- Choisissez un archétype ---</option>
                                 {% for archetype in archetype_data %}
                                 <option value="{{ archetype.id }}">{% translate archetype.name %}</option>
@@ -178,14 +178,14 @@
                                 {% translate 'Select your picture' %}
                             </label>
                             <div class="flex justify-center">
-                                <div class="relative cursor-pointer group" onclick="document.getElementById('id_image').click()">
+                                <div class="relative cursor-pointer group" onclick="document.getElementById('file').click()">
                                     <img class="w-32 h-32 rounded-lg border-2 border-emerald-500/40 group-hover:border-emerald-400 transition-all" id="user-avatar" src="{% static 'ux/default-user.svg' %}" alt="Avatar">
                                     <div class="absolute inset-0 bg-emerald-500/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <i class="fas fa-camera text-3xl text-emerald-300"></i>
                                     </div>
                                 </div>
                             </div>
-                            <input type="file" id="id_image" class="hidden" name="image" accept=".jpg, .png, .gif" />
+                            <input type="file" id="file" class="hidden" name="file" accept=".jpg, .png, .gif" />
                         </div>
 
                         <!-- Nom du personnage -->
@@ -284,7 +284,7 @@
 
     const reader = new FileReader();
     const img_user = document.querySelector('#user-avatar');
-    const img_input = document.querySelector('#id_image');
+    const img_input = document.querySelector('#file');
 
     let quill_content = undefined;
 
@@ -342,8 +342,6 @@
             // Sélectionner cette faction
             this.classList.add('faction-selected');
             faction_selected = this.id.split('-')[1];
-
-            console.log(this)
             
             // Activer le bouton suivant
             next_button.disabled = false;
@@ -357,6 +355,7 @@
 
     img_input.addEventListener('change', e => {
         const f = e.target.files[0];
+        console.log(f)
         if (f) {
             reader.readAsDataURL(f);
             img_user.classList.add('border-emerald-500');
@@ -378,7 +377,7 @@
         if (faction_selected && archetype && character_name) {
             let data = new FormData();
             const file = img_input.files[0];
-            if (file) data.append('image', file);
+            if (file) data.append('file', file);
             data.append('name', character_name);
             data.append('archetype', archetype);
             data.append('faction', faction_selected);

@@ -652,7 +652,7 @@ player_modal_container_body_otherModule_module_fieldset_legend.classList.add('fl
 player_modal_container_body_otherModule_module_fieldset_legend.append(player_modal_container_body_otherModule_module_fieldset_legend_span);
 player_modal_container_body_otherModule_module_fieldset.append(player_modal_container_body_otherModule_module_fieldset_legend);
 
-let img_src = currentPlayer.user.image == "default.gif" ? `/static/img/ux/default-user.svg` : `/static/img/users/${currentPlayer.user.player}/0.gif`
+let img_src = `/static/img/users/${currentPlayer.user.player}/0.gif`
 
 player_modal_container_header_img.src = img_src;
 player_modal_container_header_li_name_b.textContent = "Name: ";

@@ -219,17 +219,49 @@ document.addEventListener('DOMContentLoaded', () => {
         tabSent.classList.remove('border-2', 'border-emerald-400');
         tabInbox.classList.remove('border-2', 'border-emerald-400');
         newMsgBtn.classList.add('border-2', 'border-emerald-400');
-        mailList.innerHTML = `
-        <div class="p-4 space-y-4 text-sm md:text-base text-emerald-300 animate-fade-in">
-            <input id="recipient" type="text" placeholder="${gettext("Recipient...")}" class="w-full bg-zinc-800/50 border border-emerald-500/30 rounded px-3 py-2">
-            <input id="subject" type="text" placeholder="${gettext("Subject...")}" class="w-full bg-zinc-800/50 border border-emerald-500/30 rounded px-3 py-2">
-            <textarea id="body" placeholder="${gettext("Write your message...")}" class="w-full bg-zinc-800/50 border border-emerald-500/30 rounded px-3 py-2 min-h-[120px]"></textarea>
-            <div class="flex justify-end gap-3">
-            <button id="cancel-new" class="border border-red-400 text-red-400 px-4 py-2 rounded hover:bg-red-400 hover:text-zinc-900 transition">${gettext("Cancel")}</button>
-            <button id="send-new" class="bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-4 py-2 rounded font-semibold transition">${gettext("Send")}</button>
-            </div>
-        </div>`;
 
+        mailList.innerHTML = `
+            <div id="compose-container" class="p-3 space-y-3 animate-fade-in">
+                <!-- Sélecteur de cible -->
+                <div class="flex gap-2 mt-3">
+                    <select id="recipient-type"
+                        class="bg-zinc-800 border border-emerald-400 text-justify rounded px-2 py-2 text-emerald-300 text-xs">
+                        <option value="player" selected>${gettext("Player")}</option>
+                        <option value="faction">${gettext("Faction")}</option>
+                        <option value="group" class="maybe-disabled">${gettext("Group")}</option>
+                        <option value="clan" class="maybe-disabled">${gettext("Clan")}</option>
+                    </select>
+
+                    <div class="relative flex-1">
+                        <input id="recipient" type="text" autocomplete="off"
+                            placeholder="${gettext("Recipient name...")}"
+                            class="w-full bg-zinc-800/50 border border-emerald-500/30 rounded px-3 py-2 text-emerald-300 text-xs">
+                    
+                        <div id="recipient-autocomplete"
+                            class="absolute left-0 right-0 mt-1 bg-zinc-900/90 border border-emerald-500/20 rounded shadow-lg hidden z-50 max-h-44 overflow-y-auto text-xs"></div>
+                    </div>
+
+                    <input id="recipient-player-id" type="hidden">
+                </div>
+
+                <div id="recipient-error" class="text-sm text-red-400/90 hidden"></div>
+
+                <input id="subject" type="text"
+                    placeholder="${gettext("Subject...")}"
+                    class="w-full bg-zinc-800/50 border border-emerald-500/30 rounded px-3 py-2 text-emerald-300 text-xs">
+
+                <textarea id="body" 
+                    placeholder="${gettext("Write your message...")}"
+                    class="w-full bg-zinc-800/50 border border-emerald-500/30 rounded px-3 py-2 text-emerald-300 text-sm min-h-[120px]"></textarea>
+
+                <div class="flex justify-end gap-3 mt-4">
+                    <button id="cancel-new" class="border border-red-400 text-red-400 px-4 py-2 rounded">${gettext("Cancel")}</button>
+                    <button id="send-new" class="send-btn bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-4 py-2 rounded font-semibold">${gettext("Send")}</button>
+                </div>
+            </div>`;
+
+        bindComposeEvents(); // <--- 🔥 essentiel !
+        
         document.getElementById('cancel-new').addEventListener('click', loadMessages);
 
         document.getElementById('send-new').addEventListener(action_listener_touch_click, async (e) => {
@@ -299,6 +331,88 @@ document.addEventListener('DOMContentLoaded', () => {
             button.disabled = false;
             button.innerHTML = button.dataset.originalText;
         }
+    }
+
+    function bindComposeEvents() {
+        const recipientInput = document.getElementById('recipient');
+        const recipientType = document.getElementById('recipient-type');
+        const recipientAutocomplete = document.getElementById('recipient-autocomplete');
+        const recipientPlayerId = document.getElementById('recipient-player-id');
+        const recipientError = document.getElementById('recipient-error');
+        const sendBtn = document.getElementById('send-new');
+
+        function clearAutocomplete() {
+            recipientAutocomplete.innerHTML = '';
+            recipientAutocomplete.classList.add('hidden');
+        }
+
+        function showError(msg) {
+            recipientError.textContent = msg;
+            recipientError.classList.remove('hidden');
+            recipientInput.classList.add('shake-error');
+        }
+
+        function debounce(fn, delay=250) {
+            let t;
+            return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); }
+        }
+
+        recipientType.addEventListener('change', () => {
+            const mode = recipientType.value;
+            recipientError.classList.add('hidden');
+            recipientInput.classList.remove('shake-error');
+
+            if(mode === "player"){
+                recipientInput.disabled = false;
+                recipientInput.value = "";
+            } else {
+                recipientInput.disabled = true;
+                recipientInput.value = mode === "faction" ? currentPlayer.faction_name : mode;
+                clearAutocomplete();
+            }
+        });
+
+        const searchPlayers = debounce(async () => {
+
+            const q = recipientInput.value.trim();
+            if(q.length < 2) return clearAutocomplete();
+            const res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`)
+            const {results} = await res.json();
+
+            if(!results.length) return clearAutocomplete();
+
+            recipientAutocomplete.innerHTML = "";
+            results.forEach(p => {
+                const div = document.createElement('div');
+                div.className = "px-3 py-1 text-xs hover:bg-emerald-500/10 cursor-pointer";
+                div.textContent = `${p.name} — ${p.faction}`;
+                div.addEventListener('click', () => {
+                    recipientInput.value = p.name;
+                    recipientPlayerId.value = p.id;
+                    clearAutocomplete();
+                });
+                recipientAutocomplete.appendChild(div);
+            });
+
+            recipientAutocomplete.classList.remove('hidden');
+        });
+
+        if(recipientInput)
+            recipientInput.addEventListener('input', searchPlayers);
+
+        if(sendBtn)
+            sendBtn.addEventListener('click', async () => {
+                const mode = recipientType.value;
+                if(mode === "player" && !recipientPlayerId.value)
+                    return showError(gettext("Recipient not found"));
+
+                send_private_message(); // ✅ laisse ta fonction d’envoi ici
+            });
+
+        document.addEventListener('click', (e) => {
+            if (!recipientAutocomplete.contains(e.target) && e.target !== recipientInput)
+                clearAutocomplete();
+        });
     }
 });
 

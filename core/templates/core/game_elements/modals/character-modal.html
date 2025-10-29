@@ -25,12 +25,7 @@
             <div class="flex justify-center">
             <div class="relative border border-emerald-400/40 rounded-lg md:overflow-hidden shadow-lg shadow-emerald-900/30 hover:scale-105 transition-transform duration-200 cursor-pointer select-none">
                 <img id="user-avatar"
-                    class="object-cover w-28 h-28 rounded-md select-none"
-                    {% if player.user.image %}
-                    src="/static/img/users/{{player.user.player}}/0.gif"
-                    {% else %}
-                    src="{% static 'ux/default-user.svg' %}"
-                    {% endif %}>
+                    class="object-cover w-28 h-28 rounded-md select-none" src="/static/img/users/{{player.user.player}}/0.gif">
                 <input type="file" id="id_image" class="hidden" name="image" accept=".jpg, .png" />
             </div>
             </div>

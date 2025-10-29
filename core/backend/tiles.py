@@ -31,7 +31,7 @@ class UploadThisImage:
                     "recorp",
                     "static",
                     "img",
-                    str(self.category),
+                    "users",
                     str(self.element_id)
                 )
             )
@@ -46,6 +46,7 @@ class UploadThisImage:
     def __get_and_create_dir(self):
         if self.category == "users":
             self.save_path = self.parent_path
+            print(self.save_path)
             if os.path.exists(self.save_path) is False:
                 self.save_path.mkdir(parents=True, exist_ok=True)
         else:

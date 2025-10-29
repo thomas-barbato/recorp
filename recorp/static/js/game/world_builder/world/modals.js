@@ -892,7 +892,7 @@ function createUnknownModal(modalId, data, is_npc){
     if (!is_npc) {
 
         let target_img = document.createElement('img');
-        target_img.src = data.player.image == "default.gif" ? `/static/img/ux/default-user.svg` : `/static/img/users/${player_id}/0.gif`
+        target_img.src = `/static/img/users/${player_id}/0.gif`
         target_img.style.width = "30%";
         target_img.style.height = "30%";
         target_img.style.margin = "0 auto";
@@ -1522,7 +1522,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     if (!is_npc) {
 
         let target_img = document.createElement('img');
-        target_img.src = data.player.image == "default.gif" ? `/static/img/ux/default-user.svg` : `/static/img/users/${player_id}/0.gif`
+        target_img.src = `/static/img/users/${player_id}/0.gif`
         target_img.style.width = "30%";
         target_img.style.height = "30%";
         target_img.style.margin = "0 auto";

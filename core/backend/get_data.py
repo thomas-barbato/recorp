@@ -816,4 +816,12 @@ class GetDataFromDB:
         """Récupere l'id player du recepteur de mp aisi que son secteur."""
         recipient = Player.objects.filter(name=name).values('id', 'sector_id')[0]
         return recipient['id'], recipient['sector_id']
+    
+    @staticmethod
+    def get_faction_badge_color_class(faction_name):
+        return {
+            'culte technologie': 'bg-red-900/40 text-red-300 border-red-500/40',
+            'Faction Democratique': 'bg-blue-900/40 text-blue-300 border-blue-500/40',
+            'Faction Indépendante': 'bg-emerald-900/40 text-emerald-300 border-emerald-500/40'
+        }[faction_name]
         
