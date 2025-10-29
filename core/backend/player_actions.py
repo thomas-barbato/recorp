@@ -630,7 +630,6 @@ class PlayerAction:
         new_mp.save()
         
         if PrivateMessageRecipients.objects.filter(message_id=new_mp.id, recipient_id=self.player_id).exists() is False:
-            print("dedans11111111")
             add_author_mp = PrivateMessageRecipients(
                 message_id=new_mp.id,
                 recipient_id=self.player_id,

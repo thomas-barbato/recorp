@@ -16505,3 +16505,900 @@ Demande de synchronisation pour le joueur 23, secteur 3
 Envoi de réponse de synchronisation - Taille: 73833 bytes
 Sync data inclus - current_player: True, other_players: 5, map_informations: True
 Réponse de synchronisation envoyée pour le joueur 23
+Watching for file changes with StatReloader
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.63, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.25, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.06, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.12, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.05, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.04, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.06, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.04, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.08, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.04, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.03, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.06, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.03, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.07, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.03, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.03, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.05, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.04, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:61519][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.05, 127.0.0.1:61519][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.04, 127.0.0.1:61519][0m
+[mHTTP GET /fr/play/ 200 [0.90, 127.0.0.1:61519][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.15, 127.0.0.1:61930][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.16, 127.0.0.1:61929][0m
+[mHTTP GET /static/css/style.css 200 [0.17, 127.0.0.1:61519][0m
+[mHTTP GET /static/css/output.css 200 [0.17, 127.0.0.1:61927][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.18, 127.0.0.1:61928][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:61929][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.04, 127.0.0.1:61928][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.12, 127.0.0.1:61519][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.14, 127.0.0.1:61929][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.29, 127.0.0.1:61930][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.16, 127.0.0.1:61928][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.08, 127.0.0.1:61519][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.53, 127.0.0.1:61931][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/inventory_modal.js 200 [0.32, 127.0.0.1:61927][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/character_modal.js 200 [0.07, 127.0.0.1:61929][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.10, 127.0.0.1:61931][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.07, 127.0.0.1:61929][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/message_modal.js 200 [0.12, 127.0.0.1:61927][0m
+[mHTTP GET /static/world_builder/world/sonar_ship_display.js 200 [0.10, 127.0.0.1:61519][0m
+[mHTTP GET /static/world_builder/world/sonar.js 200 [0.11, 127.0.0.1:61928][0m
+[mHTTP GET /static/world_builder/world/sonar_ship_display_other_player.js 200 [0.11, 127.0.0.1:61930][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.06, 127.0.0.1:61931][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.03, 127.0.0.1:61930][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.09, 127.0.0.1:61929][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.14, 127.0.0.1:61519][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.18, 127.0.0.1:61928][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.18, 127.0.0.1:61927][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.16, 127.0.0.1:61930][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.19, 127.0.0.1:61931][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.17, 127.0.0.1:61519][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.10, 127.0.0.1:61929][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.14, 127.0.0.1:61927][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.14, 127.0.0.1:61930][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.24, 127.0.0.1:61928][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.39, 127.0.0.1:61931][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.04, 127.0.0.1:61928][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.42, 127.0.0.1:61930][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.08, 127.0.0.1:61927][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.09, 127.0.0.1:61929][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.09, 127.0.0.1:61519][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.13, 127.0.0.1:61931][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.10, 127.0.0.1:61930][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.11, 127.0.0.1:61928][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.16, 127.0.0.1:61927][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61954]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61954]
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.07, 127.0.0.1:61928][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.08, 127.0.0.1:61519][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.09, 127.0.0.1:61929][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.11, 127.0.0.1:61927][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px-reversed.png 200 [0.11, 127.0.0.1:61930][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.09, 127.0.0.1:61927][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.12, 127.0.0.1:61929][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.22, 127.0.0.1:61931][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.13, 127.0.0.1:61519][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.15, 127.0.0.1:61928][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.13, 127.0.0.1:61930][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.04, 127.0.0.1:61930][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:61930][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.04, 127.0.0.1:61930][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.03, 127.0.0.1:61930][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.16, 127.0.0.1:61930][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.04, 127.0.0.1:61930][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.03, 127.0.0.1:61930][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.03, 127.0.0.1:61930][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.05, 127.0.0.1:64269][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.05, 127.0.0.1:64269][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.04, 127.0.0.1:64269][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:64269][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.03, 127.0.0.1:64269][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:64269][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.04, 127.0.0.1:64269][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:64269][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.06, 127.0.0.1:65493][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:65493][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.04, 127.0.0.1:65493][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:65493][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:65493][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:65493][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61954]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.31, 127.0.0.1:49770][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:49770][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.08, 127.0.0.1:49770][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:49783]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:49783]
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.06, 127.0.0.1:49770][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:49770][0m
+[32mHTTP GET /messages/get/17/ 302 [0.06, 127.0.0.1:49770][0m
+[mHTTP GET /fr/messages/get/17/ 200 [0.06, 127.0.0.1:49770][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.05, 127.0.0.1:49770][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.04, 127.0.0.1:49770][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:49770][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:49770][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.11, 127.0.0.1:49770][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:49770][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:49783]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.22, 127.0.0.1:52247][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52247][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:52247][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52259]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52259]
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:52247][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:52247][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.07, 127.0.0.1:52247][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:52247][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52259]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.17, 127.0.0.1:53206][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:53206][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:53206][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53218]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53218]
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.04, 127.0.0.1:53206][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:53206][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.07, 127.0.0.1:53206][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:53206][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53218]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.21, 127.0.0.1:53206][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:53365][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:53367][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:53368][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:53369][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:53365][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.02, 127.0.0.1:53367][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/inventory_modal.js 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:53369][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.02, 127.0.0.1:53365][0m
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.08, 127.0.0.1:53206][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/character_modal.js 200 [0.02, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.02, 127.0.0.1:53365][0m
+[mHTTP GET /static/world_builder/world/sonar_ship_display.js 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/world_builder/world/sonar.js 200 [0.03, 127.0.0.1:53206][0m
+[mHTTP GET /static/world_builder/world/sonar_ship_display_other_player.js 200 [0.03, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/message_modal.js 200 [0.07, 127.0.0.1:53369][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.11, 127.0.0.1:53367][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.05, 127.0.0.1:53365][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.05, 127.0.0.1:53366][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.04, 127.0.0.1:53206][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.04, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.04, 127.0.0.1:53369][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.03, 127.0.0.1:53367][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.03, 127.0.0.1:53365][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:53206][0m
+[mHTTP GET /static/world_builder/world/modals.js 200 [0.01, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:53369][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:53365][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:53206][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.02, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.02, 127.0.0.1:53367][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.03, 127.0.0.1:53369][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.03, 127.0.0.1:53366][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.02, 127.0.0.1:53365][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.02, 127.0.0.1:53206][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:53368][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:53369][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:53367][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:53366][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53386]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53386]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.02, 127.0.0.1:53366][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:53367][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px-reversed.png 200 [0.02, 127.0.0.1:53369][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:53365][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.02, 127.0.0.1:53206][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.02, 127.0.0.1:53368][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:53368][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:53368][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:53368][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.07, 127.0.0.1:53368][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.06, 127.0.0.1:53368][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.05, 127.0.0.1:53368][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.05, 127.0.0.1:53368][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.03, 127.0.0.1:53368][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.03, 127.0.0.1:53368][0m
+[mHTTP POST /fr/messages/delete/ 200 [0.30, 127.0.0.1:53368][0m
+[32mHTTP GET /messages/?page=1&tab=sent 302 [0.08, 127.0.0.1:53368][0m
+[mHTTP GET /fr/messages/?page=1&tab=sent 200 [0.06, 127.0.0.1:53368][0m
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53386]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.14, 127.0.0.1:54690][0m
+[36mHTTP GET /static/world_builder/onlyDomAndPanels/message_modal.js 304 [0.01, 127.0.0.1:54696][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:54690][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54700]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54700]
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: 1kgo9l1
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: ahjk23, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 73833 bytes
+Sync data inclus - current_player: True, other_players: 5, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader

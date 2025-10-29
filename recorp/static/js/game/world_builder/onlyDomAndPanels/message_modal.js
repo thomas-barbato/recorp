@@ -164,11 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     await async_send_mp(payload);
                     showToast(gettext("Message sent ✔"));
-                    loadMessages();
                 } catch {
                     showToast(gettext("Send failed ❌"), false);
                 } finally {
                     setLoadingState(btn, false);
+                    displayMpList();
                 }
             });
         });
@@ -188,6 +188,14 @@ document.addEventListener('DOMContentLoaded', () => {
         bindMailEvents();
     });
 
+    // === DISPLAY MESSAGE LIST AFTER SEND / REPLAY ===
+    function displayMpList(){
+        tabSent.classList.remove('border-2', 'border-emerald-400');
+        newMsgBtn.classList.remove('border-2', 'border-emerald-400');
+        tabInbox.classList.add('border-2', 'border-emerald-400');
+        loadMessages();
+    }
+
     // === TABS ===
     tabInbox.addEventListener('click', () => {
         currentTab = 'received';
@@ -196,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tabInbox.classList.add('border-2', 'border-emerald-400');
         loadMessages();
     });
+    
 
     tabSent.addEventListener('click', () => {
         currentTab = 'sent';
@@ -246,11 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await async_send_mp(payload);
                 showToast(gettext("Message sent ✔"));
-                loadMessages();
             } catch {
                 showToast(gettext("Failed to send ❌"), false);
             } finally {
                 setLoadingState(btn, false);
+                displayMpList();
             }
         });
 

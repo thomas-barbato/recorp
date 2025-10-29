@@ -25,6 +25,7 @@ from django.views.decorators.http import require_http_methods
 from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from core.backend.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
@@ -659,8 +660,6 @@ def delete_message(request):
         player_id = PlayerAction(request.user.id).get_player_id()
         messageRecipient = PrivateMessageRecipients.objects.filter(message_id=message_id, recipient_id=player_id, deleted_at__isnull=True)
         
-        print(messageRecipient)
-        
         if not messageRecipient:
             return JsonResponse({})
         
@@ -689,3 +688,25 @@ def search_messages(request):
         recipients=request.user, subject__icontains=query
     )[:20]
     return render(request, "mail-list.html", {"received_messages": results})
+
+
+@login_required
+def search_players(request):
+    """
+    Retourne jusqu'à 10 joueurs correspondant à la query.
+    Résultat JSON: [{id, name, faction}]
+    """
+    q = request.GET.get('q', '').strip()
+    results = []
+    if q:
+        qs = Player.objects.filter(
+            Q(name__icontains=q),
+            is_npc=False
+        ).select_related('faction')[:10]
+        for p in qs:
+            results.append({
+                "id": p.id,
+                "name": p.name,
+                "faction": p.faction.name if p.faction else "",
+            })
+    return JsonResponse({"results": results})
