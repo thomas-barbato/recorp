@@ -33,8 +33,7 @@
                 <div class="absolute inset-0 bg-emerald-500/20 mix-blend-screen opacity-30 rounded-lg blur-[1px]"></div>
 
                 <!-- Radar scan (hover) -->
-                <div class="absolute inset-0 rounded-lg border border-emerald-400/40 opacity-0
-                    group-hover:opacity-40 animate-radar"></div>
+                <div class="absolute inset-0 rounded-lg border border-emerald-400/40 opacity-0 group-hover:opacity-40 animate-radar"></div>
             </div>
 
             <div class="flex flex-col flex-1 min-w-0">
@@ -48,9 +47,7 @@
                     </span>
 
                     <!-- Badge faction coloré -->
-                    <span class="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold
-                        border {{ msg.faction_color }}
-                    ">
+                    <span class="text-[10px] px-2 py-0.5 rounded-md uppercase tracking-wider font-bold border {{ msg.faction_color }}">
                         {{ msg.faction }}
                     </span>
 
@@ -83,19 +80,26 @@
 
     </div>
     {% endfor %}
+    <!-- PAGINATION -->
+    {% if page_obj %}
+    <div id="pagination-controls" class="flex justify-between items-center mt-4 text-emerald-300 text-xs">
+        <button id="prev-page" class="px-3 py-1 z-2 border border-emerald-500/40 rounded hover:bg-emerald-500/20 transition disabled:opacity-30 {% if has_previous %}cursor-pointer{% endif %}" {% if not has_previous %}disabled{% endif %}>
+            ← {% translate "Previous" %}
+        </button>
+
+        <span class="text-emerald-400/70">
+            {% translate "Page" %} {{ current_page }} / {{ total_pages }}
+        </span>
+
+        <button id="next-page" class="px-3 py-1 z-2 border border-emerald-500/40 rounded hover:bg-emerald-500/20 transition disabled:opacity-30 {% if has_next %}cursor-pointer{% endif %}" {% if not has_next %}disabled{% endif %}>
+            {% translate "Next" %} →
+        </button>
+    </div>
+    {% endif %}
+
 {% else %}
     <p class="text-center text-emerald-300/60 py-6 text-sm">
         {% translate "No messages found." %}
     </p>
 {% endif %}
 
-<!-- Radar Animation -->
-<style>
-@keyframes radar-scan {
-    0% { transform: rotate(0deg); opacity: .3; }
-    100% { transform: rotate(360deg); opacity: .6; }
-}
-.animate-radar {
-    animation: radar-scan 2.5s linear infinite;
-}
-</style>

@@ -586,7 +586,7 @@ def private_mail_modal(request):
                 'body': e['message_id__body'],
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
-                'faction': ['message_id__sender_id__faction_id__name'],
+                'faction': e['message_id__sender_id__faction_id__name'],
                 'faction_color': GetDataFromDB.get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
         } for e in messages_qs]
     else:
@@ -613,12 +613,16 @@ def private_mail_modal(request):
                 'is_read': e['is_read']
         } for e in messages_qs]
     
-    paginator = Paginator(mp, 10)
+    paginator = Paginator(mp, 4)
     page_obj = paginator.get_page(page_number)
 
     context = {
         "received_messages": page_obj.object_list,
         "page_obj": page_obj,
+        "has_previous": page_obj.has_previous(),
+        "has_next": page_obj.has_next(),
+        "current_page": page_obj.number,
+        "total_pages": paginator.num_pages,
     }
     return render(request, "mail-list.html", context)
 
@@ -647,7 +651,8 @@ def get_message(request, pk):
                 ).values(
                 'message_id', 'message_id__subject', 'message_id__body',
                 'message_id__sender_id__name', 'message_id__timestamp',
-                'message_id__sender_id', 'message_id__sender_id'
+                'message_id__sender_id', 'message_id__sender_id', 
+                'message_id__sender_id__faction_id__name'
                 )
             ]
             
@@ -661,7 +666,6 @@ def get_message(request, pk):
         body = f'{message_recipients[0]["message_id__body"] if message_recipients else message_author[0]["body"]}'
         timestamp = f'{message_recipients[0]["message_id__timestamp"].strftime("%Y-%m-%d %H:%M") if message_recipients else message_author[0]["timestamp"].strftime("%Y-%m-%d %H:%M")}'
         is_author = PrivateMessage.objects.filter(id=pk, sender_id=player_id).exists()
-        
         data = {
             "id": id,
             "subject": subject,
@@ -669,7 +673,7 @@ def get_message(request, pk):
             'sender_id': sender_id,
             "body": body,
             "timestamp": timestamp,
-            "is_author": is_author
+            "is_author": is_author,
         }
         
         if message_recipients:

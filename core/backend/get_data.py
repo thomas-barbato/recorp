@@ -809,19 +809,29 @@ class GetDataFromDB:
             ]
             # Vérification de l'intersection
             return len(set(range_zone).intersection(element_zone)) > 0
+    
+    @staticmethod
+    def get_player_id_list_linked_with_faction(faction_id):
+        """Renvoie une liste d'id de joueur apparetenant à la faction recherchée"""
+        if not faction_id:
+            return 
         
-
+        if Faction.objects.filter(id=faction_id).exists() is False:
+            return
+        
+        return [e for e in Player.objects.filter(faction_id=faction_id).values_list('id', flat=True)]
+        
     @staticmethod
     def get_mp_recipient_sector_and_id(name) -> bool:
-        """Récupere l'id player du recepteur de mp aisi que son secteur."""
-        recipient = Player.objects.filter(name=name).values('id', 'sector_id')[0]
+        """Récupere l'id player du destinataire ainsi que son secteur."""
+        recipient = Player.objects.filter(name=name).values('id', 'sector_id')
         return recipient['id'], recipient['sector_id']
     
     @staticmethod
     def get_faction_badge_color_class(faction_name):
         return {
-            'culte technologie': 'bg-red-900/40 text-red-300 border-red-500/40',
-            'Faction Democratique': 'bg-blue-900/40 text-blue-300 border-blue-500/40',
-            'Faction Indépendante': 'bg-emerald-900/40 text-emerald-300 border-emerald-500/40'
+            'culte technologie': 'bg-red-600 text-white border-red-400',
+            'Faction Democratique': 'bg-blue-600 text-white border-blue-400',
+            'Faction Indépendante': 'bg-emerald-600 text-white border-emerald-400'
         }[faction_name]
         

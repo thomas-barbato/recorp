@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('close-mail-modal');
     const mailList = document.getElementById('mail-list');
     const searchInput = document.getElementById('search-message');
-    const prevBtn = document.getElementById('prev-page');
-    const nextBtn = document.getElementById('next-page');
+    //const prevBtn = document.getElementById('prev-page');
+    //const nextBtn = document.getElementById('next-page');
     const tabInbox = document.getElementById('tab-inbox');
     const tabSent = document.getElementById('tab-sent');
     const newMsgBtn = document.getElementById('new-message-btn');
@@ -42,12 +42,54 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
     // === FETCH MESSAGES ===
-    async function loadMessages() {
+    async function loadMessages(direction = null) {
         const url = `/messages/?page=${currentPage}&tab=${currentTab}`;
         const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-        mailList.innerHTML = await response.text();
+        const html = await response.text();
+
+        // 🔹 Animation de sortie
+        if (direction) {
+            mailList.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
+            await new Promise(r => setTimeout(r, 250));
+        }
+
+        // 🔹 Remplacement du contenu
+        mailList.innerHTML = html;
+
+        // 🔹 Animation d’entrée
+        if (direction) {
+            mailList.classList.remove('slide-out-left', 'slide-out-right');
+            mailList.classList.add(direction === 'next' ? 'slide-in-right' : 'slide-in-left');
+            setTimeout(() => mailList.classList.remove('slide-in-right', 'slide-in-left'), 250);
+        }
+
         bindMailEvents();
+        bindPagination(); // ✅ Réactive les boutons pagination
     }
+
+    // === PAGINATION AMÉLIORÉE ===
+    function bindPagination() {
+        let prev_page = document.getElementById('prev-page');
+        let next_page = document.getElementById('next-page');
+
+        if (prev_page) {
+            prev_page.addEventListener('click', async () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    await loadMessages('prev');
+                }
+            });
+        }
+
+        if (next_page) {
+            next_page.addEventListener('click', async () => {
+                currentPage++;
+                console.log(currentPage)
+                await loadMessages('next');
+            });
+        }
+    }
+
 
     // === BIND EVENTS ===
     function bindMailEvents() {
@@ -174,11 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
-    // === PAGINATION ===
-    prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; loadMessages(); } });
-    nextBtn.addEventListener('click', () => { currentPage++; loadMessages(); });
-
     // === SEARCH ===
     searchInput.addEventListener('input', async e => {
         const q = e.target.value.trim();
@@ -265,7 +302,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('cancel-new').addEventListener('click', loadMessages);
 
         document.getElementById('send-new').addEventListener(action_listener_touch_click, async (e) => {
+
             const btn = e.target;
+            const recipient_type = document.getElementById('recipient-type').value;
             const recipient = document.getElementById('recipient').value.trim();
             const subject = document.getElementById('subject').value.trim();
             const body = document.getElementById('body').value.trim();
@@ -279,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     recipient: recipient,
                     subject: subject,
                     body: body,
+                    recipient_type: recipient_type,
                     senderId: currentPlayer.user.player
                 });
                 
@@ -367,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 recipientInput.value = "";
             } else {
                 recipientInput.disabled = true;
-                recipientInput.value = mode === "faction" ? currentPlayer.faction_name : mode;
+                recipientInput.value = mode === "faction" ? currentPlayer.faction.name : mode;
                 clearAutocomplete();
             }
         });
@@ -403,10 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(sendBtn)
             sendBtn.addEventListener('click', async () => {
                 const mode = recipientType.value;
-                if(mode === "player" && !recipientPlayerId.value)
-                    return showError(gettext("Recipient not found"));
-
-                send_private_message(); // ✅ laisse ta fonction d’envoi ici
+                if(mode === "player" && !recipientPlayerId.value) return showError(gettext("Recipient not found"));
             });
 
         document.addEventListener('click', (e) => {

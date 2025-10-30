@@ -1351,3 +1351,83 @@ animation: radarPulse 0.6s ease-out;
 #recipient-autocomplete {
     backdrop-filter: blur(3px);
 }
+
+/* === Animation de transition entre pages === */
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutLeft {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-40px); }
+}
+@keyframes slideOutRight {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(40px); }
+}
+
+/* === Application des animations === */
+.slide-in-right {
+    animation: slideInRight 0.25s ease-out forwards;
+}
+.slide-in-left {
+    animation: slideInLeft 0.25s ease-out forwards;
+}
+.slide-out-right {
+    animation: slideOutRight 0.25s ease-in forwards;
+}
+.slide-out-left {
+    animation: slideOutLeft 0.25s ease-in forwards;
+}
+
+/* === Effet holographique léger sur la pagination === */
+#pagination-controls {
+    position: relative;
+    overflow: hidden;
+}
+#pagination-controls::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(16,185,129,0.08), transparent);
+    animation: scanline 2s linear infinite;
+}
+@keyframes scanline {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+@keyframes radar-scan {
+    0% {
+        transform: rotate(0deg);
+        opacity: 0.3;
+    }
+    100% {
+        transform: rotate(360deg);
+        opacity: 0.6;
+    }
+}
+
+/* Animation radar au survol */
+.animate-radar {
+    animation: radar-scan 2.5s linear infinite;
+    pointer-events: none !important; /* ✅ bloque toute interférence */
+    z-index: 0 !important; /* ✅ reste derrière les boutons */
+}
+
+/* On s’assure que le conteneur de l’image crée un contexte z-index indépendant */
+.mail-item .relative {
+    position: relative;
+    z-index: 1;
+}
+
+/* Et que la zone des boutons (pagination incluse) est prioritaire */
+#pagination-controls,
+#pagination-controls button {
+    position: relative;
+    z-index: 10; /* ✅ toujours au-dessus de l’animation radar */
+}

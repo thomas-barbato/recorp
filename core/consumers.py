@@ -389,8 +389,6 @@ class GameConsumer(WebsocketConsumer):
         try:
             message = json.loads(event["message"])
             sender_id = message["senderId"]
-            print("prout")
-            print(sender_id)
             
             response = {
                 "type": "none", 
@@ -399,10 +397,24 @@ class GameConsumer(WebsocketConsumer):
             
             if self._is_other_player(sender_id) is False:
                 recipient_name = message["recipient"]
+                recipient_type = message['recipient_type']
                 mp_subject = message["subject"]
                 mp_body = message["body"]
+                print(message)
                 
                 if not recipient_name or not mp_subject or not mp_subject:
+                    return response
+                
+                if recipient_type == "faction":
+                    faction_id = PlayerAction(self.user).get_player_faction()
+                    player_id_list = GetDataFromDB.get_player_id_list_linked_with_faction(faction_id)
+                    
+                elif recipient_type == "player":
+                    pass
+                elif recipient_type == "group":
+                    pass
+                
+                else:
                     return response
                     
                 recipient_id, recipiant_sector_id = GetDataFromDB.get_mp_recipient_sector_and_id(recipient_name)
