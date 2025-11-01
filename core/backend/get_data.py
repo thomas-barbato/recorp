@@ -811,7 +811,7 @@ class GetDataFromDB:
             return len(set(range_zone).intersection(element_zone)) > 0
     
     @staticmethod
-    def get_player_id_list_linked_with_faction(faction_id):
+    def get_mp_recipient_linked_with_faction(faction_id):
         """Renvoie une liste d'id de joueur apparetenant à la faction recherchée"""
         if not faction_id:
             return 
@@ -819,13 +819,12 @@ class GetDataFromDB:
         if Faction.objects.filter(id=faction_id).exists() is False:
             return
         
-        return [e for e in Player.objects.filter(faction_id=faction_id).values_list('id', flat=True)]
+        return [e for e in Player.objects.filter(faction_id=faction_id).values('id', 'sector_id')]
         
     @staticmethod
     def get_mp_recipient_sector_and_id(name) -> bool:
         """Récupere l'id player du destinataire ainsi que son secteur."""
-        recipient = Player.objects.filter(name=name).values('id', 'sector_id')
-        return recipient['id'], recipient['sector_id']
+        return [e for e in Player.objects.filter(name=name).values('id', 'sector_id')]
     
     @staticmethod
     def get_faction_badge_color_class(faction_name):

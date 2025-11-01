@@ -619,7 +619,7 @@ class PlayerAction:
 
     def create_new_mp(self, recipient_id, subject, body):
         
-        recipient = Player.objects.get(id=recipient_id)
+        recipients = Player.objects.filter(id__in=recipient_id).values('id')
         
         new_mp = PrivateMessage(
             subject=subject,
@@ -639,13 +639,18 @@ class PlayerAction:
         
             add_author_mp.save()
         
-        add_recipient = PrivateMessageRecipients(
-            message_id=new_mp.id,
-            recipient_id=recipient.id,
-            is_read=False,
-        )
+        # Ajouter tous les destinataires
+        recipients_to_create = [
+            PrivateMessageRecipients(
+                message_id=new_mp.id,
+                recipient_id=recipient['id'],
+                is_read=False,
+            )
+            for recipient in recipients
+        ]
         
-        add_recipient.save()
+        # Création en masse pour optimiser les performances
+        PrivateMessageRecipients.objects.bulk_create(recipients_to_create)
         
     def set_spaceship_statistics_with_module(self):
         """Placeholder pour les statistiques du vaisseau avec modules."""

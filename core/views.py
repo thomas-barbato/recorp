@@ -733,7 +733,6 @@ def search_players(request):
     Retourne jusqu'à 10 joueurs correspondant à la query.
     Résultat JSON: [{id, name, faction}]
     """
-    print("search_players")
     q = request.GET.get('q', '').strip()
     results = []
     if q:

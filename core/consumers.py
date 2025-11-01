@@ -386,45 +386,134 @@ class GameConsumer(WebsocketConsumer):
             return False
         
     def async_send_mp(self, event: Dict[str, Any]) -> None:
+        """
+        Handler appelé quand un client a demandé d'envoyer un MP et que le message
+        a été group_send sur la room du consumer de l'auteur.
+        Cette méthode doit être exécutée **seulement** par le consumer du joueur-auteur.
+        """
         try:
-            message = json.loads(event["message"])
-            sender_id = message["senderId"]
+            # Accept both dict and JSON-string messages (robuste)
+            message = event.get("message")
+            if isinstance(message, str):
+                message = json.loads(message)
+
+            sender_id = message.get("senderId")
+            # On ne traite QUE si ce consumer représente l'auteur
+            if sender_id != self.player_id:
+                # ignorer: seul le consumer de l'auteur doit créer l'entrée DB + notifier
+                return
+
+            recipient_name = message.get("recipient")
+            recipient_type = message.get("recipient_type")
+            mp_subject = message.get("subject")
+            mp_body = message.get("body")
+
+            # validation minimale
+            if not recipient_name or not mp_subject or not mp_body:
+                return
+
+            # Utiliser PlayerAction correctement (id)
+            player_action = PlayerAction(self.user.id)
+
+            if recipient_type == "faction":
+                faction_id = player_action.get_player_faction()
+                recipient_data = GetDataFromDB.get_mp_recipient_linked_with_faction(faction_id)
+            elif recipient_type == "player":
+                recipient_data = GetDataFromDB.get_mp_recipient_sector_and_id(recipient_name)
+            elif recipient_type == "group":
+                recipient_data = []  # à implémenter si nécessaire
+            else:
+                logger.warning(f"async_send_mp: recipient_type inconnu: {recipient_type}")
+                return
+
+            # liste d'ids destinataires
+            recipient_id_list = [e["id"] for e in (recipient_data or [])]
+
+            # créer les MP en DB
+            player_action.create_new_mp(recipient_id_list, mp_subject, mp_body)
+
+            # notifier l'auteur que l'envoi est ok
+            self._send_response({
+                "type": "async_sent_mp",
+                "message": {"id": sender_id}
+            })
+
+            # notifier les destinataires (rooms éventuellement différentes)
+            self._notify_msg(recipient_data, sender_id)
+
+        except json.JSONDecodeError as e:
+            logger.error(f"async_send_mp JSON error: {e}")
+        except Exception as e:
+            logger.exception(f"async_send_mp unexpected error: {e}")
             
-            response = {
-                "type": "none", 
-                "message": {}
-            }
             
-            if self._is_other_player(sender_id) is False:
-                recipient_name = message["recipient"]
-                recipient_type = message['recipient_type']
-                mp_subject = message["subject"]
-                mp_body = message["body"]
-                print(message)
-                
-                if not recipient_name or not mp_subject or not mp_subject:
-                    return response
-                
-                if recipient_type == "faction":
-                    faction_id = PlayerAction(self.user).get_player_faction()
-                    player_id_list = GetDataFromDB.get_player_id_list_linked_with_faction(faction_id)
-                    
-                elif recipient_type == "player":
-                    pass
-                elif recipient_type == "group":
-                    pass
-                
-                else:
-                    return response
-                    
-                recipient_id, recipiant_sector_id = GetDataFromDB.get_mp_recipient_sector_and_id(recipient_name)
-                PlayerAction(self.user.id).create_new_mp(recipient_id, mp_subject, mp_body)
-                return { "type": "none", "message": {} }
+    def async_recieve_mp(self, event: Dict[str, Any]) -> None:
+        """
+        Handler exécuté par les consumers des rooms cibles.
+        Il ne doit délivrer la notif que si ce consumer correspond au destinataire.
+        """
+        try:
+            message = event.get("message")
+            if isinstance(message, str):
+                message = json.loads(message)
+
+            recipient_id = message.get("recipient_id")
+
+            # Si ce consumer n'est pas le destinataire, on ignore
+            if recipient_id != self.player_id:
+                return
+
+            # Envoi au client final (websocket) : type et payload à adapter côté front
+            self._send_response({
+                "type": "async_recieve_mp",
+                "message": {
+                    "recipient_id": recipient_id,
+                    "note": "Vous avez reçu un message privé"
+                }
+            })
+
+        except Exception as e:
+            logger.exception(f"async_recieve_mp error: {e}")
             
-            return response
-                
-        except (json.JSONDecodeError, KeyError) as e:
-            logger.error(f"Erreur lors du traitement du message privé: {e}")
+            
+    def _notify_msg(self, recipient_data, sender_id) -> None:
+        """
+        Envoie une notification de type 'async_recieve_mp' dans la room de
+        chaque destinataire. Exclut l'auteur.
+        recipient_data: list of dicts [{ 'id': ..., 'sector_id': ... }, ...]
+        """
+        try:
+            if not recipient_data:
+                return
+
+            for data in recipient_data:
+                recipient_player_id = data.get("id")
+                recipient_sector = data.get("sector_id")
+
+                # Exclure l'auteur explicitement
+                if recipient_player_id == sender_id:
+                    continue
+
+                if recipient_sector is None:
+                    logger.warning(f"_notify_msg: destinataire {recipient_player_id} sans sector_id")
+                    continue
+
+                destination_room_key = f"play_{recipient_sector}"
+
+                # Toujours envoyer un dict (éviter la sérialisation incohérente)
+                async_to_sync(self.channel_layer.group_send)(
+                    destination_room_key,
+                    {
+                        "type": "async_recieve_mp",   # garder la même orthographe si front attend ça
+                        "message": {
+                            "recipient_id": recipient_player_id,
+                            "from_id": sender_id,
+                            "subject": data.get("subject"),  # facultatif, si dispo
+                        },
+                    },
+                )
+        except Exception as e:
+            logger.exception(f"_notify_msg error: {e}")
 
     def async_move(self, event: Dict[str, Any]) -> None:
         try:

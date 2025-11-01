@@ -83,10 +83,12 @@ function registerAllActions(){
         { requiresValidation: false }
     );
 
-    ActionRegistry.register('send_mp',
+    ActionRegistry.register('async_sent_mp',
         (data) => {
-            if (data.message && validateCriticalData(true)) {
-                console.log('💬 Message envoyé:', data.message)
+            if (data) {
+                if(data.id == currentPlayer.user.player){
+                    console.log('💬 Message envoyé')
+                }
             } else {
                 console.error('❌ Impossible de traiter send_chat_message, données invalides');
             }
@@ -94,10 +96,16 @@ function registerAllActions(){
         { requiresValidation: false }
     );
 
-    ActionRegistry.register('recieve_mp',
+    ActionRegistry.register('async_recieve_mp',
         (data) => {
-            if (data.message && validateCriticalData(true)) {
-                console.log('💬 Message reçu:', data.message)
+            if (data) {
+                if(data.recipient_id == currentPlayer.user.player){
+                    showPrivateMessageNotification(data.note);
+                    const mailList = document.querySelector('#mail-list');
+                    if (mailList && !mailList.classList.contains('hidden')) {
+                        loadMessages();
+                    }
+                }
             } else {
                 console.error('❌ Impossible de traiter send_chat_message, données invalides');
             }

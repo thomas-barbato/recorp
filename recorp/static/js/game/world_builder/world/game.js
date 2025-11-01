@@ -356,7 +356,6 @@ class WebSocketManager {
             if (data.type === 'none'){
                 return;
             }
-            
             handle_websocket_message(data);
             
         } catch (error) {

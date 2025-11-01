@@ -131,6 +131,7 @@ function handleWarpComplete(data) {
 }
 
 function async_send_mp(data){
+    console.log(data)
     executeUserAction(() => {
         if (wsManager && wsManager.isConnected) {
             wsManager.send({
