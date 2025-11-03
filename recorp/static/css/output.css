@@ -723,6 +723,10 @@ video {
   left: 50%;
 }
 
+.left-\[32px\] {
+  left: 32px;
+}
+
 .right-0 {
   right: 0px;
 }
@@ -757,6 +761,10 @@ video {
 
 .top-4 {
   top: 1rem;
+}
+
+.top-\[32px\] {
+  top: 32px;
 }
 
 .isolate {
@@ -2762,6 +2770,11 @@ video {
   border-color: rgb(4 120 87 / 0.4);
 }
 
+.border-emerald-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(6 95 70 / var(--tw-border-opacity));
+}
+
 .border-emerald-800\/20 {
   border-color: rgb(6 95 70 / 0.2);
 }
@@ -2861,6 +2874,16 @@ video {
   border-top-color: rgb(220 38 38 / var(--tw-border-opacity));
 }
 
+.border-b-emerald-800 {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(6 95 70 / var(--tw-border-opacity));
+}
+
+.border-l-emerald-800 {
+  --tw-border-opacity: 1;
+  border-left-color: rgb(6 95 70 / var(--tw-border-opacity));
+}
+
 .bg-\[rgb\(255\2c 0\2c 0\)\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 0 0 / var(--tw-bg-opacity));
@@ -2868,6 +2891,11 @@ video {
 
 .bg-amber-400\/50 {
   background-color: rgb(251 191 36 / 0.5);
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .bg-black\/20 {
@@ -4306,6 +4334,11 @@ video {
 
 .shadow-emerald-900\/40 {
   --tw-shadow-color: rgb(6 78 59 / 0.4);
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-emerald-900\/50 {
+  --tw-shadow-color: rgb(6 78 59 / 0.5);
   --tw-shadow: var(--tw-shadow-colored);
 }
 
@@ -6623,6 +6656,33 @@ input:focus {
 
 .mp-notification {
   animation: mp-slide-in 0.4s ease-out forwards, border-pulse 3s ease-in-out infinite;
+}
+
+/***************** REFONTE DU JEU ************************/
+
+#canvas-container {
+  width: 100%;
+  height: 100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#game-canvas {
+  display:block;
+  background:#9c311e;
+}
+
+#canvas-overlay {
+  z-index: 30;
+}
+
+#game-canvas {
+  display: block;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 @media (min-width: 640px) {
