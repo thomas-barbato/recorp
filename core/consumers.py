@@ -520,6 +520,12 @@ class GameConsumer(WebsocketConsumer):
             message = json.loads(event["message"])
             player_action = PlayerAction(self.user.id)
             # Traiter le mouvement
+            if message['end_x'] == -1 or message['end_y'] == -1:
+                response = {
+                    'type' : 'none',
+                    'message': ''
+                }
+                self._send_response(response)
             if self._can_move_to_destination(player_action, message):
                 if self._register_move(player_action, message):
                     self._cache_store.update_player_position(message, self.player_id)

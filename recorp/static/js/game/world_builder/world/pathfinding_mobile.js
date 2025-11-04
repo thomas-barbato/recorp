@@ -626,6 +626,8 @@ function mobile_movement_action() {
         
         const playerCoordArray = Array.from(document.querySelectorAll('.ship-pos'))
         .map(element => element.id);
+
+        console.log(currentPlayer)
         
         const moveData = {
             player: current_player_id,
@@ -639,7 +641,13 @@ function mobile_movement_action() {
             destination_id_array: player_coord_array,
         };
 
-        direction_array.slice(0, -1);
-        async_move(moveData);
+        if(moveData.end_y == -1 || moveData.end_x == -1){
+            return;
+        }
+
+        if(moveData){
+            direction_array.slice(0, -1);
+            async_move(moveData);
+        }
     }
 }

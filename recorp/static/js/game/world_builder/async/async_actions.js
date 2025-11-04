@@ -75,11 +75,7 @@ function handleWarpTravel(sectorWarpZoneId){
 
 function handleWarpComplete(data) {
     
-    const { new_sector_id, new_room_key, new_sector_data, player_id } = data;
-
-    // 🚀 Afficher le loader pendant la transition
-    let sector_name = new_sector_data.sector.name.replaceAll('-', ' ').replaceAll('_', ' ')
-    loadingScreen.show('Saut en cours vers le secteur ' + sector_name);
+    const { new_sector_id, new_sector_data} = data;
     
     // Bloquer les actions pendant la transition
     window._syncInProgress = true;
@@ -104,6 +100,8 @@ function handleWarpComplete(data) {
     otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
     foregroundElement = map_informations.sector_element || [];
     npcs = map_informations.npc || [];
+
+    document.getElementById('sector-name').textContent = new_sector_data.sector.name
     
     // Créer une nouvelle connexion WebSocket
     setTimeout(() => {

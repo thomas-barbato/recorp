@@ -40,11 +40,11 @@ function extractPlayerInfo(playerData) {
     const baseCoordX = parseInt(playerData.user.coordinates.x);
     const baseCoordY = parseInt(playerData.user.coordinates.y);
     const isCurrentUser = playerData.user.player === current_player_id;
-    
+
     return {
         coordinates: {
-            x: baseCoordX + 1,
-            y: baseCoordY + 1,
+            x: baseCoordX,
+            y: baseCoordY,
             baseX: baseCoordX,
             baseY: baseCoordY
         },
@@ -63,6 +63,11 @@ function extractPlayerInfo(playerData) {
         isCurrentUser,
         borderColor: isCurrentUser ? "border-orange-400" : "border-cyan-400",
     };
+}
+
+function getAdjustedTableCell(rowIndex, colIndex) {
+    // +1 pour sauter la ligne et la colonne des coordonnées
+    return getTableCell(rowIndex + 1, colIndex + 1);
 }
 
 
@@ -86,7 +91,7 @@ function renderOtherPlayerShip(playerData, playerInfo, is_visible) {
     for (let rowOffset = 0; rowOffset < full_size_y; rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < full_size_x; colOffset += atlas.tilesize) {
 
-            const cell = getTableCell(coordY, coordX);
+            const cell = getAdjustedTableCell(coordY, coordX);
             const border = cell.querySelector('span');
             
             // Nettoyer TOUS les éléments unknown-ship existants
@@ -115,7 +120,7 @@ function renderPlayerShip(playerData, playerInfo) {
     
     for (let rowOffset = 0; rowOffset < (atlas.tilesize * playerInfo.ship.sizeY); rowOffset += atlas.tilesize) {
         for (let colOffset = 0; colOffset < (atlas.tilesize * playerInfo.ship.sizeX); colOffset += atlas.tilesize) {
-            const cell = getTableCell(coordY, coordX);
+            const cell = getAdjustedTableCell(coordY, coordX);
             const border = cell.querySelector('span');
 
             handleTooltipCreation(cell, playerInfo, rowOffset, colOffset);
@@ -126,7 +131,7 @@ function renderPlayerShip(playerData, playerInfo) {
         coordX = playerInfo.coordinates.x;
     }
     
-    const coordinates = {y: playerInfo.coordinates.y, x: playerInfo.coordinates.x};
+    const coordinates = {y: playerInfo.coordinates.y + 1, x: playerInfo.coordinates.x + 1};
     updatePlayerSonar(coordinates, playerInfo.ship.viewRange);
 }
 
@@ -366,7 +371,6 @@ function handleUserJoin(data) {
         }
 
         add_pc(data);
-
         updatePlayerSonar(new_coordinates, currentPlayer.ship.view_range);
 
     }
@@ -383,8 +387,6 @@ function cleanAllPlayerPositions() {
         
         // Trouver toutes les cellules occupées par des joueurs
         const shipCells = document.querySelectorAll('.ship-pos');
-        
-        console.log(`Nettoyage de ${shipCells.length} cellules`);
         
         shipCells.forEach(cell => {
             // Retirer les classes liées aux vaisseaux

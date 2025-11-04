@@ -227,9 +227,7 @@ class Sonar {
         // Mettre à jour l'apparence du bouton sur mobile
         if (this.isMobile) {
             const radarButton = document.querySelector('#radar-sweep');
-            if (radarButton) {
-                radarButton.classList.remove('sonar-active');
-            }
+            radarButton?.classList.remove('sonar-active');
         }
     }
 
@@ -328,6 +326,7 @@ let sonar = "";
 
 function renderPlayerSonar(coordinates, viewRange){
     const coord = {y: coordinates.y - 1, x: coordinates.x - 1};
+    console.log("renderPlayerSonar", coord.y, coord.x)
     
     // Si un sonar existe déjà, le nettoyer proprement
     if (sonar && typeof sonar.destroy === 'function') {

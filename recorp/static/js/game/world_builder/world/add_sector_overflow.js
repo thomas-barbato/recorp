@@ -1,7 +1,7 @@
 function hide_sector_overflow(coord_x, coord_y) {
     const position = {
-        x: parseInt(coord_x),
-        y: parseInt(coord_y)
+        x: parseInt(coord_x) + 1,
+        y: parseInt(coord_y) + 1
     };
 
     const limits = getLimits();
@@ -44,27 +44,29 @@ function getLimitY() {
 }
 
 function calculateVisibleBounds(position, limits) {
-    const halfX = limits.x / 2;
-    const halfY = limits.y / 2;
-    
-    let startX = Math.max(0, position.x - halfX);
-    let startY = Math.max(0, position.y - halfY);
+    const halfX = Math.floor(limits.x / 2);
+    const halfY = Math.floor(limits.y / 2);
+
+    // ✅ Correction : décale d'une cellule vers la gauche/haut
+    // pour recentrer le joueur quand la taille visible est impaire.
+    let startX = Math.max(0, position.x - halfX - 1);
+    let startY = Math.max(0, position.y - halfY - 1);
     let endX = Math.min(atlas.col, position.x + halfX);
     let endY = Math.min(atlas.row, position.y + halfY);
-    
-    // Ajustement des limites pour maintenir la taille de la vue
+
+    // Ajustement des bords
     if (startX === 0) {
         endX = limits.x + 1;
     } else if (endX === atlas.col) {
         startX = atlas.col - (limits.x + 1);
     }
-    
+
     if (startY === 0) {
         endY = limits.y + 1;
     } else if (endY === atlas.row) {
         startY = atlas.row - (limits.y + 1);
     }
-    
+
     return { startX, startY, endX, endY };
 }
 

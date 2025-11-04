@@ -575,14 +575,9 @@ class EnhancedPostMovementDetectionSystem extends PostMovementDetectionSystem {
 // Instance globale améliorée
 let enhancedDetectionSystem = new EnhancedPostMovementDetectionSystem();
 
-/**
- * FONCTION MODIFIÉE DE update_player_coord POUR ÉVITER LES DOUBLONS
- */
+
 function update_player_coord_fixed(data) {
-    // Nettoyage initial
     clear_path();
-    
-    // Extraction et validation des données
     const {
         size,
         user_id: targetUserId,
