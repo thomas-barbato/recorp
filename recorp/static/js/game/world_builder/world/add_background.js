@@ -48,9 +48,10 @@ function setupCurrentPlayer() {
     
     if (currentPlayer) {
         const { x, y } = currentPlayer.user.coordinates;
-        hide_sector_overflow(x, y);
-        
-        if (!is_user_is_on_mobile_device()) {
+        if(is_user_is_on_mobile_device()){
+            hide_sector_overflow(x+1, y);
+        }else{
+            hide_sector_overflow(x, y);
             set_pathfinding_event();
         }
         
