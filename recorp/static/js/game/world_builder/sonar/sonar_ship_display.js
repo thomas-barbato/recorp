@@ -69,6 +69,8 @@ class PostMovementDetectionSystem {
             y: parseInt(newPosition.y)
         };
 
+        console.log(this.currentPlayerPosition)
+
         if (newRange !== null) {
             this.detectionRange = newRange;
         }

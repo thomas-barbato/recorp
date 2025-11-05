@@ -12,7 +12,6 @@ from core.backend.get_data import GetDataFromDB
 
 logger = logging.getLogger("django")
 
-
 class GameConsumer(WebsocketConsumer):
     """
     WebSocket consumer pour gérer les interactions en temps réel du jeu.
@@ -123,7 +122,6 @@ class GameConsumer(WebsocketConsumer):
             self._refresh_session()
         
             # Gestion du heartbeat
-            
             if data["type"] == "ping":
                 response = self._handle_ping_with_validation(data)
                 self._send_response(response)
@@ -132,6 +130,10 @@ class GameConsumer(WebsocketConsumer):
             # Gestion de la synchronisation des données
             if data["type"] == "request_data_sync":
                 self._handle_data_sync_request(data)
+                return
+            
+            if data["type"] == "async_move":
+                self._handle_move_request(data)
                 return
             
             message_data = self._extract_message_data(data)
@@ -514,18 +516,137 @@ class GameConsumer(WebsocketConsumer):
                 )
         except Exception as e:
             logger.exception(f"_notify_msg error: {e}")
+            
+    def _handle_move_request(self, data: Dict[str, Any]) -> None:
+        """
+        Traite une demande de mouvement AVANT de la broadcaster.
+        Cette méthode n'est exécutée que par le consumer du joueur qui bouge.
+        """
+        try:
+            message = json.loads(data["message"])
+            
+            # ✅ VALIDATION ICI (une seule fois, par le joueur qui bouge)
+            if not self._validate_move_request(message):
+                return  # Mouvement refusé, ne pas broadcaster
+            
+            # ✅ Le mouvement est valide, broadcaster à tout le monde
+            self._broadcast_message({
+                "type": "async_move",
+                "message": data["message"]  # Message original
+            })
+            
+        except Exception as e:
+            logger.error(f"Erreur traitement mouvement: {e}")
+
+    def _validate_move_request(self, message: Dict[str, Any]) -> bool:
+        """
+        Valide la demande de mouvement (appelé UNE SEULE FOIS).
+        Retourne True si le mouvement est valide, False sinon.
+        """
+        try:
+            # Validations de base
+            if message['end_x'] == -1 or message['end_y'] == -1 or message['move_cost'] < 1:
+                logger.warning(f"Données invalides - Joueur {self.player_id}")
+                self._send_error_response("Données de mouvement invalides")
+                return False
+            
+            # Vérifier que c'est bien le joueur qui demande de bouger
+            if message["player"] != self.player_id:
+                logger.warning(
+                    f"Tentative de déplacement d'un autre joueur - "
+                    f"Demandeur: {self.player_id}, Cible: {message['player']}"
+                )
+                self._send_error_response("Vous ne pouvez pas déplacer un autre joueur")
+                return False
+            
+            # Récupérer la position actuelle
+            player_action = PlayerAction(self.user.id)
+            current_pos = player_action.get_coord()
+            end_x = message["end_x"]
+            end_y = message["end_y"]
+            claimed_cost = message["move_cost"]
+            
+            # Vérification rapide: distance Manhattan
+            min_distance = abs(end_x - current_pos["x"]) + abs(end_y - current_pos["y"])
+            
+            if claimed_cost < min_distance:
+                logger.warning(
+                    f"Coût < distance min - Joueur {self.player_id}: "
+                    f"coût={claimed_cost}, min={min_distance}"
+                )
+                self._send_error_response("Coût de déplacement invalide")
+                return False
+            
+            # Validation complète avec A* (< 1ms pour 40x40)
+            server_cost = player_action.calculate_path_cost(
+                start_x=current_pos["x"],
+                start_y=current_pos["y"],
+                end_x=end_x,
+                end_y=end_y
+            )
+            
+            # Tolérance de 10%
+            tolerance = 0.10
+            max_acceptable = server_cost * (1 + tolerance)
+            
+            if claimed_cost > max_acceptable:
+                logger.warning(
+                    f"Coût suspect - Joueur {self.player_id}: "
+                    f"client={claimed_cost}, serveur={server_cost}"
+                )
+                self._send_error_response(
+                    f"Coût invalide. Coût calculé: {server_cost}"
+                )
+                return False
+            
+            # Vérifier que le joueur a assez de points de mouvement
+            if not player_action.check_if_player_get_movement_remaining(server_cost):
+                self._send_error_response("Points de mouvement insuffisants")
+                return False
+            
+            # Vérifier que la destination n'est pas occupée
+            if player_action.destination_already_occupied([f"{message['end_y']}_{message['end_x']}"]):
+                logger.warning(f"Destination occupée - Joueur {self.player_id}")
+                self._send_error_response("Destination déjà occupée")
+                return False
+            
+            # ✅ Tout est OK
+            return True
+            
+        except Exception as e:
+            logger.error(f"Erreur validation mouvement: {e}")
+            self._send_error_response("Erreur de validation")
+            return False
+        
+        raise ValueError(f"Joueur {player_id} non trouvé dans le cache")
+    
+    
+    def _has_enough_movement(self, player_action: PlayerAction, cost: int) -> bool:
+        """Vérifie que le joueur a assez de points de mouvement."""
+        return player_action.get_player_movement_remaining()
+
+    def _send_error_response(self, error_message: str) -> None:
+        print(error_message)
+        return
+        """Envoie une réponse d'erreur au client."""
+        """
+        self._send_response({
+            "type": "move_error",
+            "message": {"error": error_message}
+        })"""
+            
 
     def async_move(self, event: Dict[str, Any]) -> None:
+        """
+        Traite un mouvement validé (reçu via broadcast).
+        Cette méthode est appelée pour TOUS les joueurs du secteur,
+        mais la validation a déjà été faite dans receive().
+        """
         try:
             message = json.loads(event["message"])
             player_action = PlayerAction(self.user.id)
+            
             # Traiter le mouvement
-            if message['end_x'] == -1 or message['end_y'] == -1:
-                response = {
-                    'type' : 'none',
-                    'message': ''
-                }
-                self._send_response(response)
             if self._can_move_to_destination(player_action, message):
                 if self._register_move(player_action, message):
                     self._cache_store.update_player_position(message, self.player_id)
@@ -554,13 +675,13 @@ class GameConsumer(WebsocketConsumer):
     def _can_move_to_destination(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Vérifie si la destination est libre."""
         return not player_action.destination_already_occupied(
-            message['destination_id_array']
+            [f"{message['end_y']}_{message['end_x']}"]
         )
 
     def _register_move(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
         """Enregistre le mouvement du joueur."""
         return player_action.move_have_been_registered(
-            coordinates=message['destination_id_array'],
+            coordinates=f"{message['end_y']}_{message['end_x']}",
             move_cost=int(message["move_cost"]),
             player_id=message["player"],
         )

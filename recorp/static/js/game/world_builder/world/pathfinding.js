@@ -347,9 +347,13 @@ function handlePlayerMovement() {
         is_reversed: current_player.reversed_ship_status,
         start_id_array: playerCoordArray,
         move_cost: current_player.player_move_cost,
-        destination_id_array: current_player.fullsize_coordinate,
     };
-    async_move(moveData);
+
+    if(moveData.end_y == -1 || moveData.end_x == -1 || moveData.move_cost == 0){
+        return;
+    }else{
+        async_move(moveData);
+    }
 }
 
 // Récupération du pathfinding

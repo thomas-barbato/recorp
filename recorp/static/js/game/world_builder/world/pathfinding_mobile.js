@@ -626,8 +626,6 @@ function mobile_movement_action() {
         
         const playerCoordArray = Array.from(document.querySelectorAll('.ship-pos'))
         .map(element => element.id);
-
-        console.log(currentPlayer)
         
         const moveData = {
             player: current_player_id,
@@ -638,8 +636,9 @@ function mobile_movement_action() {
             is_reversed: current_player.reversed_ship_status,
             start_id_array: playerCoordArray,
             move_cost: current_player.player_move_cost,
-            destination_id_array: player_coord_array,
         };
+
+        console.log(`${moveData.end_y}_${moveData.end_x}, ${moveData.start_id_array}`)
 
         if(moveData.end_y == -1 || moveData.end_x == -1){
             return;

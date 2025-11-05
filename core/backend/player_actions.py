@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 from typing import Optional, Dict, List, Tuple, Any
 from django.core import serializers
 from recorp.settings import BASE_DIR
@@ -11,6 +12,7 @@ from core.backend.get_data import GetDataFromDB
 # Ajouter ces imports en haut du fichier player_actions.py
 from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async
+logger = logging.getLogger("django")
 
 from core.models import (
     Planet,
@@ -333,8 +335,7 @@ class PlayerAction:
         Returns:
             bool: True si le mouvement a été enregistré
         """
-        
-        coordinates_split = coordinates[0].split('_')
+        coordinates_split = coordinates.split('_')
         coord = {"x": int(coordinates_split[1]), "y": int(coordinates_split[0])}
         if self.player_id == player_id:
             if self._check_if_player_can_move_and_update(move_cost):
@@ -652,6 +653,75 @@ class PlayerAction:
         # Création en masse pour optimiser les performances
         PrivateMessageRecipients.objects.bulk_create(recipients_to_create)
         
+    def check_if_player_get_movement_remaining(self, cost):
+        return PlayerShip.objects.filter(player_id=self.player_id, is_current_ship=True, current_movement__gte=cost).exists()
+    
     def set_spaceship_statistics_with_module(self):
         """Placeholder pour les statistiques du vaisseau avec modules."""
         pass
+    
+    def calculate_path_cost(
+        self, 
+        start_x: int, 
+        start_y: int, 
+        end_x: int, 
+        end_y: int
+    ) -> int:
+        """
+        Calcule une estimation du coût basée sur la distance Manhattan
+        et les obstacles connus.
+        
+        Cette version est plus rapide mais moins précise qu'A*.
+        """
+        try:
+            # Distance Manhattan (minimum théorique)
+            manhattan = abs(end_x - start_x) + abs(end_y - start_y)
+            
+            # Récupérer les obstacles sur le chemin direct
+            obstacles_on_path = self._count_obstacles_on_path(
+                start_x, start_y, end_x, end_y
+            )
+            
+            # Estimation: distance + obstacles * facteur de détour
+            estimated_cost = manhattan + (obstacles_on_path * 2)
+            
+            return estimated_cost
+            
+        except Exception as e:
+            logger.error(f"Erreur estimation chemin: {e}")
+            return abs(end_x - start_x) + abs(end_y - start_y)
+    
+    def _count_obstacles_on_path(
+        self, 
+        start_x: int, 
+        start_y: int, 
+        end_x: int, 
+        end_y: int
+    ) -> int:
+        """Compte les obstacles sur le chemin direct."""
+        from core.backend.get_data import GetDataFromDB
+        
+        # Récupérer les obstacles du secteur
+        player_data = GetDataFromDB.get_player_sector(self.player_id)
+        sector_id = player_data.get("sector_id")
+        obstacles = self._get_sector_obstacles(sector_id)
+        
+        # Convertir en set pour recherche rapide
+        obstacle_positions = {(obs["x"], obs["y"]) for obs in obstacles}
+        
+        count = 0
+        # Parcourir approximativement le chemin direct
+        steps = max(abs(end_x - start_x), abs(end_y - start_y))
+        
+        if steps == 0:
+            return 0
+        
+        for i in range(steps + 1):
+            t = i / steps
+            x = int(start_x + t * (end_x - start_x))
+            y = int(start_y + t * (end_y - start_y))
+            
+            if (x, y) in obstacle_positions:
+                count += 1
+        
+        return count

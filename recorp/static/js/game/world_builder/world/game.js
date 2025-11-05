@@ -516,7 +516,6 @@ class WebSocketManager {
         if (this.isConnected && this.socket.readyState === WebSocket.OPEN) {
             try {
                 this.socket.send(JSON.stringify(data));
-                console.log('Message envoyé:', data.type);
             } catch (error) {
                 console.error('Erreur lors de l\'envoi du message:', error);
                 this.messageQueue.push(data);

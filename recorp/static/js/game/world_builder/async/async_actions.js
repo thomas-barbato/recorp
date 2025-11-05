@@ -13,7 +13,6 @@ function async_move(pos) {
                     "is_reversed": pos.is_reversed,
                     "start_id_array": pos.start_id_array,
                     "move_cost": pos.move_cost,
-                    "destination_id_array": pos.destination_id_array,
                 }),
                 type: "async_move"
             });
@@ -129,7 +128,6 @@ function handleWarpComplete(data) {
 }
 
 function async_send_mp(data){
-    console.log(data)
     executeUserAction(() => {
         if (wsManager && wsManager.isConnected) {
             wsManager.send({

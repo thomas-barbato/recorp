@@ -1,4 +1,5 @@
 function update_player_coord(data) {
+    console.log(data)
     clear_path();
 
     // CORRECTION : Vérification robuste avec sync si nécessaire
@@ -41,6 +42,7 @@ function update_player_coord(data) {
 
     // Traitement selon le type d'utilisateur
     if (current_player_id !== data.player_id) {
+        
         let otherPlayerData = otherPlayers.find(p => p.user.player === data.player_id);
         if (otherPlayerData) {
             handleOtherPlayerMove(otherPlayerData);
