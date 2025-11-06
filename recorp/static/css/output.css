@@ -723,10 +723,6 @@ video {
   left: 50%;
 }
 
-.left-\[32px\] {
-  left: 32px;
-}
-
 .right-0 {
   right: 0px;
 }
@@ -761,10 +757,6 @@ video {
 
 .top-4 {
   top: 1rem;
-}
-
-.top-\[32px\] {
-  top: 32px;
 }
 
 .isolate {
@@ -1180,10 +1172,6 @@ video {
   height: 20vh;
 }
 
-.h-\[25px\] {
-  height: 25px;
-}
-
 .h-\[2em\] {
   height: 2em;
 }
@@ -1260,6 +1248,10 @@ video {
   max-height: 200px;
 }
 
+.max-h-\[300px\] {
+  max-height: 300px;
+}
+
 .max-h-\[60vh\] {
   max-height: 60vh;
 }
@@ -1292,16 +1284,24 @@ video {
   min-height: 200px;
 }
 
+.min-h-\[300px\] {
+  min-height: 300px;
+}
+
 .min-h-\[50px\] {
   min-height: 50px;
 }
 
-.min-h-\[75px\] {
-  min-height: 75px;
-}
-
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-full {
+  min-height: 100%;
+}
+
+.min-h-\[75px\] {
+  min-height: 75px;
 }
 
 .w-1\/12 {
@@ -2770,11 +2770,6 @@ video {
   border-color: rgb(4 120 87 / 0.4);
 }
 
-.border-emerald-800 {
-  --tw-border-opacity: 1;
-  border-color: rgb(6 95 70 / var(--tw-border-opacity));
-}
-
 .border-emerald-800\/20 {
   border-color: rgb(6 95 70 / 0.2);
 }
@@ -2874,16 +2869,6 @@ video {
   border-top-color: rgb(220 38 38 / var(--tw-border-opacity));
 }
 
-.border-b-emerald-800 {
-  --tw-border-opacity: 1;
-  border-bottom-color: rgb(6 95 70 / var(--tw-border-opacity));
-}
-
-.border-l-emerald-800 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(6 95 70 / var(--tw-border-opacity));
-}
-
 .bg-\[rgb\(255\2c 0\2c 0\)\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 0 0 / var(--tw-bg-opacity));
@@ -2891,11 +2876,6 @@ video {
 
 .bg-amber-400\/50 {
   background-color: rgb(251 191 36 / 0.5);
-}
-
-.bg-black {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .bg-black\/20 {
@@ -3912,10 +3892,6 @@ video {
   color: rgb(52 211 153 / var(--tw-text-opacity));
 }
 
-.text-emerald-400\/60 {
-  color: rgb(52 211 153 / 0.6);
-}
-
 .text-emerald-400\/70 {
   color: rgb(52 211 153 / 0.7);
 }
@@ -4027,6 +4003,10 @@ video {
 .text-zinc-950 {
   --tw-text-opacity: 1;
   color: rgb(9 9 11 / var(--tw-text-opacity));
+}
+
+.text-emerald-400\/60 {
+  color: rgb(52 211 153 / 0.6);
 }
 
 .underline {
@@ -4334,11 +4314,6 @@ video {
 
 .shadow-emerald-900\/40 {
   --tw-shadow-color: rgb(6 78 59 / 0.4);
-  --tw-shadow: var(--tw-shadow-colored);
-}
-
-.shadow-emerald-900\/50 {
-  --tw-shadow-color: rgb(6 78 59 / 0.5);
   --tw-shadow: var(--tw-shadow-colored);
 }
 

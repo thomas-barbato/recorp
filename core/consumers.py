@@ -619,11 +619,6 @@ class GameConsumer(WebsocketConsumer):
             return False
         
         raise ValueError(f"Joueur {player_id} non trouvé dans le cache")
-    
-    
-    def _has_enough_movement(self, player_action: PlayerAction, cost: int) -> bool:
-        """Vérifie que le joueur a assez de points de mouvement."""
-        return player_action.get_player_movement_remaining()
 
     def _send_error_response(self, error_message: str) -> None:
         print(error_message)
