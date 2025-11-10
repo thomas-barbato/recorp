@@ -570,7 +570,7 @@ class WebSocketManager {
     }
     
     showConnectionError() {
-        let errorNotification = document.querySelector('#connection-error');
+        let errorNotification = document.querySelector('#notification-container');
         if (!errorNotification) {
             errorNotification = this.createConnectionErrorNotification();
         }
@@ -578,7 +578,7 @@ class WebSocketManager {
     }
     
     hideConnectionError() {
-        const errorNotification = document.querySelector('#connection-error');
+        const errorNotification = document.querySelector('#notification-container');
         if (errorNotification) {
             errorNotification.style.display = 'none';
         }

@@ -326,7 +326,6 @@ let sonar = "";
 
 function renderPlayerSonar(coordinates, viewRange){
     const coord = {y: coordinates.y - 1, x: coordinates.x - 1};
-    console.log("renderPlayerSonar", coord.y, coord.x)
     
     // Si un sonar existe déjà, le nettoyer proprement
     if (sonar && typeof sonar.destroy === 'function') {

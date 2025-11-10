@@ -1,26 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log(currentPlayer)
     if (typeof gettext === 'undefined') {
         console.error("Django i18n not loaded. Make sure {% url 'javascript-catalog' %} is included before this script.");
         return;
     }
 
-    const isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
+    let isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
 
     currentPlayer.ship.modules.forEach(module => {
 
-        const module_type = module.type;
-        const translated_module_type = gettext(module_type.replace('_', ' '));
-        const module_main_container = document.querySelector(`#module-type-${module_type}`);
+        let module_type = module.type;
+        let translated_module_type = gettext(module_type.replace('_', ' '));
+        let module_main_container = document.querySelector(`#module-type-${module_type}`);
         if (!module_main_container) return;
 
         // === STRUCTURE ===
-        const module_container = document.createElement('div');
-        const module_item = document.createElement('div');
-        const module_span = document.createElement('span');
-        const module_button = document.createElement('button');
-        const module_button_i = document.createElement('i');
-        const tooltip = document.createElement('div');
+        let module_container = document.createElement('div');
+        let module_item = document.createElement('div');
+        let module_span = document.createElement('span');
+        let module_button = document.createElement('button');
+        let module_button_i = document.createElement('i');
+        let tooltip = document.createElement('div');
 
         module_container.className = "flex flex-col w-full";
 
@@ -67,10 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
             module_item.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
         } else {
             module_item.addEventListener('click', () => {
-                const expanded = module_item.nextElementSibling;
+                let expanded = module_item.nextElementSibling;
                 if (expanded && expanded.classList.contains('module-expanded')) expanded.remove();
                 else {
-                    const div = document.createElement('div');
+                    let div = document.createElement('div');
                     div.className = `
                         module-expanded mt-1 bg-emerald-900/30 border border-emerald-700/30
                         text-emerald-200 text-xs rounded p-2 shadow-inner
@@ -132,7 +131,7 @@ function createFormatedLabel(module_object) {
         case "DEFENSE_BALLISTIC":
         case "DEFENSE_THERMAL":
         case "DEFENSE_MISSILE":
-            const parts = module_type.split('_');
+            let parts = module_type.split('_');
             module_type = `${parts[1]} ${parts[0]}`;
             module_li = styledLine(`${module_object.effect.label}:`, `+${module_object.effect.defense}`);
             module_tooltip_ul.append(module_li);
@@ -238,10 +237,10 @@ function createFormatedLabel(module_object) {
 
 // Ligne stylisée pour tooltip
 function styledLine(label, value) {
-    const li = document.createElement('li');
+    let li = document.createElement('li');
     li.className = "flex justify-between border-b border-emerald-800/20 py-[1px] gap-2";
-    const l = document.createElement('span');
-    const v = document.createElement('span');
+    let l = document.createElement('span');
+    let v = document.createElement('span');
     l.className = "font-bold text-emerald-300";
     v.className = "text-emerald-100";
     l.textContent = label;

@@ -1,27 +1,28 @@
-const modal = document.getElementById('message-modal');
-const content = document.getElementById('mail-modal-content');
-const openBtn = document.getElementById('message-modal-button');
-const openBtnMobile = document.getElementById('message-modal-button-mobile');
-const closeBtn = document.getElementById('close-mail-modal');
-const mailList = document.getElementById('mail-list');
-const searchInput = document.getElementById('search-message');
-//const prevBtn = document.getElementById('prev-page');
-//const nextBtn = document.getElementById('next-page');
-const tabInbox = document.getElementById('tab-inbox');
-const tabSent = document.getElementById('tab-sent');
-const newMsgBtn = document.getElementById('new-message-btn');
+let modal = document.getElementById('message-modal');
+let content = document.getElementById('mail-modal-content');
+let openBtn = document.getElementById('message-modal-button');
+let openBtnMobile = document.getElementById('message-modal-button-mobile');
+let closeBtn = document.getElementById('close-mail-modal');
+let mailList = document.getElementById('mail-list');
+let searchInput = document.getElementById('search-message');
+let tabInbox = document.getElementById('tab-inbox');
+let tabSent = document.getElementById('tab-sent');
+let newMsgBtn = document.getElementById('new-message-btn');
 
 let currentPage = 1;
 let currentTab = 'received';
-
 function closeModal() {
-    modal.classList.add('hidden');
-    
+
     content.classList.add('scale-90', 'opacity-0');
     setTimeout(() => {
         modal.classList.add('hidden');
+        // clean mail items.
+        document.querySelectorAll('.mail-item').forEach(mail => {
+            mail.remove();
+        })
         document.body.style.overflow = '';
     }, 300);
+
 }
 
 // === OPEN / CLOSE MODAL ===
@@ -42,9 +43,9 @@ modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
 // === FETCH MESSAGES ===
 async function loadMessages(direction = null) {
-    const url = `/messages/?page=${currentPage}&tab=${currentTab}`;
-    const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-    const html = await response.text();
+    let url = `/messages/?page=${currentPage}&tab=${currentTab}`;
+    let response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+    let html = await response.text();
 
     // 🔹 Animation de sortie
     if (direction) {
@@ -63,7 +64,7 @@ async function loadMessages(direction = null) {
     }
 
     bindMailEvents();
-    bindPagination(); // ✅ Réactive les boutons pagination
+    bindPagination();
 }
 
 // === PAGINATION AMÉLIORÉE ===
@@ -83,7 +84,6 @@ function bindPagination() {
     if (next_page) {
         next_page.addEventListener('click', async () => {
             currentPage++;
-            console.log(currentPage)
             await loadMessages('next');
         });
     }
@@ -94,9 +94,9 @@ function bindPagination() {
 function bindMailEvents() {
     document.querySelectorAll('.mail-item').forEach(item => {
         item.addEventListener('click', async () => {
-            const id = item.dataset.id;
-            const res = await fetch(`/messages/get/${id}/`);
-            const data = await res.json();
+            let id = item.dataset.id;
+            let res = await fetch(`/messages/get/${id}/`);
+            let data = await res.json();
             showMessage(data);
         });
     });
@@ -104,12 +104,11 @@ function bindMailEvents() {
     document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async e => {
         e.stopPropagation();
-        const item = e.target.closest('.mail-item');
-        const id = item.dataset.id;
+        let item = e.target.closest('.mail-item');
+        let id = item.dataset.id;
 
         let data = JSON.stringify({id});
-        const deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
-        console.log(data)
+        let deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
         if (confirm(gettext("Delete this message?"))) {
             await fetch(deleteUrl, {
                 method: "POST",
@@ -185,15 +184,15 @@ function showMessage(data) {
 
         // Send
         document.getElementById('send-reply').addEventListener(action_listener_touch_click, async (e) => {
-            const btn = e.target;
-            const body = document.getElementById('reply-body').value.trim();
+            let btn = e.target;
+            let body = document.getElementById('reply-body').value.trim();
 
             if (!body) {
                 showToast(gettext("Message cannot be empty"), false);
                 return;
             }
 
-            const payload = JSON.stringify({
+            let payload = JSON.stringify({
                 recipient: data.sender,
                 recipient_type: "player",
                 subject: document.getElementById('reply-subject').value,
@@ -218,9 +217,9 @@ function showMessage(data) {
 
 // === SEARCH ===
 searchInput.addEventListener('input', async e => {
-    const q = e.target.value.trim();
+    let q = e.target.value.trim();
     if (!q) return loadMessages();
-    const res = await fetch(`/messages/search/?q=${encodeURIComponent(q)}`);
+    let res = await fetch(`/messages/search/?q=${encodeURIComponent(q)}`);
     mailList.innerHTML = await res.text();
     bindMailEvents();
 });
@@ -303,18 +302,18 @@ newMsgBtn.addEventListener('click', () => {
 
     document.getElementById('send-new').addEventListener(action_listener_touch_click, async (e) => {
 
-        const btn = e.target;
-        const recipient_type = document.getElementById('recipient-type').value;
-        const recipient = document.getElementById('recipient').value.trim();
-        const subject = document.getElementById('subject').value.trim();
-        const body = document.getElementById('body').value.trim();
+        let btn = e.target;
+        let recipient_type = document.getElementById('recipient-type').value;
+        let recipient = document.getElementById('recipient').value.trim();
+        let subject = document.getElementById('subject').value.trim();
+        let body = document.getElementById('body').value.trim();
 
         if (!recipient || !subject || !body) {
             showToast(gettext("Please fill all fields"), false);
             return;
         }
 
-        const payload = JSON.stringify({
+        let payload = JSON.stringify({
                 recipient: recipient,
                 subject: subject,
                 body: body,
@@ -338,10 +337,10 @@ newMsgBtn.addEventListener('click', () => {
 });
 
 function showToast(message, success = true) {
-    const container = document.getElementById("toast-container");
+    let container = document.getElementById("toast-container");
     if (!container) return;
 
-    const toast = document.createElement("div");
+    let toast = document.createElement("div");
     toast.className = `toast-cyber flex items-center gap-3 px-4 py-2 rounded-md font-semibold ${
         success ? 'success' : 'error'
     }`;
@@ -374,12 +373,12 @@ function setLoadingState(button, state) {
 }
 
 function bindComposeEvents() {
-    const recipientInput = document.getElementById('recipient');
-    const recipientType = document.getElementById('recipient-type');
-    const recipientAutocomplete = document.getElementById('recipient-autocomplete');
-    const recipientPlayerId = document.getElementById('recipient-player-id');
-    const recipientError = document.getElementById('recipient-error');
-    const sendBtn = document.getElementById('send-new');
+    let recipientInput = document.getElementById('recipient');
+    let recipientType = document.getElementById('recipient-type');
+    let recipientAutocomplete = document.getElementById('recipient-autocomplete');
+    let recipientPlayerId = document.getElementById('recipient-player-id');
+    let recipientError = document.getElementById('recipient-error');
+    let sendBtn = document.getElementById('send-new');
 
     function clearAutocomplete() {
         recipientAutocomplete.innerHTML = '';
@@ -398,7 +397,7 @@ function bindComposeEvents() {
     }
 
     recipientType.addEventListener('change', () => {
-        const mode = recipientType.value;
+        let mode = recipientType.value;
         recipientError.classList.add('hidden');
         recipientInput.classList.remove('shake-error');
 
@@ -412,18 +411,18 @@ function bindComposeEvents() {
         }
     });
 
-    const searchPlayers = debounce(async () => {
+    let searchPlayers = debounce(async () => {
 
-        const q = recipientInput.value.trim();
+        let q = recipientInput.value.trim();
         if(q.length < 2) return clearAutocomplete();
-        const res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`)
-        const {results} = await res.json();
+        let res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`)
+        let {results} = await res.json();
 
         if(!results.length) return clearAutocomplete();
 
         recipientAutocomplete.innerHTML = "";
         results.forEach(p => {
-            const div = document.createElement('div');
+            let div = document.createElement('div');
             div.className = "px-3 py-1 text-xs hover:bg-emerald-500/10 cursor-pointer";
             div.textContent = `${p.name} — ${p.faction}`;
             div.addEventListener('click', () => {
@@ -442,7 +441,7 @@ function bindComposeEvents() {
 
     if(sendBtn)
         sendBtn.addEventListener('click', async () => {
-            const mode = recipientType.value;
+            let mode = recipientType.value;
             if(mode === "player" && !recipientPlayerId.value) return showError(gettext("Recipient not found"));
         });
 

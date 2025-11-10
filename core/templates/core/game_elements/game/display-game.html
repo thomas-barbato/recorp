@@ -77,12 +77,12 @@
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </li>
-        <li data-tooltip-target="forum-tooltip" data-tooltip-placement="right" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+        <li id="chat-modal-button" data-modal-target="chat-modal" data-tooltip-target="chat-tooltip" data-tooltip-placement="right" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
             <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
-                <i class="fa-solid fa-comments fa-xl"></i>
+                <i class="fa-solid fa-walkie-talkie transition fa-xl"></i>
             </div>
-            <div id="forum-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                {% translate "Forum" %}
+            <div id="chat-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Chat" %}
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </li>
@@ -314,7 +314,6 @@
 <script src="{% url 'core:javascript-catalog' %}"></script>
 <script src="{% static 'world_builder/loading/loading_screen.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/onlyDomAndPanels/log_display_style.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/onlyDomAndPanels/character_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/check_visibility.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/sonar/sonar.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/sonar/sonar_ship_display.js'%}" type='application/javascript'></script>
@@ -325,11 +324,9 @@
 <script src="{% static 'world_builder/async/async_mp.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/async/async_action_manager.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/game.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/onlyDomAndPanels/message_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/navbar_game.js'%}" type="application/javascript"></script>
 <script src="{% static 'world_builder/world/world_reset.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/classes/player.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/modals.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/add_background.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/add_foreground.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/add_borders.js'%}" type='application/javascript'></script>
@@ -343,4 +340,9 @@
 <script src="{% static 'world_builder/async/async_actions.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/world/pathfinding_mobile.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/modals/modals.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/modals/character_modal.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/modals/chat_modal.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/modals/message_modal.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/modals/inventory_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'js/game/world_builder/account/logout.js' %}" type="application/javascript"></script>

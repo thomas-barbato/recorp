@@ -1,6 +1,6 @@
 function define_modal_type(modalId){
 
-    const result = {
+    let result = {
         isUnknown: false,
         type: null,
         id: null,
@@ -21,7 +21,7 @@ function define_modal_type(modalId){
 
     if (remaining.includes('pc_') || remaining.includes('npc_')) {
 
-        const match = remaining.match(/^(pc|npc)_(\d+)$/);  
+        let match = remaining.match(/^(pc|npc)_(\d+)$/);  
         if (match) {
             result.type = match[1];
             result.id = parseInt(match[2]);
@@ -43,7 +43,7 @@ function extract_data_for_modal(data){
     }
     if (data.isStatic) {
         // Recherche dans sector_element
-        const element = map_informations.sector_element.filter(el => el.data.name === data.elementName);
+        let element = map_informations.sector_element.filter(el => el.data.name === data.elementName);
         return {
             found: element.length > 0,
             type: element[0]?.data?.type,
@@ -52,7 +52,7 @@ function extract_data_for_modal(data){
         };
     } else {
         // Recherche PC ou NPC
-        const searchArray = map_informations[data.type] || [];
+        let searchArray = map_informations[data.type] || [];
         let foundEntity = null;
 
         if (data.type === 'pc') {
@@ -142,7 +142,7 @@ function createPlayerModalData(playerData) {
 }
 
 function extractForegroundModalData(foregroundData) {
-    const sizeData = foregroundData.data.data.size || { x: 1, y: 1 };
+    let sizeData = foregroundData.data.data.size || { x: 1, y: 1 };
     return {
         type: foregroundData.data.data.type,
         translatedType: foregroundData.data.type_translated || null,
@@ -193,7 +193,7 @@ function extractElementInfo(sectorData) {
 }
 
 function createForegroundModalData(elementInfo, sectorData) {
-    const baseModalData = {
+    let baseModalData = {
         type: elementInfo.type,
         translated_type: elementInfo.translatedType,
         animation: {
@@ -211,7 +211,7 @@ function createForegroundModalData(elementInfo, sectorData) {
     switch (elementInfo.type) {
         case "warpzone":
             
-            const formattedDestinations =  sectorData.data.destinations.map(dest => ({
+            let formattedDestinations =  sectorData.data.destinations.map(dest => ({
                 id: dest.id,
                 warpzone_name : dest.name,
                 destination_name: dest.destination_name
@@ -279,7 +279,7 @@ function open_close_modal(id) {
 }
 
 function create_modal(modalId, extractDataFromId, extractedDataForModal){
-    const element_type = extractDataFromId.type;
+    let element_type = extractDataFromId.type;
     let modal = "";
     let modalData = "";
 
@@ -1197,7 +1197,7 @@ function createUnknownModal(modalId, data, is_npc){
                 module_item_p.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
                 module_item_content.append(module_item_p);
 
-                for (const [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
+                for (let [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
                     let module_item_small_effect = document.createElement('span');
                     let module_item_small_effect_name = document.createElement('small');
                     let module_item_small_effect_value = document.createElement('small');
@@ -1223,7 +1223,7 @@ function createUnknownModal(modalId, data, is_npc){
 
                 module_range_array = currentPlayer.ship.modules_range[target_type]
                 if(typeof(module_range_array) != "undefined"){
-                    for(const module in module_range_array){
+                    for(let module in module_range_array){
                         is_in_range = module_range_array[module].is_in_range;
                         if(is_in_range){
                             module_item_small_effect_range_finder_span.classList.add('hidden');
@@ -1827,7 +1827,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                 module_item_p.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
                 module_item_content.append(module_item_p);
 
-                for (const [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
+                for (let [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
                     let module_item_small_effect = document.createElement('span');
                     let module_item_small_effect_name = document.createElement('small');
                     let module_item_small_effect_value = document.createElement('small');
@@ -1852,7 +1852,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
                 module_range_array = currentPlayer.ship.modules_range[target_type]
                 if(typeof(module_range_array) != "undefined"){
-                    for(const module in module_range_array){
+                    for(let module in module_range_array){
                         is_in_range = module_range_array[module].is_in_range;
                         if(is_in_range){
                             module_item_small_effect_range_finder_span.classList.add('hidden');
@@ -2034,14 +2034,14 @@ function create_chat_modal(data){
 }
 
 function createUnknownPcModal(modalId, modalData, playerInfo) {
-    const modalIdWithPrefix = modalId;
+    let modalIdWithPrefix = modalId;
 
     let visiblePlayerModal = document.getElementById(modalId);
     visiblePlayerModal?.remove();
 
     if(!checkIfModalExists(modalIdWithPrefix)){
         
-        const modal = createUnknownModal(
+        let modal = createUnknownModal(
             modalIdWithPrefix, 
             modalData, 
             true
@@ -2057,11 +2057,11 @@ function createUnknownPcModal(modalId, modalData, playerInfo) {
 
 function createUnknownNpcModal(modalId, modalData) {
     
-    const modalIdWithPrefix = `modal-unknown-pc_${modalData.player.id}`;
+    let modalIdWithPrefix = `modal-unknown-pc_${modalData.player.id}`;
 
     if(!checkIfModalExists(modalIdWithPrefix)){
         
-        const modal = createUnknownModal(
+        let modal = createUnknownModal(
             modalId, 
             modalData, 
             true

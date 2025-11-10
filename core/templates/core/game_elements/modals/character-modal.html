@@ -1,18 +1,24 @@
 {% load static %}
 {% load i18n %}
 
-<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40 backdrop-blur-md animate-modal-fade">
-    <div class="relative md:w-[95vw] w-full md:h-[95vh] h-full max-w-7xl md:max-h-[95vh] md:overflow-hidden overflow-y-auto rounded-xl shadow-lg border border-emerald-800/40 bg-gradient-to-br from-emerald-950/60 via-gray-900/70 to-black/80 flex flex-col animate-modal-rise energy-border">
-        {{  curentPlayer }}
-        <!-- Header -->
-        <div class="shrink-0 text-center py-3 border-b border-emerald-700/40 bg-black/40 backdrop-blur-sm">
-        <h3 class="text-2xl font-bold font-shadow text-emerald-400 tracking-widest uppercase drop-shadow-md">
-            {% translate "Character Sheet" %}
-        </h3>
-        <!-- Bouton Fermer -->
-        <button class="absolute top-3 right-3 text-gray-400 hover:text-emerald-400 text-xl cursor-pointer">
-            <i data-modal-hide="character-modal" class="fa-solid fa-xmark"></i>
-        </button>
+<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/70 backdrop-blur-sm animate-modal-fade">
+    
+    <!-- HOLOGRAPHIC HALO -->
+    <div id="holo-ring" class="absolute inset-0 md:rounded-2xl pointer-events-none glow-ring"></div>
+    
+    <div class="relative md:w-[95%] max-w-6xl w-full md:max-h-[90vh] h-full bg-zinc-950/95 border border-emerald-400/30 md:rounded-2xl shadow-lg flex flex-col md:overflow-hidden overflow-scroll animate-modal-rise energy-border">
+    
+        
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
+            <h3 class="text-2xl font-bold font-shadow text-emerald-400 tracking-widest uppercase drop-shadow-md">
+                <i class="fa-solid fa-user text-emerald-300 animate-pulse"></i>
+                {% translate "Character Sheet" %}
+            </h3>
+            <!-- Bouton Fermer -->
+            <button class="text-emerald-400 hover:text-red-400 text-2xl transition-all duration-200">
+                <i data-modal-hide="character-modal" id="close-character-modal" class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <!-- Contenu principal -->
@@ -24,9 +30,8 @@
         <div class="lg:w-1/4 w-full flex flex-col gap-3 bg-gray-900/50 border border-emerald-800/40 rounded-lg shadow-inner p-3 flex-shrink-0">
             <div class="flex justify-center">
             <div class="relative border border-emerald-400/40 rounded-lg md:overflow-hidden shadow-lg shadow-emerald-900/30 hover:scale-105 transition-transform duration-200 cursor-pointer select-none">
-                <img id="user-avatar"
-                    class="object-cover w-28 h-28 rounded-md select-none" src="/static/img/users/{{player.user.player}}/0.gif">
-                <input type="file" id="id_image" class="hidden" name="image" accept=".jpg, .png" />
+                <img id="user-avatar"class="object-cover w-28 h-28 rounded-md select-none" src="/static/img/users/{{player.user.player}}/0.gif">
+                <input type="file" id="id-image" class="hidden" name="image" accept=".jpg, .png" />
             </div>
             </div>
 

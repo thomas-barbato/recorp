@@ -3,11 +3,11 @@ function showPrivateMessageNotification(note) {
     if (!container) return;
 
     const notif = document.createElement("div");
-    notif.className = "mp-notification relative mp-radar bg-emerald-950/80 border border-emerald-400/50 text-emerald-200 font-semibold rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.4)] px-4 py-3 flex items-center gap-3 w-[90vw] sm:w-[320px] cursor-pointer backdrop-blur-md pointer-events-auto select-none";
+    notif.className = "mp-notification relative mp-radar bg-amber-500/90 border border-amber-300 text-white shadow-[0_0_15px_rgba(254,230,133,0.4)] font-semibold rounded-lg px-4 py-3 flex items-center gap-3 w-[90vw] sm:w-[320px] cursor-pointer backdrop-blur-md pointer-events-auto select-none";
     notif.innerHTML = `
-        <i class="fa-solid fa-envelope text-emerald-400 text-lg drop-shadow-[0_0_5px_#34d399]"></i>
+        <i class="fa-solid fa-envelope text-amber-100  drop-shadow-[0_0_5px_#fee685] text-lg"></i>
         <div class="flex flex-col">
-            <span class="text-emerald-300 font-bold">${gettext(note)}</span>
+            <span class="text-white font-bold">${gettext(note)}</span>
         </div>
     `;
 

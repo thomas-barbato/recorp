@@ -2,25 +2,23 @@
 {% load i18n %}
 {% load customtags %}
 
-<div id="inventory-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40 backdrop-blur-sm animate-modal-fade">
+<div id="inventory-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/70 backdrop-blur-sm animate-modal-fade">
 
-    <div class="relative w-[95%] max-w-6xl max-h-[90vh] bg-black/70 border border-emerald-400/30 rounded-2xl shadow-lg flex flex-col overflow-hidden animate-modal-rise energy-border">
+    <!-- HOLOGRAPHIC HALO -->
+    <div id="holo-ring" class="absolute inset-0 rounded-2xl pointer-events-none glow-ring"></div>
+
+    <div class="relative md:w-[95%] md:max-w-6xl md:max-h-[90vh] h-full w-full  bg-zinc-950/95 border border-emerald-400/30 md:rounded-2xl shadow-lg flex flex-col overflow-hidden animate-modal-rise energy-border">
     
-
-    <!-- ✅ Halo énergétique -->
-    <div class="absolute inset-0 rounded-2xl pointer-events-none glow-ring"></div>
-
-    <!-- ✅ HEADER -->
-    <div class="w-full text-center py-3 bg-emerald-950/40 border-b border-emerald-400/30 shadow-md relative z-10">
-        <h2 class="text-2xl font-bold text-emerald-300 font-orbitron tracking-wide drop-shadow-lg">
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
+        <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
+            <i class="fa-solid fa-walkie-talkie text-emerald-300 animate-pulse"></i>
             {% translate "Inventory" %}
         </h2>
-        <!-- Bouton Fermer -->
-        <button class="absolute top-3 right-3 text-gray-400 hover:text-emerald-400 text-xl cursor-pointer">
+        <button id="close-sector-chat" class="text-emerald-400 hover:text-red-400 text-2xl transition-all duration-200">
             <i data-modal-hide="inventory-modal" class="fa-solid fa-xmark"></i>
         </button>
     </div>
-
     <!-- ✅ CONTENU PRINCIPAL -->
     <div class="flex flex-col lg:flex-row flex-grow overflow-hidden relative z-10">
 
@@ -105,6 +103,4 @@
         unequipped: "{% translate 'unequipped' %}",
     };
 </script>
-
-<script src="{% static 'world_builder/onlyDomAndPanels/inventory_modal.js'%}" type='application/javascript'></script>
 

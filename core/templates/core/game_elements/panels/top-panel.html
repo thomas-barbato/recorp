@@ -60,12 +60,6 @@
                     <span>{% translate "Events" %}</span>
                 </span>
             </li>
-            <li>
-                <a href="#" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1">
-                    <i class="fa-solid fa-comments fa-xl"></i>
-                    <span>{% translate "Forum" %}</span>
-                </a>
-            </li>
             <form method="post" action="{% url 'core:logout_view' %}" class="block p-3 cursor-pointer text-emerald-400 hover:text-[#B1F1CB] text-left md:text-base text-sm font-bold font-shadow nav-item gap-1 logout">
                 {% csrf_token %}
                 <i class="fa-solid fa-home fa-xl"></i>

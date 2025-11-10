@@ -1,0 +1,69 @@
+{% load customtags%}
+{% load static %}
+{% load i18n %}
+
+<div id="chat-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/70 backdrop-blur-md animate-modal-fade">
+
+    <!-- HOLOGRAPHIC HALO -->
+    <div id="holo-ring" class="absolute inset-0 rounded-2xl pointer-events-none glow-ring"></div>
+
+    <div id="chat-modal-content" class="relative shadow-2xl md:w-[60vw] md:max-w-2xl md:h-[80vh] w-full h-full flex flex-col md:overflow-hidden transition-all bg-zinc-950/95 border md:border border-emerald-500/40 md:rounded-2xl shadow-[0_0_30px_rgba(10,185,129,0.4)] flex flex-col opacity-0">
+        
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
+            <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
+                <i class="fa-solid fa-walkie-talkie text-emerald-300 animate-pulse"></i>
+                {% translate "Chat" %}
+            </h2>
+            <button id="close-sector-chat" class="text-emerald-400 hover:text-red-400 text-2xl transition-all duration-200">
+                <i id="close-chat-modal" class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex text-xs border-b border-emerald-500/30 text-emerald-300">
+            <button id="tab-global" class="flex-1 py-2 border-b-2 border-emerald-400 text-emerald-400 font-semibold">
+                Global
+            </button>
+            <button id="tab-faction" class="flex-1 py-2 border-b border-transparent hover:text-emerald-200 transition">
+                Faction
+            </button>
+            <button id="tab-group" class="flex-1 py-2 border-b border-transparent hover:text-emerald-200 transition">
+                Group
+            </button>
+        </div>
+
+        <!-- Chat messages -->
+        <div id="sector-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2 text-sm font-mono custom-scrollbar">
+        <!-- Messages injectés ici -->
+        </div>
+
+        <!-- Input -->
+        <div class="border-t border-emerald-500/30 p-3 flex items-center gap-2">
+        <input id="sector-chat-input"
+                type="text"
+                placeholder="Transmitting message..."
+                class="flex-1 bg-zinc-800/50 border border-emerald-400/30 text-emerald-200 px-3 py-2 rounded-lg text-xs outline-none focus:border-emerald-400 transition placeholder-emerald-300/40">
+        <button id="sector-chat-send" class="bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-3 py-2 rounded font-semibold transition">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes fadeInMsg {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-msg {
+        animation: fadeInMsg 0.2s ease-out;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(16,185,129,0.4);
+        border-radius: 10px;
+    }
+</style>
