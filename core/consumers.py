@@ -387,6 +387,125 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Erreur lors de la validation des données de sync: {e}")
             return False
         
+    def async_send_chat_msg(self, event: dict) -> None:
+        """
+        Handler principal pour les messages de chat envoyés par un joueur.
+        Gère les types de chat: secteur, faction, groupe.
+        """
+        try:
+            message = event.get("message")
+            
+            if isinstance(message, str):
+                message = json.loads(message)
+                
+            author_id = self.player_id
+            content = message.get("content")
+            channel_type = message.get("channel_type", "sector")
+
+            if not content or not channel_type:
+                logger.warning("async_chat_message: contenu ou channel manquant")
+                return
+
+            player_action = PlayerAction(self.user.id)
+            author_data = player_action.get_player_data()
+            
+            print(author_data)
+
+            # Sauvegarde du message générique
+            from core.models import Message, FactionMessage, SectorMessage, GroupMessage
+            print(content, author_id)
+            msg = Message(
+                content=content,
+                author_id=author_id
+            )
+            
+            msg.save()
+
+            # Selon le type de canal, on crée le lien et on détermine les destinataires
+            recipients = []
+            if channel_type == "sector":
+                sector_id = player_action.get_player_sector()
+                print(sector_id, msg)
+                SectorMessage.objects.create(sector_id=sector_id, message_id=msg.id)
+
+                # Tous les joueurs de ce secteur
+                recipients = GetDataFromDB.get_players_in_sector(sector_id)
+
+            elif channel_type == "faction":
+                faction_id = player_action.get_player_faction()
+                FactionMessage.objects.create(faction_id=faction_id, message_id=msg.id)
+
+                # Tous les joueurs de cette faction
+                recipients = GetDataFromDB.get_players_in_faction(faction_id)
+
+            elif channel_type == "group":
+                group_id = player_action.get_player_group()
+                if group_id:
+                    GroupMessage.objects.create(group_id=group_id, message_id=msg.id)
+                    recipients = GetDataFromDB.get_players_in_group(group_id)
+                else:
+                    logger.info(f"async_chat_message: joueur {author_id} n'a pas de groupe")
+                    return
+            else:
+                logger.warning(f"Type de canal inconnu: {channel_type}")
+                return
+
+            # Diffuser le message à tous les destinataires connectés
+            self._broadcast_chat_message(channel_type, recipients, msg, author_data)
+
+        except Exception as e:
+            logger.exception(f"Erreur async_chat_message: {e}")
+
+    def _broadcast_chat_message(self, channel_type: str, recipients: list, msg, author_data: dict) -> None:
+        """
+        Diffuse le message à tous les destinataires dans leur room correspondante.
+        """
+        try:
+            for player in recipients:
+                recipient_id = player.get("id")
+                sector_id = player.get("sector_id")
+
+                if not sector_id:
+                    continue
+
+                destination_room_key = f"play_{sector_id}"
+
+                async_to_sync(self.channel_layer.group_send)(
+                    destination_room_key,
+                    {
+                        "type": "async_receive_chat_message",
+                        "message": {
+                            "channel_type": channel_type,
+                            "author": author_data.get("name"),
+                            "faction": author_data.get("faction_name"),
+                            "faction_color": GetDataFromDB().get_faction_badge_color_class(author_data.get("faction_name")),
+                            "content": msg.content,
+                            "timestamp": msg.created_at.strftime("%H:%M:%S") if hasattr(msg, "created_at") else "",
+                        },
+                    },
+                )
+        except Exception as e:
+            logger.exception(f"Erreur lors du broadcast chat: {e}")
+
+
+    def async_receive_chat_message(self, event: dict) -> None:
+        """
+        Reçoit un message de chat pour ce joueur (appelé par group_send).
+        """
+        try:
+            data = event.get("message")
+            if not data:
+                return
+
+            # Envoi au client WebSocket
+            self._send_response({
+                "type": "async_receive_chat_message",
+                "message": data
+            })
+
+        except Exception as e:
+            logger.exception(f"Erreur async_receive_chat_message: {e}")
+
     def async_send_mp(self, event: Dict[str, Any]) -> None:
         """
         Handler appelé quand un client a demandé d'envoyer un MP et que le message

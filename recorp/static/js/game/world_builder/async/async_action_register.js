@@ -113,11 +113,22 @@ function registerAllActions(){
         { requiresValidation: false }
     );
 
+    ActionRegistry.register('async_receive_chat_message',
+        (data) => {
+            console.log(data)
+            if (data && data.message) {
+            appendMessage(data.message);
+            } else {
+                console.error('❌ Impossible de traiter async_receive_chat_message, données invalides');
+            }
+        },
+        { requiresValidation: false }
+    );
+
     return {
         'send_message': () => {
             if (data.message && validateCriticalData(true)) {
-                //send_chat_message(data.message);
-                console.log('💬 Message reçu:', data.message)
+                //
             } else {
                 console.error('❌ Impossible de traiter send_chat_message, données invalides');
             }

@@ -34,6 +34,7 @@ from core.models import (
     LoggedInUser,
     PrivateMessage,
     PrivateMessageRecipients,
+    PlayerGroup
 )
 
 
@@ -725,3 +726,9 @@ class PlayerAction:
                 count += 1
         
         return count
+    
+    def get_player_group(self):
+        """
+        Retourne un dictionnaire (ou rien) du groupe auquel le joueur appartien.
+        """
+        return PlayerGroup.objects.filter(player_id=self.player_id) or []

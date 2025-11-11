@@ -22,48 +22,31 @@
 
         <!-- Tabs -->
         <div class="flex text-xs border-b border-emerald-500/30 text-emerald-300">
-            <button id="tab-global" class="flex-1 py-2 border-b-2 border-emerald-400 text-emerald-400 font-semibold">
-                Global
+            <button id="tab-sector" class="flex-1 py-2 border-b-2 border-emerald-400 text-emerald-400 font-semibold">
+                {%  trans 'Sector' %}
             </button>
             <button id="tab-faction" class="flex-1 py-2 border-b border-transparent hover:text-emerald-200 transition">
-                Faction
+                {%  trans 'Faction' %}
             </button>
             <button id="tab-group" class="flex-1 py-2 border-b border-transparent hover:text-emerald-200 transition">
-                Group
+                {%  trans 'Group' %}
             </button>
         </div>
 
         <!-- Chat messages -->
-        <div id="sector-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2 text-sm font-mono custom-scrollbar">
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2 text-sm font-mono custom-scrollbar">
         <!-- Messages injectés ici -->
         </div>
 
         <!-- Input -->
         <div class="border-t border-emerald-500/30 p-3 flex items-center gap-2">
-        <input id="sector-chat-input"
+        <input id="chat-input"
                 type="text"
                 placeholder="Transmitting message..."
                 class="flex-1 bg-zinc-800/50 border border-emerald-400/30 text-emerald-200 px-3 py-2 rounded-lg text-xs outline-none focus:border-emerald-400 transition placeholder-emerald-300/40">
-        <button id="sector-chat-send" class="bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-3 py-2 rounded font-semibold transition">
+        <button id="chat-send" class="bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-3 py-2 rounded font-semibold transition">
             <i class="fa-solid fa-paper-plane"></i>
         </button>
         </div>
     </div>
 </div>
-
-<style>
-    @keyframes fadeInMsg {
-        from { opacity: 0; transform: translateY(4px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .chat-msg {
-        animation: fadeInMsg 0.2s ease-out;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 5px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: rgba(16,185,129,0.4);
-        border-radius: 10px;
-    }
-</style>

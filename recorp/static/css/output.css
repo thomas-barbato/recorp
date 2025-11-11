@@ -2916,6 +2916,10 @@ video {
   background-color: rgb(16 185 129 / 0.2);
 }
 
+.bg-emerald-800\/10 {
+  background-color: rgb(6 95 70 / 0.1);
+}
+
 .bg-emerald-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(6 78 59 / var(--tw-bg-opacity));
@@ -6665,6 +6669,36 @@ input:focus {
   cursor: pointer;
   pointer-events: auto;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+}
+
+.chat-msg {
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-msg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(16,185,129,0.15), transparent);
+  animation: scanline 3s linear infinite;
+}
+
+@keyframes scanline {
+  0% {
+    left: -150%;
+  }
+
+  50% {
+    left: 150%;
+  }
+
+  100% {
+    left: 150%;
+  }
 }
 
 @media (min-width: 640px) {

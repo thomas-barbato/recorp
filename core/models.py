@@ -740,3 +740,62 @@ class PrivateMessageRecipients(models.Model):
     created_at = models.DateTimeField("creation date", default=localtime)
     deleted_at = models.DateTimeField("delete date", null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+class Group(models.Model):
+    creator = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="created_groups")
+    name = models.CharField(max_length=50, default="Unnamed Group")
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} (by {self.creator.name})"
+
+
+class PlayerGroup(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="group_memberships")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="members")
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.player.name} in {self.group.name}"
+
+
+class Message(models.Model):
+    author = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="messages")
+    content = models.TextField(max_length=2000)
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Message by {self.author.name}: {self.content[:30]}..."
+
+
+class FactionMessage(models.Model):
+    faction = models.ForeignKey(Faction, on_delete=models.CASCADE, related_name="faction_messages")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="faction_recipients")
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Faction {self.faction.name} message by {self.message.author.name}"
+
+
+class GroupMessage(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_messages")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="group_recipients")
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Group {self.group.name} message by {self.message.author.name}"
+
+
+class SectorMessage(models.Model):
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="sector_messages")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="sector_recipients")
+    created_at = models.DateTimeField("creation date", default=localtime)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Sector {self.sector.name} message by {self.message.author.name}"

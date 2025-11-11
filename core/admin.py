@@ -55,7 +55,26 @@ from core.models import (
     NpcTemplate,
     NpcTemplateResource,
     NpcTemplateSkill,
-    SkillExperience
+    SkillExperience,
+    LoggedInUser,
+    Security,
+    Warp,
+    WarpZone,
+    SectorWarpZone,
+    ShipModuleLimitation,
+    Archetype,
+    SkillExperience,
+    NpcResource,
+    ArchetypeModule,
+    PlayerShipModule,
+    PrivateMessage,
+    PrivateMessageRecipients,
+    Group,
+    PlayerGroup,
+    Message,
+    FactionMessage,
+    GroupMessage,
+    SectorMessage
 )
 
 
@@ -1308,3 +1327,97 @@ class NpcTemplateAdmin(admin.ModelAdmin):
 @admin.register(NpcTemplateSkill, site=admin_site)
 class NpcTemplateSkillAdmin(admin.ModelAdmin):
     model = NpcTemplateSkill
+
+@admin.register(LoggedInUser, site=admin_site)
+class LoggedInUserAdmin(admin.ModelAdmin):
+    model = LoggedInUser
+
+
+@admin.register(Security, site=admin_site)
+class SecurityAdmin(admin.ModelAdmin):
+    model = Security
+
+
+@admin.register(Warp, site=admin_site)
+class WarpAdmin(admin.ModelAdmin):
+    model = Warp
+
+
+@admin.register(WarpZone, site=admin_site)
+class WarpZoneAdmin(admin.ModelAdmin):
+    model = WarpZone
+
+
+@admin.register(SectorWarpZone, site=admin_site)
+class SectorWarpZoneAdmin(admin.ModelAdmin):
+    model = SectorWarpZone
+
+
+@admin.register(ShipModuleLimitation, site=admin_site)
+class ShipModuleLimitationAdmin(admin.ModelAdmin):
+    model = ShipModuleLimitation
+
+
+@admin.register(Archetype, site=admin_site)
+class ArchetypeAdmin(admin.ModelAdmin):
+    model = Archetype
+
+
+@admin.register(SkillExperience, site=admin_site)
+class SkillExperienceAdmin(admin.ModelAdmin):
+    model = SkillExperience
+
+
+@admin.register(NpcResource, site=admin_site)
+class NpcResourceAdmin(admin.ModelAdmin):
+    model = NpcResource
+
+
+@admin.register(ArchetypeModule, site=admin_site)
+class ArchetypeModuleAdmin(admin.ModelAdmin):
+    model = ArchetypeModule
+
+
+@admin.register(PlayerShipModule, site=admin_site)
+class PlayerShipModuleAdmin(admin.ModelAdmin):
+    model = PlayerShipModule
+
+
+@admin.register(PrivateMessage, site=admin_site)
+class PrivateMessageAdmin(admin.ModelAdmin):
+    model = PrivateMessage
+
+
+@admin.register(PrivateMessageRecipients, site=admin_site)
+class PrivateMessageRecipientsAdmin(admin.ModelAdmin):
+    model = PrivateMessageRecipients
+
+
+@admin.register(Group, site=admin_site)
+class GroupAdmin(admin.ModelAdmin):
+    model = Group
+
+
+@admin.register(PlayerGroup, site=admin_site)
+class PlayerGroupAdmin(admin.ModelAdmin):
+    model = PlayerGroup
+
+
+@admin.register(Message, site=admin_site)
+class MessageAdmin(admin.ModelAdmin):
+    model = Message
+
+
+@admin.register(FactionMessage, site=admin_site)
+class FactionMessageAdmin(admin.ModelAdmin):
+    model = FactionMessage
+
+
+@admin.register(GroupMessage, site=admin_site)
+class GroupMessageAdmin(admin.ModelAdmin):
+    model = GroupMessage
+
+
+@admin.register(SectorMessage, site=admin_site)
+class SectorMessageAdmin(admin.ModelAdmin):
+    model = SectorMessage

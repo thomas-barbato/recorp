@@ -18,6 +18,7 @@ from core.models import (
     Faction, FactionResource, Security, Sector, Player, PlayerShip,
     PlayerShipResource, PlayerShipModule, Ship, ShipCategory,
     Skill, Npc, NpcTemplateResource, NpcTemplate, NpcTemplateSkill, Module,
+    PlayerGroup
 )
 
 
@@ -834,3 +835,72 @@ class GetDataFromDB:
             'Faction Indépendante': 'bg-emerald-600 text-white border-emerald-400'
         }[faction_name]
         
+    @staticmethod
+    def get_players_in_sector(sector_id: int) -> list[dict]:
+        """
+        Retourne la liste des joueurs présents dans un secteur donné.
+        Chaque élément contient au minimum l'id du joueur et son secteur.
+        """
+        try:
+            if not sector_id:
+                return []
+
+            players = (
+                Player.objects.filter(sector_id=sector_id)
+                .values("id", "sector_id")
+            )
+
+            if not players.exists():
+                return []
+
+            return list(players)
+
+        except Exception as e:
+            return []
+
+
+    @staticmethod
+    def get_players_in_faction(faction_id: int) -> list[dict]:
+        """
+        Retourne la liste des joueurs appartenant à une faction donnée.
+        """
+        try:
+            if not faction_id:
+                return []
+
+            players = (
+                Player.objects.filter(faction_id=faction_id)
+                .values("id", "sector_id")
+            )
+
+            if not players.exists():
+                return []
+
+            return list(players)
+
+        except Exception as e:
+            return []
+
+
+    @staticmethod
+    def get_players_in_group(group_id: int | None) -> list[dict]:
+        """
+        Retourne la liste des joueurs appartenant à un groupe donné.
+        Si le joueur n'a pas de groupe (group_id=None), renvoie [].
+        """
+        try:
+            if not group_id:
+                return []
+
+            players = (
+                Player.objects.filter(group_id=group_id)
+                .values("id", "sector_id")
+            )
+
+            if not players.exists():
+                return []
+
+            return list(players)
+
+        except Exception as e:
+            return []

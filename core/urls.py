@@ -55,5 +55,6 @@ urlpatterns = [
     path("messages/delete/", core_views.delete_message, name="delete_message"),
     path("messages/search/", core_views.search_messages, name="search_messages"),
     path("messages/search_players/", core_views.search_players, name="search_players"),
+    path("chat/get/<str:channel_type>/", core_views.get_chat_messages, name="get_chat_messages"),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]

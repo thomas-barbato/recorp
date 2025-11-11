@@ -16500,3 +16500,2560 @@ Demande de synchronisation pour le joueur 23, secteur 3
 Envoi de réponse de synchronisation - Taille: 68405 bytes
 Sync data inclus - current_player: True, other_players: 4, map_informations: True
 Réponse de synchronisation envoyée pour le joueur 23
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.52, 127.0.0.1:57531][0m
+[mHTTP GET /fr/ 200 [0.76, 127.0.0.1:57531][0m
+[36mHTTP GET /static/css/style.css 304 [0.00, 127.0.0.1:57531][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:57539][0m
+[32mHTTP GET /play 302 [0.11, 127.0.0.1:57539][0m
+[mHTTP GET /fr/play/ 200 [0.63, 127.0.0.1:57539][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.07, 127.0.0.1:57539][0m
+[36mHTTP GET /static/world_builder/sonar/sonar.js 304 [0.01, 127.0.0.1:57531][0m
+[36mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 304 [0.01, 127.0.0.1:57549][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.01, 127.0.0.1:57549][0m
+[36mHTTP GET /static/world_builder/async/async_mp.js 304 [0.00, 127.0.0.1:57549][0m
+[36mHTTP GET /static/world_builder/classes/player.js 304 [0.00, 127.0.0.1:57549][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.00, 127.0.0.1:57549][0m
+[36mHTTP GET /static/world_builder/world/pathfinding_mobile.js 304 [0.01, 127.0.0.1:57539][0m
+[36mHTTP GET /static/world_builder/async/async_movements.js 304 [0.00, 127.0.0.1:57531][0m
+[36mHTTP GET /static/world_builder/modals/modals.js 304 [0.00, 127.0.0.1:57550][0m
+[36mHTTP GET /static/world_builder/world/pathfinding.js 304 [0.00, 127.0.0.1:57550][0m
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:57550][0m
+[36mHTTP GET /static/world_builder/modals/inventory_modal.js 304 [0.00, 127.0.0.1:57550][0m
+[36mHTTP GET /static/world_builder/modals/character_modal.js 304 [0.00, 127.0.0.1:57550][0m
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:57531][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57551]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57551]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 60519 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+D:\wamp64\www\recorp\core\admin.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.41, 127.0.0.1:63723][0m
+[36mHTTP GET /static/css/style.css 304 [0.00, 127.0.0.1:63723][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:63728][0m
+[36mHTTP GET /static/world_builder/sonar/sonar.js 304 [0.01, 127.0.0.1:63730][0m
+[36mHTTP GET /static/world_builder/async/async_mp.js 304 [0.01, 127.0.0.1:63723][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.01, 127.0.0.1:63731][0m
+[36mHTTP GET /static/world_builder/modals/character_modal.js 304 [0.01, 127.0.0.1:63728][0m
+[36mHTTP GET /static/world_builder/modals/modals.js 304 [0.01, 127.0.0.1:63732][0m
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:63730][0m
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:63731][0m
+[36mHTTP GET /static/world_builder/modals/inventory_modal.js 304 [0.00, 127.0.0.1:63723][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.24, 127.0.0.1:63729][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:63736]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:63736]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.03, 127.0.0.1:63865][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.17, 127.0.0.1:63865][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50844]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50844]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50844]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.23, 127.0.0.1:52593][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.00, 127.0.0.1:52598][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.06, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.02, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.02, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.03, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.03, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.03, 127.0.0.1:52601][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52605]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52605]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:52597][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:52597][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.03, 127.0.0.1:52597][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.05, 127.0.0.1:52597][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52605]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.19, 127.0.0.1:52597][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.02, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.02, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.02, 127.0.0.1:52599][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.08, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.02, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.02, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:52593][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52635]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52635]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.00, 127.0.0.1:52601][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.00, 127.0.0.1:52598][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.13, 127.0.0.1:52598][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.04, 127.0.0.1:52598][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.04, 127.0.0.1:52598][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52635]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.17, 127.0.0.1:52598][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:52598][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.02, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.07, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.00, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.00, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.04, 127.0.0.1:52593][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52700]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52700]
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.00, 127.0.0.1:52600][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:52593][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.07, 127.0.0.1:52593][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:52593][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52700]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:52593][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52593][0m
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:52600][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:52593][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52722]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52722]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52722]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.13, 127.0.0.1:52593][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:52593][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:52598][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.02, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.07, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.02, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:52599][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:52598][0m
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.07, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.03, 127.0.0.1:52600][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52767]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52767]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:52601][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:52597][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:52598][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:52593][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.01, 127.0.0.1:52599][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:52600][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.00, 127.0.0.1:52598][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:52598][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.05, 127.0.0.1:52598][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.03, 127.0.0.1:52598][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53641]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53641]
+D:\wamp64\www\recorp\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53658]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53658]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53658]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.18, 127.0.0.1:54621][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:54621][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:54621][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.05, 127.0.0.1:54629][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54632]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54632]
+Not Found: /chat/get/sector/
+[33mHTTP GET /chat/get/sector/ 404 [0.04, 127.0.0.1:54629][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54954]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54954]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:54954]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.37, 127.0.0.1:54982][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:54982][0m
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:54990][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:54982][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:54993]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:54993]
+[32mHTTP GET /chat/get/sector/ 302 [0.04, 127.0.0.1:54982][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:54982][0m
+[32mHTTP GET /chat/get/faction/ 302 [0.05, 127.0.0.1:54982][0m
+[mHTTP GET /fr/chat/get/faction/ 200 [0.04, 127.0.0.1:54982][0m
+[32mHTTP GET /chat/get/group/ 302 [0.04, 127.0.0.1:54982][0m
+[mHTTP GET /fr/chat/get/group/ 200 [0.05, 127.0.0.1:54982][0m
+[32mHTTP GET /chat/get/sector/ 302 [0.03, 127.0.0.1:54982][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.03, 127.0.0.1:54982][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55807]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55807]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\backend\get_data.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55858]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55858]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56190]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56190]
+D:\wamp64\www\recorp\core\backend\get_data.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56212]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56212]
+D:\wamp64\www\recorp\core\backend\get_data.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56235]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56235]
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56263]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56263]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56308]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56308]
+D:\wamp64\www\recorp\core\backend\player_actions.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56327]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56327]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56346]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56346]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:56346]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.19, 127.0.0.1:56462][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56467][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56470][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56469][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:56462][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.02, 127.0.0.1:56467][0m
+[mHTTP GET /static/css/output.css 200 [0.04, 127.0.0.1:56466][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.03, 127.0.0.1:56470][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:56469][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.02, 127.0.0.1:56462][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.02, 127.0.0.1:56466][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.03, 127.0.0.1:56467][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:56469][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:56467][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:56466][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.02, 127.0.0.1:56470][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:56462][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.08, 127.0.0.1:56468][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:56462][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:56467][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:56470][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:56466][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.01, 127.0.0.1:56469][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:56462][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:56470][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:56467][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:56469][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.02, 127.0.0.1:56466][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.02, 127.0.0.1:56462][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.02, 127.0.0.1:56470][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:56467][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.02, 127.0.0.1:56469][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.09, 127.0.0.1:56466][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.09, 127.0.0.1:56462][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.09, 127.0.0.1:56470][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.09, 127.0.0.1:56467][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:56466][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:56462][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:56470][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.05, 127.0.0.1:56469][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56474]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56474]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:56469][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:56470][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:56466][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:56462][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:56468][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.01, 127.0.0.1:56467][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:56469][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:56466][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:56466][0m
+[32mHTTP GET /chat/get/sector/ 302 [0.03, 127.0.0.1:56466][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:56466][0m
+[32mHTTP GET / 302 [0.04, 127.0.0.1:56489][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:56489][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56512][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56513][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56512][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56512][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-brands-400.woff2 200 [0.01, 127.0.0.1:56513][0m
+[32mHTTP POST /fr/logout 302 [0.05, 127.0.0.1:56512][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:56512][0m
+[mHTTP GET /fr/ 200 [0.00, 127.0.0.1:56512][0m
+[32mHTTP POST /fr/ 302 [0.49, 127.0.0.1:56512][0m
+[32mHTTP GET / 302 [0.07, 127.0.0.1:56512][0m
+[mHTTP GET /fr/ 200 [0.03, 127.0.0.1:56512][0m
+Not Found: /favicon.ico
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:56513][0m
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:56513][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.02, 127.0.0.1:56516][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.06, 127.0.0.1:56513][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:56513][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:56513][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:56489][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:56513][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56556]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56556]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.00, 127.0.0.1:56513][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:56515][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:56513][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:56514][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:56552][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:56516][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:56489][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+[32mHTTP GET /chat/get/sector/ 302 [0.04, 127.0.0.1:56513][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.03, 127.0.0.1:56513][0m
+[32mHTTP GET /fr/play/ 302 [0.00, 127.0.0.1:56569][0m
+[32mHTTP GET /?login_redirect=/fr/play/ 302 [0.01, 127.0.0.1:56569][0m
+[mHTTP GET /fr/?login_redirect=/fr/play/ 200 [0.01, 127.0.0.1:56569][0m
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:56556]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:56598][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56602][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.06, 127.0.0.1:56602][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.03, 127.0.0.1:56603][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.03, 127.0.0.1:56605][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.03, 127.0.0.1:56604][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:56606][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.02, 127.0.0.1:56602][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:56602][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:56602][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.00, 127.0.0.1:56603][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.02, 127.0.0.1:56602][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56602][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56602][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56620]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56620]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:56602][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:56603][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:56606][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:56598][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:56604][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:56605][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:56602][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:56474]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:56623][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.00, 127.0.0.1:56628][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:56623][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56632]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56632]
+[32mHTTP GET /chat/get/sector/ 302 [0.03, 127.0.0.1:56623][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.03, 127.0.0.1:56623][0m
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:56623][0m
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: no_cache
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.32, 127.0.0.1:56709][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56717]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56717]
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:56709][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:56727][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:56729][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.02, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.03, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.02, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.02, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.03, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.03, 127.0.0.1:56728][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.09, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.03, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.02, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.02, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.02, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.02, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.02, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.02, 127.0.0.1:56728][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:56727][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56727][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56737]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56737]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.00, 127.0.0.1:56727][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:56727][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:56709][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:56717]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.17, 127.0.0.1:56741][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:56746][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:56747][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:56748][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:56749][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:56750][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:56746][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.02, 127.0.0.1:56747][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.02, 127.0.0.1:56748][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.03, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.03, 127.0.0.1:56746][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.10, 127.0.0.1:56741][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.02, 127.0.0.1:56748][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.03, 127.0.0.1:56747][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.02, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.02, 127.0.0.1:56746][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:56748][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:56747][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.07, 127.0.0.1:56749][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.00, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:56746][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.02, 127.0.0.1:56749][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:56748][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.02, 127.0.0.1:56747][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:56749][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:56748][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.02, 127.0.0.1:56746][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.02, 127.0.0.1:56747][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:56749][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:56748][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.02, 127.0.0.1:56746][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:56747][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.02, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.02, 127.0.0.1:56749][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:56748][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.02, 127.0.0.1:56746][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:56747][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:56750][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:56749][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:56741][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56756]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56756]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:56749][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:56747][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:56750][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.01, 127.0.0.1:56746][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:56748][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:56741][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:56749][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:56749][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:56737]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.13, 127.0.0.1:56730][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:56730][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:56727][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.08, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.02, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:56727][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:56727][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:56709][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:56730][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:56730][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56775]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56775]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.00, 127.0.0.1:56730][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:56730][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:56727][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:56729][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:56728][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:56714][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:56709][0m
+[32mHTTP GET /chat/get/sector/ 302 [0.07, 127.0.0.1:56749][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:56749][0m
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 410, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 410, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56809]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56809]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56815]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56815]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+[32mHTTP GET /chat/get/faction/ 302 [0.04, 127.0.0.1:57416][0m
+[mHTTP GET /fr/chat/get/faction/ 200 [0.04, 127.0.0.1:57416][0m
+[32mHTTP GET /chat/get/sector/ 302 [0.04, 127.0.0.1:57416][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:57416][0m
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57492]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57493]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57492]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57493]
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57551]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57551]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57557]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57557]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.26, 127.0.0.1:57580][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.08, 127.0.0.1:57580][0m
+[36mHTTP GET /static/world_builder/async/async_action_register.js 304 [0.01, 127.0.0.1:57579][0m
+[36mHTTP GET /static/world_builder/async/async_actions.js 304 [0.01, 127.0.0.1:57593][0m
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:57594][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:57580][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57597]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57597]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57602]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57602]
+[32mHTTP GET /chat/get/sector/ 302 [0.03, 127.0.0.1:57580][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:57580][0m
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: no_cache
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57698]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57701]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57698]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57701]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57698]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.19, 127.0.0.1:57710][0m
+[36mHTTP GET /static/css/style.css 304 [0.01, 127.0.0.1:57716][0m
+[36mHTTP GET /static/css/output.css 304 [0.01, 127.0.0.1:57717][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:57710][0m
+[36mHTTP GET /static/world_builder/async/async_action_register.js 304 [0.00, 127.0.0.1:57717][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:57710][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57724]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57724]
+[32mHTTP GET /chat/get/sector/ 302 [0.04, 127.0.0.1:57710][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:57710][0m
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 409, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57764]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57764]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57770]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57770]
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57794]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57795]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57794]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57795]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57794]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 23
+[mHTTP GET /fr/play/ 200 [0.21, 127.0.0.1:57811][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:57811][0m
+[36mHTTP GET /static/world_builder/async/async_action_register.js 304 [0.00, 127.0.0.1:57820][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:57811][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57823]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57823]
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:57795]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.12, 127.0.0.1:57831][0m
+[mHTTP GET /static/css/style.css 200 [0.00, 127.0.0.1:57831][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57831][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:57837][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:57839][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.01, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.01, 127.0.0.1:57839][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.01, 127.0.0.1:57837][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.01, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.01, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.01, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.01, 127.0.0.1:57839][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.01, 127.0.0.1:57837][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.01, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.02, 127.0.0.1:57836][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:57837][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.02, 127.0.0.1:57839][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.02, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.02, 127.0.0.1:57836][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.08, 127.0.0.1:57831][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.02, 127.0.0.1:57837][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.02, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.02, 127.0.0.1:57839][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.10, 127.0.0.1:57831][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.10, 127.0.0.1:57837][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.11, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.02, 127.0.0.1:57836][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.11, 127.0.0.1:57838][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.11, 127.0.0.1:57839][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:57831][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:57837][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.02, 127.0.0.1:57840][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.02, 127.0.0.1:57838][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:57839][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:57831][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:57837][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/ux/recorp.png 200 [0.00, 127.0.0.1:57837][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57844]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57844]
+[mHTTP GET /static/img/background/bg_space_5/0.gif 200 [0.00, 127.0.0.1:57837][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.01, 127.0.0.1:57837][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.01, 127.0.0.1:57839][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.01, 127.0.0.1:57836][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:57838][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:57840][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.01, 127.0.0.1:57831][0m
+[32mHTTP GET /chat/get/sector/ 302 [0.03, 127.0.0.1:57811][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.04, 127.0.0.1:57811][0m
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 411, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Erreur async_chat_message: 'PlayerAction' object has no attribute 'get_player_data'
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\consumers.py", line 411, in async_send_chat_msg
+    author_data = player_action.get_player_data()
+AttributeError: 'PlayerAction' object has no attribute 'get_player_data'
+Désynchronisation détectée pour joueur 23 - Client: -eg0id2, Serveur: y2y550
+Demande de synchronisation pour le joueur 23, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 23
+Désynchronisation détectée pour joueur 24 - Client: -8zohh1, Serveur: 22i83p
+Demande de synchronisation pour le joueur 24, secteur 3
+Envoi de réponse de synchronisation - Taille: 68405 bytes
+Sync data inclus - current_player: True, other_players: 4, map_informations: True
+Réponse de synchronisation envoyée pour le joueur 24
+D:\wamp64\www\recorp\core\consumers.py changed, reloading.
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57904]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57906]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57904]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57906]

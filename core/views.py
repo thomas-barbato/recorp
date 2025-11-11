@@ -11,6 +11,7 @@ from django.conf import settings
 from PIL import Image
 from pathlib import Path
 from django.core.paginator import Paginator
+from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -24,6 +25,7 @@ from django.shortcuts import redirect, render, HttpResponse
 from django.template import RequestContext, loader
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
+from django.utils import timezone
 from django.views.generic import TemplateView, View, RedirectView, FormView
 from django.views.decorators.http import require_http_methods
 from django_user_agents.utils import get_user_agent
@@ -50,6 +52,11 @@ from core.models import (
     Module,
     PrivateMessage,
     PrivateMessageRecipients,
+    SectorMessage,
+    FactionMessage,
+    GroupMessage,
+    PlayerGroup
+
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
@@ -747,3 +754,38 @@ def search_players(request):
                 "faction": p.faction.name if p.faction else "",
             })
     return JsonResponse({"results": results})
+
+@login_required
+def get_chat_messages(request, channel_type):
+    player = Player.objects.select_related("faction", "sector").get(user=request.user)
+    messages_data = []
+
+    if channel_type == "sector":
+        messages = SectorMessage.objects.filter(
+            sector=player.sector
+        ).select_related("message__author__faction").order_by("-id")[:50]
+
+    elif channel_type == "faction":
+        messages = FactionMessage.objects.filter(
+            faction=player.faction
+        ).select_related("message__author__faction").order_by("-id")[:50]
+
+    elif channel_type == "group":
+        groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
+        messages = GroupMessage.objects.filter(
+            group_id__in=groups
+        ).select_related("message__author__faction").order_by("-id")[:50]
+    else:
+        return JsonResponse({"error": "Invalid chat type"}, status=400)
+
+    for msg in reversed(messages):
+        m = msg.message
+        messages_data.append({
+            "author": m.author.name,
+            "faction": m.author.faction.name if m.author.faction else "",
+            "faction_color": GetDataFromDB().get_faction_badge_color_class(m.author.faction.name) if m.author.faction else "",
+            "content": m.content,
+            "timestamp": m.id,  # simplifié, remplace par m.timestamp.strftime("%H:%M:%S") si tu l’ajoutes
+        })
+
+    return JsonResponse({"messages": messages_data})
