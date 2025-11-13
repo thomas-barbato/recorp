@@ -830,77 +830,28 @@ class GetDataFromDB:
     @staticmethod
     def get_faction_badge_color_class(faction_name):
         return {
-            'culte technologie': 'bg-red-600 text-white border-red-400',
-            'Faction Democratique': 'bg-blue-600 text-white border-blue-400',
-            'Faction Indépendante': 'bg-emerald-600 text-white border-emerald-400'
+            'culte technologie': 'p-1 text-orange-400',
+            'Faction Democratique': 'p-1 text-blue-500',
+            'Faction Indépendante': 'p-1 text-emerald-400'
         }[faction_name]
         
     @staticmethod
-    def get_players_in_sector(sector_id: int) -> list[dict]:
-        """
-        Retourne la liste des joueurs présents dans un secteur donné.
-        Chaque élément contient au minimum l'id du joueur et son secteur.
-        """
+    def get_players_in_sector(sector_id: int, player_id: int):
         try:
-            if not sector_id:
-                return []
-
-            players = (
-                Player.objects.filter(sector_id=sector_id)
-                .values("id", "sector_id")
-            )
-
-            if not players.exists():
-                return []
-
-            return list(players)
-
+            return list(Player.objects.filter(sector_id=sector_id).exclude(id=player_id).values("id", "name", "sector_id"))
         except Exception as e:
             return []
 
-
     @staticmethod
-    def get_players_in_faction(faction_id: int) -> list[dict]:
-        """
-        Retourne la liste des joueurs appartenant à une faction donnée.
-        """
+    def get_players_in_faction(faction_id: int, player_id: int):
         try:
-            if not faction_id:
-                return []
-
-            players = (
-                Player.objects.filter(faction_id=faction_id)
-                .values("id", "sector_id")
-            )
-
-            if not players.exists():
-                return []
-
-            return list(players)
-
+            return list(Player.objects.filter(faction_id=faction_id).exclude(id=player_id).values("id", "name", "sector_id"))
         except Exception as e:
             return []
 
-
     @staticmethod
-    def get_players_in_group(group_id: int | None) -> list[dict]:
-        """
-        Retourne la liste des joueurs appartenant à un groupe donné.
-        Si le joueur n'a pas de groupe (group_id=None), renvoie [].
-        """
+    def get_players_in_group(group_id: int, player_id: int):
         try:
-            if not group_id:
-                return []
-
-            players = (
-                Player.objects.filter(group_id=group_id)
-                .values("id", "sector_id")
-            )
-
-            if not players.exists():
-                return []
-
-            return list(players)
-
+            return list(Player.objects.filter(playergroup__group_id=group_id).exclude(id=player_id).values("id", "name", "sector_id"))
         except Exception as e:
             return []

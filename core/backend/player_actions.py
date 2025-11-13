@@ -1,12 +1,14 @@
 import json
 import os
 import logging
+from datetime import datetime
 from typing import Optional, Dict, List, Tuple, Any
 from django.core import serializers
 from recorp.settings import BASE_DIR
 from django.db.models import Q
 from functools import reduce
 import operator
+from django.utils import timezone
 from django.contrib.auth.models import User
 from core.backend.get_data import GetDataFromDB
 # Ajouter ces imports en haut du fichier player_actions.py
@@ -34,7 +36,12 @@ from core.models import (
     LoggedInUser,
     PrivateMessage,
     PrivateMessageRecipients,
-    PlayerGroup
+    Message, 
+    FactionMessage, 
+    SectorMessage, 
+    GroupMessage,
+    PlayerGroup,
+    Group
 )
 
 
@@ -83,6 +90,11 @@ class PlayerAction:
         """Récupère l'ID du secteur du joueur."""
         if self.player.exists():
             return self.player.values_list("sector_id", flat=True).first()
+        return None
+    
+    def get_player_data(self) -> List[str]:
+        if self.player.exists():
+            return self.player.all()
         return None
 
     def get_player_faction(self) -> Optional[int]:
@@ -271,7 +283,8 @@ class PlayerAction:
             id=self.player_id
         ).update(
             sector_id=sector_id,
-            coordinates=coordinates
+            coordinates=coordinates,
+            last_time_warpzone=datetime.now()
         )
         return updated_count > 0
     
@@ -732,3 +745,61 @@ class PlayerAction:
         Retourne un dictionnaire (ou rien) du groupe auquel le joueur appartien.
         """
         return PlayerGroup.objects.filter(player_id=self.player_id) or []
+    
+    def create_chat_message(self, content: str, channel: str):
+        """
+        Crée et associe un message de chat selon le type de canal.
+        Retourne (message_obj, destinataires)
+        """
+        try:
+            player_data = self.get_player_data()
+            author_id = player_data.values_list('id', flat=True)[0]
+            faction_id = player_data.values_list('faction_id', flat=True)[0]
+            sector_id = player_data.values_list('sector_id', flat=True)[0]
+
+            # Créer le message principal
+            msg = Message(
+                content=content,
+                author_id=author_id,
+            )
+            
+            msg.save()
+
+            recipients = []
+            # === CANAL SECTEUR ===
+            if channel == "sector":
+                SectorMessage.objects.create(
+                    sector_id=sector_id,
+                    message_id=msg.id
+                )
+                recipients = GetDataFromDB.get_players_in_sector(sector_id, author_id)
+
+            # === CANAL FACTION ===
+            elif channel == "faction":
+                FactionMessage.objects.create(
+                    faction_id=faction_id,
+                    message_id=msg.id
+                )
+                recipients = GetDataFromDB.get_players_in_faction(faction_id, author_id)
+
+            # === CANAL GROUPE ===
+            elif channel == "group":
+                group = PlayerGroup.objects.filter(player_id=author_id).first()
+                if not group:
+                    return msg, []  # joueur sans groupe
+                GroupMessage.objects.create(
+                    group_id=group.group_id,
+                    message_id=msg.id
+                )
+                recipients = GetDataFromDB.get_players_in_group(group.group_id, author_id)
+
+            else:
+                logger.warning(f"Canal de chat inconnu: {channel}")
+                return None, []
+
+            return msg, recipients
+
+        except Exception as e:
+            logger.exception(f"Erreur create_chat_message ({channel}): {e}")
+            return None, []
+    

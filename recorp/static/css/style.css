@@ -1558,3 +1558,16 @@ animation: radarPulse 0.6s ease-out;
     50% { left: 150%; }
     100% { left: 150%; }
 }
+
+/* === Effet radar SF sur onglet === */
+@keyframes holoPulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+    70% { box-shadow: 0 0 10px 4px rgba(16, 185, 129, 0.3); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.holo-pulse {
+    animation: holoPulse 1.6s ease-out infinite;
+    border-color: rgba(16, 185, 129, 0.8) !important;
+    color: #34d399 !important;
+}

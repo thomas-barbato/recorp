@@ -112,19 +112,14 @@ function handleWarpComplete(data) {
             if (wsManager.isConnected) {
 
                 clearInterval(checkConnection);
-                // reset du secteur
                 recreateTileStructure();
-                // Régénérer le secteur
                 init_sector_generation();
-                // Débloquer les actions
                 window._syncInProgress = false;
-
-                // ✅ Cacher le loader quand tout est prêt
                 loadingScreen.hide();
             }
 
         }, 100);
-    }, 500); // Petit délai pour la transition
+    }, 500); // délai pour la transition
 }
 
 function async_send_mp(data){

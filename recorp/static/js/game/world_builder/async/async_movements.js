@@ -328,7 +328,9 @@ function update_player_range_in_modal(data){
 }
 
 function handleWarpComplete(data) {
-    console.log('🌀 Warp terminé, changement de secteur...');
+    
+    // Lance le la loading screen.
+    loadingScreen.show();
     
     const { new_sector_id, new_sector_data } = data;
     
@@ -354,9 +356,7 @@ function handleWarpComplete(data) {
     currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
     otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
     npcs = map_informations.npc || [];
-    
-    // Lance le la loading screen.
-    loadingScreen.show();
+
     // Créer une nouvelle connexion WebSocket
     setTimeout(() => {
         wsManager = new WebSocketManager(new_sector_id);

@@ -302,7 +302,6 @@ class WebSocketManager {
     }
     
     onOpen() {
-        console.log('✅ WebSocket connecté');
         this.isConnected = true;
         const wasReconnecting = this.isReconnecting;
         this.reconnectAttempts = 0;
@@ -329,13 +328,11 @@ class WebSocketManager {
         this.isConnected = false;
         this.stopHeartbeat();
         
-        // CORRECTION : Ne pas reconnecter seulement si c'est une fermeture normale OU si on a désactivé la reconnexion
         if (event.code === 1000 || !this.shouldReconnect) {
             console.log('Arrêt définitif de la reconnexion');
             return;
         }
         
-        // CORRECTION : Reconnexion même en cas de ping timeout (code 1001)
         if (!this.isReconnecting && this.reconnectAttempts < WS_CONFIG.MAX_RECONNECT_ATTEMPTS) {
             this.attemptReconnection();
         } else if (this.reconnectAttempts >= WS_CONFIG.MAX_RECONNECT_ATTEMPTS) {
@@ -383,7 +380,6 @@ class WebSocketManager {
         
         console.log(`Tentative de reconnexion dans ${delay}ms (${this.reconnectAttempts + 1}/${WS_CONFIG.MAX_RECONNECT_ATTEMPTS})`);
         
-        // CORRECTION : Stocker le timeout pour pouvoir l'annuler si nécessaire
         this.reconnectTimeout = setTimeout(() => {
             if (this.shouldReconnect) {
                 this.reconnectAttempts++;
@@ -394,9 +390,8 @@ class WebSocketManager {
     }
     
     startHeartbeat() {
-        this.stopHeartbeat(); // S'assurer qu'il n'y a qu'un seul interval
+        this.stopHeartbeat();
         
-        // CORRECTION : Vérifier que shouldReconnect est true avant de démarrer
         if (!this.shouldReconnect) {
             return;
         }
@@ -423,7 +418,6 @@ class WebSocketManager {
         if (this.socket.readyState === WebSocket.OPEN) {
             this.lastPingTime = Date.now();
             
-            // Envoyer un hash des données critiques
             const dataHash = this.generateDataHash();
             
             this.socket.send(JSON.stringify({ 
@@ -432,13 +426,10 @@ class WebSocketManager {
                 player_id: current_player_id
             }));
             
-            console.log('Ping envoyé avec hash:', dataHash);
-            
             setTimeout(() => {
                 if (this.lastPingTime > 0 && 
                     Date.now() - this.lastPingTime > WS_CONFIG.PING_TIMEOUT && 
                     this.socket.readyState === WebSocket.OPEN) {
-                    console.log('Ping timeout détecté');
                     this.socket.close(1001, 'Ping timeout');
                 }
             }, WS_CONFIG.PING_TIMEOUT + 1000);
@@ -446,12 +437,10 @@ class WebSocketManager {
     }
 
     handlePong(data) {
-        console.log('Pong reçu');
         this.lastPingTime = 0;
         
         // ⚠️ NOUVEAU : Vérifier si le serveur signale une désynchronisation
         if (data.sync_required) {
-            console.warn('⚠️ Serveur détecte une désynchronisation, sync...');
             if (!window._syncInProgress) {
                 requestDataSync();
             }
@@ -533,7 +522,6 @@ class WebSocketManager {
     }
     
     processMessageQueue() {
-        console.log(`Traitement de la queue: ${this.messageQueue.length} messages`);
         while (this.messageQueue.length > 0 && this.isConnected) {
             const message = this.messageQueue.shift();
             this.send(message);
@@ -656,8 +644,6 @@ function init_game() {
 }
 
 function handle_websocket_message(data) {
-    console.log('Message recu:', data.type);
-    
     try {
         // Extraire les données du message
         const messageData = data.message;
@@ -679,7 +665,6 @@ function handle_websocket_message(data) {
 function requestDataSync() {
 
     if (window._syncInProgress) {
-        console.log('⏸️ Synchronisation déjà en cours, skip...');
         // Si une action est en attente, l'ajouter à la queue
         if (pendingAction) {
             window._pendingActions = window._pendingActions || [];
@@ -688,7 +673,6 @@ function requestDataSync() {
         return;
     }
     
-    console.log('📡 Demande de synchronisation des données...');
     window._syncInProgress = true;
     
     // Stocker l'action en attente
@@ -699,7 +683,6 @@ function requestDataSync() {
     // Timeout de sécurité
     setTimeout(() => {
         if (window._syncInProgress) {
-            console.warn('⚠️ Timeout de synchronisation, reset...');
             window._syncInProgress = false;
             processPendingActions();
         }
@@ -722,8 +705,6 @@ function requestDataSync() {
 function executeUserAction(actionFunction) {
     // Vérifier les données avant l'action
     if (!validateCriticalData(true)) {
-        console.warn('⚠️ Données invalides détectées avant action');
-        
         // Stocker l'action pour exécution après sync
         pendingAction = {
             execute: actionFunction,
@@ -848,7 +829,6 @@ function validateCriticalData(skipLogging = false) {
 
 // traiter les actions après sync
 function handleDataSyncResponse(data) {
-    console.log('📥 Synchronisation reçue');
     
     try {
         
@@ -894,8 +874,6 @@ function handleDataSyncResponse(data) {
             updatePlayerSonar(coords, currentPlayer.ship.view_range);
         }
         
-        console.log('✅ Synchronisation terminée avec succès');
-        
         // Marquer la fin de la sync
         actionManager.onSyncComplete();
         
@@ -909,14 +887,10 @@ function handleDataSyncResponse(data) {
 function initializeActionSystem() {
     // Enregistrer toutes les actions
     registerAllActions();
-    
-    // Logger pour debug
-    console.log(`Systeme d'actions initialise: ${ActionRegistry.handlers.size} actions`);
 }
 
 // Fonction de nettoyage mise à jour
 function cleanup_game() {
-    console.log("🧹 Nettoyage du jeu...");
     
     // Arrêter immédiatement le heartbeat
     if (wsManager) {
@@ -957,7 +931,6 @@ function cleanup_game() {
     }
     
     wsManager = null;
-    console.log("✅ Nettoyage terminé");
 }
 
 
@@ -976,8 +949,6 @@ window.debugData = debugDataState;
 window.syncData = () => {
     if (!window._syncInProgress) {
         requestDataSync();
-    } else {
-        console.warn('Sync déjà en cours');
     }
 };
 

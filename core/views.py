@@ -266,7 +266,6 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             form = CreateCharacterForm(data, request.FILES)
             if form.is_valid():
                 contains_image = True if request.FILES.get('file') else False
-                print(f"contains_image = {contains_image}")
                 new_player = Player(
                     name=data["name"],
                     faction_id=data["faction"],
@@ -671,7 +670,7 @@ def get_message(request, pk):
         sender = f'{message_recipients[0]["message_id__sender_id__name"] if message_recipients else message_author[0]["sender_id__name"]}'
         sender_id = f'{message_recipients[0]["message_id__sender_id"] if message_recipients else message_author[0]["sender_id"]}' 
         body = f'{message_recipients[0]["message_id__body"] if message_recipients else message_author[0]["body"]}'
-        timestamp = f'{message_recipients[0]["message_id__timestamp"].strftime("%Y-%m-%d %H:%M") if message_recipients else message_author[0]["timestamp"].strftime("%Y-%m-%d %H:%M")}'
+        timestamp = f'{message_recipients[0]["message_id__timestamp"].strftime("%Y-%m-%d %H:%M:%S") if message_recipients else message_author[0]["timestamp"].strftime("%Y-%m-%d %H:%M:%S")}'
         is_author = PrivateMessage.objects.filter(id=pk, sender_id=player_id).exists()
         data = {
             "id": id,
@@ -689,7 +688,6 @@ def get_message(request, pk):
         return JsonResponse(data, status=200)
     
     except Exception as e:
-        print(e)
         return JsonResponse({}, status=500)
 
 
@@ -759,22 +757,26 @@ def search_players(request):
 def get_chat_messages(request, channel_type):
     player = Player.objects.select_related("faction", "sector").get(user=request.user)
     messages_data = []
+    print(player.last_time_warpzone)
+    cutoff_date = player.last_time_warpzone
 
     if channel_type == "sector":
         messages = SectorMessage.objects.filter(
-            sector=player.sector
-        ).select_related("message__author__faction").order_by("-id")[:50]
+            sector=player.sector,
+            message__created_at__gte=cutoff_date
+        ).order_by("-id")[:100]
+        print([e for e in messages.created_at])
 
     elif channel_type == "faction":
         messages = FactionMessage.objects.filter(
-            faction=player.faction
-        ).select_related("message__author__faction").order_by("-id")[:50]
+            faction=player.faction,
+        ).order_by("-id")[:100]
 
     elif channel_type == "group":
         groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
         messages = GroupMessage.objects.filter(
-            group_id__in=groups
-        ).select_related("message__author__faction").order_by("-id")[:50]
+            group_id__in=groups,
+        ).order_by("-id")
     else:
         return JsonResponse({"error": "Invalid chat type"}, status=400)
 
@@ -785,7 +787,7 @@ def get_chat_messages(request, channel_type):
             "faction": m.author.faction.name if m.author.faction else "",
             "faction_color": GetDataFromDB().get_faction_badge_color_class(m.author.faction.name) if m.author.faction else "",
             "content": m.content,
-            "timestamp": m.id,  # simplifié, remplace par m.timestamp.strftime("%H:%M:%S") si tu l’ajoutes
+            "timestamp": m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
         })
 
     return JsonResponse({"messages": messages_data})

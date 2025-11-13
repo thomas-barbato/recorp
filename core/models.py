@@ -267,6 +267,7 @@ class Player(models.Model):
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
     coordinates = models.JSONField()
+    last_time_warpzone = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField("creation date", default=localtime)
     updated_at = models.DateTimeField(auto_now=True)
 

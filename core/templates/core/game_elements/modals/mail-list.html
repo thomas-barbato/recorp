@@ -6,13 +6,13 @@
 {% if received_messages %}
     {% for msg in received_messages %}
     <div data-id="{{ msg.id }}"
-         class="mail-item group relative border rounded-xl p-4 cursor-pointer transition
-         {% if not msg.is_read %}
-            border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.35)]
-         {% else %}
-            border-emerald-500/20
-         {% endif %}
-         bg-zinc-900/60 hover:bg-zinc-900/90 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+        class="mail-item group relative border rounded-xl p-4 cursor-pointer transition
+        {% if not msg.is_read %}
+        border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.35)]
+        {% else %}
+        border-emerald-500/20
+        {% endif %}
+        bg-zinc-900/60 hover:bg-zinc-900/90 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]">
 
         <!-- === Partie 1 : Badge lu / non-lu === -->
         <div class="absolute top-2 right-3 text-xs font-bold tracking-wider">
@@ -39,7 +39,7 @@
             <div class="flex flex-col flex-1 min-w-0">
 
                 <!-- Ligne Auteur + faction + timestamp -->
-                <div class="flex items-center gap-2 flex-wrap">
+                <div class="flex items-center gap-1 flex-wrap">
 
                     <!-- Nom du joueur -->
                     <span class="font-bold text-emerald-200 truncate">
@@ -47,12 +47,12 @@
                     </span>
 
                     <!-- Badge faction coloré -->
-                    <span class="text-[10px] px-2 py-0.5 rounded-md uppercase tracking-wider font-bold border {{ msg.faction_color }}">
+                    <span class="tracking-wider {{ msg.faction_color }}">
                         {{ msg.faction }}
                     </span>
 
                     <!-- Timestamp -->
-                    <small class="text-xs text-emerald-500/50 italic">
+                    <small class="text-emerald-500/50 italic">
                         {{ msg.timestamp|date:"Y-m-d H:i" }}
                     </small>
 

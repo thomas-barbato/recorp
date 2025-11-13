@@ -128,6 +128,7 @@ class LoadingScreen {
     }
 
     show(text = 'Chargement') {
+        console.log("CHARGEMENT")
         if (this.isVisible) return;
         this.startTime = performance.now();
         this.isVisible = true;
