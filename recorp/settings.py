@@ -207,7 +207,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 USE_TZ = True
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Paris"
 
 LANGUAGE_CODE = "en-US"
 USE_I18N = True

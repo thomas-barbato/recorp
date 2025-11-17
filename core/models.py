@@ -42,7 +42,7 @@ class Resource(models.Model):
         max_length=30, null=False, blank=False, default="Resource-default"
     )
     data = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -68,7 +68,7 @@ class Station(models.Model):
     )
     data = models.JSONField(null=True)
     size = models.JSONField(default=get_default_station_size)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -81,7 +81,7 @@ class Asteroid(models.Model):
     )
     data = models.JSONField(null=True)
     size = models.JSONField(default=get_default_asteroid_size)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -93,7 +93,7 @@ class Faction(models.Model):
         max_length=30, null=False, blank=False, default="Faction-default"
     )
     data = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
@@ -113,7 +113,7 @@ class Security(models.Model):
     attack_countdown = models.PositiveSmallIntegerField(default=3)
     chance_to_intervene = models.PositiveSmallIntegerField(default=100)
     ship_quantity = models.PositiveSmallIntegerField(default=3)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -136,7 +136,7 @@ class Sector(models.Model):
         related_name="faction_sector",
     )
     is_faction_level_starter = models.BooleanField(default=False)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -146,7 +146,7 @@ class Warp(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False, default="Warp")
     data = models.JSONField(null=True)
     size = models.JSONField(default=get_default_warzone_size)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -157,7 +157,7 @@ class WarpZone(models.Model):
     coordinates = models.JSONField(null=True)
     source = models.ForeignKey(Warp, on_delete=models.CASCADE, default=1)
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="warp_sector")
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
@@ -166,7 +166,7 @@ class WarpZone(models.Model):
 class SectorWarpZone(models.Model):
     warp_home = models.ForeignKey(WarpZone, on_delete=models.CASCADE, related_name="warp_home")
     warp_destination = models.ForeignKey(WarpZone, on_delete=models.CASCADE, related_name="warp_destination")
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -181,7 +181,7 @@ class ShipCategory(models.Model):
     size = models.JSONField(null=True)
     ship_category_hp = models.IntegerField(default=0, blank=False, null=False)
     ship_category_movement = models.IntegerField(default=0, blank=False, null=False)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -202,7 +202,7 @@ class Ship(models.Model):
     default_ballistic_defense = models.PositiveSmallIntegerField(default=0)
     default_thermal_defense = models.PositiveSmallIntegerField(default=0)
     default_missile_defense = models.PositiveSmallIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -222,7 +222,7 @@ class ShipModuleLimitation(models.Model):
     research_module_limitation = models.PositiveSmallIntegerField(default=1)
     electronic_warfare_module_limitation = models.PositiveSmallIntegerField(default=1)
     colonization_module_limitation = models.PositiveSmallIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -231,7 +231,7 @@ class Archetype(models.Model):
     description = models.TextField(max_length=2500, blank=True)
     data = models.JSONField(null=True)
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE, related_name="default_ship", null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -267,8 +267,8 @@ class Player(models.Model):
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
     coordinates = models.JSONField()
-    last_time_warpzone = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    last_time_warpzone = models.DateTimeField(default=timezone.now, auto_now=False)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -290,7 +290,7 @@ class Skill(models.Model):
         choices=SKILL_CATEGORIES_CHOICES,
         default=SKILL_CATEGORIES_CHOICES[0],
     )
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -299,7 +299,7 @@ class Skill(models.Model):
 class SkillExperience(models.Model):
     level = models.PositiveSmallIntegerField(default=0)
     required_experience = models.PositiveSmallIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -321,7 +321,7 @@ class SkillEffect(models.Model):
     expertise = models.CharField(
         max_length=20, choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0]
     )
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -333,7 +333,7 @@ class Recipe(models.Model):
     description = models.TextField(max_length=2500, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     value_needed = models.FloatField(default=1.0, null=False, blank=False)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -346,7 +346,7 @@ class Research(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     image = models.CharField(max_length=250, null=False, blank=False, default="img.png")
     time_to_complete = models.PositiveIntegerField(default=(60 * 60) * 24)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -368,7 +368,7 @@ class Log(models.Model):
     log_type = models.CharField(
         max_length=20, choices=LOG_TYPE_CHOICES, default=LOG_TYPE_CHOICES[0]
     )
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -400,7 +400,7 @@ class NpcTemplate(models.Model):
     behavior = models.CharField(
         max_length=20, choices=BEHAVIOR_CHOICES, default=BEHAVIOR_CHOICES[0]
     )
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -411,7 +411,7 @@ class NpcTemplateSkill(models.Model):
     npc_template = models.ForeignKey(NpcTemplate, on_delete=models.SET_NULL, null=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
     level = models.PositiveSmallIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -424,7 +424,7 @@ class NpcTemplateResource(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
     can_be_randomized = models.BooleanField(default=False)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -462,7 +462,7 @@ class Npc(models.Model):
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -473,7 +473,7 @@ class NpcResource(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, default=1)
     npc = models.ForeignKey(Npc, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -507,7 +507,7 @@ class Module(models.Model):
         default=MODULE_TYPE_CHOICES[0][0],
     )
     effect = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -517,7 +517,7 @@ class Module(models.Model):
 class ArchetypeModule(models.Model):
     archetype = models.ForeignKey(Archetype, on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -527,7 +527,7 @@ class ArchetypeModule(models.Model):
 class PlayerLog(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     log = models.ForeignKey(Log, on_delete=models.CASCADE)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -538,7 +538,7 @@ class PlayerResource(models.Model):
     source = models.ForeignKey(Player, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -548,7 +548,7 @@ class PlayerResource(models.Model):
 class PlayerRecipe(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -560,7 +560,7 @@ class PlayerSkill(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, default=1)
     level = models.PositiveIntegerField(default=0)
     progress = models.FloatField(default=0.0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -570,7 +570,7 @@ class PlayerSkill(models.Model):
 class PlayerResearch(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     research = models.ForeignKey(Research, on_delete=models.CASCADE)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -603,7 +603,7 @@ class PlayerShip(models.Model):
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -614,7 +614,7 @@ class PlayerShipResource(models.Model):
     source = models.ForeignKey(PlayerShip, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -624,7 +624,7 @@ class PlayerShipResource(models.Model):
 class PlayerShipModule(models.Model):
     player_ship = models.ForeignKey(PlayerShip, related_name="player_ship_module", on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -634,7 +634,7 @@ class PlayerShipModule(models.Model):
 class FactionLeader(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -650,7 +650,7 @@ class FactionResource(models.Model):
         Sector, on_delete=models.CASCADE, related_name="faction_sector"
     )
     quantity = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -663,7 +663,7 @@ class FactionRank(models.Model):
     description = models.TextField(max_length=2500, blank=True)
     responsibility_level = models.PositiveSmallIntegerField(default=0)
     faction_xp_required = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -681,7 +681,7 @@ class PlanetResource(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
     coordinates = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -697,7 +697,7 @@ class AsteroidResource(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     data = models.JSONField(null=True)
     coordinates = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -712,7 +712,7 @@ class StationResource(models.Model):
     )
     data = models.JSONField(null=True)
     coordinates = models.JSONField(null=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -723,7 +723,7 @@ class PrivateMessage(models.Model):
     subject = models.CharField(max_length=120)
     body = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     deleted_at = models.DateTimeField("delete date", null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -738,14 +738,14 @@ class PrivateMessageRecipients(models.Model):
     message = models.ForeignKey(PrivateMessage, on_delete=models.CASCADE, related_name='received_messages') 
     is_read = models.BooleanField(default=False)
     is_author = models.BooleanField(default=False)
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     deleted_at = models.DateTimeField("delete date", null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     
 class Group(models.Model):
     creator = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="created_groups")
     name = models.CharField(max_length=50, default="Unnamed Group")
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -755,48 +755,65 @@ class Group(models.Model):
 class PlayerGroup(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="group_memberships")
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="members")
-    created_at = models.DateTimeField("creation date", default=localtime)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.player.name} in {self.group.name}"
-
-
+    
+    
 class Message(models.Model):
+    """Message unique avec canal intégré"""
+    CHANNEL_CHOICES = (
+        ("SECTOR", "sector"),
+        ("FACTION", "faction"),
+        ("GROUP", "group"),
+    )
+    
     author = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="messages")
     content = models.TextField(max_length=2000)
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
+    channel = models.CharField(max_length=10, choices=CHANNEL_CHOICES, default="SECTOR")
+    
+    # Relations selon le canal (nullable car dépend du type)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=True, related_name="sector_messages")
+    faction = models.ForeignKey(Faction, on_delete=models.CASCADE, null=True, related_name="faction_messages")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name="group_messages")
+    
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['channel', 'sector', '-created_at']),
+            models.Index(fields=['channel', 'faction', '-created_at']),
+            models.Index(fields=['channel', 'group', '-created_at']),
+        ]
 
     def __str__(self):
-        return f"Message by {self.author.name}: {self.content[:30]}..."
+        return f"{self.channel} message by {self.author.name}: {self.content[:30]}..."
 
 
-class FactionMessage(models.Model):
-    faction = models.ForeignKey(Faction, on_delete=models.CASCADE, related_name="faction_messages")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="faction_recipients")
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
+class MessageReadStatus(models.Model):
+    """Table de tracking de lecture par joueur"""
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="message_read_statuses")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="read_by")
+    is_read = models.BooleanField(default=False)
+    read_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
-    def __str__(self):
-        return f"Faction {self.faction.name} message by {self.message.author.name}"
-
-
-class GroupMessage(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_messages")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="group_recipients")
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Group {self.group.name} message by {self.message.author.name}"
-
-
-class SectorMessage(models.Model):
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="sector_messages")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="sector_recipients")
-    created_at = models.DateTimeField("creation date", default=localtime)
-    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        unique_together = ('player', 'message')
+        indexes = [
+            models.Index(fields=['player', 'is_read']),
+            models.Index(fields=['message', 'is_read']),
+        ]
 
     def __str__(self):
-        return f"Sector {self.sector.name} message by {self.message.author.name}"
+        return f"{self.player.name} - Message {self.message.id} - Read: {self.is_read}"
+    
+    def mark_as_read(self):
+        """Marque le message comme lu"""
+        if not self.is_read:
+            self.is_read = True
+            self.read_at = timezone.now()
+            self.save(update_fields=['is_read', 'read_at'])

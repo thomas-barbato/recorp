@@ -20,9 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentChannel = "sector";
     let altColor = false;
     let messageIndex = 0;
+    let isModalOpen = false; // ✅ Tracker si le modal est ouvert
+    let unreadCounts = { sector: 0, faction: 0, group: 0 }; // ✅ Compteur de messages non lus
 
     // === OUVERTURE / FERMETURE MODAL ===
     function openModal() {
+        isModalOpen = true; // ✅
         chatModal.classList.remove("hidden");
         setTimeout(() => {
             chatContent.classList.remove("scale-90", "opacity-0");
@@ -31,9 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 50);
         document.body.style.overflow = "hidden";
         loadChatMessages(currentChannel).then(() => forceScrollToBottom());
+        
+        // ✅ Marquer les messages comme lus et retirer les notifications
+        markChannelAsRead(currentChannel);
     }
 
     function closeModal() {
+        isModalOpen = false; // ✅
         chatContent.classList.add("scale-90", "opacity-0");
         setTimeout(() => {
             chatModal.classList.add("hidden");
@@ -48,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === chatModal) closeModal();
     });
 
-    // === CHANGEMENT D’ONGLET ===
+    // === CHANGEMENT D'ONGLET ===
     function setTab(tab) {
         currentChannel = tab;
 
@@ -73,6 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // charger l'historique du canal sélectionné
         loadChatMessages(tab);
+        
+        // ✅ Marquer le canal comme lu
+        markChannelAsRead(tab);
     }
 
     if (chatTabSector) chatTabSector.addEventListener("click", () => setTab("sector"));
@@ -97,10 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         container.innerHTML = "";
         messageIndex = 0;
-        // reset altColor pour cohérence visuelle
         altColor = false;
         messages.forEach(m => appendMessage({ ...m, channel }));
-        // scroll après rendu
         if (channel === currentChannel) forceScrollToBottom();
     }
 
@@ -126,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         forceScrollToBottom();
     }
 
-    // simple helper pour éviter injection si messages non filtrés côté serveur
     function escapeHtml(str) {
         if (!str) return '';
         return String(str)
@@ -159,29 +166,122 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ✅ === SYSTÈME DE NOTIFICATION ===
+    function markChannelAsRead(channel) {
+        unreadCounts[channel] = 0;
+        updateNotificationBadge();
+        updateTabBadge(channel);
+        
+        // Retirer l'animation de secousse
+        removeShakeAnimation();
+    }
+
+    function incrementUnreadCount(channel) {
+        unreadCounts[channel]++;
+        updateNotificationBadge();
+        updateTabBadge(channel);
+        
+        // Ajouter l'animation de secousse si modal fermé
+        if (!isModalOpen) {
+            addShakeAnimation();
+        }
+    }
+
+    function updateNotificationBadge() {
+        const totalUnread = Object.values(unreadCounts).reduce((a, b) => a + b, 0);
+        
+        // Badge sur le bouton principal
+        updateBadgeElement(chatOpenBtn, totalUnread);
+        
+        // Badge sur le bouton mobile
+        updateBadgeElement(chatOpenBtnMobile, totalUnread);
+    }
+
+    function updateBadgeElement(button, count) {
+        if (!button) return;
+        
+        let badge = button.querySelector('.chat-badge');
+        
+        if (count > 0) {
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'chat-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold';
+                button.style.position = 'relative';
+                button.appendChild(badge);
+            }
+            badge.textContent = count > 99 ? '99+' : count;
+        } else if (badge) {
+            badge.remove();
+        }
+    }
+
+    function updateTabBadge(channel) {
+        const tab = document.getElementById(`tab-${channel}`);
+        if (!tab) return;
+        
+        let badge = tab.querySelector('.tab-badge');
+        const count = unreadCounts[channel];
+        
+        if (count > 0 && channel !== currentChannel) {
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'tab-badge ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold';
+                tab.appendChild(badge);
+            }
+            badge.textContent = count;
+            
+            // Animation de pulsation sur l'onglet
+            tab.classList.add("holo-pulse");
+        } else if (badge) {
+            badge.remove();
+            tab.classList.remove("holo-pulse");
+        }
+    }
+
+    function addShakeAnimation() {
+        // Animation sur bouton desktop
+        if (chatOpenBtn && !chatOpenBtn.classList.contains('chat-shake')) {
+            chatOpenBtn.classList.add('chat-shake');
+        }
+        
+        // Animation sur bouton mobile
+        if (chatOpenBtnMobile && !chatOpenBtnMobile.classList.contains('chat-shake')) {
+            chatOpenBtnMobile.classList.add('chat-shake');
+        }
+    }
+
+    function removeShakeAnimation() {
+        if (chatOpenBtn) {
+            chatOpenBtn.classList.remove('chat-shake');
+        }
+        if (chatOpenBtnMobile) {
+            chatOpenBtnMobile.classList.remove('chat-shake');
+        }
+    }
+
     // === RÉCEPTION DES MESSAGES VIA CONSUMER ===
     window.handleChatMessage = function (data) {
-        // data doit contenir channel (ou channel_type)
         const channel = data.channel_type || data.channel || "sector";
         appendMessage({ ...data, channel });
 
-        // si message pour autre onglet, pulser l'onglet
+        // ✅ Si le message n'est pas pour le canal actif ou modal fermé
+        if (channel !== currentChannel || !isModalOpen) {
+            incrementUnreadCount(channel);
+        }
+
+        // Si message pour autre onglet, pulser l'onglet
         if (channel !== currentChannel) {
             const tabEl = document.getElementById(`tab-${channel}`);
-            if (tabEl) {
+            if (tabEl && !tabEl.classList.contains("holo-pulse")) {
                 tabEl.classList.add("holo-pulse");
-                setTimeout(() => tabEl.classList.remove("holo-pulse"), 5000);
             }
         }
     };
 
-    // Scroll seulement si l'utilisateur est déjà en bas (petite marge)
     function maybeScrollToBottom(container) {
         if (!container) return;
         const distanceFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
-        // seuil : 100px -> si l'utilisateur est proche du bas, on scroll
         if (distanceFromBottom < 100) {
-            // scroll lisse (safari/edge ok)
             try {
                 container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
             } catch (e) {
@@ -193,16 +293,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function forceScrollToBottom() {
         const container = document.getElementById("chat-messages");
         if (!container) return;
-        // Scroll immédiatement à la fin
         container.scrollTop = container.scrollHeight;
-
-        // Puis forcer un 2e scroll après le rendu du DOM (sécurise sur Chrome/Safari)
         requestAnimationFrame(() => {
             container.scrollTop = container.scrollHeight;
         });
     }
 
-    // Ajuste la position quand le clavier mobile s'ouvre (évite les messages cachés)
     function handleKeyboardResize(container) {
         if (!container) return;
         if (/Mobi|Android/i.test(navigator.userAgent)) {
@@ -216,6 +312,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Exposer appendMessage globalement pour que d'autres modules puissent l'appeler
     window.appendMessage = appendMessage;
 });

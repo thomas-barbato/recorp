@@ -52,10 +52,9 @@ from core.models import (
     Module,
     PrivateMessage,
     PrivateMessageRecipients,
-    SectorMessage,
-    FactionMessage,
-    GroupMessage,
-    PlayerGroup
+    PlayerGroup,
+    Message,
+    MessageReadStatus
 
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
@@ -757,24 +756,22 @@ def search_players(request):
 def get_chat_messages(request, channel_type):
     player = Player.objects.select_related("faction", "sector").get(user=request.user)
     messages_data = []
-    print(player.last_time_warpzone)
     cutoff_date = player.last_time_warpzone
+    print(cutoff_date)
 
     if channel_type == "sector":
-        messages = SectorMessage.objects.filter(
+        messages = Message.objects.filter(
             sector=player.sector,
-            message__created_at__gte=cutoff_date
-        ).order_by("-id")[:100]
-        print([e for e in messages.created_at])
-
+            created_at__gte=cutoff_date
+        ).select_related("message", "author", "author__faction").order_by("-id")[:100]
     elif channel_type == "faction":
-        messages = FactionMessage.objects.filter(
+        messages = Message.objects.filter(
             faction=player.faction,
         ).order_by("-id")[:100]
 
     elif channel_type == "group":
         groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
-        messages = GroupMessage.objects.filter(
+        messages = Message.objects.filter(
             group_id__in=groups,
         ).order_by("-id")
     else:

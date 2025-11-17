@@ -72,9 +72,6 @@ from core.models import (
     Group,
     PlayerGroup,
     Message,
-    FactionMessage,
-    GroupMessage,
-    SectorMessage
 )
 
 
@@ -1406,18 +1403,3 @@ class PlayerGroupAdmin(admin.ModelAdmin):
 @admin.register(Message, site=admin_site)
 class MessageAdmin(admin.ModelAdmin):
     model = Message
-
-
-@admin.register(FactionMessage, site=admin_site)
-class FactionMessageAdmin(admin.ModelAdmin):
-    model = FactionMessage
-
-
-@admin.register(GroupMessage, site=admin_site)
-class GroupMessageAdmin(admin.ModelAdmin):
-    model = GroupMessage
-
-
-@admin.register(SectorMessage, site=admin_site)
-class SectorMessageAdmin(admin.ModelAdmin):
-    model = SectorMessage

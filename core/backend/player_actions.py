@@ -37,11 +37,9 @@ from core.models import (
     PrivateMessage,
     PrivateMessageRecipients,
     Message, 
-    FactionMessage, 
-    SectorMessage, 
-    GroupMessage,
     PlayerGroup,
-    Group
+    Group,
+    MessageReadStatus
 )
 
 
@@ -748,7 +746,7 @@ class PlayerAction:
     
     def create_chat_message(self, content: str, channel: str):
         """
-        Crée et associe un message de chat selon le type de canal.
+        Crée un message de chat selon le type de canal.
         Retourne (message_obj, destinataires)
         """
         try:
@@ -756,46 +754,61 @@ class PlayerAction:
             author_id = player_data.values_list('id', flat=True)[0]
             faction_id = player_data.values_list('faction_id', flat=True)[0]
             sector_id = player_data.values_list('sector_id', flat=True)[0]
-
-            # Créer le message principal
-            msg = Message(
-                content=content,
-                author_id=author_id,
-            )
             
-            msg.save()
+            msg_data = {
+                "content": content,
+                "author_id": author_id,
+                "channel": channel.upper(),  # SECTOR, FACTION, GROUP
+            }
 
             recipients = []
+
             # === CANAL SECTEUR ===
             if channel == "sector":
-                SectorMessage.objects.create(
-                    sector_id=sector_id,
-                    message_id=msg.id
-                )
+                msg_data["sector_id"] = sector_id
                 recipients = GetDataFromDB.get_players_in_sector(sector_id, author_id)
 
             # === CANAL FACTION ===
             elif channel == "faction":
-                FactionMessage.objects.create(
-                    faction_id=faction_id,
-                    message_id=msg.id
-                )
+                msg_data["faction_id"] = faction_id
                 recipients = GetDataFromDB.get_players_in_faction(faction_id, author_id)
 
             # === CANAL GROUPE ===
             elif channel == "group":
                 group = PlayerGroup.objects.filter(player_id=author_id).first()
                 if not group:
-                    return msg, []  # joueur sans groupe
-                GroupMessage.objects.create(
-                    group_id=group.group_id,
-                    message_id=msg.id
-                )
+                    return None, []  # joueur sans groupe
+                msg_data["group_id"] = group.group_id
                 recipients = GetDataFromDB.get_players_in_group(group.group_id, author_id)
 
             else:
                 logger.warning(f"Canal de chat inconnu: {channel}")
                 return None, []
+            
+            msg = Message.objects.create(**msg_data)
+            
+            read_statuses = []
+            for recipient in recipients:
+                read_statuses.append(
+                    MessageReadStatus(
+                        player_id=recipient['id'],
+                        message_id=msg.id,
+                        is_read=False
+                    )
+                )
+            
+            # Ajouter l'auteur (déjà lu)
+            read_statuses.append(
+                MessageReadStatus(
+                    player_id=author_id,
+                    message_id=msg.id,
+                    is_read=True,
+                    read_at=timezone.now()
+                )
+            )
+            
+            # Bulk create pour optimisation
+            MessageReadStatus.objects.bulk_create(read_statuses)
 
             return msg, recipients
 
