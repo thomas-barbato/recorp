@@ -56,5 +56,7 @@ urlpatterns = [
     path("messages/search/", core_views.search_messages, name="search_messages"),
     path("messages/search_players/", core_views.search_players, name="search_players"),
     path("chat/get/<str:channel_type>/", core_views.get_chat_messages, name="get_chat_messages"),
+    path('chat/mark-read/<str:channel_type>/', core_views.mark_messages_as_read, name='mark_messages_as_read'),
+    path('chat/unread-counts/', core_views.get_unread_counts, name='get_unread_counts'),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]

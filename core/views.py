@@ -756,35 +756,142 @@ def search_players(request):
 def get_chat_messages(request, channel_type):
     player = Player.objects.select_related("faction", "sector").get(user=request.user)
     messages_data = []
+    
+    # Date limite
     cutoff_date = player.last_time_warpzone
-    print(cutoff_date)
+    channel_upper = channel_type.upper()
 
     if channel_type == "sector":
         messages = Message.objects.filter(
+            channel=channel_upper,
             sector=player.sector,
             created_at__gte=cutoff_date
-        ).select_related("message", "author", "author__faction").order_by("-id")[:100]
+        ).select_related("author__faction").order_by("-created_at")[:50]
+
     elif channel_type == "faction":
         messages = Message.objects.filter(
+            channel=channel_upper,
             faction=player.faction,
-        ).order_by("-id")[:100]
+            created_at__gte=cutoff_date
+        ).select_related("author__faction").order_by("-created_at")[:50]
 
     elif channel_type == "group":
         groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
         messages = Message.objects.filter(
+            channel=channel_upper,
             group_id__in=groups,
-        ).order_by("-id")
+            created_at__gte=cutoff_date
+        ).select_related("author__faction").order_by("-created_at")[:50]
     else:
         return JsonResponse({"error": "Invalid chat type"}, status=400)
+    
+    message_ids = [msg.id for msg in messages]
+    read_statuses = MessageReadStatus.objects.filter(
+        player=player,
+        message_id__in=message_ids
+    ).values_list('message_id', flat=True)
+    
+    read_message_ids = set(read_statuses)
 
     for msg in reversed(messages):
-        m = msg.message
         messages_data.append({
-            "author": m.author.name,
-            "faction": m.author.faction.name if m.author.faction else "",
-            "faction_color": GetDataFromDB().get_faction_badge_color_class(m.author.faction.name) if m.author.faction else "",
-            "content": m.content,
-            "timestamp": m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "id": msg.id,
+            "author": msg.author.name,
+            "faction": msg.author.faction.name if msg.author.faction else "",
+            "faction_color": GetDataFromDB().get_faction_badge_color_class(msg.author.faction.name) if msg.author.faction else "",
+            "content": msg.content,
+            "timestamp": msg.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "is_read": msg.id in read_message_ids
         })
 
     return JsonResponse({"messages": messages_data})
+
+
+@login_required
+def mark_messages_as_read(request, channel_type):
+    """Marque tous les messages d'un canal comme lus"""
+    try:
+        player = Player.objects.get(user=request.user)
+        channel_upper = channel_type.upper()
+        cutoff_date = player.last_time_warpzone
+
+        # Récupérer les messages non lus selon le canal
+        if channel_type == "sector":
+            messages = Message.objects.filter(
+                channel=channel_upper,
+                sector=player.sector,
+                created_at__gte=cutoff_date
+            )
+        elif channel_type == "faction":
+            messages = Message.objects.filter(
+                channel=channel_upper,
+                faction=player.faction,
+                created_at__gte=cutoff_date
+            )
+        elif channel_type == "group":
+            groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
+            messages = Message.objects.filter(
+                channel=channel_upper,
+                group_id__in=groups,
+                created_at__gte=cutoff_date
+            )
+        else:
+            return JsonResponse({"error": "Invalid channel"}, status=400)
+        
+        # Marquer comme lus
+        MessageReadStatus.objects.filter(
+            player=player,
+            message__in=messages,
+            is_read=False
+        ).update(is_read=True, read_at=timezone.now())
+
+        return JsonResponse({"success": True})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@login_required
+def get_unread_counts(request):
+    """Retourne le nombre de messages non lus par canal"""
+    try:
+        player = Player.objects.select_related("faction", "sector").get(user=request.user)
+        cutoff_date = player.last_time_warpzone
+
+        unread_counts = {
+            "sector": 0,
+            "faction": 0,
+            "group": 0
+        }
+
+        # Secteur
+        unread_counts["sector"] = MessageReadStatus.objects.filter(
+            player=player,
+            is_read=False,
+            message__channel="SECTOR",
+            message__sector=player.sector,
+            message__created_at__gte=cutoff_date
+        ).count()
+
+        # Faction
+        unread_counts["faction"] = MessageReadStatus.objects.filter(
+            player=player,
+            is_read=False,
+            message__channel="FACTION",
+            message__faction=player.faction,
+            message__created_at__gte=cutoff_date
+        ).count()
+
+        # Groupe
+        groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
+        unread_counts["group"] = MessageReadStatus.objects.filter(
+            player=player,
+            is_read=False,
+            message__channel="GROUP",
+            message__group_id__in=groups,
+            message__created_at__gte=cutoff_date
+        ).count()
+
+        return JsonResponse(unread_counts)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

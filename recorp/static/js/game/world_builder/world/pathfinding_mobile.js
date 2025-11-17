@@ -638,8 +638,6 @@ function mobile_movement_action() {
             move_cost: current_player.player_move_cost,
         };
 
-        console.log(`${moveData.end_y}_${moveData.end_x}, ${moveData.start_id_array}`)
-
         if(moveData.end_y == -1 || moveData.end_x == -1){
             return;
         }

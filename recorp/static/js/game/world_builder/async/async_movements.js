@@ -1,5 +1,4 @@
 function update_player_coord(data) {
-    console.log(data)
     clear_path();
 
     // CORRECTION : Vérification robuste avec sync si nécessaire

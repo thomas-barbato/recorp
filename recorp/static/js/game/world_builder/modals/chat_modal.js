@@ -20,12 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentChannel = "sector";
     let altColor = false;
     let messageIndex = 0;
-    let isModalOpen = false; // ✅ Tracker si le modal est ouvert
-    let unreadCounts = { sector: 0, faction: 0, group: 0 }; // ✅ Compteur de messages non lus
+    let isModalOpen = false;
+    let unreadCounts = { sector: 0, faction: 0, group: 0 };
 
-    // === OUVERTURE / FERMETURE MODAL ===
+    loadUnreadCounts();
+
     function openModal() {
-        isModalOpen = true; // ✅
+        isModalOpen = true;
         chatModal.classList.remove("hidden");
         setTimeout(() => {
             chatContent.classList.remove("scale-90", "opacity-0");
@@ -33,14 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
             forceScrollToBottom(); 
         }, 50);
         document.body.style.overflow = "hidden";
-        loadChatMessages(currentChannel).then(() => forceScrollToBottom());
-        
-        // ✅ Marquer les messages comme lus et retirer les notifications
-        markChannelAsRead(currentChannel);
+        loadChatMessages(currentChannel).then(() => {
+            forceScrollToBottom();
+            markChannelAsRead(currentChannel);
+        });
     }
 
     function closeModal() {
-        isModalOpen = false; // ✅
+        isModalOpen = false;
         chatContent.classList.add("scale-90", "opacity-0");
         setTimeout(() => {
             chatModal.classList.add("hidden");
@@ -55,11 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === chatModal) closeModal();
     });
 
-    // === CHANGEMENT D'ONGLET ===
     function setTab(tab) {
         currentChannel = tab;
 
-        // Changement visuel des onglets
         [chatTabSector, chatTabFaction, chatTabGroup].forEach((b) => {
             if (!b) return;
             b.classList.remove("border-b-2", "border-emerald-400", "text-emerald-400");
@@ -71,17 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
             activeTab.classList.add("border-b-2", "border-emerald-400", "text-emerald-400");
         }
 
-        // Masquer / afficher les bons conteneurs
         Object.keys(chatContainers).forEach(k => {
             const c = chatContainers[k];
             if (!c) return;
             c.classList.toggle('hidden', k !== tab);
         });
 
-        // charger l'historique du canal sélectionné
         loadChatMessages(tab);
-        
-        // ✅ Marquer le canal comme lu
         markChannelAsRead(tab);
     }
 
@@ -89,7 +84,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatTabFaction) chatTabFaction.addEventListener("click", () => setTab("faction"));
     if (chatTabGroup) chatTabGroup.addEventListener("click", () => setTab("group"));
 
-    // === CHARGER LES MESSAGES ===
+    async function loadUnreadCounts() {
+        try {
+            const response = await fetch('/chat/unread-counts/', {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const data = await response.json();
+            
+            unreadCounts = data;
+            updateNotificationBadge();
+            
+            Object.keys(data).forEach(channel => {
+                updateTabBadge(channel);
+            });
+            
+            const totalUnread = Object.values(data).reduce((a, b) => a + b, 0);
+            if (totalUnread > 0 && !isModalOpen) {
+                addShakeAnimation();
+            }
+            
+        } catch (err) {
+            console.error("Erreur chargement compteurs:", err);
+        }
+    }
+
     async function loadChatMessages(channel) {
         const url = `/chat/get/${channel}/`;
         try {
@@ -112,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (channel === currentChannel) forceScrollToBottom();
     }
 
-    function appendMessage({ author, faction, faction_color, content, timestamp, channel }) {
+    function appendMessage({ author, faction, faction_color, content, timestamp, channel, is_read }) {
         const container = chatContainers[channel || currentChannel];
         if (!container) return;
 
@@ -166,14 +184,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ✅ === SYSTÈME DE NOTIFICATION ===
-    function markChannelAsRead(channel) {
-        unreadCounts[channel] = 0;
-        updateNotificationBadge();
-        updateTabBadge(channel);
+    async function markChannelAsRead(channel) {
         
-        // Retirer l'animation de secousse
-        removeShakeAnimation();
+        const url = `/chat/mark-read/${channel}/`
+        try {
+            const response = await fetch(url, {headers: { 'X-Requested-With': 'XMLHttpRequest' },});
+            const data = await response.json();
+            
+            unreadCounts[channel] = 0;
+            updateNotificationBadge();
+            updateTabBadge(channel);
+            removeShakeAnimation();
+            
+        } catch (err) {
+            console.error("Erreur :", err);
+        }
+    }
+
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
     }
 
     function incrementUnreadCount(channel) {
@@ -181,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateNotificationBadge();
         updateTabBadge(channel);
         
-        // Ajouter l'animation de secousse si modal fermé
         if (!isModalOpen) {
             addShakeAnimation();
         }
@@ -189,11 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateNotificationBadge() {
         const totalUnread = Object.values(unreadCounts).reduce((a, b) => a + b, 0);
-        
-        // Badge sur le bouton principal
         updateBadgeElement(chatOpenBtn, totalUnread);
-        
-        // Badge sur le bouton mobile
         updateBadgeElement(chatOpenBtnMobile, totalUnread);
     }
 
@@ -229,8 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 tab.appendChild(badge);
             }
             badge.textContent = count;
-            
-            // Animation de pulsation sur l'onglet
             tab.classList.add("holo-pulse");
         } else if (badge) {
             badge.remove();
@@ -239,37 +261,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addShakeAnimation() {
-        // Animation sur bouton desktop
         if (chatOpenBtn && !chatOpenBtn.classList.contains('chat-shake')) {
             chatOpenBtn.classList.add('chat-shake');
         }
-        
-        // Animation sur bouton mobile
         if (chatOpenBtnMobile && !chatOpenBtnMobile.classList.contains('chat-shake')) {
             chatOpenBtnMobile.classList.add('chat-shake');
         }
     }
 
     function removeShakeAnimation() {
-        if (chatOpenBtn) {
-            chatOpenBtn.classList.remove('chat-shake');
-        }
-        if (chatOpenBtnMobile) {
-            chatOpenBtnMobile.classList.remove('chat-shake');
-        }
+        if (chatOpenBtn) chatOpenBtn.classList.remove('chat-shake');
+        if (chatOpenBtnMobile) chatOpenBtnMobile.classList.remove('chat-shake');
     }
 
-    // === RÉCEPTION DES MESSAGES VIA CONSUMER ===
+    // === RÉCEPTION DES MESSAGES VIA WEBSOCKET ===
     window.handleChatMessage = function (data) {
         const channel = data.channel_type || data.channel || "sector";
         appendMessage({ ...data, channel });
 
-        // ✅ Si le message n'est pas pour le canal actif ou modal fermé
         if (channel !== currentChannel || !isModalOpen) {
             incrementUnreadCount(channel);
         }
 
-        // Si message pour autre onglet, pulser l'onglet
         if (channel !== currentChannel) {
             const tabEl = document.getElementById(`tab-${channel}`);
             if (tabEl && !tabEl.classList.contains("holo-pulse")) {
@@ -277,18 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-
-    function maybeScrollToBottom(container) {
-        if (!container) return;
-        const distanceFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
-        if (distanceFromBottom < 100) {
-            try {
-                container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-            } catch (e) {
-                container.scrollTop = container.scrollHeight;
-            }
-        }
-    }
 
     function forceScrollToBottom() {
         const container = document.getElementById("chat-messages");
@@ -299,18 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function handleKeyboardResize(container) {
-        if (!container) return;
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            let originalHeight = window.innerHeight;
-            window.addEventListener('resize', () => {
-                const isKeyboardOpen = window.innerHeight < originalHeight * 0.85;
-                if (isKeyboardOpen) {
-                    setTimeout(() => forceScrollToBottom(), 120);
-                }
-            });
-        }
-    }
-
     window.appendMessage = appendMessage;
+    setInterval(loadUnreadCounts, 30000);
 });
