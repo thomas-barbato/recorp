@@ -1,0 +1,65 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 20px auto;">
+    <h1>Envoyer une annonce</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label><strong>Destinataires :</strong></label><br>
+            <select name="recipient_type" id="recipient-type" style="padding: 8px; width: 100%;">
+                <option value="all">Tous les joueurs</option>
+                <option value="faction">Par faction</option>
+            </select>
+        </div>
+        
+        <div id="faction-selector" style="display: none; margin-bottom: 20px;">
+            <label><strong>Faction :</strong></label><br>
+            <select name="faction_id" style="padding: 8px; width: 100%;">
+                {% for faction in factions %}
+                <option value="{{ faction.id }}">{{ faction.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label><strong>Priorité :</strong></label><br>
+            <select name="priority" style="padding: 8px; width: 100%;">
+                {% for value, label in priorities %}
+                <option value="{{ value }}" {% if value == 'HIGH' %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label><strong>Sujet :</strong></label><br>
+            <input type="text" name="subject" required style="width: 100%; padding: 8px; font-size: 14px;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label><strong>Message :</strong></label><br>
+            <textarea name="body" rows="10" required style="width: 100%; padding: 8px; font-size: 14px;"></textarea>
+        </div>
+        
+        <div>
+            <button type="submit" style="background: #417690; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 14px; font-weight: bold;">
+                Envoyer l'annonce
+            </button>
+            <a href="{% url 'admin:core_privatemessage_changelist' %}" style="margin-left: 10px; padding: 10px 20px; text-decoration: none;">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('recipient-type').addEventListener('change', function() {
+    const factionSelector = document.getElementById('faction-selector');
+    factionSelector.style.display = this.value === 'faction' ? 'block' : 'none';
+});
+</script>
+{% endblock %}

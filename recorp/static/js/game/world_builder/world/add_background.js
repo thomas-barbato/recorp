@@ -1,5 +1,6 @@
 function add_background(data) {
-    const bgUrl = `/static/img/background/${data.image}/0.gif`;
+    const bgUrl = `/static/img/background/${data.image}/0.webp`;
+    console.log(bgUrl)
     
     setupBackgroundTiles(bgUrl);
     setupCurrentPlayer();

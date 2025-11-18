@@ -14,6 +14,11 @@ urlpatterns = [
         name="play_view",
     ),
     path(
+        "canvas_test/",
+        core_views.DisplayGameCanvasView.as_view(template_name="play_canvas.html"),
+        name="play_canvas_view",
+    ),
+    path(
         "play/tutorial",
         core_views.DisplayTutorialView.as_view(template_name="tutorial.html"),
         name="tutorial_view",
@@ -51,10 +56,12 @@ urlpatterns = [
     path('play/session-check', core_views.session_check, name='session_check'),
     
     path("messages/", core_views.private_mail_modal, name="private_mail_modal"),
-    path("messages/get/<str:pk>/", core_views.get_message, name="get_message"),
-    path("messages/delete/", core_views.delete_message, name="delete_message"),
-    path("messages/search/", core_views.search_messages, name="search_messages"),
-    path("messages/search_players/", core_views.search_players, name="search_players"),
+    path("messages/get/<str:pk>/", core_views.get_private_mail, name="get_message"),
+    path("messages/delete/", core_views.delete_private_mail, name="delete_message"),
+    path("messages/search/", core_views.search_private_mail, name="search_messages"),
+    path("messages/search_players/", core_views.search_players_for_private_mail, name="search_players"),
+    path('messages/unread-count/', core_views.get_unread_private_mail_count, name='get_unread_private_mail_count'),
+    path('messages/mark-read/<int:message_id>/', core_views.mark_private_mail_as_read, name='mark_private_mail_as_read'),
     path("chat/get/<str:channel_type>/", core_views.get_chat_messages, name="get_chat_messages"),
     path('chat/mark-read/<str:channel_type>/', core_views.mark_messages_as_read, name='mark_messages_as_read'),
     path('chat/unread-counts/', core_views.get_unread_counts, name='get_unread_counts'),

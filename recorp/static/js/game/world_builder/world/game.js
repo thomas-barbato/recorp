@@ -2,8 +2,8 @@
 // Configuration et variables globales
 const map_informations = JSON.parse(document.getElementById('script_map_informations').textContent);
 const current_player_id = JSON.parse(document.getElementById('script_current_player_id').textContent);
-let currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id);
-let otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id);
+let currentPlayer = map_informations.pc.find(p => p.user.player === current_player_id) || map_informations.pc;
+let otherPlayers = map_informations.pc.filter(p => p.user.player !== current_player_id) || [];
 let foregroundElement = map_informations.sector_element || [];
 let npcs = map_informations.npc || [];
 let observable_zone = [];

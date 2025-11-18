@@ -3,6 +3,11 @@ import re
 import json
 import ast
 import random
+from django.contrib import admin
+from django.shortcuts import render, redirect
+from django.urls import path
+from django.contrib import messages
+from core.backend.player_actions import send_admin_announcement
 from pprint import pprint
 from django.contrib import admin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -87,6 +92,12 @@ class CustomAdminSite(admin.AdminSite):
                 "app_label": "my_test_app",
                 # "app_url": "/admin/test_view",
                 "models": [
+                    {
+                        "name": "send announcement message",
+                        "object_name": "send announcement message",
+                        "admin_url": "/admin/send_announcement",
+                        "view_only": True,
+                    },
                     {
                         "name": "set xp progress",
                         "object_name": "set xp value progression per level",
@@ -1380,16 +1391,6 @@ class PlayerShipModuleAdmin(admin.ModelAdmin):
     model = PlayerShipModule
 
 
-@admin.register(PrivateMessage, site=admin_site)
-class PrivateMessageAdmin(admin.ModelAdmin):
-    model = PrivateMessage
-
-
-@admin.register(PrivateMessageRecipients, site=admin_site)
-class PrivateMessageRecipientsAdmin(admin.ModelAdmin):
-    model = PrivateMessageRecipients
-
-
 @admin.register(Group, site=admin_site)
 class GroupAdmin(admin.ModelAdmin):
     model = Group
@@ -1403,3 +1404,91 @@ class PlayerGroupAdmin(admin.ModelAdmin):
 @admin.register(Message, site=admin_site)
 class MessageAdmin(admin.ModelAdmin):
     model = Message
+    
+@admin.register(PrivateMessage, site=admin_site)
+class PrivateMessageAdmin(admin.ModelAdmin):
+    list_display = ('subject', 'sender', 'priority', 'timestamp', 'recipient_count')
+    list_filter = ('priority', 'timestamp')
+    search_fields = ('subject', 'body', 'sender__name')
+    readonly_fields = ('timestamp', 'created_at', 'updated_at')
+    
+    def recipient_count(self, obj):
+        """Affiche le nombre de destinataires"""
+        return obj.received_messages.count()
+    recipient_count.short_description = 'Destinataires'
+    
+    def get_urls(self):
+        """Ajoute une URL custom pour envoyer des annonces"""
+        urls = super().get_urls()
+        custom_urls = [
+            path('send-announcement/', 
+                self.admin_site.admin_view(self.send_announcement_view),
+                name='send-announcement'),
+        ]
+        return custom_urls + urls
+    
+    def send_announcement_view(self, request):
+        """Vue pour envoyer une annonce à tous les joueurs"""
+        if request.method == 'POST':
+            subject = request.POST.get('subject')
+            body = request.POST.get('body')
+            priority = request.POST.get('priority', 'HIGH')
+            recipient_type = request.POST.get('recipient_type', 'all')
+            
+            if not subject or not body:
+                messages.error(request, 'Sujet et corps sont obligatoires')
+                return render(request, 'admin/send_announcement.html', {
+                    'title': 'Envoyer une annonce',
+                    'priorities': PrivateMessage.PRIORITY_CHOICES,
+                })
+            
+            try:
+                # Déterminer les destinataires
+                recipient_ids = None
+                if recipient_type == 'all':
+                    recipient_ids = None  # Tous les joueurs
+                elif recipient_type == 'faction':
+                    faction_id = request.POST.get('faction_id')
+                    if faction_id:
+                        recipient_ids = list(
+                            Player.objects.filter(faction_id=faction_id)
+                            .values_list('id', flat=True)
+                        )
+                
+                # Envoyer l'annonce
+                message = send_admin_announcement(
+                    admin_user_id=request.user.id,
+                    subject=subject,
+                    body=body,
+                    recipient_ids=recipient_ids,
+                    priority=priority
+                )
+                
+                recipient_count = message.received_messages.count()
+                messages.success(
+                    request, 
+                    f'Annonce "{subject}" envoyée à {recipient_count} joueurs'
+                )
+                return redirect('admin:core_privatemessage_changelist')
+                
+            except Exception as e:
+                messages.error(request, f'Erreur: {str(e)}')
+        
+        # GET request - afficher le formulaire
+        from core.models import Faction
+        return render(request, 'admin/send_announcement.html', {
+            'title': 'Envoyer une annonce',
+            'priorities': PrivateMessage.PRIORITY_CHOICES,
+            'factions': Faction.objects.all(),
+        })
+    
+    # Ajouter un bouton dans la liste des messages
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_announcement_button'] = True
+        return super().changelist_view(request, extra_context)
+    
+
+@admin.register(PrivateMessageRecipients, site=admin_site)
+class PrivateMessageRecipientsAdmin(admin.ModelAdmin):
+    model = PrivateMessageRecipients

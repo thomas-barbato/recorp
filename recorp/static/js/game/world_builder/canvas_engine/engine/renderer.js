@@ -1,0 +1,93 @@
+// engine/renderer.js
+// Pipeline de rendu. Instancie les renderers de chaque couche.
+// fournit reloadMapData(newRaw) pour appliquer un sync serveur.
+
+import BackgroundRenderer from "../renderers/background_renderer.js";
+import ForegroundRenderer from "../renderers/foreground_renderer.js";
+import ActorsRenderer from "../renderers/actors_renderer.js";
+import UIRenderer from "../renderers/ui_renderer.js";
+
+
+export default class Renderer {
+    constructor({canvases, camera, spriteManager, map}) {
+        this.canvases = canvases;
+        this.camera = camera;
+        this.spriteManager = spriteManager;
+        this.map = map;
+
+        this.bg = new BackgroundRenderer(canvases.bg.ctx, camera, spriteManager, map);
+        this.fg = new ForegroundRenderer(canvases.fg.ctx, camera, spriteManager, map);
+        this.actors = new ActorsRenderer(canvases.actors.ctx, camera, spriteManager, map);
+        this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map);
+
+        this._dirty = true;
+    }
+
+    requestRedraw() { this._dirty = true; }
+
+    // render appelé par la loop (delta en ms)
+    render(delta) {
+        // efface canvas (ui aussi)
+        const { bg, fg, actors, ui } = this.canvases;
+        [bg, fg, actors, ui].forEach(c => {
+        c.ctx.clearRect(0, 0, c.el.width, c.el.height);
+        });
+
+        // dessine couches dans l'ordre
+        this.bg.render();
+        this.fg.render();
+        this.actors.render(delta);
+        this.ui.render();
+        this._dirty = false;
+    }
+
+    updateGridCoordinatesUI(camera, tileSize) {
+        const contX = document.getElementById("ui-coordinates-x");
+        const contY = document.getElementById("ui-coordinates-y");
+
+        contX.innerHTML = "";
+        contY.innerHTML = "";
+
+        //
+        // --- AXE X (haut) ---
+        //
+
+        // 2) Ajoute les coordonnées X
+        for (let i = 0; i < camera.visibleTilesX; i++) {
+            const worldX = camera.worldX + i;
+
+            const div = document.createElement("div");
+            div.className =
+                "text-center text-emerald-300 font-orbitron font-semibold " +
+                "border border-emerald-400/20 bg-zinc-800/50 " +
+                "w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm " +
+                "hover:bg-emerald-500/10 transition-all duration-200";
+
+            div.innerText = worldX;
+            contX.appendChild(div);
+        }
+
+        //
+        // --- AXE Y (gauche) ---
+        //
+        for (let i = 0; i < camera.visibleTilesY; i++) {
+            const worldY = camera.worldY + i;
+
+            const div = document.createElement("div");
+            div.className =
+                "text-center text-emerald-300 font-orbitron font-semibold " +
+                "border border-emerald-400/20 bg-zinc-800/50 " +
+                "w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm " +
+                "hover:bg-emerald-500/10 transition-all duration-200";
+
+            div.innerText = worldY;
+            contY.appendChild(div);
+        }
+    }
+
+    // appelé par bootstrap quand un sync serveur ouvre de nouvelles données
+    reloadMapData(newRaw) {
+        this.map.raw = newRaw;
+        this.map.prepare().then(() => this.requestRedraw()).catch(e => console.error('reloadMapData prepare failed', e));
+    }
+}

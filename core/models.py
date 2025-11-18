@@ -719,9 +719,21 @@ class StationResource(models.Model):
         return f"{self.source.name} : {self.resource.name}"
 
 class PrivateMessage(models.Model):
+    PRIORITY_CHOICES = (
+        ('LOW', 'Basse'),
+        ('NORMAL', 'Normale'),
+        ('HIGH', 'Haute'),
+        ('URGENT', 'Urgente'),
+    )
+    
     sender = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='sent_messages')
     subject = models.CharField(max_length=120)
     body = models.TextField()
+    priority = models.CharField(
+        max_length=10, 
+        choices=PRIORITY_CHOICES, 
+        default='LOW'
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField("creation date", default=timezone.now)
     deleted_at = models.DateTimeField("delete date", null=True, blank=True)
@@ -729,9 +741,13 @@ class PrivateMessage(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['priority', '-timestamp']),
+            models.Index(fields=['-timestamp']),
+        ]
 
     def __str__(self):
-        return f"{self.subject} ({self.sender.name})"
+        return f"[{self.priority}] {self.subject} ({self.sender.name})"
     
 class PrivateMessageRecipients(models.Model):
     recipient = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='recipient')

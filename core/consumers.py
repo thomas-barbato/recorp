@@ -691,11 +691,20 @@ class GameConsumer(WebsocketConsumer):
             current_pos = player_action.get_coord()
             end_x = message["end_x"]
             end_y = message["end_y"]
-            claimed_cost = message["move_cost"]
+            
+            # Récuperer la taille du vaisseau
+            # prise en compte pour le cout en déplacement.
+            player_size = player_action.get_player_ship_size()
+            
+            size_x = player_size['ship_id__ship_category_id__size']['x']
+            size_y = player_size['ship_id__ship_category_id__size']['y']
+            
+            size_claimed_cost_bonus = 0 if size_x == 1 and size_y == 1 else 1
+            claimed_cost = message["move_cost"] + size_claimed_cost_bonus
             
             # Vérification rapide: distance Manhattan
             min_distance = abs(end_x - current_pos["x"]) + abs(end_y - current_pos["y"])
-            
+            print(min_distance, claimed_cost)
             if claimed_cost < min_distance:
                 logger.warning(
                     f"Coût < distance min - Joueur {self.player_id}: "

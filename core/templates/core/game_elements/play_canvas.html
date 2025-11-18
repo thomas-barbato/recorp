@@ -1,0 +1,46 @@
+{% extends "generic_template.html" %}
+{% load static %}
+{% load customtags %}
+{% load i18n %}
+
+{% block content %}
+
+{{ description|json_script:"description" }}
+{% include "character-modal.html" %}
+{% include "inventory-modal.html" %}
+{% include "faction-modal.html" %}
+{% include "event-modal.html" %}
+{% include "map-modal.html" %}
+{% include "message-modal.html" %}
+{% include "research-modal.html" %}
+{% include "task-modal.html" %}
+{% include "chat-modal.html" %}
+<!--{% include "display-warp-loading-screen.html" %} -->
+
+<div class="flex flex-col h-screen no-scrollbar" id="main-screen">
+<!-- === NOTIFICATION SYSTEM (MP RECEIVED) === -->
+<div id="mp-notification-container" class="fixed top-2 left-2 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+<div id="connection-error" class="fixed top-50 right-50 z-[9999] flex flex-col gap-3 items-end pointer-events-none"></div>
+{% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    {% include "top-panel.html" %}
+    <header class="flex w-full main-info-container flex-col">
+        {% include "display-info.html" %}
+    </header>
+    <main class="flex main-game-container flex-col w-full h-full">
+        {% include "canvas-test.html" %}
+    </main>
+    {% include "footer.html" %}
+{% else %}
+    <header class="flex w-full flex-col main-info-container gap-2">
+        {% include "top-panel.html" %}
+        {% include "display-info.html" %}
+    </header>
+    <main class="flex main-game-container flex-row w-full h-full flex-row lg:blur-none">
+        {% include "canvas-test.html" %}
+    </main>
+    {% include "footer.html" %}
+{% endif %}
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}

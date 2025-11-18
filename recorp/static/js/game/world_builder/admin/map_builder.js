@@ -382,7 +382,8 @@ class MapElementsManager {
 
         let index_row = 1;
         let index_col = 1;
-        let bg_url = `${CONFIG.BACKGROUND_PATH}${value}/0.gif`;
+        let bg_url = `${CONFIG.BACKGROUND_PATH}${value}/0.webp`;
+        console.log(bg_url)
         CONFIG.SAVED_ELEMENT_ON_MAP.sector.image = value;
 
         document.querySelector("#background").value = value;

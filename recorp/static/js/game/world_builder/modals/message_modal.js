@@ -1,3 +1,8 @@
+let user_is_on_mobile_bool = is_user_is_on_mobile_device();
+let attribute_touch_mouseover = user_is_on_mobile_bool ? 'touchstart' : 'mouseover';
+let attribute_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'onclick';
+let action_listener_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'click';
+
 let modal = document.getElementById('message-modal');
 let content = document.getElementById('mail-modal-content');
 let openBtn = document.getElementById('message-modal-button');
@@ -11,35 +16,102 @@ let newMsgBtn = document.getElementById('new-message-btn');
 
 let currentPage = 1;
 let currentTab = 'received';
-function closeModal() {
+let unreadCount = 0;
+let isModalOpen = false;
 
+// ✅ Charger le compteur au démarrage
+loadUnreadCount();
+
+function closeModal() {
+    isModalOpen = false;
     content.classList.add('scale-90', 'opacity-0');
     setTimeout(() => {
         modal.classList.add('hidden');
-        // clean mail items.
         document.querySelectorAll('.mail-item').forEach(mail => {
             mail.remove();
-        })
+        });
         document.body.style.overflow = '';
     }, 300);
-
 }
 
-// === OPEN / CLOSE MODAL ===
+// === OPEN MODAL ===
 function openModal() {
+    isModalOpen = true;
     modal.classList.remove('hidden');
-    
     document.body.style.overflow = 'hidden';
     setTimeout(() => {
-    content.classList.remove('scale-90', 'opacity-0');
-    content.classList.add('scale-100', 'opacity-100');
+        content.classList.remove('scale-90', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
     }, 50);
     loadMessages();
 }
+
 openBtnMobile.addEventListener(action_listener_touch_click, openModal);
 openBtn.addEventListener(action_listener_touch_click, openModal);
 closeBtn.addEventListener(action_listener_touch_click, closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+// ✅ === CHARGEMENT DU COMPTEUR NON LUS ===
+async function loadUnreadCount() {
+    try {
+        const response = await fetch('/messages/unread-count/', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const data = await response.json();
+        
+        unreadCount = data.unread_count || 0;
+        updateUnreadBadge();
+        
+        // Animation si messages non lus
+        if (unreadCount > 0 && !isModalOpen) {
+            addShakeAnimation();
+        } else {
+            removeShakeAnimation();
+        }
+        
+    } catch (err) {
+        console.error("Erreur chargement compteur messages:", err);
+    }
+}
+
+// ✅ === MISE À JOUR DU BADGE ===
+function updateUnreadBadge() {
+    updateBadgeElement(openBtn, unreadCount);
+    updateBadgeElement(openBtnMobile, unreadCount);
+}
+
+function updateBadgeElement(button, count) {
+    if (!button) return;
+    
+    let badge = button.querySelector('.mail-badge');
+    
+    if (count > 0) {
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'mail-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold';
+            button.style.position = 'relative';
+            button.appendChild(badge);
+        }
+        badge.textContent = count > 99 ? '99+' : count;
+    } else if (badge) {
+        badge.remove();
+    }
+}
+
+// ✅ === ANIMATIONS ===
+function addShakeAnimation() {
+    if (openBtn && !openBtn.classList.contains('mail-shake')) {
+        openBtn.classList.add('mail-shake');
+    }
+    if (openBtnMobile && !openBtnMobile.classList.contains('mail-shake')) {
+        openBtnMobile.classList.add('mail-shake');
+    }
+}
+
+function removeShakeAnimation() {
+    if (openBtn) openBtn.classList.remove('mail-shake');
+    if (openBtnMobile) openBtnMobile.classList.remove('mail-shake');
+}
 
 // === FETCH MESSAGES ===
 async function loadMessages(direction = null) {
@@ -47,16 +119,13 @@ async function loadMessages(direction = null) {
     let response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     let html = await response.text();
 
-    // 🔹 Animation de sortie
     if (direction) {
         mailList.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
         await new Promise(r => setTimeout(r, 250));
     }
 
-    // 🔹 Remplacement du contenu
     mailList.innerHTML = html;
 
-    // 🔹 Animation d’entrée
     if (direction) {
         mailList.classList.remove('slide-out-left', 'slide-out-right');
         mailList.classList.add(direction === 'next' ? 'slide-in-right' : 'slide-in-left');
@@ -67,7 +136,7 @@ async function loadMessages(direction = null) {
     bindPagination();
 }
 
-// === PAGINATION AMÉLIORÉE ===
+// === PAGINATION ===
 function bindPagination() {
     let prev_page = document.getElementById('prev-page');
     let next_page = document.getElementById('next-page');
@@ -89,12 +158,15 @@ function bindPagination() {
     }
 }
 
-
 // === BIND EVENTS ===
 function bindMailEvents() {
     document.querySelectorAll('.mail-item').forEach(item => {
         item.addEventListener('click', async () => {
             let id = item.dataset.id;
+            
+            // ✅ Marquer comme lu avant d'afficher
+            await markMessageAsRead(id);
+            
             let res = await fetch(`/messages/get/${id}/`);
             let data = await res.json();
             showMessage(data);
@@ -102,25 +174,50 @@ function bindMailEvents() {
     });
 
     document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', async e => {
-        e.stopPropagation();
-        let item = e.target.closest('.mail-item');
-        let id = item.dataset.id;
+        btn.addEventListener('click', async e => {
+            e.stopPropagation();
+            let item = e.target.closest('.mail-item');
+            let id = item.dataset.id;
 
-        let data = JSON.stringify({id});
-        let deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
-        if (confirm(gettext("Delete this message?"))) {
-            await fetch(deleteUrl, {
-                method: "POST",
-                headers: { 
-                    "X-CSRFToken": csrf_token 
-                },
-                body: data,
-            });
-            loadMessages();
-        }
+            let data = JSON.stringify({id});
+            let deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
+            if (confirm(gettext("Delete this message?"))) {
+                await fetch(deleteUrl, {
+                    method: "POST",
+                    headers: { 
+                        "X-CSRFToken": csrf_token 
+                    },
+                    body: data,
+                });
+                loadMessages();
+                // ✅ Recharger le compteur après suppression
+                await loadUnreadCount();
+            }
+        });
     });
-    });
+}
+
+// ✅ === MARQUER COMME LU ===
+async function markMessageAsRead(messageId) {
+    try {
+        await fetch(`/messages/mark-read/${messageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCsrfToken()
+            }
+        });
+        
+        // Recharger le compteur
+        await loadUnreadCount();
+        
+    } catch (err) {
+        console.error("Erreur marquage lecture message:", err);
+    }
+}
+
+function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')?.value || csrf_token || '';
 }
 
 // === SHOW SINGLE MESSAGE ===
@@ -143,10 +240,8 @@ function showMessage(data) {
         document.getElementById('reply').classList.add('hidden');
     }
 
-    // Retour à la liste
     document.getElementById('back').addEventListener('click', loadMessages);
 
-    // Répondre
     document.getElementById('reply').addEventListener('click', () => {
         mailList.innerHTML = `
         <div class="p-4 text-emerald-300 space-y-4 animate-fade-in">
@@ -178,11 +273,8 @@ function showMessage(data) {
             </div>
         </div>`;
 
-        // Cancel
-        document.getElementById('cancel-reply')
-            .addEventListener('click', loadMessages);
+        document.getElementById('cancel-reply').addEventListener('click', loadMessages);
 
-        // Send
         document.getElementById('send-reply').addEventListener(action_listener_touch_click, async (e) => {
             let btn = e.target;
             let body = document.getElementById('reply-body').value.trim();
@@ -204,9 +296,9 @@ function showMessage(data) {
 
             try {
                 await async_send_mp(payload);
-                showToast(gettext("Message sent ✔"));
+                showToast(gettext("Message sent ✓"));
             } catch {
-                showToast(gettext("Send failed ❌"), false);
+                showToast(gettext("Send failed ✗"), false);
             } finally {
                 setLoadingState(btn, false);
                 displayMpList();
@@ -224,7 +316,7 @@ searchInput.addEventListener('input', async e => {
     bindMailEvents();
 });
 
-// === DISPLAY MESSAGE LIST AFTER SEND / REPLAY ===
+// === DISPLAY MESSAGE LIST ===
 function displayMpList(){
     tabSent.classList.remove('border-2', 'border-emerald-400');
     newMsgBtn.classList.remove('border-2', 'border-emerald-400');
@@ -240,7 +332,6 @@ tabInbox.addEventListener('click', () => {
     tabInbox.classList.add('border-2', 'border-emerald-400');
     loadMessages();
 });
-
 
 tabSent.addEventListener('click', () => {
     currentTab = 'sent';
@@ -258,7 +349,6 @@ newMsgBtn.addEventListener('click', () => {
 
     mailList.innerHTML = `
         <div id="compose-container" class="p-3 space-y-3 animate-fade-in">
-            <!-- Sélecteur de cible -->
             <div class="flex gap-2 mt-3">
                 <select id="recipient-type"
                     class="bg-zinc-800 border border-emerald-400 text-justify rounded px-2 py-2 text-emerald-300 text-xs">
@@ -296,12 +386,11 @@ newMsgBtn.addEventListener('click', () => {
             </div>
         </div>`;
 
-    bindComposeEvents(); // <--- 🔥 essentiel !
+    bindComposeEvents();
     
     document.getElementById('cancel-new').addEventListener('click', loadMessages);
 
     document.getElementById('send-new').addEventListener(action_listener_touch_click, async (e) => {
-
         let btn = e.target;
         let recipient_type = document.getElementById('recipient-type').value;
         let recipient = document.getElementById('recipient').value.trim();
@@ -314,26 +403,25 @@ newMsgBtn.addEventListener('click', () => {
         }
 
         let payload = JSON.stringify({
-                recipient: recipient,
-                subject: subject,
-                body: body,
-                recipient_type: recipient_type,
-                senderId: currentPlayer.user.player
-            });
+            recipient: recipient,
+            subject: subject,
+            body: body,
+            recipient_type: recipient_type,
+            senderId: currentPlayer.user.player
+        });
             
         setLoadingState(btn, true);
 
         try {
             await async_send_mp(payload);
-            showToast(gettext("Message sent ✔"));
+            showToast(gettext("Message sent ✓"));
         } catch {
-            showToast(gettext("Failed to send ❌"), false);
+            showToast(gettext("Failed to send ✗"), false);
         } finally {
             setLoadingState(btn, false);
             displayMpList();
         }
     });
-
 });
 
 function showToast(message, success = true) {
@@ -353,13 +441,11 @@ function showToast(message, success = true) {
 
     container.appendChild(toast);
 
-    // Animation sortante
     setTimeout(() => {
         toast.classList.add("cyber-exit");
         setTimeout(() => toast.remove(), 400);
     }, 4500);
 }
-
 
 function setLoadingState(button, state) {
     if (state) {
@@ -412,7 +498,6 @@ function bindComposeEvents() {
     });
 
     let searchPlayers = debounce(async () => {
-
         let q = recipientInput.value.trim();
         if(q.length < 2) return clearAutocomplete();
         let res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`)
@@ -451,4 +536,18 @@ function bindComposeEvents() {
     });
 }
 
+// ✅ === NOTIFICATION DEPUIS WEBSOCKET ===
+function showPrivateMessageNotification(note) {
+    // Recharger le compteur quand un nouveau message arrive
+    loadUnreadCount();
+    
+    // Optionnel : afficher un toast
+    showToast(note || gettext("You have received a private message"));
+}
 
+// Exposer globalement
+window.showPrivateMessageNotification = showPrivateMessageNotification;
+
+// ✅ === RAFRAÎCHISSEMENT AUTOMATIQUE ===
+// Recharger le compteur toutes les 30 secondes
+setInterval(loadUnreadCount, 30000);

@@ -10,6 +10,7 @@ from django.core.files import File
 from django.conf import settings
 from PIL import Image
 from pathlib import Path
+from django.db import models
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
@@ -60,7 +61,7 @@ from core.models import (
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
 
 
-# logger = logging.getLogger("django")
+logger = logging.getLogger("django")
 
 
 def is_ajax(request):
@@ -419,11 +420,118 @@ class DisplayTutorialView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "tutorial.html"
-
+    
 class DisplayGameView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "play.html"
+    
+    def get(self, request, *args, **kwargs):
+        player = PlayerAction(self.request.user.id)
+        if player.is_player_exists() is False:
+            url = "create_character"
+            return HttpResponseRedirect(redirect_to=url)
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user_agent = self.request.user_agent
+        player = PlayerAction(self.request.user.id)
+        modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
+        
+        if user_agent.is_pc:
+            map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
+        elif user_agent.is_mobile:
+            map_range = GetDataFromDB.get_resolution_sized_map("is_mobile")
+        elif user_agent.is_tablet:
+            map_range = GetDataFromDB.get_resolution_sized_map("is_tablet")
+
+        context["loop"] = range(10)
+        context["map_size_range"] = {"cols": range(40), "rows": range(40)}
+        
+        sector = Sector.objects.filter(id=player.get_player_sector())
+        sector_name = sector.values_list("name", flat=True)[0]
+
+        if sector.exists():
+            context["skills"] = {
+                "categories": [
+                    "Steering",
+                    "Offensive",
+                    "Defensive",
+                    "Utility",
+                    "Industry",
+                ],
+                "list": [
+                    {
+                        "id": skill['id'],
+                        "skill_name": skill['skill_id__name'],
+                        "level": skill['level'],
+                        "progress": str(skill['progress']).replace(',', '.'),
+                        "cat": skill['skill_id__category'],
+                        "description": skill['skill_id__description'],
+                    } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values(
+                            'id', 
+                            'level', 
+                            'progress', 
+                            'skill_id__name', 
+                            'skill_id__category', 
+                            'skill_id__description'
+                        )
+                ],
+            }
+            
+            data = StoreInCache(
+                f"play_{player.get_player_sector()}", self.request.user
+            ).get_or_set_cache()
+            
+            result_dict = dict()
+            for pc in data["pc"]:
+                pc["user"]["archetype_name"] = _(pc["user"]["archetype_name"])
+
+            data["sector"]["security"]["translated_name"] = _(
+                data["sector"]["security"]["translated_name"]
+            )
+
+            data["sector"]["faction"]["translated_text_faction_level_starter"] = _(
+                "The faction's main planet"
+            )
+
+            result_dict["actions"] = {
+                "translated_action_label_msg": _("Actions available"),
+                "translated_close_msg": _("Close"),
+                "player_is_same_faction": player.get_player_faction()
+                == data["sector"]["faction"]["id"],
+                "translated_scan_msg_str": _(
+                    "In order to display resource you must scan it"
+                ),
+                "translated_statistics_msg_str": _(
+                    "Equip your spaceship with the ‘spaceship probe’ module to access detailed statistics"
+                ),
+                "translated_statistics_msg_label": _("statistics"),
+            }
+            
+            result_dict["sector"] = data["sector"]
+            result_dict["sector_element"] = data["sector_element"]
+            result_dict["pc"] = data["pc"]
+            result_dict["npc"] = data["npc"]
+            result_dict["screen_sized_map"] = map_range
+            context["map_informations"] = result_dict
+            context["current_player_id"] = player.get_player_id()
+            context["module_categories"] = modules_category
+            return context
+        
+        else:
+            
+            error_msg = _("Sector unknown... Contact admin to get more informations")
+            messages.warning(self.request, error_msg)
+            data_to_send = {"form": LoginForm}
+            return redirect("/", data_to_send)
+        
+
+class DisplayGameCanvasView(LoginRequiredMixin, TemplateView):
+    login_url = LOGIN_REDIRECT_URL
+    redirect_field_name = "login_redirect"
+    template_name = "play_canvas.html"
     
     def get(self, request, *args, **kwargs):
         player = PlayerAction(self.request.user.id)
@@ -506,10 +614,11 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 "translated_statistics_msg_label": _("statistics"),
             }
             
-            result_dict["sector"] = data["sector"]
+            result_dict["sector"] = data["sector"]  
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
             result_dict["npc"] = data["npc"]
+            result_dict["room"] = player.get_player_sector()
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             context["current_player_id"] = player.get_player_id()
@@ -633,7 +742,7 @@ def private_mail_modal(request):
 
 
 @login_required
-def get_message(request, pk):
+def get_private_mail(request, pk):
     try:
         player_id = PlayerAction(request.user.id).get_player_id()
         message = PrivateMessage.objects.filter(id=pk, deleted_at__isnull=True)
@@ -691,7 +800,7 @@ def get_message(request, pk):
 
 
 @login_required
-def delete_message(request):
+def delete_private_mail(request):
     if request.method != "POST":
         return HttpResponseBadRequest(_("Invalid method"))
     try:
@@ -723,7 +832,7 @@ def delete_message(request):
 
 
 @login_required
-def search_messages(request):
+def search_private_mail(request):
     query = request.GET.get("q", "")
     results = PrivateMessage.objects.filter(
         recipients=request.user, subject__icontains=query
@@ -732,7 +841,7 @@ def search_messages(request):
 
 
 @login_required
-def search_players(request):
+def search_players_for_private_mail(request):
     """
     Retourne jusqu'à 10 joueurs correspondant à la query.
     Résultat JSON: [{id, name, faction}]
@@ -751,6 +860,53 @@ def search_players(request):
                 "faction": p.faction.name if p.faction else "",
             })
     return JsonResponse({"results": results})
+
+@login_required
+def get_unread_private_mail_count(request):
+    """Retourne le nombre de messages non lus"""
+    try:
+        player = Player.objects.get(user=request.user)
+        
+        unread_count = PrivateMessageRecipients.objects.filter(
+            recipient=player,
+            is_read=False,
+            is_author=False,  # Ne pas compter ses propres messages
+            deleted_at__isnull=True
+        ).count()
+        
+        return JsonResponse({"unread_count": unread_count})
+        
+    except Player.DoesNotExist:
+        return JsonResponse({"error": "Player not found"}, status=404)
+    except Exception as e:
+        logger.exception(f"Erreur get_unread_messages_count: {e}")
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+@login_required
+@require_http_methods(["POST"])
+def mark_private_mail_as_read(request, message_id):
+    """Marque un message comme lu"""
+    try:
+        player = Player.objects.get(user=request.user)
+        
+        recipient_entry = PrivateMessageRecipients.objects.get(
+            message_id=message_id,
+            recipient=player
+        )
+        
+        if not recipient_entry.is_read:
+            recipient_entry.is_read = True
+            recipient_entry.save(update_fields=['is_read', 'updated_at'])
+        
+        return JsonResponse({"success": True})
+        
+    except PrivateMessageRecipients.DoesNotExist:
+        return JsonResponse({"error": "Message not found"}, status=404)
+    except Exception as e:
+        logger.exception(f"Erreur mark_message_as_read: {e}")
+        return JsonResponse({"error": str(e)}, status=500)
+
 
 @login_required
 def get_chat_messages(request, channel_type):

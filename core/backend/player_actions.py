@@ -630,19 +630,36 @@ class PlayerAction:
         
         return True
 
-    def create_new_mp(self, recipient_id, subject, body):
+    def create_new_mp(self, recipient_id, subject, body, priority='LOW'):
+        """
+        Crée un nouveau message privé avec priorité.
+        
+        Args:
+            recipient_id: Liste des IDs des destinataires
+            subject: Sujet du message
+            body: Corps du message
+            priority: 'LOW', 'NORMAL', 'HIGH', ou 'URGENT' (défaut: 'LOW')
+        """
         
         recipients = Player.objects.filter(id__in=recipient_id).values('id')
+    
+        sender_player = Player.objects.get(id=self.player_id)
+        sender_user = sender_player.user
+        
+        # Si l'expéditeur est staff/admin, priorité haute
+        if sender_user.is_staff or sender_user.is_superuser:
+            priority = 'HIGH'
         
         new_mp = PrivateMessage(
             subject=subject,
             body=body,
             sender_id=self.player_id,
+            priority=priority
         )
         
         new_mp.save()
         
-        if PrivateMessageRecipients.objects.filter(message_id=new_mp.id, recipient_id=self.player_id).exists() is False:
+        if not PrivateMessageRecipients.objects.filter(message_id=new_mp.id, recipient_id=self.player_id).exists():
             add_author_mp = PrivateMessageRecipients(
                 message_id=new_mp.id,
                 recipient_id=self.player_id,
@@ -816,3 +833,45 @@ class PlayerAction:
             logger.exception(f"Erreur create_chat_message ({channel}): {e}")
             return None, []
     
+    
+def send_admin_announcement(subject, body, recipient_ids=None, priority='HIGH'):
+    """
+    Fonction pour envoyer des annonces administratives avec haute priorité.
+    
+    Args:
+        subject: Sujet du message
+        body: Corps du message
+        recipient_ids: Liste des IDs destinataires (None = tous les joueurs)
+        priority: 'HIGH' ou 'URGENT'
+    """
+    # Récupérer l'admin/système
+    admin_player = Player.objects.filter(user__is_superuser=True).first()
+    
+    if not admin_player:
+        raise ValueError("Aucun admin trouvé")
+    
+    # Si pas de destinataires spécifiés, envoyer à tous
+    if recipient_ids is None:
+        recipient_ids = list(Player.objects.values_list('id', flat=True))
+    
+    # Créer le message
+    message = PrivateMessage.objects.create(
+        sender=admin_player,
+        subject=subject,
+        body=body,
+        priority=priority
+    )
+        
+    # Créer les entrées destinataires
+    recipients_to_create = [
+        PrivateMessageRecipients(
+            message=message,
+            recipient_id=recipient_id,
+            is_read=False
+        )
+        for recipient_id in recipient_ids
+    ]
+    
+    PrivateMessageRecipients.objects.bulk_create(recipients_to_create)
+    
+    return message

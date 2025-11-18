@@ -1,7 +1,6 @@
 {% load static %}
 {% load customtags %}
 {% load i18n %}
-
 {{ map_informations|json_script:"script_map_informations" }}
 {{ current_player_id|json_script:"script_current_player_id" }}
 <div id="button-menu" class="hidden lg:flex justify-center items-center order-1 m-2 w-1/12">
@@ -100,36 +99,38 @@
         </form>
     </ul>
 </div>
-<div id="map-background" class="flex lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2 justify-center items-center select-none">
-    <div class="flex z-100 mx-auto mb-2 justify-center">
-        <div class="grid">
-            <table class="tabletop-view">
-                <tbody class="border-collapse border-r border-b border-emerald-400/20">
-                {% for row in map_size_range.rows %}
-                    {% if forloop.first %}
-                        <td id="Y_X" class="text-center text-emerald-300/70 font-orbitron font-bold w-[32px] h-[32px] uncrossable text-xs uppercase tracking-wide">
-                            <span class="flex w-[32px] hidden" id="Y_X_y"></span>
-                        </td>
-                        {% for col in map_size_range.cols %}
-                        <td id="X_{{ col }}" class="text-center text-emerald-300 font-orbitron font-semibold border border-emerald-400/20 bg-zinc-800/50 w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm hover:bg-emerald-500/10 transition-all duration-200">
-                            {{ col }}
-                        </td>
-                        {% endfor %}
-                    {% endif %}
-                    <tr class="rows">
-                        <td id="Y_{{ row }}" class="text-center text-emerald-300 font-orbitron font-semibold border border-emerald-400/20 bg-zinc-800/50 w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm hover:bg-emerald-500/10 transition-all duration-200">{{ row }}</td>
-                        {% for col in map_size_range.cols %}
-                            <td class="relative w-[32px] h-[32px] m-0 p-0 tile z-10" id="{{ row }}_{{ col }}">
-                                <div class="relative w-[32px] h-[32px] z-20 coord-zone-div">
-                                    <div class="absolute w-[32px] h-[32px] hidden" id="field-of-view"></div>
-                                    <span class="absolute w-[32px] h-[32px]"></span>
-                                </div>
-                            </td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+<div id="map-background" class="lg:w-9/12 w-full h-full order-2 lg:flex-col flex-col mx-0 overflow-x-hidden no-scrollbar mt-2 justify-center items-center select-none">
+    <!-- WRAPPER PRINCIPAL -->
+    <div id="canvas-wrapper"
+         class="relative w-full h-full">
+
+        <!-- CASE VIDE (0,0) -->
+        <div id="ui-coordinates-empty"
+             class="absolute top-0 left-0 w-[32px] h-[32px]
+                    text-center text-emerald-300 font-orbitron font-semibold
+                    border border-emerald-400/20 bg-zinc-800/50
+                    md:p-1 text-xs tracking-wider shadow-sm
+                    pointer-events-none z-50"></div>
+
+        <!-- AXE X (haut du canvas) -->
+        <div id="ui-coordinates-x"
+             class="absolute top-0 left-[32px] h-[32px]
+                    flex flex-row gap-0 pointer-events-none z-50">
+        </div>
+
+        <!-- AXE Y (gauche du canvas) -->
+        <div id="ui-coordinates-y"
+             class="absolute top-[32px] left-0 w-[32px]
+                    flex flex-col gap-0 pointer-events-none z-50">
+        </div>
+
+        <!-- CANVAS ZONE (décalé de 32px/32px) -->
+        <div id="canvas-zone"
+             class="absolute top-[32px] left-[32px] right-0 bottom-0 overflow-hidden">
+            <canvas id="canvas-bg"></canvas>
+            <canvas id="canvas-fg"></canvas>
+            <canvas id="canvas-actors"></canvas>
+            <canvas id="canvas-ui"></canvas>
         </div>
     </div>
     <div class="context-menu" id="contextMenu"></div>
@@ -313,36 +314,10 @@
 </div>
 
 <script src="{% url 'core:javascript-catalog' %}"></script>
-<script src="{% static 'world_builder/loading/loading_screen.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/onlyDomAndPanels/log_display_style.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/check_visibility.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/sonar/sonar.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/sonar/sonar_ship_display.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/sonar/sonar_ship_display_other_player.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/observable_zone.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/async/async_action_registry.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/async/async_action_register.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/async/async_mp.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/async/async_action_manager.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/game.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/navbar_game.js'%}" type="application/javascript"></script>
-<script src="{% static 'world_builder/world/world_reset.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/classes/player.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_background.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_foreground.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_borders.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_npc.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_pc.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_sector_overflow.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/update_user_coordinates.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/add_sector_elements.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/occured_event_display.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/async/async_movements.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/async/async_actions.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/pathfinding.js'%}" type='application/javascript'></script>
-<script src="{% static 'world_builder/world/pathfinding_mobile.js'%}" type='application/javascript'></script>
+<script type="module" src="{% static 'world_builder/canvas_engine/main_engine.js' %}"></script>
+{{ map_informations|json_script:"script_map_informations" }}
+{{ current_player_id|json_script:"script_current_player_id" }}
 <script src="{% static 'world_builder/modals/modals.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/character_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/message_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/inventory_modal.js'%}" type='application/javascript'></script>
-<script src="{% static 'js/game/world_builder/account/logout.js' %}" type="application/javascript"></script>
