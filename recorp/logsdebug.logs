@@ -19715,3 +19715,1541 @@ Erreur lors du traitement du message: 'message'
 [mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:65343][0m
 [32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:64921][0m
 [mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:64921][0m
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.88, 127.0.0.1:62230][0m
+[mHTTP GET /fr/ 200 [0.21, 127.0.0.1:62230][0m
+[36mHTTP GET /static/css/output.css 304 [0.00, 127.0.0.1:62230][0m
+[36mHTTP GET /static/css/style.css 304 [0.01, 127.0.0.1:62243][0m
+[32mHTTP GET /play 302 [0.07, 127.0.0.1:62243][0m
+[mHTTP GET /fr/play/ 200 [0.91, 127.0.0.1:62243][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.05, 127.0.0.1:62243][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.18, 127.0.0.1:62230][0m
+[36mHTTP GET /static/world_builder/world/game.js 304 [0.08, 127.0.0.1:62230][0m
+[36mHTTP GET /static/world_builder/async/async_movements.js 304 [0.03, 127.0.0.1:62230][0m
+[36mHTTP GET /static/world_builder/world/pathfinding_mobile.js 304 [0.01, 127.0.0.1:62243][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.11, 127.0.0.1:62243][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62266]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62266]
+[32mHTTP GET /chat/unread-counts/ 302 [0.39, 127.0.0.1:62243][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.28, 127.0.0.1:62243][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.32, 127.0.0.1:62243][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.12, 127.0.0.1:62243][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.15, 127.0.0.1:62243][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.09, 127.0.0.1:62243][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.10, 127.0.0.1:62243][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62266]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.35, 127.0.0.1:62243][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.19, 127.0.0.1:62243][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.24, 127.0.0.1:62243][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.48, 127.0.0.1:62515][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62526]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62526]
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.11, 127.0.0.1:62515][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62526]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.55, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/style.css 200 [0.15, 127.0.0.1:62515][0m
+[mHTTP GET /static/css/output.css 200 [0.15, 127.0.0.1:62243][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.06, 127.0.0.1:62515][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.14, 127.0.0.1:62565][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.34, 127.0.0.1:62243][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.52, 127.0.0.1:62566][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.18, 127.0.0.1:62515][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.18, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.11, 127.0.0.1:62574][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.12, 127.0.0.1:62573][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.19, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.13, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.10, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.09, 127.0.0.1:62573][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.31, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.04, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.03, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.04, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.07, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.03, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.03, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.02, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.03, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.04, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.02, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.01, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.02, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.02, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.02, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.03, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.03, 127.0.0.1:62565][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.03, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.03, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.12, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.09, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.03, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.02, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.04, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.05, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.04, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.07, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.12, 127.0.0.1:62574][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.11, 127.0.0.1:62573][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.09, 127.0.0.1:62565][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.33, 127.0.0.1:62565][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62588]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62588]
+[mHTTP GET /static/img/background/bg_space_5/0.webp 200 [0.19, 127.0.0.1:62565][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.15, 127.0.0.1:62573][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.15, 127.0.0.1:62574][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.05, 127.0.0.1:62573][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.05, 127.0.0.1:62574][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.08, 127.0.0.1:62565][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.15, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.03, 127.0.0.1:62565][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.03, 127.0.0.1:62574][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.05, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.17, 127.0.0.1:62515][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.25, 127.0.0.1:62574][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62588]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.71, 127.0.0.1:62574][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:62565][0m
+[mHTTP GET /static/css/style.css 200 [0.05, 127.0.0.1:62574][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:62515][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.12, 127.0.0.1:62565][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.08, 127.0.0.1:62574][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.05, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.34, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.29, 127.0.0.1:62574][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.31, 127.0.0.1:62565][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.39, 127.0.0.1:62574][0m
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.85, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/loading/loading_screen.js 200 [0.19, 127.0.0.1:62565][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.31, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/onlyDomAndPanels/log_display_style.js 200 [0.22, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/check_visibility.js 200 [0.16, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/sonar/sonar.js 200 [0.04, 127.0.0.1:62515][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.99, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display_other_player.js 200 [0.08, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/sonar/sonar_ship_display.js 200 [0.15, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/async/async_action_register.js 200 [0.07, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/observable_zone.js 200 [0.10, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/async/async_action_registry.js 200 [0.08, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/async/async_mp.js 200 [0.11, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/async/async_action_manager.js 200 [0.04, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/game.js 200 [0.04, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/navbar_game.js 200 [0.06, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/classes/player.js 200 [0.02, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/world_reset.js 200 [0.02, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/add_background.js 200 [0.09, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/add_foreground.js 200 [0.08, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/add_borders.js 200 [0.08, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/add_pc.js 200 [0.01, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/world/add_npc.js 200 [0.02, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/add_sector_overflow.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/update_user_coordinates.js 200 [0.02, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/occured_event_display.js 200 [0.02, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/world/add_sector_elements.js 200 [0.02, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/async/async_actions.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/pathfinding.js 200 [0.01, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/async/async_movements.js 200 [0.01, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/world_builder/world/pathfinding_mobile.js 200 [0.01, 127.0.0.1:62573][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:62515][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.01, 127.0.0.1:62565][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.04, 127.0.0.1:62573][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.21, 127.0.0.1:62573][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.15, 127.0.0.1:62565][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:62638]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:62638]
+[mHTTP GET /static/img/background/bg_space_5/0.webp 200 [0.06, 127.0.0.1:62565][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.03, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.04, 127.0.0.1:62573][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.10, 127.0.0.1:62566][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.10, 127.0.0.1:62573][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.10, 127.0.0.1:62574][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.17, 127.0.0.1:62515][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.26, 127.0.0.1:62565][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.07, 127.0.0.1:62515][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.02, 127.0.0.1:62574][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.02, 127.0.0.1:62573][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.00, 127.0.0.1:62574][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.10, 127.0.0.1:62574][0m
+[32mHTTP GET /chat/get/sector/ 302 [0.27, 127.0.0.1:62574][0m
+[mHTTP GET /fr/chat/get/sector/ 200 [0.29, 127.0.0.1:62574][0m
+[32mHTTP GET /chat/mark-read/sector/ 302 [0.18, 127.0.0.1:62574][0m
+[mHTTP GET /fr/chat/mark-read/sector/ 200 [0.15, 127.0.0.1:62574][0m
+[32mHTTP GET /messages/?page=1&tab=received 302 [0.16, 127.0.0.1:62574][0m
+[mHTTP GET /fr/messages/?page=1&tab=received 200 [0.43, 127.0.0.1:62574][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.10, 127.0.0.1:62574][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.18, 127.0.0.1:62573][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.14, 127.0.0.1:62574][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.16, 127.0.0.1:62573][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.17, 127.0.0.1:62574][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.17, 127.0.0.1:62573][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.08, 127.0.0.1:62573][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.08, 127.0.0.1:62574][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.33, 127.0.0.1:62968][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.40, 127.0.0.1:62969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.12, 127.0.0.1:62968][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.07, 127.0.0.1:62969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.17, 127.0.0.1:62969][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.42, 127.0.0.1:62968][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.30, 127.0.0.1:62969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.21, 127.0.0.1:62968][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.15, 127.0.0.1:62968][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.11, 127.0.0.1:62969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.24, 127.0.0.1:62968][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.12, 127.0.0.1:62968][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.16, 127.0.0.1:62968][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.17, 127.0.0.1:62969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.15, 127.0.0.1:62968][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.26, 127.0.0.1:62969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.08, 127.0.0.1:62969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:62969][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:62969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.09, 127.0.0.1:62969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.28, 127.0.0.1:62969][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.35, 127.0.0.1:63478][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.32, 127.0.0.1:63478][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.32, 127.0.0.1:62969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.25, 127.0.0.1:62969][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.26, 127.0.0.1:63478][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:63478][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.10, 127.0.0.1:62969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.09, 127.0.0.1:63789][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.16, 127.0.0.1:63790][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.12, 127.0.0.1:63790][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.12, 127.0.0.1:63789][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.08, 127.0.0.1:63789][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.11, 127.0.0.1:63790][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.07, 127.0.0.1:63789][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.11, 127.0.0.1:63790][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.26, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.11, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.17, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.19, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.20, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.22, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.17, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.11, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.24, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.24, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.12, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.14, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.44, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.48, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.12, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.15, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.11, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.15, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.09, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.08, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.15, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.16, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.16, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.14, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.10, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.15, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.13, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.09, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.10, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.09, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.08, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.07, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.08, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:64154][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.09, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.07, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64150][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:64154][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:64150][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:64154][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:64150][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:62638]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/play/ 200 [0.10, 127.0.0.1:64150][0m
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:64150][0m
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:64154][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:64150][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50065]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:64154][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50065]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:64150][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:64154][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:64150][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50065]
+WebSocket déconnecté proprement - Code: 1000, Joueur: 24
+[mHTTP GET /fr/canvas_test/ 200 [0.08, 127.0.0.1:64150][0m
+[36mHTTP GET /static/world_builder/canvas_engine/main_engine.js 304 [0.00, 127.0.0.1:64154][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:64150][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:64150][0m
+[36mHTTP GET /static/world_builder/canvas_engine/globals.js 304 [0.00, 127.0.0.1:64154][0m
+[36mHTTP GET /static/world_builder/canvas_engine/touch.js 304 [0.01, 127.0.0.1:64154][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 304 [0.01, 127.0.0.1:50105][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 304 [0.01, 127.0.0.1:50106][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 304 [0.01, 127.0.0.1:64150][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/input.js 304 [0.02, 127.0.0.1:50107][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:50108][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 304 [0.02, 127.0.0.1:50105][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 304 [0.02, 127.0.0.1:64154][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.01, 127.0.0.1:64150][0m
+[36mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 304 [0.01, 127.0.0.1:50107][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 304 [0.01, 127.0.0.1:50105][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 304 [0.00, 127.0.0.1:50107][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 304 [0.01, 127.0.0.1:50108][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:64154][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 304 [0.00, 127.0.0.1:50107][0m
+[36mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 304 [0.00, 127.0.0.1:50105][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50106][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50112]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50112]
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:50106][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50106][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:50106][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50106][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:50106][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50106][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50106][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50106][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:50106][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:50106][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50106][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:50106][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50106][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50330][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50330][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.31, 127.0.0.1:50330][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50112]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:50432][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.05, 127.0.0.1:50433][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 304 [0.00, 127.0.0.1:50432][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.02, 127.0.0.1:50433][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50442]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50330][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50442]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50433][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.10, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:50330][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50442]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:50432][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.05, 127.0.0.1:50330][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:50433][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50536]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50536]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:50433][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50536]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.01, 127.0.0.1:50432][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50330][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50594]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50594]
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:50330][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:50330][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50594]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:50432][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:50330][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50640]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50640]
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50330][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50330][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50330][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50330][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50330][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50330][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.10, 127.0.0.1:50433][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50640]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:50433][0m
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.01, 127.0.0.1:50330][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:50433][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 304 [0.00, 127.0.0.1:50918][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:50330][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50922]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50433][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50922]
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:50330][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.07, 127.0.0.1:50330][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50922]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:50433][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 304 [0.00, 127.0.0.1:50330][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50946]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50946]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50330][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50330][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.09, 127.0.0.1:50330][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50946]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50918][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:50968][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:50969][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.02, 127.0.0.1:50918][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.02, 127.0.0.1:50969][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.02, 127.0.0.1:50968][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:50433][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:50330][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:50918][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.00, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:50918][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:50918][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.07, 127.0.0.1:50918][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.02, 127.0.0.1:50969][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.07, 127.0.0.1:50968][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.07, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.02, 127.0.0.1:50330][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.07, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.02, 127.0.0.1:50918][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.02, 127.0.0.1:50968][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.02, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.02, 127.0.0.1:50330][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.02, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.01, 127.0.0.1:50968][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:50918][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:50330][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.00, 127.0.0.1:50967][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:50982]
+[32mHTTP GET /messages/unread-count/ 302 [0.07, 127.0.0.1:50969][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:50982]
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50967][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.08, 127.0.0.1:50433][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:50982]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.02, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50967][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51032]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51032]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50967][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.07, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.22, 127.0.0.1:50967][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51032]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:51553][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:50433][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 304 [0.01, 127.0.0.1:51553][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.05, 127.0.0.1:50967][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:50433][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 304 [0.00, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:50967][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.07, 127.0.0.1:50967][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.00, 127.0.0.1:50967][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51617]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51617]
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:50433][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50967][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.10, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.13, 127.0.0.1:50433][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:50433][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51617]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:50433][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.00, 127.0.0.1:50433][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51698]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51698]
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:50967][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:50433][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:50967][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:50433][0m
+Erreur lors du traitement du message: 'message'
+[mHTTP GET /fr/canvas_test/ 200 [0.07, 127.0.0.1:50433][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51698]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:51748][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:50433][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.01, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.01, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.01, 127.0.0.1:51747][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51765]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:50433][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51765]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:51747][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:50433][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:51747][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51765]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:51748][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.02, 127.0.0.1:51748][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:51748][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:50967][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.01, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.02, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.02, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.02, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.02, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.02, 127.0.0.1:50967][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.07, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.02, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.02, 127.0.0.1:51748][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:51746][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:50433][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.01, 127.0.0.1:50967][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.01, 127.0.0.1:51745][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51793]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51793]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:51747][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:51745][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:51745][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:51745][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:51747][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:51745][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:51747][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:51747][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51793]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.04, 127.0.0.1:51747][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:51745][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51882]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51882]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:51745][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:51745][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51882]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:51745][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:51745][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:51929]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:51929]
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:51747][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:51745][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:51745][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:51747][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:51745][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:51747][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:51745][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:51747][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:51745][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:51747][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:51745][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:51747][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:51745][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:51747][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:51747][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:51747][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:51745][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:51747][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:51747][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:51745][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:51747][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:51747][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:51745][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.20, 127.0.0.1:51745][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:51929]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:52235][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:52236][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:52237][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.02, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.02, 127.0.0.1:52235][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.02, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.02, 127.0.0.1:52237][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:52235][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:52238][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:51747][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.01, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:52235][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.02, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.01, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.02, 127.0.0.1:52235][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.01, 127.0.0.1:52238][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:52235][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.00, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.01, 127.0.0.1:52237][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52255]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52255]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:51745][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:51745][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:51745][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52255]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.02, 127.0.0.1:52235][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:52236][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:51747][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.01, 127.0.0.1:52235][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.02, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.02, 127.0.0.1:52236][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:52237][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.07, 127.0.0.1:52238][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:52235][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.02, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.02, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.02, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.01, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.01, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.01, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:51747][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.02, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.02, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.01, 127.0.0.1:52238][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.01, 127.0.0.1:51747][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:52235][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:51745][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.01, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.01, 127.0.0.1:52237][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52284]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52284]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52237][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:52237][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:52237][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52284]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:52237][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52427]
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:52236][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52427]
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:52237][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52427]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:52583][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52592]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52592]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.08, 127.0.0.1:52236][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52592]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:52236][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 304 [0.00, 127.0.0.1:52237][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52618]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52618]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:52237][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52618]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:52236][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52644]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52644]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.07, 127.0.0.1:52237][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52644]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:52236][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52700]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52700]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.07, 127.0.0.1:52236][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52700]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:52236][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 304 [0.00, 127.0.0.1:52237][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:52727]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:52727]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[33mHTTP GET /static/img/users/47/0.gif 404 [0.01, 127.0.0.1:52237][0m
+[33mHTTP GET /static/img/users/52/0.gif 404 [0.00, 127.0.0.1:52237][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.08, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.14, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.13, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.26, 127.0.0.1:52237][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:52727]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.01, 127.0.0.1:53094][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:52236][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 304 [0.01, 127.0.0.1:53094][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53101]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53101]
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[33mHTTP GET /static/img/users/52/0.gif 404 [0.00, 127.0.0.1:52236][0m
+[33mHTTP GET /static/img/users/47/0.gif 404 [0.01, 127.0.0.1:52236][0m
+[mHTTP GET /static/img/users/26/0.gif 200 [0.00, 127.0.0.1:52236][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52237][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.07, 127.0.0.1:52237][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53101]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:53406][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52236][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53415]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53415]
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:52236][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:52236][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53415]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:52236][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.02, 127.0.0.1:52236][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53463]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53463]
+[32mHTTP GET /messages/unread-count/ 302 [0.08, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:52236][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:52236][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:52237][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52237][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:52237][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:52236][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:52237][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:52236][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:53656][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:53657][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:53656][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:53657][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:53657][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:53656][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:53657][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:53656][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:53656][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:53657][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:53656][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:53657][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.23, 127.0.0.1:53657][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53463]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.01, 127.0.0.1:53783][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:53657][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:53656][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 304 [0.00, 127.0.0.1:53783][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.04, 127.0.0.1:53657][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:53656][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:53790]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:53790]
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:53656][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:53657][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:53656][0m
+[33mHTTP GET /static/img/users/47/0.gif 404 [0.01, 127.0.0.1:53656][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:53656][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:53656][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:53657][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.17, 127.0.0.1:53657][0m
+[33mHTTP GET /static/img/users/47/0.gif 404 [0.01, 127.0.0.1:53657][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:53657][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:53657][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:53656][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:53656][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:53656][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.08, 127.0.0.1:53657][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:53656][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:53657][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:53657][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:53656][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:53657][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:53656][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:53657][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:53656][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:53657][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:53656][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:53656][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:53657][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:53656][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:53657][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.08, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54137][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.23, 127.0.0.1:54137][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:53790]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[36mHTTP GET /static/world_builder/modals/chat_modal.js 304 [0.00, 127.0.0.1:54138][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:55507][0m
+[36mHTTP GET /static/world_builder/modals/message_modal.js 304 [0.00, 127.0.0.1:55507][0m
+[36mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 304 [0.00, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:55507][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[36mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 304 [0.00, 127.0.0.1:54138][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55517]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:55507][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55517]
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:54138][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55517]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:55507][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55540]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55540]
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:55507][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:54138][0m
+[33mHTTP GET /static/img/users/47/0.gif 404 [0.01, 127.0.0.1:54138][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:55507][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:55507][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55540]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:55507][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:54138][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55656]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55656]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:55507][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55656]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:55507][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:54138][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55682]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55682]
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:55507][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55682]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/css/output.css 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:54138][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.01, 127.0.0.1:55703][0m
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.00, 127.0.0.1:55507][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.02, 127.0.0.1:55702][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.04, 127.0.0.1:54138][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55721]
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:55704][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55721]
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px-reversed.png 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:55704][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.00, 127.0.0.1:55507][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:55507][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:55507][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:55507][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55721]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:55703][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:55507][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.00, 127.0.0.1:55702][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.01, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:54137][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55748]
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.03, 127.0.0.1:55703][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55748]
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.03, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px-reversed.png 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:55702][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.00, 127.0.0.1:54137][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.10, 127.0.0.1:54137][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54137][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54137][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/canvas_test/ 200 [0.06, 127.0.0.1:54138][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:55748]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/users/24/0.gif 200 [0.01, 127.0.0.1:54137][0m
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/modals/modals.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.00, 127.0.0.1:55703][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.04, 127.0.0.1:54137][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.00, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_bootstrap.js 200 [0.01, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.01, 127.0.0.1:55703][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.05, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/world_builder/canvas_engine/actions/action_manager.js 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/websocket_manager.js 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.01, 127.0.0.1:55507][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.01, 127.0.0.1:54137][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:55842]
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.02, 127.0.0.1:55507][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.03, 127.0.0.1:55704][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.07, 127.0.0.1:54138][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:55842]
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.02, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px.png 200 [0.02, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px.png 200 [0.02, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.03, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-red-32px-reversed.png 200 [0.02, 127.0.0.1:55704][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-white-32px-reversed.png 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px.png 200 [0.01, 127.0.0.1:54138][0m
+[mHTTP GET /static/img/foreground/SHIPS/station01-96px-reversed.png 200 [0.01, 127.0.0.1:54137][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium-reversed.png 200 [0.01, 127.0.0.1:55704][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship03-green-64x32px-medium.png 200 [0.02, 127.0.0.1:55702][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px.png 200 [0.01, 127.0.0.1:55703][0m
+[mHTTP GET /static/img/foreground/SHIPS/ship01-yellow-32px-reversed.png 200 [0.01, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:55507][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.07, 127.0.0.1:55507][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 127.0.0.1:54138][0m
+Erreur lors du traitement du message: 'message'
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:55935][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:55935][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.10, 127.0.0.1:55935][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:55935][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:55935][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:55935][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:55935][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:55935][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:55935][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:55935][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:55935][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:55935][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.06, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:54138][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:55935][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:54138][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:55935][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:55935][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:54138][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:55935][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:54138][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:56397][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:56398][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:56397][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:56398][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:56397][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.07, 127.0.0.1:56398][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:56397][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:56398][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:56398][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.08, 127.0.0.1:56397][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.05, 127.0.0.1:56398][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:56397][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:56397][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:56398][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:56397][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.05, 127.0.0.1:56398][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:56398][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.05, 127.0.0.1:56397][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:56398][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:56397][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:56397][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.07, 127.0.0.1:56398][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.04, 127.0.0.1:56397][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:56398][0m

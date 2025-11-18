@@ -1,7 +1,3 @@
-let user_is_on_mobile_bool = is_user_is_on_mobile_device();
-let attribute_touch_mouseover = user_is_on_mobile_bool ? 'touchstart' : 'mouseover';
-let attribute_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'onclick';
-let action_listener_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'click';
 
 let modal = document.getElementById('message-modal');
 let content = document.getElementById('mail-modal-content');

@@ -85,6 +85,35 @@ export default class Renderer {
         }
     }
 
+    drawObject(obj, ctx) {
+        const tileSize = this.tileSize;
+
+        const screenX = Math.floor((obj.x - this.camera.originX) * tileSize);
+        const screenY = Math.floor((obj.y - this.camera.originY) * tileSize);
+
+        const screenW = obj.sizeX * tileSize;
+        const screenH = obj.sizeY * tileSize;
+
+        const img = this.spriteManager.get(obj.spritePath);
+        if (!img) return; // pas encore chargé
+
+        const isShip = (obj.type === "player" || obj.type === "npc");
+        const reversed = isShip && obj.data?.ship?.is_reversed;
+
+        if (!reversed) {
+            // ---- Normal draw ----
+            ctx.drawImage(img, screenX, screenY, screenW, screenH);
+            return;
+        }
+
+        // ---- Reversed (flipped horizontally) ----
+        ctx.save();
+        ctx.translate(screenX + screenW, screenY); // déplace le point d'origine à droite
+        ctx.scale(-1, 1); // flip horizontal
+        ctx.drawImage(img, 0, 0, screenW, screenH);
+        ctx.restore();
+    }
+
     // appelé par bootstrap quand un sync serveur ouvre de nouvelles données
     reloadMapData(newRaw) {
         this.map.raw = newRaw;

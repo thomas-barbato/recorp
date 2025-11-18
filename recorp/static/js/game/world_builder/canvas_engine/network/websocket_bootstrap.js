@@ -23,6 +23,7 @@ export function initWebSocket() {
 
 function requestDataSync() {
     if (!wsInstance) return;
+    console.log("request data sync.")
     wsInstance.send({
         type: "request_sync",
         player_id: window.current_player_id
@@ -36,17 +37,17 @@ function handle_websocket_message(data) {
 
     switch (data.type) {
         case 'sync_sector':
-        applySectorSync(data.sector);
-        break;
+            applySectorSync(data.sector);
+            break;
         case 'player_move':
-        updatePlayerPosition(data);
-        break;
+            updatePlayerPosition(data);
+            break;
         case 'npc_move':
-        updateNpcPosition(data);
-        break;
+            updateNpcPosition(data);
+            break;
         case 'update_foreground':
-        updateForeground(data);
-        break;
+            updateForeground(data);
+            break;
         default:
         // fallback: try to pass to legacy action manager if present
         if (window.actionManager && typeof window.actionManager.execute === 'function') {
@@ -60,7 +61,6 @@ function handle_websocket_message(data) {
 function applySectorSync(syncData) {
     if (!syncData) return;
     Object.assign(window.map_informations, syncData);
-    console.log('Sector sync applied');
     // notify canvasEngine to reload map
     if (window.canvasEngine?.renderer?.reloadMapData) {
         window.canvasEngine.renderer.reloadMapData(window.map_informations);

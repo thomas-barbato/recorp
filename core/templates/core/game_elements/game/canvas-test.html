@@ -317,6 +317,13 @@
 <script type="module" src="{% static 'world_builder/canvas_engine/main_engine.js' %}"></script>
 {{ map_informations|json_script:"script_map_informations" }}
 {{ current_player_id|json_script:"script_current_player_id" }}
+<script>
+    let user_is_on_mobile_bool = is_user_is_on_mobile_device();
+    let attribute_touch_mouseover = user_is_on_mobile_bool ? 'touchstart' : 'mouseover';
+    let attribute_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'onclick';
+    let action_listener_touch_click = user_is_on_mobile_bool ? 'touchstart' : 'click';
+
+</script>
 <script src="{% static 'world_builder/modals/modals.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/character_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/message_modal.js'%}" type='application/javascript'></script>
