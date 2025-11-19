@@ -58,7 +58,7 @@ class Sonar {
         });
         
         // Nettoyer aussi le bouton radar s'il existe
-        const radarButton = document.querySelector('#radar-sweep');
+        const radarButton = document.querySelector('#sonar-toggle-btn');
         if (radarButton) {
             const newButton = radarButton.cloneNode(true);
             radarButton.parentNode.replaceChild(newButton, radarButton);
@@ -111,8 +111,8 @@ class Sonar {
     }
 
     setupMobileEventListeners() {
-        // Sur mobile, utiliser le bouton radar-sweep
-        const radarButton = document.querySelector('#radar-sweep');
+        // Sur mobile, utiliser le bouton sonar-toggle-btn
+        const radarButton = document.querySelector('#sonar-toggle-btn');
         
         if (radarButton) {
             // Gestionnaire pour l'activation/désactivation du sonar par bouton
@@ -160,7 +160,7 @@ class Sonar {
         });
         
         // Retirer la classe du bouton radar si elle existe
-        const radarButton = document.querySelector('#radar-sweep');
+        const radarButton = document.querySelector('#sonar-toggle-btn');
         if (radarButton) {
             radarButton.classList.remove('sonar-control-active');
         }
@@ -212,7 +212,7 @@ class Sonar {
         
         // Mettre à jour l'apparence du bouton sur mobile
         if (this.isMobile) {
-            const radarButton = document.querySelector('#radar-sweep');
+            const radarButton = document.querySelector('#sonar-toggle-btn');
             if (radarButton) {
                 radarButton.classList.add('sonar-active');
             }
@@ -226,7 +226,7 @@ class Sonar {
         
         // Mettre à jour l'apparence du bouton sur mobile
         if (this.isMobile) {
-            const radarButton = document.querySelector('#radar-sweep');
+            const radarButton = document.querySelector('#sonar-toggle-btn');
             radarButton?.classList.remove('sonar-active');
         }
     }

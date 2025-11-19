@@ -1,55 +1,92 @@
-// engine/input.js
-// gestion des clics et du hover (UI canvas reçoit les events).
-// onObjectClick(obj) et onTileClick({x,y}) sont des hooks fournis par le bootstrap.
-
 export default class Input {
-    constructor({uiCanvas, camera, map, onObjectClick, onTileClick}) {
-        this.canvas = uiCanvas.el;
-        this.ctx = uiCanvas.ctx;
+    /**
+     * @param {Object} options
+     * @param {Object} options.uiCanvas - { el, ctx } provenant de CanvasManager
+     * @param {Object} options.camera   - instance de Camera
+     * @param {Object} options.map      - instance de MapData
+     * @param {Function} [options.onObjectClick] - (obj, info) => void
+     * @param {Function} [options.onTileClick]   - (tx, ty, info) => void
+     * @param {Function} [options.onMouseMove]   - (tx, ty, info) => void
+     * @param {Function} [options.onMouseLeave]  - () => void
+     */
+    constructor({ uiCanvas, camera, map, onObjectClick, onTileClick, onMouseMove, onMouseLeave }) {
+        // uiCanvas = { el, ctx } → on garde le vrai <canvas>
+        this.canvas = uiCanvas.el || uiCanvas;
+        this.ctx = uiCanvas.ctx || null;
         this.camera = camera;
         this.map = map;
-        this.onObjectClick = onObjectClick;
-        this.onTileClick = onTileClick;
 
-        this._attach();
+        this.onObjectClick = onObjectClick || null;
+        this.onTileClick   = onTileClick   || null;
+        this.onMouseMove   = onMouseMove   || null;
+        this.onMouseLeave  = onMouseLeave  || null;
+
+        this._bindEvents();
     }
 
-    _attach() {
-        this.canvas.style.cursor = 'default';
-        this.canvas.addEventListener('click', this._handleClick.bind(this));
-        this.canvas.addEventListener('mousemove', this._handleMove.bind(this));
-        this.canvas.addEventListener('touchstart', (e) => {
-        const t = e.touches[0];
-        this._handleClick({clientX: t.clientX, clientY: t.clientY});
-        e.preventDefault();
-        }, {passive: false});
+    _bindEvents() {
+        // CLICK
+        this.canvas.addEventListener("click", (ev) => {
+            const info = this._eventToWorld(ev);
+            if (!info) return;
+
+            const { tileX, tileY } = info;
+
+            // Y a-t-il un objet sur cette tile ?
+            const obj = this.map.getTopObjectAt(tileX, tileY);
+
+            if (obj && this.onObjectClick) {
+                this.onObjectClick(obj, info);
+                return;
+            }
+
+            // Sinon, clic "vide" sur une tile → pathfinding / autre
+            if (this.onTileClick) {
+                this.onTileClick(tileX, tileY, info);
+            }
+        });
+
+        // MOUSE MOVE
+        this.canvas.addEventListener("mousemove", (ev) => {
+            if (!this.onMouseMove) return;
+            const info = this._eventToWorld(ev);
+            if (!info) return;
+            const { tileX, tileY } = info;
+            this.onMouseMove(tileX, tileY, info);
+        });
+
+        // MOUSE LEAVE
+        this.canvas.addEventListener("mouseleave", () => {
+            if (this.onMouseLeave) {
+                this.onMouseLeave();
+            }
+        });
     }
 
-    _getLocalPos(ev) {
+    /**
+     * Convertit un event souris en coordonnées monde & tile.
+     */
+    _eventToWorld(ev) {
         const rect = this.canvas.getBoundingClientRect();
-        const x = (ev.clientX - rect.left);
-        const y = (ev.clientY - rect.top);
-        return {x, y};
-    }
+        const mx = ev.clientX - rect.left;
+        const my = ev.clientY - rect.top;
 
-    _handleClick(ev) {
-        const pos = this._getLocalPos(ev);
-        const world = this.camera.screenToWorld(pos.x, pos.y);
-        const objs = this.map.getObjectsAtTile(world.x, world.y);
-        const top = objs.length ? objs[0] : null;
-        if (top && this.onObjectClick) this.onObjectClick(top);
-        else if (this.onTileClick) this.onTileClick({x: world.x, y: world.y});
-    }
+        const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
 
-    _handleMove(ev) {
-        const pos = this._getLocalPos(ev);
-        const world = this.camera.screenToWorld(pos.x, pos.y);
-        const top = this.map.getTopObjectAt(world.x, world.y);
-        if (top) {
-        if (top.type === 'foreground' || top.type === 'player') this.canvas.style.cursor = 'pointer';
-        else this.canvas.style.cursor = 'default';
-        } else {
-        this.canvas.style.cursor = 'default';
-        }
+        // world pixel = camera.x/y + offset
+        const worldPxX = this.camera.x + mx;
+        const worldPxY = this.camera.y + my;
+
+        const tileX = Math.floor(worldPxX / tilePx);
+        const tileY = Math.floor(worldPxY / tilePx);
+
+        return {
+            mouseX: mx,
+            mouseY: my,
+            worldPxX,
+            worldPxY,
+            tileX,
+            tileY
+        };
     }
 }

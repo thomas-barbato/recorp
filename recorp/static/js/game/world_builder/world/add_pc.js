@@ -207,7 +207,7 @@ function setupUnknownPcCell(cell, border, playerInfo, spaceship) {
 
     }else{
 
-        const radarSweepButton = document.querySelector('#radar-sweep');
+        const radarSweepButton = document.querySelector('#sonar-toggle-btn');
         if (!radarSweepButton){
             return
         }

@@ -14,23 +14,34 @@ export default class Renderer {
         this.camera = camera;
         this.spriteManager = spriteManager;
         this.map = map;
-
+        this.needsRedraw = true;
+        
         this.bg = new BackgroundRenderer(canvases.bg.ctx, camera, spriteManager, map);
         this.fg = new ForegroundRenderer(canvases.fg.ctx, camera, spriteManager, map);
         this.actors = new ActorsRenderer(canvases.actors.ctx, camera, spriteManager, map);
-        this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map);
-
-        this._dirty = true;
+        this.actors.sonar = this.sonar;
+        this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {
+            pathfinder: this.pathfinder
+        });
+        this.sonar = this.ui.sonar;
     }
 
-    requestRedraw() { this._dirty = true; }
+    requestRedraw() { this.needsRedraw = true; }
+
+    setPathfinder(pathfinder) {
+        this.pathfinder = pathfinder;
+        if (this.ui && this.ui.setPathfinder) {
+            this.ui.setPathfinder(pathfinder);
+        }
+        this.requestRedraw();
+    }
 
     // render appelé par la loop (delta en ms)
     render(delta) {
         // efface canvas (ui aussi)
         const { bg, fg, actors, ui } = this.canvases;
         [bg, fg, actors, ui].forEach(c => {
-        c.ctx.clearRect(0, 0, c.el.width, c.el.height);
+            c.ctx.clearRect(0, 0, c.el.width, c.el.height);
         });
 
         // dessine couches dans l'ordre
@@ -38,15 +49,12 @@ export default class Renderer {
         this.fg.render();
         this.actors.render(delta);
         this.ui.render();
-        this._dirty = false;
+        this.needsRedraw = false;
     }
 
     updateGridCoordinatesUI(camera, tileSize) {
         const contX = document.getElementById("ui-coordinates-x");
         const contY = document.getElementById("ui-coordinates-y");
-
-        contX.innerHTML = "";
-        contY.innerHTML = "";
 
         //
         // --- AXE X (haut) ---
@@ -58,7 +66,7 @@ export default class Renderer {
 
             const div = document.createElement("div");
             div.className =
-                "text-center text-emerald-300 font-orbitron font-semibold " +
+                "flex items-center justify-center text-emerald-300 font-orbitron font-semibold " +
                 "border border-emerald-400/20 bg-zinc-800/50 " +
                 "w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm " +
                 "hover:bg-emerald-500/10 transition-all duration-200";
@@ -75,7 +83,7 @@ export default class Renderer {
 
             const div = document.createElement("div");
             div.className =
-                "text-center text-emerald-300 font-orbitron font-semibold " +
+                "flex items-center justify-center text-emerald-300 font-orbitron font-semibold " +
                 "border border-emerald-400/20 bg-zinc-800/50 " +
                 "w-[32px] h-[32px] md:p-1 text-xs tracking-wider shadow-sm " +
                 "hover:bg-emerald-500/10 transition-all duration-200";
@@ -117,6 +125,8 @@ export default class Renderer {
     // appelé par bootstrap quand un sync serveur ouvre de nouvelles données
     reloadMapData(newRaw) {
         this.map.raw = newRaw;
-        this.map.prepare().then(() => this.requestRedraw()).catch(e => console.error('reloadMapData prepare failed', e));
+        this.map.prepare()
+            .then(() => this.requestRedraw())
+            .catch(e => console.error('reloadMapData prepare failed', e));
     }
 }

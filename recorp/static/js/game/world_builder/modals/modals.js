@@ -74,6 +74,10 @@ function extract_data_for_modal(data){
     }
 }
 
+function checkIfModalExists(modalId) {
+    return document.getElementById(modalId) !== null;
+}
+
 function createNpcModalData(npcData) {
     return {
         player: {

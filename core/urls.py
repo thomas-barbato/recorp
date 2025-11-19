@@ -9,12 +9,12 @@ app_name = "core"
 
 urlpatterns = [
     path(
-        "play/",
+        "oldplay/",
         core_views.DisplayGameView.as_view(template_name="play.html"),
         name="play_view",
     ),
     path(
-        "canvas_test/",
+        "play/",
         core_views.DisplayGameCanvasView.as_view(template_name="play_canvas.html"),
         name="play_canvas_view",
     ),

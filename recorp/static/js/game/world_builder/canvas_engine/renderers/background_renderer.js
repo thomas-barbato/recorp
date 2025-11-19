@@ -17,11 +17,10 @@ export default class BackgroundRenderer {
         // fond par défaut (espace)
         this.ctx.fillStyle = '#0b1220';
         this.ctx.fillRect(0, 0, w, h);
-
         // si map.background défini, on tente de tiler l'image
-        if (this.map.background) {
-        const rel = this.map.background; // ex: 'background/nebula01'
-        const src = this.spriteManager.makeUrl(`${rel}/0.webp`);
+        if (this.map.img) {
+        const rel = this.map.raw.sector.image; // ex: 'background/nebula01'
+        const src = this.spriteManager.makeUrl(`background/${rel}/0.webp`);
         const img = this.spriteManager.get(src);
         if (img) {
             const tilePx = this.camera.tileSize * this.camera.zoom;
@@ -31,13 +30,13 @@ export default class BackgroundRenderer {
             const startTileY = Math.floor(this.camera.y / tilePx) - 1;
             const cols = Math.ceil(w / tilePx) + 2;
             const rows = Math.ceil(h / tilePx) + 2;
+            this.ctx.drawImage(img, screenX, screenY, tilePx, tilePx);
             for (let ry = 0; ry < rows; ry++) {
             for (let cx = 0; cx < cols; cx++) {
                 const worldTileX = startTileX + cx;
                 const worldTileY = startTileY + ry;
                 const screenX = (worldTileX * tilePx) - this.camera.x;
                 const screenY = (worldTileY * tilePx) - this.camera.y;
-                this.ctx.drawImage(img, screenX, screenY, tilePx, tilePx);
             }
             }
         } else {

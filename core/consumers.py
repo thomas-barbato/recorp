@@ -120,6 +120,9 @@ class GameConsumer(WebsocketConsumer):
     
             # Rafraîchir la session à CHAQUE message
             self._refresh_session()
+            
+            print(data["type"])
+            print(data)
         
             # Gestion du heartbeat
             if data["type"] == "ping":
