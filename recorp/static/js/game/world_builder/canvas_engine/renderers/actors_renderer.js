@@ -7,27 +7,138 @@ export default class ActorsRenderer {
         this.sonar = sonar || null;
         this._time = 0;
 
-        // cache : key = `${src}|${w}x${h}|density` -> { canvas, imgW, imgH, step }
+        // Animations en cours : Map<playerId, { segments, current, startTime }>
+        this.activeAnimations = new Map();
+
+        // Cache silhouettes (clé -> { points, imgW, imgH, step })
         this._dotCache = new Map();
     }
 
     render(delta = 0) {
         this._time += delta;
+
         const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
 
-        // players
+        // Met à jour les animations en cours (case par case)
+        this._updateActorAnimations();
+
+        // Players
         (this.map.players || []).forEach(p => {
             this._drawObject(p, tilePx);
         });
 
-        // npc (we stored some as worldObjects)
-        (this.map.worldObjects || []).filter(o => o.type === 'npc').forEach(npc => {
-            this._drawObject(npc, tilePx);
+        // NPCs
+        (this.map.worldObjects || [])
+            .filter(o => o.type === "npc")
+            .forEach(npc => {
+                this._drawObject(npc, tilePx);
+            });
+    }
+
+    /**
+     * Animation simple (start -> end). Gardée pour compat mais non utilisée
+     */
+    addMovementAnimation(playerId, startX, startY, endX, endY) {
+        const segments = [
+            {
+                startX,
+                startY,
+                endX,
+                endY,
+                duration: 350
+            }
+        ];
+
+        this.activeAnimations.set(playerId, {
+            segments,
+            current: 0,
+            startTime: performance.now()
         });
     }
 
+    /**
+     * Animation multi-segments : suit le path A* case par case.
+     * path = [ {x,y}, {x,y}, ... ]
+     */
+    addMovementAnimationPath(playerId, path) {
+        if (!path || path.length < 2) return;
+
+        const segments = [];
+        for (let i = 0; i < path.length - 1; i++) {
+            segments.push({
+                startX: path[i].x,
+                startY: path[i].y,
+                endX: path[i + 1].x,
+                endY: path[i + 1].y,
+                duration: 120 // ms par case
+            });
+        }
+
+        this.activeAnimations.set(playerId, {
+            segments,
+            current: 0,
+            startTime: performance.now()
+        });
+    }
+
+    /**
+     * Met à jour toutes les animations de vaisseaux.
+     * Utilise renderX / renderY pour l'affichage interpolé,
+     * et met à jour actor.x / actor.y seulement à la fin.
+     */
+    _updateActorAnimations() {
+        const now = performance.now();
+
+        for (const [playerId, anim] of this.activeAnimations.entries()) {
+            const actor = this.map.findPlayerById(playerId);
+            if (!actor) {
+                this.activeAnimations.delete(playerId);
+                continue;
+            }
+
+            const seg = anim.segments[anim.current];
+            if (!seg) {
+                // Sécurité : plus de segments => nettoyage
+                delete actor.renderX;
+                delete actor.renderY;
+                this.activeAnimations.delete(playerId);
+                continue;
+            }
+
+            const t = (now - anim.startTime) / seg.duration;
+
+            if (t >= 1) {
+                // Fin de ce segment
+                actor.renderX = seg.endX;
+                actor.renderY = seg.endY;
+
+                anim.current++;
+                anim.startTime = now;
+
+                // Si on vient de terminer le DERNIER segment
+                if (anim.current >= anim.segments.length) {
+                    actor.x = seg.endX;
+                    actor.y = seg.endY;
+                    delete actor.renderX;
+                    delete actor.renderY;
+                    this.activeAnimations.delete(playerId);
+                }
+                continue;
+            }
+
+            // interpolation ease-in-out
+            const eased = t * t * (3 - 2 * t);
+            actor.renderX = seg.startX + (seg.endX - seg.startX) * eased;
+            actor.renderY = seg.startY + (seg.endY - seg.startY) * eased;
+        }
+    }
+
     _drawObject(obj, tilePx) {
-        const scr = this.camera.worldToScreen(obj.x, obj.y);
+        // Coordonnées monde : animées (renderX/Y) si présentes, sinon x/y
+        const worldX = (obj.renderX !== undefined) ? obj.renderX : obj.x;
+        const worldY = (obj.renderY !== undefined) ? obj.renderY : obj.y;
+
+        const scr = this.camera.worldToScreen(worldX, worldY);
         const pxW = obj.sizeX * tilePx;
         const pxH = obj.sizeY * tilePx;
 
@@ -35,54 +146,82 @@ export default class ActorsRenderer {
         const srcUrl = this.spriteManager.makeUrl ? this.spriteManager.makeUrl(srcPath) : srcPath;
         const img = this.spriteManager.get ? this.spriteManager.get(srcUrl) : null;
 
-        const sonar = this.sonar || (window.canvasEngine && window.canvasEngine.renderer && window.canvasEngine.renderer.sonar) || null;
+        // Sonar / visibilité
+        const sonar =
+            this.sonar ||
+            (window.canvasEngine && window.canvasEngine.renderer && window.canvasEngine.renderer.sonar) ||
+            null;
+
         const visible = sonar ? sonar.isVisible(obj) : true;
-        
-        // highlight current player ONLY when pathfinding active
+
+        // Highlight du joueur courant lorsque pathfinding actif
         const engine = window.canvasEngine;
         const pf = engine?.pathfinding;
         const showBorder = pf && (pf.current || pf.invalidPreview);
-        
-        // If visible -> normal draw (with flip handling)
+
         if (visible) {
-            this._drawFullSprite(img, scr.x, scr.y, pxW, pxH, obj);
-            // define borders.
-            if (showBorder && String(obj.data?.user?.player) === String(window.current_player_id)) {
+            const isAnimating = obj.renderX !== undefined;
+
+            // Traînée SF : dessine l'ancienne position avec blur
+            if (isAnimating && img) {
+                const prevScr = this.camera.worldToScreen(obj.x, obj.y);
                 this.ctx.save();
-                this.ctx.strokeStyle = 'rgba(255,165,0,0.95)';
+                this.ctx.globalAlpha = 0.15;
+                this.ctx.filter = "blur(1px) brightness(1.12)";
+                this.ctx.drawImage(img, prevScr.x, prevScr.y, pxW, pxH);
+                this.ctx.restore();
+            }
+
+            // Blur léger sur le sprite animé
+            if (isAnimating) {
+                this.ctx.filter = "brightness(1.12) blur(0.45px)";
+                this.ctx.globalAlpha = 0.9;
+            } else {
+                this.ctx.filter = "none";
+                this.ctx.globalAlpha = 1;
+            }
+
+            // Dessin du sprite (flip géré dans _drawFullSprite)
+            this._drawFullSprite(img, scr.x, scr.y, pxW, pxH, obj);
+
+            // Bordure du joueur courant
+            if (
+                showBorder &&
+                String(obj.data?.user?.player) === String(window.current_player_id)
+            ) {
+                this.ctx.save();
+                this.ctx.strokeStyle = "rgba(255,165,0,0.95)";
                 this.ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
-
-                // dashed border
                 this.ctx.setLineDash([4, 4]);
-
                 this.ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
                 this.ctx.restore();
             }
+
+            // Reset filtre
+            this.ctx.filter = "none";
+            this.ctx.globalAlpha = 1;
             return;
         }
 
-        // If not visible -> draw dotted silhouette that preserves shape
+        // Non visible : silhouette "radar"
         if (img) {
             this._drawDottedSilhouetteFromSprite(img, scr.x, scr.y, pxW, pxH, obj);
         } else {
-            // fallback: draw dotted rectangle
             this._drawDottedFallback(scr.x, scr.y, pxW, pxH);
-            // also kick preload
             if (this.spriteManager && srcUrl) {
-                this.spriteManager.ensure?.(srcUrl).catch(()=>{});
+                this.spriteManager.ensure?.(srcUrl).catch(() => {});
             }
         }
     }
 
     _drawFullSprite(img, x, y, w, h, obj) {
         if (!img) {
-            // placeholder
-            this.ctx.fillStyle = '#f59e0b';
+            this.ctx.fillStyle = "#f59e0b";
             this.ctx.fillRect(x, y, w, h);
             return;
         }
 
-        const isShip = (obj.type === 'player' || obj.type === 'npc');
+        const isShip = (obj.type === "player" || obj.type === "npc");
         const reversed = isShip && obj.data?.ship?.is_reversed;
 
         if (!reversed) {
@@ -99,13 +238,13 @@ export default class ActorsRenderer {
     _drawDottedFallback(x, y, w, h) {
         const ctx = this.ctx;
         ctx.save();
-        ctx.fillStyle = 'rgba(150,200,170,0.9)';
+        ctx.fillStyle = "rgba(150,200,170,0.9)";
         const step = Math.max(4, Math.floor(Math.min(w, h) / 6));
         const r = Math.max(1, Math.round(step * 0.35));
         for (let yy = y; yy < y + h; yy += step) {
             for (let xx = x; xx < x + w; xx += step) {
                 ctx.beginPath();
-                ctx.arc(xx + Math.floor(step/2), yy + Math.floor(step/2), r, 0, Math.PI*2);
+                ctx.arc(xx + Math.floor(step / 2), yy + Math.floor(step / 2), r, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
@@ -113,44 +252,36 @@ export default class ActorsRenderer {
     }
 
     /**
-     * Draw "points silhouette" by sampling the sprite image.
-     * We use an offscreen canvas per (src + target size + density) cached in _dotCache.
-     *
-     * Strategy:
-     *  - draw sprite into offscreen canvas sized to tilePx*object size (matching final drawing size)
-     *  - read ImageData
-     *  - step over pixels by sampleStep; if alpha > threshold -> draw a small dot at corresponding position
-     *
-     * Caching: we store an offscreen canvas that already contains sampled positions (array of coords)
+     * Silhouette "points radar" dérivée du sprite original.
+     * On échantillonne l'alpha dans un canvas offscreen et on dessine des points.
      */
     _drawDottedSilhouetteFromSprite(img, x, y, w, h, obj) {
         if (!img) {
-            this._drawDottedFallback(x,y,w,h);
+            this._drawDottedFallback(x, y, w, h);
             return;
         }
 
-        // choose density: smaller tilePx -> fewer points; larger objects -> more points but keep performant
         const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
-        // density factor: roughly points per 8px
         const density = Math.max(1, Math.round(tilePx / 8));
 
-        const cacheKey = `${img.src}|${Math.round(w)}x${Math.round(h)}|d${density}|rev${Boolean(obj.data?.ship?.is_reversed)}`;
+        const cacheKey = `${img.src}|${Math.round(w)}x${Math.round(h)}|d${density}|rev${Boolean(
+            obj.data?.ship?.is_reversed
+        )}`;
 
         let cached = this._dotCache.get(cacheKey);
         if (!cached) {
-            // create offscreen canvas at target render size to ensure sampling matches final scale
-            const off = document.createElement('canvas');
+            const off = document.createElement("canvas");
             off.width = Math.max(1, Math.round(w));
             off.height = Math.max(1, Math.round(h));
-            const octx = off.getContext('2d', { willReadFrequently: true });
 
-            // draw sprite to offscreen scaled to target size (respecting flip)
             try {
-                // Clear and draw
-                octx.clearRect(0,0,off.width, off.height);
+                const octx = off.getContext("2d");
+                octx.clearRect(0, 0, off.width, off.height);
 
-                // If the object's sprite should be flipped, draw flipped on the offscreen so sampling matches
-                const reversed = Boolean(obj.data?.ship?.is_reversed);
+                // flip si nécessaire dans l'offscreen
+                const isShip = (obj.type === "player" || obj.type === "npc");
+                const reversed = isShip && obj.data?.ship?.is_reversed;
+
                 if (!reversed) {
                     octx.drawImage(img, 0, 0, off.width, off.height);
                 } else {
@@ -161,81 +292,72 @@ export default class ActorsRenderer {
                     octx.restore();
                 }
 
-                // sample
-                const imgd = octx.getImageData(0,0,off.width, off.height);
+                const imgd = octx.getImageData(0, 0, off.width, off.height);
                 const data = imgd.data;
                 const wOff = off.width;
                 const hOff = off.height;
 
-                // sample step tuned to density
-                const sampleStep = Math.max(2, Math.floor(Math.min(wOff, hOff) / (density * 2)));
-                const alphaThreshold = 30; // pixel alpha threshold (0-255)
+                const sampleStep = Math.max(
+                    2,
+                    Math.floor(Math.min(wOff, hOff) / (density * 2))
+                );
+                const alphaThreshold = 30;
 
-                // collect sample positions (normalized 0..1)
                 const points = [];
                 for (let yy = 0; yy < hOff; yy += sampleStep) {
                     for (let xx = 0; xx < wOff; xx += sampleStep) {
                         const idx = (yy * wOff + xx) * 4;
                         const a = data[idx + 3];
                         if (a > alphaThreshold) {
-                            // center within cell to create nicer distribution
-                            const cx = (xx + Math.min(sampleStep-1, Math.floor(sampleStep/2))) / wOff;
-                            const cy = (yy + Math.min(sampleStep-1, Math.floor(sampleStep/2))) / hOff;
+                            const cx =
+                                (xx +
+                                    Math.min(sampleStep - 1, Math.floor(sampleStep / 2))) / wOff;
+                            const cy =
+                                (yy +
+                                    Math.min(sampleStep - 1, Math.floor(sampleStep / 2))) / hOff;
                             points.push([cx, cy]);
                         }
                     }
                 }
 
-                // reduce points if too many for very large objects (cap)
-                const maxPoints = 1200;
-                let finalPoints = points;
-                if (points.length > maxPoints) {
-                    // sample down uniformly
-                    const step = Math.ceil(points.length / maxPoints);
-                    finalPoints = points.filter((_, i) => i % step === 0);
-                }
-
                 cached = {
-                    points: finalPoints,
+                    points,
                     imgW: off.width,
                     imgH: off.height,
                     step: sampleStep
                 };
                 this._dotCache.set(cacheKey, cached);
             } catch (e) {
-                // fallback: if cross-origin issue or other, store empty and bail to fallback rectangle
-                console.warn('ActorsRenderer: sampling sprite failed, fallback to dotted rectangle', e);
+                console.warn(
+                    "ActorsRenderer: sampling sprite failed, fallback to dotted rectangle",
+                    e
+                );
                 cached = { points: null };
                 this._dotCache.set(cacheKey, cached);
             }
         }
 
-        // draw points
         if (!cached || !cached.points || cached.points.length === 0) {
-            this._drawDottedFallback(x,y,w,h);
+            this._drawDottedFallback(x, y, w, h);
             return;
         }
 
         this.ctx.save();
 
-        // visual style: radar greenish, dimmer for unknown, slightly smaller for tiny tiles
-        const baseAlpha = 0.95;
-        const color = 'rgba(44,255,190,' + (0.7) + ')';
+        const color = "rgba(44,255,190,0.7)";
         this.ctx.fillStyle = color;
 
-        // size of each dot relative to object size
-        const dotBase = Math.max(1, Math.round(Math.min(w,h) * 0.06)); // 6% of min dim
+        const dotBase = Math.max(1, Math.round(Math.min(w, h) * 0.06));
         const dot = Math.max(1, dotBase);
 
-        // draw each cached normalized point at scaled position
         const pts = cached.points;
         for (let i = 0; i < pts.length; i++) {
             const [nx, ny] = pts[i];
             const px = Math.round(x + nx * w);
             const py = Math.round(y + ny * h);
 
-            // Slight alpha variation for a 'twinkling' radar feel
-            const alpha = 0.6 + 0.4 * Math.sin((i * 13 + (this._time * 0.01)) % Math.PI);
+            const alpha =
+                0.6 + 0.4 * Math.sin((i * 13 + this._time * 0.01) % Math.PI);
             this.ctx.globalAlpha = alpha;
 
             this.ctx.beginPath();

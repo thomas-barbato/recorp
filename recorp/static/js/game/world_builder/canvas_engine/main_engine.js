@@ -1,5 +1,5 @@
 // main_engine.js
-import { initGlobals } from './globals.js';
+import { currentPlayer, initGlobals } from './globals.js';
 import './touch.js'; // side effects: expose action_listener_touch_click and friends to window
 import SpriteManager from './engine/sprite_manager.js';
 import CanvasManager from './engine/canvas_manager.js';
@@ -155,6 +155,23 @@ if (!ok) {
         const ws = new WebSocketManager(ws_url);
         ws.connect();
 
+        // --------------------------------
+        // GESTION DU MOUVEMENT DES JOUEURS
+        // --------------------------------
+        ws.on("player_move", (msg) => {
+
+            const actor = map.findPlayerById(msg.player_id);
+            if (!actor) return;
+
+            // Mettre à jour la position logique dès maintenant
+            actor.x = msg.end_x;
+            actor.y = msg.end_y;
+
+            // Animer le chemin complet (case par case)
+            renderer.actors.addMovementAnimationPath(msg.player_id, msg.path);
+
+            renderer.requestRedraw();
+        });
         const loop = new UpdateLoop({ fps: FPS, map, renderer, camera, input });
         window.addEventListener('resize', () => {
             CanvasManager.resizeAll();

@@ -176,6 +176,12 @@ class PlayerAction:
             ).first()
         except PlayerShip.DoesNotExist:
             return None
+        
+    def get_playerShip(self):
+        return PlayerShip.objects.filter(
+            player_id=self.player_id,
+            is_current_ship=True
+        ).all()
 
     def destination_already_occupied(self, coordinates_list: list) -> bool:
         """
@@ -258,6 +264,20 @@ class PlayerAction:
         try:
             return PlayerShip.objects.filter(
                 player_id=other_player_id, 
+                is_current_ship=True
+            ).values_list("current_movement", flat=True).first()
+        except PlayerShip.DoesNotExist:
+            return None
+
+    def get_player_movement_remaining(self) -> Optional[int]:
+        """
+        Récupère le mouvement restant du joueur.
+        Returns:
+            Optional[int]: Mouvement restant ou None
+        """
+        try:
+            return PlayerShip.objects.filter(
+                player_id=self.player_id, 
                 is_current_ship=True
             ).values_list("current_movement", flat=True).first()
         except PlayerShip.DoesNotExist:

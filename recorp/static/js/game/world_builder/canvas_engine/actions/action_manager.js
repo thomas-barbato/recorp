@@ -16,14 +16,14 @@ export default class ActionManager {
         Object.entries(map).forEach(([k, v]) => this.register(k, v));
     }
 
-    execute(type, payload) {
+    execute(type, message) {
         const handler = this.handlers.get(type);
         if (!handler) {
         console.warn(`ActionManager: no handler for ${type}`);
         return;
         }
         try {
-        handler(payload);
+        handler(message);
         } catch (err) {
         console.error('ActionManager handler error', err);
         this._state.lastError = err;

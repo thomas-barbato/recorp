@@ -101,7 +101,7 @@ export default class CanvasPathfinding {
             if (!ws || !me || !this.current) return;
 
             const path = this.current.path;
-            if (!path || path.length < 2) {
+            if (!path || path.length < 1) {
                 // coût 0 → mouvement invalide
                 console.warn("[MOVE] move_cost < 1 → mouvement ignoré");
                 return;
@@ -109,7 +109,7 @@ export default class CanvasPathfinding {
 
             // coût = nombre de pas
             const moveCost = path.length - 1;
-            if (moveCost < 1) return;
+            if (moveCost < 0) return;
 
             const dest = this.current.dest;
 
@@ -123,6 +123,7 @@ export default class CanvasPathfinding {
                 size_x: me.sizeX,
                 size_y: me.sizeY,
                 is_reversed: me.isReversed,
+                path: path
             });
 
             console.log("%c[MOVE] async_move envoyé →",

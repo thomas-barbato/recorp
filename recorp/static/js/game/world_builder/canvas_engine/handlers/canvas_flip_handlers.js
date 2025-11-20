@@ -2,11 +2,11 @@
 // Handler du flip vaisseau reçu via WebSocket
 // ============================================================================
 
-export function handleCanvasFlipShip(payload) {
+export function handleCanvasFlipShip(message) {
 
-    console.log("[CANVAS] flip reçu :", payload);
+    console.log("[CANVAS] flip reçu :", message);
 
-    const { player_id } = payload;
+    const { player_id } = message;
     const engine = window.canvasEngine;
     if (!engine) {
         console.warn("[CANVAS] window.canvasEngine introuvable");

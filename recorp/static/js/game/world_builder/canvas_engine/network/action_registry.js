@@ -16,12 +16,12 @@ export default class ActionRegistry {
         this.table.set(action, handler);
     }
 
-    run(action, payload) {
+    run(action, message) {
         const handler = this.table.get(action);
         if (!handler) {
             console.warn(`ActionRegistry: no handler for "${action}"`);
             return;
         }
-        handler(payload);
+        handler(message);
     }
 }

@@ -595,7 +595,7 @@ class GameConsumer(WebsocketConsumer):
             if recipient_id != self.player_id:
                 return
 
-            # Envoi au client final (websocket) : type et payload à adapter côté front
+            # Envoi au client final (websocket) : type et message à adapter côté front
             self._send_response({
                 "type": "async_recieve_mp",
                 "message": {
@@ -653,9 +653,9 @@ class GameConsumer(WebsocketConsumer):
         SEUL son consumer valide et enregistre.
         """
         try:
-            payload = data["payload"]
+            message = data["message"]
             # Étape 1 : validation complète
-            if not self._validate_move_request(payload):
+            if not self._validate_move_request(message):
                 return  # ne rien broadcaster si invalide
 
             # Étape 2 : enregistrement du mouvement (DB + cache)
@@ -663,9 +663,9 @@ class GameConsumer(WebsocketConsumer):
 
             # → move_cost déjà validé
             registered = player_action.move_have_been_registered(
-                coordinates=f"{payload['end_y']}_{payload['end_x']}",
-                move_cost=int(payload["move_cost"]),
-                player_id=payload["player"],
+                coordinates=f"{message['end_y']}_{message['end_x']}",
+                move_cost=int(message["move_cost"]),
+                player_id=message["player"],
             )
 
             if not registered:
@@ -673,7 +673,7 @@ class GameConsumer(WebsocketConsumer):
                 return
 
             # Mise à jour du cache
-            self._cache_store.update_player_position(payload, self.player_id)
+            self._cache_store.update_player_position(message, self.player_id)
             self._cache_store.update_player_range_finding()
             self._cache_store.update_sector_player_visibility_zone(self.player_id)
 
@@ -682,7 +682,7 @@ class GameConsumer(WebsocketConsumer):
                 self.room_group_name,
                 {
                     "type": "async_move",
-                    "payload": payload
+                    "message": message
                 }
             )
 
@@ -753,13 +753,12 @@ class GameConsumer(WebsocketConsumer):
         Juste mise à jour du cache local + réponse client.
         """
         try:
-            message = event["payload"]
+            message = event["message"]
             player_action = PlayerAction(self.user.id)
 
             # Mise à jour du cache
             self._cache_store.update_player_position(message, self.player_id)
             self._cache_store.update_player_range_finding()
-
             # Préparer la réponse pour CE joueur
             response = {
                 "type": "player_move",
@@ -768,6 +767,9 @@ class GameConsumer(WebsocketConsumer):
                     "end_x": message["end_x"],
                     "end_y": message["end_y"],
                     "move_cost": message["move_cost"],
+                    "move": player_action.get_player_movement_remaining(),
+                    "path": message["path"],
+                    "max_move": int(player_action.get_playerShip().values_list('max_movement', flat=True)[0]),
                     "is_reversed": message.get("is_reversed", False),
                     "size": {
                         "x": message.get("size_x", 1),

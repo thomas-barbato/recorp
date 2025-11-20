@@ -47,13 +47,13 @@ export default class WebSocketManager {
     // -----------------------------------------------------------------
     // Send packet
     // -----------------------------------------------------------------
-    send(type, payload = {}) {
+    send(type, message = {}) {
         if (!this.isConnected) {
             console.warn("[WS] Not connected, send skipped");
             return;
         }
 
-        const packet = JSON.stringify({ type, payload });
+        const packet = JSON.stringify({ type, message });
         this.socket.send(packet);
     }
 
@@ -79,7 +79,7 @@ export default class WebSocketManager {
             return;
         }
 
-        const { type, payload } = msg;
+        const { type, message } = msg;
 
         if (!type) {
             console.warn("[WS] message with no type:", msg);
@@ -92,6 +92,6 @@ export default class WebSocketManager {
             return;
         }
 
-        list.forEach(cb => cb(payload));
+        list.forEach(cb => cb(message));
     }
 }
