@@ -1,209 +1,284 @@
-// engine/canvas_pathfinding.js
-// Gère la prévisualisation du chemin sur le canvas UI.
+// canvas_pathfinding.js — VERSION FINALE
 
 export default class CanvasPathfinding {
-    constructor({ map, camera, renderer }) {
-        this.map = map;
-        this.camera = camera;
-        this.renderer = renderer;
+    /**
+     * options = {
+     *   tileSize: 32,
+     *   map: MapData instance,
+     *   renderer: Renderer instance
+     * }
+     */
+    constructor(options = {}) {
+        this.map = options.map;
+        this.renderer = options.renderer;
+        this.tileSize = options.tileSize || 32;
 
-        this.active = false;          // pathfinding activé après premier clic
-        this.lastHoverTile = null;    // dernière tuile survolée
-        this.lastComputed = null;     // { tiles:[{x,y,step}], valid:true/false }
+        // stockage interne du résultat visible à l'écran
+        this.current = null;
+        this.path = [];
+
+        this.hoverTx = null;
+        this.hoverTy = null;
     }
 
-    // ---------------------------------------------------------------------
-    // Données joueur
-    // ---------------------------------------------------------------------
-    _getPlayerBoundingBox() {
-        const me = this.map.findPlayerById(window.current_player_id);
-        if (!me) return null;
+    // ---------------------------------------------------------
+    // Événement de clic (déclenché par Input.onTileClick)
+    // ---------------------------------------------------------
+    handleClick(tx, ty) {
+        // Si clic sur le même tile → toggle off
+        if (this.current && this.current.dest && this.current.dest.x === tx && this.current.dest.y === ty) {
+            this.clear();
+            return;
+        }
 
-        return {
-            player: me,
-            x: me.x,
-            y: me.y,
-            sizeX: me.sizeX || 1,
-            sizeY: me.sizeY || 1
-        };
+        this._compute(tx, ty);
     }
 
-    // ---------------------------------------------------------------------
-    // Construction de l'anneau de départ autour du vaisseau
-    // ---------------------------------------------------------------------
-    _buildStartRing(box) {
-        const tiles = [];
+    // ---------------------------------------------------------
+    // Hover : met à jour le tile pointé — NE CALCULE PAS le path
+    // ---------------------------------------------------------
+    handleHover(tx, ty) {
+        this.hoverTx = tx;
+        this.hoverTy = ty;
 
-        const minX = box.x;
-        const maxX = box.x + box.sizeX - 1;
-        const minY = box.y;
-        const maxY = box.y + box.sizeY - 1;
-
-        // ligne du haut
-        for (let x = minX; x <= maxX; x++) {
-            tiles.push({ x, y: minY - 1 });
-        }
-
-        // ligne du bas
-        for (let x = minX; x <= maxX; x++) {
-            tiles.push({ x, y: maxY + 1 });
-        }
-
-        // côtés gauche/droit
-        for (let y = minY; y <= maxY; y++) {
-            tiles.push({ x: minX - 1, y });
-            tiles.push({ x: maxX + 1, y });
-        }
-
-        return tiles.filter(t =>
-            t.x >= 0 &&
-            t.y >= 0 &&
-            t.x < this.map.mapWidth &&
-            t.y < this.map.mapHeight
-        );
-    }
-
-    // ---------------------------------------------------------------------
-    // Trouver le point du ring le plus proche
-    // ---------------------------------------------------------------------
-    _closestStartTile(ring, target) {
-        let best = null;
-        let bestDist = Infinity;
-
-        for (const t of ring) {
-            const dx = t.x - target.x;
-            const dy = t.y - target.y;
-            const dist = dx * dx + dy * dy;
-
-            if (dist < bestDist) {
-                bestDist = dist;
-                best = t;
+        // Si on a un chemin courant et que la souris quitte la tuile de destination → clear
+        if (this.current && this.current.dest) {
+            if (tx !== this.current.dest.x || ty !== this.current.dest.y) {
+                this.clear();
             }
         }
+
+        // ---- Effacer la zone rouge ----
+        if (this.invalidPreview) {
+            const inv = this.invalidPreview;
+
+            const inside =
+                tx >= inv.x &&
+                tx < inv.x + inv.sizeX &&
+                ty >= inv.y &&
+                ty < inv.y + inv.sizeY;
+
+            if (!inside) {
+                this.clear();
+            }
+        }
+    }
+
+    // ---------------------------------------------------------
+    // Efface le pathfinding
+    // ---------------------------------------------------------
+    clear() {
+        this.current = null;
+        this.path = [];
+        this.invalidPreview = null;
+        if (this.renderer?.requestRedraw) {
+            this.renderer.requestRedraw();
+        }
+    }
+
+    /**
+     * Vérifie que toutes les cases nécessaires à la taille du vaisseau sont libres.
+     */
+    _isDestinationAreaFree(x, y, me) {
+        const sizeX = me.sizeX || 1;
+        const sizeY = me.sizeY || 1;
+
+        for (let dy = 0; dy < sizeY; dy++) {
+            for (let dx = 0; dx < sizeX; dx++) {
+                const tx = x + dx;
+                const ty = y + dy;
+
+                // hors map
+                if (tx < 0 || ty < 0 ||
+                    tx >= this.map.mapWidth ||
+                    ty >= this.map.mapHeight) {
+                    return false;
+                }
+
+                // case bloquante ?
+                if (this.map.isBlockedTile(tx, ty)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // ---------------------------------------------------------
+    // Calcule tout : anneau de départ + A*
+    // ---------------------------------------------------------
+    _compute(destX, destY) {
+
+        const me = this.map.findPlayerById(window.current_player_id);
+        if (!me) return;
+
+        this.shipSizeX = me.sizeX;
+        this.shipSizeY = me.sizeY;
+
+        const startRing = this._computeStartRing(me);
+        if (startRing.length === 0) return;
+
+        const bestStart = this._pickClosest(startRing, { x: destX, y: destY });
+
+        const path = this._computePath(bestStart, { x: destX, y: destY });
+
+        if (!path) {
+            this.current = null;
+            this.path = [];
+        } else {
+            this.current = {
+                startList: startRing,
+                start: bestStart,
+                dest: { x: destX, y: destY },
+                path
+            };
+            this.path = path;
+        }
+
+        // Vérifier que la zone destination est libre pour la taille du vaisseau
+        if (!this._isDestinationAreaFree(destX, destY, me)) {
+            // chemin impossible → zone rouge
+            this.current = null;
+            this.path = [];
+            this.invalidPreview = {
+                x: destX,
+                y: destY,
+                sizeX: me.sizeX,
+                sizeY: me.sizeY
+            };
+            this.renderer.requestRedraw();
+            return;
+        }
+
+        this.renderer.requestRedraw();
+    }
+
+    // ---------------------------------------------------------
+    // Construit l'anneau de départ autour du vaisseau
+    // ---------------------------------------------------------
+    _computeStartRing(me) {
+        const sx = me.x;
+        const sy = me.y;
+        const w = me.sizeX;
+        const h = me.sizeY;
+
+        const ring = [];
+
+        // TOP
+        for (let i = 0; i < w; i++)
+            ring.push({ x: sx + i, y: sy - 1 });
+
+        // BOTTOM
+        for (let i = 0; i < w; i++)
+            ring.push({ x: sx + i, y: sy + h });
+
+        // LEFT
+        for (let j = 0; j < h; j++)
+            ring.push({ x: sx - 1, y: sy + j });
+
+        // RIGHT
+        for (let j = 0; j < h; j++)
+            ring.push({ x: sx + w, y: sy + j });
+
+        return ring;
+    }
+
+    // ---------------------------------------------------------
+    // Choisit le start le + proche de la destination
+    // ---------------------------------------------------------
+    _pickClosest(list, dest) {
+        let best = null;
+        let bestDist = Infinity;
+        list.forEach(p => {
+            const dx = p.x - dest.x;
+            const dy = p.y - dest.y;
+            const d = dx * dx + dy * dy;
+            if (d < bestDist) {
+                bestDist = d;
+                best = p;
+            }
+        });
         return best;
     }
 
-    // ---------------------------------------------------------------------
-    // Construire un chemin simple (sans décalage)
-    // ---------------------------------------------------------------------
-    _buildSimplePath(start, target) {
-        const path = [];
-        let x = start.x;
-        let y = start.y;
-        let step = 2;
+    // ---------------------------------------------------------
+    // Pathfinding A* — Contourne les obstacles
+    // ---------------------------------------------------------
+    _computePath(start, dest) {
+        const W = this.map.mapWidth;
+        const H = this.map.mapHeight;
+        const isBlocked = (x, y) => this.map.isBlockedTile(x, y);
 
-        path.push({ x, y, step: 1 }); // <-- le vrai début, collé au ring
+        const open = [];
+        const closed = new Set();
+        const parent = new Map();
+        const g = new Map();
 
-        while (x !== target.x || y !== target.y) {
+        const key = (x, y) => `${x},${y}`;
 
-            if (x < target.x) x++;
-            else if (x > target.x) x--;
+        const startKey = key(start.x, start.y);
+        const destKey = key(dest.x, dest.y);
 
-            if (y < target.y) y++;
-            else if (y > target.y) y--;
+        open.push(start);
+        g.set(startKey, 0);
 
-            path.push({ x, y, step });
-            step++;
-        }
-        return path;
-    }
+        const h = (p) => Math.abs(p.x - dest.x) + Math.abs(p.y - dest.y);
 
-    // ---------------------------------------------------------------------
-    // Calcul depuis la tuile survolée
-    // ---------------------------------------------------------------------
-    _compute() {
-        const hover = this.lastHoverTile;
-        if (!hover) return;
+        while (open.length > 0) {
+            open.sort((a, b) =>
+                (g.get(key(a.x, a.y)) + h(a)) - (g.get(key(b.x, b.y)) + h(b))
+            );
 
-        const box = this._getPlayerBoundingBox();
-        if (!box) return;
+            const cur = open.shift();
+            const ck = key(cur.x, cur.y);
 
-        // si la tuile survolée est une tuile du vaisseau -> effacer
-        if (
-            hover.x >= box.x &&
-            hover.x < box.x + box.sizeX &&
-            hover.y >= box.y &&
-            hover.y < box.y + box.sizeY
-        ) {
-            this.clear();
-            return;
-        }
+            if (ck === destKey) {
+                const final = [];
+                let k = ck;
+                while (parent.has(k)) {
+                    final.push(k);
+                    k = parent.get(k);
+                }
+                final.push(startKey);
+                final.reverse();
 
-        const ring = this._buildStartRing(box);
-        const start = this._closestStartTile(ring, hover);
-        if (!start) {
-            this.clear();
-            return;
-        }
-
-        const path = this._buildSimplePath(start, hover);
-
-        const me = box.player;
-        const mp = me.data?.ship?.current_movement ?? 0;
-        const valid = path.length - 1 <= mp;   // -1 car step 0 = ring
-
-        // transmettre toutes les infos au renderer
-        this.lastComputed = { tiles: path, valid };
-        window.__canvasPathPreview = this.lastComputed;
-        this.renderer.requestRedraw();
-    }
-
-    // ---------------------------------------------------------------------
-    // Survol souris
-    // ---------------------------------------------------------------------
-    handleHover(tileX, tileY) {
-        const pos = { x: tileX, y: tileY };
-
-        // Si changement de tuile → recalcul / disparition
-        if (
-            !this.lastHoverTile ||
-            this.lastHoverTile.x !== pos.x ||
-            this.lastHoverTile.y !== pos.y
-        ) {
-            this.lastHoverTile = pos;
-
-            if (!this.active) {
-                // pas dans la phase de pathfinding → pas d'affichage permanent
-                this.clear();
-                return;
+                return final.map(s => {
+                    const [sx, sy] = s.split(',').map(Number);
+                    return { x: sx, y: sy };
+                });
             }
 
-            this._compute();
-        }
-    }
+            closed.add(ck);
 
-    // ---------------------------------------------------------------------
-    // Clic
-    // ---------------------------------------------------------------------
-    handleClick(tileX, tileY) {
+            const neighbors = [
+                { x: cur.x + 1, y: cur.y },
+                { x: cur.x - 1, y: cur.y },
+                { x: cur.x, y: cur.y + 1 },
+                { x: cur.x, y: cur.y - 1 }
+            ];
 
-        // 1er clic → activer
-        if (!this.active) {
-            this.active = true;
-            this.lastHoverTile = { x: tileX, y: tileY };
-            this._compute();
-            return;
-        }
+            for (const nb of neighbors) {
+                if (nb.x < 0 || nb.x >= W || nb.y < 0 || nb.y >= H) continue;
 
-        // 2e clic → valider si la tuile = destination finale
-        if (this.lastComputed) {
-            const final = this.lastComputed.tiles.at(-1);
-            if (final && final.x === tileX && final.y === tileY) {
-                console.log("➡ Déplacement (à implémenter)");
+                const nk = key(nb.x, nb.y);
+                if (closed.has(nk)) continue;
+
+                if (isBlocked(nb.x, nb.y)) continue;
+
+                const tentative = g.get(ck) + 1;
+
+                if (!g.has(nk) || tentative < g.get(nk)) {
+                    parent.set(nk, ck);
+                    g.set(nk, tentative);
+
+                    if (!open.find(o => o.x === nb.x && o.y === nb.y)) {
+                        open.push(nb);
+                    }
+                }
             }
         }
 
-        // reset pour recommencer
-        this.active = false;
-        this.clear();
-    }
-
-    // ---------------------------------------------------------------------
-    // Nettoyage
-    // ---------------------------------------------------------------------
-    clear() {
-        this.lastComputed = null;
-        window.__canvasPathPreview = null;
-        this.renderer.requestRedraw();
+        return null;
     }
 }

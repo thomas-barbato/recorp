@@ -62,9 +62,13 @@ if (!ok) {
             camera,
             renderer
         });
+
+        // Connecter le pathfinder au renderer/UI
+        renderer.setPathfinder(canvasPathfinding);
         
         const input = new Input({
-            uiCanvas: canvases.ui,
+            uiCanvas: canvases.ui.el,        // 💥 Le canvas interactif
+            canvases,
             camera,
             map,
             renderer,

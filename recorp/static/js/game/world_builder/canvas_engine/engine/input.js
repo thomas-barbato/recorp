@@ -1,92 +1,100 @@
+// input.js — version finale basée sur un objet config
 export default class Input {
-    /**
-     * @param {Object} options
-     * @param {Object} options.uiCanvas - { el, ctx } provenant de CanvasManager
-     * @param {Object} options.camera   - instance de Camera
-     * @param {Object} options.map      - instance de MapData
-     * @param {Function} [options.onObjectClick] - (obj, info) => void
-     * @param {Function} [options.onTileClick]   - (tx, ty, info) => void
-     * @param {Function} [options.onMouseMove]   - (tx, ty, info) => void
-     * @param {Function} [options.onMouseLeave]  - () => void
-     */
-    constructor({ uiCanvas, camera, map, onObjectClick, onTileClick, onMouseMove, onMouseLeave }) {
-        // uiCanvas = { el, ctx } → on garde le vrai <canvas>
-        this.canvas = uiCanvas.el || uiCanvas;
-        this.ctx = uiCanvas.ctx || null;
-        this.camera = camera;
-        this.map = map;
 
-        this.onObjectClick = onObjectClick || null;
-        this.onTileClick   = onTileClick   || null;
-        this.onMouseMove   = onMouseMove   || null;
-        this.onMouseLeave  = onMouseLeave  || null;
+    /**
+     * new Input({
+     *   uiCanvas: HTMLCanvasElement,
+     *   camera,
+     *   map,
+     *   renderer,
+     *   pathfinding,
+     *   onObjectClick(obj),
+     *   onTileClick(tx, ty, info),
+     *   onMouseMove(tx, ty, info),
+     *   onMouseLeave()
+     * })
+     */
+    constructor(options = {}) {
+        this.uiCanvas = options.uiCanvas;     // HTMLCanvasElement obligatoire
+        this.camera = options.camera;
+        this.map = options.map;
+        this.renderer = options.renderer;
+        this.pathfinding = options.pathfinding;
+
+        // callbacks utilisateur
+        this.onObjectClick = options.onObjectClick || function () {};
+        this.onTileClick = options.onTileClick || function () {};
+        this.onMouseMove = options.onMouseMove || function () {};
+        this.onMouseLeave = options.onMouseLeave || function () {};
+
+        if (!this.uiCanvas) {
+            console.error("Input ERROR: uiCanvas manquant.");
+            return;
+        }
 
         this._bindEvents();
     }
 
+    // ---------------------------------------------------------------------
+    // Bind des events sur le canvas UI
+    // ---------------------------------------------------------------------
     _bindEvents() {
-        // CLICK
-        this.canvas.addEventListener("click", (ev) => {
-            const info = this._eventToWorld(ev);
+
+        // Click → tile + object
+        this.uiCanvas.addEventListener("click", ev => {
+            const info = this._eventToTile(ev);
             if (!info) return;
 
-            const { tileX, tileY } = info;
+            const { tx, ty, topObject } = info;
 
-            // Y a-t-il un objet sur cette tile ?
-            const obj = this.map.getTopObjectAt(tileX, tileY);
-
-            if (obj && this.onObjectClick) {
-                this.onObjectClick(obj, info);
-                return;
-            }
-
-            // Sinon, clic "vide" sur une tile → pathfinding / autre
-            if (this.onTileClick) {
-                this.onTileClick(tileX, tileY, info);
+            if (topObject) {
+                this.onObjectClick(topObject);
+            } else {
+                this.onTileClick(tx, ty, info);
             }
         });
 
-        // MOUSE MOVE
-        this.canvas.addEventListener("mousemove", (ev) => {
-            if (!this.onMouseMove) return;
-            const info = this._eventToWorld(ev);
+        // Mouse move → tile hover
+        this.uiCanvas.addEventListener("mousemove", ev => {
+            const info = this._eventToTile(ev);
             if (!info) return;
-            const { tileX, tileY } = info;
-            this.onMouseMove(tileX, tileY, info);
+
+            this.onMouseMove(info.tx, info.ty, info);
         });
 
-        // MOUSE LEAVE
-        this.canvas.addEventListener("mouseleave", () => {
-            if (this.onMouseLeave) {
-                this.onMouseLeave();
-            }
+        // Mouse leave du canvas UI
+        this.uiCanvas.addEventListener("mouseleave", () => {
+            this.onMouseLeave();
         });
     }
 
-    /**
-     * Convertit un event souris en coordonnées monde & tile.
-     */
-    _eventToWorld(ev) {
-        const rect = this.canvas.getBoundingClientRect();
+    // ---------------------------------------------------------------------
+    // Convertit un event souris → case 32×32 du monde
+    // ---------------------------------------------------------------------
+    _eventToTile(ev) {
+        const rect = this.uiCanvas.getBoundingClientRect();
         const mx = ev.clientX - rect.left;
         const my = ev.clientY - rect.top;
 
         const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
 
-        // world pixel = camera.x/y + offset
-        const worldPxX = this.camera.x + mx;
-        const worldPxY = this.camera.y + my;
+        const worldX = Math.floor((mx + this.camera.x) / tilePx);
+        const worldY = Math.floor((my + this.camera.y) / tilePx);
 
-        const tileX = Math.floor(worldPxX / tilePx);
-        const tileY = Math.floor(worldPxY / tilePx);
+        if (worldX < 0 || worldY < 0 ||
+            worldX >= this.map.mapWidth ||
+            worldY >= this.map.mapHeight) {
+            return null;
+        }
+
+        const topObject = this.map.getTopObjectAt(worldX, worldY);
 
         return {
-            mouseX: mx,
-            mouseY: my,
-            worldPxX,
-            worldPxY,
-            tileX,
-            tileY
+            tx: worldX,
+            ty: worldY,
+            mx, my,
+            worldX, worldY,
+            topObject
         };
     }
 }

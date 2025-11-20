@@ -147,4 +147,166 @@ export default class MapData {
         const arr = this.getObjectsAtTile(tileX, tileY);
         return arr.length ? arr[0] : null;
     }
+
+     // -----------------------------------------------------------------
+    //  NOUVEAU : test si une case est bloquée pour le pathfinding
+    // -----------------------------------------------------------------
+    isBlocked(x, y, ignoreIds = new Set()) {
+        // hors de la carte => bloqué
+        if (x < 0 || y < 0 || x >= this.mapWidth || y >= this.mapHeight) {
+            return true;
+        }
+
+        const objs = this.getObjectsAtTile(x, y);
+        if (!objs.length) {
+            return false;
+        }
+
+        // Types considérés comme obstacles : players, npcs, foreground (sector_element)
+        for (const o of objs) {
+            if (ignoreIds.has(o.id)) continue;
+
+            if (o.type === "player" || o.type === "npc" || o.type === "foreground") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isBlockedTile(x, y) {
+        // Limites de la carte
+        if (x < 0 || y < 0 || x >= this.mapWidth || y >= this.mapHeight) {
+            return true;
+        }
+
+        // On vérifie si un objet occupe cette tuile
+        const obj = this.getTopObjectAt(x, y);
+
+        if (!obj) return false;
+
+        // foreground (planètes, astéroïdes, stations...) = bloquant
+        if (obj.type === "foreground") return true;
+
+        // NPC ou Player (autre que moi) = bloquant
+        if (obj.type === "player" || obj.type === "npc") {
+            // mais pas le joueur lui-même !
+            if (String(obj.data?.user?.player) !== String(window.current_player_id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // -----------------------------------------------------------------
+    //  NOUVEAU : A* sur la grille
+    //  start / goal : { x, y }
+    //  options: { maxCost?: number, ignoreIds?: string[] }
+    //  Retourne un tableau [{x,y}, ...] (sans le point de départ)
+    // -----------------------------------------------------------------
+    computePath(start, goal, options = {}) {
+        if (!start || !goal) return [];
+
+        const sx = start.x;
+        const sy = start.y;
+        const gx = goal.x;
+        const gy = goal.y;
+
+        const maxCost = (options && typeof options.maxCost === "number")
+            ? options.maxCost
+            : 9999;
+
+        const ignoreIds = new Set(options.ignoreIds || []);
+
+        const key = (x, y) => `${x},${y}`;
+
+        // A* open & closed
+        const open = new Map();   // key -> node
+        const closed = new Set(); // key
+
+        // node = { x, y, g, f, parentKey }
+        const h = (x, y) => Math.abs(x - gx) + Math.abs(y - gy);
+
+        const startKey = key(sx, sy);
+        const startNode = { x: sx, y: sy, g: 0, f: h(sx, sy), parentKey: null };
+        open.set(startKey, startNode);
+
+        let bestGoalNode = null;
+
+        while (open.size > 0) {
+            // trouver le node avec le plus petit f
+            let currentKey = null;
+            let currentNode = null;
+            for (const [k, n] of open) {
+                if (!currentNode || n.f < currentNode.f) {
+                    currentNode = n;
+                    currentKey = k;
+                }
+            }
+
+            if (!currentNode) break;
+
+            // si on a atteint la cible
+            if (currentNode.x === gx && currentNode.y === gy) {
+                bestGoalNode = currentNode;
+                break;
+            }
+
+            open.delete(currentKey);
+            closed.add(currentKey);
+
+            // voisins 4-directions
+            const neighbors = [
+                { x: currentNode.x + 1, y: currentNode.y },
+                { x: currentNode.x - 1, y: currentNode.y },
+                { x: currentNode.x,     y: currentNode.y + 1 },
+                { x: currentNode.x,     y: currentNode.y - 1 }
+            ];
+
+            for (const nb of neighbors) {
+                const nx = nb.x;
+                const ny = nb.y;
+                const k = key(nx, ny);
+
+                if (closed.has(k)) continue;
+
+                // case bloquante ?
+                if (this.isBlocked(nx, ny, ignoreIds)) continue;
+
+                const gCost = currentNode.g + 1; // coût = 1 par case
+
+                // si on dépasse la limite de PM, pas la peine d'explorer plus loin
+                if (gCost > maxCost) continue;
+
+                const existing = open.get(k);
+                if (existing && gCost >= existing.g) {
+                    continue; // pas mieux que ce qu'on a déjà
+                }
+
+                const node = {
+                    x: nx,
+                    y: ny,
+                    g: gCost,
+                    f: gCost + h(nx, ny),
+                    parentKey: currentKey
+                };
+                open.set(k, node);
+            }
+        }
+
+        if (!bestGoalNode) {
+            // aucune route trouvée
+            return [];
+        }
+
+        // reconstruire le chemin (du goal vers le start)
+        const pathReversed = [];
+        let node = bestGoalNode;
+        while (node && !(node.x === sx && node.y === sy)) {
+            pathReversed.push({ x: node.x, y: node.y });
+            node = open.get(node.parentKey) || null;
+        }
+
+        return pathReversed.reverse();
+    }
 }

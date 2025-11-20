@@ -19,18 +19,20 @@ export default class Renderer {
         this.bg = new BackgroundRenderer(canvases.bg.ctx, camera, spriteManager, map);
         this.fg = new ForegroundRenderer(canvases.fg.ctx, camera, spriteManager, map);
         this.actors = new ActorsRenderer(canvases.actors.ctx, camera, spriteManager, map);
-        this.actors.sonar = this.sonar;
-        this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {
-            pathfinder: this.pathfinder
-        });
+
+        // UI créée sans pathfinder, qu'on branchera après
+        this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {});
+        
+        // sonar partagé pour les acteurs
         this.sonar = this.ui.sonar;
+        this.actors.sonar = this.sonar;
     }
 
     requestRedraw() { this.needsRedraw = true; }
 
     setPathfinder(pathfinder) {
         this.pathfinder = pathfinder;
-        if (this.ui && this.ui.setPathfinder) {
+        if (this.ui && typeof this.ui.setPathfinder === "function") {
             this.ui.setPathfinder(pathfinder);
         }
         this.requestRedraw();

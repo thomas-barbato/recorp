@@ -3,6 +3,7 @@
 // ne modifie pas la taille des tiles, seulement le nombre de tiles visibles.
 import SonarSystem from './sonar_system.js';
 import { renderPathfinding } from "./pathfinding_renderer.js";
+import { currentPlayer } from '../globals.js';
 
 export default class UIRenderer {
     constructor(ctx, camera, spriteManager, map, options = {}) {
@@ -25,7 +26,10 @@ export default class UIRenderer {
 
         // chemin courant (tableau de {x,y})
         this.pathTiles = [];
-        this.maxMovement = 0; // points de mouvement restants du joueur
+        this.maxMovement = currentPlayer.ship.current_movement;
+
+        // 🔗 pathfinder (CanvasPathfinding)
+        this.pathfinder = options.pathfinder || null;
     }
 
     /**
@@ -38,6 +42,10 @@ export default class UIRenderer {
         this.maxMovement = typeof maxMovement === "number" ? maxMovement : 0;
     }
 
+    setPathfinder(pathfinder) {
+        this.pathfinder = pathfinder || null;
+    }
+
     /**
      * Efface le chemin affiché.
      */
@@ -46,52 +54,108 @@ export default class UIRenderer {
         this.maxMovement = 0;
     }
 
-    render() {
-        const pf = window.__canvasPathPreview;
-
-        if (!pf || !pf.tiles || pf.tiles.length === 0) {
-            return;
-        }
-
+    _renderInvalidPreview(preview) {
+        const ctx = this.ctx;
         const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
 
-        for (const t of pf.tiles) {
-            const scr = this.camera.worldToScreen(t.x, t.y);
-            const x = scr.x;
-            const y = scr.y;
+        const screen = this.camera.worldToScreen(preview.x, preview.y);
+        const x = screen.x;
+        const y = screen.y;
 
-            // Style selon si la tuile est valide ou hors distance
-            if (pf.valid) {
-                // turquoise semi-transparent
-                this.ctx.fillStyle = "rgba(0, 255, 200, 0.35)";
-                this.ctx.strokeStyle = "rgba(0, 255, 200, 0.55)";
-            } else {
-                // rouge semi-transparent
-                this.ctx.fillStyle = "rgba(255, 50, 50, 0.35)";
-                this.ctx.strokeStyle = "rgba(255, 80, 80, 0.8)";
-            }
+        const w = preview.sizeX * tilePx;
+        const h = preview.sizeY * tilePx;
 
-            // carré semi transparent
-            this.ctx.lineWidth = 1;
-            this.ctx.beginPath();
-            this.ctx.rect(x, y, tilePx, tilePx);
-            this.ctx.fill();
-            this.ctx.stroke();
+        ctx.save();
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = "rgba(255, 80, 80, 0.9)"; // glow rouge
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "rgba(255, 80, 80, 0.95)";
+        ctx.fillStyle = "rgba(255, 80, 80, 0.35)";
 
-            // Affichage du numéro (step)
-            // On ne met PAS de numéro sur t.step === 0 (tuile du ring)
-            if (t.step > 0) {
-                this.ctx.fillStyle = pf.valid ? "#00ffee" : "#ff5555";
-                this.ctx.font = `${Math.floor(tilePx * 0.45)}px Orbitron, sans-serif`;
-                this.ctx.textAlign = "center";
-                this.ctx.textBaseline = "middle";
+        // rectangle arrondi (même fonction que pour le jaune)
+        this._roundedRectPath(ctx, x + 3, y + 3, w - 6, h - 6, 6);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+    }
 
-                this.ctx.fillText(
-                    t.step.toString(),
-                    x + tilePx / 2,
-                    y + tilePx / 2
-                );
-            }
+    _roundedRectPath(ctx, x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
+
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + w - radius, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+        ctx.lineTo(x + w, y + h - radius);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+        ctx.lineTo(x + radius, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+    }
+
+    _renderGrid() {
+        const ctx = this.ctx;
+        const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
+
+        // dimensions affichées (CSS pixels, plus robustes avec le DPR)
+        const w = ctx.canvas.clientWidth || ctx.canvas.width;
+        const h = ctx.canvas.clientHeight || ctx.canvas.height;
+
+        const startTileX = this.camera.worldX;
+        const startTileY = this.camera.worldY;
+
+        const endTileX = startTileX + this.camera.visibleTilesX + 1;
+        const endTileY = startTileY + this.camera.visibleTilesY + 1;
+
+        ctx.save();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(15, 118, 110, 0.35)"; // teal discret
+
+        // lignes horizontales
+        for (let ty = startTileY; ty <= endTileY; ty++) {
+            const y = (ty * tilePx) - this.camera.y;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+        }
+
+        // lignes verticales
+        for (let tx = startTileX; tx <= endTileX; tx++) {
+            const x = (tx * tilePx) - this.camera.x;
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, h);
+            ctx.stroke();
+        }
+
+        ctx.restore();
+    }
+
+    render(delta = 0) {
+        this._time += delta;
+
+        // 1) Grille légère
+        this._renderGrid();
+
+        // 2) Sonar (masque + pulses) si actif
+        if (this.sonar) {
+            this.sonar.render(this.ctx, delta);
+        }
+        // 3) Pathfinding A* (version PC)
+        if (this.pathfinder && this.pathfinder.invalidPreview) {
+            this._renderInvalidPreview(this.pathfinder.invalidPreview);
+        }
+        if (this.pathfinder && this.pathfinder.current && this.pathfinder.current.path && this.pathfinder.current.path.length > 0) {
+            // On adapte l'API pour pathfinding_renderer :
+            const pf = { path: this.pathfinder.current.path };
+            renderPathfinding(this.ctx,this.camera,{
+                path: this.pathfinder.current.path,
+                shipSizeX: currentPlayer.ship.size.x,
+                shipSizeY: currentPlayer.ship.size.y
+            });
         }
     }
 }
