@@ -25,12 +25,28 @@ export default class CanvasPathfinding {
     // Événement de clic (déclenché par Input.onTileClick)
     // ---------------------------------------------------------
     handleClick(tx, ty) {
-        // Si clic sur le même tile → toggle off
-        if (this.current && this.current.dest && this.current.dest.x === tx && this.current.dest.y === ty) {
+        // 1) si clic sur même case → tentative de validation
+        if (this.current && this.current.dest &&
+            this.current.dest.x === tx &&
+            this.current.dest.y === ty &&
+            !this.invalidPreview) {
+
+            // chemin valide → envoi WS
+            this._sendMoveToServer();
             this.clear();
             return;
         }
 
+        // 2) si clic sur même case mais preview rouge → on efface juste
+        if (this.invalidPreview &&
+            this.invalidPreview.x === tx &&
+            this.invalidPreview.y === ty) {
+
+            this.clear();
+            return;
+        }
+
+        // 3) sinon → calcul du pathfinding
         this._compute(tx, ty);
     }
 
@@ -76,6 +92,47 @@ export default class CanvasPathfinding {
         }
     }
 
+    _sendMoveToServer() {
+        try {
+            const engine = window.canvasEngine;
+            const ws = engine?.ws;
+            const me = engine?.map.findPlayerById(window.current_player_id);
+
+            if (!ws || !me || !this.current) return;
+
+            const path = this.current.path;
+            if (!path || path.length < 2) {
+                // coût 0 → mouvement invalide
+                console.warn("[MOVE] move_cost < 1 → mouvement ignoré");
+                return;
+            }
+
+            // coût = nombre de pas
+            const moveCost = path.length - 1;
+            if (moveCost < 1) return;
+
+            const dest = this.current.dest;
+
+            ws.send("async_move", {
+                player: window.current_player_id,
+                start_x: me.x,
+                start_y: me.y,
+                end_x: dest.x,
+                end_y: dest.y,
+                move_cost: moveCost,
+                size_x: me.sizeX,
+                size_y: me.sizeY,
+                is_reversed: me.isReversed,
+            });
+
+            console.log("%c[MOVE] async_move envoyé →",
+                "color:#00f2ff;font-weight:bold;",
+                { dest, move_cost: moveCost });
+
+        } catch (e) {
+            console.error("Erreur _sendMoveToServer:", e);
+        }
+    }
     /**
      * Vérifie que toutes les cases nécessaires à la taille du vaisseau sont libres.
      */
