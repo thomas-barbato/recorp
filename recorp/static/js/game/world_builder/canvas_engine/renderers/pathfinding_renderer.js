@@ -51,15 +51,17 @@ export function renderPathfinding(ctx, camera, pathfinder) {
     ctx.textBaseline = "middle";
 
     pathfinder.path.forEach((node, idx) => {
+        const isOverPM = (typeof pmLimit === "number") && idx > pmLimit;
         const insideYellow =
             node.x >= dest.x &&
             node.x < dest.x + shipW &&
             node.y >= dest.y &&
             node.y < dest.y + shipH;
 
-        if (insideYellow && idx !== pathfinder.path.length - 1) {
-            return; // on ne dessine pas cette tuile teal
+        if (!pathfinder?.isPmLimit) { 
+            if (insideYellow && idx !== pathfinder.path.length-1) return;
         }
+
         const screen = camera.worldToScreen(node.x, node.y);
         const x = screen.x;
         const y = screen.y;

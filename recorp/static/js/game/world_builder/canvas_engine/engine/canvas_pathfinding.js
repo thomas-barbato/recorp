@@ -123,6 +123,10 @@ export default class CanvasPathfinding {
 
         const path = this._computePath(bestStart, { x: destX, y: destY });
 
+        // -- Calcul du coût du chemin --
+        const pathCost = path.length;
+        const pmRemaining = me.data?.ship?.current_movement || 0;
+
         if (!path) {
             this.current = null;
             this.path = [];
@@ -134,6 +138,24 @@ export default class CanvasPathfinding {
                 path
             };
             this.path = path;
+        }
+
+        // -- Vérification PM (si zone est libre mais PM insuffisants) --
+        if (pathCost > pmRemaining) {
+            // preview rouge (destination atteignable mais PM insuffisants)
+            this.current = null;
+            this.path = [];
+            this.invalidPreview = {
+                x: destX,
+                y: destY,
+                sizeX: me.sizeX,
+                sizeY: me.sizeY,
+                reason: "not_enough_pm",  // Juste au cas où tu veux afficher un message
+                pathCost,
+                pmRemaining
+            };
+            this.renderer.requestRedraw();
+            return;
         }
 
         // Vérifier que la zone destination est libre pour la taille du vaisseau

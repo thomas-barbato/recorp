@@ -38,20 +38,16 @@ export default class ActorsRenderer {
         const sonar = this.sonar || (window.canvasEngine && window.canvasEngine.renderer && window.canvasEngine.renderer.sonar) || null;
         const visible = sonar ? sonar.isVisible(obj) : true;
         
-
+        // highlight current player ONLY when pathfinding active
+        const engine = window.canvasEngine;
+        const pf = engine?.pathfinding;
+        const showBorder = pf && (pf.current || pf.invalidPreview);
+        
         // If visible -> normal draw (with flip handling)
         if (visible) {
             this._drawFullSprite(img, scr.x, scr.y, pxW, pxH, obj);
-            // highlight current player ONLY when pathfinding active
-            const engine = window.canvasEngine;
-            const pf = engine?.pathfinding;
-            const showBorder = pf && (pf.current || pf.invalidPreview);
             // define borders.
-            console.log(obj)
-            console.log(obj.data?.user?.player)
-            console.log(showBorder)
             if (showBorder && String(obj.data?.user?.player) === String(window.current_player_id)) {
-                console.log("DEDANS")
                 this.ctx.save();
                 this.ctx.strokeStyle = 'rgba(255,165,0,0.95)';
                 this.ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));

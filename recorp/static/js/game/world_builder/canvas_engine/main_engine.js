@@ -64,7 +64,9 @@ if (!ok) {
         });
 
         // Connecter le pathfinder au renderer/UI
-        renderer.setPathfinder(canvasPathfinding);
+        if (renderer.setPathfinder) {
+            renderer.setPathfinder(canvasPathfinding);
+        }
         
         const input = new Input({
             uiCanvas: canvases.ui.el,        // 💥 Le canvas interactif
@@ -163,7 +165,16 @@ if (!ok) {
 
         renderer.updateGridCoordinatesUI(camera, TILE_SIZE);
 
-        window.canvasEngine = { canvases, camera, map, renderer, input, loop, ws};
+        window.canvasEngine = { 
+            canvases, 
+            camera, 
+            map, 
+            renderer, 
+            input, 
+            loop, 
+            ws,
+            pathfinding: canvasPathfinding
+        };
 
         loop.start();
         console.log('Canvas engine started');
