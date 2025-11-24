@@ -34,7 +34,7 @@ if (!ok) {
             console.error('Map.prepare failed', e);
         }
 
-        const canvases = CanvasManager.init(['canvas-bg', 'canvas-fg', 'canvas-actors', 'canvas-ui']);
+        const canvases = CanvasManager.init(['canvas-bg', 'canvas-fg', 'canvas-actors', 'canvas-ui', 'canvas-floating']);
 
         const camera = new Camera({
             canvasWidth: CanvasManager.width,

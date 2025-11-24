@@ -22,6 +22,11 @@ export default class Renderer {
 
         // UI créée sans pathfinder, qu'on branchera après
         this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {});
+        this.uiCtx = canvases.ui.ctx;
+
+        // nouvelle couche floating pour le texte
+        this.floating = canvases.floating || null;
+        this.floatingCtx = this.floating ? this.floating.ctx : null;
         
         // sonar partagé pour les acteurs
         this.sonar = this.ui.sonar;
@@ -40,9 +45,10 @@ export default class Renderer {
 
     // render appelé par la loop (delta en ms)
     render(delta) {
-        // efface canvas (ui aussi)
-        const { bg, fg, actors, ui } = this.canvases;
+        // efface canvas
+        const { bg, fg, actors, ui, floating } = this.canvases;
         [bg, fg, actors, ui].forEach(c => {
+            // Laisser la couche UI intacte (elle est nettoyée manuellement)
             c.ctx.clearRect(0, 0, c.el.width, c.el.height);
         });
 
@@ -52,6 +58,10 @@ export default class Renderer {
         this.actors.render(delta);
         this.ui.render();
         this.needsRedraw = false;
+        if (this.floatingCtx) {
+            // rien à faire ici, c'est juste pour assurer que la couche existe
+            // tout est déjà dessiné par drawFloatingText()
+        }
     }
 
     updateGridCoordinatesUI(camera, tileSize) {
@@ -94,6 +104,48 @@ export default class Renderer {
             contY.appendChild(div);
         }
     }
+
+    clearUILayer() {
+        const ui = this.canvases.ui;
+        if (!ui) return;
+        ui.ctx.clearRect(0, 0, ui.el.width, ui.el.height);
+    }
+
+    clearFloatingLayer() {
+        const f = this.canvases.floating;
+        if (!f) return;
+        f.ctx.clearRect(0, 0, f.el.width, f.el.height);
+    }
+
+    drawFloatingText(text, worldX, worldY, color = "rgba(0,255,180,0.95)", duration = 1200) {
+        const ctx = this.floatingCtx;
+        const camera = this.camera;
+        if (!ctx || !camera) return;
+
+        const screen = camera.worldToScreenCoords(worldX, worldY);
+
+        // Nettoie uniquement la couche floating
+        this.clearFloatingLayer();
+
+        ctx.font = "22px Orbitron, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.lineWidth = 3;
+
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = color;
+
+        const textY = screen.y - 20;
+
+        ctx.strokeText(text, screen.x, textY);
+        ctx.fillText(text, screen.x, textY);
+
+        setTimeout(() => {
+            this.clearFloatingLayer();
+            this.requestRedraw();
+        }, duration);
+    }
+
 
     drawObject(obj, ctx) {
         const tileSize = this.tileSize;

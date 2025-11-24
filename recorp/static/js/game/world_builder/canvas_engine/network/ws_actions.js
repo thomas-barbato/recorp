@@ -184,6 +184,7 @@ function handlePlayerMove(msg) {
                             const centerY = endY + (sizeY - 1) / 2;
 
                             engine.camera.centerOn(centerX, centerY);
+                            renderMoveCostAbovePlayer(playerId, msg.move_cost);
                             engine.renderer.requestRedraw();
                         }
                     } catch (e) {
@@ -236,6 +237,22 @@ function handlePlayerMove(msg) {
     if (engine.renderer && typeof engine.renderer.requestRedraw === "function") {
         engine.renderer.requestRedraw();
     }
+}
+
+function renderMoveCostAbovePlayer(playerId, cost) {
+    const engine = window.canvasEngine;
+    if (!engine) return;
+
+    const actor = engine.map.findPlayerById(playerId);
+    if (!actor) return;
+
+    const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
+    const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
+
+    const centerX = actor.x + (sizeX - 1) / 2;
+    const centerY = actor.y + (sizeY - 1) / 2;
+
+    engine.renderer.drawFloatingText(cost, centerX, centerY);
 }
 
 

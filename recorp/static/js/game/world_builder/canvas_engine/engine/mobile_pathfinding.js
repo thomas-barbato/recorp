@@ -153,7 +153,6 @@ export function initMobilePathfinding(engine) {
             return;
         }
 
-        // Directions autorisées (bord de map + obstacles)
         const directions = [
             { dir: "top",    btn: btnTop },
             { dir: "bottom", btn: btnBottom },
@@ -161,6 +160,9 @@ export function initMobilePathfinding(engine) {
             { dir: "right",  btn: btnRight }
         ];
 
+        // ⚠️ Les directions ne deviennent rouges QUE:
+        // - bord de map
+        // - plus de PM
         directions.forEach(({ dir, btn }) => {
             const cand = computeCandidateDest(dir, me);
             if (!cand) {
@@ -169,21 +171,29 @@ export function initMobilePathfinding(engine) {
             }
 
             const { x, y } = cand;
+
+            // ❌ LIMITE DE MAP → bouton rouge
             if (x < 0 || y < 0 || x >= map.mapWidth || y >= map.mapHeight) {
                 setDirectionButtonState(btn, false);
                 return;
             }
 
-            const free = isAreaFree(x, y, me);
-            setDirectionButtonState(btn, free);
+            // ❌ PLUS DE PM → bouton rouge
+            if (pm <= 0) {
+                setDirectionButtonState(btn, false);
+                return;
+            }
+
+            // ✔️ SINON bouton vert, même si obstacle !
+            setDirectionButtonState(btn, true);
         });
 
-        // center en fonction du pathfinding courant
-        if (pathfinding.current && !pathfinding.invalidPreview) {
-            setCenterDisabled(false);
-        } else {
-            setCenterDisabled(true);
-        }
+        const destInvalid =
+            pm <= 0 ||
+            !pathfinding.current ||
+            pathfinding.invalidPreview;
+
+        setCenterDisabled(destInvalid);
     }
 
     function resetPreview() {

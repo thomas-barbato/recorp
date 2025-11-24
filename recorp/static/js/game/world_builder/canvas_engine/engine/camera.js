@@ -65,4 +65,10 @@ export default class Camera {
         const worldY = (screenPxY + this.y) / (this.tileSize * this.zoom);
         return { x: Math.floor(worldX), y: Math.floor(worldY) };
     }
+
+    worldToScreenCoords(worldX, worldY) {
+        const screenX = (worldX - this.originX) * this.tileSize;
+        const screenY = (worldY - this.originY) * this.tileSize;
+        return { x: screenX, y: screenY };
+    }
 }

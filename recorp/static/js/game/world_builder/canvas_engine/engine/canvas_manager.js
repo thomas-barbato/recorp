@@ -9,7 +9,7 @@ const CanvasManager = (function(){
 
     function _get(id) { return document.getElementById(id); }
 
-    function init(ids = ['canvas-bg','canvas-fg','canvas-actors','canvas-ui']) {
+    function init(ids = ['canvas-bg','canvas-fg','canvas-actors','canvas-ui','canvas-floating']) {
 
         const wrapper = document.getElementById('canvas-wrapper') || document.body;
 
@@ -41,6 +41,7 @@ const CanvasManager = (function(){
             fg: canvasMap['canvas-fg'],
             actors: canvasMap['canvas-actors'],
             ui: canvasMap['canvas-ui'],
+            floating: canvasMap['canvas-floating'],
             canvasMap,
             get width(){ return width; },
             get height(){ return height; }
