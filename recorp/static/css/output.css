@@ -2164,10 +2164,6 @@ video {
   gap: 2rem;
 }
 
-.gap-\[0px\] {
-  gap: 0px;
-}
-
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));

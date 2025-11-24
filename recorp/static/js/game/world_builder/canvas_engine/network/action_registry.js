@@ -1,11 +1,8 @@
-// -----------------------------------------------------------
-// ACTION REGISTRY — Nouveau système
-// -----------------------------------------------------------
+// static/js/game/world_builder/network/action_registry.js
 
-export default class ActionRegistry {
-
+class ActionRegistryClass {
     constructor() {
-        this.table = new Map(); // action → handler
+        this.table = new Map();
     }
 
     register(action, handler) {
@@ -16,12 +13,20 @@ export default class ActionRegistry {
         this.table.set(action, handler);
     }
 
-    run(action, message) {
+    has(action) {
+        return this.table.has(action);
+    }
+
+    run(action, payload) {
         const handler = this.table.get(action);
         if (!handler) {
             console.warn(`ActionRegistry: no handler for "${action}"`);
             return;
         }
-        handler(message);
+        handler(payload);
     }
 }
+
+const ActionRegistry = new ActionRegistryClass();
+
+export default ActionRegistry;

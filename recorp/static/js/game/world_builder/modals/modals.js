@@ -748,6 +748,7 @@ function createUnknownModal(modalId, data, is_npc){
     movement_container_label.textContent = "Movement points:";
     movement_container_text.textContent = `${movement.status}`;
     movement_container_label.classList.add('text-white');
+    movement_container_text.id = "movement-container-text";
 
     movement_container.append(movement_container_label);
     movement_container.append(movement_container_text);
@@ -790,6 +791,8 @@ function createUnknownModal(modalId, data, is_npc){
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
     movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
     movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
+    movement_progress_bar_container_text.id = "movement-container-detailed-progress-bar-text";
+    movement_progress_bar_container_content.id = "movement-container-detailed-progress-bar-content";
     movement_progress_bar_container_content.style.width = parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
 
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);

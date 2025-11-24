@@ -104,50 +104,73 @@ class GameConsumer(WebsocketConsumer):
             self.scope['session'].modified = True
             self.scope['session'].save()
 
-    def receive(self, text_data: Optional[str] = None, bytes_data: Optional[bytes] = None) -> None:
+    def receive(self, text_data=None, bytes_data=None):
         """
-        Reçoit et traite les messages WebSocket.
+        Réception sécurisée des messages WebSocket
+        """
         
-        Args:
-            text_data: Données texte reçues
-            bytes_data: Données binaires reçues
-        """
-        data = json.loads(text_data)
-        if not self._is_valid_request(data):
+        # 1) Rien à traiter
+        if not text_data:
             return
 
+        # 2) L'utilisateur doit être authentifié
+        if not self.user.is_authenticated:
+            return
+
+        # 3) Essayer de parser le JSON
         try:
-    
-            # Rafraîchir la session à CHAQUE message
-            self._refresh_session()
-            
-            print(data["type"])
-            print(data)
-        
-            # Gestion du heartbeat
-            if data["type"] == "ping":
-                response = self._handle_ping_with_validation(data)
-                self._send_response(response)
+            data = json.loads(text_data)
+        except Exception:
+            # Ce n'est pas un JSON → ignorer (ex: ping navigateur)
+            return
+
+        # 4) S'assurer que c'est un dict JSON
+        if not isinstance(data, dict):
+            return
+
+        msg_type = data.get("type")
+        if not msg_type:
+            return
+
+        # 5) Rafraîchir la session
+        self._refresh_session()
+
+        # ------------------------------
+        # TRAITEMENT DES TYPES
+        # ------------------------------
+        # PING (client)
+        if msg_type == "ping":
+            response = self._handle_ping_with_validation(data)
+            self._send_response(response)
+            return
+
+        # SYNC
+        if msg_type == "request_data_sync":
+            self._handle_data_sync_request(data)
+            return
+
+        # MOVE
+        if msg_type == "async_move":
+            payload = data.get("payload")
+            if not isinstance(payload, dict):
+                logger.error(f"Payload async_move invalide: {data}")
                 return
-            
-            # Gestion de la synchronisation des données
-            if data["type"] == "request_data_sync":
-                self._handle_data_sync_request(data)
-                return
-            
-            if data["type"] == "async_move":
-                self._handle_move_request(data)
-                return
-            
-            if data["type"] == "async_chat_message":
-                self.async_send_chat_msg(data)
-                return
-            
+            self._handle_move_request(payload)
+            return
+
+        # CHAT
+        if msg_type == "async_chat_message":
+            self.async_send_chat_msg(data)
+            return
+
+        # MESSAGE GÉNÉRIQUE
+        try:
             message_data = self._extract_message_data(data)
             self._broadcast_message(message_data)
-            
-        except (json.JSONDecodeError, KeyError) as e:
-            logger.error(f"Erreur lors du traitement du message: {e}")
+        except Exception as e:
+            logger.error(f"Erreur traitement message générique: {e}")
+
+
 
     def _is_valid_request(self, text_data: Optional[str]) -> bool:
         """Vérifie si la requête est valide."""
@@ -647,13 +670,12 @@ class GameConsumer(WebsocketConsumer):
         except Exception as e:
             logger.exception(f"_notify_msg error: {e}")
             
-    def _handle_move_request(self, data: Dict[str, Any]) -> None:
+    def _handle_move_request(self, message: Dict[str, Any]) -> None:
         """
         Le joueur A envoie un mouvement.
         SEUL son consumer valide et enregistre.
         """
         try:
-            message = data["message"]
             # Étape 1 : validation complète
             if not self._validate_move_request(message):
                 return  # ne rien broadcaster si invalide
@@ -661,7 +683,6 @@ class GameConsumer(WebsocketConsumer):
             # Étape 2 : enregistrement du mouvement (DB + cache)
             player_action = PlayerAction(self.user.id)
 
-            # → move_cost déjà validé
             registered = player_action.move_have_been_registered(
                 coordinates=f"{message['end_y']}_{message['end_x']}",
                 move_cost=int(message["move_cost"]),
@@ -673,7 +694,6 @@ class GameConsumer(WebsocketConsumer):
                 return
 
             # Mise à jour du cache
-            self._cache_store.update_player_position(message, self.player_id)
             self._cache_store.update_player_range_finding()
             self._cache_store.update_sector_player_visibility_zone(self.player_id)
 
@@ -808,33 +828,75 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def _create_own_move_response(
-        self, 
-        message: Dict[str, Any], 
-        store: StoreInCache, 
-        player_id: int
-    ) -> Dict[str, Any]:
-        """Crée la réponse pour le mouvement du propre joueur."""
+        self,
+        store: StoreInCache,
+        player_action: PlayerAction,
+        message: dict,
+    ) -> dict:
+        """
+        Réponse envoyée AU JOUEUR QUI BOUGE.
+        On renvoie:
+            - les infos attendues par le front pour animer le déplacement:
+            end_x, end_y, move_cost, move, path, max_move, is_reversed, size
+            - les infos supplémentaires pour mettre à jour map_informations / UI :
+            modules_range, visible_zone, view_range, sector, updated_*_player_data
+        """
+
+        player_id = message["player"]
+
+        # PM restants du joueur courant (après mouvement)
+        movement_remaining = player_action.get_player_movement_remaining()
+        max_movement = store.get_specific_player_data(
+            player_id, "pc", "ship", "max_movement"
+        )
+
+        # Modules en portée + zones visibles + view_range
+        modules_range = store.get_specific_player_data(
+            player_id, "pc", "ship", "modules_range"
+        )
+        visible_zone = store.get_specific_player_data(
+            player_id, "pc", "ship", "visible_zone"
+        )
+        view_range = store.get_specific_player_data(
+            player_id, "pc", "ship", "view_range"
+        )
+
+        # Données complètes pour refresh UI / modals
+        updated_current_player_data = store.get_current_player_data(player_id)
+        updated_other_player_data = store.get_other_player_data(player_id)
+        sector_data = store.get_sector_data()
+
         return {
             "type": "player_move",
             "message": {
-                "player_id": message["player"],
-                "start_id_array": message["start_id_array"],
-                "updated_other_player_data": store.get_other_player_data(self.player_id),
-                "updated_current_player_data": store.get_current_player_data(self.player_id),
-                "is_reversed": message["is_reversed"],
-                "sector": store.get_sector_data(),
+                # --- Infos de base pour le front (ANIMATION + POSITION) ---
+                "player_id": player_id,
+                "end_x": message["end_x"],
+                "end_y": message["end_y"],
                 "move_cost": message["move_cost"],
-                "modules_range": store.get_specific_player_data(
-                    player_id, "pc", "ship", "modules_range"
-                ),
-                "visible_zone": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "visible_zone"
-                ),
-                "view_range": store.get_specific_player_data(
-                    message["player"], "pc", "ship", "view_range" 
-                ),
-                "size": {"x" : message["size_x"], "y" : message["size_y"]},
-                
+                # PM restants après mouvement (ce que ton front appelle souvent "move")
+                "move": movement_remaining,
+                # chemin complet utilisé pour l’animation case par case
+                "path": message.get("path", []),
+                "max_move": max_movement,
+                "is_reversed": message["is_reversed"],
+                "size": {
+                    "x": message["size_x"],
+                    "y": message["size_y"],
+                },
+
+                # --- Infos gameplay complémentaires ---
+                "modules_range": modules_range,
+                "visible_zone": visible_zone,
+                "view_range": view_range,
+
+                # --- Pour éventuellement rafraîchir map_informations côté client ---
+                "updated_current_player_data": updated_current_player_data,
+                "updated_other_player_data": updated_other_player_data,
+                "sector": sector_data,
+
+                # Optionnel : si tu veux garder trace de la zone de départ complète
+                "start_id_array": message.get("start_id_array", []),
             },
         }
 

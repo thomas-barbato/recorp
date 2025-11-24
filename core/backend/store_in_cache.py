@@ -635,17 +635,13 @@ class StoreInCache:
                     "y": int(pos["end_y"]),
                 }
                 
-                # Mise à jour du mouvement
-                if current_player_id == player_id:
-                    player_list[player_index]["ship"]["current_movement"] -= pos["move_cost"]
-                else:
-                    # Récupération depuis la DB pour les autres joueurs
-                    current_movement = PlayerShip.objects.filter(
-                        player_id=player_id, is_current_ship=True
-                    ).values_list('current_movement', flat=True).first()
-                    
-                    if current_movement is not None:
-                        player_list[player_index]["ship"]["current_movement"] = current_movement
+                # Mise à jour du mouvement : toujours depuis la DB
+                current_movement = PlayerShip.objects.filter(
+                    player_id=player_id, is_current_ship=True
+                ).values_list('current_movement', flat=True).first()
+
+                if current_movement is not None:
+                    player_list[player_index]["ship"]["current_movement"] = current_movement
                 
                 # Nettoyage des doublons
                 self._remove_duplicate_players_optimized(player_list, player_index, pos)

@@ -12,6 +12,7 @@ export default class Camera {
         this.zoom = 1; // pas de zoom actif, tileSize est constant
         this.x = 0; // pixel offset world -> screen (top-left)
         this.y = 0;
+        this.autoCenter = true;
         this.updateViewport();
     }
 

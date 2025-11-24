@@ -8,12 +8,13 @@ import Input from './engine/input.js';
 import Renderer from './engine/renderer.js';
 import MapData from './renderers/map_data.js';
 import UpdateLoop from './engine/update_loop.js';
+import CanvasPathfinding from './engine/canvas_pathfinding.js';
+import PathfindingController from './engine/pathfinding.js';
+import { initMobilePathfinding } from "./engine/mobile_pathfinding.js";
 import WebSocketManager from "./engine/websocket_manager.js";
 import ActionRegistry from "./network/action_registry.js";
 import { initWebSocket } from './network/websocket_bootstrap.js';
-import CanvasPathfinding from './engine/canvas_pathfinding.js';
-import PathfindingController from './engine/pathfinding.js';
-
+import "./network/ws_actions.js";
 
 // initialise les globals (lit les json_script injectés)
 const ok = initGlobals();
@@ -155,23 +156,6 @@ if (!ok) {
         const ws = new WebSocketManager(ws_url);
         ws.connect();
 
-        // --------------------------------
-        // GESTION DU MOUVEMENT DES JOUEURS
-        // --------------------------------
-        ws.on("player_move", (msg) => {
-
-            const actor = map.findPlayerById(msg.player_id);
-            if (!actor) return;
-
-            // Mettre à jour la position logique dès maintenant
-            actor.x = msg.end_x;
-            actor.y = msg.end_y;
-
-            // Animer le chemin complet (case par case)
-            renderer.actors.addMovementAnimationPath(msg.player_id, msg.path);
-
-            renderer.requestRedraw();
-        });
         const loop = new UpdateLoop({ fps: FPS, map, renderer, camera, input });
         window.addEventListener('resize', () => {
             CanvasManager.resizeAll();
@@ -190,8 +174,14 @@ if (!ok) {
             input, 
             loop, 
             ws,
-            pathfinding: canvasPathfinding
+            pathfinding: canvasPathfinding,
         };
+
+        try {
+            initMobilePathfinding(window.canvasEngine);
+        } catch (e) {
+            console.error("[MOBILE PF] initMobilePathfinding error:", e);
+        }
 
         loop.start();
         console.log('Canvas engine started');

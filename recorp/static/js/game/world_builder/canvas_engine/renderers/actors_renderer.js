@@ -60,9 +60,32 @@ export default class ActorsRenderer {
      * Animation multi-segments : suit le path A* case par case.
      * path = [ {x,y}, {x,y}, ... ]
      */
-    addMovementAnimationPath(playerId, path) {
-        if (!path || path.length < 2) return;
+    addMovementAnimationPath(playerId, path, options = {}) {
+        if (!path || path.length === 0) return;
 
+        // callback optionnel
+        const onComplete =
+            typeof options.onComplete === "function" ? options.onComplete : null;
+
+        if (path.length === 1) {
+            const actor = this.map.findPlayerById(playerId);
+            if (actor) {
+                actor.x = path[0].x;
+                actor.y = path[0].y;
+                delete actor.renderX;
+                delete actor.renderY;
+            }
+            if (onComplete) {
+                try {
+                    onComplete();
+                } catch (e) {
+                    console.warn("ActorsRenderer: onComplete (single step) error:", e);
+                }
+            }
+            return;
+        }
+
+        // ---- Animation multi-segments ----
         const segments = [];
         for (let i = 0; i < path.length - 1; i++) {
             segments.push({
@@ -70,14 +93,15 @@ export default class ActorsRenderer {
                 startY: path[i].y,
                 endX: path[i + 1].x,
                 endY: path[i + 1].y,
-                duration: 120 // ms par case
+                duration: 120
             });
         }
 
         this.activeAnimations.set(playerId, {
             segments,
             current: 0,
-            startTime: performance.now()
+            startTime: performance.now(),
+            onComplete  // 🔥 stocké ici
         });
     }
 
@@ -121,7 +145,17 @@ export default class ActorsRenderer {
                     actor.y = seg.endY;
                     delete actor.renderX;
                     delete actor.renderY;
+                    const cb = anim.onComplete;
                     this.activeAnimations.delete(playerId);
+
+                    if (typeof cb === "function") {
+                        try {
+                            cb();
+                        } catch (e) {
+                            console.warn("ActorsRenderer: onComplete error:", e);
+                        }
+                    }
+                    continue;
                 }
                 continue;
             }

@@ -1,65 +1,50 @@
-// -----------------------------------------------------------
-// WEBSOCKET MANAGER 100% NOUVEAU
-// -----------------------------------------------------------
+import ActionRegistry from "../network/action_registry.js";
 
 export default class WebSocketManager {
-
     constructor(url) {
         this.url = url;
         this.socket = null;
-        this.handlers = new Map(); // type → array of callbacks
-        this.isConnected = false;
-        this.reconnectDelay = 2000; // 2 sec
-        this.shouldReconnect = true;
+
+        // callbacks locaux optionnels
+        this.handlers = new Map();
     }
 
-    // -----------------------------------------------------------------
-    // Connect / Reconnect
-    // -----------------------------------------------------------------
     connect() {
         this.socket = new WebSocket(this.url);
 
         this.socket.onopen = () => {
-            this.isConnected = true;
-            console.log("[WS] Connected");
+            console.log("[WS] Connected to", this.url);
         };
 
-        this.socket.onclose = (ev) => {
-            this.isConnected = false;
-            console.warn("[WS] Closed", ev.code, ev.reason);
-            if (this.shouldReconnect) {
-                setTimeout(() => {
-                    console.log("[WS] Reconnecting…");
-                    this.connect();
-                }, this.reconnectDelay);
-            }
+        this.socket.onclose = (e) => {
+            console.warn("[WS] Connection closed, retrying...", e.reason);
+            setTimeout(() => this.connect(), 1000);
         };
 
         this.socket.onerror = (err) => {
-            console.error("[WS] Error", err);
+            console.error("[WS] Error:", err);
         };
 
-        this.socket.onmessage = (messageEvent) => {
-            this._onMessage(messageEvent.data);
-        };
+        this.socket.onmessage = (event) => this._onMessage(event.data);
     }
 
-    // -----------------------------------------------------------------
-    // Send packet
-    // -----------------------------------------------------------------
-    send(type, message = {}) {
-        if (!this.isConnected) {
-            console.warn("[WS] Not connected, send skipped");
-            return;
+    /**
+     * ---- Envoi d’un message standardisé ----
+     */
+    send(obj) {
+        
+        try {
+            const payload = JSON.stringify(obj);
+            this.socket.send(payload);
+        } catch (e) {
+            console.error("[WS] Could not send:", obj, e);
         }
-
-        const packet = JSON.stringify({ type, message });
-        this.socket.send(packet);
     }
 
-    // -----------------------------------------------------------------
-    // Listen: ws.on("flip_ship", callback)
-    // -----------------------------------------------------------------
+    /**
+     * ---- Abonnement local ----
+     * ws.on("player_move", fn)
+     */
     on(type, callback) {
         if (!this.handlers.has(type)) {
             this.handlers.set(type, []);
@@ -67,9 +52,9 @@ export default class WebSocketManager {
         this.handlers.get(type).push(callback);
     }
 
-    // -----------------------------------------------------------------
-    // Internal dispatch
-    // -----------------------------------------------------------------
+    /**
+     * ---- Dispatcher ----
+     */
     _onMessage(raw) {
         let msg;
         try {
@@ -79,19 +64,25 @@ export default class WebSocketManager {
             return;
         }
 
-        const { type, message } = msg;
+        const type = msg.type;
+        const message = msg.message ?? msg.payload; // compatibilité
 
         if (!type) {
-            console.warn("[WS] message with no type:", msg);
+            console.warn("[WS] Message sans type:", msg);
             return;
         }
 
-        const list = this.handlers.get(type);
-        if (!list || list.length === 0) {
+        // --- 1) Dispatch LOCAL (via ws.on)
+        const localHandlers = this.handlers.get(type);
+        if (localHandlers) {
+            for (const cb of localHandlers) cb(message, msg);
+        }
+
+        // --- 2) Dispatch GLOBAL (via ActionRegistry)
+        if (ActionRegistry.has(type)) {
+            ActionRegistry.run(type, message);
+        } else if (!localHandlers) {
             console.warn(`[WS] No handler for type "${type}"`);
-            return;
         }
-
-        list.forEach(cb => cb(message));
     }
 }

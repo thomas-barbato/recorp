@@ -108,27 +108,26 @@ export default class CanvasPathfinding {
             }
 
             // coût = nombre de pas
-            const moveCost = path.length - 1;
-            if (moveCost < 0) return;
+            const moveCost = path.length;
+            if (moveCost < 1) return;
 
             const dest = this.current.dest;
 
-            ws.send("async_move", {
-                player: window.current_player_id,
-                start_x: me.x,
-                start_y: me.y,
-                end_x: dest.x,
-                end_y: dest.y,
-                move_cost: moveCost,
-                size_x: me.sizeX,
-                size_y: me.sizeY,
-                is_reversed: me.isReversed,
-                path: path
+            ws.send({
+                type: "async_move",
+                payload: {
+                    player: window.current_player_id,
+                    start_x: me.x,
+                    start_y: me.y,
+                    end_x: dest.x,
+                    end_y: dest.y,
+                    move_cost: moveCost,
+                    size_x: me.sizeX,
+                    size_y: me.sizeY,
+                    is_reversed: me.isReversed,
+                    path: path
+                }
             });
-
-            console.log("%c[MOVE] async_move envoyé →",
-                "color:#00f2ff;font-weight:bold;",
-                { dest, move_cost: moveCost });
 
         } catch (e) {
             console.error("Erreur _sendMoveToServer:", e);
@@ -243,25 +242,34 @@ export default class CanvasPathfinding {
         const w = me.sizeX;
         const h = me.sizeY;
 
-        const ring = [];
+        const raw = [];
 
         // TOP
         for (let i = 0; i < w; i++)
-            ring.push({ x: sx + i, y: sy - 1 });
+            raw.push({ x: sx + i, y: sy - 1 });
 
         // BOTTOM
         for (let i = 0; i < w; i++)
-            ring.push({ x: sx + i, y: sy + h });
+            raw.push({ x: sx + i, y: sy + h });
 
         // LEFT
         for (let j = 0; j < h; j++)
-            ring.push({ x: sx - 1, y: sy + j });
+            raw.push({ x: sx - 1, y: sy + j });
 
         // RIGHT
         for (let j = 0; j < h; j++)
-            ring.push({ x: sx + w, y: sy + j });
+            raw.push({ x: sx + w, y: sy + j });
 
-        return ring;
+        // ------ Filtre : dans la map & non bloqué ------
+        const filtered = raw.filter(p =>
+            p.x >= 0 &&
+            p.y >= 0 &&
+            p.x < this.map.mapWidth &&
+            p.y < this.map.mapHeight &&
+            !this.map.isBlockedTile(p.x, p.y)
+        );
+
+        return filtered;
     }
 
     // ---------------------------------------------------------

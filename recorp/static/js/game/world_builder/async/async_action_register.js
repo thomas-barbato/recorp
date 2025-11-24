@@ -11,6 +11,7 @@ function registerAllActions(){
     // Action de mouvement avec enrichissement des données
     ActionRegistry.register('player_move', 
         (data) => {
+            console.log("prout")
             if (data && validateCriticalData(true)) {
                 update_player_coord(data);
             } else {

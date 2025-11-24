@@ -26,10 +26,12 @@
     <header class="flex w-full main-info-container flex-col">
         {% include "display-info.html" %}
     </header>
-    <main class="flex main-game-container flex-col w-full h-full">
+    <main class="flex main-game-container flex-col w-full h-screen">
         {% include "canvas-test.html" %}
     </main>
+    <footer>
     {% include "footer.html" %}
+    </footer>
 {% else %}
     <header class="flex w-full flex-col main-info-container gap-2">
         {% include "top-panel.html" %}
