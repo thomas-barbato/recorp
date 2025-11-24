@@ -67,8 +67,7 @@ export default class Camera {
     }
 
     worldToScreenCoords(worldX, worldY) {
-        const screenX = (worldX - this.originX) * this.tileSize;
-        const screenY = (worldY - this.originY) * this.tileSize;
-        return { x: screenX, y: screenY };
+        // On réutilise la vraie fonction du moteur
+        return this.worldToScreen(worldTileX, worldTileY);
     }
 }

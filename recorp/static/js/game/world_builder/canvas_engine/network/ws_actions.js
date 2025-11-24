@@ -241,16 +241,17 @@ function handlePlayerMove(msg) {
 
 function renderMoveCostAbovePlayer(playerId, cost) {
     const engine = window.canvasEngine;
-    if (!engine) return;
+    if (!engine || !engine.map || !engine.renderer) return;
 
     const actor = engine.map.findPlayerById(playerId);
     if (!actor) return;
 
-    const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
-    const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
+    const sizeX = actor.sizeX || actor.data?.ship?.sizeX || actor.data?.ship?.size.x || 1;
+    const sizeY = actor.sizeY || actor.data?.ship?.sizeY || actor.data?.ship?.size.y || 1;
 
-    const centerX = actor.x + (sizeX - 1) / 2;
-    const centerY = actor.y + (sizeY - 1) / 2;
+    // Coordonnées "monde" (tiles) du centre du vaisseau
+    const centerX = (actor.renderX !== undefined ? actor.renderX : actor.x) + (sizeX - 1) / 2;
+    const centerY = (actor.renderY !== undefined ? actor.renderY : actor.y) + (sizeY - 1) / 2;
 
     engine.renderer.drawFloatingText(cost, centerX, centerY);
 }

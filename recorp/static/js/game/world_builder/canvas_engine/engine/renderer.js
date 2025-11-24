@@ -23,14 +23,12 @@ export default class Renderer {
         // UI créée sans pathfinder, qu'on branchera après
         this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {});
         this.uiCtx = canvases.ui.ctx;
-
-        // nouvelle couche floating pour le texte
-        this.floating = canvases.floating || null;
-        this.floatingCtx = this.floating ? this.floating.ctx : null;
         
         // sonar partagé pour les acteurs
         this.sonar = this.ui.sonar;
         this.actors.sonar = this.sonar;
+        // Texte flottant (coût de mouvement, etc.)
+        this.floatingText = null;
     }
 
     requestRedraw() { this.needsRedraw = true; }
@@ -45,23 +43,67 @@ export default class Renderer {
 
     // render appelé par la loop (delta en ms)
     render(delta) {
-        // efface canvas
-        const { bg, fg, actors, ui, floating } = this.canvases;
+        const { bg, fg, actors, ui } = this.canvases;
+
+        // 1) Effacer TOUTES les couches de rendu principales, y compris l'UI
         [bg, fg, actors, ui].forEach(c => {
-            // Laisser la couche UI intacte (elle est nettoyée manuellement)
             c.ctx.clearRect(0, 0, c.el.width, c.el.height);
         });
 
-        // dessine couches dans l'ordre
+        // 2) Dessiner dans l'ordre
         this.bg.render();
         this.fg.render();
         this.actors.render(delta);
         this.ui.render();
-        this.needsRedraw = false;
-        if (this.floatingCtx) {
-            // rien à faire ici, c'est juste pour assurer que la couche existe
-            // tout est déjà dessiné par drawFloatingText()
+
+        // 3) Texte flottant (au-dessus de l'UI)
+        if (this.floatingText) {
+            const now = performance.now();
+            const { text, worldX, worldY, color, startTime, duration } = this.floatingText;
+
+            const elapsed = now - startTime;
+            if (elapsed >= duration) {
+                this.floatingText = null;
+            } else {
+                const fadeIn = 200;
+                const fadeOut = 300;
+                const visible = Math.max(0, duration - fadeIn - fadeOut);
+
+                let alpha = 1;
+                if (elapsed < fadeIn) {
+                    alpha = elapsed / fadeIn;                // fade-in
+                } else if (elapsed > fadeIn + visible) {
+                    alpha = 1 - (elapsed - fadeIn - visible) / fadeOut; // fade-out
+                }
+
+                const screen = this.camera.worldToScreen(worldX, worldY);
+                const tile = this.camera.tileSize;
+
+                // juste au-dessus du vaisseau (centre + petit offset)
+                const textX = screen.x;
+                const textY = screen.y - tile * 0.5 - 4;
+
+                const ctx = this.uiCtx;
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.font = "18px Orbitron, sans-serif";
+                ctx.fontWeight = 'bold';
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = color;
+
+                ctx.strokeText(text, textX, textY);
+                ctx.fillText(text, textX, textY);
+                ctx.restore();
+
+                // on redemandera un redraw tant que l'anim n'est pas finie
+                this.needsRedraw = true;
+            }
         }
+
+        this.needsRedraw = false;
     }
 
     updateGridCoordinatesUI(camera, tileSize) {
@@ -111,39 +153,17 @@ export default class Renderer {
         ui.ctx.clearRect(0, 0, ui.el.width, ui.el.height);
     }
 
-    clearFloatingLayer() {
-        const f = this.canvases.floating;
-        if (!f) return;
-        f.ctx.clearRect(0, 0, f.el.width, f.el.height);
-    }
-
     drawFloatingText(text, worldX, worldY, color = "rgba(0,255,180,0.95)", duration = 1200) {
-        const ctx = this.floatingCtx;
-        const camera = this.camera;
-        if (!ctx || !camera) return;
-
-        const screen = camera.worldToScreenCoords(worldX, worldY);
-
-        // Nettoie uniquement la couche floating
-        this.clearFloatingLayer();
-
-        ctx.font = "22px Orbitron, sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "bottom";
-        ctx.lineWidth = 3;
-
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = color;
-
-        const textY = screen.y - 20;
-
-        ctx.strokeText(text, screen.x, textY);
-        ctx.fillText(text, screen.x, textY);
-
-        setTimeout(() => {
-            this.clearFloatingLayer();
-            this.requestRedraw();
-        }, duration);
+        // On enregistre juste les infos ; le dessin se fait dans render()
+        this.floatingText = {
+            text: String(text),
+            worldX,
+            worldY,
+            color,
+            startTime: performance.now(),
+            duration
+        };
+        this.requestRedraw();
     }
 
 

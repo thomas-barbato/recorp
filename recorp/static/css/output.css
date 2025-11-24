@@ -6800,6 +6800,20 @@ canvas {
   /* blocage interactions */
 }
 
+#canvas-bg,
+#canvas-fg,
+#canvas-actors,
+#canvas-ui,
+#canvas-floating {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#canvas-floating {
+  pointer-events: none;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
