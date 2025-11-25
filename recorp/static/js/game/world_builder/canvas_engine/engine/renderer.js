@@ -6,6 +6,7 @@ import BackgroundRenderer from "../renderers/background_renderer.js";
 import ForegroundRenderer from "../renderers/foreground_renderer.js";
 import ActorsRenderer from "../renderers/actors_renderer.js";
 import UIRenderer from "../renderers/ui_renderer.js";
+import FloatingMessageManager from "./floating_message_manager.js"
 
 
 export default class Renderer {
@@ -29,6 +30,8 @@ export default class Renderer {
         this.actors.sonar = this.sonar;
         // Texte flottant (coût de mouvement, etc.)
         this.floatingText = null;
+        // Gestionnaire de messages flottants (texte + icônes)
+        this.floatingMessages = new FloatingMessageManager();
     }
 
     requestRedraw() { this.needsRedraw = true; }
@@ -38,6 +41,12 @@ export default class Renderer {
         if (this.ui && typeof this.ui.setPathfinder === "function") {
             this.ui.setPathfinder(pathfinder);
         }
+        this.requestRedraw();
+    }
+
+    addFloatingMessage(opts) {
+        if (!this.floatingMessages) return;
+        this.floatingMessages.addMessage(opts);
         this.requestRedraw();
     }
 
@@ -55,6 +64,11 @@ export default class Renderer {
         this.fg.render();
         this.actors.render(delta);
         this.ui.render();
+
+        // 🔥 Messages flottants par-dessus l'UI
+        if (this.floatingMessages) {
+            this.floatingMessages.updateAndRender(this.uiCtx, this.camera);
+        }
 
         // 3) Texte flottant (au-dessus de l'UI)
         if (this.floatingText) {

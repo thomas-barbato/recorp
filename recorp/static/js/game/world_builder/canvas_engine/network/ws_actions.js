@@ -246,16 +246,21 @@ function renderMoveCostAbovePlayer(playerId, cost) {
     const actor = engine.map.findPlayerById(playerId);
     if (!actor) return;
 
-    const sizeX = actor.sizeX || actor.data?.ship?.sizeX || actor.data?.ship?.size.x || 1;
-    const sizeY = actor.sizeY || actor.data?.ship?.sizeY || actor.data?.ship?.size.y || 1;
+    const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
+    const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
 
-    // Coordonnées "monde" (tiles) du centre du vaisseau
-    const centerX = (actor.renderX !== undefined ? actor.renderX : actor.x) + (sizeX - 1) / 2;
-    const centerY = (actor.renderY !== undefined ? actor.renderY : actor.y) + (sizeY - 1) / 2;
+    const worldX = (actor.renderX ?? actor.x) + (sizeX - 1) / 2;
+    const worldY = (actor.renderY ?? actor.y) + (sizeY - 1) / 2;
 
-    engine.renderer.drawFloatingText(cost, centerX, centerY);
+    engine.renderer.addFloatingMessage({
+        text: cost,
+        icon: "ship",// 🚀
+        worldX,
+        worldY,
+        duration: 1200,
+        color: "rgba(0,255,180,0.95)"
+    });
 }
-
 
 // -----------------------------------------------------------
 // Enregistrement dans ActionRegistry

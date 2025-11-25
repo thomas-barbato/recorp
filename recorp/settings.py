@@ -272,6 +272,13 @@ STATICFILES_DIRS = [
         os.path.join(
             BASE_DIR, "recorp", "static", "js", "fontawesome"
         )
+    ),
+    (
+        "floating_icon", 
+        os.path.join(
+            BASE_DIR, "recorp", "static", "img", "floating_icon"
+        )
+        
     )
 ]
 
