@@ -246,6 +246,7 @@ export default class UIRenderer {
             ctx.stroke();
         }
         ctx.restore();
+        
     }
 
     getCenter() {

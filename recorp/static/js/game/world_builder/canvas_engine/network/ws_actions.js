@@ -171,9 +171,6 @@ function handlePlayerMove(msg) {
                 finalX: endX,
                 finalY: endY,
                 onComplete: () => {
-                    // ---------------------------------------
-                    // ★ Recentrage caméra à la fin de l’animation
-                    // ---------------------------------------
                     console.log(engine.camera && engine.camera.autoCenter)
                     try {
                         if (engine.camera && engine.camera.autoCenter) {
@@ -184,8 +181,21 @@ function handlePlayerMove(msg) {
                             const centerY = endY + (sizeY - 1) / 2;
 
                             engine.camera.centerOn(centerX, centerY);
+
                             renderMoveCostAbovePlayer(playerId, msg.move_cost);
+                            // mise à jour de la position du joueur.
+                            if (playerId === window.current_player_id) {
+                                currentPlayer.user.coordinates.x = endX;
+                                currentPlayer.user.coordinates.y = endY;
+                            }
+
                             engine.renderer.requestRedraw();
+                            window.canvasEngine.renderer.requestRedraw();
+
+                            // ⭐ FIX SONAR : remettre à zéro pour réinitialiser la rotation
+                            if (window.canvasEngine?.renderer?.ui?.sonar) {
+                                window.canvasEngine.renderer.ui.sonar._sonarPulseTime = 0;
+                            }
                         }
                     } catch (e) {
                         console.warn("[WS player_move] camera recenter error (animation):", e);
