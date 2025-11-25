@@ -146,8 +146,36 @@ if (!ok) {
                 }
             },
             onTileClick: (tx, ty, info) => canvasPathfinding.handleClick(tx, ty),
-            onMouseMove: (tx, ty, info) => canvasPathfinding.handleHover(tx, ty),
-            onMouseLeave: () => canvasPathfinding.clear()
+            onMouseMove: (tx, ty, info) => {
+                canvasPathfinding.handleHover(tx, ty);
+
+                const player = map.findPlayerById(window.current_player_id);
+
+                if (!player) return;
+
+                const inside =
+                    tx >= player.x &&
+                    tx < player.x + player.sizeX &&
+                    ty >= player.y &&
+                    ty < player.y + player.sizeY;
+
+                if (inside) {
+                    if (!renderer.sonar.active) {
+                        renderer.sonar.active = true;
+                        renderer.requestRedraw();
+                    }
+                } else {
+                    if (renderer.sonar.active) {
+                        renderer.sonar.active = false;
+                        renderer.requestRedraw();
+                    }
+                }
+            },
+            onMouseLeave: () => {
+                canvasPathfinding.clear();
+                renderer.sonar.active = false;
+                renderer.requestRedraw();
+            }
         });
         
         // websocket
@@ -162,9 +190,31 @@ if (!ok) {
             camera.resize(CanvasManager.width, CanvasManager.height);
             renderer.requestRedraw();
             renderer.updateGridCoordinatesUI(camera, TILE_SIZE);
+        
+            const sonarBtn = document.getElementById("sonar-toggle-btn");
+            if (sonarBtn) {
+                sonarBtn.addEventListener("click", () => {
+                    renderer.sonar.active = !renderer.sonar.active;
+                    renderer.requestRedraw();
+
+                    // Option : feedback visuel du bouton
+                    sonarBtn.classList.toggle("active", renderer.sonar.active);
+                });
+            }
         });
 
         renderer.updateGridCoordinatesUI(camera, TILE_SIZE);
+
+        const sonarBtn = document.getElementById("sonar-toggle-btn");
+        if (sonarBtn) {
+            sonarBtn.addEventListener("click", () => {
+                renderer.sonar.active = !renderer.sonar.active;
+                renderer.requestRedraw();
+
+                // Option : feedback visuel du bouton
+                sonarBtn.classList.toggle("active", renderer.sonar.active);
+            });
+        }
 
         window.canvasEngine = { 
             canvases, 

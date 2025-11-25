@@ -63,7 +63,7 @@ export default class Renderer {
         this.bg.render();
         this.fg.render();
         this.actors.render(delta);
-        this.ui.render();
+        this.ui.render(delta);
 
         // 🔥 Messages flottants par-dessus l'UI
         if (this.floatingMessages) {

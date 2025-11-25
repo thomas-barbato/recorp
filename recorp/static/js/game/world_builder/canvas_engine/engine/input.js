@@ -27,6 +27,8 @@ export default class Input {
         this.onMouseMove = options.onMouseMove || function () {};
         this.onMouseLeave = options.onMouseLeave || function () {};
 
+        this.hoveredPlayer = false;
+
         if (!this.uiCanvas) {
             console.error("Input ERROR: uiCanvas manquant.");
             return;
@@ -67,6 +69,7 @@ export default class Input {
             this.onMouseLeave();
         });
     }
+    
 
     // ---------------------------------------------------------------------
     // Convertit un event souris → case 32×32 du monde

@@ -24,6 +24,13 @@ export default class UIRenderer {
             tileSize: camera.tileSize
         });
 
+        // Compteur pour le sonar pulsant
+        this._sonarPulseTime = 0;
+
+        if (this.sonar.range === undefined || this.sonar.range === null) {
+            this.sonar.range = window.currentPlayer.ship.view_range// rayon de X tiles 
+        }
+
         // chemin courant (tableau de {x,y})
         this.pathTiles = [];
         this.maxMovement = currentPlayer.ship.current_movement;
@@ -133,29 +140,128 @@ export default class UIRenderer {
 
         ctx.restore();
     }
+    
+    renderSonar() {
+        const ctx = this.ctx;
+        const cam = this.camera;
+
+        const playerData = currentPlayer;
+        if (!playerData || !playerData.ship || !playerData.user) return;
+
+        const tile = cam.tileSize;
+        const zoom = cam.zoom || 1;
+
+        // Position dans le monde
+        const worldX = playerData.user.coordinates.x;
+        const worldY = playerData.user.coordinates.y;
+        const sizeX = playerData.ship.size.x;
+        const sizeY = playerData.ship.size.y;
+
+        // Centre monde
+        const cxWorld = worldX + (sizeX - 1) / 2;
+        const cyWorld = worldY + (sizeY - 1) / 2;
+
+        // Conversion en écran
+        const base = cam.worldToScreen(cxWorld, cyWorld);
+        const cx = base.x;
+        const cy = base.y;
+
+        const radius = this.sonar.range * tile;
+
+        // --------------------------------------
+        // 1) CERCLE PERMANENT — VERT FLUO
+        // --------------------------------------
+        ctx.save();
+        ctx.globalAlpha = 0.20;
+        ctx.strokeStyle = "#00ff64";        // bord vert fluo
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Glow interne (équivalent box-shadow inset)
+        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grd.addColorStop(0, "rgba(0,255,100,0.4)");
+        grd.addColorStop(1, "rgba(0,255,100,0.0)");
+        ctx.fillStyle = grd;
+        ctx.fill();
+
+        ctx.restore();
+
+
+        // --------------------------------------
+        // 2) BALAYAGE RADAR — CYAN FLUO
+        // --------------------------------------
+        const angle = (this._sonarPulseTime * 0.004) % (Math.PI * 2);
+        const sweep = (22 * Math.PI) / 180; // 22° comme CSS (~20°)
+
+        const a1 = angle - sweep / 2;
+        const a2 = angle + sweep / 2;
+
+        ctx.save();
+        ctx.globalAlpha = 0.55; // proche rgba(0,255,255,0.6)
+
+        // Glow cyan externe (équivalent box-shadow)
+        const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        glow.addColorStop(0, "rgba(0,255,255,0.6)");
+        glow.addColorStop(0.7, "rgba(0,255,255,0.3)");
+        glow.addColorStop(1, "rgba(0,255,255,0.0)");
+        ctx.fillStyle = glow;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, a1, a2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+
+        // -------------------------------------------------------
+        // 3) BALAYAGE "NUCLEAIRE" FIN — Ligne cyan pure (#00FFFF)
+        // -------------------------------------------------------
+        ctx.save();
+        ctx.globalAlpha = 0.90;
+        ctx.strokeStyle = "#00ffff";
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+        ctx.stroke();
+
+        ctx.restore();
+
+    }
+
 
     render(delta = 0) {
         this._time += delta;
+        const ctx = this.ctx;
 
-        // 1) Grille légère
+        // 1) Clear UI (première étape !)
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        // 2) Grille
         this._renderGrid();
 
-        // 2) Sonar (masque + pulses) si actif
-        if (this.sonar) {
-            this.sonar.render(this.ctx, delta);
-        }
-        // 3) Pathfinding A* (version PC)
+        // 3) Pathfinding
         if (this.pathfinder && this.pathfinder.invalidPreview) {
             this._renderInvalidPreview(this.pathfinder.invalidPreview);
         }
-        if (this.pathfinder && this.pathfinder.current && this.pathfinder.current.path && this.pathfinder.current.path.length > 0) {
-            // On adapte l'API pour pathfinding_renderer :
-            const pf = { path: this.pathfinder.current.path };
-            renderPathfinding(this.ctx,this.camera,{
+
+        if (this.pathfinder && this.pathfinder.current && this.pathfinder.current.path?.length > 0) {
+            renderPathfinding(this.ctx, this.camera, {
                 path: this.pathfinder.current.path,
                 shipSizeX: currentPlayer.ship.size.x,
                 shipSizeY: currentPlayer.ship.size.y
             });
+        }
+
+        // 4) SONAR
+        this._sonarPulseTime += delta;
+        if (this.sonar && this.sonar.active) {
+            this.renderSonar();
         }
     }
 }
