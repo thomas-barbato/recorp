@@ -23,7 +23,7 @@ export default class ActorsRenderer {
         this._updateActorAnimations();
 
         // Players
-        (this.map.players || []).forEach(p => {
+        Object.values(this.map.players || {}).forEach(p => {
             this._drawObject(p, tilePx);
         });
 

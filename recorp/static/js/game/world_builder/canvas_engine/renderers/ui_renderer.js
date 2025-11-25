@@ -24,11 +24,12 @@ export default class UIRenderer {
             tileSize: camera.tileSize
         });
 
-        // Compteur pour le sonar pulsant
+        // Compteur temps pour le sonar (rotation)
         this._sonarPulseTime = 0;
 
-        if (this.sonar.range === undefined || this.sonar.range === null) {
-            this.sonar.range = window.currentPlayer.ship.view_range// rayon de X tiles 
+        // Sécu: si jamais view_range est absent
+        if (currentPlayer.ship.view_range === undefined || currentPlayer.ship.view_range === null) {
+            currentPlayer.ship.view_range = window.currentPlayer.ship.view_range; // rayon de X tiles
         }
 
         // chemin courant (tableau de {x,y})
@@ -140,100 +141,131 @@ export default class UIRenderer {
 
         ctx.restore();
     }
-    
-    renderSonar() {
+
+    /**
+     * Sonar visuel : fond rempli + rayon unique qui balaye
+     * @param {number} delta temps écoulé (ms)
+     */
+    renderSonar(delta) {
+        if (!this.sonar.active) return;
+
         const ctx = this.ctx;
         const cam = this.camera;
-
         const playerData = currentPlayer;
+
         if (!playerData || !playerData.ship || !playerData.user) return;
 
         const tile = cam.tileSize;
         const zoom = cam.zoom || 1;
 
-        // Position dans le monde
         const worldX = playerData.user.coordinates.x;
         const worldY = playerData.user.coordinates.y;
         const sizeX = playerData.ship.size.x;
         const sizeY = playerData.ship.size.y;
 
-        // Centre monde
+        // Centre du vaisseau, peu importe la taille (1x1, 1x2, 3x3…)
         const cxWorld = worldX + (sizeX - 1) / 2;
         const cyWorld = worldY + (sizeY - 1) / 2;
+        const pos = cam.worldToScreen(cxWorld, cyWorld);
+        const cx = pos.x;
+        const cy = pos.y;
 
-        // Conversion en écran
-        const base = cam.worldToScreen(cxWorld, cyWorld);
-        const cx = base.x;
-        const cy = base.y;
+        const radius = playerData.ship.view_range * tile * zoom;
 
-        const radius = this.sonar.range * tile;
-
-        // --------------------------------------
-        // 1) CERCLE PERMANENT — VERT FLUO
-        // --------------------------------------
+        // === 1) FOND COMPLET (équivalent .in-range CSS) ===
         ctx.save();
-        ctx.globalAlpha = 0.20;
-        ctx.strokeStyle = "#00ff64";        // bord vert fluo
-        ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.22;
+        ctx.fillStyle = "rgba(0, 255, 100, 0.22)";  // fond vert
 
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // bordure + glow interne vert
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#00ff64";
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = "rgba(0, 255, 100, 0.35)";
         ctx.stroke();
-
-        // Glow interne (équivalent box-shadow inset)
-        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        grd.addColorStop(0, "rgba(0,255,100,0.4)");
-        grd.addColorStop(1, "rgba(0,255,100,0.0)");
-        ctx.fillStyle = grd;
-        ctx.fill();
-
         ctx.restore();
 
+        // === 2) BALAYAGE : rayon unique, sens horaire ===
 
-        // --------------------------------------
-        // 2) BALAYAGE RADAR — CYAN FLUO
-        // --------------------------------------
-        const angle = (this._sonarPulseTime * 0.004) % (Math.PI * 2);
-        const sweep = (22 * Math.PI) / 180; // 22° comme CSS (~20°)
+        // delta est en ms → on le convertit en secondes pour un contrôle plus fin
+        const dtSeconds = (delta || 16) / 1000;
 
-        const a1 = angle - sweep / 2;
-        const a2 = angle + sweep / 2;
+        // vitesse configurable via this.sonar.speed (sinon défaut lent)
+        const speed = this.sonar.speed || 3; // plus petit = plus lent
 
+        this._sonarPulseTime = (this._sonarPulseTime || 0) + dtSeconds * speed;
+
+        const angle = this._sonarPulseTime % (Math.PI * 2);
+
+        // Coordonnées du bout du rayon
+        const endX = cx + Math.cos(angle) * radius;
+        const endY = cy + Math.sin(angle) * radius;
+
+        /* ==========================================================
+        BALAYAGE PRINCIPAL — RAYON UNIQUE
+        ========================================================== */
         ctx.save();
-        ctx.globalAlpha = 0.55; // proche rgba(0,255,255,0.6)
 
-        // Glow cyan externe (équivalent box-shadow)
-        const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        glow.addColorStop(0, "rgba(0,255,255,0.6)");
-        glow.addColorStop(0.7, "rgba(0,255,255,0.3)");
-        glow.addColorStop(1, "rgba(0,255,255,0.0)");
-        ctx.fillStyle = glow;
+        ctx.globalAlpha = 0.9;
+        ctx.strokeStyle = "rgba(0, 255, 255, 0.95)";
+        ctx.lineWidth = 4;
+
+        // Glow
+        ctx.shadowBlur = 25;
+        ctx.shadowColor = "rgba(0, 255, 255, 0.85)";
 
         ctx.beginPath();
         ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, radius, a1, a2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-
-
-        // -------------------------------------------------------
-        // 3) BALAYAGE "NUCLEAIRE" FIN — Ligne cyan pure (#00FFFF)
-        // -------------------------------------------------------
-        ctx.save();
-        ctx.globalAlpha = 0.90;
-        ctx.strokeStyle = "#00ffff";
-        ctx.lineWidth = 3;
-
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+        ctx.lineTo(endX, endY);
         ctx.stroke();
 
         ctx.restore();
 
+        /* ==========================================================
+        TRAILING EFFECT (OPTIONNEL)
+        → tu peux le réactiver ici si tu veux plusieurs traits
+        ========================================================== */
+
+        ctx.save();
+        const tailCount = 8;          // nombre de traits dans la “traîne”
+        const tailOpacity = 0.07;     // intensité de la trace
+        for (let i = 1; i <= tailCount; i++) {
+            const a = angle - i * 0.12; // léger décalage derrière le rayon
+            const ex = cx + Math.cos(a) * radius;
+            const ey = cy + Math.sin(a) * radius;
+            ctx.globalAlpha = tailOpacity * (1 - i / tailCount);
+            ctx.strokeStyle = "rgba(0, 255, 255, 1)";
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(ex, ey);
+            ctx.stroke();
+        }
+        ctx.restore();
     }
 
+    getCenter() {
+        const me = this._getPlayer?.();
+        if (!me) return null;
+
+        // Centre basé sur la taille du vaisseau
+        const cx = me.x + me.sizeX / 2;
+        const cy = me.y + me.sizeY / 2;
+
+        return { x: cx, y: cy };
+    }
+
+    getRadius() {
+        const me = this._getPlayer?.();
+        if (!me) return 0;
+
+        // le radius = range * tileSize
+        return me.ship.view_range * this.tileSize;
+    }
 
     render(delta = 0) {
         this._time += delta;
@@ -259,9 +291,8 @@ export default class UIRenderer {
         }
 
         // 4) SONAR
-        this._sonarPulseTime += delta;
         if (this.sonar && this.sonar.active) {
-            this.renderSonar();
+            this.renderSonar(delta);
         }
     }
 }

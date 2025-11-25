@@ -7,6 +7,7 @@ import ForegroundRenderer from "../renderers/foreground_renderer.js";
 import ActorsRenderer from "../renderers/actors_renderer.js";
 import UIRenderer from "../renderers/ui_renderer.js";
 import FloatingMessageManager from "./floating_message_manager.js"
+import SonarSystem from "../renderers/sonar_system.js";
 
 
 export default class Renderer {
@@ -24,10 +25,19 @@ export default class Renderer {
         // UI créée sans pathfinder, qu'on branchera après
         this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {});
         this.uiCtx = canvases.ui.ctx;
-        
-        // sonar partagé pour les acteurs
-        this.sonar = this.ui.sonar;
+
+        // Création du sonar système logique et visuel
+        this.sonar = new SonarSystem({
+            camera,
+            map,
+            ctx: canvases.ui.ctx,
+            tileSize: camera.tileSize,
+            playerId: window.current_player_id
+        });
+        // Partage avec acteurs (pour flip / highlight etc.)
         this.actors.sonar = this.sonar;
+        // Transfert vers l'UI pour dessin (UIRenderer doit appeler sonar.render())
+        this.ui.sonar = this.sonar;
         // Texte flottant (coût de mouvement, etc.)
         this.floatingText = null;
         // Gestionnaire de messages flottants (texte + icônes)

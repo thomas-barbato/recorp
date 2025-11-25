@@ -9,7 +9,7 @@ export default class MapData {
         this.mapHeight = this.raw.map_height || 40;
 
         this.worldObjects = []; // includes foreground, players, npcs
-        this.players = [];
+        this.players = {};
         this.foregrounds = [];
         this.background = this.raw.sector?.background || null;
     }
@@ -18,7 +18,7 @@ export default class MapData {
         if (!this.raw) throw new Error('MapData.prepare: raw undefined');
 
         this.worldObjects = [];
-        this.players = [];
+        this.players = {};
         this.foregrounds = [];
 
         const tryEnsure = (url) => {
@@ -86,12 +86,14 @@ export default class MapData {
                 reversedSprite: shipImage ? `foreground/SHIPS/${shipImage}-reversed.png` : null
             };
 
-            this.players.push(obj);
+            // ✔️ CORRECTION ICI : stockage par ID joueur
+            this.players[p.user.player] = obj;
+
             this.worldObjects.push(obj);
 
             if (obj.spritePath) tryEnsure(obj.spritePath);
             if (obj.reversedSprite) tryEnsure(obj.reversedSprite);
-        });
+});
 
         // ------------ NPCs ------------
         const npcList = Array.isArray(this.raw.npc) ? this.raw.npc : [];
@@ -130,7 +132,7 @@ export default class MapData {
 
 
     findPlayerById(id) {
-        return this.players.find(p => String(p.data.user.player) === String(id)) || null;
+        return this.players[id] || null;
     }
 
     getObjectsAtTile(tileX, tileY) {

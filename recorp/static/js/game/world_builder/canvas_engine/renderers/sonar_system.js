@@ -6,11 +6,12 @@ export default class SonarSystem {
      *  - ctx (ui canvas 2d ctx) -> used for measurement when rendering if needed
      *  - tileSize (base tile size in px)
      */
-    constructor({ camera, map, ctx, tileSize }) {
+    constructor({ camera, map, ctx, tileSize, playerId }) {
         this.camera = camera;
         this.map = map;
         this.ctx = ctx;
         this.tileSize = tileSize || camera.tileSize;
+        this.playerId = playerId;
         this.active = false;     // sonar active (mobile toggle) or hovered
         this._time = 0;
         this.pulseSpeed = 0.008; // pulsation speed
@@ -27,11 +28,24 @@ export default class SonarSystem {
      * Returns player center in world tiles
      */
     _getPlayer() {
-        // Prefer canvas-engine current map player if available
-        const id = window.current_player_id;
-        if (!id) return null;
-        const p = this.map.findPlayerById(id);
-        return p || null;
+        // Cache simple pour éviter de rebalayer le tableau à chaque fois
+        if (this._playerCache && this._playerCache.data?.user?.player === this.playerId) {
+            return this._playerCache;
+        }
+
+        if (!this.map || !Array.isArray(this.map.worldObjects)) {
+            return null;
+        }
+
+        const found = this.map.worldObjects.find(obj =>
+            obj.type === 'player' &&
+            obj.data &&
+            obj.data.user &&
+            obj.data.user.player === this.playerId
+        );
+
+        this._playerCache = found || null;
+        return this._playerCache;
     }
 
     /**
@@ -40,19 +54,26 @@ export default class SonarSystem {
      */
     isVisible(obj) {
         const player = this._getPlayer();
-        if (!player || !player.data || !player.data.ship) return false;
-        const viewRange = Number(player.data.ship.view_range) || Number(player.data.ship.view_range) === 0 ? Number(player.data.ship.view_range) : (player.data.ship.view_range || 6);
-        // center positions (in tiles)
+        if (!player || !player.data || !player.data.ship) {
+            return false;
+        }
+
+        // portée radar : même source que ton backend / currentPlayer
+        const viewRange = Number(player.data.ship.view_range) || 6;
+
+        // centre du joueur (en tiles)
         const px = player.x + (player.sizeX || 1) / 2;
         const py = player.y + (player.sizeY || 1) / 2;
+
+        // centre de l'objet (en tiles) – si pas de taille, on le traite comme 1x1
         const ox = obj.x + (obj.sizeX || 1) / 2;
         const oy = obj.y + (obj.sizeY || 1) / 2;
 
         const dx = ox - px;
         const dy = oy - py;
-        const distTiles = Math.sqrt(dx*dx + dy*dy);
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-        return distTiles <= viewRange + 0.0001;
+        return dist <= viewRange;
     }
 
     /**
