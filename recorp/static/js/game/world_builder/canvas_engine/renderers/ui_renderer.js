@@ -193,10 +193,10 @@ export default class UIRenderer {
     ctx.arc(cx, cy, radius, 0, Math.PI * 2);
     ctx.fillStyle = "rgba(0,255,100,0.22)";
     ctx.fill();
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1;
     ctx.shadowBlur = 18;
-    ctx.shadowColor = "rgba(0,255,100,0.4)";
-    ctx.strokeStyle = "#00ff64";
+    ctx.shadowColor = "rgba(0, 79, 59, 0.4)";
+    ctx.strokeStyle = "rgb(94, 233, 181)";
     ctx.stroke();
     ctx.restore();
 
@@ -204,7 +204,7 @@ export default class UIRenderer {
     // 3) Balayage (rayon unique)
     // ---------------------------------------------------
     const dtSec = (dt || 16) / 1000;
-    const speed = this.sonar.speed || 0.28;
+    const speed = this.sonar.speed || 1.0;
 
     this._sonarPulseTime = (this._sonarPulseTime || 0) + dtSec * speed;
     const angle = this._sonarPulseTime % (Math.PI * 2);
