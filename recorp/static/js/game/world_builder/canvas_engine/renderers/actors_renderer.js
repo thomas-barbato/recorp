@@ -192,6 +192,7 @@ export default class ActorsRenderer {
         const engine = window.canvasEngine;
         const pf = engine?.pathfinding;
         const showBorder = pf && (pf.current || pf.invalidPreview);
+        const hover = window.canvasEngine?.hoverTarget || null;
 
         if (visible) {
             const isAnimating = obj.renderX !== undefined;
@@ -218,10 +219,76 @@ export default class ActorsRenderer {
                 this.ctx.restore();
             }
 
+            // si pas survolé → pas de bordure
+            if (hover && hover === obj) {
+                const ctx = this.ctx;
+                const sonarVisible = this.sonar ? this.sonar.isVisible(obj) : true;
+
+                // On détermine le type via obj.id : "pc_23", "npc_25", etc.
+                let isPc = false;
+                let isNpc = false;
+                let isCurrentPlayer = false;
+
+                if (typeof obj.id === "string") {
+                    if (obj.id.startsWith("pc_")) {
+                        isPc = true;
+                        const idNum = parseInt(obj.id.slice(3), 10);
+                        const currentPlayer = window.currentPlayer;
+                        const currentId = currentPlayer?.user?.player;
+                        if (!Number.isNaN(idNum) && String(idNum) === String(currentId)) {
+                            isCurrentPlayer = true;
+                        }
+                    } else if (obj.id.startsWith("npc_")) {
+                        isNpc = true;
+                    }else{
+                    }
+                }
+
+                // Ton propre vaisseau : on NE TOUCHE PAS à la logique existante
+                // (border orange pendant le pathfinding)
+                if (isCurrentPlayer) {
+                    // on laisse la bordure gérée plus haut (pathfinding)
+                    // donc on n'ajoute rien ici
+                } else {
+
+                    ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
+                    ctx.setLineDash([4, 4]);
+                    // 🟡 Vaisseau hors sonar → jaune
+                    if (!sonarVisible) {
+                        ctx.strokeStyle = "rgba(250, 204, 21, 1)"; // yellow-400
+                    } else {
+                        // 🟥 NPC visible
+                        if (isNpc) {
+                            ctx.strokeStyle = "rgba(220, 38, 38, 1)"; // red-600
+                        }
+                        // 🟦 PC visible (autre que toi)
+                        else if (isPc) {
+                            ctx.strokeStyle = "rgba(34, 211, 238, 1)"; // cyan-400
+                        } else {
+                            // fallback : teal blanc
+                            ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+                        }
+                    }
+
+                    ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
+                    ctx.restore();
+                }
+            }
+
             // Reset filtre
             this.ctx.filter = "none";
             this.ctx.globalAlpha = 1;
             return;
+        }else{
+            if (hover && hover === obj) {
+                const ctx = this.ctx;
+                ctx.save();
+                ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
+                ctx.setLineDash([4, 4]);
+                ctx.strokeStyle = "rgba(250, 204, 21, 1)"; // yellow-400
+                ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
+                ctx.restore();
+            }
         }
 
         // Non visible : silhouette "radar"

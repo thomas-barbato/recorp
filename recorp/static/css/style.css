@@ -1624,12 +1624,11 @@ canvas {
 #canvas-bg,
 #canvas-fg,
 #canvas-actors,
-#canvas-ui,
 #canvas-floating {
-    position: absolute;
+    pointer-events: none;
     top: 0;
     left: 0;
 }
-#canvas-floating {
-    pointer-events: none;
+#canvas-ui {
+    pointer-events: auto;
 }
