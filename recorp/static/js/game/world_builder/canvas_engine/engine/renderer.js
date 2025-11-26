@@ -22,9 +22,10 @@ export default class Renderer {
         this.fg = new ForegroundRenderer(canvases.fg.ctx, camera, spriteManager, map);
         this.actors = new ActorsRenderer(canvases.actors.ctx, camera, spriteManager, map);
 
-        // UI créée sans pathfinder, qu'on branchera après
         this.ui = new UIRenderer(canvases.ui.ctx, camera, spriteManager, map, {});
         this.uiCtx = canvases.ui.ctx;
+
+        this.floatingCtx = canvases.floating.ctx;
 
         // Création du sonar système logique et visuel
         this.sonar = new SonarSystem({
@@ -75,58 +76,11 @@ export default class Renderer {
         this.actors.render(delta);
         this.ui.render(delta);
 
-        // 🔥 Messages flottants par-dessus l'UI
+        // Messages flottants par-dessus l'UI
         if (this.floatingMessages) {
-            this.floatingMessages.updateAndRender(this.uiCtx, this.camera);
+            this.floatingCtx.clearRect(0, 0, this.floatingCtx.canvas.width, this.floatingCtx.canvas.height);
+            this.floatingMessages.updateAndRender(this.floatingCtx, this.camera);
         }
-
-        // 3) Texte flottant (au-dessus de l'UI)
-        if (this.floatingText) {
-            const now = performance.now();
-            const { text, worldX, worldY, color, startTime, duration } = this.floatingText;
-
-            const elapsed = now - startTime;
-            if (elapsed >= duration) {
-                this.floatingText = null;
-            } else {
-                const fadeIn = 200;
-                const fadeOut = 300;
-                const visible = Math.max(0, duration - fadeIn - fadeOut);
-
-                let alpha = 1;
-                if (elapsed < fadeIn) {
-                    alpha = elapsed / fadeIn;                // fade-in
-                } else if (elapsed > fadeIn + visible) {
-                    alpha = 1 - (elapsed - fadeIn - visible) / fadeOut; // fade-out
-                }
-
-                const screen = this.camera.worldToScreen(worldX, worldY);
-                const tile = this.camera.tileSize;
-
-                // juste au-dessus du vaisseau (centre + petit offset)
-                const textX = screen.x;
-                const textY = screen.y - tile * 0.5 - 4;
-
-                const ctx = this.uiCtx;
-                ctx.save();
-                ctx.globalAlpha = alpha;
-                ctx.font = "18px Orbitron, sans-serif";
-                ctx.fontWeight = 'bold';
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.lineWidth = 3;
-                ctx.strokeStyle = "black";
-                ctx.fillStyle = color;
-
-                ctx.strokeText(text, textX, textY);
-                ctx.fillText(text, textX, textY);
-                ctx.restore();
-
-                // on redemandera un redraw tant que l'anim n'est pas finie
-                this.needsRedraw = true;
-            }
-        }
-
         this.needsRedraw = false;
     }
 
@@ -134,11 +88,7 @@ export default class Renderer {
         const contX = document.getElementById("ui-coordinates-x");
         const contY = document.getElementById("ui-coordinates-y");
 
-        //
-        // --- AXE X (haut) ---
-        //
-
-        // 2) Ajoute les coordonnées X
+        // coordonnées X
         for (let i = 0; i < camera.visibleTilesX; i++) {
             const worldX = camera.worldX + i;
 
@@ -152,10 +102,7 @@ export default class Renderer {
             div.innerText = worldX;
             contX.appendChild(div);
         }
-
-        //
-        // --- AXE Y (gauche) ---
-        //
+        // coordonnées Y
         for (let i = 0; i < camera.visibleTilesY; i++) {
             const worldY = camera.worldY + i;
 

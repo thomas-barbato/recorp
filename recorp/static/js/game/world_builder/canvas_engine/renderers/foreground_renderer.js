@@ -1,4 +1,3 @@
-// world/foreground_renderer.js
 // dessine tous les objets foreground (planetes, stations...).
 // chaque objet multi-tile est dessiné en une seule drawImage.
 

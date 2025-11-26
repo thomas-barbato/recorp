@@ -264,7 +264,7 @@ function renderMoveCostAbovePlayer(playerId, cost) {
 
     engine.renderer.addFloatingMessage({
         text: cost,
-        icon: "ship",// 🚀
+        icon: "ship",
         worldX,
         worldY,
         duration: 1200,

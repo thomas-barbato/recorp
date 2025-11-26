@@ -70,7 +70,7 @@ if (!ok) {
         }
         
         const input = new Input({
-            uiCanvas: canvases.ui.el,        // 💥 Le canvas interactif
+            uiCanvas: canvases.ui.el, // 💥 Le canvas interactif
             canvases,
             camera,
             map,

@@ -239,7 +239,7 @@ export default class ActorsRenderer {
 
         // Non visible : silhouette "radar"
         if (img) {
-            this._drawDottedSilhouetteFromSprite(img, scr.x, scr.y, pxW, pxH, obj);
+            this._drawSolidSilhouetteFromSprite(img, scr.x, scr.y, pxW, pxH, obj);
         } else {
             this._drawDottedFallback(scr.x, scr.y, pxW, pxH);
             if (this.spriteManager && srcUrl) {
@@ -268,6 +268,23 @@ export default class ActorsRenderer {
             this.ctx.restore();
         }
     }
+    _drawSolidPingSilhouette(x, y, w, h) {
+    const ctx = this.ctx;
+
+    // Pulsation douce entre 0.55 et 0.95
+    const t = this._time * 0.006;
+    const alpha = 0.55 + 0.40 * Math.sin(t);
+
+    ctx.save();
+
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = "rgba(255, 230, 80, 1)";
+
+    // Rectangle plein exactement à la taille du vaisseau
+    ctx.fillRect(x, y, w, h);
+
+    ctx.restore();
+}
 
     _drawDottedFallback(x, y, w, h) {
         const ctx = this.ctx;
@@ -289,117 +306,61 @@ export default class ActorsRenderer {
      * Silhouette "points radar" dérivée du sprite original.
      * On échantillonne l'alpha dans un canvas offscreen et on dessine des points.
      */
-    _drawDottedSilhouetteFromSprite(img, x, y, w, h, obj) {
-        if (!img) {
-            this._drawDottedFallback(x, y, w, h);
-            return;
-        }
+    _drawSolidSilhouetteFromSprite(img, x, y, w, h, obj) {
+        const ctx = this.ctx;
 
-        const tilePx = this.camera.tileSize * (this.camera.zoom || 1);
-        const density = Math.max(1, Math.round(tilePx / 8));
-
-        const cacheKey = `${img.src}|${Math.round(w)}x${Math.round(h)}|d${density}|rev${Boolean(
+        // --- cache key identique à la version dotted, mais "solid" ---
+        const cacheKey = `solidSilhouette|${img.src}|${w}x${h}|rev${Boolean(
             obj.data?.ship?.is_reversed
         )}`;
 
-        let cached = this._dotCache.get(cacheKey);
-        if (!cached) {
-            const off = document.createElement("canvas");
-            off.width = Math.max(1, Math.round(w));
-            off.height = Math.max(1, Math.round(h));
+        let off = this._dotCache.get(cacheKey);
+        if (!off) {
+            // canvas offscreen pour créer le masque
+            off = document.createElement("canvas");
+            off.width = w;
+            off.height = h;
+            const octx = off.getContext("2d");
 
-            try {
-                const octx = off.getContext("2d");
-                octx.clearRect(0, 0, off.width, off.height);
+            octx.clearRect(0, 0, w, h);
 
-                // flip si nécessaire dans l'offscreen
-                const isShip = (obj.type === "player" || obj.type === "npc");
-                const reversed = isShip && obj.data?.ship?.is_reversed;
+            const isShip = (obj.type === "player" || obj.type === "npc");
+            const reversed = isShip && obj.data?.ship?.is_reversed;
 
-                if (!reversed) {
-                    octx.drawImage(img, 0, 0, off.width, off.height);
-                } else {
-                    octx.save();
-                    octx.translate(off.width, 0);
-                    octx.scale(-1, 1);
-                    octx.drawImage(img, 0, 0, off.width, off.height);
-                    octx.restore();
-                }
-
-                const imgd = octx.getImageData(0, 0, off.width, off.height);
-                const data = imgd.data;
-                const wOff = off.width;
-                const hOff = off.height;
-
-                const sampleStep = Math.max(
-                    2,
-                    Math.floor(Math.min(wOff, hOff) / (density * 2))
-                );
-                const alphaThreshold = 30;
-
-                const points = [];
-                for (let yy = 0; yy < hOff; yy += sampleStep) {
-                    for (let xx = 0; xx < wOff; xx += sampleStep) {
-                        const idx = (yy * wOff + xx) * 4;
-                        const a = data[idx + 3];
-                        if (a > alphaThreshold) {
-                            const cx =
-                                (xx +
-                                    Math.min(sampleStep - 1, Math.floor(sampleStep / 2))) / wOff;
-                            const cy =
-                                (yy +
-                                    Math.min(sampleStep - 1, Math.floor(sampleStep / 2))) / hOff;
-                            points.push([cx, cy]);
-                        }
-                    }
-                }
-
-                cached = {
-                    points,
-                    imgW: off.width,
-                    imgH: off.height,
-                    step: sampleStep
-                };
-                this._dotCache.set(cacheKey, cached);
-            } catch (e) {
-                console.warn(
-                    "ActorsRenderer: sampling sprite failed, fallback to dotted rectangle",
-                    e
-                );
-                cached = { points: null };
-                this._dotCache.set(cacheKey, cached);
+            // 1) dessine le sprite dans offscreen (pour récupérer son alpha)
+            if (!reversed) {
+                octx.drawImage(img, 0, 0, w, h);
+            } else {
+                octx.save();
+                octx.translate(w, 0);
+                octx.scale(-1, 1);
+                octx.drawImage(img, 0, 0, w, h);
+                octx.restore();
             }
+
+            // 2) transforme le sprite en silhouette pleine
+            octx.globalCompositeOperation = "source-in";
+            octx.fillStyle = "black";  // on ne garde que l'alpha du sprite
+            octx.fillRect(0, 0, w, h);
+
+            this._dotCache.set(cacheKey, off);
         }
 
-        if (!cached || !cached.points || cached.points.length === 0) {
-            this._drawDottedFallback(x, y, w, h);
-            return;
-        }
+        // --- Animation sonar (opacité interne uniquement) ---
+        const t = this._time * 0.004;
+        const pulsate = 0.55 + 0.35 * Math.sin(t);  // range 0.55 → 0.9
 
-        this.ctx.save();
+        ctx.save();
 
-        const color = "rgba(44,255,190,0.7)";
-        this.ctx.fillStyle = color;
+        // dessine la silhouette noire
+        ctx.globalAlpha = pulsate;
+        ctx.drawImage(off, x, y);
 
-        const dotBase = Math.max(1, Math.round(Math.min(w, h) * 0.06));
-        const dot = Math.max(1, dotBase);
+        // recoloriage en jaune (toujours contenu dans la silhouette)
+        ctx.globalCompositeOperation = "source-atop";
+        ctx.fillStyle = "rgba(255, 230, 60, 1)";
+        ctx.fillRect(x, y, w, h);
 
-        const pts = cached.points;
-        for (let i = 0; i < pts.length; i++) {
-            const [nx, ny] = pts[i];
-            const px = Math.round(x + nx * w);
-            const py = Math.round(y + ny * h);
-
-            const alpha =
-                0.6 + 0.4 * Math.sin((i * 13 + this._time * 0.01) % Math.PI);
-            this.ctx.globalAlpha = alpha;
-
-            this.ctx.beginPath();
-            this.ctx.arc(px, py, dot, 0, Math.PI * 2);
-            this.ctx.fill();
-        }
-
-        this.ctx.globalAlpha = 1;
-        this.ctx.restore();
+        ctx.restore();
     }
 }

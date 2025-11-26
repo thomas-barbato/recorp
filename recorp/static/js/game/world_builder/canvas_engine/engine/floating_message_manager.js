@@ -62,7 +62,7 @@ class FloatingMessageManager {
         });
     }
 
-    addMessage({ text, icon = "ship", worldX, worldY, color = "rgba(0,255,180,0.95)", duration = 2000 }) {
+    addMessage({ text, icon = "ship", worldX, worldY, color = "rgb(255,255,255)", duration = 2000 }) {
         this._ensureIconsLoaded();
 
         const msg = {
@@ -97,7 +97,7 @@ class FloatingMessageManager {
             ctx.textBaseline = "middle";
             ctx.lineWidth = 2;
             ctx.strokeStyle = "black";
-            ctx.fillStyle = "rgba(0,255,180,0.95)";
+            ctx.fillStyle = "rgb(255,255,255)";
             ctx.strokeText(fallbackChar, x, y);
             ctx.fillText(fallbackChar, x, y);
         }
@@ -129,19 +129,18 @@ class FloatingMessageManager {
 
             // coordonnées écran du centre du vaisseau
             const screen = camera.worldToScreen(worldX, worldY);
+            const player_size = window.currentPlayer.ship.size
 
-            // stacking vertical: chaque message un peu plus haut
-            const stackOffsetY = index * (tile * 0.4);
-            const baseY = screen.y - tile * 0.5 - 6 - stackOffsetY;
-            const baseX = screen.x;
+            let centerX = screen.x + (player_size.x * tile) / 2;
+            let centerY = screen.y + (player_size.y * tile) / 2;
 
             ctx.save();
             ctx.globalAlpha = alpha;
 
             // --- Icône réelle ---
             const iconSize = 20;
-            const iconX = baseX - iconSize; // à gauche du texte
-            const iconY = baseY;
+            const iconX = ( centerX + tile ); // à gauche du texte
+            const iconY = centerY;
             this._drawIcon(ctx, icon, iconX, iconY, iconSize);
 
             // --- Texte numérique ---
@@ -152,11 +151,11 @@ class FloatingMessageManager {
             ctx.strokeStyle = "black";
             ctx.fillStyle = color;
 
-            const textX = baseX + 4;
-            const textY = baseY;
+            const textX = ( centerX + tile ) + iconSize;
+            const textY =  centerY;
 
             ctx.strokeText(text, textX, textY);
-            ctx.fillText(text, textX, textY);
+            ctx.fillText(text, textX,  centerY);
 
             ctx.restore();
         });

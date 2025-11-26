@@ -67,14 +67,30 @@ export default class SonarSystem {
     isVisible(obj) {
         if (!obj) return false;
 
-        const px = window.currentPlayer.user.coordinates.x;
-        const py = window.currentPlayer.user.coordinates.y;
+        // Position centrale du joueur (cercle)
+        const px = window.currentPlayer.user.coordinates.x + 0.5;
+        const py = window.currentPlayer.user.coordinates.y + 0.5;
 
-        const dx = obj.x - px;
-        const dy = obj.y - py;
+        const range = this.range; // en tiles
 
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        return dist <= this.range;
+        // Bounding box de l'objet (rect)
+        const left = obj.x;
+        const right = obj.x + obj.sizeX;
+        const top = obj.y;
+        const bottom = obj.y + obj.sizeY;
+
+        // Trouver le point du rectangle le plus proche du centre du sonar
+        const closestX = Math.max(left, Math.min(px, right));
+        const closestY = Math.max(top, Math.min(py, bottom));
+
+        // Distance entre ce point et le centre du sonar
+        const dx = closestX - px;
+        const dy = closestY - py;
+
+        const distSq = dx*dx + dy*dy;
+
+        // Si ce point est dans le cercle → intersection → visible
+        return distSq <= range * range;
     }
 
     /**
@@ -139,38 +155,6 @@ export default class SonarSystem {
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(centerX, centerY, baseRadius * 1.15, 0, Math.PI * 2);
-        ctx.fill();
-
-        // --- pulses (STYLE C: double offset pulses + inner ring) ---
-        const t = this._time * this.pulseSpeed;
-        const pulse1 = baseRadius * (1 + Math.abs(Math.sin(t)) * this.pulseStrength);
-        const pulse2 = baseRadius * (1 + Math.abs(Math.sin(t + Math.PI * 0.6)) * this.pulseStrength * 0.7);
-
-        // pulse outline 1
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, pulse1, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(44,255,255,0.09)';
-        ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.08));
-        ctx.stroke();
-
-        // pulse outline 2
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, pulse2, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(44,255,255,0.09)';
-        ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
-        ctx.stroke();
-
-        // inner ring (solid)
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, baseRadius * 0.92, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(44,255,255,0.09)';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // small center beacon
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, Math.max(2, tilePx * 0.12), 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(44,255,190,0.95)';
         ctx.fill();
 
         ctx.restore();

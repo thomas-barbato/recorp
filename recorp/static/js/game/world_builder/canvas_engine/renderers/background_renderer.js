@@ -18,6 +18,7 @@ export default class BackgroundRenderer {
         this.ctx.fillStyle = '#0b1220';
         this.ctx.fillRect(0, 0, w, h);
         // si map.background défini, on tente de tiler l'image
+        // if (this.map.raw.sector.image) est la version correcte.
         if (this.map.img) {
         const rel = this.map.raw.sector.image; // ex: 'background/nebula01'
         const src = this.spriteManager.makeUrl(`background/${rel}/0.webp`);
