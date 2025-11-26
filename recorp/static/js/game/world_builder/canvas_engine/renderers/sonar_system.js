@@ -6,17 +6,25 @@ export default class SonarSystem {
      *  - ctx (ui canvas 2d ctx) -> used for measurement when rendering if needed
      *  - tileSize (base tile size in px)
      */
+    
     constructor({ camera, map, ctx, tileSize, playerId }) {
         this.camera = camera;
         this.map = map;
         this.ctx = ctx;
-        this.tileSize = tileSize || camera.tileSize;
-        this.playerId = playerId;
-        this.active = false;     // sonar active (mobile toggle) or hovered
-        this._time = 0;
-        this.pulseSpeed = 0.008; // pulsation speed
-        this.pulseStrength = 0.12; // relative extra radius
-        this.lastVisibleSet = new Set();
+        this.tileSize = tileSize;
+
+        this.active = false;
+
+        if (currentPlayer.ship.view_range === undefined || currentPlayer.ship.view_range === null) {
+            currentPlayer.ship.view_range = window.currentPlayer.ship.view_range;
+        }
+
+        this.range = currentPlayer.ship.view_range;      // nombre de tiles
+        this.speed = 1.25;   // vitesse rotation
+        this.trail = 0.35;   // longueur de traînée (0 = pas de traînée)
+
+        // internes
+        this._pulse = 0;
     }
 
     enable() { this.active = true; }
@@ -47,33 +55,26 @@ export default class SonarSystem {
         this._playerCache = found || null;
         return this._playerCache;
     }
+    update(dt) {
+        if (!this.active) return;
+        this._pulse += (dt / 1000) * this.speed;
+    }
 
     /**
      * compute whether object is within sonar (circular)
      * obj must provide x,y,sizeX,sizeY in tile coords
      */
     isVisible(obj) {
-        const player = this._getPlayer();
-        if (!player || !player.data || !player.data.ship) {
-            return false;
-        }
+        if (!obj) return false;
 
-        // portée radar : même source que ton backend / currentPlayer
-        const viewRange = Number(player.data.ship.view_range) || 6;
+        const px = window.currentPlayer.user.coordinates.x;
+        const py = window.currentPlayer.user.coordinates.y;
 
-        // centre du joueur (en tiles)
-        const px = player.x + (player.sizeX || 1) / 2;
-        const py = player.y + (player.sizeY || 1) / 2;
+        const dx = obj.x - px;
+        const dy = obj.y - py;
 
-        // centre de l'objet (en tiles) – si pas de taille, on le traite comme 1x1
-        const ox = obj.x + (obj.sizeX || 1) / 2;
-        const oy = obj.y + (obj.sizeY || 1) / 2;
-
-        const dx = ox - px;
-        const dy = oy - py;
         const dist = Math.sqrt(dx * dx + dy * dy);
-
-        return dist <= viewRange;
+        return dist <= this.range;
     }
 
     /**
@@ -148,7 +149,7 @@ export default class SonarSystem {
         // pulse outline 1
         ctx.beginPath();
         ctx.arc(centerX, centerY, pulse1, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(44,255,200,0.14)';
+        ctx.strokeStyle = 'rgba(44,255,255,0.09)';
         ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.08));
         ctx.stroke();
 
@@ -162,7 +163,7 @@ export default class SonarSystem {
         // inner ring (solid)
         ctx.beginPath();
         ctx.arc(centerX, centerY, baseRadius * 0.92, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(44,255,190,0.24)';
+        ctx.strokeStyle = 'rgba(44,255,255,0.09)';
         ctx.lineWidth = 2;
         ctx.stroke();
 

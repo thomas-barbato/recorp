@@ -127,106 +127,105 @@ export default class UIRenderer {
      * SONAR — balayage + halo
      */
     renderSonar(dt) {
-    if (!this.sonar.active) return;
+        const sonar = this.sonar;
+        if (!sonar.active) return;
 
-    const ctx = this.ctx;
-    const cam = this.camera;
+        const ctx = this.ctx;
+        const cam = this.camera;
 
-    // --- Récup joueur ---
-    let playerData = window.currentPlayer;
-    if (!playerData || !playerData.user || !playerData.ship) return;
+        const player = window.currentPlayer;
+        if (!player) return;
 
-    const sizeXTiles = playerData.ship.size?.x || 1;
-    const sizeYTiles = playerData.ship.size?.y || 1;
-    const maxSize = Math.max(sizeXTiles, sizeYTiles);
+        // --------------- CALCUL CENTRE ----------------
+        const worldX = player.user.coordinates.x;
+        const worldY = player.user.coordinates.y;
 
-    const tile = cam.tileSize;
+        const sizeX = player.ship.size?.x || 1;
+        const sizeY = player.ship.size?.y || 1;
 
-    // --- Centre du vaisseau (centre visuel réel) ---
-    const worldX = playerData.user.coordinates.x;
-    const worldY = playerData.user.coordinates.y;
+        const topLeft = cam.worldToScreen(worldX, worldY);
 
-    const topLeft = cam.worldToScreen(worldX, worldY);
+        const sprite = this.spriteManager.get(player.ship.image);
+        let cx, cy;
 
-    const spriteImg = this.spriteManager.get(playerData.ship.image);
-    let cx, cy;
+        if (sprite) {
+            const zoom = cam.zoom || 1;
+            const w = sprite.width * (cam.tileSize / 32) * zoom;
+            const h = sprite.height * (cam.tileSize / 32) * zoom;
 
-    if (spriteImg) {
-        const zoom = cam.zoom || 1;
-        const spriteW = spriteImg.width  * (tile / 32) * zoom;
-        const spriteH = spriteImg.height * (tile / 32) * zoom;
+            cx = topLeft.x + w / 2;
+            cy = topLeft.y + h / 2;
+        } else {
+            const scr = cam.worldToScreen(worldX + sizeX / 2, worldY + sizeY / 2);
+            cx = scr.x;
+            cy = scr.y;
+        }
 
-        // centre exact du sprite
-        cx = topLeft.x + spriteW / 2;
-        cy = topLeft.y + spriteH / 2;
-    } else {
-        // fallback centre brut
-        const screen = cam.worldToScreen(
-            worldX + sizeXTiles / 2,
-            worldY + sizeYTiles / 2
-        );
-        cx = screen.x;
-        cy = screen.y;
+        if (!isFinite(cx) || !isFinite(cy)) return;
+
+        // -------------- RAYON SONAR ------------------
+        const tile = cam.tileSize * cam.zoom;
+        const radius = sonar.range * tile;
+
+        if (!isFinite(radius) || radius <= 0) return;
+
+        // -------------- UPDATE DU TEMPS ----------------
+        sonar.update(dt);
+        const t = sonar._pulse;
+        const angle = t % (Math.PI * 2);
+
+        // -------------- CLEAR LOCAL ----------------
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius + 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // -------------- FOND ----------------
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0,255,100,0.20)";
+        ctx.fill();
+        ctx.restore();
+
+        // -------------- RAYON ----------------
+        const x2 = cx + Math.cos(angle) * radius;
+        const y2 = cy + Math.sin(angle) * radius;
+
+        ctx.save();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgba(0,255,255,0.85)";
+        ctx.shadowBlur = 25;
+        ctx.shadowColor = "rgba(0,255,255,0.9)";
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.restore();
+
+        // -------------- TRAÎNÉE ----------------
+        if (sonar.trail > 0) {
+            const trailLen = sonar.trail; // 0.25 = 1/4 de cercle
+
+            ctx.save();
+            ctx.globalAlpha = 0.55;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, angle - trailLen, angle);
+            ctx.lineTo(cx, cy);
+
+            const grad = ctx.createRadialGradient(cx, cy, radius * 0.35, cx, cy, radius);
+            grad.addColorStop(0, "rgba(0,255,255,0.45)");
+            grad.addColorStop(1, "rgba(0,190,255,0)");
+
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            ctx.restore();
+        }
     }
-
-    const viewRange = playerData.ship.view_range || 0;
-    const effectiveRangeTiles = Math.max(viewRange - maxSize / 2, 0.5);
-    const radius = effectiveRangeTiles * tile * cam.zoom;
-
-    if (!isFinite(cx) || !isFinite(cy) || !isFinite(radius) || radius <= 0) return;
-
-    // ---------------------------------------------------
-    // 1) CLEAR uniquement la zone du sonar (pas la grille !)
-    // ---------------------------------------------------
-    ctx.save();
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius + 8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    // ---------------------------------------------------
-    // 2) Fond vert
-    // ---------------------------------------------------
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(0,255,100,0.22)";
-    ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = "rgba(0, 79, 59, 0.4)";
-    ctx.strokeStyle = "rgb(94, 233, 181)";
-    ctx.stroke();
-    ctx.restore();
-
-    // ---------------------------------------------------
-    // 3) Balayage (rayon unique)
-    // ---------------------------------------------------
-    const dtSec = (dt || 16) / 1000;
-    const speed = this.sonar.speed || 1.0;
-
-    this._sonarPulseTime = (this._sonarPulseTime || 0) + dtSec * speed;
-    const angle = this._sonarPulseTime % (Math.PI * 2);
-
-    const endX = cx + Math.cos(angle) * radius;
-    const endY = cy + Math.sin(angle) * radius;
-
-    ctx.save();
-    ctx.globalAlpha = 0.9;
-    ctx.strokeStyle = "rgba(0,255,255,0.95)";
-    ctx.lineWidth = 3;
-    ctx.shadowBlur = 25;
-    ctx.shadowColor = "rgba(0,255,255,0.85)";
-
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-    ctx.restore();
-
-    // trailing désactivé (mais l’emplacement est prêt)
-}
 
     render(delta = 0) {
         this._time += delta;
