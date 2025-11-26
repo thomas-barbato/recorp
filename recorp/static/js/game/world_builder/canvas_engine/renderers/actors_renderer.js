@@ -196,16 +196,6 @@ export default class ActorsRenderer {
         if (visible) {
             const isAnimating = obj.renderX !== undefined;
 
-            // Traînée SF : dessine l'ancienne position avec blur
-            if (isAnimating && img) {
-                const prevScr = this.camera.worldToScreen(obj.x, obj.y);
-                this.ctx.save();
-                this.ctx.globalAlpha = 0.15;
-                this.ctx.filter = "blur(1px) brightness(1.12)";
-                this.ctx.drawImage(img, prevScr.x, prevScr.y, pxW, pxH);
-                this.ctx.restore();
-            }
-
             // Blur léger sur le sprite animé
             if (isAnimating) {
                 this.ctx.filter = "brightness(1.12) blur(0.45px)";
@@ -219,10 +209,7 @@ export default class ActorsRenderer {
             this._drawFullSprite(img, scr.x, scr.y, pxW, pxH, obj);
 
             // Bordure du joueur courant
-            if (
-                showBorder &&
-                String(obj.data?.user?.player) === String(window.current_player_id)
-            ) {
+            if (showBorder && String(obj.data?.user?.player) === String(window.current_player_id)) {
                 this.ctx.save();
                 this.ctx.strokeStyle = "rgba(255,165,0,0.95)";
                 this.ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));

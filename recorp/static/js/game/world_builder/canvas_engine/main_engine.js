@@ -147,34 +147,75 @@ if (!ok) {
             },
             onTileClick: (tx, ty, info) => canvasPathfinding.handleClick(tx, ty),
             onMouseMove: (tx, ty, info) => {
+                // 1) Pathfinding : garder ta logique existante
                 canvasPathfinding.handleHover(tx, ty);
 
                 const player = map.findPlayerById(window.current_player_id);
+                const obj = info.topObject || null;
+                const canvasZone = document.getElementById("canvas-zone");
 
-                if (!player) return;
+                // 2) Gestion du sonar (ta logique d'origine, conservée)
+                if (player) {
+                    const inside =
+                        tx >= player.x &&
+                        tx < player.x + player.sizeX &&
+                        ty >= player.y &&
+                        ty < player.y + player.sizeY;
 
-                const inside =
-                    tx >= player.x &&
-                    tx < player.x + player.sizeX &&
-                    ty >= player.y &&
-                    ty < player.y + player.sizeY;
-
-                if (inside) {
-                    if (!renderer.sonar.active) {
-                        renderer.sonar.active = true;
-                        renderer.requestRedraw();
-                    }
-                } else {
-                    if (renderer.sonar.active) {
-                        renderer.sonar.active = false;
+                    const shouldBeActive = inside;
+                    if (renderer.sonar.active !== shouldBeActive) {
+                        renderer.sonar.active = shouldBeActive;
                         renderer.requestRedraw();
                     }
                 }
+
+                // 3) Gestion du curseur (NOUVEAU) sans casser les classes Tailwind
+                if (canvasZone) {
+                    const cls = canvasZone.classList;
+                    // on enlève seulement les classes cursor-*
+                    cls.remove('cursor-crosshair', 'cursor-pointer', 'cursor-not-allowed');
+
+                    const sonar = renderer.sonar;
+                    let cursorClass = 'cursor-crosshair';
+
+                    if (!obj) {
+                        // case vide
+                        cursorClass = 'cursor-crosshair';
+                    } else if (obj.type === 'foreground') {
+                        const inSonar = sonar && sonar.isVisible(obj);
+                        cursorClass = inSonar ? 'cursor-pointer' : 'cursor-not-allowed';
+                    } else if (obj.type === 'player' || obj.type === 'npc') {
+                        // tous les vaisseaux = pointer, même hors sonar
+                        cursorClass = 'cursor-pointer';
+                    }
+
+                    cls.add(cursorClass);
+                }
+
+                // 4) Stocker la cible survolée pour les bordures (ActorsRenderer / ForegroundRenderer)
+                if (window.canvasEngine) {
+                    window.canvasEngine.hoverTarget = obj;
+                }
+
+                // 5) Redraw pour mettre à jour les bordures hover
+                renderer.requestRedraw();
             },
+
             onMouseLeave: () => {
                 canvasPathfinding.clear();
                 renderer.sonar.active = false;
                 renderer.requestRedraw();
+
+                const canvasZone = document.getElementById("canvas-zone");
+                if (canvasZone) {
+                    const cls = canvasZone.classList;
+                    cls.remove('cursor-crosshair', 'cursor-pointer', 'cursor-not-allowed');
+                    cls.add('cursor-crosshair'); // retour au curseur par défaut sur la grille
+                }
+
+                if (window.canvasEngine) {
+                    window.canvasEngine.hoverTarget = null;
+                }
             }
         });
         
