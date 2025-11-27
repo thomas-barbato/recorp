@@ -101,8 +101,8 @@ export default class UIRenderer {
         const endTileY = startTileY + this.camera.visibleTilesY + 1;
 
         ctx.save();
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "rgba(15, 118, 110, 0.35)";
+        ctx.lineWidth = 0;
+        ctx.strokeStyle = "rgba(15, 118, 110, 0.0)";
 
         for (let ty = startTileY; ty <= endTileY; ty++) {
             const y = (ty * tilePx) - this.camera.y;

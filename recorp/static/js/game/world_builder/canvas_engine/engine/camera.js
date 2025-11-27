@@ -23,9 +23,41 @@ export default class Camera {
     }
 
     updateViewport() {
-        this.visibleTilesX = Math.max(1, Math.floor(this.canvasWidth / (this.tileSize * this.zoom)));
-        this.visibleTilesY = Math.max(1, Math.floor(this.canvasHeight / (this.tileSize * this.zoom)));
-        // worldX/Y correspondent à la tile en haut-gauche visible
+
+        // 1) Taille affichable en pixel
+        const maxTilesPC = { x: 39, y: 23 };
+        const maxTilesTablet = { x: 20, y: 20 };
+        const maxTilesMobile = { x: 11, y: 11 };
+
+        const w = window.innerWidth;
+
+        let limitX, limitY;
+
+        // MOBILE
+        if (w < 640) {
+            limitX = maxTilesMobile.x;
+            limitY = maxTilesMobile.y;
+
+        // TABLETTE
+        } else if (w < 1024) {
+            limitX = maxTilesTablet.x;
+            limitY = maxTilesTablet.y;
+
+        // PC
+        } else {
+            limitX = maxTilesPC.x;
+            limitY = maxTilesPC.y;
+        }
+
+        // 2) Nombre de cases théoriquement visibles selon taille du canvas
+        const autoX = Math.floor(this.canvasWidth / (this.tileSize * this.zoom));
+        const autoY = Math.floor(this.canvasHeight / (this.tileSize * this.zoom));
+
+        // 3) On impose les MAX DEVICE
+        this.visibleTilesX = Math.max(1, Math.min(autoX, limitX));
+        this.visibleTilesY = Math.max(1, Math.min(autoY, limitY));
+
+        // Top-left tile de la caméra
         this.worldX = 0;
         this.worldY = 0;
     }

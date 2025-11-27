@@ -4,7 +4,7 @@ module.exports = {
     content: ["**/*.{html,js}"],
     theme: {
         extend: {
-            lineClamp: {
+            Clamp: {
                 7: '7',
                 8: '8',
                 9: '9',
@@ -48,7 +48,7 @@ module.exports = {
         },
     },
     plugins: [
-        require("@tailwindcss/line-clamp"),
+        require("@tailwindcss/-clamp"),
         addIconSelectors(["game-icons"]),
     ],
 }

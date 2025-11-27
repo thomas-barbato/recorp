@@ -1,7 +1,3 @@
-// world/background_renderer.js
-// dessine un fond en "tiling" (ou couleur uni si pas d'image).
-// note: canvas ne gère pas d'animation GIF - on dessine la frame actuelle.
-
 export default class BackgroundRenderer {
     constructor(ctx, camera, spriteManager, map) {
         this.ctx = ctx;
@@ -11,39 +7,50 @@ export default class BackgroundRenderer {
     }
 
     render() {
-        const w = this.ctx.canvas.clientWidth;
-        const h = this.ctx.canvas.clientHeight;
+        const canvas = this.ctx.canvas;
+        const w = canvas.width / (window.devicePixelRatio || 1);
+        const h = canvas.height / (window.devicePixelRatio || 1);
 
-        // fond par défaut (espace)
+        // Fond couleur si pas d’image
         this.ctx.fillStyle = '#0b1220';
         this.ctx.fillRect(0, 0, w, h);
-        // si map.background défini, on tente de tiler l'image
-        // if (this.map.raw.sector.image) est la version correcte.
-        if (this.map.img) {
-        const rel = this.map.raw.sector.image; // ex: 'background/nebula01'
-        const src = this.spriteManager.makeUrl(`background/${rel}/0.webp`);
+
+        // Aucune image ?
+        const bgId = this.map.raw?.sector?.image;
+        if (!bgId) return;
+
+        // Charge l’image
+        const src = this.spriteManager.makeUrl(`background/${bgId}/0.webp`);
         const img = this.spriteManager.get(src);
-        if (img) {
-            const tilePx = this.camera.tileSize * this.camera.zoom;
-            // calculer le tile de début en pixels pour la position de la caméra
-            // nous dessinons des tuiles de la taille d'une case (pour correspondre à l'ancienne logique)
-            const startTileX = Math.floor(this.camera.x / tilePx) - 1;
-            const startTileY = Math.floor(this.camera.y / tilePx) - 1;
-            const cols = Math.ceil(w / tilePx) + 2;
-            const rows = Math.ceil(h / tilePx) + 2;
-            this.ctx.drawImage(img, screenX, screenY, tilePx, tilePx);
-            for (let ry = 0; ry < rows; ry++) {
-            for (let cx = 0; cx < cols; cx++) {
-                const worldTileX = startTileX + cx;
-                const worldTileY = startTileY + ry;
-                const screenX = (worldTileX * tilePx) - this.camera.x;
-                const screenY = (worldTileY * tilePx) - this.camera.y;
-            }
-            }
-        } else {
-            // si image pas preloaded : demande le preload (non-bloquant)
+        if (!img) {
             this.spriteManager.ensure(src).catch(()=>{});
+            return;
         }
-        }
+
+        // --- CALCUL DU VIEWPORT DANS L’IMAGE ---
+        // Exemple :
+        // sx = offset horizontal dans l'image
+        // sy = offset vertical dans l'image
+
+        // Ratio pixel/tile
+        const pxPerTile = this.camera.tileSize * this.camera.zoom;
+
+        const sx = this.camera.x;      // offset horizontal en px dans l’image
+        const sy = this.camera.y;      // offset vertical en px
+        const sw = w;                  // largeur affichée
+        const sh = h;                  // hauteur affichée
+
+        // Clamp pour éviter hors-image
+        const clampedSx = Math.max(0, Math.min(img.width  - sw, sx));
+        const clampedSy = Math.max(0, Math.min(img.height - sh, sy));
+
+        // --- DESSIN D’UNE PORTION DE L’IMAGE ---
+        this.ctx.drawImage(
+            img,
+            clampedSx, clampedSy,  // partie de l’image à lire
+            sw, sh,                // taille de la partie à lire
+            0, 0,                  // où la dessiner sur le canvas
+            w, h                   // taille du rendu final
+        );
     }
 }

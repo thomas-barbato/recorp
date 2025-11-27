@@ -21,6 +21,38 @@ const ok = initGlobals();
 if (!ok) {
     console.error('main_engine: initGlobals failed — aborting bootstrap');
 } else {
+
+    function resizeCanvasWrapper() {
+        const TILE = 32;
+        const w = window.innerWidth;
+
+        let maxX, maxY;
+
+        if (w < 640) {         // MOBILE
+            maxX = 11; maxY = 11;
+
+        } else if (w < 1024) { // TABLETTE
+            maxX = 20; maxY = 20;
+
+        } else {               // PC
+            maxX = 39; maxY = 23;
+        }
+
+        const wrapper = document.getElementById('canvas-wrapper');
+
+        const widthPx  = maxX * TILE;
+        const heightPx = maxY * TILE;
+
+        wrapper.style.width  = widthPx + "px";
+        wrapper.style.height = heightPx + "px";
+
+        wrapper.style.maxWidth  = widthPx + "px";
+        wrapper.style.maxHeight = heightPx + "px";
+
+        wrapper.style.marginLeft  = "auto";
+        wrapper.style.marginRight = "auto";
+    }
+
     (async function bootstrap() {
 
         const TILE_SIZE = 32;
@@ -33,7 +65,7 @@ if (!ok) {
         } catch (e) {
             console.error('Map.prepare failed', e);
         }
-
+        resizeCanvasWrapper();
         const canvases = CanvasManager.init(['canvas-bg', 'canvas-fg', 'canvas-actors', 'canvas-ui', 'canvas-floating']);
 
         const camera = new Camera({
@@ -227,6 +259,7 @@ if (!ok) {
 
         const loop = new UpdateLoop({ fps: FPS, map, renderer, camera, input });
         window.addEventListener('resize', () => {
+            resizeCanvasWrapper();
             CanvasManager.resizeAll();
             camera.resize(CanvasManager.width, CanvasManager.height);
             renderer.requestRedraw();
