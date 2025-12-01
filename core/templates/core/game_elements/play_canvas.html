@@ -17,6 +17,9 @@
 {% include "chat-modal.html" %}
 <!--{% include "display-warp-loading-screen.html" %} -->
 
+
+<div id="tooltip-hover" class="hidden pointer-events-none fixed z-[9996] bg-black/60 border border-emerald-400/40 text-emerald-300 text-xs font-orbitron px-2 py-1 rounded shadow-[0_0_12px_#34d399aa] backdrop-blur-sm">
+</div>
 <div class="flex flex-col h-screen no-scrollbar" id="main-screen">
 <!-- === NOTIFICATION SYSTEM (MP RECEIVED) === -->
 <div id="mp-notification-container" class="fixed top-2 left-2 z-[9999] flex flex-col gap-3 pointer-events-none"></div>

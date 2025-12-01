@@ -88,6 +88,11 @@ export default class Renderer {
         const contX = document.getElementById("ui-coordinates-x");
         const contY = document.getElementById("ui-coordinates-y");
 
+        if (!contX || !contY) return;
+
+        // ⚠️ tu as dit avoir déjà corrigé cette partie,
+        // je garde donc ta logique d'origine (sans clear) telle quelle.
+
         // coordonnées X
         for (let i = 0; i < camera.visibleTilesX; i++) {
             const worldX = camera.worldX + i;
@@ -171,7 +176,15 @@ export default class Renderer {
     reloadMapData(newRaw) {
         this.map.raw = newRaw;
         this.map.prepare()
-            .then(() => this.requestRedraw())
+            .then(() => {
+                this.requestRedraw();
+
+                // 🔥 APRES SYNC SERVEUR : mettre à jour les coords joueur (PC uniquement)
+                const player = this.map.findPlayerById(window.current_player_id);
+                if (player && window.updatePlayerCoords) {
+                    window.updatePlayerCoords(player);
+                }
+            })
             .catch(e => console.error('reloadMapData prepare failed', e));
     }
 }

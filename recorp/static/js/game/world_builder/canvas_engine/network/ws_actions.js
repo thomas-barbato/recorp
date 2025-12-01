@@ -1,8 +1,8 @@
-// ws_actions.js
 // Gestion des actions reçues via WebSocket pour le moteur canvas
 // (déplacements, mise à jour des points de mouvement, etc.)
 
 import ActionRegistry from "./action_registry.js";
+import { updatePlayerCoords } from "../engine/update_coordinate_display.js";
 
 /**
  * Met à jour le HUD des points de mouvement pour le joueur courant.
@@ -187,6 +187,9 @@ function handlePlayerMove(msg) {
                             if (playerId === window.current_player_id) {
                                 currentPlayer.user.coordinates.x = endX;
                                 currentPlayer.user.coordinates.y = endY;
+                                actor.x = endX;
+                                actor.y = endY;
+                                updatePlayerCoords(actor);
                             }
 
                             engine.renderer.requestRedraw();
@@ -206,6 +209,9 @@ function handlePlayerMove(msg) {
         } else {
             actor.x = endX;
             actor.y = endY;
+            if (playerId === window.current_player_id) {
+                updatePlayerCoords(actor);
+            }
         }
     } catch (e) {
         console.warn("[WS player_move] erreur animation:", e);

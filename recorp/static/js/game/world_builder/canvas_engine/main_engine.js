@@ -1,6 +1,5 @@
-// main_engine.js
 import { currentPlayer, initGlobals } from './globals.js';
-import './touch.js'; // side effects: expose action_listener_touch_click and friends to window
+import './touch.js';
 import SpriteManager from './engine/sprite_manager.js';
 import CanvasManager from './engine/canvas_manager.js';
 import Camera from './engine/camera.js';
@@ -9,75 +8,23 @@ import Renderer from './engine/renderer.js';
 import MapData from './renderers/map_data.js';
 import UpdateLoop from './engine/update_loop.js';
 import CanvasPathfinding from './engine/canvas_pathfinding.js';
-import PathfindingController from './engine/pathfinding.js';
 import { initMobilePathfinding } from "./engine/mobile_pathfinding.js";
+import { resizeCanvasWrapper } from "./engine/canvas_wrapper_resize.js"
 import WebSocketManager from "./engine/websocket_manager.js";
-import ActionRegistry from "./network/action_registry.js";
-import { initWebSocket } from './network/websocket_bootstrap.js';
 import "./network/ws_actions.js";
+import {
+    isDesktop,
+    updatePlayerCoords,
+    updateTargetCoords,
+    clearTargetCoords,
+    updateHoverTooltip, 
+    hideHoverTooltip
+} from "./engine/update_coordinate_display.js";
 
-// initialise les globals (lit les json_script injectés)
 const ok = initGlobals();
 if (!ok) {
     console.error('main_engine: initGlobals failed — aborting bootstrap');
 } else {
-
-    function resizeCanvasWrapper() {
-        const TILE = 32;
-        const w = window.innerWidth;
-
-        let maxX, maxY;
-
-        if (w < 640) {                 
-        // 📱 MOBILE
-        maxX = 11; 
-        maxY = 11;
-
-        } else if (w < 820) {         
-            // PETITE TABLETTE (ex: iPad mini / tablettes compactes)
-            maxX = 16; 
-            maxY = 16;
-
-        } else if (w < 1024) {        
-            // TABLETTE CLASSIQUE
-            maxX = 20; 
-            maxY = 20;
-
-        } else if (w < 1280) {        
-            // PETIT ÉCRAN PC / Laptop 13"
-            maxX = 26; 
-            maxY = 18;
-
-        } else if (w < 1536) {        
-            // ÉCRANS PC standards 1080p / 24"
-            maxX = 32; 
-            maxY = 20;
-
-        } else if (w < 1920) {        
-            // LARGE ÉCRAN 1080p / 1440p
-            maxX = 36; 
-            maxY = 22;
-
-        } else {                      
-            // MAXIMUM ABSOLU (GRANDS ÉCRANS)
-            maxX = 39; 
-            maxY = 23;
-        }
-
-        const wrapper = document.getElementById('canvas-wrapper');
-
-        const widthPx  = maxX * TILE;
-        const heightPx = maxY * TILE;
-
-        wrapper.style.width  = widthPx + "px";
-        wrapper.style.height = heightPx + "px";
-
-        wrapper.style.maxWidth  = widthPx + "px";
-        wrapper.style.maxHeight = heightPx + "px";
-
-        wrapper.style.marginLeft  = "auto";
-        wrapper.style.marginRight = "auto";
-    }
 
     (async function bootstrap() {
 
@@ -91,6 +38,7 @@ if (!ok) {
         } catch (e) {
             console.error('Map.prepare failed', e);
         }
+
         resizeCanvasWrapper();
         const canvases = CanvasManager.init(['canvas-bg', 'canvas-fg', 'canvas-actors', 'canvas-ui', 'canvas-floating']);
 
@@ -108,10 +56,14 @@ if (!ok) {
             const centerX = currentPlayerObj.x + (currentPlayerObj.sizeX - 1) / 2;
             const centerY = currentPlayerObj.y + (currentPlayerObj.sizeY - 1) / 2;
             camera.centerOn(centerX, centerY);
+
+            // 🔥 coords joueur au chargement (PC uniquement, logique interne dans updatePlayerCoords)
+            updatePlayerCoords(currentPlayerObj);
         } else {
             // center roughly in middle of map if no player
             camera.centerOn(Math.floor(map.mapWidth / 2), Math.floor(map.mapHeight / 2));
         }
+
         // renderer
         const renderer = new Renderer({ canvases, camera, spriteManager: SpriteManager, map });
 
@@ -204,7 +156,7 @@ if (!ok) {
                 }
             },
             onTileClick: (tx, ty, info) => canvasPathfinding.handleClick(tx, ty),
-            onMouseMove: (tx, ty, info) => {
+            onMouseMove: (tx, ty, info, evt) => {
                 // 1) Pathfinding : garder ta logique existante
                 canvasPathfinding.handleHover(tx, ty);
 
@@ -212,7 +164,7 @@ if (!ok) {
                 const obj = info.topObject || null;
                 const canvasZone = document.getElementById("canvas-zone");
 
-                // 2) Gestion du sonar (ta logique d'origine, conservée)
+                // 2) Gestion du sonar (logique d'origine)
                 if (player) {
                     const inside =
                         tx >= player.x &&
@@ -227,7 +179,7 @@ if (!ok) {
                     }
                 }
 
-                // 3) Gestion du curseur (NOUVEAU) sans casser les classes Tailwind
+                // 3) Gestion du curseur
                 if (canvasZone) {
                     const cls = canvasZone.classList;
                     // on enlève seulement les classes cursor-*
@@ -255,7 +207,18 @@ if (!ok) {
                     window.canvasEngine.hoverTarget = obj;
                 }
 
-                // 5) Redraw pour mettre à jour les bordures hover
+                // 5) 🔥 Mise à jour des coordonnées cibles (PC uniquement – filtré dans la fonction)
+                updateTargetCoords(
+                    obj,
+                    tx,
+                    ty,
+                    map.raw?.sector?.name ?? ""
+                );
+
+                const inSonar = renderer.sonar.isVisible(obj);
+                updateHoverTooltip(obj, tx, ty, map.raw.sector.name, evt, inSonar);
+
+                // 6) Redraw pour mettre à jour bordures + pathfinding
                 renderer.requestRedraw();
             },
 
@@ -274,6 +237,12 @@ if (!ok) {
                 if (window.canvasEngine) {
                     window.canvasEngine.hoverTarget = null;
                 }
+
+                // reset des coords cibles quand on sort de la carte (PC uniquement)
+                clearTargetCoords(map.raw?.sector?.name ?? "Nothing selected");
+
+                // Cacher le tooltip
+                hideHoverTooltip();
             }
         });
         
@@ -295,6 +264,9 @@ if (!ok) {
                 const cx = cp.x + (cp.sizeX - 1) / 2;
                 const cy = cp.y + (cp.sizeY - 1) / 2;
                 camera.centerOn(cx, cy);
+
+                // 🔥 mettre à jour coords joueur après resize
+                updatePlayerCoords(cp);
             }
             
             renderer.requestRedraw();

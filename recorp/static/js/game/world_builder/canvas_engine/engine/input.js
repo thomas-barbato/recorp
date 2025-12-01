@@ -61,7 +61,7 @@ export default class Input {
             const info = this._eventToTile(ev);
             if (!info) return;
 
-            this.onMouseMove(info.tx, info.ty, info);
+            this.onMouseMove(info.tx, info.ty, info, ev);
         });
 
         // Mouse leave du canvas UI

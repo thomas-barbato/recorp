@@ -1616,9 +1616,11 @@ canvas {
     image-rendering: crisp-edges;
 }
 
-#ui-coordinates-x div,
-#ui-coordinates-y div {
-    pointer-events: none; /* blocage interactions */
+#ui-coordinates-x,
+#ui-coordinates-y,
+#ui-coordinates-empty {
+    z-index: 50 !important;       /* Sous les canvas, sous les modals */
+    pointer-events: none;         /* Ne jamais bloquer les interactions */
 }
 
 #canvas-bg,
@@ -1632,3 +1634,36 @@ canvas {
 #canvas-ui {
     pointer-events: auto;
 }
+
+#canvas-wrapper canvas {
+    z-index: 100 !important;
+}
+
+#modal-container,
+.modal {
+    z-index: 9998 !important;
+}
+
+#navbar-hamburger {
+    z-index: 9997 !important;
+}
+
+.modal-z-index{
+    z-index: 9999 !important;
+}
+
+#tooltip-hover {
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+        opacity 120ms ease-out,
+        transform 120ms ease-out,
+        filter 200ms ease-out;
+}
+
+#tooltip-hover.visible {
+    opacity: 1;
+    transform: translateY(0px);
+    filter: drop-shadow(0 0 8px #34d399aa);
+}
+
