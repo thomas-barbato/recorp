@@ -24,40 +24,40 @@ export default class Camera {
 
     updateViewport() {
 
-        // 1) Taille affichable en pixel
-        const maxTilesPC = { x: 39, y: 23 };
-        const maxTilesTablet = { x: 20, y: 20 };
-        const maxTilesMobile = { x: 11, y: 11 };
-
+        const TILE = this.tileSize;
         const w = window.innerWidth;
 
-        let limitX, limitY;
+        let maxX, maxY;
 
-        // MOBILE
-        if (w < 640) {
-            limitX = maxTilesMobile.x;
-            limitY = maxTilesMobile.y;
+        // 🟩 EXACTEMENT les mêmes paliers que resizeCanvasWrapper()
 
-        // TABLETTE
-        } else if (w < 1024) {
-            limitX = maxTilesTablet.x;
-            limitY = maxTilesTablet.y;
+        if (w < 640) {                 
+            maxX = 11; maxY = 11;
 
-        // PC
-        } else {
-            limitX = maxTilesPC.x;
-            limitY = maxTilesPC.y;
+        } else if (w < 820) {         
+            maxX = 16; maxY = 16;
+
+        } else if (w < 1024) {        
+            maxX = 20; maxY = 20;
+
+        } else if (w < 1280) {        
+            maxX = 26; maxY = 18;
+
+        } else if (w < 1536) {        
+            maxX = 32; maxY = 20;
+
+        } else if (w < 1920) {        
+            maxX = 36; maxY = 22;
+
+        } else {                      
+            maxX = 39; maxY = 23;
         }
 
-        // 2) Nombre de cases théoriquement visibles selon taille du canvas
-        const autoX = Math.floor(this.canvasWidth / (this.tileSize * this.zoom));
-        const autoY = Math.floor(this.canvasHeight / (this.tileSize * this.zoom));
+        // 🎯 La caméra adopte EXACTEMENT la taille fixée par le wrapper
+        this.visibleTilesX = maxX;
+        this.visibleTilesY = maxY;
 
-        // 3) On impose les MAX DEVICE
-        this.visibleTilesX = Math.max(1, Math.min(autoX, limitX));
-        this.visibleTilesY = Math.max(1, Math.min(autoY, limitY));
-
-        // Top-left tile de la caméra
+        // Position de départ en haut-gauche
         this.worldX = 0;
         this.worldY = 0;
     }

@@ -28,14 +28,40 @@ if (!ok) {
 
         let maxX, maxY;
 
-        if (w < 640) {         // MOBILE
-            maxX = 11; maxY = 11;
+        if (w < 640) {                 
+        // 📱 MOBILE
+        maxX = 11; 
+        maxY = 11;
 
-        } else if (w < 1024) { // TABLETTE
-            maxX = 20; maxY = 20;
+        } else if (w < 820) {         
+            // PETITE TABLETTE (ex: iPad mini / tablettes compactes)
+            maxX = 16; 
+            maxY = 16;
 
-        } else {               // PC
-            maxX = 39; maxY = 23;
+        } else if (w < 1024) {        
+            // TABLETTE CLASSIQUE
+            maxX = 20; 
+            maxY = 20;
+
+        } else if (w < 1280) {        
+            // PETIT ÉCRAN PC / Laptop 13"
+            maxX = 26; 
+            maxY = 18;
+
+        } else if (w < 1536) {        
+            // ÉCRANS PC standards 1080p / 24"
+            maxX = 32; 
+            maxY = 20;
+
+        } else if (w < 1920) {        
+            // LARGE ÉCRAN 1080p / 1440p
+            maxX = 36; 
+            maxY = 22;
+
+        } else {                      
+            // MAXIMUM ABSOLU (GRANDS ÉCRANS)
+            maxX = 39; 
+            maxY = 23;
         }
 
         const wrapper = document.getElementById('canvas-wrapper');
@@ -259,9 +285,18 @@ if (!ok) {
 
         const loop = new UpdateLoop({ fps: FPS, map, renderer, camera, input });
         window.addEventListener('resize', () => {
-            resizeCanvasWrapper();
-            CanvasManager.resizeAll();
-            camera.resize(CanvasManager.width, CanvasManager.height);
+            resizeCanvasWrapper();                   // adapte le wrapper selon la résolution
+            CanvasManager.resizeAll();               // redimensionne les canvas
+            camera.resize(CanvasManager.width, CanvasManager.height);   // recalcule visibleTilesX/Y
+
+            // ====== RECENTRAGE DE LA CAMERA SUR LE JOUEUR ======
+            const cp = map.findPlayerById(window.current_player_id);
+            if (cp) {
+                const cx = cp.x + (cp.sizeX - 1) / 2;
+                const cy = cp.y + (cp.sizeY - 1) / 2;
+                camera.centerOn(cx, cy);
+            }
+            
             renderer.requestRedraw();
             renderer.updateGridCoordinatesUI(camera, TILE_SIZE);
         
