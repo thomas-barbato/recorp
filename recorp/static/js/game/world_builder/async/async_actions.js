@@ -121,16 +121,3 @@ function handleWarpComplete(data) {
         }, 100);
     }, 500); // délai pour la transition
 }
-
-function async_send_mp(data){
-    executeUserAction(() => {
-        if (wsManager && wsManager.isConnected) {
-            wsManager.send({
-                message: data,
-                type: "async_send_mp"
-            });
-        } else {
-            console.error('WebSocket non connecté pour async_send_mp');
-        }
-    });
-}

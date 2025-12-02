@@ -108,7 +108,6 @@ class GameConsumer(WebsocketConsumer):
         """
         Réception sécurisée des messages WebSocket
         """
-        
         # 1) Rien à traiter
         if not text_data:
             return
@@ -161,6 +160,11 @@ class GameConsumer(WebsocketConsumer):
         # CHAT
         if msg_type == "async_chat_message":
             self.async_send_chat_msg(data)
+            return
+        
+        # PRIVATE MESSAGE
+        if msg_type == "async_send_mp":
+            self.async_send_mp(data)
             return
 
         # MESSAGE GÉNÉRIQUE

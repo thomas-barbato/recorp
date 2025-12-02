@@ -702,6 +702,7 @@ def private_mail_modal(request):
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
                 'faction_color': GetDataFromDB.get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
+                'is_author': True,
         } for e in messages_qs]
     else:
         messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id, is_author=False, deleted_at__isnull=True).values(
@@ -724,7 +725,8 @@ def private_mail_modal(request):
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
                 'faction_color': GetDataFromDB().get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
-                'is_read': e['is_read']
+                'is_read': e['is_read'],
+                'is_author': False
         } for e in messages_qs]
     
     paginator = Paginator(mp, 4)

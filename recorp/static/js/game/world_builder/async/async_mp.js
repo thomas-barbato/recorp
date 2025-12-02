@@ -50,3 +50,7 @@ function openMailModal() {
         loadMessages();
     }
 }
+
+window.showPrivateMessageNotification = showPrivateMessageNotification;
+window.openMailModal = openModal;
+window.loadUnreadCount = loadUnreadCount;

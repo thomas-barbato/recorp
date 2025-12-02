@@ -168,14 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const payload = {
             channel: currentChannel,
-            sender_id: current_player_id,
+            sender_id: window.currentPlayer.user.player,
             content: text,
         };
-        
-        window.canvasEngine.ws.send({
-            message: payload,
-            type: "async_send_chat_msg"
-        });
+
+        async_send_chat_msg(payload);
 
         chatInput.value = "";
     }
@@ -302,6 +299,31 @@ document.addEventListener('DOMContentLoaded', () => {
             container.scrollTop = container.scrollHeight;
         });
     }
+
+    
+
+async function async_send_chat_msg(payload) {
+
+    console.log("SENDING MP", payload)
+    // payload est déjà un JSON.stringify({ recipient, subject, body, ... })
+    try {
+        const ws = window.canvasEngine?.ws;
+        if (!ws) {
+            console.error("[MP] WebSocket (canvasEngine.ws) non initialisé");
+            return;
+        }
+
+        // On envoie un message structuré — adapte si besoin au backend :
+        // - type : côté serveur, tu peux router dessus
+        // - message : le payload déjà sérialisé
+        ws.send({
+            type: "async_send_chat_msg",
+            message: payload,
+        });
+    } catch (e) {
+        console.error("[MP] Erreur lors de l'envoi MP via WebSocket:", e);
+    }
+}
 
     window.appendMessage = appendMessage;
     setInterval(loadUnreadCounts, 30000);

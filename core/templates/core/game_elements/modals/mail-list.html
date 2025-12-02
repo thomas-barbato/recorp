@@ -7,7 +7,7 @@
     {% for msg in received_messages %}
     <div data-id="{{ msg.id }}"
         class="mail-item group relative border rounded-xl p-4 cursor-pointer transition
-        {% if not msg.is_read %}
+        {% if not msg.is_read and not msg.is_author %}
         border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.35)]
         {% else %}
         border-emerald-500/20
@@ -16,10 +16,8 @@
 
         <!-- === Partie 1 : Badge lu / non-lu === -->
         <div class="absolute top-2 right-3 text-xs font-bold tracking-wider">
-            {% if not msg.is_read %}
+            {% if not msg.is_read and not msg.is_author %}
             <span class="text-emerald-400 animate-pulse">● NEW</span>
-            {% else %}
-            <span class="text-emerald-500/40">●</span>
             {% endif %}
         </div>
 

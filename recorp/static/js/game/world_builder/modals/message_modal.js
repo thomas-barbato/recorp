@@ -279,19 +279,17 @@ function showMessage(data) {
                 showToast(gettext("Message cannot be empty"), false);
                 return;
             }
-
-            let payload = JSON.stringify({
+            let payload = {
                 recipient: data.sender,
                 recipient_type: "player",
                 subject: document.getElementById('reply-subject').value,
                 body,
-                senderId: currentPlayer.user.player,
-            });
-
+                senderId: current_player_id,
+            };
             setLoadingState(btn, true);
 
             try {
-                await async_send_mp(payload);
+                await sendPrivateMessage(payload);
                 showToast(gettext("Message sent ✓"));
             } catch {
                 showToast(gettext("Send failed ✗"), false);
@@ -398,18 +396,18 @@ newMsgBtn.addEventListener('click', () => {
             return;
         }
 
-        let payload = JSON.stringify({
+        let payload = {
             recipient: recipient,
             subject: subject,
             body: body,
             recipient_type: recipient_type,
-            senderId: currentPlayer.user.player
-        });
+            senderId: window.currentPlayer.user.player
+        };
             
         setLoadingState(btn, true);
 
         try {
-            await async_send_mp(payload);
+            await sendPrivateMessage(payload);
             showToast(gettext("Message sent ✓"));
         } catch {
             showToast(gettext("Failed to send ✗"), false);
@@ -541,9 +539,34 @@ function showPrivateMessageNotification(note) {
     showToast(note || gettext("You have received a private message"));
 }
 
-// Exposer globalement
-window.showPrivateMessageNotification = showPrivateMessageNotification;
+async function sendPrivateMessage(payload) {
+    try {
+        const ws = window.canvasEngine?.ws;
+
+        if (!ws) {
+            console.error("[MP] WebSocket CanvasEngine non initialisé");
+            throw new Error("No WebSocket");
+        }
+
+        // STRINGIFY OBLIGATOIRE : le serveur fait json.loads(message)
+        ws.send({
+            type: "async_send_mp",
+            message: JSON.stringify(payload),
+        });
+
+    } catch (err) {
+        console.error("[MP] Erreur envoi MP:", err);
+        throw err; // << ton UI gérera le toast
+    }
+}
+
 
 // ✅ === RAFRAÎCHISSEMENT AUTOMATIQUE ===
 // Recharger le compteur toutes les 30 secondes
 setInterval(loadUnreadCount, 30000);
+// === Exposer fonctions pour handlers WebSocket ===
+window.loadMessages = loadMessages; 
+window.showPrivateMessageNotification = showPrivateMessageNotification;
+window.openMailModal = openModal;
+window.loadUnreadCount = loadUnreadCount;
+window.sendPrivateMessage = sendPrivateMessage;
