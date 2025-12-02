@@ -31,7 +31,6 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
     if (window.canvasEngine?.renderer?.sonar && obj) {
         inSonar = window.canvasEngine.renderer.sonar.isVisible(obj);
     }
-
     if (obj) {
         if (obj.type === "player"){
             if(inSonar){
@@ -42,7 +41,7 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
         }
         else if (obj.type === "npc"){
             if(inSonar){
-                name = obj.data.npc.name;
+                name = obj.data.npc.displayed_name;
             }else{
                 name = "Unknown";
             }
@@ -95,9 +94,10 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
             name = "Unknown";
         } else {
             if (obj.type === "player") name = obj.data.user.name;
-            else if (obj.type === "npc") name = obj.data.npc.name;
-            else if (obj.type === "foreground") name = obj.data.data.name;
+            else if (obj.type === "npc") name = obj.data.npc.displayed_name;
         }
+        
+        if (obj.type === "foreground") name = obj.data.data.name;
     }else{
         hideHoverTooltip();
         return;

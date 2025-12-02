@@ -210,9 +210,11 @@ export default class ActorsRenderer {
             this._drawFullSprite(img, scr.x, scr.y, pxW, pxH, obj);
 
             // Bordure du joueur courant
-            if (showBorder && String(obj.data?.user?.player) === String(window.current_player_id)) {
+            if (String(obj.data?.user?.player) === String(window.current_player_id)) {
                 this.ctx.save();
-                this.ctx.strokeStyle = "rgba(255,165,0,0.95)";
+                this.ctx.shadowColor = "rgba(52, 211, 153, 0.8)";   // emerald 400 glow
+                this.ctx.shadowBlur = 18;
+                this.ctx.strokeStyle = "rgba(52, 211, 153, 0.9)";
                 this.ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
                 this.ctx.setLineDash([4, 4]);
                 this.ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
@@ -264,9 +266,6 @@ export default class ActorsRenderer {
                         // 🟦 PC visible (autre que toi)
                         else if (isPc) {
                             ctx.strokeStyle = "rgba(34, 211, 238, 1)"; // cyan-400
-                        } else {
-                            // fallback : teal blanc
-                            ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
                         }
                     }
 

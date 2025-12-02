@@ -28,7 +28,7 @@ export default class ForegroundRenderer {
                     ctx.save();
                     ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
                     ctx.setLineDash([4, 4]);
-                    ctx.strokeStyle = "rgba(52, 211, 153, 1)"; // emerald-400
+                    ctx.strokeStyle = "rgba(226, 232, 240, 0.8)"; // emerald-400
                     ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
                     ctx.restore();
                 }

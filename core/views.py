@@ -421,7 +421,7 @@ class DisplayTutorialView(LoginRequiredMixin, TemplateView):
     redirect_field_name = "login_redirect"
     template_name = "tutorial.html"
     
-class DisplayGameView(LoginRequiredMixin, TemplateView):
+class DisplayGameOldView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "play.html"
@@ -528,7 +528,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             return redirect("/", data_to_send)
         
 
-class DisplayGameCanvasView(LoginRequiredMixin, TemplateView):
+class DisplayGameView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
     template_name = "play_canvas.html"
