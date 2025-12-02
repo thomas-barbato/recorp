@@ -134,16 +134,3 @@ function async_send_mp(data){
         }
     });
 }
-
-function async_send_chat_msg(data){
-    executeUserAction(() => {
-        if (wsManager && wsManager.isConnected) {
-            wsManager.send({
-                message: data,
-                type: "async_send_chat_msg"
-            });
-        } else {
-            console.error('WebSocket non connecté pour async_send_chat_msg');
-        }
-    });
-}

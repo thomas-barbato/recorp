@@ -167,12 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return;
 
         const payload = {
-            action: "async_chat_message",
             channel: currentChannel,
             sender_id: current_player_id,
             content: text,
         };
-        async_send_chat_msg(payload);
+        
+        window.canvasEngine.ws.send({
+            message: payload,
+            type: "async_send_chat_msg"
+        });
 
         chatInput.value = "";
     }
@@ -302,4 +305,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.appendMessage = appendMessage;
     setInterval(loadUnreadCounts, 30000);
+    window.appendMessage = appendMessage;
+    window.incrementUnreadCount = incrementUnreadCount;
+    window.markChannelAsRead = markChannelAsRead;
+    window.getCurrentChannel = () => currentChannel;
 });
