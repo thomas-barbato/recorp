@@ -23,6 +23,10 @@ export function handleIncomingPrivateMessage(payload) {
     if (modal && !modal.classList.contains("hidden") && window.loadMessages) {
         window.loadMessages();
     }
+    // Si le modal est ouvert → afficher un toast interne
+    if (modal && !modal.classList.contains("hidden") && window.showToast) {
+        window.showToast(note, true);
+    }
 }
 
 // Message pour AUTEUR

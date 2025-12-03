@@ -15,6 +15,9 @@ let currentTab = 'received';
 let unreadCount = 0;
 let isModalOpen = false;
 
+window.mpNotificationQueue = [];
+window.mpNotificationIsShowing = false;
+
 // ✅ Charger le compteur au démarrage
 loadUnreadCount();
 
@@ -290,7 +293,6 @@ function showMessage(data) {
 
             try {
                 await sendPrivateMessage(payload);
-                showToast(gettext("Message sent ✓"));
             } catch {
                 showToast(gettext("Send failed ✗"), false);
             } finally {
@@ -408,7 +410,6 @@ newMsgBtn.addEventListener('click', () => {
 
         try {
             await sendPrivateMessage(payload);
-            showToast(gettext("Message sent ✓"));
         } catch {
             showToast(gettext("Failed to send ✗"), false);
         } finally {
@@ -537,6 +538,99 @@ function showPrivateMessageNotification(note) {
     
     // Optionnel : afficher un toast
     showToast(note || gettext("You have received a private message"));
+}
+
+/**
+ * Ajoute une notification à la file.
+ */
+function enqueueMpNotification(note) {
+    window.mpNotificationQueue.push(note);
+    processMpNotificationQueue();
+}
+
+/**
+ * Traite les notifications une par une (séquentiel).
+ */
+async function processMpNotificationQueue() {
+    if (window.mpNotificationIsShowing) return;
+    if (window.mpNotificationQueue.length === 0) return;
+
+    window.mpNotificationIsShowing = true;
+
+    const nextNote = window.mpNotificationQueue.shift();
+    await showMpNotificationSciFi(nextNote);
+
+    window.mpNotificationIsShowing = false;
+
+    // Traiter la suivante
+    processMpNotificationQueue();
+}
+
+/**
+ * Affiche une notification sci-fi (Promise pour gestion séquentielle)
+ */
+function showMpNotificationSciFi(note) {
+    return new Promise(resolve => {
+        const container = document.getElementById("mp-notification-container");
+        if (!container) return resolve();
+
+        const notif = document.createElement("div");
+
+        notif.className = `
+            relative
+            bg-amber-500/90
+            border border-amber-400
+            text-white font-semibold
+            rounded-lg px-4 py-3
+            flex items-center gap-3
+            w-[90vw] sm:w-[320px]
+            shadow-[0_0_30px_rgba(255,230,140,0.55)]
+            backdrop-blur-md select-none cursor-pointer
+            animate-[mp-holo-border_2s_ease-in-out_infinite]
+            animate-[mp-pop_0.35s_ease-out]
+            overflow-hidden
+        `;
+
+        notif.innerHTML = `
+            <i class="fa-solid fa-envelope text-white text-lg drop-shadow-[0_0_6px_#fff]"></i>
+            <div class="flex flex-col leading-tight">
+                <span class="text-white font-bold">${note}</span>
+            </div>
+
+            <div class="mp-scanline"></div>
+            <div class="mp-radar-pulse"></div>
+        `;
+
+        container.appendChild(notif);
+
+        const removeDelay = 5500;
+        const timer = setTimeout(() => remove(), removeDelay);
+
+        notif.addEventListener("click", () => {
+            clearTimeout(timer);
+            remove();
+            if (typeof openModal === "function") {
+                openModal();
+            }
+        });
+
+        function remove() {
+            notif.style.animation = "mp-fade-out 0.4s forwards";
+            setTimeout(() => {
+                notif.remove();
+                resolve();
+            }, 400);
+        }
+    });
+}
+
+// NOTIFICATION DEPUIS WEBSOCKET
+function showPrivateMessageNotification(note) {
+    const finalNote = note || (window.gettext
+        ? gettext("You have received a private message")
+        : "You have received a private message");
+
+    enqueueMpNotification(finalNote);
 }
 
 async function sendPrivateMessage(payload) {

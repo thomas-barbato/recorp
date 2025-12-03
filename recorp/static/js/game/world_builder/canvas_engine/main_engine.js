@@ -316,5 +316,14 @@ if (!ok) {
 
         loop.start();
         console.log('Canvas engine started');
+        if (window.sectorLoader) {
+            window.sectorLoader.setText("Chargement terminé");
+
+            // Laisse un petit délai pour afficher réellement le texte
+            setTimeout(() => {
+                window.sectorLoader.hide();
+            }, 800);
+        }
+        
     })();
 }

@@ -128,7 +128,6 @@ class LoadingScreen {
     }
 
     show(text = 'Chargement') {
-        console.log("CHARGEMENT")
         if (this.isVisible) return;
         this.startTime = performance.now();
         this.isVisible = true;
@@ -136,6 +135,7 @@ class LoadingScreen {
         this.container.style.display = 'block';
         requestAnimationFrame(() => (this.container.style.opacity = 1));
         this.setText(text);
+        if (this.textElement) this.textElement.style.opacity = 1;
     }
 
     hide() {
