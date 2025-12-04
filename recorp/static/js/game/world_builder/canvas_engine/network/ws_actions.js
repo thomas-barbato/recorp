@@ -1,10 +1,18 @@
 // === WEBSOCKET ACTION REGISTRY ===
 
 import ActionRegistry from "./action_registry.js";
-import { handlePlayerMove, handleUpdateMovementGeneric } from "../handlers/move_handlers.js";
 import { handleIncomingChatMessage } from "../handlers/chat_handlers.js";
+import { handlePlayerMove, handleUpdateMovementGeneric } from "../handlers/move_handlers.js";
 import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handlers/message_handlers.js";
-import { handleWarpFailed } from "../handlers/warp_handlers.js";
+import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
+import { 
+    handlerWarpFailed, 
+    handlerRemovePlayer, 
+    handlerShipRemoved, 
+    handlerUserJoin, 
+    handlerShipAdded, 
+    handlerWarpComplete 
+} from "../handlers/warp_handlers.js";
 
 // ===============================
 // ACTIONS MOTEUR CANVAS
@@ -29,5 +37,15 @@ ActionRegistry.register("async_recieve_mp", handleIncomingPrivateMessage);
 // ===============================
 // WARP
 // ===============================
-ActionRegistry.register("async_warp_complete", window.location.reload());
-ActionRegistry.register("async_warp_failed", handleWarpFailed);
+ActionRegistry.register("async_warp_complete", handlerWarpComplete);
+ActionRegistry.register("async_warp_failed", handlerWarpFailed);
+ActionRegistry.register("async_remove_ship", handlerRemovePlayer);
+ActionRegistry.register("ship_removed", handlerShipRemoved);
+ActionRegistry.register("async_user_join", handlerUserJoin);
+ActionRegistry.register("ship_added", handlerShipAdded);
+
+// ===============================
+// NPC ADD / REMOVE
+// ===============================
+ActionRegistry.register("npc_added", addNpc);
+ActionRegistry.register("npc_removed", removeNpc);

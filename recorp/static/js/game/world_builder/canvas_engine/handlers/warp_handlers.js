@@ -1,4 +1,4 @@
-export function handleWarpFailed(data) {
+export function handlerWarpFailed(data) {
     console.warn("[warp] Warp impossible :", data);
 
     // cacher loader si actif
@@ -115,6 +115,62 @@ export function handleWarpTravel(sectorWarpZoneId) {
     }
 }
 
+export function handlerRemovePlayer(data){
+    
+    const shipId = data.player_id;
+    const actorId = `pc_${shipId}`;
+
+    const engine = window.canvasEngine;
+    if (!engine) return;
+
+    const map = engine.map;
+    if (!map) return;
+
+    console.log("[WS] Suppression acteur →", actorId);
+
+    map.removeActorByPlayerId(data.player_id);
+
+    // Forcer un rafraîchissement du renderer
+    engine.renderer.requestRedraw();
+
+}
+
+export function handlerShipRemoved(data){
+    const actorId = `pc_${data.ship_id}`;
+    const engine = window.canvasEngine;
+    if (!engine) return;
+
+    map.removeActorByPlayerId(data.player_id);
+    engine.renderer.requestRedraw();
+}
+
+export function handlerUserJoin(data){
+    const actors = data;  // backend envoie directement la liste des PC
+    const engine = window.canvasEngine;
+    if (!engine) return;
+
+    const map = engine.map;
+
+    console.log("[WS] Nouveaux acteurs ajoutés", actors);
+
+    actors.forEach(actor => {
+        map.addPlayerActor(actor);
+    });
+
+    engine.renderer.requestRedraw();
+}
+
+export function handlerShipAdded(data){
+    const engine = window.canvasEngine;
+    if (!engine) return;
+
+    engine.map.addPlayerActor(data.actor);
+    engine.renderer.requestRedraw();
+}
+
+export function handlerWarpComplete(){
+    window.location.reload()
+}
 
 // Rendre disponible globalement pour modals.js
 window.handleWarpTravel = handleWarpTravel;

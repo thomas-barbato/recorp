@@ -331,4 +331,214 @@ export default class MapData {
 
         return pathReversed.reverse();
     }
+
+    addPlayerActor(p) {
+        if (!p || !p.user) return;
+
+        const playerId = p.user.player;
+        const pidStr = String(playerId);
+
+        // On nettoie d'abord tout acteur existant pour ce joueur
+        this.removeActorByPlayerId(playerId);
+
+        const ship = p.ship || {};
+        const shipSize = ship.size || {};
+        const sizeX = Number.isFinite(Number(shipSize.x)) ? Number(shipSize.x) : 1;
+        const sizeY = Number.isFinite(Number(shipSize.y)) ? Number(shipSize.y) : 1;
+
+        const x = Number.parseInt(p.user.coordinates?.x ?? p.user.x ?? 0, 10);
+        const y = Number.parseInt(p.user.coordinates?.y ?? p.user.y ?? 0, 10);
+
+        const image = ship.image || null;
+        const spritePath = image ? `foreground/SHIPS/${image}.png` : null;
+        const reversedSprite = image ? `foreground/SHIPS/${image}-reversed.png` : null;
+
+        const obj = {
+            id: `pc_${playerId}`,
+            type: "player",
+            data: p,
+            subtype: ship.name || null,
+            x,
+            y,
+            sizeX,
+            sizeY,
+            image,
+            spritePath,
+            reversedSprite
+        };
+
+        // players indexé à la fois par number et par string pour plus de robustesse
+        this.players[playerId] = obj;
+        this.players[pidStr] = obj;
+
+        this.worldObjects.push(obj);
+
+        // Préchargement des sprites si le spriteManager est dispo
+        if (this.spriteManager && this.spriteManager.ensure && this.spriteManager.makeUrl) {
+            try {
+                if (spritePath) {
+                    this.spriteManager
+                        .ensure(this.spriteManager.makeUrl(spritePath))
+                        .catch(() => {});
+                }
+                if (reversedSprite) {
+                    this.spriteManager
+                        .ensure(this.spriteManager.makeUrl(reversedSprite))
+                        .catch(() => {});
+                }
+            } catch (e) {
+                // mode défensif : ne rien casser si le prefetch foire
+            }
+        }
+
+        console.log("[MAP] addPlayerActor →", obj.id, "(", x, y, ")");
+    }
+
+    // ======================================================================
+    // Suppression d’un PC à partir de son pc_id
+    // (supprime pc_<id> + toute forme unknown liée)
+    // ======================================================================
+    removeActorByPlayerId(playerId) {
+        if (playerId == null) return;
+
+        const pidStr = String(playerId);
+        const before = this.worldObjects.length;
+
+        this.worldObjects = this.worldObjects.filter(o => {
+            // id direct pc_XX
+            if (String(o.id) === `pc_${pidStr}`) return false;
+
+            // acteur "unknown" mais qui possède un user.player
+            const objPid = o?.data?.user ? String(o.data.user.player) : null;
+            if (objPid === pidStr) return false;
+
+            return true;
+        });
+
+        // Nettoyage du cache players
+        delete this.players[pidStr];
+        const pidNum = Number(pidStr);
+        if (!Number.isNaN(pidNum)) {
+            delete this.players[pidNum];
+        }
+
+        const after = this.worldObjects.length;
+        if (before !== after) {
+            console.log(`[MAP] removeActorByPlayerId(${pidStr}) → ${before} -> ${after}`);
+        }
+    }
+
+    // ======================================================================
+    // Suppression d’un NPC à partir de son npc_id
+    // (supprime npc_<id> + toute forme unknown liée)
+    // ======================================================================
+    removeNpcById(npcId) {
+        if (npcId == null) return;
+
+        const nidStr = String(npcId);
+        const before = this.worldObjects.length;
+
+        this.worldObjects = this.worldObjects.filter(o => {
+
+            // --- 1. npc_<id> normal ---
+            if (String(o.id) === `npc_${nidStr}`) return false;
+
+            // --- 2. unknown avec data.npc_id ---
+            if (o?.data?.npc_id && String(o.data.npc_id) === nidStr) return false;
+
+            // --- 3. unknown avec data.user.npc ---
+            if (o?.data?.user?.npc && String(o.data.user.npc) === nidStr) return false;
+
+            // --- 4. id style "unknown-npc-<id>" ---
+            if (o.id && o.id.includes("unknown") && o.id.endsWith("_" + nidStr)) return false;
+
+            return true;
+        });
+
+        delete this.npcs?.[nidStr];
+        const nidNum = Number(nidStr);
+        if (!Number.isNaN(nidNum)) delete this.npcs?.[nidNum];
+
+        const after = this.worldObjects.length;
+        if (before !== after) {
+            console.log(`[MAP] removeNpcById(${nidStr}) → ${before} -> ${after}`);
+        }
+    }
+
+    // ======================================================================
+    // Ajout dynamique d'un NPC (pour spawn, apparition d'ennemis, scripts…)
+    // Structure identique à celle générée dans prepare() → compatible modals
+    // ======================================================================
+    addNpcActor(npcData) {
+        if (!npcData) return;
+
+        const npcId = npcData.npc_id || npcData.id || npcData.pk;
+        if (!npcId) {
+            console.warn("[MAP] addNpcActor: npcData sans npc_id", npcData);
+            return;
+        }
+
+        const idStr = String(npcId);
+
+        // Supprimer toute version existante (npc_<id> ou unknown lié)
+        this.removeNpcById(npcId);
+
+        // Détermination de la taille
+        const size = npcData.size || npcData.ship?.size || {};
+        const sizeX = Number.isFinite(Number(size.x)) ? Number(size.x) : 1;
+        const sizeY = Number.isFinite(Number(size.y)) ? Number(size.y) : 1;
+
+        // Coordonnées du NPC
+        const x = Number.parseInt(
+            npcData.coordinates?.x ?? npcData.x ?? 0,
+            10
+        );
+        const y = Number.parseInt(
+            npcData.coordinates?.y ?? npcData.y ?? 0,
+            10
+        );
+
+        // Image & sprites
+        const img = npcData.image || npcData.ship?.image || null;
+        const spritePath = img ? `foreground/SHIPS/${img}.png` : null;
+        const reversedSprite = img ? `foreground/SHIPS/${img}-reversed.png` : null;
+
+        // Construction du worldObject NPC
+        const obj = {
+            id: `npc_${idStr}`,
+            type: "npc",
+            data: npcData,
+            subtype: npcData.ship?.name || npcData.name || null,
+            x,
+            y,
+            sizeX,
+            sizeY,
+            image: img,
+            spritePath,
+            reversedSprite,
+        };
+
+        // Stocker dans this.npcs
+        if (!this.npcs) this.npcs = {};
+        this.npcs[idStr] = obj;
+
+        // Ajouter au worldObjects
+        this.worldObjects.push(obj);
+
+        console.log("[MAP] addNpcActor →", obj.id, "(", x, y, ")");
+
+        // Préchargement des images si spriteManager existe
+        if (this.spriteManager && this.spriteManager.ensure && this.spriteManager.makeUrl) {
+            try {
+                if (spritePath) {
+                    this.spriteManager.ensure(this.spriteManager.makeUrl(spritePath)).catch(() => {});
+                }
+                if (reversedSprite) {
+                    this.spriteManager.ensure(this.spriteManager.makeUrl(reversedSprite)).catch(() => {});
+                }
+            } catch (e) {
+                // Ne jamais casser : silencieux
+            }
+        }
+    }
 }
