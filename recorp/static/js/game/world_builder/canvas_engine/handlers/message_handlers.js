@@ -46,3 +46,25 @@ export function handlePrivateMessageSent(payload) {
         window.loadMessages();
     }
 }
+
+export function handleWarpFailed(data) {
+    console.warn("[warp] Échec warp :", data);
+
+    window._syncInProgress = false;
+
+    if (window.sectorLoader) {
+        window.sectorLoader.setText("Warp impossible : aucune place disponible");
+        setTimeout(() => window.sectorLoader.hide?.(), 300);
+    }
+
+    // message flottant élégant
+    if (window.canvasEngine?.floatingMessages) {
+        const me = window.canvasEngine.map.findPlayerById(window.current_player_id);
+        if (me) {
+            window.canvasEngine.floatingMessages.addMessage(
+                "⚠ Warp impossible",
+                { x: me.x, y: me.y }
+            );
+        }
+    }
+}

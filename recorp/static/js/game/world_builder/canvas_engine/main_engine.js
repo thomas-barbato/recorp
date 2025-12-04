@@ -64,8 +64,19 @@ if (!ok) {
             camera.centerOn(Math.floor(map.mapWidth / 2), Math.floor(map.mapHeight / 2));
         }
 
+        window.spriteManager = SpriteManager;
+        window.spriteManager.init({
+            basePath: "/static/img",
+            tileSize: 32
+        });
+
         // renderer
-        const renderer = new Renderer({ canvases, camera, spriteManager: SpriteManager, map });
+        const renderer = new Renderer({ 
+            canvases, 
+            camera, 
+            spriteManager: window.spriteManager, 
+            map 
+        });
 
         // ------ PATHFINDING CANVAS ------
         const canvasPathfinding = new CanvasPathfinding({
@@ -248,7 +259,7 @@ if (!ok) {
         
         // websocket
         const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
-        const ws_url = `${ws_scheme}://${window.location.host}/ws/play_${map_informations.sector.id}/`;
+        const ws_url = `${ws_scheme}://${window.location.host}/ws/play_${window.map_informations.sector.id}/`;
         const ws = new WebSocketManager(ws_url);
         ws.connect();
 
@@ -315,11 +326,8 @@ if (!ok) {
         }
 
         loop.start();
-        console.log('Canvas engine started');
-        if (window.sectorLoader) {
-            window.sectorLoader.setText("Chargement terminé");
 
-            // Laisse un petit délai pour afficher réellement le texte
+        if (window.sectorLoader) {
             setTimeout(() => {
                 window.sectorLoader.hide();
             }, 800);

@@ -10,6 +10,8 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 
+from core.models import SectorWarpZone
+
 logger = logging.getLogger("django")
 
 class GameConsumer(WebsocketConsumer):
@@ -977,146 +979,139 @@ class GameConsumer(WebsocketConsumer):
             event: Événement contenant les données de voyage
         """
         try:
-            warp_data = json.loads(event["message"])
-            self._process_warp_travel(warp_data)
-            
-        except (json.JSONDecodeError, KeyError) as e:
-            logger.error(f"Erreur lors du voyage par distorsion: {e}")
+            raw = event.get("message")
+            if isinstance(raw, str):
+                warp_data = json.loads(raw)
+            else:
+                warp_data = raw
 
-    def _process_warp_travel(self, warp_data: Dict[str, Any]) -> None:
-        """Traite le voyage par distorsion."""
-        
-        coordinates = warp_data["coordinates"]
-        size = warp_data["size"]
-        player_id = warp_data["player_id"]
-        sector_id = warp_data["current_sector_id"]
-        sector_warpzone_id = warp_data["sectorwarpzone_id"]
-        # Retirer le joueur du cache du secteur actuel
-        self._remove_player_from_current_sector(player_id)
-        
-        # Distinguer le joueur actuel des autres
-        if self._is_other_player(player_id):
-            # Un autre joueur quitte le secteur
-            start_id_array = warp_data["start_id_array"]
-            self._handle_other_player_warp(coordinates, size, player_id, start_id_array)
-        else:
-            # Le joueur connecté quitte le secteur
-            destination_id, destination_room_key = self._get_destination_room_key(sector_warpzone_id)
-            self._handle_own_player_warp(sector_id, destination_id, destination_room_key, player_id)
+            # --- Vérifications ---
+            if not warp_data:
+                logger.error("async_warp_travel: warp_data manquant")
+                return
 
-    def _remove_player_from_current_sector(self, player_id: int) -> None:
-        """Retire le joueur du secteur actuel."""
-        StoreInCache(
-            room_name=self.room_group_name, 
-            user_calling=self.user
-        ).delete_player_from_cache(player_id, self.room_group_name)   
+            player_id = warp_data.get("player_id")
+            sectorwarpzone_id = warp_data.get("sectorwarpzone_id")
+            current_sector_id = warp_data.get("current_sector_id")
 
-    def _get_destination_room_key(self, sector_warpzone_id: int) -> str:
-        """Obtient la clé de la salle de destination."""
-        destination_id = GetDataFromDB.get_destination_sector_id_from_sectorwarpzone(sector_warpzone_id)
-        return destination_id, f"play_{destination_id}"
+            if not player_id or not sectorwarpzone_id or not current_sector_id:
+                logger.error(f"async_warp_travel: données incomplètes {warp_data}")
+                return
 
-    def _is_other_player(self, player_id: int) -> bool:
-        """Vérifie si c'est un autre joueur."""
-        return player_id != self.player_id
+            # --- Si ce consumer n’est PAS le joueur concerné → sortir ---
+            if player_id != self.player_id:
+                return
 
-    def _handle_other_player_warp(self, coordinates: Any, size: Any, player_id: int, start_id_array) -> None:
-        """Gère le voyage d'un autre joueur."""
-        spaceship_data_coord = {
-            "type": "async_remove_ship",
-            "message": {
-                "position": coordinates,
-                "size": size,
-                "player_id": player_id,
-                "start_id_array": start_id_array
-            },
-        }
-        self._send_response(spaceship_data_coord)
-
-    def _handle_own_player_warp(self, sector_id: int, destination_id: int, destination_room_key: str, player_id: int) -> None:
-        """Gère le voyage du joueur."""
-        # Mettre à jour la base de données
-        self._setup_destination_change_in_db(sector_id, destination_id, player_id)
-        # Préparer le cache de la destination (pour que les données soient prêtes)
-        self._setup_destination_cache(destination_room_key)
-        
-        # Mettre à jour le cache source (retirer le joueur)
-        self._update_source_cache()
-    
-        # 4. Récupérer les données complètes du nouveau secteur
-        new_sector_data = cache.get(destination_room_key)
-        
-        # Envoyer au client les infos pour changer de room
-        self._send_response({
-            "type": "async_warp_complete",
-            "message": {
-                "new_sector_id": destination_id,
-                "new_room_key": destination_room_key,
-                "new_sector_data": new_sector_data,
-                "player_id": player_id
-            }
-        })
-    
-        # Notifier les autres joueurs dans la nouvelle room
-        # Cela se fait après avoir envoyé les données au joueur qui voyage
-        # pour que les autres joueurs voient son arrivée
-        self._notify_destination_room(destination_room_key, player_id)
-        
-    def _setup_destination_change_in_db(self, sector_id: int, destination_id: int, player_id: int) -> Dict[str, int]:
-        """Met à jour la DB, change le secteur du joueur"""
-        playerAction = PlayerAction(self.user.id)
-        
-        # Récupérer les nouvelles coordonnées
-        destination_sector, new_coordinates = playerAction.player_travel_to_destination(
-            sector_id, 
-            destination_id,
-        )
-        
-        # Mettre à jour le joueur
-        playerAction.set_player_sector(destination_sector, new_coordinates)
-        
-        return {
-            "sector_id": destination_sector,
-            "coordinates": new_coordinates
-        }
-
-    def _setup_destination_cache(self, destination_room_key: str) -> None:
-        """Configure le cache de destination."""
-        StoreInCache(
-            room_name=destination_room_key, 
-            user_calling=self.user
-        ).get_or_set_cache(need_to_be_recreated=True)
-
-    def _update_source_cache(self) -> None:
-        """Met à jour le cache source."""
-        StoreInCache(
-            room_name=self.room_group_name, 
-            user_calling=self.user
-        ).update_player_range_finding()
-
-    def _notify_destination_room(self, destination_room_key: str, player_id: int) -> None:
-        """Notifie la salle de destination de l'arrivée du joueur (pour les autres joueurs)."""
-        in_cache = cache.get(destination_room_key)
-        
-        if not in_cache:
-            return
-        
-        # Trouver les données du joueur qui arrive
-        player_data = next(
-            (pc for pc in in_cache.get("pc", []) 
-            if pc.get("user", {}).get("player") == player_id),
-            None
-        )
-        
-        if player_data:
-            # Envoyer à tous les joueurs connectés à la NOUVELLE room
+            # --- Retirer le joueur du secteur actuel (pour les autres joueurs) ---
             async_to_sync(self.channel_layer.group_send)(
-                destination_room_key,  # La nouvelle room
+                self.room_group_name,
+                {
+                    "type": "async_remove_ship",
+                    "message": {
+                        "player_id": player_id,
+                        "start_id_array": warp_data.get("start_id_array", []),
+                        "coordinates": warp_data.get("coordinates", {}),
+                        "size": warp_data.get("size", {})
+                    }
+                }
+            )
+
+            # --- Calcul destination ---
+            pa = PlayerAction(self.user.id)
+
+            # retrouver la warpzone home (on sait dans quel secteur on est)
+            warp_home_id = None
+            links = SectorWarpZone.objects.filter(id=sectorwarpzone_id).first()
+            if not links:
+                self._send_response({
+                    "type": "async_warp_failed",
+                    "message": {"reason": "invalid_warp_link"}
+                })
+                return
+
+            warp_home_id = links.warp_home_id
+            warp_destination_id = links.warp_destination_id
+
+            dest = pa.player_travel_to_destination(warp_home_id, warp_destination_id)
+            if not dest:
+                # déplacement impossible → prévenir joueur
+                self._send_response({
+                    "type": "async_warp_failed",
+                    "message": {"reason": "no_valid_destination"}
+                })
+                return
+
+            destination_sector_id, dest_coord = dest
+
+            # --- Mise à jour DB (changement secteur + coords) ---
+            ok = pa.set_player_sector(destination_sector_id, dest_coord)
+            if not ok:
+                logger.error(f"async_warp_travel: échec update DB pour player {player_id}")
+                return
+
+            # --- Mise à jour du cache destination ---
+            new_room_key = f"play_{destination_sector_id}"
+
+            dest_cache = StoreInCache(new_room_key, self.user)
+            dest_cache.get_or_set_cache(need_to_be_recreated=True)
+
+            # --- Mettre à jour la portée + visibilité ---
+            dest_cache.update_player_range_finding()
+            dest_cache.update_sector_player_visibility_zone(player_id)
+
+            # --- Préparer données secteur destination pour le front ---
+            new_sector_data = dest_cache.get_or_set_cache(need_to_be_recreated=False)
+
+            # --- Dire à TOUS les joueurs du nouveau secteur que ce joueur arrive ---
+            async_to_sync(self.channel_layer.group_send)(
+                new_room_key,
                 {
                     "type": "async_user_join",
-                    "message": player_data,
-                },
+                    "message": new_sector_data.get("pc", [])
+                }
             )
+
+            # --- Enfin : notifier le joueur qu’il a WARPÉ ---
+            self._send_response({
+                "type": "async_warp_complete",
+                "message": {
+                    "new_sector_id": destination_sector_id,
+                    "new_room_key": new_room_key,
+                    "new_sector_data": new_sector_data,
+                    "player_id": player_id
+                }
+            })
+
+        except Exception as e:
+            logger.exception(f"async_warp_travel ERROR: {e}")
+            
+    def async_warp_complete(self, event):
+        """
+        Méthode appelée automatiquement par WebSocketConsumer lorsque
+        l'on fait:
+        self._send_response({"type": "async_warp_complete", ...})
+        """
+        msg = event.get("message")
+        self._send_response({
+            "type": "async_warp_complete",
+            "message": msg
+        })
+        
+    def async_remove_ship(self, event):
+        """
+        Un joueur quitte le secteur (warp ou déconnexion).
+        On notifie SEULEMENT les autres joueurs.
+        """
+        msg = event.get("message", {})
+        
+        # Ne rien envoyer au joueur qui part -> il recevra async_warp_complete
+        if msg.get("player_id") == self.player_id:
+            return
+        
+        self._send_response({
+            "type": "async_remove_ship",
+            "message": msg
+        })
 
     def async_user_join(self, event: Dict[str, Any]) -> None:
         """

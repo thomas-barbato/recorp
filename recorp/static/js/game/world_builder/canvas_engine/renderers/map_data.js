@@ -132,9 +132,29 @@ export default class MapData {
 
 
     findPlayerById(id) {
-        return this.players[id] || null;
+        if (id == null) return null;
+
+        // on tolère number / string
+        const keyStr = String(id);
+        const keyNum = Number.isFinite(Number(id)) ? Number(id) : null;
+
+        if (keyStr in this.players) {
+            return this.players[keyStr];
+        }
+        if (keyNum !== null && keyNum in this.players) {
+            return this.players[keyNum];
+        }
+
+        return null;
     }
 
+    getCurrentPlayer() {
+        if (typeof window === "undefined") return null;
+        const pid = window.current_player_id;
+        if (pid == null) return null;
+        return this.findPlayerById(pid);
+    }
+    
     getObjectsAtTile(tileX, tileY) {
         return this.worldObjects.filter(o =>
         tileX >= o.x && tileX < (o.x + o.sizeX) &&
