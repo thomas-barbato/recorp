@@ -1,103 +1,121 @@
-// dessine tous les objets foreground (planetes, stations...).
-// chaque objet multi-tile est dessiné en une seule drawImage.
 
 class ForegroundAnimationManager {
     constructor(spriteManager) {
         this.spriteManager = spriteManager;
-        this.animStates = new Map();
+        this.animCache = new Map(); // cache global par clé (ex: "planet:planet_3")
+        this.instanceState = new WeakMap(); // état individuel (frame courante)
     }
 
-    getFrameFor(obj) {
-        const key = obj.spritePath;
-        let state = this.animStates.get(key);
+    // Déduit une clé unique basée sur le spritePath
+    _makeKey(obj) {
+        // Ex: foreground/planet/planet_3/0.gif → planet:planet_3
+        const parts = obj.spritePath.split("/");
+        return `${parts[1]}:${parts[2]}`;
+    }
 
-        if (!state) {
-            state = {
+    // Animation globale = frames + durations (chargée une seule fois)
+    // État par instance = currentIndex + lastTime
+    getFrameFor(obj) {
+        const key = this._makeKey(obj);
+
+        // Si pas encore dans le cache → init immédiat
+        if (!this.animCache.has(key)) {
+            this.animCache.set(key, {
                 initialized: false,
                 frames: [],
                 durations: [],
-                frameCount: 0,
+                frameCount: 0
+            });
+            this._initAnimation(obj, key);
+            return null; // on retourne la frame statique
+        }
+
+        const anim = this.animCache.get(key);
+
+        // Si animation pas prête → afficher statique
+        if (!anim.initialized || anim.frameCount === 0) return null;
+
+        // Récupérer l’état *de cette instance*
+        let state = this.instanceState.get(obj);
+        if (!state) {
+            state = {
                 currentIndex: 0,
                 lastTime: performance.now()
             };
-            this.animStates.set(key, state);
-            this._initAnimation(obj, state);
-            return null;
+            this.instanceState.set(obj, state);
         }
 
-        if (!state.initialized || state.frameCount === 0 || state.frames.length === 0) {
-            return null;
-        }
-
+        // Jouer l’animation
         const now = performance.now();
         let elapsed = now - state.lastTime;
 
-        while (elapsed > state.durations[state.currentIndex]) {
-            elapsed -= state.durations[state.currentIndex];
-            state.currentIndex = (state.currentIndex + 1) % state.frameCount;
+        while (elapsed > anim.durations[state.currentIndex]) {
+            elapsed -= anim.durations[state.currentIndex];
+            state.currentIndex = (state.currentIndex + 1) % anim.frameCount;
             state.lastTime = now - elapsed;
         }
 
-        return state.frames[state.currentIndex];
+        return anim.frames[state.currentIndex];
     }
 
-    _initAnimation(obj, state) {
-
+    // Chargement unique de l’animation
+    _initAnimation(obj, key) {
         if (!obj.spritePath.endsWith("0.gif")) {
-            state.initialized = true;
+            this.animCache.get(key).initialized = true;
             return;
         }
 
-        // 🔥 FIX : basePath propre
+        // Path fixe, fiable
         const basePath = obj.spritePath.replace(/\/?0\.gif$/, "");
-
-        // 🔥 FIX : chemins corrects
         const jsonRel = `${basePath}/frames/animation.json`;
         const jsonUrl = this.spriteManager.makeUrl(jsonRel);
-
-        console.log("[ANIM INIT jsonUrl]", jsonUrl);
 
         fetch(jsonUrl)
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();
             })
-            .then(anim => {
-                const frameCount = anim.frame_count || 0;
-                const durations = anim.durations || [];
+            .then(animData => {
+                const anim = this.animCache.get(key);
 
-                if (!frameCount) throw new Error("animation.json vide");
+                anim.frameCount = animData.frame_count || 0;
+                anim.durations = animData.durations || [];
 
-                state.frameCount = frameCount;
-                state.durations = durations;
+                if (anim.frameCount === 0) throw new Error("Animation vide");
 
                 const promises = [];
-                const frames = new Array(frameCount);
+                const frames = new Array(anim.frameCount);
 
-                for (let i = 0; i < frameCount; i++) {
+                for (let i = 0; i < anim.frameCount; i++) {
                     const frameRel = `${basePath}/frames/frame-${i}.png`;
                     const frameUrl = this.spriteManager.makeUrl(frameRel);
 
                     promises.push(
-                        this.spriteManager.ensure(frameUrl)
-                            .then(() => frames[i] = this.spriteManager.get(frameUrl))
+                        this.spriteManager.ensure(frameUrl).then(() => {
+                            frames[i] = this.spriteManager.get(frameUrl);
+                        })
                     );
                 }
 
                 return Promise.all(promises).then(() => {
-                    state.frames = frames;
-                    state.initialized = true;
-                    state.currentIndex = 0;
-                    state.lastTime = performance.now();
+                    anim.frames = frames;
+                    anim.initialized = true;
                 });
             })
             .catch(err => {
-                console.error("[ANIM ERROR]", obj.spritePath, err);
-                state.initialized = true;
-                state.frameCount = 0;
+                const anim = this.animCache.get(key);
+                anim.initialized = true;
+                anim.frameCount = 0;
             });
     }
 }
+
+// ============================================================================
+// Foreground Renderer
+// ============================================================================
+// - Dessine foreground (planètes, astéroïdes, stations…)
+// - Utilise animation si disponible
+// ============================================================================
 
 export default class ForegroundRenderer {
     constructor(ctx, camera, spriteManager, map) {
@@ -105,45 +123,44 @@ export default class ForegroundRenderer {
         this.camera = camera;
         this.spriteManager = spriteManager;
         this.map = map;
+
         this.animManager = new ForegroundAnimationManager(spriteManager);
     }
 
     render() {
         const tilePx = this.camera.tileSize * this.camera.zoom;
+
         this.map.foregrounds.forEach(obj => {
-            
             const scr = this.camera.worldToScreen(obj.x, obj.y);
             const pxW = obj.sizeX * tilePx;
             const pxH = obj.sizeY * tilePx;
-            const src = this.spriteManager.makeUrl(obj.spritePath);
-            const img = this.spriteManager.get(src);
 
-            // 🔥 obtenir frame animée
+            // Static image
+            const imgUrl = this.spriteManager.makeUrl(obj.spritePath);
+            const img = this.spriteManager.get(imgUrl);
+
+            // Animated frame
             const animImg = this.animManager.getFrameFor(obj);
             const finalImg = animImg || img;
 
             if (finalImg) {
                 this.ctx.drawImage(finalImg, scr.x, scr.y, pxW, pxH);
-                const ctx = this.ctx;
-                const sonar = this.map?.sonar || this.sonar;
-                const sonarVisible = sonar ? sonar.isVisible(obj) : true;
+
+                // Hover highlight
                 const hover = window.canvasEngine?.hoverTarget || null;
                 if (hover && hover === obj) {
-                    // Si tu veux la bordure uniquement quand c'est dans le sonar :
-                    ctx.save();
-                    ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
-                    ctx.setLineDash([4, 4]);
-                    ctx.strokeStyle = "rgba(226, 232, 240, 0.8)"; // emerald-400
-                    ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
-                    ctx.restore();
+                    this.ctx.save();
+                    this.ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
+                    this.ctx.setLineDash([4, 4]);
+                    this.ctx.strokeStyle = "rgba(226, 232, 240, 0.8)";
+                    this.ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
+                    this.ctx.restore();
                 }
-                // Si tu la veux même hors sonar, enlève simplement le if(sonarVisible).
             } else {
-                // placeholder semi-translucent if pas chargé
+                // placeholder
                 this.ctx.fillStyle = 'rgba(180, 120, 255, 0.25)';
                 this.ctx.fillRect(scr.x, scr.y, pxW, pxH);
-                // demande preload
-                this.spriteManager.ensure(src).catch(()=>{});
+                this.spriteManager.ensure(imgUrl).catch(() => {});
             }
         });
     }
