@@ -21,6 +21,8 @@ from core.backend.get_data import GetDataFromDB
 from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
 from core.forms import UploadImageForm, SetXpForm
 from core.views import admin_index
+from core.backend.generate_missing_frames import generate_missing_frames
+from django.contrib.auth.decorators import user_passes_test
 from core.models import (
     User,
     CashShop,
@@ -134,6 +136,12 @@ class CustomAdminSite(admin.AdminSite):
                         "admin_url": "/admin/sector_gestion/warpzone/warpzone_link_add",
                         "view_only": True,
                     },
+                    {
+                        "name": "Generate missing frames",
+                        "object_name": "generate missing frames",
+                        "admin_url": "/admin/generate_missing_frames/",
+                        "view_only": True,
+                    },
                     
                 ],
             }
@@ -226,9 +234,32 @@ class CustomAdminSite(admin.AdminSite):
                 r"^sector_gestion/warpzone/warpzone_link_delete$",
                 self.admin_view(WarpzoneLinkDataDeleteView.as_view()),
                 name="warpzone_link_delete",
-            )
+            ),
+            re_path(
+                r"^generate_missing_frames/$",
+                self.admin_view(self.generate_missing_frames_view),
+                name="generate-missing-frames",
+            ),
         ] + urls
         return urls
+    
+    def generate_missing_frames_view(self, request):
+        if not request.user.is_superuser:
+            messages.error(request, "Permission denied: superuser only.")
+            return redirect("/admin/")
+
+        logs, errors = generate_missing_frames()
+
+        for l in logs:
+            messages.success(request, l)
+
+        for e in errors:
+            messages.error(request, e)
+
+        if not errors:
+            messages.success(request, "✔ Toutes les frames manquantes ont été générées.")
+
+        return redirect("/admin/")
 
 
 class UploadImageView(LoginRequiredMixin, TemplateView):
@@ -1152,7 +1183,6 @@ class WarpzoneLinkDataDeleteView(LoginRequiredMixin, TemplateView):
         SectorWarpZone.objects.filter(warp_home_id=data['warp_destination_id'], warp_destination_id=data['warp_home_id']).delete()
         
         return JsonResponse(json.dumps(response), safe=False)
-        
 
 class NpcToSectorDeleteDataView(LoginRequiredMixin, DeleteView):
     template_name = "create_npc_template.html"

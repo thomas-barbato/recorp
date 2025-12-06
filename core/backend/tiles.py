@@ -1,6 +1,7 @@
-from PIL import Image
-from pathlib import Path
+from PIL import Image, ImageSequence
 from recorp.settings import BASE_DIR
+from pathlib import Path
+import json
 import os
 
 
@@ -57,8 +58,50 @@ class UploadThisImage:
 
     def save(self):
         self.__get_and_create_dir()
-        save_to = os.path.join(self.save_path, "0.gif")
-        self.file.save(save_to, format="GIF", save_all=True, append_images=[self.file], duration=100, loop=0)
+        gif_path = os.path.join(self.save_path, "0.gif")
+        self.file.save(gif_path, format="GIF", save_all=True, append_images=[self.file], duration=100, loop=0)
+        if self.category == "foreground":
+            try:
+                frame_count = self.extract_gif_frames(gif_path)
+                print(f"[OK] Extracted {frame_count} frames for {gif_path}")
+            except Exception as e:
+                print(f"[ERROR] GIF extraction failed for {gif_path}: {e}")
+        else:
+            print(f"[INFO] No frame extraction needed for category '{self.category}'.")
 
     def get_save_path(self):
         return self.save_path
+    
+    def extract_gif_frames(self, gif_path):
+        """Découpe un GIF en frames PNG + génère animation.json"""
+
+        gif = Image.open(gif_path)
+
+        # Dossier /frames/ à créer
+        frames_dir = Path(os.path.join(self.save_path, "frames"))
+        frames_dir.mkdir(parents=True, exist_ok=True)
+
+        frame_index = 0
+        frame_durations = []
+
+        for frame in ImageSequence.Iterator(gif):
+            frame = frame.convert("RGBA")  # préserver transparence
+            duration = frame.info.get("duration", 100)
+            frame_durations.append(duration)
+
+            frame_path = frames_dir / f"frame-{frame_index}.png"
+            frame.save(frame_path, format="PNG")
+
+            frame_index += 1
+
+        # Fichier JSON contenant les infos d’animation
+        anim_data = {
+            "frame_count": frame_index,
+            "durations": frame_durations
+        }
+
+        json_path = frames_dir / "animation.json"
+        with open(json_path, "w") as f:
+            json.dump(anim_data, f, indent=4)
+
+        return frame_index
