@@ -4,15 +4,11 @@
 class ForegroundAnimationManager {
     constructor(spriteManager) {
         this.spriteManager = spriteManager;
-        this.animStates = new Map(); // key -> { frames, durations, frameCount, currentIndex, lastTime }
+        this.animStates = new Map();
     }
 
-    /**
-     * Retourne l'image de frame à dessiner pour cet objet
-     * ou null si on doit fallback sur le sprite statique.
-     */
     getFrameFor(obj) {
-        const key = obj.spritePath; // peut être adapté (ex: obj.id)
+        const key = obj.spritePath;
         let state = this.animStates.get(key);
 
         if (!state) {
@@ -26,96 +22,77 @@ class ForegroundAnimationManager {
             };
             this.animStates.set(key, state);
             this._initAnimation(obj, state);
-            return null; // première fois : on laisse le statique
+            return null;
         }
 
         if (!state.initialized || state.frameCount === 0 || state.frames.length === 0) {
-            // pas prêt, on dessine encore le GIF
             return null;
         }
 
         const now = performance.now();
         let elapsed = now - state.lastTime;
 
-        if (elapsed <= 0) {
-            return state.frames[state.currentIndex] || null;
-        }
-
-        // avance dans les frames en tenant compte des durations
         while (elapsed > state.durations[state.currentIndex]) {
             elapsed -= state.durations[state.currentIndex];
             state.currentIndex = (state.currentIndex + 1) % state.frameCount;
             state.lastTime = now - elapsed;
         }
 
-        return state.frames[state.currentIndex] || null;
+        return state.frames[state.currentIndex];
     }
 
     _initAnimation(obj, state) {
-        // On suppose obj.spritePath se termine par "0.gif"
-        // Exemple : "img/foreground/planet/planet_5/0.gif"
-        if (!obj.spritePath || !obj.spritePath.endsWith("0.gif")) {
-            // pas une anim gérée → on marque comme initialisé vide
+
+        if (!obj.spritePath.endsWith("0.gif")) {
             state.initialized = true;
-            state.frameCount = 0;
             return;
         }
 
-        const basePath = obj.spritePath.replace(/0\.gif$/, "");
-        const jsonRelPath = basePath + "frames/animation.json";      // relatif côté spriteManager
-        const jsonUrl = this.spriteManager.makeUrl(jsonRelPath);
+        // 🔥 FIX : basePath propre
+        const basePath = obj.spritePath.replace(/\/?0\.gif$/, "");
+
+        // 🔥 FIX : chemins corrects
+        const jsonRel = `${basePath}/frames/animation.json`;
+        const jsonUrl = this.spriteManager.makeUrl(jsonRel);
+
+        console.log("[ANIM INIT jsonUrl]", jsonUrl);
 
         fetch(jsonUrl)
             .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP ${res.status}`);
-                }
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();
             })
-            .then(animData => {
-                const frameCount = animData.frame_count || 0;
-                const durations = animData.durations || [];
+            .then(anim => {
+                const frameCount = anim.frame_count || 0;
+                const durations = anim.durations || [];
 
-                if (!frameCount || frameCount <= 0) {
-                    throw new Error("animation.json invalide ou vide");
-                }
+                if (!frameCount) throw new Error("animation.json vide");
 
                 state.frameCount = frameCount;
-                state.durations = durations.length === frameCount
-                    ? durations
-                    : Array(frameCount).fill(100); // fallback si mismatch
+                state.durations = durations;
 
-                const framePromises = [];
-                const frameImages = new Array(frameCount);
+                const promises = [];
+                const frames = new Array(frameCount);
 
                 for (let i = 0; i < frameCount; i++) {
-                    const frameRel = `${basePath}frames/frame-${i}.png`;
+                    const frameRel = `${basePath}/frames/frame-${i}.png`;
                     const frameUrl = this.spriteManager.makeUrl(frameRel);
 
-                    // ensure() charge l'image via spriteManager (comme tu le fais déjà)
-                    const p = this.spriteManager.ensure(frameUrl)
-                        .then(() => {
-                            frameImages[i] = this.spriteManager.get(frameUrl);
-                        })
-                        .catch(err => {
-                            console.error("[ForegroundAnim] Erreur chargement frame", frameRel, err);
-                        });
-
-                    framePromises.push(p);
+                    promises.push(
+                        this.spriteManager.ensure(frameUrl)
+                            .then(() => frames[i] = this.spriteManager.get(frameUrl))
+                    );
                 }
 
-                return Promise.all(framePromises).then(() => {
-                    state.frames = frameImages.filter(Boolean);
+                return Promise.all(promises).then(() => {
+                    state.frames = frames;
                     state.initialized = true;
                     state.currentIndex = 0;
                     state.lastTime = performance.now();
-                    if (state.frames.length === 0) {
-                        console.warn("[ForegroundAnim] Aucune frame valide pour", obj.spritePath);
-                    }
                 });
             })
             .catch(err => {
-                console.error("[ForegroundAnim] Erreur init animation pour", obj.spritePath, err);
+                console.error("[ANIM ERROR]", obj.spritePath, err);
                 state.initialized = true;
                 state.frameCount = 0;
             });
@@ -128,20 +105,27 @@ export default class ForegroundRenderer {
         this.camera = camera;
         this.spriteManager = spriteManager;
         this.map = map;
+        this.animManager = new ForegroundAnimationManager(spriteManager);
     }
 
     render() {
         const tilePx = this.camera.tileSize * this.camera.zoom;
         this.map.foregrounds.forEach(obj => {
+            
             const scr = this.camera.worldToScreen(obj.x, obj.y);
             const pxW = obj.sizeX * tilePx;
             const pxH = obj.sizeY * tilePx;
             const src = this.spriteManager.makeUrl(obj.spritePath);
             const img = this.spriteManager.get(src);
-            if (img) {
-                this.ctx.drawImage(img, scr.x, scr.y, pxW, pxH);
+
+            // 🔥 obtenir frame animée
+            const animImg = this.animManager.getFrameFor(obj);
+            const finalImg = animImg || img;
+
+            if (finalImg) {
+                this.ctx.drawImage(finalImg, scr.x, scr.y, pxW, pxH);
                 const ctx = this.ctx;
-                const sonar = this.map?.sonar || this.sonar; // selon ta structure
+                const sonar = this.map?.sonar || this.sonar;
                 const sonarVisible = sonar ? sonar.isVisible(obj) : true;
                 const hover = window.canvasEngine?.hoverTarget || null;
                 if (hover && hover === obj) {

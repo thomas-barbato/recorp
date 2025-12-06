@@ -6,10 +6,10 @@ const ImageLoader = (function() {
         if (!src) return Promise.reject(new Error('no src'));
         if (cache.has(src)) return Promise.resolve(cache.get(src));
         return new Promise((res, rej) => {
-        const img = new Image();
-        img.onload = () => { cache.set(src, img); res(img); };
-        img.onerror = (e) => { rej(e); };
-        img.src = src;
+            const img = new Image();
+            img.onload = () => { cache.set(src, img); res(img); };
+            img.onerror = (e) => { rej(e); };
+            img.src = src;
         });
     }
 
@@ -17,6 +17,7 @@ const ImageLoader = (function() {
     function ensure(src) { return cache.has(src) ? Promise.resolve(cache.get(src)) : load(src); }
 
     function makeUrl(path) {
+        
         if (!path) return '';
         // base path used in main_engine; keep as-is
         return `/static/img/${path}`;
