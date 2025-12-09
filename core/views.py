@@ -421,115 +421,6 @@ class DisplayTutorialView(LoginRequiredMixin, TemplateView):
     redirect_field_name = "login_redirect"
     template_name = "tutorial.html"
     
-class DisplayGameOldView(LoginRequiredMixin, TemplateView):
-    login_url = LOGIN_REDIRECT_URL
-    redirect_field_name = "login_redirect"
-    template_name = "play.html"
-    
-    def get(self, request, *args, **kwargs):
-        player = PlayerAction(self.request.user.id)
-        if player.is_player_exists() is False:
-            url = "create_character"
-            return HttpResponseRedirect(redirect_to=url)
-        return super().get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        user_agent = self.request.user_agent
-        player = PlayerAction(self.request.user.id)
-        player_data = GetDataFromDB.get_full_player_data(player.get_player_id())
-        modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
-        
-        if user_agent.is_pc:
-            map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
-        elif user_agent.is_mobile:
-            map_range = GetDataFromDB.get_resolution_sized_map("is_mobile")
-        elif user_agent.is_tablet:
-            map_range = GetDataFromDB.get_resolution_sized_map("is_tablet")
-
-        context["loop"] = range(10)
-        context["map_size_range"] = {"cols": range(40), "rows": range(40)}
-        
-        sector = Sector.objects.filter(id=player.get_player_sector())
-        sector_name = sector.values_list("name", flat=True)[0]
-
-        if sector.exists():
-            context["skills"] = {
-                "categories": [
-                    "Steering",
-                    "Offensive",
-                    "Defensive",
-                    "Utility",
-                    "Industry",
-                ],
-                "list": [
-                    {
-                        "id": skill['id'],
-                        "skill_name": skill['skill_id__name'],
-                        "level": skill['level'],
-                        "progress": str(skill['progress']).replace(',', '.'),
-                        "cat": skill['skill_id__category'],
-                        "description": skill['skill_id__description'],
-                    } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values(
-                            'id', 
-                            'level', 
-                            'progress', 
-                            'skill_id__name', 
-                            'skill_id__category', 
-                            'skill_id__description'
-                        )
-                ],
-            }
-            
-            data = StoreInCache(
-                f"play_{player.get_player_sector()}", self.request.user
-            ).get_or_set_cache()
-            
-            result_dict = dict()
-            for pc in data["pc"]:
-                pc["user"]["archetype_name"] = _(pc["user"]["archetype_name"])
-
-            data["sector"]["security"]["translated_name"] = _(
-                data["sector"]["security"]["translated_name"]
-            )
-
-            data["sector"]["faction"]["translated_text_faction_level_starter"] = _(
-                "The faction's main planet"
-            )
-
-            result_dict["actions"] = {
-                "translated_action_label_msg": _("Actions available"),
-                "translated_close_msg": _("Close"),
-                "player_is_same_faction": player.get_player_faction()
-                == data["sector"]["faction"]["id"],
-                "translated_scan_msg_str": _(
-                    "In order to display resource you must scan it"
-                ),
-                "translated_statistics_msg_str": _(
-                    "Equip your spaceship with the ‘spaceship probe’ module to access detailed statistics"
-                ),
-                "translated_statistics_msg_label": _("statistics"),
-            }
-            
-            result_dict["sector"] = data["sector"]
-            result_dict["sector_element"] = data["sector_element"]
-            result_dict["pc"] = data["pc"]
-            result_dict["npc"] = data["npc"]
-            result_dict["screen_sized_map"] = map_range
-            context["map_informations"] = result_dict
-            context["current_player_id"] = player.get_player_id()
-            context["module_categories"] = modules_category
-            context["full_data"] = player_data
-            return context
-        
-        else:
-            
-            error_msg = _("Sector unknown... Contact admin to get more informations")
-            messages.warning(self.request, error_msg)
-            data_to_send = {"form": LoginForm}
-            return redirect("/", data_to_send)
-        
-
 class DisplayGameView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
@@ -546,8 +437,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data()
         user_agent = self.request.user_agent
         player = PlayerAction(self.request.user.id)
-        current_player_id = player.get_player_id()
-        player_data = GetDataFromDB.get_full_player_data(player_id=current_player_id)
         modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
         
         if user_agent.is_pc:
@@ -618,8 +507,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 "translated_statistics_msg_label": _("statistics"),
             }
             
-            print(player_data)
-            
             result_dict["sector"] = data["sector"]  
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
@@ -629,7 +516,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             context["map_informations"] = result_dict
             context["current_player_id"] = player.get_player_id()
             context["module_categories"] = modules_category
-            context["current_player_data"] = player_data
             return context
         
         else:
@@ -709,7 +595,6 @@ def private_mail_modal(request):
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
                 'faction_color': GetDataFromDB.get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
-                'is_author': True,
         } for e in messages_qs]
     else:
         messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id, is_author=False, deleted_at__isnull=True).values(
@@ -732,8 +617,7 @@ def private_mail_modal(request):
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
                 'faction_color': GetDataFromDB().get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
-                'is_read': e['is_read'],
-                'is_author': False
+                'is_read': e['is_read']
         } for e in messages_qs]
     
     paginator = Paginator(mp, 4)
