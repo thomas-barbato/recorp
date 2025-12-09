@@ -15,8 +15,8 @@ from recorp.settings import BASE_DIR
 from core.models import (
     Planet, Asteroid, Station, Warp, WarpZone, SectorWarpZone,
     Resource, PlanetResource, AsteroidResource, StationResource,
-    Faction, FactionResource, Security, Sector, Player, PlayerShip,
-    PlayerShipResource, PlayerShipModule, Ship, ShipCategory,
+    Faction, FactionResource, Security, Sector, Player, PlayerShip, 
+    PlayerSkill, PlayerShipResource, PlayerShipModule, Ship, ShipCategory,
     Skill, Npc, NpcTemplateResource, NpcTemplate, NpcTemplateSkill, Module,
     PlayerGroup
 )
@@ -855,3 +855,327 @@ class GetDataFromDB:
             return list(Player.objects.filter(playergroup__group_id=group_id).exclude(id=player_id).values("id", "name", "sector_id"))
         except Exception as e:
             return []
+    
+    @staticmethod
+    def get_reduced_pc_npc(pk, current_player_id):
+        # PC
+        pcs = PlayerShip.objects.filter(
+            player_id__sector_id=pk,
+            is_current_ship=True
+        ).values(
+            "player_id",
+            "player_id__name",
+            "player_id__coordinates",
+            "ship_id__ship_category__size",
+            "ship_id__image"
+        )
+
+        pc_data = [
+            {
+                "id": p["player_id"],
+                "name": p["player_id__name"],
+                "position": p["player_id__coordinates"],
+                "size": p["ship_id__ship_category__size"],
+                "ship_image": p["ship_id__image"],
+            }
+            for p in pcs if p["player_id"] != current_player_id
+        ]
+
+        # NPC
+        npcs = Npc.objects.filter(sector_id=pk).values(
+            "id",
+            "coordinates",
+            "npc_template_id__ship_id__ship_category__size",
+            "npc_template_id__ship_id__image",
+            "npc_template_id__ship_id__name",
+            "npc_template_id__ship_id__data__subtype",
+            "npc_template_id__ship_id__data__type",
+            "npc_template_id__displayed_name",
+        )
+
+        npc_data = [
+            {
+                "id": n["id"],
+                "name": n["npc_template_id__ship_id__name"],
+                "displayed_name": n["npc_template_id__displayed_name"],
+                "type": n["npc_template_id__ship_id__data__type"],
+                "subtype": n["npc_template_id__ship_id__data__subtype"],
+                "position": n["coordinates"],
+                "size": n["npc_template_id__ship_id__ship_category__size"],
+                "ship_image": n["npc_template_id__ship_id__image"],
+            }
+            for n in npcs
+        ]
+
+        return pc_data, npc_data
+    
+    @staticmethod
+    def get_full_player_data(player_id: int) -> Dict[str, Any]:
+
+        ship = PlayerShip.objects.filter(
+            player_id=player_id,
+            is_current_ship=True
+        ).values(
+            "id",
+            "ship_id",
+            "player_id__sector_id"
+        ).first()
+
+        if not ship:
+            return {"data": None, "inventory": []}
+
+        db = GetDataFromDB()
+
+        # --- PC complet ---
+        pc_data = db._fetch_current_pc_bulk(player_id, ship["ship_id"])
+        if not pc_data:
+            return {"data": None, "inventory": []}
+
+        # --- Secteur ---
+        sector_info = db._get_sector_basic_info(ship["player_id__sector_id"])
+        if not sector_info:
+            return {"data": None, "inventory": []}
+
+        sector_data = db._initialize_self_data_structure_optimized(sector_info)
+
+        # --- Ajouter PC ---
+        db._process_single_pc(sector_data, pc_data)
+
+        # --- Inventaire (ressources du vaisseau actif) ---
+        inventory_resources = PlayerShipResource.objects.filter(
+            source_id=ship["id"]
+        ).values(
+            "resource_id",
+            "resource__name",
+            "quantity",
+        )
+
+        return {
+            "data": sector_data,
+            "inventory": list(inventory_resources),
+        }
+
+    def _get_sector_basic_info(self, sector_id: int) -> Optional[Dict[str, Any]]:
+        try:
+            return Sector.objects.filter(id=sector_id).select_related(
+                "security", "faction"
+            ).values(
+                "id",
+                "name",
+                "description",
+                "image",
+                "security_id",
+                "security__name",
+                "faction_id",
+                "faction_id__name",
+                "is_faction_level_starter",
+            ).first()
+        except Exception:
+            return None
+
+    def _initialize_self_data_structure_optimized(self, sector_info: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "pc": [],
+            "sector": {
+                "id": sector_info["id"],
+                "name": sector_info["name"],
+                "description": sector_info["description"],
+                "image": sector_info["image"],
+                "security": {
+                    "id": sector_info["security_id"],
+                    "name": sector_info["security__name"],
+                    "translated_name": sector_info["security__name"],
+                },
+                "faction": {
+                    "id": sector_info["faction_id"],
+                    "name": sector_info["faction_id__name"],
+                    "is_faction_level_starter": sector_info["is_faction_level_starter"],
+                    "translated_text_faction_level_starter": [],
+                },
+            },
+        }
+
+    def _fetch_current_pc_bulk(self, player_id: int, ship_id: int) -> Optional[Dict]:
+
+        pc = (
+            PlayerShip.objects.filter(
+                player_id=player_id,
+                is_current_ship=True,
+                ship_id=ship_id,
+            )
+            .select_related(
+                "player",
+                "player__faction",
+                "player__archetype",
+                "player__sector",
+                "ship",
+                "ship__ship_category",
+            )
+            .values(
+                # ---------------------
+                # PLAYER
+                # ---------------------
+                "player_id",
+                "player__name",
+                "player__description",
+                "player__image",
+                "player__coordinates",
+                "player__is_npc",
+                "player__current_ap",
+                "player__max_ap",
+                "player__archetype__name",
+                "player__archetype__data",
+                "player__sector__name",
+                "player__faction__name",
+
+                # ---------------------
+                # PLAYERSHIP
+                # ---------------------
+                "id",
+                "is_current_ship",
+                "is_reversed",
+                "current_hp",
+                "max_hp",
+                "current_movement",
+                "max_movement",
+                "current_ballistic_defense",
+                "current_thermal_defense",
+                "current_missile_defense",
+                "max_ballistic_defense",
+                "max_thermal_defense",
+                "max_missile_defense",
+                "current_cargo_size",
+                "status",
+                "view_range",
+
+                # ---------------------
+                # SHIP MODEL
+                # ---------------------
+                "ship_id",
+                "ship__name",
+                "ship__image",
+                "ship__description",
+                "ship__module_slot_available",
+
+                # ---------------------
+                # CATEGORY
+                # ---------------------
+                "ship__ship_category__name",
+                "ship__ship_category__description",
+                "ship__ship_category__size",
+            )
+            .first()
+        )
+
+        return pc
+    
+    def _get_player_module_list(self, player_ship_id: int) -> List[Dict]:
+        return list(
+            PlayerShipModule.objects.filter(player_ship_id=player_ship_id)
+            .select_related("module")
+            .values(
+                "module_id",
+                "module__name",
+                "module__description",
+                "module__effect",
+                "module__type",
+                "module__tier",
+            )
+        )
+        
+    def _get_player_skill_list(self, player_id: int) -> List[Dict]:
+        return list(
+            PlayerSkill.objects.filter(player_id=player_id)
+            .select_related("skill")
+            .values(
+                "skill_id",
+                "level",
+                "progress",
+                "skill__name",
+                "skill__category",
+                "skill__description",
+            )
+        )
+
+    def _process_single_pc(self, sector_data: Dict[str, Any], pc: Dict[str, Any]) -> None:
+        try:
+            player_id = pc["player_id"]
+            player_ship_id = pc["id"]
+
+            # ---------------------
+            # Modules & Skills
+            # ---------------------
+            modules = self._get_player_module_list(player_ship_id)
+            skills = self._get_player_skill_list(player_id)
+
+            from_DB = GetDataFromDB
+
+            sector_data["pc"].append({
+                "user": {
+                    "player": player_id,
+                    "name": pc["player__name"],
+                    "coordinates": pc["player__coordinates"],
+                    "image": pc["player__image"],
+                    "description": pc["player__description"],
+                    "is_npc": pc["player__is_npc"],
+                    "current_ap": pc["player__current_ap"],
+                    "max_ap": pc["player__max_ap"],
+                    "archetype_name": pc["player__archetype__name"],
+                    "archetype_data": pc["player__archetype__data"],
+                    "sector_name": pc["player__sector__name"],
+                    "skills": skills,
+                },
+
+                "faction": {
+                    "name": pc["player__faction__name"],
+                },
+
+                "ship": {
+                    "ship_id": pc["ship_id"],
+                    "name": pc["ship__name"],
+                    "image": pc["ship__image"],
+                    "description": pc["ship__description"],
+                    "max_hp": pc["max_hp"],
+                    "current_hp": pc["current_hp"],
+                    "max_movement": pc["max_movement"],
+                    "current_movement": pc["current_movement"],
+
+                    # DEFENSE
+                    "current_ballistic_defense": pc["current_ballistic_defense"],
+                    "current_thermal_defense": pc["current_thermal_defense"],
+                    "current_missile_defense": pc["current_missile_defense"],
+                    "max_ballistic_defense": pc["max_ballistic_defense"],
+                    "max_thermal_defense": pc["max_thermal_defense"],
+                    "max_missile_defense": pc["max_missile_defense"],
+
+                    "current_cargo_size": pc["current_cargo_size"],
+                    "status": pc["status"],
+                    "is_reversed": pc["is_reversed"],
+                    "view_range": pc["view_range"],
+
+                    # CATEGORY
+                    "category_name": pc["ship__ship_category__name"],
+                    "category_description": pc["ship__ship_category__description"],
+                    "size": pc["ship__ship_category__size"],
+
+                    # MODULES
+                    "module_slot_available": pc["ship__module_slot_available"],
+                    "module_slot_already_in_use": len(modules),
+                    "modules": modules,
+
+                    # MODULE RANGE
+                    "modules_range": from_DB.is_in_range(
+                        sector_data["sector"]["id"],
+                        player_id,
+                        is_npc=False,
+                    ),
+
+                    # SCAN MODULE ?
+                    "ship_scanning_module_available": any(
+                        m["module__type"] == "PROBE" for m in modules
+                    ),
+                },
+            })
+
+        except Exception as e:
+            print(f"[ERROR] _process_single_pc failed: {e}")

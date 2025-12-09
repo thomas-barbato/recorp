@@ -437,6 +437,7 @@ class DisplayGameOldView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data()
         user_agent = self.request.user_agent
         player = PlayerAction(self.request.user.id)
+        player_data = GetDataFromDB.get_full_player_data(player.get_player_id())
         modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
         
         if user_agent.is_pc:
@@ -518,6 +519,7 @@ class DisplayGameOldView(LoginRequiredMixin, TemplateView):
             context["map_informations"] = result_dict
             context["current_player_id"] = player.get_player_id()
             context["module_categories"] = modules_category
+            context["full_data"] = player_data
             return context
         
         else:
@@ -544,6 +546,8 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data()
         user_agent = self.request.user_agent
         player = PlayerAction(self.request.user.id)
+        current_player_id = player.get_player_id()
+        player_data = GetDataFromDB.get_full_player_data(player_id=current_player_id)
         modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
         
         if user_agent.is_pc:
@@ -614,6 +618,8 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 "translated_statistics_msg_label": _("statistics"),
             }
             
+            print(player_data)
+            
             result_dict["sector"] = data["sector"]  
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
@@ -623,6 +629,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             context["map_informations"] = result_dict
             context["current_player_id"] = player.get_player_id()
             context["module_categories"] = modules_category
+            context["current_player_data"] = player_data
             return context
         
         else:

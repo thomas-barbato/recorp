@@ -2,7 +2,9 @@
 {% load customtags %}
 {% load i18n %}
 {{ map_informations|json_script:"script_map_informations" }}
+{{ current_player_data|json_script:"script_full_data" }}
 {{ current_player_id|json_script:"script_current_player_id" }}
+
 <div id="button-menu" class="hidden lg:flex justify-center items-center order-1 m-2 w-1/12">
     <ul class="flex flex-col h-auto gap-6 p-4 bg-emerald-900/40 border border-emerald-400/40 rounded-md">
         <li data-tooltip-target="character-tooltip" data-tooltip-placement="right" data-modal-target="character-modal" data-modal-toggle="character-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1">
@@ -314,8 +316,6 @@
 
 <script src="{% url 'core:javascript-catalog' %}"></script>
 <script type="module" src="{% static 'world_builder/canvas_engine/main_engine.js' %}"></script>
-{{ map_informations|json_script:"script_map_informations" }}
-{{ current_player_id|json_script:"script_current_player_id" }}
 
 <script>
     

@@ -4,6 +4,7 @@
 
 export let map_informations = null;
 export let current_player_id = null;
+export let current_player_data = null
 
 export let currentPlayer = null;
 export let otherPlayers = [];
@@ -29,9 +30,11 @@ export function initGlobals() {
     try {
         const mapScript = document.getElementById('script_map_informations');
         const playerScript = document.getElementById('script_current_player_id');
+        const currentPlayerData = document.getElementById('script_current_player_data');
 
         map_informations = mapScript ? JSON.parse(mapScript.textContent) : null;
         current_player_id = playerScript ? JSON.parse(playerScript.textContent) : null;
+        current_player_data = currentPlayerData ? JSON.parse(currentPlayerData.textContent) : null;
 
         if (map_informations && Array.isArray(map_informations.pc)) {
         currentPlayer = map_informations.pc.find(p => String(p.user.player) === String(current_player_id)) || null;
