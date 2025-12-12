@@ -1274,24 +1274,16 @@ video {
   max-height: 70vh;
 }
 
+.max-h-\[80vh\] {
+  max-height: 80vh;
+}
+
 .max-h-\[90vh\] {
   max-height: 90vh;
 }
 
 .max-h-full {
   max-height: 100%;
-}
-
-.max-h-\[80vh\] {
-  max-height: 80vh;
-}
-
-.max-h-\[40vh\] {
-  max-height: 40vh;
-}
-
-.max-h-\[30vh\] {
-  max-height: 30vh;
 }
 
 .min-h-\[100px\] {
@@ -7007,16 +6999,124 @@ canvas {
   animation: pulse 1s infinite;
 }
 
+/* Wrapper centré qui s'adapte au contenu */
+
+.action-wrapper-sf {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
 /* Optional emerald border for action grid */
 
 .action-grid-sf {
+  --btn: 64px;
+  /* taille bouton desktop */
+  --gap: 15px;
+  --pad: 15px;
+  --cols: 5;
+  /* max colonnes desktop */
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.75rem;
-  padding: 0.75rem;
+  gap: var(--gap);
+  padding: var(--pad);
+  /* max 5 colonnes, boutons fixes, et wrap si pas la place */
+  grid-template-columns: repeat(var(--cols), var(--btn));
+  justify-content: center;
+  justify-items: center;
+  /* ✅ la bordure s’adapte au contenu */
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
   border-radius: 0.75rem;
   border: 1px solid rgba(52, 211, 153, 0.3);
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Bouton */
+
+.action-button-sf {
+  width: var(--btn);
+  height: var(--btn);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(52, 211, 153, 0.6);
+  background-color: rgba(6, 78, 59, 0.4);
+  color: white;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.action-button-sf:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.9);
+  animation: pulse 1s infinite;
+}
+
+.action-button-sf-icon {
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.action-button-sf-label {
+  margin-top: 0.25rem;
+  font-size: 10px;
+  font-weight: bold;
+  color: rgb(110, 231, 183);
+  text-align: center;
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+}
+
+/* Error message */
+
+.action-error-msg {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: rgb(239, 68, 68);
+  animation: pulse 1s infinite;
+}
+
+/* Tablet */
+
+@media (max-width: 1023px) {
+  .action-grid-sf {
+    --btn: 56px;
+    --cols: 4;
+  }
+
+  .action-button-sf-label {
+    font-size: 9px;
+  }
+}
+
+/* Phone */
+
+@media (max-width: 640px) {
+  .action-grid-sf {
+    --btn: 52px;
+    --cols: 3;
+  }
+
+  .action-button-sf-label {
+    font-size: 8px;
+  }
+}
+
+/* Tiny phone */
+
+@media (max-width: 400px) {
+  .action-grid-sf {
+    --btn: 50px;
+    --cols: 2;
+  }
 }
 
 .action-button-sf {
@@ -7053,7 +7153,7 @@ canvas {
     font-weight: bold;
     color: rgb(110, 231, 183);
     /* emerald-300 */
-    text-align: center;
+    text-align:  center;
     letter-spacing: 0.03em;
   }
 }
@@ -7741,20 +7841,16 @@ canvas {
     height: 85vh;
   }
 
+  .md\:max-h-\[70vh\] {
+    max-height: 70vh;
+  }
+
   .md\:max-h-\[900px\] {
     max-height: 900px;
   }
 
   .md\:max-h-\[90vh\] {
     max-height: 90vh;
-  }
-
-  .md\:max-h-\[50vh\] {
-    max-height: 50vh;
-  }
-
-  .md\:max-h-\[70vh\] {
-    max-height: 70vh;
   }
 
   .md\:w-\[60vw\] {

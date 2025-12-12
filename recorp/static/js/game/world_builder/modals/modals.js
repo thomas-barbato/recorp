@@ -283,7 +283,7 @@ function buildModulesSection(modalId, data) {
         "custom-scroll",
         "flex",
         "flex-col",
-        "gap-2"
+        "gap-1"
     );
 
     const categories = groupModulesByCategory(currentPlayer.ship.modules);
@@ -625,6 +625,7 @@ function createNpcModalData(npcData) {
             name: npcData.npc.displayed_name,
             faction_name: npcData.faction.name,
             id: npcData.npc.id,
+            coordinates : npcData.npc.coordinates
         },
         ship: {
             name: npcData.ship.name,
@@ -641,7 +642,7 @@ function createNpcModalData(npcData) {
             modules: npcData.ship.modules,
             modules_range: npcData.ship.modules_range,
             image: npcData.ship.image,
-            size: npcData.ship.size
+            size: npcData.ship.size,
         },
         actions: {
             action_label: map_informations.actions.translated_action_label_msg,
@@ -661,6 +662,7 @@ function createPlayerModalData(playerData) {
             image: playerData.user.image,
             faction_name: playerData.faction.name,
             id: playerData.user.player,
+            coordinates : playerData.user.coordinates,
         },
         ship: {
             name: playerData.ship.name,
@@ -1226,19 +1228,16 @@ function showActionError(modalId, message) {
     }, 5000);
 }
 
-function buildActionsSection(modalId, data, is_npc) {
+function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     const modules = currentPlayer.ship.modules;
+    const isUnknown = modalId.startsWith("modal-unknown");
 
     // Conteneur global
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("action-wrapper-sf");
     const grid = document.createElement("div");
     grid.classList.add("action-grid-sf");
-    grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
-    grid.style.gap = "0.75rem";
-
-    // ZONE CONTEXTUELLE
-    const contextZone = document.getElementById(modalId + "-action-context");
 
     // Vérif modules
     const hasWeaponry = playerHasModule(modules, ["WEAPONRY"]);
@@ -1287,11 +1286,13 @@ function buildActionsSection(modalId, data, is_npc) {
                     "rounded-lg",
                     "bg-black/40",
                     "border",
-                    "border-emerald-400/40"
+                    "border-emerald-400/40",
+                    "gap-4"
                 );
 
                 // description
                 const left = document.createElement("div");
+                left.classList.add('w-full');
                 left.innerHTML = createFormatedLabel(m); // convert string → element
                 const temp = document.createElement("div");
                 temp.innerHTML = left.innerHTML.trim();
@@ -1319,7 +1320,7 @@ function buildActionsSection(modalId, data, is_npc) {
             contextZone.append(list);
         }
     );
-
+    wrapper.append(grid);
     grid.append(attackButton);
 
     // ---------------------------
@@ -1345,7 +1346,7 @@ function buildActionsSection(modalId, data, is_npc) {
     // ACTION : E-WAR
     // ---------------------------
     const ewarIcon = document.createElement("span");
-    ewarIcon.classList.add("iconify", "game-icons--computing");
+    ewarIcon.classList.add("flex", "justify-center", "iconify", "game-icons--computing");
 
     const ewarButton = createActionButton(
         ewarIcon,
@@ -1383,7 +1384,7 @@ function buildActionsSection(modalId, data, is_npc) {
     // ACTION : COMMERCE
     // ---------------------------
     const tradeIcon = document.createElement("span");
-    tradeIcon.classList.add("iconify", "game-icons--trade");
+    tradeIcon.classList.add("flex", "justify-center", "iconify", "game-icons--trade");
 
     const tradeButton = createActionButton(
         tradeIcon,
@@ -1396,7 +1397,22 @@ function buildActionsSection(modalId, data, is_npc) {
 
     grid.append(tradeButton);
 
-    return grid;
+    // --- FILTRAGE UNKNOWN ---
+    if (isUnknown) {
+        grid.innerHTML = "";
+        grid.append(attackButton);
+        grid.append(scanButton);
+    }
+
+    // Après avoir ajouté les boutons (et après le filtrage unknown)
+    const count = grid.children.length;
+
+    // on force le nombre de colonnes à "min(count, maxCols)" en restant responsive
+    // maxCols vient du CSS via --cols (media queries), donc on lit la valeur calculée
+    const computedCols = parseInt(getComputedStyle(grid).getPropertyValue("--cols")) || 5;
+    grid.style.setProperty("--cols", String(Math.min(count, computedCols)));
+
+    return wrapper;
 }
 
 function createUnknownModal(modalId, data, is_npc) {
@@ -1452,60 +1468,36 @@ function createUnknownModal(modalId, data, is_npc) {
     unknown_img.classList.add('mx-auto','object-center','h-[80px]','w-[80px]','pt-1','rounded-full');
     body_container_div.append(unknown_img);
 
-    // Scan required message
-    let msg = document.createElement('p');
-    msg.classList.add('text-white','font-shadow','text-center','italic','my-1','py-1','text-xs');
-    msg.textContent = "Scan required to identify this target";
-    body_container_div.append(msg);
+    const statsSection = buildShipStatsSection(data);
+    body_container_div.append(
+        statsSection.ship_statistics_container_label,
+        statsSection.ship_statistics_container_div,
+        statsSection.ship_statistics_warning_msg_container_p,
+        statsSection.ship_detailed_statistics_container_div
+    );
 
     // ACTIONS SECTION
-    let action_label = document.createElement("label");
-    action_label.classList.add('font-bold','text-white','font-shadow','text-justify','text-base','mt-5');
-    action_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
-    body_container_div.append(action_label);
+    // === ACTIONS LABEL (même style que normal) ===
+    const actionsLabel = document.createElement("label");
+    actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
+    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-4");
+    body_container_div.append(actionsLabel);
 
-    let actions_div = document.createElement('figure');
-    actions_div.classList.add('flex','items-center','justify-center','flex-wrap','gap-8');
-    actions_div.setAttribute('role','group');
+    // === CONTEXT ZONE (obligatoire pour éviter null) ===
+    const contextZone = document.createElement("div");
+    contextZone.id = modalId + "-action-context";
+    contextZone.classList.add("hidden", "w-full", "mt-3");
+    body_container_div.append(contextZone);
 
-    // Attack button
-    let attack_cont = document.createElement('div');
-    attack_cont.classList.add('inline-block','items-center','justify-center','w-[15%]','h-[15%]','hover:animate-pulse');
+    // === ERROR ZONE (pour le message rouge 5s) ===
+    const errorZone = document.createElement("div");
+    errorZone.id = modalId + "-action-error-zone";
+    errorZone.classList.add("action-error-msg", "hidden");
+    body_container_div.append(errorZone);
 
-    let attack_img = document.createElement('img');
-    attack_img.src = '/static/img/ux/target_icon.svg';
-    attack_img.classList.add('cursor-pointer','flex','justify-center');
-    let attack_cap = document.createElement('figcaption');
-    attack_cap.textContent = "Attack";
-    attack_cap.classList.add('text-white','font-shadow','font-bold','text-xs');
-
-    let attack_ap = document.createElement('figcaption');
-    attack_ap.textContent = "1 AP";
-    attack_ap.classList.add('text-white','font-shadow','font-bold','text-xs');
-
-    attack_cont.append(attack_img, attack_cap, attack_ap);
-    actions_div.append(attack_cont);
-
-    // Scan button
-    let scan_cont = document.createElement('div');
-    scan_cont.classList.add('inline-block','items-center','justify-center','w-[15%]','h-[15%]','hover:animate-pulse');
-
-    let scan_img = document.createElement('img');
-    scan_img.src = '/static/img/ux/scan_resource_icon.svg';
-    scan_img.classList.add('cursor-pointer','flex','justify-center');
-
-    let scan_cap = document.createElement('figcaption');
-    scan_cap.textContent = "Scan";
-    scan_cap.classList.add('text-white','font-shadow','font-bold','text-xs');
-
-    let scan_ap = document.createElement('figcaption');
-    scan_ap.textContent = "0 AP";
-    scan_ap.classList.add('text-white','font-shadow','font-bold','text-xs');
-
-    scan_cont.append(scan_img, scan_cap, scan_ap);
-    actions_div.append(scan_cont);
-
-    body_container_div.append(actions_div);
+    // === ACTIONS GRID (utilise buildActionsSection) ===
+    const actionsSection = buildActionsSection(modalId, data, is_npc, contextZone);
+    body_container_div.append(actionsSection);
 
     // Now the part with WEAPON MODULES (from currentPlayer)
     // ACCORDION
@@ -1614,7 +1606,13 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     });
 
     // === HEADER ===
-    modal.header.setTitle(data.player?.name?.toUpperCase() || data.name?.toUpperCase());
+    const coords = data.player?.coordinates || data.coordinates;
+    const coordStr = coords ? ` [Y:${coords.y}, X:${coords.x}]` : "";
+
+    modal.header.setTitle(
+        (data.player?.name || "UNKNOWN").toUpperCase() + coordStr
+    );
+
     modal.header.setCloseButton(modalId);
 
     // === BODY ===
@@ -1658,6 +1656,10 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     //
     // 7 — ACTIONS SECTION
     //
+    const contextZone = document.createElement("div");
+    contextZone.id = modalId + "-action-context";
+    contextZone.classList.add("hidden", "w-full", "mt-3");
+    modal.body.addSection(contextZone);
 
     // zone d’erreur
     const errorZone = document.createElement("div");
@@ -1665,16 +1667,9 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     errorZone.id = modalId + "-action-error-zone";
     modal.body.addSection(errorZone);
 
-    const actionsSection = buildActionsSection(modalId, data, is_npc);
-    modal.body.addSection(actionsSection);
-
-    //
     // 8 — ACTION CONTEXT ZONE (hidden)
-    //
-    const contextZone = document.createElement("div");
-    contextZone.id = modalId + "-action-context";
-    contextZone.classList.add("hidden", "w-full", "mt-3");
-    modal.body.addSection(contextZone);
+    const actionsSection = buildActionsSection(modalId, data, is_npc, contextZone);
+    modal.body.addSection(actionsSection);
 
     //
     // === FOOTER ===
@@ -1694,119 +1689,132 @@ function buildShipStatsSection(data) {
     let ship_statistics_container_label = document.createElement("label");
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
     ship_statistics_container_label.classList.add(
-        'w-full',
-        'font-bold',
-        'font-shadow',
-        'text-white',
-        'text-justify',
-        'text-base',
-        'mt-2',
+        "font-bold",
+        "font-shadow",
+        "text-white",
+        "text-justify",
+        "text-base",
+        "mt-2",
+        "w-full"
     );
 
-    // --- START DETAILED STATS (inchangé) ---
-    let ship_detailed_statistics_container_div = document.createElement('div');
+    // --- CONTENEUR "SIMPLE STATS" (laissé vide pour compat) ---
+    let ship_statistics_container_div = document.createElement("div");
+    ship_statistics_container_div.id = "ship-statistics";
+
+    // --- CONTENEUR STATS DÉTAILLÉES ---
+    let ship_detailed_statistics_container_div = document.createElement("div");
     ship_detailed_statistics_container_div.id = "ship-statistics-detailed";
-    ship_detailed_statistics_container_div.classList.add('w-full', 'p-2')
+    ship_detailed_statistics_container_div.classList.add("w-full", "mt-2", "hidden"); // ⬅ caché par défaut
 
-    // HP barre détaillée
-    let hp_progress_bar_container_div = document.createElement('div');
-    let hp_progress_bar_container_content = document.createElement('div');
-    let hp_progress_bar_container_text = document.createElement('span');
-    let hp_progress_bar_container_label = document.createElement('label');
-    let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
+    // Helper pour une barre de progression
+    function createProgressBar(current, max, labelText) {
+        let wrapper = document.createElement("div");
 
-    hp_progress_bar_container_div.classList.add('bg-red-600', 'relative', 'mx-auto', 'border-emerald-400');
-    hp_progress_bar_container_label.textContent = "Hull points:";
-    hp_progress_bar_container_label.classList.add(
-        'font-bold',
-        'font-shadow',
-        'text-white',
-        'items-center', 
-        'justify-between', 
-        'w-full'
+        let label = document.createElement("label");
+        label.textContent = labelText;
+        label.classList.add("font-bold", "font-shadow", "text-white", "text-xs", "mt-2");
+
+        let container = document.createElement("div");
+        container.classList.add("w-full", "bg-red-600", "relative", "h-[15px]", "overflow-hidden");
+
+        let content = document.createElement("div");
+        content.classList.add("bg-blue-600", "leading-none", "h-[15px]");
+
+        let text = document.createElement("span");
+        text.classList.add(
+            "w-full",
+            "absolute",
+            "z-10",
+            "text-center",
+            "text-xs",
+            "font-bold",
+            "text-blue-100",
+            "font-shadow"
+        );
+        text.textContent = `${current} / ${max}`;
+
+        let percent = max > 0 ? Math.round((current * 100) / max) : 0;
+        content.style.width = (percent > 100 ? 100 : percent) + "%";
+
+        container.append(text, content);
+        wrapper.append(label, container);
+        return wrapper;
+    }
+
+    // --- HP ---
+    ship_detailed_statistics_container_div.append(
+        createProgressBar(
+            data.ship.current_hp,
+            data.ship.max_hp,
+            "Hull points:"
+        )
     );
-    hp_progress_bar_container_content.classList.add('bg-blue-600', 'border-emerald-400', 'border-1', 'leading-none', 'h-[15px]');
-    hp_progress_bar_container_text.classList.add(
-        'w-full',
-        'absolute',
-        'z-10',
-        'text-center',
-        'text-xs',
-        'font-bold',
-        'font-shadow',
-        'text-blue-100',
-        'text-center'
+
+    // --- Movement ---
+    ship_detailed_statistics_container_div.append(
+        createProgressBar(
+            data.ship.current_movement,
+            data.ship.max_movement,
+            "Movement left:"
+        )
     );
-    hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
-    hp_progress_bar_container_content.style.width =
-        parseInt(hp_percent.split('%')) > 100 ? "100%" : hp_percent;
 
-    hp_progress_bar_container_div.append(hp_progress_bar_container_text);
-    hp_progress_bar_container_div.append(hp_progress_bar_container_content);
+    // --- DEFENSES (ballistic / thermal / missile) ---
+    const DEF_CONFIG = [
+        {
+            type: "DEFENSE_BALLISTIC",
+            currentKey: "current_ballistic_defense",
+            label: "Ballistic defense:"
+        },
+        {
+            type: "DEFENSE_THERMAL",
+            currentKey: "current_thermal_defense",
+            label: "Thermal defense:"
+        },
+        {
+            type: "DEFENSE_MISSILE",
+            currentKey: "current_missile_defense",
+            label: "Missile defense:"
+        }
+    ];
 
-    // Movement barre détaillée
-    let movement_progress_bar_container_div = document.createElement('div');
-    let movement_progress_bar_container_content = document.createElement('div');
-    let movement_progress_bar_container_text = document.createElement('span');
-    let movement_progress_bar_container_label = document.createElement('label');
-    let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
+    if (Array.isArray(data.ship.modules)) {
+        DEF_CONFIG.forEach(defConf => {
+            const mod = data.ship.modules.find(m => m.type === defConf.type && m.effect && typeof m.effect.defense !== "undefined");
+            if (!mod) return;
 
-    movement_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
-    movement_progress_bar_container_div.id = "movement-container-detailed";
-    movement_progress_bar_container_label.textContent = "Movement left:";
-    movement_progress_bar_container_label.classList.add(
-        'font-bold',
-        'font-shadow',
-        'text-white',
-        'items-center', 
-        'justify-between', 
-        'w-full'
-    );
-    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-    movement_progress_bar_container_text.classList.add(
-        'w-full',
-        'absolute',
-        'z-10',
-        'text-center',
-        'text-xs',
-        'font-bold',
-        'text-blue-100',
-        'font-shadow',
-        'text-center'
-    );
-    movement_progress_bar_container_text.textContent =
-        `${data.ship.current_movement} / ${data.ship.max_movement}`;
-    movement_progress_bar_container_text.id = "movement-container-detailed-progress-bar-text";
-    movement_progress_bar_container_content.id = "movement-container-detailed-progress-bar-content";
-    movement_progress_bar_container_content.style.width =
-        parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
+            const currentVal = data.ship[defConf.currentKey] ?? 0;
+            const maxVal = mod.effect.defense ?? 0;
 
-    movement_progress_bar_container_div.append(movement_progress_bar_container_text);
-    movement_progress_bar_container_div.append(movement_progress_bar_container_content);
+            ship_detailed_statistics_container_div.append(
+                createProgressBar(currentVal, maxVal, defConf.label)
+            );
+        });
+    }
 
-    ship_detailed_statistics_container_div.append(hp_progress_bar_container_label);
-    ship_detailed_statistics_container_div.append(hp_progress_bar_container_div);
-    ship_detailed_statistics_container_div.append(movement_progress_bar_container_label);
-    ship_detailed_statistics_container_div.append(movement_progress_bar_container_div);
-    // --- END DETAILED STATS ---
-
-    // WARNING MSG (inchangé)
-    let ship_statistics_warning_msg_container_p = document.createElement('p');
+    // --- WARNING MSG ---
+    let ship_statistics_warning_msg_container_p = document.createElement("p");
     ship_statistics_warning_msg_container_p.classList.add(
-        'text-justify',
-        'font-shadow',
-        'text-xs',
-        'lg:p-1',
-        'text-red-600',
-        'animate-pulse',
-        'font-bold',
-        'font-shadow'
+        "text-justify",
+        "font-shadow",
+        "text-xs",
+        "lg:p-1",
+        "text-red-600",
+        "animate-pulse",
+        "font-bold",
+        "font-shadow"
     );
     ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
     ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str} `;
 
+    // Par défaut : ON montre le warning, ON cache les stats détaillées
+    // (le bouton Scan s'occupera de faire l'inverse)
+    ship_detailed_statistics_container_div.classList.add("hidden");
+
     return {
         ship_statistics_container_label,
+        ship_statistics_container_div,
         ship_detailed_statistics_container_div,
         ship_statistics_warning_msg_container_p
     };
