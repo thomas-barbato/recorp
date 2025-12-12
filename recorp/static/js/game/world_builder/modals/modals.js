@@ -21,6 +21,44 @@ const MODULE_CATEGORIES = {
     }
 };
 
+const FOREGROUND_ACTIONS = {
+    asteroid: [
+        {
+        key: "gather",
+        label: "Récolte",
+        icon: "/static/img/ux/gather_icon.svg",
+        requires: [{ type: "GATHERING" }]
+        },
+        {
+        key: "scan",
+        label: "Scan",
+        icon: "/static/img/ux/scan_resource_icon.svg",
+        requires: [{ type: "PROBE", name: "drilling" }]
+        }
+    ],
+
+    planet: [
+        { key: "set_home", label: "New Home", icon: "/static/img/ux/new_location.svg" },
+        { key: "join_faction", label: "Join Faction", icon: "/static/img/ux/join_faction.svg" },
+        { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg" },
+        { key: "market", label: "Market", icon: "/static/img/ux/market.svg" },
+        { key: "task", label: "Task", icon: "/static/img/ux/task.svg" },
+        {
+        key: "invade",
+        label: "Invade",
+        icon: "/static/img/ux/invade.svg",
+        requires: [{ type: "COLONIZATION" }]
+        }
+    ],
+
+    warpzone: [
+        { key: "warp_destinations" }
+    ],
+
+    station: [],
+    black_hole: []
+};
+
 function groupModulesByCategory(modules) {
 
     const grouped = {
@@ -354,7 +392,7 @@ function createStandardModalShell(modalId, options = {}) {
         "hidden","overflow-hidden","fixed","top-0","right-0","left-0",
         "z-50","justify-center","items-center","w-full","h-full",
         "md:inset-0","backdrop-brightness-50","bg-black/40",
-        "backdrop-blur-md","animate-modal-fade"
+        "backdrop-blur-md","animate-modal-fade", "border-2", "border-emerald-400/20"
     );
 
     //
@@ -372,8 +410,8 @@ function createStandardModalShell(modalId, options = {}) {
     const content = document.createElement("div");
     content.classList.add(
         "flex","rounded-lg","shadow","w-full","lg:w-1/4","rounded-t",
-        "justify-center","mx-auto","flex-col","border-2",
-        border,"bg-gradient-to-b", gradientFrom, gradientTo
+        "justify-center","mx-auto","flex-col", "border", "border-2", "border-emerald-400/20",
+        "bg-gradient-to-b", gradientFrom, gradientTo,
     );
 
     //
@@ -459,7 +497,7 @@ function createStandardModalShell(modalId, options = {}) {
             closeBtn.src = "/static/img/ux/close.svg";
             closeBtn.classList.add(
                 "inline-block","w-[5%]","h-[5%]",
-                "cursor-pointer","hover:animate-pulse"
+                "cursor-pointer","hover:animate-pulse", "mx-auto"
             );
             closeBtn.onclick = () => open_close_modal(modalId);
             this.el.append(closeBtn);
@@ -531,11 +569,14 @@ function extract_data_for_modal(data){
     }
     if (data.isStatic) {
         // Recherche dans sector_element
-        let element = map_informations.sector_element.filter(el => el.data.name === data.elementName);
+        let element = map_informations.sector_element.find(el => el.data.name === data.elementName);
+        console.log("element = ")
+        console.log(element)
+        console.log("====")
         return {
-            found: element.length > 0,
-            type: element[0]?.data?.type,
-            data: element[0],
+            found: !!element,
+            type: element?.data?.type || null,
+            data: element || null,
             searchInfo: data
         };
     } else {
@@ -689,23 +730,53 @@ function createPlayerModalData(playerData) {
     };
 }
 
-function extractForegroundModalData(foregroundData) {
-    let sizeData = foregroundData.data.data.size || { x: 1, y: 1 };
-    return {
-        type: foregroundData.data.data.type,
-        translatedType: foregroundData.data.type_translated || null,
-        animationName: foregroundData.data.animations,
-        name: foregroundData.data.data.name,
-        description: foregroundData.data.data.description,
-        coordinates: {
-            x: foregroundData.data.data.coordinates.x,
-            y: foregroundData.data.data.coordinates.y
-        },
-        size: {
-            x: sizeData.x || 1,
-            y: sizeData.y || 1
+function extractForegroundModalData(element) {
+    if (!element || !element.data) {
+        console.error("Invalid foreground element:", element);
+        return null;
+    }
+    let extractedDataByType;
+    if(element.type == "warpzone"){
+        extractedDataByType = {
+            type: element.type,
+            name: element.data.data.name,
+            description: element.data.data.description,
+            coordinates: element.data.data.coordinates,
+            size: {
+                x: element.data.size?.x || 1,
+                y: element.data.size?.y || 1
+            },
+            animation: {
+                dir: element.type,
+                img: element.data.animations
+            },
+            data: element.data
         }
-    };
+    }else{
+        extractedDataByType = {
+            type: element.type,
+            name: element.data.item_name,
+            description: element.data.data.description,
+            coordinates: element.data.data.coordinates,
+            size: {
+                x: element.size?.x || 1,
+                y: element.size?.y || 1
+            },
+            animation: {
+                dir: element.type,
+                img: element.data.animations
+            },
+            data: element.data
+        }
+
+    }
+
+    console.log("1111111111")
+    console.log(element)
+    console.log(extractedDataByType)
+    console.log("1111111111")
+    
+    return extractedDataByType;
 }
 
 function extractResourceInfo(resource) {
@@ -744,13 +815,11 @@ function createForegroundModalData(elementInfo, sectorData) {
     let baseModalData = {
         type: elementInfo.type,
         translated_type: elementInfo.translatedType,
-        animation: {
-            dir: elementInfo.type,
-            img: elementInfo.animationName,
-        },
+        animation: elementInfo.animation,
         name: elementInfo.name,
         description: elementInfo.description,
         coord: elementInfo.coordinates,
+        size: elementInfo.size,
         actions: {
             action_label: map_informations.actions.translated_action_label_msg,
             close: map_informations.actions.translated_close_msg,
@@ -851,6 +920,10 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
             }
             break;
         default:
+            if (!extractedDataForModal) {
+                console.error("Foreground element not found", data);
+                return;
+            }
             let foregroundData = extractForegroundModalData(extractedDataForModal)
             modalData = createForegroundModalData(foregroundData, extractedDataForModal.data)
             modal = create_foreground_modal(modalId, modalData)
@@ -863,334 +936,153 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
 
 }
 
-function create_foreground_modal(modalId, data) {
-    
-    const {
-        root: e,
-        container: container_div,
-        content: content_div,
-        headerContainer: header_container_div,
-        bodyContainer: body_container_div,
-        footerContainer: footer_container_div
-    } = createStandardModalShell(modalId, {
-        contentClasses: [
-            'flex',
-            'rounded-lg',
-            'shadow',
-            'w-full',
-            'lg:w-1/4',
-            'rounded-t',
-            'justify-center',
-            'mx-auto',
-            'flex-col',
-            'border-2',
-            'border-slate-600',
-            'bg-gradient-to-b',
-            'from-amber-600/70',
-            'to-black/70'
-        ],
-        footerClasses: [
-            'md:p-5',
-            'p-1',
-            'flex',
-            'flex-row',
-            'w-[100%]',
-            'justify-end',
-            'align-center'
-        ]
-    });
-
-    let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
-    header_div.textContent = `${data.name.toUpperCase()}`;
-
-    let close_button_url = '/static/img/ux/close.svg';
-
-    let header_close_button = document.createElement("img");
-    header_close_button.src = close_button_url;
-    header_close_button.title = `${data.actions.close}`;
-    header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
-
-    let footer_close_button = document.createElement("div");
-    footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'cursor-pointer', 'hover:animate-pulse', 'p-2', 'text-white', 'text-xs', 'font-bold', 'font-shadow');
-    
-    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-
-    body_container_div.classList.add('items-center', 'md:p-5', 'p-2');
-
-    let item_img = document.createElement('img');
-    item_img.src = `/static/img/foreground/${data.animation.dir}/${data.animation.img}/0.gif`;
-    item_img.style.width = "30%";
-    item_img.style.height = "30%";
-    item_img.style.margin = "0 auto";
-
-    let item_content_div = document.createElement('div');
-    item_content_div.classList.add('flex', 'flex-col');
-
-    let item_description_p = document.createElement('p');
-
-    let item_action_container = document.createElement("div");
-    item_action_container.classList.add('mt-2');
-    item_action_container.id = "item-action-container";
-
-    let item_action_container_label = document.createElement("label");
-    item_action_container_label.htmlFor = "item-action-container";
-    item_action_container_label.textContent = `${data.actions.action_label}: `;
-    item_action_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base');
-
-    let item_action_container_div = document.createElement('figure');
-    item_action_container_div.classList.add('inline-flex', 'items-center', 'justify-center', 'flex-wrap', 'gap-3');
-    item_action_container_div.setAttribute('role', 'group');
-
-    body_container_div.append(item_img);
-
-    if (data.type !== "planet" && data.type !== "warpzone") {
-        let item_resource_label = document.createElement('label');
-        item_resource_label.htmlFor = "resources";
-        item_resource_label.textContent = `${data.resources.translated_text_resource} :`
-        item_resource_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-xs', 'mt-2', 'p-2', 'lg:p-1')
-
-        let item_resource_content = document.createElement('div');
-        item_resource_content.classList.add('flex', 'flex-col');
-        item_resource_content.id = "ressource-content";
-
-        let item_resource_content_span = document.createElement('span');
-        item_resource_content_span.classList.add('flex', 'flex-row');
-
-        let item_resource_content_p_resource = document.createElement('p');
-        item_resource_content_p_resource.classList.add('text-white', 'font-shadow', 'text-justify', 'text-xs', 'p-2', 'lg:p-1');
-        item_resource_content_p_resource.id = "resource-name";
-        item_resource_content_p_resource.textContent = `${data.resources.name}`;
-        item_resource_content_p_resource.classList.add('hidden');
-
-
-        let item_resource_content_p_quantity = document.createElement('p');
-        item_resource_content_p_quantity.classList.add('font-bold', 'font-shadow', 'text-justify', 'text-xs', 'p-2', 'lg:p-1');
-        if (data.resources.quantity == "empty") {
-            item_resource_content_p_quantity.classList.add('text-red-600', 'animate-pulse', 'font-shadow');
-        } else {
-            item_resource_content_p_quantity.classList.add('text-white', 'font-shadow');
-        }
-        item_resource_content_p_quantity.id = "resource-quantity";
-        item_resource_content_p_quantity.textContent = `${data.resources.translated_quantity_str.toUpperCase()}`
-        item_resource_content_p_quantity.classList.add('hidden');
-
-        item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'my-1', 'py-1', 'text-xs');
-        item_description_p.textContent = data.description;
-
-        let item_resource_content_p_scan_msg = document.createElement('p');
-        item_resource_content_p_scan_msg.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base');
-        item_resource_content_p_scan_msg.id = "resource-scan-msg";
-        item_resource_content_p_scan_msg.textContent = `${data.resources.translated_scan_msg_str}`;
-
-        let item_action_container_img_scan_container = document.createElement('div');
-        item_action_container_img_scan_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]');
-
-        let item_action_container_img_gather_container = document.createElement('div');
-        item_action_container_img_gather_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]');
-
-        let item_action_container_img_scan = document.createElement('img');
-        item_action_container_img_scan.src = '/static/img/ux/scan_resource_icon.svg';
-        item_action_container_img_scan.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_scan_figcaption = document.createElement('figcaption');
-        item_action_container_img_scan_figcaption.textContent = "Scan";
-        item_action_container_img_scan_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
-
-        let item_action_container_img_scan_figcaption_ap = document.createElement('figcaption');
-        item_action_container_img_scan_figcaption_ap.textContent = "0 AP";
-        item_action_container_img_scan_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow', 'text-xs');
-
-        let item_action_container_img_gather = document.createElement('img');
-        item_action_container_img_gather.src = '/static/img/ux/gather_icon.svg';
-        item_action_container_img_gather.classList.add('cursor-pointer', 'flex', 'justify-center', 'hover:animate-pulse');
-
-        let item_action_container_img_gather_figcaption = document.createElement('figcaption');
-        item_action_container_img_gather_figcaption.textContent = "Gather";
-        item_action_container_img_gather_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow');
-
-        let item_action_container_img_gather_figcaption_ap = document.createElement('figcaption');
-        item_action_container_img_gather_figcaption_ap.textContent = "1 AP";
-        item_action_container_img_gather_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'font-shadow');
-
-        item_resource_content_span.append(item_resource_content_p_resource);
-        item_resource_content_span.append(item_resource_content_p_quantity);
-        item_resource_content_span.append(item_resource_content_p_scan_msg);
-        item_resource_content.append(item_resource_content_span);
-
-        item_action_container_img_scan_container.append(item_action_container_img_scan);
-        item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption);
-        item_action_container_img_scan_container.append(item_action_container_img_scan_figcaption_ap);
-
-        item_action_container_img_gather_container.append(item_action_container_img_gather);
-        item_action_container_img_gather_container.append(item_action_container_img_gather_figcaption);
-        item_action_container_img_gather_container.append(item_action_container_img_gather_figcaption_ap);
-
-        item_action_container_div.append(item_action_container_img_scan_container);
-        item_action_container_div.append(item_action_container_img_gather_container);
-
-        item_content_div.append(item_resource_label);
-        item_content_div.append(item_resource_content);
-
-        item_action_container.append(item_action_container_div);
-        
-    } else if(data.type == "warpzone"){
-
-        let modal_name = e.id; 
-        item_description_p.classList.add('text-white', 'font-shadow', 'text-center', 'italic', 'text-xs', 'my-1', 'py-1');
-        item_description_p.innerHTML = `${data.description}`;
-
-        let item_action_container_warpzone_container = document.createElement('div');
-        item_action_container_warpzone_container.classList.add('flex', 'mt-2');
-
-        let item_action_container_warpzone_ul = document.createElement('ul');
-        item_action_container_warpzone_ul.className ='flex w-full gap-3 text-white flex-col text-xs';
-
-        for(let i = 0; i < data.destinations.length; i++){
-            let item_action_container_warpzone_ul_item = document.createElement('li');
-            item_action_container_warpzone_ul_item.classList.add('hover:font-bold')
-            item_action_container_warpzone_ul_item.textContent = `Travel to ${data.destinations[i].destination_name.replaceAll('-',' ').replaceAll('_', ' ')} (0 AP)`;
-            item_action_container_warpzone_ul_item.addEventListener(action_listener_touch_click, function(){
-                if (typeof handleWarpTravel === 'function' && typeof currentPlayer !== 'undefined') {
-                    open_close_modal(e.id);
-                    handleWarpTravel(data.destinations[i].warp_link_id);
-                }
-            }, { passive: true });
-            item_action_container_warpzone_ul.append(item_action_container_warpzone_ul_item)
-        }
-
-        item_action_container_warpzone_container.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        item_action_container_warpzone_container.append(item_action_container_warpzone_ul);
-
-        item_action_container_div.append(item_action_container_warpzone_container);
-
-        item_action_container.append(item_action_container_div);
-
-    } else {
-        if (data.faction.starter) {
-            let item_faction_p = document.createElement('p');
-            item_faction_p.htmlFor = "faction";
-            item_faction_p.textContent = `${data.faction.translated_str} ${data.faction.name}`;
-            item_faction_p.classList.add('text-white', 'font-shadow', 'text-justify', 'italic', 'text-xs', 'my-1', 'py-1')
-
-            let item_faction_content = document.createElement('div');
-            item_faction_content.classList.add('flex', 'flex-row');
-
-            item_content_div.append(item_faction_p);
-            item_content_div.append(item_faction_content);
-        }
-
-        let item_action_container_img_setNewStartLoc_container = document.createElement('div');
-        item_action_container_img_setNewStartLoc_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-        let item_action_container_img_joinFaction_container = document.createElement('div');
-        item_action_container_img_joinFaction_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-        let item_action_container_img_opendock_container = document.createElement('div');
-        item_action_container_img_opendock_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-        let item_action_container_img_openmarket_container = document.createElement('div');
-        item_action_container_img_openmarket_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-        let item_action_container_img_gettask_container = document.createElement('div');
-        item_action_container_img_gettask_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-        let item_action_container_img_invade_container = document.createElement('div');
-        item_action_container_img_invade_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-        let item_action_container_setNewStartLoc_img = document.createElement('img');
-        item_action_container_setNewStartLoc_img.src = '/static/img/ux/new_location.svg';
-        item_action_container_setNewStartLoc_img.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_setNewStartLoc_figcaption = document.createElement('figcaption');
-        item_action_container_img_setNewStartLoc_figcaption.textContent = "New Home";
-        item_action_container_img_setNewStartLoc_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-        let item_action_container_joinFaction_img = document.createElement('img');
-        item_action_container_joinFaction_img.src = '/static/img/ux/join_faction.svg';
-        item_action_container_joinFaction_img.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_joinFaction_figcaption = document.createElement('figcaption');
-        item_action_container_img_joinFaction_figcaption.textContent = `Join ${data.faction.name}`;
-        item_action_container_img_joinFaction_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-        let item_action_container_opendock_img = document.createElement('img');
-        item_action_container_opendock_img.src = '/static/img/ux/dock.svg';
-        item_action_container_opendock_img.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_opendock_figcaption = document.createElement('figcaption');
-        item_action_container_img_opendock_figcaption.textContent = "dock";
-        item_action_container_img_opendock_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-        let item_action_container_openmarket_img = document.createElement('img');
-        item_action_container_openmarket_img.src = '/static/img/ux/market.svg';
-        item_action_container_openmarket_img.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_openmarket_figcaption = document.createElement('figcaption');
-        item_action_container_img_openmarket_figcaption.textContent = "market";
-        item_action_container_img_openmarket_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-        let item_action_container_gettask_img = document.createElement('img');
-        item_action_container_gettask_img.src = '/static/img/ux/task.svg';
-        item_action_container_gettask_img.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_gettask_figcaption = document.createElement('figcaption');
-        item_action_container_img_gettask_figcaption.textContent = "task";
-        item_action_container_img_gettask_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-        let item_action_container_invade_img = document.createElement('img');
-        item_action_container_invade_img.src = '/static/img/ux/invade.svg';
-        item_action_container_invade_img.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-        let item_action_container_img_invade_figcaption = document.createElement('figcaption');
-        item_action_container_img_invade_figcaption.textContent = "invade";
-        item_action_container_img_invade_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-        if (data.actions.player_in_same_faction == true) {
-            item_action_container_img_setNewStartLoc_container.append(item_action_container_setNewStartLoc_img);
-            item_action_container_img_setNewStartLoc_container.append(item_action_container_img_setNewStartLoc_figcaption);
-            item_action_container_div.append(item_action_container_img_setNewStartLoc_container);
-        } else {
-            item_action_container_img_joinFaction_container.append(item_action_container_joinFaction_img);
-            item_action_container_img_joinFaction_container.append(item_action_container_img_joinFaction_figcaption);
-            item_action_container_img_invade_container.append(item_action_container_invade_img);
-            item_action_container_img_invade_container.append(item_action_container_img_invade_figcaption);
-            item_action_container_div.append(item_action_container_img_joinFaction_container);
-            item_action_container_div.append(item_action_container_img_invade_container);
-        }
-        item_action_container_img_opendock_container.append(item_action_container_opendock_img);
-        item_action_container_img_opendock_container.append(item_action_container_img_opendock_figcaption);
-        item_action_container_img_openmarket_container.append(item_action_container_openmarket_img);
-        item_action_container_img_openmarket_container.append(item_action_container_img_openmarket_figcaption);
-        item_action_container_img_gettask_container.append(item_action_container_gettask_img);
-        item_action_container_img_gettask_container.append(item_action_container_img_gettask_figcaption);
-
-        item_action_container_div.append(item_action_container_img_opendock_container);
-        item_action_container_div.append(item_action_container_img_openmarket_container);
-        item_action_container_div.append(item_action_container_img_gettask_container);
-
-        item_action_container.append(item_action_container_div);
+function buildForegroundActionsSection(modalId, data) {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("action-wrapper-sf");
+
+    const type = data.type;
+
+    // Zone message erreur
+    const errorZone = document.createElement("div");
+    errorZone.id = modalId + "-action-error-zone";
+    errorZone.classList.add("action-error-msg", "hidden");
+
+    // =========================
+    // WARPZONE 
+    // =========================
+    if (type === "warpzone") {
+        const ul = document.createElement("ul");
+        ul.classList.add(
+            "flex",
+            "flex-col",
+            "list-none",
+            "w-full",
+            "text-center",
+            "text-start",
+            "p-2"
+        );
+
+        data.destinations.forEach(dest => {
+            const li = document.createElement("li");
+            li.textContent = `Travel to ${dest.destination_name}`;
+            li.classList.add(
+                "cursor-pointer",
+                "text-white",
+                "hover:animate-pulse"
+            );
+
+            li.onclick = () => handleWarpTravel(dest.warp_link_id);
+            ul.append(li);
+        });
+
+        wrapper.append(ul);
+        return wrapper;
     }
 
-    footer_container_div.append(footer_close_button);
+    // =========================
+    // AUTRES FOREGROUND
+    // =========================
+    const grid = document.createElement("div");
+    grid.classList.add("action-grid-sf");
+    wrapper.append(grid);
 
-    body_container_div.append(item_content_div);
-    body_container_div.append(item_description_p);
+    const actions = FOREGROUND_ACTIONS[type] || [];
 
-    body_container_div.append(item_action_container_label);
-    body_container_div.append(item_action_container);
+    // Autres foregrounds
+    actions.forEach(action => {
+        const btn = document.createElement("div");
+        btn.classList.add("action-button-sf");
 
-    header_container_div.append(header_div);
-    header_container_div.append(header_close_button);
-    content_div.append(header_container_div);
-    content_div.append(body_container_div);
-    content_div.append(footer_container_div);
-    container_div.append(content_div);
-    e.append(container_div);
+        const img = document.createElement("img");
+        img.src = action.icon;
+        img.classList.add("action-button-sf-icon");
 
-    return e;
+        const label = document.createElement("div");
+        label.textContent = action.label;
+        label.classList.add("action-button-sf-label");
+
+        btn.append(img, label);
+
+        btn.onclick = () => {
+            // Vérification des prérequis
+            if (action.requires) {
+                const ok = action.requires.every(req =>
+                    currentPlayer.ship.modules.some(m =>
+                        m.type === req.type &&
+                        (!req.name || m.name === req.name)
+                    )
+                );
+
+                if (!ok) {
+                    errorZone.textContent =
+                        "Vous ne pouvez pas effectuer cette action sans le module requis.";
+                    errorZone.classList.remove("hidden");
+                    setTimeout(() => errorZone.classList.add("hidden"), 5000);
+                    return;
+                }
+            }
+
+            // Handlers futurs
+            console.log("Foreground action:", action.key, data);
+        };
+
+        grid.append(btn);
+    });
+
+    // Ajuste la largeur au nombre d’actions
+    const count = grid.children.length;
+    grid.style.setProperty("--cols", Math.min(count, 5));
+
+    wrapper.append(errorZone);
+    return wrapper;
+}
+
+function create_foreground_modal(modalId, data) {
+    const modal = createStandardModalShell(modalId);
+    const coords = `[X:${data.coord.x} Y:${data.coord.y}]`;
+    modal.header.setTitle(`${data.name.toUpperCase()} ${coords}`);
+    modal.header.setCloseButton(modalId);
+
+    // IMAGE
+    const imgWrap = document.createElement("div");
+    imgWrap.classList.add("flex", "justify-center", "w-full");
+
+    const foregroundType = data.animation.dir;
+    const foregroundName = data.animation.img;
+
+    if (foregroundType && foregroundName) {
+        const img = document.createElement("img");
+        img.src = `/static/img/foreground/${foregroundType}/${foregroundName}/0.gif`;
+        img.style.width = (data.size.x * 32) + "px";
+        img.style.height = (data.size.y * 32) + "px";
+        img.style.objectFit = "contain";
+        imgWrap.append(img);
+        modal.body.addSection(imgWrap);
+    } else {
+        console.warn("Foreground image missing:", data.animation);
+    }
+
+    modal.body.addSection(imgWrap);
+
+    // INFOS
+    if (data.description) {
+        const desc = document.createElement("p");
+        desc.textContent = data.description;
+        desc.classList.add("text-sm", "text-white", "opacity-80");
+        modal.body.addSection(desc);
+    }
+
+    // ACTIONS
+    const actionsLabel = document.createElement("label");
+    actionsLabel.textContent = "ACTIONS:";
+    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-4", "text-start");
+    modal.body.addSection(actionsLabel);
+
+    const actionsSection = buildForegroundActionsSection(modalId, data);
+    modal.body.addSection(actionsSection);
+
+    modal.footer.setCloseButton(modalId);
+    return modal.root;
 }
 
 function createActionButton(iconElement, label, onClick) {
