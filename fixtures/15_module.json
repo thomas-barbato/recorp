@@ -1439,7 +1439,7 @@
     "pk": 92,
     "fields": {
         "name": "spaceship probe",
-        "type": "ELECTRONIC_WARFARE",
+        "type": "PROBE",
         "tier": 1,
         "effect": {
             "label": "Display ship data",
@@ -1455,7 +1455,7 @@
     "pk": 93,
     "fields": {
         "name": "drilling probe",
-        "type": "GATHERING",
+        "type": "PROBE",
         "tier": 1,
         "effect": {
             "label": "Display harvestable resources",

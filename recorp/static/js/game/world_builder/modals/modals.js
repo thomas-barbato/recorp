@@ -1,3 +1,491 @@
+const MODULE_CATEGORIES = {
+    WEAPONRY: {
+        label: "Weaponry",
+        types: ["WEAPONRY"]
+    },
+    EWAR: {
+        label: "Electronic Warfare",
+        types: ["ELECTRONIC_WARFARE"]
+    },
+    DEFENSIVE: {
+        label: "Defensive Modules",
+        types: ["DEFENSE_BALLISTIC", "DEFENSE_THERMAL", "DEFENSE_MISSILE"]
+    },
+    UTILITY: {
+        label: "Utility Modules",
+        types: ["REPAIRE", "COLONIZATION", "CRAFT", "GATHERING", "RESEARCH"]
+    },
+    PROBE: {
+        label: "Probe Modules",
+        types: ["PROBE"]
+    }
+};
+
+function groupModulesByCategory(modules) {
+
+    const grouped = {
+        WEAPONRY: [],
+        EWAR: [],
+        DEFENSIVE: [],
+        UTILITY: [],
+        PROBE: []
+    };
+
+    for (const mod of modules) {
+        for (const catKey in MODULE_CATEGORIES) {
+            if (MODULE_CATEGORIES[catKey].types.includes(mod.type)) {
+                grouped[catKey].push(mod);
+                break;
+            }
+        }
+    }
+
+    return grouped;
+}
+
+function createFormatedLabel(module_object) {
+
+    let module_name = module_object.name;
+    let module_type = module_object.type;
+
+    let module_tooltip_ul = document.createElement('ul');
+    let module_tooltip_name = document.createElement('span');
+    let module_tooltip_moduleType = document.createElement('small');
+
+    module_tooltip_ul.className = `
+        flex flex-col gap-1 font-bold text-xs
+        bg-gray-900/95 border border-emerald-700/40 rounded-md
+        text-emerald-200 shadow-lg shadow-black/60 p-2 backdrop-blur-sm
+    `;
+    module_tooltip_name.className = "font-bold text-emerald-300 text-sm";
+    module_tooltip_name.textContent = module_name;
+    module_tooltip_moduleType.className = "italic text-emerald-400/80 mb-1";
+
+    module_tooltip_ul.append(module_tooltip_name);
+    module_tooltip_ul.append(module_tooltip_moduleType);
+
+    let module_li, module_li_label, module_li_value;
+
+    // === switch conservé, mais stylé ===
+    switch (module_type) {
+
+        case "DEFENSE_BALLISTIC":
+        case "DEFENSE_THERMAL":
+        case "DEFENSE_MISSILE":
+            let parts = module_type.split('_');
+            module_type = `${parts[1]} ${parts[0]}`;
+            module_li = styledLine(`${module_object.effect.label}:`, `+${module_object.effect.defense}`);
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "HOLD":
+            module_li = styledLine(`${module_object.effect.label}:`, `+${module_object.effect.capacity}`);
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "MOVEMENT":
+            module_li = styledLine(
+                module_object.effect.label || "Movement:",
+                `+${module_object.effect.movement}`
+            );
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "HULL":
+            module_li = styledLine(`${module_object.effect.label}:`, ` +${module_object.effect.hp}`);
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "REPAIRE":
+            module_li = styledLine(
+                `${module_object.effect.label}:`,
+                ` ${module_object.effect.repair_shield} hull points`
+            );
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "GATHERING":
+            if ('can_scavenge' in module_object.effect) {
+                module_li = styledLine(`${module_object.effect.label}`, `✔️`);
+            } else if ('display_mineral_data' in module_object.effect) {
+                module_li = styledLine(`${module_object.effect.label}`, `range: ${module_object.effect.range}`);
+            } else {
+                module_li = styledLine(
+                    `${module_object.effect.label}:`,
+                    `+${module_object.effect.gathering_amount}, range: ${module_object.effect.range}`
+                );
+            }
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "RESEARCH":
+            module_li = styledLine(
+                `${module_object.effect.label}:`,
+                `-${module_object.effect.research_time_discrease}%`
+            );
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "CRAFT":
+            module_li = styledLine(
+                `${module_object.effect.label}:`,
+                `${module_object.effect.crafting_tier_allowed}`
+            );
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "ELECTRONIC_WARFARE":
+            if ("aiming_discrease" in module_object.effect) {
+                module_li = styledLine(
+                    `${module_object.effect.label}:`,
+                    `-${module_object.effect.aiming_discrease}% — range ${module_object.effect.range}`
+                );
+            } else if ("movement_discrease" in module_object.effect) {
+                module_li = styledLine(
+                    `${module_object.effect.label}:`,
+                    `-${module_object.effect.movement_discrease}% — range ${module_object.effect.range}`
+                );
+            } else if ("display_ship_data" in module_object.effect) {
+                module_li = styledLine(`${module_object.effect.label}`, `range ${module_object.effect.range}`);
+            }
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "WEAPONRY":
+            if ("aiming_increase" in module_object.effect) {
+                module_li = styledLine(
+                    `${module_object.effect.label}:`,
+                    `+${module_object.effect.aiming_increase}% — range ${module_object.effect.range || "?"}`
+                );
+            } else {
+                module_li = styledLine(
+                    `${module_object.effect.label}:`,
+                    `damages: ${module_object.effect.min_damage} - ${module_object.effect.max_damage} — range ${module_object.effect.range}`
+                );
+            }
+            module_tooltip_ul.append(module_li);
+            break;
+
+        case "COLONIZATION":
+            module_li = styledLine(`${module_object.effect.label}`, `🌍`);
+            module_tooltip_ul.append(module_li);
+            break;
+    }
+
+    module_tooltip_moduleType.textContent = module_type;
+    return module_tooltip_ul.outerHTML;
+}
+
+function createModuleCategoryAccordion(categoryKey, modules, uniqueModalId) {
+
+    if (!modules.length) return null;
+
+    const categoryInfo = MODULE_CATEGORIES[categoryKey];
+    const accordionId = `${uniqueModalId}-accordion-${categoryKey}`;
+
+    // WRAPPER
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("w-full");
+    wrapper.dataset.accordionId = accordionId;
+
+    // HEADER BUTTON
+    const headerBtn = document.createElement("button");
+    headerBtn.type = "button";
+    headerBtn.classList.add(
+        "flex","items-center","justify-between",
+        "w-full","p-2","font-bold","text-white",
+        "mb-1","cursor-pointer"
+    );
+    headerBtn.dataset.accordionToggle = accordionId;
+
+    const textSpan = document.createElement("span");
+    textSpan.textContent = categoryInfo.label;
+
+    // ARROW ICON
+    const arrowSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    arrowSvg.classList.add("w-3","h-3","transition-transform","duration-200");
+    arrowSvg.setAttribute("fill","none");
+    arrowSvg.setAttribute("viewBox","0 0 10 6");
+
+    const arrowPath = document.createElementNS("http://www.w3.org/2000/svg","path");
+    arrowPath.setAttribute("stroke","currentColor");
+    arrowPath.setAttribute("stroke-width","2");
+    arrowPath.setAttribute("d","M9 5 5 1 1 5");
+
+    arrowSvg.append(arrowPath);
+    headerBtn.append(textSpan, arrowSvg);
+
+    // BODY (initialement caché)
+    const bodyDiv = document.createElement("div");
+    bodyDiv.classList.add("hidden","pl-2","pb-2","flex","flex-col","gap-3");
+    bodyDiv.id = accordionId;
+
+    // Chaque module formaté via createFormatedLabel
+    for (const moduleObj of modules) {
+
+        const htmlString = createFormatedLabel(moduleObj);
+
+        const temp = document.createElement("div");  
+        temp.innerHTML = htmlString.trim();
+
+        const formattedModule = temp.firstChild;  // ⭐ vrai élément DOM !
+
+        formattedModule.classList.add(
+            "rounded-md","p-2","border","border-slate-500",
+            "bg-black/40","hover:bg-black/60","transition"
+        );
+
+        bodyDiv.append(formattedModule);
+    }
+
+    wrapper.append(headerBtn, bodyDiv);
+    return wrapper;
+}
+
+function activateExclusiveAccordions(modalRoot) {
+
+    const toggles = modalRoot.querySelectorAll("[data-accordion-toggle]");
+
+    toggles.forEach(toggle => {
+        toggle.addEventListener("click", () => {
+
+            const targetId = toggle.dataset.accordionToggle;
+            const targetBody = modalRoot.querySelector(`#${targetId}`);
+
+            const isOpening = targetBody.classList.contains("hidden");
+
+            // Fermer tous les accordéons
+            modalRoot.querySelectorAll("[data-accordion-toggle]").forEach(btn => {
+                const otherId = btn.dataset.accordionToggle;
+                const otherBody = modalRoot.querySelector(`#${otherId}`);
+                const otherSvg = btn.querySelector("svg");
+
+                otherBody.classList.add("hidden");
+                otherSvg.classList.remove("rotate-180");
+            });
+
+            // Ouvrir celui cliqué (si on demande à ouvrir)
+            if (isOpening) {
+                targetBody.classList.remove("hidden");
+                toggle.querySelector("svg").classList.add("rotate-180");
+            }
+        });
+    });
+}
+
+function buildModulesSection(modalId, data) {
+
+    const section = document.createElement("div");
+    section.classList.add(
+        "w-full",
+        "max-h-[35vh]",
+        "pr-1",
+        "custom-scroll",
+        "flex",
+        "flex-col",
+        "gap-2"
+    );
+
+    const categories = groupModulesByCategory(currentPlayer.ship.modules);
+
+    for (const catKey of Object.keys(MODULE_CATEGORIES)) {
+        const accordion = createModuleCategoryAccordion(catKey, categories[catKey], modalId);
+        if (accordion) section.append(accordion);
+    }
+
+    return section;
+}
+
+function buildPcNpcImage(data, is_npc) {
+    console.log(data)
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("flex", "justify-center", "w-full");
+
+    const img = document.createElement("img");
+
+    //
+    // IMAGE SOURCE
+    //
+    if (!is_npc) {
+        // PC
+        img.src = `/static/img/users/${data.player.id}/0.gif` || `/static/img/ux/default-user.svg`;
+        img.classList.add('object-cover', 'w-[72px]', 'h-[72px]', 'rounded-md')
+    } else {
+        // NPC
+        const sizeX = data.ship.size.x;
+        const sizeY = data.ship.size.y;
+
+        img.src = `/static/img/foreground/ships/${data.ship.image}.png`;
+        img.style.width = (32 * sizeX) + "px";
+        img.style.height = (32 * sizeY) + "px";
+        img.style.maxWidth = "none";
+        img.style.objectFit = "contain";
+        // Si ton format NPC diffère, dis-le moi, je l’adapte.
+    }
+
+    //
+    // STYLE EXACT DE TON ANCIEN MODAL
+    //
+    img.classList.add(
+        "mx-auto",
+        "object-center",
+    );
+
+    wrapper.append(img);
+    return wrapper;
+}
+
+function createStandardModalShell(modalId, options = {}) {
+
+    const {
+        border = "border-slate-600",
+        gradientFrom = "from-emerald-700/90",
+        gradientTo = "to-black/70"
+    } = options;
+
+    //
+    // === ROOT ===
+    //
+    const root = document.createElement("div");
+    root.id = modalId;
+    root.setAttribute("aria-hidden", true);
+    root.setAttribute("tabindex", -1);
+    root.classList.add(
+        "hidden","overflow-hidden","fixed","top-0","right-0","left-0",
+        "z-50","justify-center","items-center","w-full","h-full",
+        "md:inset-0","backdrop-brightness-50","bg-black/40",
+        "backdrop-blur-md","animate-modal-fade"
+    );
+
+    //
+    // === CONTAINER ===
+    //
+    const container = document.createElement("div");
+    container.classList.add(
+        "fixed","md:p-3","top-50","right-0","left-0","z-50",
+        "w-full","md:inset-0","h-screen"
+    );
+
+    //
+    // === CONTENT ===
+    //
+    const content = document.createElement("div");
+    content.classList.add(
+        "flex","rounded-lg","shadow","w-full","lg:w-1/4","rounded-t",
+        "justify-center","mx-auto","flex-col","border-2",
+        border,"bg-gradient-to-b", gradientFrom, gradientTo
+    );
+
+    //
+    // === HEADER CONTAINER ===
+    //
+    const headerContainer = document.createElement("div");
+    headerContainer.id = `${modalId}-header`;
+    headerContainer.classList.add("md:p-5","p-1","flex","flex-row","items-center");
+
+    //
+    // ==== HEADER API ====
+    //
+    const header = {
+        el: headerContainer,
+        titleEl: null,
+
+        setTitle(text) {
+            if (!this.titleEl) {
+                this.titleEl = document.createElement("h3");
+                this.titleEl.classList.add(
+                    "lg:text-xl","text-md","text-center","font-shadow",
+                    "font-bold","flex","w-[95%]","text-white","p-1",
+                    "justify-center"
+                );
+                this.el.append(this.titleEl);
+            }
+            this.titleEl.textContent = text;
+        },
+
+        setCloseButton(modalId) {
+            const closeBtn = document.createElement("img");
+            closeBtn.src = "/static/img/ux/close.svg";
+            closeBtn.classList.add(
+                "inline-block","w-[5%]","h-[5%]",
+                "cursor-pointer","hover:animate-pulse"
+            );
+            closeBtn.onclick = () => open_close_modal(modalId);
+            this.el.append(closeBtn);
+        }
+    };
+
+    //
+    // === BODY CONTAINER ===
+    //
+    const bodyContainer = document.createElement("div");
+    bodyContainer.id = `${modalId}-body`;
+    bodyContainer.classList.add(
+        "items-center",
+        "md:p-5",
+        "p-2",
+        "flex",
+        "flex-col",
+        "gap-3",
+        "overflow-y-auto",
+        "md:max-h-[70vh]",
+        "max-h-[80vh]"
+    );
+
+    //
+    // ==== BODY API ====
+    //
+    const body = {
+        el: bodyContainer,
+        addSection(section) {
+            this.el.append(section);
+        }
+    };
+
+    //
+    // === FOOTER CONTAINER ===
+    //
+    const footerContainer = document.createElement("div");
+    footerContainer.classList.add("md:p-5","p-1","flex","flex-row","w-full","justify-end");
+
+    //
+    // ==== FOOTER API ====
+    //
+    const footer = {
+        el: footerContainer,
+
+        setCloseButton(modalId) {
+            const closeBtn = document.createElement("img");
+            closeBtn.src = "/static/img/ux/close.svg";
+            closeBtn.classList.add(
+                "inline-block","w-[5%]","h-[5%]",
+                "cursor-pointer","hover:animate-pulse"
+            );
+            closeBtn.onclick = () => open_close_modal(modalId);
+            this.el.append(closeBtn);
+        }
+    };
+
+    //
+    // === ASSEMBLAGE ===
+    //
+    content.append(headerContainer, bodyContainer, footerContainer);
+    container.append(content);
+    root.append(container);
+
+    //
+    // === RETURN API ===
+    //
+    return {
+        root,
+        container,
+        content,
+        header,
+        body,
+        footer
+    };
+}
+
 function define_modal_type(modalId){
 
     let result = {
@@ -78,11 +566,63 @@ function checkIfModalExists(modalId) {
     return document.getElementById(modalId) !== null;
 }
 
+function h(tag, options = {}, children = []) {
+    const el = document.createElement(tag);
+
+    const {
+        classList,
+        className,
+        attrs,
+        text
+    } = options;
+
+    if (className) {
+        el.className = className;
+    }
+
+    if (classList) {
+        const classes = Array.isArray(classList) ? classList : String(classList).split(/\s+/);
+        classes.forEach(c => {
+            if (c) el.classList.add(c);
+        });
+    }
+
+    if (attrs) {
+        Object.entries(attrs).forEach(([key, value]) => {
+            if (key === 'dataset' && value && typeof value === 'object') {
+                Object.entries(value).forEach(([dk, dv]) => {
+                    el.dataset[dk] = dv;
+                });
+            } else {
+                el.setAttribute(key, String(value));
+            }
+        });
+    }
+
+    if (text !== undefined && text !== null) {
+        el.textContent = text;
+    }
+
+    if (!Array.isArray(children)) {
+        children = [children];
+    }
+
+    children.forEach(child => {
+        if (child === null || child === undefined) return;
+        if (typeof child === 'string') {
+            el.appendChild(document.createTextNode(child));
+        } else {
+            el.appendChild(child);
+        }
+    });
+
+    return el;
+}
+
 function createNpcModalData(npcData) {
     return {
         player: {
             name: npcData.npc.displayed_name,
-            image: npcData.npc.image,
             faction_name: npcData.faction.name,
             id: npcData.npc.id,
         },
@@ -100,6 +640,8 @@ function createNpcModalData(npcData) {
             status: npcData.ship.status,
             modules: npcData.ship.modules,
             modules_range: npcData.ship.modules_range,
+            image: npcData.ship.image,
+            size: npcData.ship.size
         },
         actions: {
             action_label: map_informations.actions.translated_action_label_msg,
@@ -111,14 +653,14 @@ function createNpcModalData(npcData) {
     };
 }
 
-
 function createPlayerModalData(playerData) {
     return {
         player: {
             name: playerData.user.name,
             is_npc: playerData.user.is_npc,
             image: playerData.user.image,
-            faction_name: playerData.faction.name
+            faction_name: playerData.faction.name,
+            id: playerData.user.player,
         },
         ship: {
             name: playerData.ship.name,
@@ -320,41 +862,41 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
 }
 
 function create_foreground_modal(modalId, data) {
-    let e = document.createElement('div');
-    e.id = modalId;
-    e.setAttribute('aria-hidden', true);
-    e.setAttribute('tabindex', -1);
-    e.classList.add(
-        'hidden',
-        'overflow-hidden',
-        'fixed',
-        'top-0',
-        'right-0',
-        'left-0',
-        'z-50',
-        'justify-center',
-        'items-center',
-        'w-full',
-        'h-full',
-        'md:inset-0',
-        'border-1',
-        'backdrop-brightness-50', 
-        'bg-black/40',
-        'backdrop-blur-md',
-        'animate-modal-fade'
-    );
-
-    let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-50", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
-
-    let content_div = document.createElement('div');
-    content_div.classList.add('flex', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
-
-    let header_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
-
-    let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
+    
+    const {
+        root: e,
+        container: container_div,
+        content: content_div,
+        headerContainer: header_container_div,
+        bodyContainer: body_container_div,
+        footerContainer: footer_container_div
+    } = createStandardModalShell(modalId, {
+        contentClasses: [
+            'flex',
+            'rounded-lg',
+            'shadow',
+            'w-full',
+            'lg:w-1/4',
+            'rounded-t',
+            'justify-center',
+            'mx-auto',
+            'flex-col',
+            'border-2',
+            'border-slate-600',
+            'bg-gradient-to-b',
+            'from-amber-600/70',
+            'to-black/70'
+        ],
+        footerClasses: [
+            'md:p-5',
+            'p-1',
+            'flex',
+            'flex-row',
+            'w-[100%]',
+            'justify-end',
+            'align-center'
+        ]
+    });
 
     let header_div = document.createElement('h3');
     header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
@@ -374,7 +916,6 @@ function create_foreground_modal(modalId, data) {
     header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
     footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
 
-    let body_container_div = document.createElement('div');
     body_container_div.classList.add('items-center', 'md:p-5', 'p-2');
 
     let item_img = document.createElement('img');
@@ -650,766 +1191,560 @@ function create_foreground_modal(modalId, data) {
     return e;
 }
 
-function createUnknownModal(modalId, data, is_npc){
+function createActionButton(iconElement, label, onClick) {
+    const btn = document.createElement("div");
+    btn.classList.add("action-button-sf");
+
+    const iconWrapper = document.createElement("div");
+    iconWrapper.append(iconElement);
+    iconElement.classList.add("action-button-sf-icon");
+
+    const lbl = document.createElement("span");
+    lbl.classList.add("action-button-sf-label");
+    lbl.textContent = label;
+
+    btn.append(iconWrapper, lbl);
+    btn.addEventListener("click", onClick);
+
+    return btn;
+}
+
+function playerHasModule(modules, types = []) {
+    return modules.some(m => types.includes(m.type));
+}
+
+function showActionError(modalId, message) {
+    const zone = document.getElementById(modalId + "-action-error-zone");
+    if (!zone) return;
+
+    zone.textContent = message;
+    zone.classList.remove("hidden");
+
+    setTimeout(() => {
+        zone.classList.add("hidden");
+        zone.textContent = "";
+    }, 5000);
+}
+
+function buildActionsSection(modalId, data, is_npc) {
+
+    const modules = currentPlayer.ship.modules;
+
+    // Conteneur global
+    const grid = document.createElement("div");
+    grid.classList.add("action-grid-sf");
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
+    grid.style.gap = "0.75rem";
+
+    // ZONE CONTEXTUELLE
+    const contextZone = document.getElementById(modalId + "-action-context");
+
+    // Vérif modules
+    const hasWeaponry = playerHasModule(modules, ["WEAPONRY"]);
+    const hasProbe = playerHasModule(modules, ["PROBE"]);
+    const hasEwar = playerHasModule(modules, ["ELECTRONIC_WARFARE"]);
+    const hasRepaire = playerHasModule(modules, ["REPAIRE"]);
+
+    // Message d’erreur
+    const showMissingModuleError = () => {
+        showActionError(
+            modalId,
+            "Vous ne pouvez pas effectuer cette action tant que vous n'aurez pas installé de module de ce type."
+        );
+    };
+
+    // ---------------------------
+    // ACTION : ATTACK
+    // ---------------------------
+    const attackIcon = document.createElement("img");
+    attackIcon.src = "/static/img/ux/target_icon.svg";
+
+    const attackButton = createActionButton(
+        attackIcon,
+        "Attaquer",
+        () => {
+            if (!hasWeaponry) return showMissingModuleError();
+
+            // ouvrir weaponry dans contextZone
+            contextZone.innerHTML = "";
+            contextZone.classList.remove("hidden");
+
+            const list = document.createElement("div");
+            list.classList.add("flex", "flex-col", "gap-2", "mt-2");
+
+            // modules weaponry
+            modules.forEach(m => {
+                if (m.type !== "WEAPONRY") return;
+
+                const wrapper = document.createElement("div");
+                wrapper.classList.add(
+                    "flex",
+                    "flex-row",
+                    "justify-between",
+                    "items-center",
+                    "p-2",
+                    "rounded-lg",
+                    "bg-black/40",
+                    "border",
+                    "border-emerald-400/40"
+                );
+
+                // description
+                const left = document.createElement("div");
+                left.innerHTML = createFormatedLabel(m); // convert string → element
+                const temp = document.createElement("div");
+                temp.innerHTML = left.innerHTML.trim();
+                left.innerHTML = "";
+                left.append(temp.firstChild);
+
+                // bouton attaque
+                const rightIcon = document.createElement("img");
+                rightIcon.src = "/static/img/ux/target_icon.svg";
+                rightIcon.classList.add("action-button-sf-icon");
+
+                const rightBtn = document.createElement("div");
+                rightBtn.classList.add("action-button-sf");
+                rightBtn.append(rightIcon);
+
+                rightBtn.addEventListener("click", () => {
+                    // TODO: attaquer via websocket avec module m.id
+                    console.log("Attaque avec module :", m.id);
+                });
+
+                wrapper.append(left, rightBtn);
+                list.append(wrapper);
+            });
+
+            contextZone.append(list);
+        }
+    );
+
+    grid.append(attackButton);
+
+    // ---------------------------
+    // ACTION : SCAN
+    // ---------------------------
+    const scanIcon = document.createElement("img");
+    scanIcon.src = "/static/img/ux/scan_resource_icon.svg";
+
+    const scanButton = createActionButton(
+        scanIcon,
+        "Scan",
+        () => {
+            if (!hasProbe) return showMissingModuleError();
+
+            contextZone.innerHTML = "Scan disponible (à implémenter)";
+            contextZone.classList.remove("hidden");
+        }
+    );
+
+    grid.append(scanButton);
+
+    // ---------------------------
+    // ACTION : E-WAR
+    // ---------------------------
+    const ewarIcon = document.createElement("span");
+    ewarIcon.classList.add("iconify", "game-icons--computing");
+
+    const ewarButton = createActionButton(
+        ewarIcon,
+        "E-War",
+        () => {
+            if (!hasEwar) return showMissingModuleError();
+
+            contextZone.innerHTML = "E-War disponible (à implémenter)";
+            contextZone.classList.remove("hidden");
+        }
+    );
+
+    grid.append(ewarButton);
+
+    // ---------------------------
+    // ACTION : REPAIRE
+    // ---------------------------
+    const repIcon = document.createElement("img");
+    repIcon.src = "/static/img/ux/repaire_icon.svg";
+
+    const repButton = createActionButton(
+        repIcon,
+        "Repaire",
+        () => {
+            if (!hasRepaire) return showMissingModuleError();
+
+            contextZone.innerHTML = "Réparation (à implémenter)";
+            contextZone.classList.remove("hidden");
+        }
+    );
+
+    grid.append(repButton);
+
+    // ---------------------------
+    // ACTION : COMMERCE
+    // ---------------------------
+    const tradeIcon = document.createElement("span");
+    tradeIcon.classList.add("iconify", "game-icons--trade");
+
+    const tradeButton = createActionButton(
+        tradeIcon,
+        "Commerce",
+        () => {
+            contextZone.innerHTML = "Commerce (à implémenter)";
+            contextZone.classList.remove("hidden");
+        }
+    );
+
+    grid.append(tradeButton);
+
+    return grid;
+}
+
+function createUnknownModal(modalId, data, is_npc) {
+
     let e = document.createElement('div');
     e.id = modalId;
     e.setAttribute('aria-hidden', true);
     e.setAttribute('tabindex', -1);
     e.classList.add(
-        'hidden',
-        'overflow-hidden',
-        'fixed',
-        'top-0',
-        'right-0',
-        'left-0',
-        'z-50',
-        'justify-center',
-        'items-center',
-        'w-full',
-        'h-full',
-        'md:inset-0',
-        'backdrop-brightness-50',
-        'border-1',
-        'bg-black/40',
-        'backdrop-blur-md',
-        'animate-modal-fade'
+        'hidden', 'overflow-hidden', 'fixed', 'top-0', 'right-0', 'left-0',
+        'z-50', 'justify-center', 'items-center', 'w-full', 'h-full', 'md:inset-0',
+        'backdrop-brightness-50', 'bg-black/40', 'backdrop-blur-md', 'animate-modal-fade'
     );
-    let player_id = modalId.split('_')[1];
 
     let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-50", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
+    container_div.classList.add("fixed","md:p-3","top-50","right-0","left-0","z-50","w-full","md:inset-0","h-screen");
 
+    // 🔥 Always RED background for UNKNOWN
     let content_div = document.createElement('div');
-    content_div.classList.add('flex', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600','items-center', 'gap-2');
+    content_div.classList.add(
+        'flex','rounded-lg','shadow','w-full','lg:w-1/4','rounded-t',
+        'justify-center','mx-auto','flex-col','border-2','border-red-800',
+        'bg-gradient-to-b','from-red-600/70','to-black/70','items-center','gap-2'
+    );
 
+    // --- HEADER ---
     let header_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
+    header_container_div.classList.add('md:p-5','p-1','flex','flex-row');
 
     let header_div = document.createElement('h3');
-    header_div.classList.add('lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'flex-wrap', 'text-justify', 'justify-center', 'text-white', 'p-1', 'flex', 'w-[95%]');
+    header_div.id = `${modalId}-header`;
+    header_div.classList.add(
+        'lg:text-xl','text-md','text-center','font-shadow','font-bold',
+        'flex-wrap','text-justify','justify-center','text-white','p-1','flex','w-[95%]'
+    );
+    header_div.textContent = "Unknown";
 
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
+    let header_close = document.createElement("img");
+    header_close.src = '/static/img/ux/close.svg';
+    header_close.classList.add('inline-block','w-[5%]','h-[5%]','cursor-pointer','hover:animate-pulse');
+    header_close.setAttribute('onclick', `open_close_modal('${e.id}')`);
 
-    let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
+    header_container_div.append(header_div, header_close);
 
-    let footer_close_button = document.createElement("div");
-    footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'text-xs', 'font-bold', 'font-shadow');
-    
-
-    let close_button_url = '/static/img/ux/close.svg';
-
-    let header_close_button = document.createElement("img");
-    header_close_button.src = close_button_url;
-    header_close_button.title = ``;
-    header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
-    
-    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-
+    // --- BODY ---
     let body_container_div = document.createElement('div');
-    body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+    body_container_div.classList.add('items-center','md:p-5','p-1');
 
-    let ship_statistics_container_label = document.createElement("label");
-    ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
-    ship_statistics_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base', 'mt-2');
+    // Placeholder generic image
+    let unknown_img = document.createElement('img');
+    unknown_img.src = "/static/img/ux/unknown_target_icon.svg";
+    unknown_img.alt = "unknown-target";
+    unknown_img.classList.add('mx-auto','object-center','h-[80px]','w-[80px]','pt-1','rounded-full');
+    body_container_div.append(unknown_img);
 
-    // START SIMPLE STATS
-    let ship_statistics_container_div = document.createElement('div');
-    ship_statistics_container_div.id = "ship-statistics";
+    // Scan required message
+    let msg = document.createElement('p');
+    msg.classList.add('text-white','font-shadow','text-center','italic','my-1','py-1','text-xs');
+    msg.textContent = "Scan required to identify this target";
+    body_container_div.append(msg);
 
-    let hp = color_per_percent(data.ship.current_hp, data.ship.max_hp);
-    let movement = color_per_percent(data.ship.current_movement, data.ship.max_movement);
+    // ACTIONS SECTION
+    let action_label = document.createElement("label");
+    action_label.classList.add('font-bold','text-white','font-shadow','text-justify','text-base','mt-5');
+    action_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
+    body_container_div.append(action_label);
 
-    let hp_container = document.createElement('div');
-    let hp_container_text = document.createElement('p');
-    let hp_container_label = document.createElement('label');
+    let actions_div = document.createElement('figure');
+    actions_div.classList.add('flex','items-center','justify-center','flex-wrap','gap-8');
+    actions_div.setAttribute('role','group');
 
-    let movement_container = document.createElement('div');
-    let movement_container_text = document.createElement('p');
-    let movement_container_label = document.createElement('label');
+    // Attack button
+    let attack_cont = document.createElement('div');
+    attack_cont.classList.add('inline-block','items-center','justify-center','w-[15%]','h-[15%]','hover:animate-pulse');
 
-    hp_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
-    hp_container_label.classList.add('text-xs', 'font-bold');
-    hp_container_text.classList.add('text-xs');
-    hp_container_label.textContent = "Hull points:";
-    hp_container_text.textContent = `${hp.status}`
-    hp_container_label.classList.add('text-white');
-    hp_container_text.classList.add(hp.color);
+    let attack_img = document.createElement('img');
+    attack_img.src = '/static/img/ux/target_icon.svg';
+    attack_img.classList.add('cursor-pointer','flex','justify-center');
+    let attack_cap = document.createElement('figcaption');
+    attack_cap.textContent = "Attack";
+    attack_cap.classList.add('text-white','font-shadow','font-bold','text-xs');
 
-    hp_container.append(hp_container_label);
-    hp_container.append(hp_container_text);
+    let attack_ap = document.createElement('figcaption');
+    attack_ap.textContent = "1 AP";
+    attack_ap.classList.add('text-white','font-shadow','font-bold','text-xs');
 
-    movement_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
-    movement_container.id = "movement-container";
-    movement_container_label.classList.add('text-xs', 'font-bold');
-    movement_container_text.classList.add('text-xs', movement.color, 'font-shadow');
-    movement_container_label.textContent = "Movement points:";
-    movement_container_text.textContent = `${movement.status}`;
-    movement_container_label.classList.add('text-white');
-    movement_container_text.id = "movement-container-text";
+    attack_cont.append(attack_img, attack_cap, attack_ap);
+    actions_div.append(attack_cont);
 
-    movement_container.append(movement_container_label);
-    movement_container.append(movement_container_text);
+    // Scan button
+    let scan_cont = document.createElement('div');
+    scan_cont.classList.add('inline-block','items-center','justify-center','w-[15%]','h-[15%]','hover:animate-pulse');
 
-    ship_statistics_container_div.append(hp_container);
-    ship_statistics_container_div.append(movement_container);
+    let scan_img = document.createElement('img');
+    scan_img.src = '/static/img/ux/scan_resource_icon.svg';
+    scan_img.classList.add('cursor-pointer','flex','justify-center');
 
-    // END SIMPLE STATS
+    let scan_cap = document.createElement('figcaption');
+    scan_cap.textContent = "Scan";
+    scan_cap.classList.add('text-white','font-shadow','font-bold','text-xs');
 
-    // START DETAILED STATS
-    let ship_detailed_statistics_container_div = document.createElement('div');
-    ship_detailed_statistics_container_div.id = "ship-statistics-detailed";
+    let scan_ap = document.createElement('figcaption');
+    scan_ap.textContent = "0 AP";
+    scan_ap.classList.add('text-white','font-shadow','font-bold','text-xs');
 
-    let hp_progress_bar_container_div = document.createElement('div');
-    let hp_progress_bar_container_content = document.createElement('div');
-    let hp_progress_bar_container_text = document.createElement('span');
-    let hp_progress_bar_container_label = document.createElement('label');
-    let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
-    hp_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
-    hp_progress_bar_container_label.textContent = "Hull points:"
-    hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
-    hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
-    hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
-    hp_progress_bar_container_content.style.width = parseInt(hp_percent.split('%')) > 100 ? "100%" : hp_percent;
+    scan_cont.append(scan_img, scan_cap, scan_ap);
+    actions_div.append(scan_cont);
 
-    hp_progress_bar_container_div.append(hp_progress_bar_container_text);
-    hp_progress_bar_container_div.append(hp_progress_bar_container_content);
+    body_container_div.append(actions_div);
 
-    let movement_progress_bar_container_div = document.createElement('div');
-    let movement_progress_bar_container_content = document.createElement('div');
-    let movement_progress_bar_container_text = document.createElement('span');
-    let movement_progress_bar_container_label = document.createElement('label');
-    let move_percent = `${Math.round((data.ship.current_movement * 100) / (data.ship.max_movement))}%`;
+    // Now the part with WEAPON MODULES (from currentPlayer)
+    // ACCORDION
+    let weapon_container = document.createElement('div');
+    weapon_container.id = "accordion-collapse";
+    weapon_container.classList.add('mt-5','hidden');
 
-    movement_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
-    movement_progress_bar_container_div.id = "movement-container-detailed";
-    movement_progress_bar_container_label.textContent = "Movement left:"
-    movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
-    movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
-    movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
-    movement_progress_bar_container_text.id = "movement-container-detailed-progress-bar-text";
-    movement_progress_bar_container_content.id = "movement-container-detailed-progress-bar-content";
-    movement_progress_bar_container_content.style.width = parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
+    // Category 1
+    let h3_cat1 = document.createElement('h3');
+    let btn_cat1 = document.createElement('button');
+    btn_cat1.type = "button";
+    btn_cat1.classList.add('flex','items-center','justify-between','w-full','p-2','font-bold','text-white','mb-1');
 
-    movement_progress_bar_container_div.append(movement_progress_bar_container_text);
-    movement_progress_bar_container_div.append(movement_progress_bar_container_content);
+    let btn_cat1_span = document.createElement('span');
+    btn_cat1_span.textContent = "Weaponry";
 
-    ship_detailed_statistics_container_div.append(hp_progress_bar_container_label);
-    ship_detailed_statistics_container_div.append(hp_progress_bar_container_div);
-    ship_detailed_statistics_container_div.append(movement_progress_bar_container_label);
-    ship_detailed_statistics_container_div.append(movement_progress_bar_container_div);
-    // END DETAILED STATS
+    let btn_cat1_svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    btn_cat1_svg.setAttribute("fill","none");
+    btn_cat1_svg.setAttribute("viewBox","0 0 10 6");
+    btn_cat1_svg.classList.add('w-3','h-3','rotate-180','shrink-0');
 
-    let ship_statistics_warning_msg_container_p = document.createElement('p');
-    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'font-shadow', 'text-xs', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold', 'font-shadow');
-    ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
-    ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str} `;
+    let btn_cat1_path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    btn_cat1_path.setAttribute("stroke","currentColor");
+    btn_cat1_path.setAttribute("stroke-linecap","round");
+    btn_cat1_path.setAttribute("stroke-linejoin","round");
+    btn_cat1_path.setAttribute("stroke-width","2");
+    btn_cat1_path.setAttribute("d","M9 5 5 1 1 5");
+    btn_cat1_svg.append(btn_cat1_path);
 
-    let ship_action_container = document.createElement("div");
-    ship_action_container.classList.add('mt-3');
-    ship_action_container.id = "item-action-container";
+    btn_cat1.append(btn_cat1_span, btn_cat1_svg);
+    h3_cat1.append(btn_cat1);
 
-    let ship_action_container_label = document.createElement("label");
-    ship_action_container_label.classList.add('font-bold', 'text-white', 'font-shadow', 'text-justify', 'text-base', 'font-shadow', 'mt-5');
-    ship_action_container_label.htmlFor = "item-action-container";
-    ship_action_container_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
+    let body_cat1 = document.createElement('div');
+    body_cat1.id = "offensive-module-body-1";
+    body_cat1.classList.add('hidden');
+    btn_cat1.addEventListener('click', ()=> display_attack_options(e.id, 1));
 
-    let ship_action_container_div = document.createElement('figure');
-    ship_action_container_div.classList.add('flex', 'items-center', 'justify-center', 'flex-wrap', 'gap-8');
-    ship_action_container_div.setAttribute('role', 'group');
+    // Populate modules from currentPlayer.ship.modules
+    for (let mod of currentPlayer.ship.modules) {
+        if (mod.type !== "WEAPONRY") continue;
 
-    let item_action_container_img_attack_container = document.createElement('div');
-    item_action_container_img_attack_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-    item_action_container_img_attack_container.addEventListener('click', function() {
-        let element = document.querySelector('#' + e.id);
-        let ship_attack_modules = element.querySelector('#accordion-collapse');
-        ship_attack_modules.classList.remove('hidden');
-    })
+        let mod_div = document.createElement('div');
+        mod_div.classList.add(
+            'flex','flex-col','py-2','px-4','mb-1','rounded-md','border',
+            'hover:border-gray-800','border-slate-400','hover:bg-slate-300',
+            'bg-gray-800','text-white','hover:text-gray-800','cursor-pointer',
+            'divide-y','divide-dashed','divide-white','hover:divide-gray-800'
+        );
 
-    let item_action_container_img_contact_container = document.createElement('div');
-    item_action_container_img_contact_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+        let mod_name = document.createElement('p');
+        mod_name.classList.add('font-bold');
+        mod_name.textContent = mod.name;
+        mod_div.append(mod_name);
 
-    let item_action_container_img_repaire_container = document.createElement('div');
-    item_action_container_img_repaire_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
+        // Damages, range, etc (UNCHANGED)
+        if (mod.effect.damage_type) {
+            let dmg_span = document.createElement('span');
+            dmg_span.innerHTML = `<small>Damage type: </small><small class="text-blue-500 font-bold">${mod.effect.damage_type}</small>`;
+            let dmg_val = document.createElement('span');
+            dmg_val.innerHTML = `<small>Damages: </small><small class="text-blue-500 font-bold">${mod.effect.min_damage} - ${mod.effect.max_damage}</small>`;
+            let range = document.createElement('span');
+            range.innerHTML = `<small>Range: </small><small class="text-blue-500 font-bold">${mod.effect.range}</small>`;
+            let cth = document.createElement('span');
+            cth.innerHTML = `<small>Chance to hit: </small><small class="text-blue-500 font-bold">100%</small>`;
 
-    let item_action_container_img_attack_btn_container = document.createElement('div');
-    item_action_container_img_attack_btn_container.id = "action-btn";
-    item_action_container_img_attack_btn_container.classList.add('w-full', 'hidden');
+            mod_div.append(dmg_span, dmg_val, range, cth);
+        }
 
-    let item_action_container_img_attack = document.createElement('img');
-    item_action_container_img_attack.src = '/static/img/ux/target_icon.svg';
-    item_action_container_img_attack.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_attack_figcaption = document.createElement('figcaption');
-    item_action_container_img_attack_figcaption.textContent = "Attack";
-    item_action_container_img_attack_figcaption.classList.add('text-white', 'font-shadow', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_attack_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_attack_figcaption_ap.textContent = "1 AP";
-    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_contact = document.createElement('img');
-    item_action_container_img_contact.src = '/static/img/ux/contact_icon.svg';
-    item_action_container_img_contact.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_contact_figcaption = document.createElement('figcaption');
-    item_action_container_img_contact_figcaption.textContent = "Contact";
-    item_action_container_img_contact_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_contact_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_contact_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs', 'invisible');
-
-    let item_action_container_img_repaire = document.createElement('img');
-    item_action_container_img_repaire.src = '/static/img/ux/repaire_icon.svg';
-    item_action_container_img_repaire.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_repaire_figcaption = document.createElement('figcaption');
-    item_action_container_img_repaire_figcaption.textContent = "Repaire";
-    item_action_container_img_repaire_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_repaire_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_repaire_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_attack_btn_img = document.createElement('img');
-    item_action_container_img_attack_btn_img.src = '/static/img/ux/target_icon.svg';
-    item_action_container_img_attack_btn_img.classList.add('cursor-pointer', 'flex', 'inline-block', 'mx-auto', 'object-center', 'justify-center', 'w-[15%]', 'h-[15%]');
-    item_action_container_img_attack_btn_img.addEventListener('click', function() {
-        check_radio_btn_and_swap_color(e.id, module_item_content.id);
-    })
-
-    item_action_container_img_attack_container.append(item_action_container_img_attack);
-    item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption);
-    item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption_ap);
-
-    item_action_container_img_contact_container.append(item_action_container_img_contact);
-    item_action_container_img_contact_container.append(item_action_container_img_contact_figcaption);
-    item_action_container_img_contact_container.append(item_action_container_img_contact_figcaption_ap);
-
-    item_action_container_img_repaire_container.append(item_action_container_img_repaire);
-    item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption);
-    item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
-
-
-    if (!is_npc) {
-
-        let target_img = document.createElement('img');
-        target_img.src = `/static/img/users/${player_id}/0.gif`
-        target_img.style.width = "30%";
-        target_img.style.height = "30%";
-        target_img.style.margin = "0 auto";
-
-        header_div.textContent = `Unknown`;
-        content_div.classList.add('bg-gradient-to-b', 'from-cyan-400/70', 'to-black/70');
-
-        body_container_div.append(target_img);
-        ship_action_container_div.append(item_action_container_img_attack_container);
-        ship_action_container_div.append(item_action_container_img_contact_container);
-        ship_action_container_div.append(item_action_container_img_repaire_container);
-
-    } else {
-
-        header_div.textContent = `Unknown`;
-        content_div.classList.add('bg-gradient-to-b', 'from-red-600/70', 'to-black/70');
-        ship_action_container_div.append(item_action_container_img_attack_container);
+        body_cat1.append(mod_div);
     }
 
-    for (let defense_module_i in data.ship.modules) {
-        if (data.ship.modules[defense_module_i]["type"].includes('DEFENSE') && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
-            let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase();
-            // START SIMPLE DEFENSE MODULE
-            let module_status_color = color_per_percent(data.ship["current_"+defense_name+"_defense"], data.ship.modules[defense_module_i].effect.defense);
-            let module_content_container = document.createElement('div')
-            let module_content_label = document.createElement('label');
-            let module_content_text = document.createElement('p');
-
-            module_content_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
-            module_content_text.classList.add(module_status_color.color);
-            module_content_label.classList.add('text-white');
-            module_content_label.textContent = `${data.ship.modules[defense_module_i].effect.defense_type}:`;
-            module_content_text.textContent = `${module_status_color.status}`;
-
-            module_content_container.append(module_content_label);
-            module_content_container.append(module_content_text);
-            ship_statistics_container_div.append(module_content_container);
-            // END SIMPLE DEFENSE MODULE
-            
-            // START DETAILED DEFENSE MODULE
-            let defense_value_detailed = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
-            let module_element_detailed = document.createElement('div');
-            let module_content_detailed_label = document.createElement("label");
-            let module_content_detailed = document.createElement('div');
-            let module_content_detailed_text = document.createElement('span');
-
-            module_content_detailed_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
-            module_content_detailed_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
-            module_element_detailed.classList.add('w-full', 'bg-red-600', 'relative');
-            module_content_detailed.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-            module_content_detailed_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
-            module_content_detailed_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
-            module_content_detailed.style.width = parseInt(defense_value_detailed.split('%')) > 100 ? "100%" : defense_value_detailed;
-
-            module_element_detailed.append(module_content_detailed_text);
-            module_element_detailed.append(module_content_detailed);
-            ship_detailed_statistics_container_div.append(module_content_detailed_label);
-            ship_detailed_statistics_container_div.append(module_element_detailed);
-            // END DETAILED DEFENSE MODULE
-        }
-    }
-
-    let ship_offensive_module_container = document.createElement('div');
-    ship_offensive_module_container.classList.add('mt-5', 'hidden');
-    ship_offensive_module_container.id = "accordion-collapse";
-
-    let ship_offensive_module_container_h3_cat_1 = document.createElement('h3');
-    let ship_offensive_module_container_h3_cat_2 = document.createElement('h3');
-    let ship_offensive_module_container_h3_cat_1_btn = document.createElement('button');
-    let ship_offensive_module_container_h3_cat_1_btn_span = document.createElement('span');
-    let ship_offensive_module_container_h3_cat_1_btn_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    let ship_offensive_module_container_h3_cat_1_btn_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    let ship_offensive_module_container_h3_cat_2_btn = document.createElement('button');
-    let ship_offensive_module_container_h3_cat_2_btn_span = document.createElement('span');
-    let ship_offensive_module_container_h3_cat_2_btn_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    let ship_offensive_module_container_h3_cat_2_btn_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    let ship_offensive_module_container_cat_1_div = document.createElement('div');
-    let ship_offensive_module_container_cat_2_div = document.createElement('div');
-
-    ship_offensive_module_container_h3_cat_1.id = "offensive-module-heading-1";
-
-    ship_offensive_module_container_h3_cat_1_btn.setAttribute('type', 'button');
-    ship_offensive_module_container_h3_cat_1_btn.classList.add(
-        'flex',
-        'items-center',
-        'justify-between',
-        'w-full',
-        'p-2',
-        'font-bold',
-        'rtl:text-right',
-        'text-white',
-        'mb-1',
+    weapon_container.append(
+        h3_cat1,
+        body_cat1
     );
 
-    ship_offensive_module_container_h3_cat_1_btn.addEventListener('click', function() {
-        display_attack_options(e.id, 1)
-    });
+    body_container_div.append(weapon_container);
 
-    ship_offensive_module_container_h3_cat_1_btn_span.textContent = "Weaponry";
-    ship_offensive_module_container_h3_cat_1_btn_svg.id = "offensive-module-menu-svg-1";
-    ship_offensive_module_container_h3_cat_1_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
-    ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("fill", "none");
-    ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("viewBox", "0 0 10 6");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke", "currentColor");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-linecap", "round");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-linejoin", "round");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-width", "2");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("d", "M9 5 5 1 1 5");
+    // --- FOOTER ---
+    let footer_div = document.createElement('div');
+    footer_div.classList.add('md:p-5','p-1','flex','flex-row','w-[100%]','justify-end','align-center');
 
-    ship_offensive_module_container_cat_1_div.id = "offensive-module-body-1";
-    ship_offensive_module_container_cat_1_div.classList.add('hidden');
-    ship_offensive_module_container_cat_1_div.setAttribute('aria-labelledby', "offensive-module-heading-1");
+    let footer_close = document.createElement("img");
+    footer_close.src = "/static/img/ux/close.svg";
+    footer_close.classList.add('inline-block','w-[5%]','h-[5%]','cursor-pointer','hover:animate-pulse');
+    footer_close.setAttribute('onclick', `open_close_modal('${e.id}')`);
+    footer_div.append(footer_close);
 
-    ship_offensive_module_container_h3_cat_2_btn.setAttribute('type', 'button');
-    ship_offensive_module_container_h3_cat_2_btn.classList.add(
-        'flex',
-        'items-center',
-        'justify-between',
-        'w-full',
-        'p-2',
-        'font-bold',
-        'rtl:text-right',
-        'text-white',
-        'mb-1',
-        'font-shadow',
-    );
-
-    ship_offensive_module_container_h3_cat_2_btn.addEventListener('click', function() {
-        display_attack_options(e.id, 2)
-    });
-
-    ship_offensive_module_container_h3_cat_2.id = "offensive-module-heading-2";
-
-    ship_offensive_module_container_h3_cat_2_btn_span.textContent = "Electronic Warfare";
-    ship_offensive_module_container_h3_cat_2_btn_svg.id = "offensive-module-menu-svg-2";
-    ship_offensive_module_container_h3_cat_2_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
-    ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("fill", "none");
-    ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("viewBox", "0 0 10 6");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke", "currentColor");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-linecap", "round");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-linejoin", "round");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-width", "2");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("d", "M9 5 5 1 1 5");
-
-    ship_offensive_module_container_cat_2_div.id = "offensive-module-body-2";
-    ship_offensive_module_container_cat_2_div.classList.add('hidden');
-    ship_offensive_module_container_cat_2_div.setAttribute('aria-labelledby', "offensive-module-heading-2");
-
-        if(currentPlayer.ship.ship_scanning_module_available){
-            ship_statistics_container_div.classList.add('hidden');
-            ship_detailed_statistics_container_div.classList.remove('hidden');
-            ship_statistics_warning_msg_container_p.classList.add('hidden');
-        }else{
-            ship_statistics_container_div.classList.remove('hidden');
-            ship_detailed_statistics_container_div.classList.add('hidden');
-            ship_statistics_warning_msg_container_p.classList.remove('hidden');
-        }
-        for (let module_i in currentPlayer.ship.modules) {
-            let module_item_content = document.createElement('div');
-            let module_item_p = document.createElement('p');
-
-            module_item_content.classList.add(
-                'flex',
-                'flex-col',
-                'py-2',
-                'px-4',
-                'mb-1',
-                'rounded-md',
-                'border',
-                'hover:border-gray-800',
-                'border-slate-400',
-                'hover:bg-slate-300',
-                'bg-gray-800',
-                'text-white',
-                'hover:text-gray-800',
-                'cursor-pointer',
-                'divide-y',
-                'divide-dashed',
-                'divide-white',
-                'hover:divide-gray-800',
-            );
-            module_item_p.classList.add('font-bold');
-            module_item_p.textContent = currentPlayer.ship.modules[module_i]["name"];
-            module_item_content.append(module_item_p);
-            module_item_content.classList.add('module-container')
-            module_item_content.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
-            module_item_content.addEventListener('click', function() {
-                check_radio_btn_and_swap_color(e.id, module_item_content.id);
-            })
-
-            let radio_btn = document.createElement('input');
-            radio_btn.type = "radio";
-            radio_btn.name = "module_choice";
-            radio_btn.value = currentPlayer.ship.modules[module_i]["id"];
-            radio_btn.classList.add('hidden');
-
-            if (currentPlayer.ship.modules[module_i]["type"] == "WEAPONRY") {
-
-                if ("damage_type" in currentPlayer.ship.modules[module_i]["effect"]) {
-                    let damage_type_span = document.createElement('span');
-                    let damage_type_small = document.createElement('small');
-                    let damage_type_small_value = document.createElement('small');
-                    let damage_span = document.createElement('span');
-                    let damage_small = document.createElement('small');
-                    let damage_small_value = document.createElement('small');
-                    let range_span = document.createElement('span');
-                    let range_small = document.createElement('small');
-                    let range_small_value = document.createElement('small');
-                    let range_finder_span = document.createElement('span');
-                    let chance_to_hit_span = document.createElement('span');
-                    let chance_to_hit_small = document.createElement('small');
-                    let chance_to_hit_small_value = document.createElement('small');
-                    let damage_type_value = currentPlayer.ship.modules[module_i]["effect"]["damage_type"];
-                    let range_value = currentPlayer.ship.modules[module_i]["effect"]["range"];
-                    let min_damage_value = currentPlayer.ship.modules[module_i]["effect"]["min_damage"];
-                    let max_damage_value = currentPlayer.ship.modules[module_i]["effect"]["max_damage"];
-
-                    let id_splitted = e.id.split('_');
-                    let target_id = id_splitted[1];
-                    let target_type = id_splitted[0];
-
-                    damage_type_small.textContent = "Damage type : ";
-                    damage_type_small.classList.add('font-sans');
-                    damage_type_small_value.textContent = damage_type_value;
-                    damage_type_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    damage_type_span.append(damage_type_small);
-                    damage_type_span.append(damage_type_small_value);
-
-                    damage_small.textContent = "Damages : ";
-                    damage_small.classList.add('font-sans');
-                    damage_small_value.textContent = `${min_damage_value} - ${max_damage_value}`;
-                    damage_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    damage_span.append(damage_small);
-                    damage_span.append(damage_small_value);
-
-                    range_small.textContent = "Range : ";
-                    range_small.classList.add('font-sans');
-                    range_small_value.textContent = `${range_value}`;
-                    range_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    range_span.append(range_small);
-                    range_span.append(range_small_value);
-
-                    chance_to_hit_small.textContent = "Chance to hit : ";
-                    chance_to_hit_small.classList.add('font-sans');
-                    chance_to_hit_small_value.textContent = "100%";
-                    chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    chance_to_hit_span.append(chance_to_hit_small); 
-                    chance_to_hit_span.append(chance_to_hit_small_value);
-
-                    range_finder_span.textContent = "Your target is out of range";
-                    range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                    range_finder_span.id = "range-finder-warning-msg";
-                    if(currentPlayer.ship.modules_range.length > 0){
-                        let array_module = Array.from(currentPlayer.ship.modules_range[target_type])
-                        module_path = array_module.filter(function (module, index) {
-                            if(module.target_id == target_id){
-                                return module
-                            }
-                        });
-                            
-                        for(let module_container in module_path){
-                            if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
-                                if (module_path[module_container]['is_in_range']) {
-                                    range_finder_span.classList.add('hidden');
-                                }else{
-                                    range_finder_span.classList.remove('hidden');
-                                }
-                            }
-                        }
-
-                        module_item_content.append(radio_btn);
-                        module_item_content.append(damage_type_span);
-                        module_item_content.append(damage_span);
-                        module_item_content.append(range_span);
-                        module_item_content.append(chance_to_hit_span);
-                        module_item_content.append(range_finder_span);
-                    }
-
-                } else {
-
-                    let other_bonus_span = document.createElement('span');
-                    let other_bonus_small = document.createElement('small');
-                    let other_bonus_small_value = document.createElement('small');
-
-                    other_bonus_small.textContent = "accuracy bonus : ";
-                    other_bonus_small_value.textContent = `${currentPlayer.ship.modules[module_i]["effect"]["aiming_increase"]} %`;
-                    other_bonus_small_value.classList.add('text-blue-500', 'font-bold');
-
-                    module_item_content.append(radio_btn);
-                    other_bonus_span.append(other_bonus_small);
-                    other_bonus_span.append(other_bonus_small_value);
-
-                    module_item_content.append(other_bonus_span);
-
-                }
-
-                ship_offensive_module_container_cat_1_div.append(module_item_content);
-
-            } else if (currentPlayer.ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
-                module_item_p.textContent = currentPlayer.ship.modules[module_i]["name"];
-                module_item_p.classList.add('font-bold');
-                module_item_p.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
-                module_item_content.append(module_item_p);
-
-                for (let [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
-                    let module_item_small_effect = document.createElement('span');
-                    let module_item_small_effect_name = document.createElement('small');
-                    let module_item_small_effect_value = document.createElement('small');
-                    module_item_small_effect_name.classList.add('italic');
-                    module_item_small_effect_value.classList.add('text-blue-500', 'font-bold');
-                    module_item_small_effect_name.textContent = `${key.replace('_',' ')}: `;
-                    module_item_small_effect_value.textContent = `${value}`;
-
-                    module_item_content.append(radio_btn);
-                    module_item_small_effect.append(module_item_small_effect_name);
-                    module_item_small_effect.append(module_item_small_effect_value);
-                    module_item_content.append(module_item_small_effect);
-                }
-                    
-                let id_splitted = e.id.split('_');
-                let target_id = id_splitted[1];
-                let target_type = id_splitted[0];
-                    
-                let module_item_small_effect_range_finder_span = document.createElement('span');
-                module_item_small_effect_range_finder_span.textContent = "Your target is out of range";
-                module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
-
-                module_range_array = currentPlayer.ship.modules_range[target_type]
-                if(typeof(module_range_array) != "undefined"){
-                    for(let module in module_range_array){
-                        is_in_range = module_range_array[module].is_in_range;
-                        if(is_in_range){
-                            module_item_small_effect_range_finder_span.classList.add('hidden');
-                        }else{
-                            module_item_small_effect_range_finder_span.classList.remove('hidden');
-                        }
-                        module_item_content.append(module_item_small_effect_range_finder_span)
-                        ship_offensive_module_container_cat_2_div.append(module_item_content);
-                    }
-                }
-            }
-        }
-        item_action_container_img_attack_btn_container.append(item_action_container_img_attack_btn_img);
-
-    ship_offensive_module_container_h3_cat_1_btn_svg.append(ship_offensive_module_container_h3_cat_1_btn_svg_path);
-    ship_offensive_module_container_h3_cat_2_btn_svg.append(ship_offensive_module_container_h3_cat_2_btn_svg_path);
-
-    ship_offensive_module_container_h3_cat_1_btn.append(ship_offensive_module_container_h3_cat_1_btn_span);
-    ship_offensive_module_container_h3_cat_1_btn.append(ship_offensive_module_container_h3_cat_1_btn_svg);
-    ship_offensive_module_container_h3_cat_2_btn.append(ship_offensive_module_container_h3_cat_2_btn_span);
-    ship_offensive_module_container_h3_cat_2_btn.append(ship_offensive_module_container_h3_cat_2_btn_svg);
-
-    ship_offensive_module_container_h3_cat_1.append(ship_offensive_module_container_h3_cat_1_btn);
-    ship_offensive_module_container_h3_cat_2.append(ship_offensive_module_container_h3_cat_2_btn);
-
-    ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_1);
-    ship_offensive_module_container.append(ship_offensive_module_container_cat_1_div);
-    ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_2);
-    ship_offensive_module_container.append(ship_offensive_module_container_cat_2_div);
-    ship_offensive_module_container.append(item_action_container_img_attack_btn_container);
-
-    footer_container_div.append(footer_close_button);
-
-    body_container_div.append(ship_statistics_container_label);
-    body_container_div.append(ship_statistics_container_div);
-    body_container_div.append(ship_statistics_warning_msg_container_p);
-    body_container_div.append(ship_detailed_statistics_container_div);
-    body_container_div.append(ship_action_container_label);
-    body_container_div.append(ship_action_container_div);
-    body_container_div.append(ship_offensive_module_container);
-    header_container_div.append(header_div);
-    header_container_div.append(header_close_button);
+    // Final assembly
     content_div.append(header_container_div);
     content_div.append(body_container_div);
-    content_div.append(footer_container_div);
+    content_div.append(footer_div);
     container_div.append(content_div);
     e.append(container_div);
 
     return e;
-    
 }
 
 function create_pc_npc_modal(modalId, data, is_npc) {
-    let e = document.createElement('div');
-    e.id = modalId;
-    e.setAttribute('aria-hidden', true);
-    e.setAttribute('tabindex', -1);
-    e.classList.add(
-        'hidden',
-        'overflow-hidden',
-        'fixed',
-        'top-0',
-        'right-0',
-        'left-0',
-        'z-50',
-        'justify-center',
-        'items-center',
-        'w-full',
-        'h-full',
-        'md:inset-0',
-        'backdrop-brightness-50',
-        'border-1',
-        'bg-black/40',
-        'backdrop-blur-md',
-        'animate-modal-fade'
-    );
-    let player_id = modalId.split('_')[1];
 
-    let container_div = document.createElement('div');
-    container_div.classList.add("fixed", "md:p-3", "top-50", "right-0", "left-0", "z-50", "w-full", "md:inset-0", "h-screen");
+    // === MODAL SHELL ===
+    const modal = createStandardModalShell(modalId, {
+        border: is_npc ? "border-red-800" : "border-cyan-600",
+        gradientFrom: is_npc ? "from-red-700/70" : "from-cyan-600/70",
+        gradientTo: "to-black/70"
+    });
 
-    let content_div = document.createElement('div');
-    content_div.classList.add('flex', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4'  , 'rounded-t', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600','items-center', 'gap-2');
+    // === HEADER ===
+    modal.header.setTitle(data.player?.name?.toUpperCase() || data.name?.toUpperCase());
+    modal.header.setCloseButton(modalId);
 
-    let header_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
+    // === BODY ===
 
-    let header_div = document.createElement('h3');
-    header_div.classList.add('flex', 'lg:text-xl', 'text-md', 'text-center', 'font-shadow', 'font-bold', 'rounded-t', 'p-1', 'w-[95%]', 'justify-center', 'text-white');
+    //
+    // 1 — IMAGE
+    //
+    const shipImage = buildPcNpcImage(data, is_npc);
+    modal.body.addSection(shipImage);
 
-    header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
+    //
+    // 2 — STATS SECTION
+    //
+    const statsSection = buildShipStatsSection(data);
+    modal.body.addSection(statsSection.ship_statistics_container_label);
+    modal.body.addSection(statsSection.ship_statistics_warning_msg_container_p);
+    modal.body.addSection(statsSection.ship_detailed_statistics_container_div);
 
-    let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-center', 'align-right');
+    //
+    // 3 — MODULES LABEL
+    //
+    const modulesLabel = document.createElement("label");
+    modulesLabel.textContent = "MODULES:";
+    modulesLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-4");
+    modal.body.addSection(modulesLabel);
 
-    let footer_close_button = document.createElement("div");
-    footer_close_button.textContent = `${data.actions.close}`;
-    footer_close_button.classList.add('inline-block', 'flex', 'cursor-pointer', 'hover:animate-pulse', 'p-5', 'text-white', 'text-xs', 'font-bold', 'font-shadow');
-    
+    //
+    // 4 — MODULES SECTION (weaponry / ewar / defensive / utility / probe)
+    //
+    const modulesSection = buildModulesSection(modalId, data);
+    modal.body.addSection(modulesSection);
 
-    let close_button_url = '/static/img/ux/close.svg';
+    //
+    // 5 — ACTIONS LABEL
+    //
+    const actionsLabel = document.createElement("label");
+    actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
+    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-4");
+    modal.body.addSection(actionsLabel);
 
-    let header_close_button = document.createElement("img");
-    header_close_button.src = close_button_url;
-    header_close_button.title = ``;
-    header_close_button.classList.add('inline-block', 'w-[5%]', 'h-[5%]', 'flex', 'justify-end', 'align-top', 'cursor-pointer', 'hover:animate-pulse');
-    
-    header_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
-    footer_close_button.setAttribute('onclick', "open_close_modal('" + e.id + "')");
+    //
+    // 7 — ACTIONS SECTION
+    //
 
-    let body_container_div = document.createElement('div');
-    body_container_div.classList.add('items-center', 'md:p-5', 'p-1');
+    // zone d’erreur
+    const errorZone = document.createElement("div");
+    errorZone.classList.add("action-error-msg", "hidden");
+    errorZone.id = modalId + "-action-error-zone";
+    modal.body.addSection(errorZone);
 
+    const actionsSection = buildActionsSection(modalId, data, is_npc);
+    modal.body.addSection(actionsSection);
+
+    //
+    // 8 — ACTION CONTEXT ZONE (hidden)
+    //
+    const contextZone = document.createElement("div");
+    contextZone.id = modalId + "-action-context";
+    contextZone.classList.add("hidden", "w-full", "mt-3");
+    modal.body.addSection(contextZone);
+
+    //
+    // === FOOTER ===
+    //
+    modal.footer.setCloseButton(modalId);
+
+    //
+    // === POST INIT LOGIC ===
+    //
+    setTimeout(() => activateExclusiveAccordions(modal.root), 50);
+
+    return modal.root;
+}
+
+function buildShipStatsSection(data) {
+    // LABEL GENERAL
     let ship_statistics_container_label = document.createElement("label");
     ship_statistics_container_label.textContent = `${data.actions.translated_statistics_label.toUpperCase()}: `;
-    ship_statistics_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-justify', 'text-base', 'mt-2');
+    ship_statistics_container_label.classList.add(
+        'w-full',
+        'font-bold',
+        'font-shadow',
+        'text-white',
+        'text-justify',
+        'text-base',
+        'mt-2',
+    );
 
-    // START SIMPLE STATS
-    let ship_statistics_container_div = document.createElement('div');
-    ship_statistics_container_div.id = "ship-statistics";
-
-    let hp = color_per_percent(data.ship.current_hp, data.ship.max_hp);
-    let movement = color_per_percent(data.ship.current_movement, data.ship.max_movement);
-
-    let hp_container = document.createElement('div');
-    let hp_container_text = document.createElement('p');
-    let hp_container_label = document.createElement('label');
-
-    let movement_container = document.createElement('div');
-    let movement_container_text = document.createElement('p');
-    let movement_container_label = document.createElement('label');
-
-    hp_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
-    hp_container_label.classList.add('text-xs', 'font-bold');
-    hp_container_text.classList.add('text-xs');
-    hp_container_label.textContent = "Hull points:";
-    hp_container_text.textContent = `${hp.status}`
-    hp_container_label.classList.add('text-white');
-    hp_container_text.classList.add(hp.color);
-
-    hp_container.append(hp_container_label);
-    hp_container.append(hp_container_text);
-
-    movement_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
-    movement_container.id = "movement-container";
-    movement_container_label.classList.add('text-xs', 'font-bold');
-    movement_container_text.classList.add('text-xs', movement.color, 'font-shadow');
-    movement_container_label.textContent = "Movement points:";
-    movement_container_text.textContent = `${movement.status}`;
-    movement_container_label.classList.add('text-white');
-
-    movement_container.append(movement_container_label);
-    movement_container.append(movement_container_text);
-
-    ship_statistics_container_div.append(hp_container);
-    ship_statistics_container_div.append(movement_container);
-
-    // END SIMPLE STATS
-
-    // START DETAILED STATS
+    // --- START DETAILED STATS (inchangé) ---
     let ship_detailed_statistics_container_div = document.createElement('div');
     ship_detailed_statistics_container_div.id = "ship-statistics-detailed";
+    ship_detailed_statistics_container_div.classList.add('w-full', 'p-2')
 
+    // HP barre détaillée
     let hp_progress_bar_container_div = document.createElement('div');
     let hp_progress_bar_container_content = document.createElement('div');
     let hp_progress_bar_container_text = document.createElement('span');
     let hp_progress_bar_container_label = document.createElement('label');
     let hp_percent = `${Math.round((data.ship.current_hp * 100) / (data.ship.max_hp))}%`;
-    hp_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
-    hp_progress_bar_container_label.textContent = "Hull points:"
-    hp_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
-    hp_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-    hp_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
+
+    hp_progress_bar_container_div.classList.add('bg-red-600', 'relative', 'mx-auto', 'border-emerald-400');
+    hp_progress_bar_container_label.textContent = "Hull points:";
+    hp_progress_bar_container_label.classList.add(
+        'font-bold',
+        'font-shadow',
+        'text-white',
+        'items-center', 
+        'justify-between', 
+        'w-full'
+    );
+    hp_progress_bar_container_content.classList.add('bg-blue-600', 'border-emerald-400', 'border-1', 'leading-none', 'h-[15px]');
+    hp_progress_bar_container_text.classList.add(
+        'w-full',
+        'absolute',
+        'z-10',
+        'text-center',
+        'text-xs',
+        'font-bold',
+        'font-shadow',
+        'text-blue-100',
+        'text-center'
+    );
     hp_progress_bar_container_text.textContent = `${data.ship.current_hp} / ${data.ship.max_hp}`;
-    hp_progress_bar_container_content.style.width = parseInt(hp_percent.split('%')) > 100 ? "100%" : hp_percent;
+    hp_progress_bar_container_content.style.width =
+        parseInt(hp_percent.split('%')) > 100 ? "100%" : hp_percent;
 
     hp_progress_bar_container_div.append(hp_progress_bar_container_text);
     hp_progress_bar_container_div.append(hp_progress_bar_container_content);
 
+    // Movement barre détaillée
     let movement_progress_bar_container_div = document.createElement('div');
     let movement_progress_bar_container_content = document.createElement('div');
     let movement_progress_bar_container_text = document.createElement('span');
@@ -1418,12 +1753,33 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
     movement_progress_bar_container_div.classList.add('w-full', 'bg-red-600', 'relative');
     movement_progress_bar_container_div.id = "movement-container-detailed";
-    movement_progress_bar_container_label.textContent = "Movement left:"
-    movement_progress_bar_container_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
+    movement_progress_bar_container_label.textContent = "Movement left:";
+    movement_progress_bar_container_label.classList.add(
+        'font-bold',
+        'font-shadow',
+        'text-white',
+        'items-center', 
+        'justify-between', 
+        'w-full'
+    );
     movement_progress_bar_container_content.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-    movement_progress_bar_container_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'text-blue-100', 'font-shadow', 'text-center');
-    movement_progress_bar_container_text.textContent = `${data.ship.current_movement} / ${data.ship.max_movement}`;
-    movement_progress_bar_container_content.style.width = parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
+    movement_progress_bar_container_text.classList.add(
+        'w-full',
+        'absolute',
+        'z-10',
+        'text-center',
+        'text-xs',
+        'font-bold',
+        'text-blue-100',
+        'font-shadow',
+        'text-center'
+    );
+    movement_progress_bar_container_text.textContent =
+        `${data.ship.current_movement} / ${data.ship.max_movement}`;
+    movement_progress_bar_container_text.id = "movement-container-detailed-progress-bar-text";
+    movement_progress_bar_container_content.id = "movement-container-detailed-progress-bar-content";
+    movement_progress_bar_container_content.style.width =
+        parseInt(move_percent.split('%')) > 100 ? "100%" : move_percent;
 
     movement_progress_bar_container_div.append(movement_progress_bar_container_text);
     movement_progress_bar_container_div.append(movement_progress_bar_container_content);
@@ -1432,484 +1788,28 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     ship_detailed_statistics_container_div.append(hp_progress_bar_container_div);
     ship_detailed_statistics_container_div.append(movement_progress_bar_container_label);
     ship_detailed_statistics_container_div.append(movement_progress_bar_container_div);
-    // END DETAILED STATS
+    // --- END DETAILED STATS ---
 
+    // WARNING MSG (inchangé)
     let ship_statistics_warning_msg_container_p = document.createElement('p');
-    ship_statistics_warning_msg_container_p.classList.add('text-justify', 'font-shadow', 'text-xs', 'lg:p-1', 'text-red-600', 'animate-pulse', 'font-bold', 'font-shadow');
+    ship_statistics_warning_msg_container_p.classList.add(
+        'text-justify',
+        'font-shadow',
+        'text-xs',
+        'lg:p-1',
+        'text-red-600',
+        'animate-pulse',
+        'font-bold',
+        'font-shadow'
+    );
     ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
     ship_statistics_warning_msg_container_p.textContent = `${data.actions.translated_statistics_str} `;
 
-    let ship_action_container = document.createElement("div");
-    ship_action_container.classList.add('mt-3');
-    ship_action_container.id = "item-action-container";
-
-    let ship_action_container_label = document.createElement("label");
-    ship_action_container_label.classList.add('font-bold', 'text-white', 'font-shadow', 'text-justify', 'text-base', 'font-shadow', 'mt-5');
-    ship_action_container_label.htmlFor = "item-action-container";
-    ship_action_container_label.textContent = `${data.actions.action_label.toUpperCase()}: `;
-
-    let ship_action_container_div = document.createElement('figure');
-    ship_action_container_div.classList.add('flex', 'items-center', 'justify-center', 'flex-wrap', 'gap-8');
-    ship_action_container_div.setAttribute('role', 'group');
-
-    let item_action_container_img_attack_container = document.createElement('div');
-    item_action_container_img_attack_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-    item_action_container_img_attack_container.addEventListener('click', function() {
-        let element = document.querySelector('#' + e.id);
-        let ship_attack_modules = element.querySelector('#accordion-collapse');
-        ship_attack_modules.classList.remove('hidden');
-    })
-
-    let item_action_container_img_contact_container = document.createElement('div');
-    item_action_container_img_contact_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-    let item_action_container_img_repaire_container = document.createElement('div');
-    item_action_container_img_repaire_container.classList.add('inline-block', 'items-center', 'justify-center', 'w-[15%]', 'h-[15%]', 'hover:animate-pulse');
-
-    let item_action_container_img_attack_btn_container = document.createElement('div');
-    item_action_container_img_attack_btn_container.id = "action-btn";
-    item_action_container_img_attack_btn_container.classList.add('w-full', 'hidden');
-
-    let item_action_container_img_attack = document.createElement('img');
-    item_action_container_img_attack.src = '/static/img/ux/target_icon.svg';
-    item_action_container_img_attack.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_attack_figcaption = document.createElement('figcaption');
-    item_action_container_img_attack_figcaption.textContent = "Attack";
-    item_action_container_img_attack_figcaption.classList.add('text-white', 'font-shadow', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_attack_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_attack_figcaption_ap.textContent = "1 AP";
-    item_action_container_img_attack_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_contact = document.createElement('img');
-    item_action_container_img_contact.src = '/static/img/ux/contact_icon.svg';
-    item_action_container_img_contact.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_contact_figcaption = document.createElement('figcaption');
-    item_action_container_img_contact_figcaption.textContent = "Contact";
-    item_action_container_img_contact_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_contact_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_contact_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_contact_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs', 'invisible');
-
-    let item_action_container_img_repaire = document.createElement('img');
-    item_action_container_img_repaire.src = '/static/img/ux/repaire_icon.svg';
-    item_action_container_img_repaire.classList.add('cursor-pointer', 'flex', 'justify-center');
-
-    let item_action_container_img_repaire_figcaption = document.createElement('figcaption');
-    item_action_container_img_repaire_figcaption.textContent = "Repaire";
-    item_action_container_img_repaire_figcaption.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_repaire_figcaption_ap = document.createElement('figcaption');
-    item_action_container_img_repaire_figcaption_ap.textContent = "0 AP";
-    item_action_container_img_repaire_figcaption_ap.classList.add('text-white', 'font-shadow', 'flex', 'justify-center', 'font-bold', 'text-xs');
-
-    let item_action_container_img_attack_btn_img = document.createElement('img');
-    item_action_container_img_attack_btn_img.src = '/static/img/ux/target_icon.svg';
-    item_action_container_img_attack_btn_img.classList.add('cursor-pointer', 'flex', 'inline-block', 'mx-auto', 'object-center', 'justify-center', 'w-[15%]', 'h-[15%]');
-    item_action_container_img_attack_btn_img.addEventListener('click', function() {
-        check_radio_btn_and_swap_color(e.id, module_item_content.id);
-    })
-
-    item_action_container_img_attack_container.append(item_action_container_img_attack);
-    item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption);
-    item_action_container_img_attack_container.append(item_action_container_img_attack_figcaption_ap);
-
-    item_action_container_img_contact_container.append(item_action_container_img_contact);
-    item_action_container_img_contact_container.append(item_action_container_img_contact_figcaption);
-    item_action_container_img_contact_container.append(item_action_container_img_contact_figcaption_ap);
-
-    item_action_container_img_repaire_container.append(item_action_container_img_repaire);
-    item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption);
-    item_action_container_img_repaire_container.append(item_action_container_img_repaire_figcaption_ap);
-
-
-    if (!is_npc) {
-
-        let target_img = document.createElement('img');
-        target_img.src = `/static/img/users/${player_id}/0.gif`
-        target_img.style.width = "30%";
-        target_img.style.height = "30%";
-        target_img.style.margin = "0 auto";
-
-        header_div.textContent = `${data.player.name.toUpperCase()} (${data.player.faction_name.toUpperCase()})`;
-        content_div.classList.add('bg-gradient-to-b', 'from-cyan-400/70', 'to-black/70');
-
-        body_container_div.append(target_img);
-        ship_action_container_div.append(item_action_container_img_attack_container);
-        ship_action_container_div.append(item_action_container_img_contact_container);
-        ship_action_container_div.append(item_action_container_img_repaire_container);
-
-    } else {
-
-        header_div.textContent = `${data.player.name.toUpperCase()}`;
-        content_div.classList.add('bg-gradient-to-b', 'from-red-600/70', 'to-black/70');
-        ship_action_container_div.append(item_action_container_img_attack_container);
-    }
-
-    for (let defense_module_i in data.ship.modules) {
-        if (data.ship.modules[defense_module_i]["type"].includes('DEFENSE') && !data.ship.modules[defense_module_i]["name"].includes('hull')) {
-            let defense_name = data.ship.modules[defense_module_i]["name"].split(" ")[0].toLowerCase();
-            // START SIMPLE DEFENSE MODULE
-            let module_status_color = color_per_percent(data.ship["current_"+defense_name+"_defense"], data.ship.modules[defense_module_i].effect.defense);
-            let module_content_container = document.createElement('div')
-            let module_content_label = document.createElement('label');
-            let module_content_text = document.createElement('p');
-
-            module_content_container.classList.add('font-bold', 'font-shadow', 'text-xs', 'flex', 'flex-row', 'gap-1', 'p-1');
-            module_content_text.classList.add(module_status_color.color);
-            module_content_label.classList.add('text-white');
-            module_content_label.textContent = `${data.ship.modules[defense_module_i].effect.defense_type}:`;
-            module_content_text.textContent = `${module_status_color.status}`;
-
-            module_content_container.append(module_content_label);
-            module_content_container.append(module_content_text);
-            ship_statistics_container_div.append(module_content_container);
-            // END SIMPLE DEFENSE MODULE
-            
-            // START DETAILED DEFENSE MODULE
-            let defense_value_detailed = `${Math.round((data.ship["current_"+defense_name+"_defense"] * 100) / (data.ship.modules[defense_module_i].effect.defense))}%`;
-            let module_element_detailed = document.createElement('div');
-            let module_content_detailed_label = document.createElement("label");
-            let module_content_detailed = document.createElement('div');
-            let module_content_detailed_text = document.createElement('span');
-
-            module_content_detailed_label.textContent = data.ship.modules[defense_module_i]["name"].toLowerCase();
-            module_content_detailed_label.classList.add('font-bold', 'font-shadow', 'text-white', 'text-xs', 'mt-2');
-            module_element_detailed.classList.add('w-full', 'bg-red-600', 'relative');
-            module_content_detailed.classList.add('bg-blue-600', 'leading-none', 'h-[15px]');
-            module_content_detailed_text.classList.add('w-full', 'absolute', 'z-10', 'text-center', 'text-xs', 'font-bold', 'font-shadow', 'text-blue-100', 'text-center');
-            module_content_detailed_text.textContent = `${data.ship["current_"+defense_name+"_defense"]} / ${data.ship.modules[defense_module_i].effect.defense}`;
-            module_content_detailed.style.width = parseInt(defense_value_detailed.split('%')) > 100 ? "100%" : defense_value_detailed;
-
-            module_element_detailed.append(module_content_detailed_text);
-            module_element_detailed.append(module_content_detailed);
-            ship_detailed_statistics_container_div.append(module_content_detailed_label);
-            ship_detailed_statistics_container_div.append(module_element_detailed);
-            // END DETAILED DEFENSE MODULE
-        }
-    }
-
-    let ship_offensive_module_container = document.createElement('div');
-    ship_offensive_module_container.classList.add('mt-5', 'hidden');
-    ship_offensive_module_container.id = "accordion-collapse";
-
-    let ship_offensive_module_container_h3_cat_1 = document.createElement('h3');
-    let ship_offensive_module_container_h3_cat_2 = document.createElement('h3');
-    let ship_offensive_module_container_h3_cat_1_btn = document.createElement('button');
-    let ship_offensive_module_container_h3_cat_1_btn_span = document.createElement('span');
-    let ship_offensive_module_container_h3_cat_1_btn_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    let ship_offensive_module_container_h3_cat_1_btn_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    let ship_offensive_module_container_h3_cat_2_btn = document.createElement('button');
-    let ship_offensive_module_container_h3_cat_2_btn_span = document.createElement('span');
-    let ship_offensive_module_container_h3_cat_2_btn_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    let ship_offensive_module_container_h3_cat_2_btn_svg_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    let ship_offensive_module_container_cat_1_div = document.createElement('div');
-    let ship_offensive_module_container_cat_2_div = document.createElement('div');
-
-    ship_offensive_module_container_h3_cat_1.id = "offensive-module-heading-1";
-
-    ship_offensive_module_container_h3_cat_1_btn.setAttribute('type', 'button');
-    ship_offensive_module_container_h3_cat_1_btn.classList.add(
-        'flex',
-        'items-center',
-        'justify-between',
-        'w-full',
-        'p-2',
-        'font-bold',
-        'rtl:text-right',
-        'text-white',
-        'mb-1',
-    );
-
-    ship_offensive_module_container_h3_cat_1_btn.addEventListener('click', function() {
-        display_attack_options(e.id, 1)
-    });
-
-    ship_offensive_module_container_h3_cat_1_btn_span.textContent = "Weaponry";
-    ship_offensive_module_container_h3_cat_1_btn_svg.id = "offensive-module-menu-svg-1";
-    ship_offensive_module_container_h3_cat_1_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
-    ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("fill", "none");
-    ship_offensive_module_container_h3_cat_1_btn_svg.setAttribute("viewBox", "0 0 10 6");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke", "currentColor");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-linecap", "round");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-linejoin", "round");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("stroke-width", "2");
-    ship_offensive_module_container_h3_cat_1_btn_svg_path.setAttribute("d", "M9 5 5 1 1 5");
-
-    ship_offensive_module_container_cat_1_div.id = "offensive-module-body-1";
-    ship_offensive_module_container_cat_1_div.classList.add('hidden');
-    ship_offensive_module_container_cat_1_div.setAttribute('aria-labelledby', "offensive-module-heading-1");
-
-    ship_offensive_module_container_h3_cat_2_btn.setAttribute('type', 'button');
-    ship_offensive_module_container_h3_cat_2_btn.classList.add(
-        'flex',
-        'items-center',
-        'justify-between',
-        'w-full',
-        'p-2',
-        'font-bold',
-        'rtl:text-right',
-        'text-white',
-        'mb-1',
-        'font-shadow',
-    );
-
-    ship_offensive_module_container_h3_cat_2_btn.addEventListener('click', function() {
-        display_attack_options(e.id, 2)
-    });
-
-    ship_offensive_module_container_h3_cat_2.id = "offensive-module-heading-2";
-
-    ship_offensive_module_container_h3_cat_2_btn_span.textContent = "Electronic Warfare";
-    ship_offensive_module_container_h3_cat_2_btn_svg.id = "offensive-module-menu-svg-2";
-    ship_offensive_module_container_h3_cat_2_btn_svg.classList.add('w-3', 'h-3', 'rotate-180', 'shrink-0');
-    ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("fill", "none");
-    ship_offensive_module_container_h3_cat_2_btn_svg.setAttribute("viewBox", "0 0 10 6");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke", "currentColor");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-linecap", "round");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-linejoin", "round");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("stroke-width", "2");
-    ship_offensive_module_container_h3_cat_2_btn_svg_path.setAttribute("d", "M9 5 5 1 1 5");
-
-    ship_offensive_module_container_cat_2_div.id = "offensive-module-body-2";
-    ship_offensive_module_container_cat_2_div.classList.add('hidden');
-    ship_offensive_module_container_cat_2_div.setAttribute('aria-labelledby', "offensive-module-heading-2");
-
-        if(currentPlayer.ship.ship_scanning_module_available){
-            ship_statistics_container_div.classList.add('hidden');
-            ship_detailed_statistics_container_div.classList.remove('hidden');
-            ship_statistics_warning_msg_container_p.classList.add('hidden');
-        }else{
-            ship_statistics_container_div.classList.remove('hidden');
-            ship_detailed_statistics_container_div.classList.add('hidden');
-            ship_statistics_warning_msg_container_p.classList.remove('hidden');
-        }
-        for (let module_i in currentPlayer.ship.modules) {
-            let module_item_content = document.createElement('div');
-            let module_item_p = document.createElement('p');
-
-            module_item_content.classList.add(
-                'flex',
-                'flex-col',
-                'py-2',
-                'px-4',
-                'mb-1',
-                'rounded-md',
-                'border',
-                'hover:border-gray-800',
-                'border-slate-400',
-                'hover:bg-slate-300',
-                'bg-gray-800',
-                'text-white',
-                'hover:text-gray-800',
-                'cursor-pointer',
-                'divide-y',
-                'divide-dashed',
-                'divide-white',
-                'hover:divide-gray-800',
-            );
-            module_item_p.classList.add('font-bold');
-            module_item_p.textContent = currentPlayer.ship.modules[module_i]["name"];
-            module_item_content.append(module_item_p);
-            module_item_content.classList.add('module-container')
-            module_item_content.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
-            module_item_content.addEventListener('click', function() {
-                check_radio_btn_and_swap_color(e.id, module_item_content.id);
-            })
-
-            let radio_btn = document.createElement('input');
-            radio_btn.type = "radio";
-            radio_btn.name = "module_choice";
-            radio_btn.value = currentPlayer.ship.modules[module_i]["id"];
-            radio_btn.classList.add('hidden');
-
-            if (currentPlayer.ship.modules[module_i]["type"] == "WEAPONRY") {
-
-                if ("damage_type" in currentPlayer.ship.modules[module_i]["effect"]) {
-                    let damage_type_span = document.createElement('span');
-                    let damage_type_small = document.createElement('small');
-                    let damage_type_small_value = document.createElement('small');
-                    let damage_span = document.createElement('span');
-                    let damage_small = document.createElement('small');
-                    let damage_small_value = document.createElement('small');
-                    let range_span = document.createElement('span');
-                    let range_small = document.createElement('small');
-                    let range_small_value = document.createElement('small');
-                    let range_finder_span = document.createElement('span');
-                    let chance_to_hit_span = document.createElement('span');
-                    let chance_to_hit_small = document.createElement('small');
-                    let chance_to_hit_small_value = document.createElement('small');
-                    let damage_type_value = currentPlayer.ship.modules[module_i]["effect"]["damage_type"];
-                    let range_value = currentPlayer.ship.modules[module_i]["effect"]["range"];
-                    let min_damage_value = currentPlayer.ship.modules[module_i]["effect"]["min_damage"];
-                    let max_damage_value = currentPlayer.ship.modules[module_i]["effect"]["max_damage"];
-                    
-                    let id_splitted = e.id.split('_');
-                    let target_id = id_splitted[1];
-                    let target_type = id_splitted[0];
-
-                    damage_type_small.textContent = "Damage type : ";
-                    damage_type_small.classList.add('font-sans');
-                    damage_type_small_value.textContent = damage_type_value;
-                    damage_type_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    damage_type_span.append(damage_type_small);
-                    damage_type_span.append(damage_type_small_value);
-
-                    damage_small.textContent = "Damages : ";
-                    damage_small.classList.add('font-sans');
-                    damage_small_value.textContent = `${min_damage_value} - ${max_damage_value}`;
-                    damage_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    damage_span.append(damage_small);
-                    damage_span.append(damage_small_value);
-
-                    range_small.textContent = "Range : ";
-                    range_small.classList.add('font-sans');
-                    range_small_value.textContent = `${range_value}`;
-                    range_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    range_span.append(range_small);
-                    range_span.append(range_small_value);
-
-                    chance_to_hit_small.textContent = "Chance to hit : ";
-                    chance_to_hit_small.classList.add('font-sans');
-                    chance_to_hit_small_value.textContent = "100%";
-                    chance_to_hit_small_value.classList.add('text-blue-500', 'font-bold', 'font-sans');
-                    chance_to_hit_span.append(chance_to_hit_small); 
-                    chance_to_hit_span.append(chance_to_hit_small_value);
-
-                    range_finder_span.textContent = "Your target is out of range";
-                    range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                    range_finder_span.id = "range-finder-warning-msg";
-                    if(currentPlayer.ship.modules_range.length > 0){
-                        let array_module = Array.from(currentPlayer.ship.modules_range[target_type])
-                        module_path = array_module.filter(function (module, index) {
-                            if(module.target_id == target_id){
-                                return module
-                            }
-                        });
-                            
-                        for(let module_container in module_path){
-                            if(typeof(module_path[module_container]['is_in_range']) !== undefined && module_path[module_container]['is_in_range'] != null){
-                                if (module_path[module_container]['is_in_range']) {
-                                    range_finder_span.classList.add('hidden');
-                                }else{
-                                    range_finder_span.classList.remove('hidden');
-                                }
-                            }
-                        }
-
-                        module_item_content.append(radio_btn);
-                        module_item_content.append(damage_type_span);
-                        module_item_content.append(damage_span);
-                        module_item_content.append(range_span);
-                        module_item_content.append(chance_to_hit_span);
-                        module_item_content.append(range_finder_span);
-                    }
-
-                } else {
-
-                    let other_bonus_span = document.createElement('span');
-                    let other_bonus_small = document.createElement('small');
-                    let other_bonus_small_value = document.createElement('small');
-
-                    other_bonus_small.textContent = "accuracy bonus : ";
-                    other_bonus_small_value.textContent = `${currentPlayer.ship.modules[module_i]["effect"]["aiming_increase"]} %`;
-                    other_bonus_small_value.classList.add('text-blue-500', 'font-bold');
-
-                    module_item_content.append(radio_btn);
-                    other_bonus_span.append(other_bonus_small);
-                    other_bonus_span.append(other_bonus_small_value);
-
-                    module_item_content.append(other_bonus_span);
-
-                }
-
-                ship_offensive_module_container_cat_1_div.append(module_item_content);
-
-            } else if (currentPlayer.ship.modules[module_i]["type"] == "ELECTRONIC_WARFARE") {
-                module_item_p.textContent = currentPlayer.ship.modules[module_i]["name"];
-                module_item_p.classList.add('font-bold');
-                module_item_p.id = `module-${currentPlayer.ship.modules[module_i]["id"]}`;
-                module_item_content.append(module_item_p);
-
-                for (let [key, value] of Object.entries(currentPlayer.ship.modules[module_i]["effect"])) {
-                    let module_item_small_effect = document.createElement('span');
-                    let module_item_small_effect_name = document.createElement('small');
-                    let module_item_small_effect_value = document.createElement('small');
-                    module_item_small_effect_name.classList.add('italic');
-                    module_item_small_effect_value.classList.add('text-blue-500', 'font-bold');
-                    module_item_small_effect_name.textContent = `${key.replace('_',' ')}: `;
-                    module_item_small_effect_value.textContent = `${value}`;
-
-                    module_item_content.append(radio_btn);
-                    module_item_small_effect.append(module_item_small_effect_name);
-                    module_item_small_effect.append(module_item_small_effect_value);
-                    module_item_content.append(module_item_small_effect);
-                }
-                let id_splitted = e.id.split('_');
-                let target_id = id_splitted[1];
-                let target_type = id_splitted[0];
-                    
-                let module_item_small_effect_range_finder_span = document.createElement('span');
-                module_item_small_effect_range_finder_span.textContent = "Your target is out of range";
-                module_item_small_effect_range_finder_span.classList.add('text-red-600', 'animate-pulse');
-                module_item_small_effect_range_finder_span.id = "range-finder-warning-msg";
-
-                module_range_array = currentPlayer.ship.modules_range[target_type]
-                if(typeof(module_range_array) != "undefined"){
-                    for(let module in module_range_array){
-                        is_in_range = module_range_array[module].is_in_range;
-                        if(is_in_range){
-                            module_item_small_effect_range_finder_span.classList.add('hidden');
-                        }else{
-                            module_item_small_effect_range_finder_span.classList.remove('hidden');
-                        }
-                        module_item_content.append(module_item_small_effect_range_finder_span)
-                        ship_offensive_module_container_cat_2_div.append(module_item_content);
-                    }
-                }
-            }
-        }
-        item_action_container_img_attack_btn_container.append(item_action_container_img_attack_btn_img);
-
-    ship_offensive_module_container_h3_cat_1_btn_svg.append(ship_offensive_module_container_h3_cat_1_btn_svg_path);
-    ship_offensive_module_container_h3_cat_2_btn_svg.append(ship_offensive_module_container_h3_cat_2_btn_svg_path);
-
-    ship_offensive_module_container_h3_cat_1_btn.append(ship_offensive_module_container_h3_cat_1_btn_span);
-    ship_offensive_module_container_h3_cat_1_btn.append(ship_offensive_module_container_h3_cat_1_btn_svg);
-    ship_offensive_module_container_h3_cat_2_btn.append(ship_offensive_module_container_h3_cat_2_btn_span);
-    ship_offensive_module_container_h3_cat_2_btn.append(ship_offensive_module_container_h3_cat_2_btn_svg);
-
-    ship_offensive_module_container_h3_cat_1.append(ship_offensive_module_container_h3_cat_1_btn);
-    ship_offensive_module_container_h3_cat_2.append(ship_offensive_module_container_h3_cat_2_btn);
-
-    ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_1);
-    ship_offensive_module_container.append(ship_offensive_module_container_cat_1_div);
-    ship_offensive_module_container.append(ship_offensive_module_container_h3_cat_2);
-    ship_offensive_module_container.append(ship_offensive_module_container_cat_2_div);
-    ship_offensive_module_container.append(item_action_container_img_attack_btn_container);
-
-    footer_container_div.append(footer_close_button);
-
-    body_container_div.append(ship_statistics_container_label);
-    body_container_div.append(ship_statistics_container_div);
-    body_container_div.append(ship_statistics_warning_msg_container_p);
-    body_container_div.append(ship_detailed_statistics_container_div);
-    body_container_div.append(ship_action_container_label);
-    body_container_div.append(ship_action_container_div);
-    body_container_div.append(ship_offensive_module_container);
-    header_container_div.append(header_div);
-    header_container_div.append(header_close_button);
-    content_div.append(header_container_div);
-    content_div.append(body_container_div);
-    content_div.append(footer_container_div);
-    container_div.append(content_div);
-    e.append(container_div);
-
-    return e;
-
+    return {
+        ship_statistics_container_label,
+        ship_detailed_statistics_container_div,
+        ship_statistics_warning_msg_container_p
+    };
 }
 
 let display_attack_options = function(e_id, element) {
@@ -2060,7 +1960,6 @@ function createUnknownPcModal(modalId, modalData, playerInfo) {
     return;
     
 }
-
 
 function createUnknownNpcModal(modalId, modalData) {
     
