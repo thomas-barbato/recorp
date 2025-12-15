@@ -140,8 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const div = document.createElement("div");
         div.className = `chat-msg rounded-md p-1 ${bgClass} ${sideClass}`;
+        console.log(`${faction_color}`)
         div.innerHTML = `
-            <div class="flex items-center flex-wrap">
+            <div class="flex items-center flex-wrap gap-1">
                 ${faction ? `<small class="${faction_color} font-shadow">(${faction})</small>` : ''}
                 <span class="font-bold font-shadow ${faction_color || 'text-emerald-400'}">${escapeHtml(author)}</span>
                 <small class="text-emerald-500/60 italic font-shadow ml-2">${timestamp || ''}</small>
@@ -307,19 +308,21 @@ async function async_send_chat_msg(payload) {
     console.log("SENDING MP", payload)
     // payload est déjà un JSON.stringify({ recipient, subject, body, ... })
     try {
+        
         const ws = window.canvasEngine?.ws;
+        
         if (!ws) {
             console.error("[MP] WebSocket (canvasEngine.ws) non initialisé");
             return;
         }
+        console.log(payload)
+        const msg = {
+            type: "async_chat_message",
+            message: payload
+        };
 
-        // On envoie un message structuré — adapte si besoin au backend :
-        // - type : côté serveur, tu peux router dessus
-        // - message : le payload déjà sérialisé
-        ws.send({
-            type: "async_send_chat_msg",
-            message: payload,
-        });
+        ws.send(msg);
+
     } catch (e) {
         console.error("[MP] Erreur lors de l'envoi MP via WebSocket:", e);
     }

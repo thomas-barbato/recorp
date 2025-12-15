@@ -1831,6 +1831,7 @@ canvas {
 /* Bouton */
 .action-button-sf {
     width: var(--btn);
+    min-height: 96px; /* ou plus */
     height: var(--btn);
     display: flex;
     flex-direction: column;
@@ -1940,4 +1941,8 @@ canvas {
         text-align:  center;
         letter-spacing: 0.03em;
     }
+}
+
+.text-purple-700{
+    color:oklch(55.8% 0.288 302.321)
 }

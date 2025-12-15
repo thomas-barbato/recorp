@@ -128,10 +128,10 @@ class GameConsumer(WebsocketConsumer):
         # 4) S'assurer que c'est un dict JSON
         if not isinstance(data, dict):
             return
-
         msg_type = data.get("type")
         if not msg_type:
             return
+        
 
         # 5) Rafraîchir la session
         self._refresh_session()
@@ -161,6 +161,7 @@ class GameConsumer(WebsocketConsumer):
 
         # CHAT
         if msg_type == "async_chat_message":
+            print("ici")
             self.async_send_chat_msg(data)
             return
         
@@ -422,10 +423,10 @@ class GameConsumer(WebsocketConsumer):
         - Les autres ne font rien.
         """
         try:
-            data = event.get("message")
+            data = event["message"]
             if isinstance(data, str):
                 data = json.loads(data)
-
+            
             author_id = data.get("sender_id")
             content = data.get("content")
             channel = data.get("channel")  # "sector", "faction" ou "group"

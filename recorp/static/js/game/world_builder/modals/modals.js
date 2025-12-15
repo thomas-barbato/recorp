@@ -33,7 +33,7 @@ const FOREGROUND_ACTIONS = {
         key: "scan",
         label: "Scan",
         icon: "/static/img/ux/scan_resource_icon.svg",
-        requires: [{ type: "PROBE", name: "drilling" }]
+        requires: [{ type: "PROBE", name: "drilling probe" }]
         }
     ],
 
@@ -55,7 +55,53 @@ const FOREGROUND_ACTIONS = {
         { key: "warp_destinations" }
     ],
 
-    station: [],
+    satellite: [
+        {
+            key: "corporation",
+            label: "Corporation",
+            icon: "/static/img/ux/join_faction.svg",
+        },
+        {
+            key: "new_home",
+            label: "New Home",
+            icon: "/static/img/ux/new_location.svg"
+        },
+        {
+            key: "dock",
+            label: "Dock",
+            icon: "/static/img/ux/dock.svg",
+        },
+        {
+            key: "market",
+            label: "Market",
+            icon: "/static/img/ux/market.svg"
+        },
+    ],
+
+    station: [
+        {
+            key: "training",
+            label: "Training",
+            iconify: "game-icons--teacher"
+        },
+        {
+            key: "craft",
+            label: "Craft",
+            iconify: "game-icons--crafting"
+        },
+        {
+            key: "repair",
+            label: "Repair",
+            iconify: "game-icons--auto-repair",
+            cost: 1000
+        },
+        {
+            key: "refuel",
+            label: "Refuel",
+            iconify: "game-icons--fuel-tank",
+            cost: 1000
+        }
+    ],
     black_hole: []
 };
 
@@ -484,7 +530,7 @@ function createStandardModalShell(modalId, options = {}) {
     // === FOOTER CONTAINER ===
     //
     const footerContainer = document.createElement("div");
-    footerContainer.classList.add("md:p-5","p-1","flex","flex-row","w-full","justify-end");
+    footerContainer.classList.add("md:p-5","p-1","flex","flex-row","w-full","mx-auto");
 
     //
     // ==== FOOTER API ====
@@ -855,6 +901,7 @@ function createForegroundModalData(elementInfo, sectorData) {
             };
         case "planet":
         case "station":
+        case "satellite":
             return {
                 ...baseModalData,
                 faction: {
@@ -936,19 +983,73 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
 
 }
 
+function buildAsteroidResourcesSection(modalId, data) {
+    const container = document.createElement("div");
+    container.id = `${modalId}-resources`;
+    container.classList.add("w-full", "mt-3");
+
+    const isScanned = data._ui?.scanned === true;
+
+    if (!isScanned) {
+        const msg = document.createElement("p");
+        msg.textContent = data.resources?.translated_scan_msg_str || "Un scan est requis pour identifier les ressources.";
+        msg.classList.add("text-sm","text-red-500","font-bold","animate-pulse");
+        container.append(msg);
+        return container;
+    }
+
+    const res = data.resources;
+    const qty = Number(res?.quantity ?? 0);
+
+    if (!res || qty <= 0) {
+        const emptyMsg = document.createElement("p");
+        emptyMsg.textContent = "Les ressources sont épuisées.";
+        emptyMsg.classList.add("text-sm","text-red-600","font-bold","animate-pulse");
+        container.append(emptyMsg);
+        return container;
+    }
+
+    const p = document.createElement("p");
+    const name = res.translated_text_resource || res.name || "Ressource";
+    const max = res.max_quantity ?? res.max ?? "?"; // si tu l’ajoutes plus tard
+    p.textContent = `${name} : ${qty}${max !== "?" ? " / " + max : ""}`;
+    p.classList.add("text-sm","text-white");
+    container.append(p);
+
+    return container;
+}
+
+
 function buildForegroundActionsSection(modalId, data) {
     const wrapper = document.createElement("div");
-    wrapper.classList.add("action-wrapper-sf");
+    wrapper.classList.add(
+        "action-wrapper-sf",
+        "flex",
+        "flex-col",
+        "justify-center",
+        "w-full",
+        "gap-2"
+    );
 
     const type = data.type;
 
-    // Zone message erreur
+    // =========================
+    // ZONE MESSAGE ERREUR
+    // =========================
     const errorZone = document.createElement("div");
     errorZone.id = modalId + "-action-error-zone";
-    errorZone.classList.add("action-error-msg", "hidden");
+    errorZone.classList.add(
+        "action-error-msg",
+        "hidden",
+        "w-full",
+        "text-center",
+        "text-red-600",
+        "font-bold",
+        "animate-pulse"
+    );
 
     // =========================
-    // WARPZONE 
+    // WARPZONE : LISTE
     // =========================
     if (type === "warpzone") {
         const ul = document.createElement("ul");
@@ -957,9 +1058,9 @@ function buildForegroundActionsSection(modalId, data) {
             "flex-col",
             "list-none",
             "w-full",
-            "text-center",
             "text-start",
-            "p-2"
+            "p-2",
+            "gap-2"
         );
 
         data.destinations.forEach(dest => {
@@ -968,9 +1069,9 @@ function buildForegroundActionsSection(modalId, data) {
             li.classList.add(
                 "cursor-pointer",
                 "text-white",
+                "font-bold",
                 "hover:animate-pulse"
             );
-
             li.onclick = () => handleWarpTravel(dest.warp_link_id);
             ul.append(li);
         });
@@ -983,28 +1084,70 @@ function buildForegroundActionsSection(modalId, data) {
     // AUTRES FOREGROUND
     // =========================
     const grid = document.createElement("div");
-    grid.classList.add("action-grid-sf");
+    grid.classList.add(
+        "action-grid-sf",
+        "mx-auto"
+    );
+
+    wrapper.append(errorZone);
     wrapper.append(grid);
 
     const actions = FOREGROUND_ACTIONS[type] || [];
 
-    // Autres foregrounds
     actions.forEach(action => {
+
+        // === WRAPPER PAR ACTION (clé du fix mobile) ===
+        const itemWrapper = document.createElement("div");
+        itemWrapper.classList.add(
+            "flex",
+            "flex-col",
+            "items-center"
+        );
+
+        // === BOUTON ===
         const btn = document.createElement("div");
-        btn.classList.add("action-button-sf");
+        btn.classList.add("action-button-sf", "cursor-pointer");
 
-        const img = document.createElement("img");
-        img.src = action.icon;
-        img.classList.add("action-button-sf-icon");
+        // === ICÔNE ===
+        let iconEl;
+        if (action.icon) {
+            iconEl = document.createElement("img");
+            iconEl.src = action.icon;
+            iconEl.classList.add("action-button-sf-icon");
+        } else if (action.iconify) {
+            iconEl = document.createElement("span");
+            iconEl.classList.add(
+                "iconify",
+                action.iconify,
+                "action-button-sf-icon"
+            );
+        }
 
+        // === LABEL ===
         const label = document.createElement("div");
-        label.textContent = action.label;
+        label.textContent = action.label || "";
         label.classList.add("action-button-sf-label");
 
-        btn.append(img, label);
+        btn.append(iconEl, label);
+        itemWrapper.append(btn);
 
+        // === COÛT (SEULEMENT SI DÉFINI) ===
+        if (typeof action.cost === "number") {
+            const costEl = document.createElement("div");
+            costEl.textContent = `${action.cost} cr`;
+            costEl.classList.add(
+                "text-xs",
+                "text-yellow-400",
+                "font-bold",
+                "mt-1"
+            );
+            itemWrapper.append(costEl);
+        }
+
+        // === CLICK HANDLER ===
         btn.onclick = () => {
-            // Vérification des prérequis
+
+            // Vérification des modules requis
             if (action.requires) {
                 const ok = action.requires.every(req =>
                     currentPlayer.ship.modules.some(m =>
@@ -1022,26 +1165,41 @@ function buildForegroundActionsSection(modalId, data) {
                 }
             }
 
-            // Handlers futurs
-            console.log("Foreground action:", action.key, data);
+            // === LOGIQUE SPÉCIFIQUE ===
+            if (action.key === "scan") {
+                data._ui.scanned = true;
+                const resContainer = document.getElementById(`${modalId}-resources`);
+                if (resContainer) {
+                    resContainer.replaceWith(
+                        buildAsteroidResourcesSection(modalId, data)
+                    );
+                }
+            }
+
+            // autres actions → handlers plus tard
         };
 
-        grid.append(btn);
+        grid.append(itemWrapper);
     });
 
-    // Ajuste la largeur au nombre d’actions
+    // Ajuste le nombre de colonnes max (≤ 5)
     const count = grid.children.length;
     grid.style.setProperty("--cols", Math.min(count, 5));
 
-    wrapper.append(errorZone);
     return wrapper;
 }
+
 
 function create_foreground_modal(modalId, data) {
     const modal = createStandardModalShell(modalId);
     const coords = `[X:${data.coord.x} Y:${data.coord.y}]`;
     modal.header.setTitle(`${data.name.toUpperCase()} ${coords}`);
     modal.header.setCloseButton(modalId);
+    if (!data._ui) {
+        data._ui = {
+            scanned: false
+        };
+    }
 
     // IMAGE
     const imgWrap = document.createElement("div");
@@ -1071,6 +1229,18 @@ function create_foreground_modal(modalId, data) {
         desc.classList.add("text-sm", "text-white", "opacity-80");
         modal.body.addSection(desc);
     }
+    // RESSOURCES, si asteroid / étoile.
+    console.log(`data type = ${data.type}`)
+    if (data.type === "asteroid" || data.type === "star") {
+        const resourcesLabel = document.createElement("label");
+        resourcesLabel.textContent = "RESSOURCES :";
+        resourcesLabel.classList.add("font-bold", "text-white", "mt-4");
+
+        modal.body.addSection(resourcesLabel);
+        modal.body.addSection(
+            buildAsteroidResourcesSection(modalId, data)
+        );
+    }
 
     // ACTIONS
     const actionsLabel = document.createElement("label");
@@ -1087,7 +1257,7 @@ function create_foreground_modal(modalId, data) {
 
 function createActionButton(iconElement, label, onClick) {
     const btn = document.createElement("div");
-    btn.classList.add("action-button-sf");
+    btn.classList.add("action-button-sf", "cursor-pointer");
 
     const iconWrapper = document.createElement("div");
     iconWrapper.append(iconElement);
@@ -1129,7 +1299,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     const wrapper = document.createElement("div");
     wrapper.classList.add("action-wrapper-sf");
     const grid = document.createElement("div");
-    grid.classList.add("action-grid-sf");
+    grid.classList.add(
+        "action-grid-sf", 
+        "mx-auto"
+    );
 
     // Vérif modules
     const hasWeaponry = playerHasModule(modules, ["WEAPONRY"]);
@@ -1197,7 +1370,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 rightIcon.classList.add("action-button-sf-icon");
 
                 const rightBtn = document.createElement("div");
-                rightBtn.classList.add("action-button-sf");
+                rightBtn.classList.add("action-button-sf", "cursor-pointer");
                 rightBtn.append(rightIcon);
 
                 rightBtn.addEventListener("click", () => {
@@ -1474,7 +1647,7 @@ function createUnknownModal(modalId, data, is_npc) {
 
     let footer_close = document.createElement("img");
     footer_close.src = "/static/img/ux/close.svg";
-    footer_close.classList.add('inline-block','w-[5%]','h-[5%]','cursor-pointer','hover:animate-pulse');
+    footer_close.classList.add('inline-block','w-[5%]','h-[5%]','cursor-pointer','hover:animate-pulse', 'mx-auto');
     footer_close.setAttribute('onclick', `open_close_modal('${e.id}')`);
     footer_div.append(footer_close);
 

@@ -830,9 +830,9 @@ class GetDataFromDB:
     @staticmethod
     def get_faction_badge_color_class(faction_name):
         return {
-            'culte technologie': 'bg-red-600 text-white border-red-400',
-            'Faction Democratique': 'bg-blue-600 text-white border-blue-400',
-            'Faction Indépendante': 'bg-emerald-600 text-white border-emerald-400'
+            'culte technologie': 'text-orange-400',
+            'Faction Democratique': 'text-blue-600',
+            'Faction Indépendante': 'text-purple-700'
         }[faction_name]
         
     @staticmethod

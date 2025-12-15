@@ -21,7 +21,7 @@ submit_button.addEventListener(action_listener_touch_click, function() {
         email: document.querySelector("#id_email").value,
     };
 
-    fetch("create", {
+    fetch("create_account", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

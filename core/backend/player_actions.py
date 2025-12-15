@@ -792,6 +792,8 @@ class PlayerAction:
             faction_id = player_data.values_list('faction_id', flat=True)[0]
             sector_id = player_data.values_list('sector_id', flat=True)[0]
             
+            print(sector_id)
+            
             msg_data = {
                 "content": content,
                 "author_id": author_id,
@@ -803,12 +805,12 @@ class PlayerAction:
             # === CANAL SECTEUR ===
             if channel == "sector":
                 msg_data["sector_id"] = sector_id
-                recipients = GetDataFromDB.get_players_in_sector(sector_id, author_id)
+                recipients = GetDataFromDB.get_players_in_sector(sector_id)
 
             # === CANAL FACTION ===
             elif channel == "faction":
                 msg_data["faction_id"] = faction_id
-                recipients = GetDataFromDB.get_players_in_faction(faction_id, author_id)
+                recipients = GetDataFromDB.get_players_in_faction(faction_id)
 
             # === CANAL GROUPE ===
             elif channel == "group":
@@ -817,15 +819,22 @@ class PlayerAction:
                     return None, []  # joueur sans groupe
                 msg_data["group_id"] = group.group_id
                 recipients = GetDataFromDB.get_players_in_group(group.group_id, author_id)
-
+                
+            
             else:
                 logger.warning(f"Canal de chat inconnu: {channel}")
                 return None, []
             
+            recipients_data = [
+                r for r in recipients
+                if r["id"] != author_id
+            ]
+
+            
             msg = Message.objects.create(**msg_data)
             
             read_statuses = []
-            for recipient in recipients:
+            for recipient in recipients_data:
                 read_statuses.append(
                     MessageReadStatus(
                         player_id=recipient['id'],
@@ -835,14 +844,15 @@ class PlayerAction:
                 )
             
             # Ajouter l'auteur (déjà lu)
-            read_statuses.append(
-                MessageReadStatus(
-                    player_id=author_id,
-                    message_id=msg.id,
-                    is_read=True,
-                    read_at=timezone.now()
+            if not MessageReadStatus.objects.filter(player_id=author_id, message_id=msg.id).exists():
+                read_statuses.append(
+                    MessageReadStatus(
+                        player_id=author_id,
+                        message_id=msg.id,
+                        is_read=True,
+                        read_at=timezone.now()
+                    )
                 )
-            )
             
             # Bulk create pour optimisation
             MessageReadStatus.objects.bulk_create(read_statuses)
