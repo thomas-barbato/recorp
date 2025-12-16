@@ -632,9 +632,6 @@ function extract_data_for_modal(data){
     if (data.isStatic) {
         // Recherche dans sector_element
         let element = map_informations.sector_element.find(el => el.data.name === data.elementName);
-        console.log("element = ")
-        console.log(element)
-        console.log("====")
         return {
             found: !!element,
             type: element?.data?.type || null,
@@ -838,11 +835,6 @@ function extractForegroundModalData(element) {
         }
 
     }
-
-    console.log("1111111111")
-    console.log(element)
-    console.log(extractedDataByType)
-    console.log("1111111111")
     
     return extractedDataByType;
 }
@@ -942,29 +934,122 @@ function createForegroundModalData(elementInfo, sectorData) {
     }
 }
 
-function open_close_modal(id) {
+async function open_close_modal(modalId) {
+    if (!modalId || typeof modalId !== "string") return;
+
+    const modalContainer = document.getElementById("modal-container");
+    if (!modalContainer) return;
+
+    // --------------------------------------------------
+    // 1) Toggle close si même modal déjà ouvert
+    // --------------------------------------------------
+    const existing = document.getElementById(modalId);
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    // Un seul modal à la fois
+    modalContainer.innerHTML = "";
+
+    // --------------------------------------------------
+    // 2) Création du conteneur modal (VIDE)
+    // --------------------------------------------------
+    const modal = document.createElement("div");
+    modal.id = modalId;
+    modal.className = "absolute inset-0 pointer-events-auto z-50";
+
+    modalContainer.appendChild(modal);
+
+    // --------------------------------------------------
+    // 3) Affichage loader GLOBAL (dans modal-container)
+    // --------------------------------------------------
+    const loader = document.createElement("div");
+    loader.id = "modal-loader";
+    loader.className = `
+        absolute inset-0 flex items-center justify-center
+        bg-black/60 backdrop-blur-sm z-40
+        text-emerald-400 font-semibold
+    `;
+    loader.innerText = "Transmission en cours…";
+
+    modalContainer.appendChild(loader);
+
+    // --------------------------------------------------
+    // 4) Parse modalId
+    // --------------------------------------------------
+    const raw = modalId.replace("modal-", "");
+    const isUnknown = raw.startsWith("unknown-");
+    const clean = isUnknown ? raw.replace("unknown-", "") : raw;
+
+    const [elementType, elementIdStr] = clean.split("_");
+    const elementId = parseInt(elementIdStr, 10);
+
+    if (!elementType || Number.isNaN(elementId)) {
+        loader.remove();
+        console.warn("Invalid modalId:", modalId);
+        return;
+    }
+
+    // --------------------------------------------------
+    // 5) Fetch backend
+    // --------------------------------------------------
+    let responseData;
+    try {
+        const res = await fetch(`/play/modal-data/${elementType}/${elementId}/`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        responseData = await res.json();
+
+    } catch (err) {
+        console.error("Modal fetch failed:", err);
+        loader.innerText = "Erreur de transmission";
+        return;
+    }
+
+    // --------------------------------------------------
+    // 6) Contexte UI (UNKNOWN = front only)
+    // --------------------------------------------------
+    responseData.__ui = { isUnknown };
+
+    // --------------------------------------------------
+    // 7) Construction réelle du modal
+    // --------------------------------------------------
     
-    let extractDataFromId = define_modal_type(id);
-    let extractedDataForModal = extract_data_for_modal(extractDataFromId);
+    try {
+        const parsed = define_modal_type(modalId);
+        if (!parsed) {
+            console.error("define_modal_type failed (parse)");
+            // suppression du loader.
+            loader.remove();
+            return;
+        }
 
-    document.querySelector('#modal-unknown-' + id)?.delete();
-    
-    let modal = document.querySelector('#' + id);
+        // On injecte les données fetchées à la place de map_informations
+        const extractedDataForModal = {
+            found: true,
+            type: parsed.type,
+            data: responseData.target,       // 👈 CIBLE
+            current_player: responseData.current_player
+        };
 
-    if (modal) {
+        create_modal(modalId, parsed, extractedDataForModal);
+        modal.remove(); // 🔥 enlève le calque fantôme
+        const built = document.getElementById(modalId);
+        if (built) built.classList.remove("hidden");
+        loader.remove();
 
-        modal.classList.add('hidden');
-        // delete content from modal-container.
-        document.querySelector('#modal-container').textContent = "";
-
-    }else{
-        create_modal(id, extractDataFromId, extractedDataForModal);
-        document.querySelector('#' + id).classList.remove('hidden');
-
+    } catch (e) {
+        console.error("define_modal_type failed:", e);
+        loader.innerText = "Erreur de décodage";
+        return;
     }
 }
 
 function create_modal(modalId, extractDataFromId, extractedDataForModal){
+    console.log(extractDataFromId, extractedDataForModal)
     let element_type = extractDataFromId.type;
     let modal = "";
     let modalData = "";
@@ -1218,7 +1303,8 @@ function buildForegroundActionsSection(modalId, data) {
 
 function create_foreground_modal(modalId, data) {
     const modal = createStandardModalShell(modalId);
-    const coords = `[X:${data.coord.x} Y:${data.coord.y}]`;
+    console.log(data)
+    const coords = `[X:${data.coordinates.x} Y:${data.coordinates.y}]`;
     modal.header.setTitle(`${data.name.toUpperCase()} ${coords}`);
     modal.header.setCloseButton(modalId);
     if (!data._ui) {

@@ -944,3 +944,71 @@ def get_unread_counts(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+    
+@login_required
+def modal_data_view(request, element_type: str, element_id: int):
+    """
+    Retourne les données complètes d'un élément pour les modals.
+    - PC
+    - NPC
+    - sector_element (planet, asteroid, station, warpzone, ...)
+    """
+
+    # 1) Sécurité : récupérer le secteur courant du joueur
+    player_action = PlayerAction(request.user.id)
+    sector_id = player_action.get_player_sector()
+    if not sector_id:
+        return HttpResponseBadRequest("No sector")
+
+    room_key = f"play_{sector_id}"
+
+    # 2) Récupérer le cache du secteur
+    store = StoreInCache(room_key, request.user)
+    cached_data = store.get_or_set_cache()
+
+    if not cached_data:
+        return HttpResponseBadRequest("Sector cache unavailable")
+    
+    # récupérer le PC courant depuis le cache
+    current_player_data = None
+    for pc in cached_data.get("pc", []):
+        if pc.get("user", {}).get("player") == player_action.get_player_id():
+            current_player_data = pc
+            break
+
+    # 3) Routing par type
+    if element_type == "pc":
+        for pc in cached_data.get("pc", []):
+            if pc.get("user", {}).get("player") == element_id:
+                return JsonResponse({
+                    "type": "pc",
+                    "target": pc,
+                    "current_player": current_player_data,
+                })
+
+        return HttpResponseBadRequest("PC not found")
+
+    elif element_type == "npc":
+        for npc in cached_data.get("npc", []):
+            if npc.get("npc", {}).get("id") == element_id:
+                return JsonResponse({
+                    "type": "npc",
+                    "target": npc,
+                    "current_player": current_player_data,
+                })
+
+        return HttpResponseBadRequest("NPC not found")
+
+    else:
+        # sector_element (foreground)
+        for element in cached_data.get("sector_element", []):
+            if element.get("item_id") == element_id and \
+                element.get("data", {}).get("type") == element_type:
+                return JsonResponse({
+                    "type": "sector_element",
+                    "subtype": element_type,
+                    "target": element,
+                    "current_player": current_player_data,
+                })
+
+        return HttpResponseBadRequest("Sector element not found")

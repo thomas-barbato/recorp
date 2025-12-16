@@ -48,8 +48,12 @@ urlpatterns = [
         http_method_names = ['post']
         ), 
         name='logout_view'),
+    path(
+        "play/modal-data/<str:element_type>/<int:element_id>/",
+        core_views.modal_data_view,
+        name="modal_data_view"
+    ),
     path('play/session-check', core_views.session_check, name='session_check'),
-    
     path("messages/", core_views.private_mail_modal, name="private_mail_modal"),
     path("messages/get/<str:pk>/", core_views.get_private_mail, name="get_message"),
     path("messages/delete/", core_views.delete_private_mail, name="delete_message"),

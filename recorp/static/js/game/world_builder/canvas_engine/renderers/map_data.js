@@ -86,7 +86,7 @@ export default class MapData {
                 reversedSprite: shipImage ? `foreground/SHIPS/${shipImage}-reversed.png` : null
             };
 
-            // ✔️ CORRECTION ICI : stockage par ID joueur
+            // stockage par ID joueur
             this.players[p.user.player] = obj;
 
             this.worldObjects.push(obj);
@@ -524,8 +524,6 @@ export default class MapData {
 
         // Ajouter au worldObjects
         this.worldObjects.push(obj);
-
-        console.log("[MAP] addNpcActor →", obj.id, "(", x, y, ")");
 
         // Préchargement des images si spriteManager existe
         if (this.spriteManager && this.spriteManager.ensure && this.spriteManager.makeUrl) {

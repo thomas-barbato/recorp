@@ -99,7 +99,6 @@ if (!ok) {
             pathfinding: canvasPathfinding,
             onObjectClick: obj => {
                 if (!obj) return;
-
                 const player = map.findPlayerById(window.current_player_id);
                 if (!player) return;
 
@@ -145,8 +144,8 @@ if (!ok) {
                     // NPC
                     modalId = `modal-${inRange ? '' : 'unknown-'}npc_${obj.data.npc.id}`;
                 } else if (obj.type === 'foreground') {
-                    // foreground : nom = data.data.name
-                    modalId = `modal-${obj.data.data.name}`;
+                    // foreground : nom = {type}_{id}
+                    modalId = `modal-${obj.id}`;
                 } else {
                     console.warn('Unknown object type for modal:', obj.type);
                     return;
@@ -161,6 +160,7 @@ if (!ok) {
                 // 4) Ouverture / fermeture du modal
                 // -------------------------------
                 if (typeof open_close_modal === 'function') {
+                    console.log(modalId)
                     open_close_modal(modalId);
                 } else {
                     console.warn('open_close_modal is not defined');
