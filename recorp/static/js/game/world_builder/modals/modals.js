@@ -137,13 +137,13 @@ function createFormatedLabel(module_object) {
     let module_tooltip_moduleType = document.createElement('small');
 
     module_tooltip_ul.className = `
-        flex flex-col gap-1 font-bold text-xs
+        flex flex-col gap-1 font-bold text-xs font-shadow
         bg-gray-900/95 border border-emerald-700/40 rounded-md
         text-emerald-200 shadow-lg shadow-black/60 p-2 backdrop-blur-sm
     `;
-    module_tooltip_name.className = "font-bold text-emerald-300 text-sm";
+    module_tooltip_name.className = "font-bold text-emerald-300 text-sm font-shadow";
     module_tooltip_name.textContent = module_name;
-    module_tooltip_moduleType.className = "italic text-emerald-400/80 mb-1";
+    module_tooltip_moduleType.className = "italic text-emerald-400/80 font-shadow mb-1";
 
     module_tooltip_ul.append(module_tooltip_name);
     module_tooltip_ul.append(module_tooltip_moduleType);
@@ -278,7 +278,7 @@ function createModuleCategoryAccordion(categoryKey, modules, uniqueModalId) {
     headerBtn.classList.add(
         "flex","items-center","justify-between",
         "w-full","p-2","font-bold","text-white",
-        "mb-1","cursor-pointer"
+        "mb-1","cursor-pointer", "font-shadow"
     );
     headerBtn.dataset.accordionToggle = accordionId;
 
@@ -312,7 +312,7 @@ function createModuleCategoryAccordion(categoryKey, modules, uniqueModalId) {
         const temp = document.createElement("div");  
         temp.innerHTML = htmlString.trim();
 
-        const formattedModule = temp.firstChild;  // ⭐ vrai élément DOM !
+        const formattedModule = temp.firstChild;
 
         formattedModule.classList.add(
             "rounded-md","p-2","border","border-slate-500",
@@ -370,10 +370,16 @@ function buildModulesSection(modalId, data) {
         "gap-1"
     );
 
-    const categories = groupModulesByCategory(currentPlayer.ship.modules);
+    const targetModules = data?.ship?.modules || [];
+
+    const categories = groupModulesByCategory(targetModules);
 
     for (const catKey of Object.keys(MODULE_CATEGORIES)) {
-        const accordion = createModuleCategoryAccordion(catKey, categories[catKey], modalId);
+        const accordion = createModuleCategoryAccordion(
+            catKey,
+            categories[catKey],
+            modalId
+        );
         if (accordion) section.append(accordion);
     }
 
@@ -421,8 +427,17 @@ function buildPcNpcImage(data, is_npc) {
 
 function createStandardModalShell(modalId, options = {}) {
 
+    let borderColor = "";
+
+    if(!modalId.includes('npc') && !modalId.includes('pc')){
+        borderColor = "border-emerald-400";
+    }else{
+        let is_npc = modalId.includes('npc') == true ? true : false;
+        borderColor = is_npc == true ? "border-red-800" : "border-teal-600";
+    }
+
     const {
-        border = "border-slate-600",
+        border = borderColor,
         gradientFrom = "from-emerald-700/90",
         gradientTo = "to-black/70"
     } = options;
@@ -454,9 +469,10 @@ function createStandardModalShell(modalId, options = {}) {
     // === CONTENT ===
     //
     const content = document.createElement("div");
+
     content.classList.add(
-        "flex","rounded-lg","shadow","w-full","lg:w-1/4","rounded-t",
-        "justify-center","mx-auto","flex-col", "border", "border-2", "border-emerald-400/20",
+        "flex","rounded-lg","shadow","w-full","lg:w-1/4","rounded-t", "font-shadow",
+        "justify-center","mx-auto","flex-col", "border", "border-2", border,
         "bg-gradient-to-b", gradientFrom, gradientTo,
     );
 
@@ -708,6 +724,9 @@ function h(tag, options = {}, children = []) {
 
 function createNpcModalData(npcData) {
     return {
+        _ui: {
+            scanned: false
+        },
         player: {
             name: npcData.npc.displayed_name,
             faction_name: npcData.faction.name,
@@ -743,6 +762,9 @@ function createNpcModalData(npcData) {
 
 function createPlayerModalData(playerData) {
     return {
+        _ui: {
+            scanned: false
+        },
         player: {
             name: playerData.user.name,
             is_npc: playerData.user.is_npc,
@@ -993,7 +1015,7 @@ function buildAsteroidResourcesSection(modalId, data) {
     if (!isScanned) {
         const msg = document.createElement("p");
         msg.textContent = data.resources?.translated_scan_msg_str || "Un scan est requis pour identifier les ressources.";
-        msg.classList.add("text-sm","text-red-500","font-bold","animate-pulse");
+        msg.classList.add("text-sm","text-red-500","font-bold","animate-pulse", "font-shadow");
         container.append(msg);
         return container;
     }
@@ -1004,7 +1026,7 @@ function buildAsteroidResourcesSection(modalId, data) {
     if (!res || qty <= 0) {
         const emptyMsg = document.createElement("p");
         emptyMsg.textContent = "Les ressources sont épuisées.";
-        emptyMsg.classList.add("text-sm","text-red-600","font-bold","animate-pulse");
+        emptyMsg.classList.add("text-sm","text-red-500","font-bold","animate-pulse", "font-shadow");
         container.append(emptyMsg);
         return container;
     }
@@ -1013,7 +1035,7 @@ function buildAsteroidResourcesSection(modalId, data) {
     const name = res.translated_text_resource || res.name || "Ressource";
     const max = res.max_quantity ?? res.max ?? "?"; // si tu l’ajoutes plus tard
     p.textContent = `${name} : ${qty}${max !== "?" ? " / " + max : ""}`;
-    p.classList.add("text-sm","text-white");
+    p.classList.add("text-sm","text-white", "font-shadow");
     container.append(p);
 
     return container;
@@ -1043,7 +1065,8 @@ function buildForegroundActionsSection(modalId, data) {
         "hidden",
         "w-full",
         "text-center",
-        "text-red-600",
+        "text-red-500",
+        "font-shadow",
         "font-bold",
         "animate-pulse"
     );
@@ -1060,7 +1083,8 @@ function buildForegroundActionsSection(modalId, data) {
             "w-full",
             "text-start",
             "p-2",
-            "gap-2"
+            "gap-2",
+            "font-shadow"
         );
 
         data.destinations.forEach(dest => {
@@ -1070,7 +1094,8 @@ function buildForegroundActionsSection(modalId, data) {
                 "cursor-pointer",
                 "text-white",
                 "font-bold",
-                "hover:animate-pulse"
+                "hover:animate-pulse",
+                "font-shadow"
             );
             li.onclick = () => handleWarpTravel(dest.warp_link_id);
             ul.append(li);
@@ -1106,7 +1131,7 @@ function buildForegroundActionsSection(modalId, data) {
 
         // === BOUTON ===
         const btn = document.createElement("div");
-        btn.classList.add("action-button-sf", "cursor-pointer");
+        btn.classList.add("action-button-sf", "cursor-pointer", "font-shadow");
 
         // === ICÔNE ===
         let iconEl;
@@ -1126,7 +1151,7 @@ function buildForegroundActionsSection(modalId, data) {
         // === LABEL ===
         const label = document.createElement("div");
         label.textContent = action.label || "";
-        label.classList.add("action-button-sf-label");
+        label.classList.add("action-button-sf-label", "font-shadow");
 
         btn.append(iconEl, label);
         itemWrapper.append(btn);
@@ -1139,7 +1164,8 @@ function buildForegroundActionsSection(modalId, data) {
                 "text-xs",
                 "text-yellow-400",
                 "font-bold",
-                "mt-1"
+                "mt-1",
+                "font-shadow"
             );
             itemWrapper.append(costEl);
         }
@@ -1226,15 +1252,14 @@ function create_foreground_modal(modalId, data) {
     if (data.description) {
         const desc = document.createElement("p");
         desc.textContent = data.description;
-        desc.classList.add("text-sm", "text-white", "opacity-80");
+        desc.classList.add("text-sm", "text-white", "opacity-80", "font-shadow");
         modal.body.addSection(desc);
     }
     // RESSOURCES, si asteroid / étoile.
-    console.log(`data type = ${data.type}`)
     if (data.type === "asteroid" || data.type === "star") {
         const resourcesLabel = document.createElement("label");
         resourcesLabel.textContent = "RESSOURCES :";
-        resourcesLabel.classList.add("font-bold", "text-white", "mt-4");
+        resourcesLabel.classList.add("font-bold", "text-white", "mt-4", "font-shadow");
 
         modal.body.addSection(resourcesLabel);
         modal.body.addSection(
@@ -1245,7 +1270,7 @@ function create_foreground_modal(modalId, data) {
     // ACTIONS
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = "ACTIONS:";
-    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-4", "text-start");
+    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-4", "text-start", "font-shadow");
     modal.body.addSection(actionsLabel);
 
     const actionsSection = buildForegroundActionsSection(modalId, data);
@@ -1393,15 +1418,54 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     // ---------------------------
     const scanIcon = document.createElement("img");
     scanIcon.src = "/static/img/ux/scan_resource_icon.svg";
-
+    
     const scanButton = createActionButton(
         scanIcon,
         "Scan",
         () => {
-            if (!hasProbe) return showMissingModuleError();
+            if (!hasProbe) {
+                return showMissingModuleError();
+            }
 
-            contextZone.innerHTML = "Scan disponible (à implémenter)";
+            // 1️⃣ Marquer la cible comme scannée
+            data._ui.scanned = true;
+
+            const modalRoot = document.getElementById(modalId);
+            if (!modalRoot) return;
+
+            // 2️⃣ STATS : cacher warning, afficher stats détaillées
+            const warningMsg = modalRoot.querySelector("#statistics-warning-msg");
+            if (warningMsg) {
+                warningMsg.classList.add("hidden");
+            }
+
+            const detailedStats = modalRoot.querySelector("#ship-statistics-detailed");
+            if (detailedStats) {
+                detailedStats.classList.remove("hidden");
+            }
+
+            // 3️⃣ MODULES : remplacer le message par la vraie section modules
+            const modulesLabel = Array.from(
+                modalRoot.querySelectorAll("label")
+            ).find(l => l.textContent.trim() === "MODULES:");
+
+            if (modulesLabel) {
+                let next = modulesLabel.nextSibling;
+                if (next) next.remove();
+
+                const modulesSection = buildModulesSection(modalId, data);
+                modulesLabel.after(modulesSection);
+
+                activateExclusiveAccordions(modalRoot);
+            }
+
+            // 4️⃣ Feedback visuel optionnel
+            contextZone.textContent = "Scan effectué.";
             contextZone.classList.remove("hidden");
+            setTimeout(() => {
+                contextZone.classList.add("hidden");
+                contextZone.textContent = "";
+            }, 1500);
         }
     );
 
@@ -1707,9 +1771,23 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     //
     // 4 — MODULES SECTION (weaponry / ewar / defensive / utility / probe)
     //
-    const modulesSection = buildModulesSection(modalId, data);
-    modal.body.addSection(modulesSection);
+    if (data._ui?.scanned === true) {
+        modal.body.addSection(buildModulesSection(modalId, data));
+    } else {
+        const warning = document.createElement("p");
+        warning.id = "statistics-warning-msg";
+        warning.classList.add(
+            "text-red-500",
+            "font-bold",
+            "text-xs",
+            "text-center",
+            "font-shadow",
+            "animate-pulse"
+        );
+        warning.textContent = "Scan requis pour afficher les modules.";
 
+        modal.body.addSection(warning);
+    }
     //
     // 5 — ACTIONS LABEL
     //
@@ -1865,7 +1943,7 @@ function buildShipStatsSection(data) {
         "font-shadow",
         "text-xs",
         "lg:p-1",
-        "text-red-600",
+        "text-red-500",
         "animate-pulse",
         "font-bold",
         "font-shadow"
@@ -1928,12 +2006,14 @@ function check_radio_btn_and_swap_color(id, module_id) {
                 'hover:text-gray-800',
                 'divide-white',
                 'hover:divide-gray-800',
+                "font-shadow",
             )
             module_list[i].classList.add(
                 'border-gray-800',
                 'bg-slate-300',
                 'text-gray-800',
                 'divide-gray-800',
+                "font-shadow",
             )
         } else {
             radio_btn.checked = false;
@@ -1945,6 +2025,7 @@ function check_radio_btn_and_swap_color(id, module_id) {
                 'text-gray-800',
                 'hover:text-white',
                 'divide-gray-800',
+                "font-shadow",
             )
             module_list[i].classList.add(
                 'hover:border-gray-800',
@@ -1955,6 +2036,7 @@ function check_radio_btn_and_swap_color(id, module_id) {
                 'hover:text-gray-800',
                 'divide-white',
                 'hover:divide-gray-800',
+                "font-shadow",
             )
 
         }
