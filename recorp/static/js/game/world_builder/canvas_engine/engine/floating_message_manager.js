@@ -129,7 +129,7 @@ class FloatingMessageManager {
 
             // coordonnées écran du centre du vaisseau
             const screen = camera.worldToScreen(worldX, worldY);
-            const player_size = window.currentPlayer.ship.size
+            const player_size = currentPlayer.ship.size
 
             let centerX = screen.x + (player_size.x * tile) / 2;
             let centerY = screen.y + (player_size.y * tile) / 2;

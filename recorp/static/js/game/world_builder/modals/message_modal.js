@@ -403,7 +403,7 @@ newMsgBtn.addEventListener('click', () => {
             subject: subject,
             body: body,
             recipient_type: recipient_type,
-            senderId: window.currentPlayer.user.player
+            senderId: currentPlayer.user.player
         };
             
         setLoadingState(btn, true);

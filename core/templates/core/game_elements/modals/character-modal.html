@@ -23,29 +23,27 @@
 
         <!-- Contenu principal -->
         <div class="flex-1 flex flex-col lg:flex-row gap-4 p-4 md:overflow-hidden">
-        {% for player in map_informations.pc %}
-        {% if player.user.player == current_player_id %}
         
         <!-- Colonne gauche : infos joueur (fixe) -->
         <div class="lg:w-1/4 w-full flex flex-col gap-3 bg-gray-900/50 border border-emerald-800/40 rounded-lg shadow-inner p-3 flex-shrink-0">
             <div class="flex justify-center">
             <div class="relative border border-emerald-400/40 rounded-lg md:overflow-hidden shadow-lg shadow-emerald-900/30 hover:scale-105 transition-transform duration-200 cursor-pointer select-none">
-                <img id="user-avatar"class="object-cover w-28 h-28 rounded-md select-none" src="/static/img/users/{{player.user.player}}/0.gif">
+                <img id="user-avatar"class="object-cover w-28 h-28 rounded-md select-none" src="/static/img/users/{{ current_player_state.user.player}}/0.gif">
                 <input type="file" id="id-image" class="hidden" name="image" accept=".jpg, .png" />
             </div>
             </div>
 
             <ul class="text-sm text-emerald-200 font-shadow space-y-1 text-center select-none">
-            <li><span class="text-emerald-400 font-bold">{% translate "Name" %}</span>: {{ player.user.name }}</li>
-            <li><span class="text-emerald-400 font-bold">{% translate "Archetype" %}</span>: {% translate player.user.archetype_name %}</li>
-            <li><span class="text-emerald-400 font-bold">{% translate "Faction" %}</span>: {{ player.faction.name }}</li>
-            <li><span class="text-emerald-400 font-bold">{% translate "Sector" %}</span>: {{ player.user.sector_name }}</li>
+            <li><span class="text-emerald-400 font-bold">{% translate "Name" %}</span>: {{  current_player_state.user.name }}</li>
+            <li><span class="text-emerald-400 font-bold">{% translate "Archetype" %}</span>: {% translate  current_player_state.user.archetype_name %}</li>
+            <li><span class="text-emerald-400 font-bold">{% translate "Faction" %}</span>: {{  current_player_state.faction.name }}</li>
+            <li><span class="text-emerald-400 font-bold">{% translate "Sector" %}</span>: {{  current_player_state.user.sector_name }}</li>
             </ul>
 
             <div class="flex flex-col w-full mt-2">
             <div id="editor"
                 class="flex w-full h-[30vh] md:overflow-y-auto text-sm bg-gray-800/40 border border-emerald-700/30 rounded-md p-2 text-justify text-emerald-100 font-shadow md:custom-scrollbar">
-                {{ player.user.description | safe }}
+                {{  current_player_state.user.description | safe }}
             </div>
             </div>
 
@@ -107,8 +105,6 @@
         </fieldset>
         {% endfor %}
     </div>
-    {% endif %}
-    {% endfor %}
 </div>
 
 <!-- Footer -->

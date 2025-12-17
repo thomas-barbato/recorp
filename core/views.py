@@ -59,6 +59,12 @@ from core.models import (
 
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
+from core.backend.player_actions import PlayerAction
+from core.backend.modal_builder import (
+    build_pc_modal_data, 
+    build_npc_modal_data, 
+    build_sector_element_modal_data
+    )
 
 
 logger = logging.getLogger("django")
@@ -482,8 +488,6 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             ).get_or_set_cache()
             
             result_dict = dict()
-            for pc in data["pc"]:
-                pc["user"]["archetype_name"] = _(pc["user"]["archetype_name"])
 
             data["sector"]["security"]["translated_name"] = _(
                 data["sector"]["security"]["translated_name"]
@@ -507,6 +511,8 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 "translated_statistics_msg_label": _("statistics"),
             }
             
+            player_id = player.get_player_id()
+            
             result_dict["sector"] = data["sector"]  
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
@@ -514,7 +520,8 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["room"] = player.get_player_sector()
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
-            context["current_player_id"] = player.get_player_id()
+            context["current_player_state"] = build_pc_modal_data(player_id)
+            context["current_player_id"] = player_id
             context["module_categories"] = modules_category
             return context
         
@@ -948,67 +955,67 @@ def get_unread_counts(request):
 @login_required
 def modal_data_view(request, element_type: str, element_id: int):
     """
-    Retourne les données complètes d'un élément pour les modals.
-    - PC
-    - NPC
-    - sector_element (planet, asteroid, station, warpzone, ...)
+    Fournit les données d'un modal (PC / NPC / sector_element)
+    en reconstruisant les données à la volée depuis la DB.
     """
 
-    # 1) Sécurité : récupérer le secteur courant du joueur
+    # --------------------------------------------------
+    # 1) Joueur courant (sécurité)
+    # --------------------------------------------------
     player_action = PlayerAction(request.user.id)
-    sector_id = player_action.get_player_sector()
-    if not sector_id:
-        return HttpResponseBadRequest("No sector")
+    current_player_id = player_action.get_player_id()
 
-    room_key = f"play_{sector_id}"
+    if not current_player_id:
+        return HttpResponseBadRequest("No current player")
 
-    # 2) Récupérer le cache du secteur
-    store = StoreInCache(room_key, request.user)
-    cached_data = store.get_or_set_cache()
-
-    if not cached_data:
-        return HttpResponseBadRequest("Sector cache unavailable")
-    
-    # récupérer le PC courant depuis le cache
-    current_player_data = None
-    for pc in cached_data.get("pc", []):
-        if pc.get("user", {}).get("player") == player_action.get_player_id():
-            current_player_data = pc
-            break
-
-    # 3) Routing par type
+    # --------------------------------------------------
+    # 2) PC (DB-only, sans cache)
+    # --------------------------------------------------
     if element_type == "pc":
-        for pc in cached_data.get("pc", []):
-            if pc.get("user", {}).get("player") == element_id:
-                return JsonResponse({
-                    "type": "pc",
-                    "target": pc,
-                    "current_player": current_player_data,
-                })
 
-        return HttpResponseBadRequest("PC not found")
+        # PC cible
+        target_pc = build_pc_modal_data(element_id)
+        if not target_pc:
+            return HttpResponseBadRequest("PC not found")
 
-    elif element_type == "npc":
-        for npc in cached_data.get("npc", []):
-            if npc.get("npc", {}).get("id") == element_id:
-                return JsonResponse({
-                    "type": "npc",
-                    "target": npc,
-                    "current_player": current_player_data,
-                })
+        # Joueur courant (peut être la même personne)
+        current_player = build_pc_modal_data(current_player_id)
+        if not current_player:
+            return HttpResponseBadRequest("Current player not found")
 
-        return HttpResponseBadRequest("NPC not found")
+        return JsonResponse({
+            "type": "pc",
+            "current_player": current_player,
+            "target": target_pc
+        })
+        
+    if element_type == "npc":
+        target_npc = build_npc_modal_data(element_id)
+        if not target_npc:
+            return HttpResponseBadRequest("NPC not found")
 
-    else:
-        # sector_element (foreground)
-        for element in cached_data.get("sector_element", []):
-            if element.get("item_id") == element_id and \
-                element.get("data", {}).get("type") == element_type:
-                return JsonResponse({
-                    "type": "sector_element",
-                    "subtype": element_type,
-                    "target": element,
-                    "current_player": current_player_data,
-                })
+        current_player = build_pc_modal_data(current_player_id)
+        if not current_player:
+            return HttpResponseBadRequest("Current player not found")
 
-        return HttpResponseBadRequest("Sector element not found")
+        return JsonResponse({
+            "type": "npc",
+            "current_player": current_player,
+            "target": target_npc
+        })
+
+    if element_type in ("planet", "asteroid", "station", "warpzone"):
+        target_element = build_sector_element_modal_data(element_type, element_id)
+        if not target_element:
+            return HttpResponseBadRequest("Sector element not found")
+
+        current_player = build_pc_modal_data(current_player_id)
+        if not current_player:
+            return HttpResponseBadRequest("Current player not found")
+
+        return JsonResponse({
+            "type": "sector_element",
+            "subtype": element_type,
+            "current_player": current_player,
+            "target": target_element
+        })

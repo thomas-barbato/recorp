@@ -30,7 +30,7 @@ export default class SonarSystem {
         if (actor?.data?.ship?.view_range != null) {
             range = Number(actor.data.ship.view_range) || 6;
         } else if (window.currentPlayer?.ship?.view_range != null) {
-            range = Number(window.currentPlayer.ship.view_range) || 6;
+            range = Number(currentPlayer.ship.view_range) || 6;
         }
 
         this.range = range;       // en tiles

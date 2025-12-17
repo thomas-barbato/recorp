@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof gettext === 'undefined') {
         console.error("Django i18n not loaded. Make sure {% url 'javascript-catalog' %} is included before this script.");
@@ -5,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
-
+    console.log(currentPlayer)
     currentPlayer.ship.modules.forEach(module => {
 
         let module_type = module.type;

@@ -30,20 +30,14 @@ export function initGlobals() {
     try {
         const mapScript = document.getElementById('script_map_informations');
         const playerScript = document.getElementById('script_current_player_id');
-        const currentPlayerData = document.getElementById('script_current_player_data');
+        const currentPlayerData = document.getElementById('script_current_player_state');
 
         map_informations = mapScript ? JSON.parse(mapScript.textContent) : null;
         current_player_id = playerScript ? JSON.parse(playerScript.textContent) : null;
-        current_player_data = currentPlayerData ? JSON.parse(currentPlayerData.textContent) : null;
+        currentPlayer = currentPlayerData ? JSON.parse(currentPlayerData.textContent) : null;
+        current_player_data = currentPlayer;
 
-        if (map_informations && Array.isArray(map_informations.pc)) {
-        currentPlayer = map_informations.pc.find(p => String(p.user.player) === String(current_player_id)) || null;
-        otherPlayers = map_informations.pc.filter(p => String(p.user.player) !== String(current_player_id));
-        } else {
-        currentPlayer = null;
-        otherPlayers = [];
-        }
-
+        
         foregroundElement = map_informations?.sector_element || [];
         npcs = map_informations?.npc || [];
 
@@ -51,6 +45,7 @@ export function initGlobals() {
         window.map_informations = map_informations;
         window.current_player_id = current_player_id;
         window.currentPlayer = currentPlayer;
+        window.current_player_data = currentPlayer;   // window legacy
         window.otherPlayers = otherPlayers;
         window.foregroundElement = foregroundElement;
         window.npcs = npcs;

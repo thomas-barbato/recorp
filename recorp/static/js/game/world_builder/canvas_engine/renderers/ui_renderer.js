@@ -24,7 +24,7 @@ export default class UIRenderer {
         this._sonarPulseTime = 0;
 
         if (currentPlayer.ship.view_range === undefined || currentPlayer.ship.view_range === null) {
-            currentPlayer.ship.view_range = window.currentPlayer.ship.view_range;
+            currentPlayer.ship.view_range = currentPlayer.ship.view_range;
         }
 
         this.pathTiles = [];

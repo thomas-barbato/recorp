@@ -1,4 +1,3 @@
-// map_data.js
 export default class MapData {
     constructor(raw, spriteManager, tileSize) {
         this.raw = raw || window.map_informations || {};

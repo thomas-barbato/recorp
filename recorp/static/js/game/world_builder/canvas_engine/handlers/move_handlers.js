@@ -5,6 +5,7 @@
  */
 
 import { updatePlayerCoords } from "../engine/update_coordinate_display.js";
+import { currentPlayer } from "../globals.js";
 
 export function updateHudMovement(playerId, remainingMovement, maxMove) {
     // On ne met à jour le HUD complet que pour le joueur courant

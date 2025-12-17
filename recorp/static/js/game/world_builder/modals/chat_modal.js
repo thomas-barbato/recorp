@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const payload = {
             channel: currentChannel,
-            sender_id: window.currentPlayer.user.player,
+            sender_id: currentPlayer.user.player,
             content: text,
         };
 

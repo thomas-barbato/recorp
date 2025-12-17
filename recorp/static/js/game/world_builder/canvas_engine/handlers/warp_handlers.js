@@ -14,8 +14,8 @@ export function handlerWarpFailed(data) {
     if (window.canvasEngine?.floatingMessages) {
         window.canvasEngine.floatingMessages.addMessage(
             "⚠ Warp impossible : zone saturée",
-            { x: window.currentPlayer.user.coordinates.x,
-            y: window.currentPlayer.user.coordinates.y }
+            { x: currentPlayer.user.coordinates.x,
+            y: currentPlayer.user.coordinates.y }
         );
     } else {
         alert("Warp impossible : aucune place disponible autour de la warpzone.");

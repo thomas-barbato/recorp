@@ -1,8 +1,6 @@
 {% load static %}
 {% load i18n %}
 
-{% for pc in map_informations.pc %}
-{% if pc.user.player == current_player_id %}
 <div id="info-container" class="flex w-full flex-col overflow-hidden mx-auto order-1 m-0 text-sm text-emerald-200 bg-zinc-900/60 border border-emerald-500/30 shadow-lg backdrop-blur-md lg:blur-none">
 
   <div class="lg:flex lg:grid-cols-0 grid grid-cols-2 w-full lg:justify-center justify-between gap-1 p-2 ">
@@ -12,9 +10,9 @@
 
       <!-- Player Informations -->
       <fieldset class="flex flex-col gap-2 border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-2 shadow-inner shadow-emerald-900/40 text-emerald-200">
-        <div class="flex justify-between"><span class="uppercase">{% translate "Name" %}</span><span class="text-emerald-200 font-bold" id="player-name">{{ pc.user.name }}</span></div>
-        <div class="flex justify-between"><span class="uppercase">{% translate "Archetype" %}</span><span class="text-emerald-200 font-bold" id="player-archetype">{{ pc.user.archetype_name }}</span></div>
-        <div class="flex justify-between"><span class="uppercase">{% translate "Faction" %}</span><span class="text-emerald-200 font-bold" id="player-faction">{{ pc.faction.name }}</span></div>
+        <div class="flex justify-between"><span class="uppercase">{% translate "Name" %}</span><span class="text-emerald-200 font-bold" id="player-name">{{ current_player_state.user.name }}</span></div>
+        <div class="flex justify-between"><span class="uppercase">{% translate "Archetype" %}</span><span class="text-emerald-200 font-bold" id="player-archetype">{{ current_player_state.user.archetype_name }}</span></div>
+        <div class="flex justify-between"><span class="uppercase">{% translate "Faction" %}</span><span class="text-emerald-200 font-bold" id="player-faction">{{ current_player_state.faction.name }}</span></div>
       </fieldset>
 
       <!-- Ship Stats -->
@@ -26,8 +24,8 @@
             <span class="uppercase tracking-wider">{% translate 'Hull' %}</span>
           </div>
           <span class="font-bold text-xs">
-            <span id="hp-container-value-min" class="text-emerald-200 font-bold">{{pc.ship.current_hp}}</span> /
-            <span id="hp-container-value-max" class="text-emerald-200 font-bold">{{pc.ship.max_hp}}</span>
+            <span id="hp-container-value-min" class="text-emerald-200 font-bold">{{current_player_state.ship.current_hp}}</span> /
+            <span id="hp-container-value-max" class="text-emerald-200 font-bold">{{current_player_state.ship.max_hp}}</span>
           </span>
         </div>
         {% comment %} Movement Points {% endcomment %}
@@ -37,8 +35,8 @@
             <span class="uppercase tracking-wider">{% translate 'Movement' %}</span>
           </div>
           <span class="font-bold text-xs">
-            <span id="movement-container-value-current" class="text-emerald-200 font-bold">{{pc.ship.current_movement}}</span> /
-            <span id="movement-container-value-max" class="text-emerald-200 font-bold">{{pc.ship.max_movement}}</span>
+            <span id="movement-container-value-current" class="text-emerald-200 font-bold">{{current_player_state.ship.current_movement}}</span> /
+            <span id="movement-container-value-max" class="text-emerald-200 font-bold">{{current_player_state.ship.max_movement}}</span>
           </span>
         </div>
 
@@ -49,8 +47,8 @@
             <span class="uppercase tracking-wider">{% translate 'Action' %}</span>
           </div>
           <span class="font-bold text-xs">
-            <span id="ap-container-value-min" class="text-emerald-200 font-bold">{{pc.user.current_ap}}</span> /
-            <span id="ap-container-value-max" class="text-emerald-200 font-bold">{{pc.user.max_ap}}</span>
+            <span id="ap-container-value-min" class="text-emerald-200 font-bold">{{current_player_state.user.current_ap}}</span> /
+            <span id="ap-container-value-max" class="text-emerald-200 font-bold">{{current_player_state.user.max_ap}}</span>
           </span>
         </div>
       </fieldset>
@@ -104,8 +102,8 @@
             <span class="uppercase tracking-wider">{% translate "Ballistic" %}</span>
           </div>
           <span class="font-bold text-xs">
-            <span id="ballistic-container-value-min">{{ pc.ship.current_ballistic_defense }}</span>/
-            <span id="ballistic-container-value-max">{{ pc.ship.max_ballistic_defense }}</span>
+            <span id="ballistic-container-value-min">{{ current_player_state.ship.current_ballistic_defense }}</span>/
+            <span id="ballistic-container-value-max">{{ current_player_state.ship.max_ballistic_defense }}</span>
           </span>
         </div>
 
@@ -116,8 +114,8 @@
             <span class="uppercase tracking-wider">{% translate "Thermal" %}</span>
           </div>
           <span class="font-bold text-xs">
-            <span id="thermal-container-value-min">{{ pc.ship.current_thermal_defense }}</span>/
-            <span id="thermal-container-value-max">{{ pc.ship.max_thermal_defense }}</span>
+            <span id="thermal-container-value-min">{{ current_player_state.ship.current_thermal_defense }}</span>/
+            <span id="thermal-container-value-max">{{ current_player_state.ship.max_thermal_defense }}</span>
           </span>
         </div>
 
@@ -128,8 +126,8 @@
             <span class="uppercase tracking-wider">{% translate "Missile" %}</span>
           </div>
           <span class="font-bold text-xs">
-            <span id="missile-container-value-min">{{ pc.ship.current_missile_defense }}</span>/
-            <span id="missile-container-value-max">{{ pc.ship.max_missile_defense }}</span>
+            <span id="missile-container-value-min">{{ current_player_state.ship.current_missile_defense }}</span>/
+            <span id="missile-container-value-max">{{ current_player_state.ship.max_missile_defense }}</span>
           </span>
         </div>
       </fieldset>
@@ -146,7 +144,5 @@
   </div>
 
 </div>
-{% endif %}
-{% endfor %}
 <script>
 </script>

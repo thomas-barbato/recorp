@@ -1793,7 +1793,7 @@ function createUnknownModal(modalId, data, is_npc) {
     body_cat1.classList.add('hidden');
     btn_cat1.addEventListener('click', ()=> display_attack_options(e.id, 1));
 
-    // Populate modules from currentPlayer.ship.modules
+    // Populate modules from currentPlayer..ship.modules
     for (let mod of currentPlayer.ship.modules) {
         if (mod.type !== "WEAPONRY") continue;
 

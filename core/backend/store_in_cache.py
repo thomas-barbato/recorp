@@ -238,16 +238,6 @@ class StoreInCache:
                     "size": element.get("source__size", {"x": 1, "y": 1}),
                 }
                 
-                # Ajout des données de ressource si applicable
-                if 'quantity' in element:
-                    element_data["resource"] = {
-                        "id": element["source_id"],
-                        "name": element.get("source__name", "Unknown"),
-                        "quantity": element["quantity"],
-                        "quantity_str": resource_quantity,
-                        "translated_quantity_str": resource_quantity,
-                    }
-                
                 sector_data["sector_element"].append(element_data)
                 
             except Exception as e:
@@ -386,8 +376,11 @@ class StoreInCache:
     def _process_single_npc(self, sector_data: Dict[str, Any], npc_data: Dict) -> None:
         """Traite un NPC individuel."""
         try:
-            module_list = self._get_module_list_cached(npc_data["npc_template_id__module_id_list"])
-            sector_data["npc"].append({
+            module_list = self._get_module_list_cached(
+                npc_data["npc_template_id__module_id_list"]
+            )
+
+            npc_entry = {
                 "npc": {
                     "id": npc_data["id"],
                     "name": npc_data["npc_template_id__name"],
@@ -414,12 +407,21 @@ class StoreInCache:
                     "size": npc_data["npc_template_id__ship_id__ship_category_id__size"],
                     "modules": module_list,
                     "modules_range": self.from_DB.is_in_range(
-                        sector_data["sector"]["id"], npc_data["id"], is_npc=True
+                        sector_data["sector"]["id"],
+                        npc_data["id"],
+                        is_npc=True
                     ),
                 },
-            })
+            }
+            self._strip_npc_cache_data(npc_entry)
+
+            sector_data["npc"].append(npc_entry)
+
         except Exception as e:
-            logger.error(f"Erreur lors du traitement du NPC {npc_data.get('id', 'unknown')}: {e}")
+            logger.error(
+                f"Erreur lors du traitement du NPC {npc_data.get('id', 'unknown')}: {e}"
+            )
+
 
     def _process_single_pc(self, sector_data: Dict[str, Any], pc_data: Dict) -> None:
         """Traite un PC individuel."""
@@ -427,7 +429,7 @@ class StoreInCache:
             module_list = self._get_player_module_list_cached(pc_data["player_ship_id"])
             visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id"])
             
-            sector_data["pc"].append({
+            pc_entry = {
                 "user": {
                     "player": pc_data["player_ship_id__player_id"],
                     "name": pc_data["player_ship_id__player_id__name"],
@@ -477,9 +479,14 @@ class StoreInCache:
                     "visible_zone": visible_zone,
                     "view_range": pc_data["player_ship_id__view_range"]
                 },
-            })
+            }
+            
+            self._strip_pc_cache_data(pc_entry)
+            sector_data["pc"].append(pc_entry)
+                
         except Exception as e:
             logger.error(f"Erreur lors du traitement du PC: {e}")
+        
 
     def _get_module_list_cached(self, module_id_list: tuple) -> List[Dict[str, Any]]:
         
@@ -781,3 +788,62 @@ class StoreInCache:
     def get_datetime_json(date_time: datetime.datetime) -> str:
         """Conversion optimisée datetime vers JSON."""
         return date_time.isoformat()
+    
+    @staticmethod
+    def _strip_pc_cache_data(pc_data: dict):
+        # USER
+        for key in [
+            "description",
+            "image",
+            "current_ap",
+            "max_ap",
+            "archetype_name",
+            "archetype_data",
+        ]:
+            pc_data.get("user", {}).pop(key, None)
+
+        # FACTION
+        pc_data.get("faction", {}).pop("name", None)
+
+        # SHIP
+        ship = pc_data.get("ship", {})
+        for key in [
+            "max_hp",
+            "current_hp",
+            "description",
+            "max_movement",
+            "current_movement",
+            "current_ballistic_defense",
+            "current_thermal_defense",
+            "current_missile_defense",
+            "max_ballistic_defense",
+            "max_thermal_defense",
+            "max_missile_defense",
+            "current_cargo_size",
+            "module_slot_available",
+            "module_slot_already_in_use",
+            "modules",
+            "modules_range",
+            "ship_scanning_module_available",
+            "category_name",
+            "category_description",
+        ]:
+            ship.pop(key, None)
+    
+    @staticmethod
+    def _strip_npc_cache_data(npc_data: dict):
+        ship = npc_data.get("ship", {})
+        for key in [
+            "current_hp",
+            "max_hp",
+            "current_movement",
+            "max_movement",
+            "current_ballistic_defense",
+            "current_thermal_defense",
+            "current_missile_defense",
+            "category_name",
+            "category_description",
+            "modules",
+            "modules_range",
+        ]:
+            ship.pop(key, None)
