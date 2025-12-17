@@ -335,7 +335,7 @@ def build_sector_element_modal_data(
     Routeur DB-only pour tous les sector_element.
     """
 
-    if element_type == "planet":
+    if element_type == "planet" or element_type == "satellite" or element_type == "star":
         return _build_standard_foreground_cache_like(
             PlanetResource, element_id, "planet"
         )

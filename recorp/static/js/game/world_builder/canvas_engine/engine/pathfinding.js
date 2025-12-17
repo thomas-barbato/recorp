@@ -39,8 +39,19 @@ export default class PathfindingController {
 
     getCurrentMovementPoints() {
         const me = this.getCurrentPlayer();
-        if (!me || !me.data || !me.data.ship) return 0;
-        return me.data.ship.current_movement || 0;
+        if (!me) return 0;
+
+        // 1️⃣ Priorité : actor canvas (syncé)
+        if (me.data?.ship?.current_movement != null) {
+            return me.data.ship.current_movement;
+        }
+
+        // 2️⃣ Fallback : state joueur courant (DB-only)
+        if (window.currentPlayerState?.ship?.current_movement != null) {
+            return window.currentPlayerState.ship.current_movement;
+        }
+
+        return 0;
     }
 
     // ---------------------------
@@ -132,6 +143,8 @@ export default class PathfindingController {
         // 2) choisir la tile de départ la plus proche de la destination
         let bestStart = null;
         let bestDist = Infinity;
+        console.log("[PF] ring:", ring);
+        console.log("[PF] bestStart:", bestStart);
 
         for (const c of ring) {
             if (!this._isWalkable(c.x, c.y)) continue;
@@ -215,10 +228,13 @@ export default class PathfindingController {
             // ships : on ne peut pas passer à travers les autres vaisseaux
             if (o.type === "player" || o.type === "npc") {
                 const me = this.getCurrentPlayer();
-                const isMe = me && me.id === o.id;
-                if (!isMe) {
-                    return false;
+                // ⚠️ IGNORER COMPLÈTEMENT LE JOUEUR COURANT
+                if (me && o.id === me.id) {
+                    continue;
                 }
+
+                // autres vaisseaux = bloquants
+                return false;
             }
         }
 

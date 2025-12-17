@@ -179,10 +179,13 @@ export default class CanvasPathfinding {
         const bestStart = this._pickClosest(startRing, { x: destX, y: destY });
 
         const path = this._computePath(bestStart, { x: destX, y: destY });
-
         // -- Calcul du coût du chemin --
         const pathCost = path.length;
-        const pmRemaining = me.data?.ship?.current_movement || 0;
+        let pmRemaining = 0;
+        console.log(window.currentPlayer?.ship?.current_movement)
+        if (window.currentPlayer?.ship?.current_movement != null) {
+            pmRemaining = window.currentPlayer.ship.current_movement;
+        }
 
         if (!path) {
             this.current = null;
@@ -196,7 +199,6 @@ export default class CanvasPathfinding {
             };
             this.path = path;
         }
-
         // -- Vérification PM (si zone est libre mais PM insuffisants) --
         if (pathCost > pmRemaining) {
             // preview rouge (destination atteignable mais PM insuffisants)

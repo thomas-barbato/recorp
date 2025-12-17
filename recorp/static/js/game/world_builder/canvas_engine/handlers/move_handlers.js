@@ -224,6 +224,12 @@ export function handlePlayerMove(msg) {
         syncMapInformationsMovement(playerId, remaining, maxMove);
         syncCanvasPlayerMovement(playerId, remaining, maxMove);
         updateHudMovement(playerId, remaining, maxMove);
+        if (playerId === window.current_player_id && window.currentPlayer?.ship) {
+            window.currentPlayer.ship.current_movement = remaining;
+            if (typeof maxMove === "number") {
+                window.currentPlayer.ship.max_movement = maxMove;
+            }
+        }
     }
 
     // ----------------------------------------------------------

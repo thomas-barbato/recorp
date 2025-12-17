@@ -1357,7 +1357,7 @@ function create_foreground_modal(modalId, data) {
     if (data.type === "asteroid" || data.type === "star") {
         const resourcesLabel = document.createElement("label");
         resourcesLabel.textContent = "RESSOURCES :";
-        resourcesLabel.classList.add("font-bold", "text-white", "mt-4", "font-shadow");
+        resourcesLabel.classList.add("font-bold", "text-white", "mt-4", "font-shadow", "w-full");
 
         modal.body.addSection(resourcesLabel);
         modal.body.addSection(

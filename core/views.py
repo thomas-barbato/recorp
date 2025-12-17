@@ -1004,7 +1004,7 @@ def modal_data_view(request, element_type: str, element_id: int):
             "target": target_npc
         })
 
-    if element_type in ("planet", "asteroid", "station", "warpzone"):
+    if element_type in ("planet", "asteroid", "station", "warpzone", "star", "satellite"):
         target_element = build_sector_element_modal_data(element_type, element_id)
         if not target_element:
             return HttpResponseBadRequest("Sector element not found")

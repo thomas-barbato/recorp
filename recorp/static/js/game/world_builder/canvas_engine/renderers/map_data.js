@@ -3,6 +3,7 @@ export default class MapData {
         this.raw = raw || window.map_informations || {};
         this.spriteManager = spriteManager;
         this.tileSize = tileSize || 32;
+        this.currentPlayerState = window.currentPlayerState;
 
         this.mapWidth = this.raw.map_width || 40;
         this.mapHeight = this.raw.map_height || 40;
@@ -92,7 +93,7 @@ export default class MapData {
 
             if (obj.spritePath) tryEnsure(obj.spritePath);
             if (obj.reversedSprite) tryEnsure(obj.reversedSprite);
-});
+        });
 
         // ------------ NPCs ------------
         const npcList = Array.isArray(this.raw.npc) ? this.raw.npc : [];
@@ -179,18 +180,22 @@ export default class MapData {
         }
 
         const objs = this.getObjectsAtTile(x, y);
-        if (!objs.length) {
-            return false;
-        }
+        if (!objs.length) return false;
 
-        // Types considérés comme obstacles : players, npcs, foreground (sector_element)
         for (const o of objs) {
             if (ignoreIds.has(o.id)) continue;
+
+            // ✅ NE PAS se bloquer soi-même (important pour ships > 1x1)
+            if ((o.type === "player" || o.type === "npc")
+                && String(o.data?.user?.player) === String(window.current_player_id)) {
+                continue;
+            }
 
             if (o.type === "player" || o.type === "npc" || o.type === "foreground") {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -240,24 +245,23 @@ export default class MapData {
         const ignoreIds = new Set(options.ignoreIds || []);
 
         const key = (x, y) => `${x},${y}`;
-
-        // A* open & closed
-        const open = new Map();   // key -> node
-        const closed = new Set(); // key
-
-        // node = { x, y, g, f, parentKey }
         const h = (x, y) => Math.abs(x - gx) + Math.abs(y - gy);
 
-        const startKey = key(sx, sy);
-        const startNode = { x: sx, y: sy, g: 0, f: h(sx, sy), parentKey: null };
-        open.set(startKey, startNode);
+        // A* open & closed
+        const open = new Map();       // key -> {x,y,g,f}
+        const closed = new Set();     // key
+        const cameFrom = new Map();   // key -> parentKey
 
-        let bestGoalNode = null;
+        const startKey = key(sx, sy);
+        open.set(startKey, { x: sx, y: sy, g: 0, f: h(sx, sy) });
+
+        let bestGoalKey = null;
 
         while (open.size > 0) {
-            // trouver le node avec le plus petit f
+            // node avec le plus petit f
             let currentKey = null;
             let currentNode = null;
+
             for (const [k, n] of open) {
                 if (!currentNode || n.f < currentNode.f) {
                     currentNode = n;
@@ -267,16 +271,15 @@ export default class MapData {
 
             if (!currentNode) break;
 
-            // si on a atteint la cible
+            // objectif atteint
             if (currentNode.x === gx && currentNode.y === gy) {
-                bestGoalNode = currentNode;
+                bestGoalKey = currentKey;
                 break;
             }
 
             open.delete(currentKey);
             closed.add(currentKey);
 
-            // voisins 4-directions
             const neighbors = [
                 { x: currentNode.x + 1, y: currentNode.y },
                 { x: currentNode.x - 1, y: currentNode.y },
@@ -287,45 +290,50 @@ export default class MapData {
             for (const nb of neighbors) {
                 const nx = nb.x;
                 const ny = nb.y;
-                const k = key(nx, ny);
+                const nk = key(nx, ny);
 
-                if (closed.has(k)) continue;
+                if (closed.has(nk)) continue;
 
                 // case bloquante ?
                 if (this.isBlocked(nx, ny, ignoreIds)) continue;
 
-                const gCost = currentNode.g + 1; // coût = 1 par case
-
-                // si on dépasse la limite de PM, pas la peine d'explorer plus loin
+                const gCost = currentNode.g + 1;
                 if (gCost > maxCost) continue;
 
-                const existing = open.get(k);
-                if (existing && gCost >= existing.g) {
-                    continue; // pas mieux que ce qu'on a déjà
-                }
+                const existing = open.get(nk);
+                if (existing && gCost >= existing.g) continue;
 
-                const node = {
+                cameFrom.set(nk, currentKey);
+
+                open.set(nk, {
                     x: nx,
                     y: ny,
                     g: gCost,
-                    f: gCost + h(nx, ny),
-                    parentKey: currentKey
-                };
-                open.set(k, node);
+                    f: gCost + h(nx, ny)
+                });
             }
         }
 
-        if (!bestGoalNode) {
-            // aucune route trouvée
-            return [];
-        }
+        if (!bestGoalKey) return [];
 
-        // reconstruire le chemin (du goal vers le start)
+        // ✅ reconstruction via cameFrom (fiable)
         const pathReversed = [];
-        let node = bestGoalNode;
-        while (node && !(node.x === sx && node.y === sy)) {
-            pathReversed.push({ x: node.x, y: node.y });
-            node = open.get(node.parentKey) || null;
+        let cur = bestGoalKey;
+
+        while (cur !== startKey) {
+            const n = open.get(cur) || null;
+
+            // si le goal a été trouvé, il est possible qu'il ne soit plus dans open
+            // donc on reconstruit la coord à partir de la clé
+            if (n) {
+                pathReversed.push({ x: n.x, y: n.y });
+            } else {
+                const [x, y] = cur.split(",").map(Number);
+                pathReversed.push({ x, y });
+            }
+
+            cur = cameFrom.get(cur);
+            if (!cur) break; // safety
         }
 
         return pathReversed.reverse();

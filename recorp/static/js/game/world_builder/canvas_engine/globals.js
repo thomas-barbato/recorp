@@ -45,7 +45,6 @@ export function initGlobals() {
         window.map_informations = map_informations;
         window.current_player_id = current_player_id;
         window.currentPlayer = currentPlayer;
-        window.current_player_data = currentPlayer;   // window legacy
         window.otherPlayers = otherPlayers;
         window.foregroundElement = foregroundElement;
         window.npcs = npcs;

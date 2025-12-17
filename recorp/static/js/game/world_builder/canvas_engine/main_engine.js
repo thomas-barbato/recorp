@@ -63,6 +63,16 @@ if (!ok) {
             // center roughly in middle of map if no player
             camera.centerOn(Math.floor(map.mapWidth / 2), Math.floor(map.mapHeight / 2));
         }
+        if (currentPlayerObj && window.currentPlayerState?.ship) {
+            currentPlayerObj.data = currentPlayerObj.data || {};
+            currentPlayerObj.data.ship = currentPlayerObj.data.ship || {};
+
+            currentPlayerObj.data.ship.current_movement =
+                window.currentPlayerState.ship.current_movement;
+
+            currentPlayerObj.data.ship.max_movement =
+                window.currentPlayerState.ship.max_movement;
+        }
 
         window.spriteManager = SpriteManager;
         window.spriteManager.init({
