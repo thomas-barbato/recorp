@@ -619,6 +619,18 @@ function define_modal_type(modalId){
         
     } else {
         result.isStatic = true;
+        // Foreground/sector_element au format: {element_type}_{id}
+        // ex: asteroid_33, planet_2, warpzone_10
+        const fg = remaining.match(/^([a-z_]+)_(\d+)$/);
+        if (!fg) {
+            result.isStatic = true;
+            result.elementName = remaining;
+            return result;
+        }
+
+        result.isForegroundElement = true;
+        result.type = fg[1]; // "asteroid", "planet", ...
+        result.id = parseInt(fg[2], 10);
         result.elementName = remaining;
     }
 
@@ -878,7 +890,7 @@ function createForegroundModalData(elementInfo, sectorData) {
         animation: elementInfo.animation,
         name: elementInfo.name,
         description: elementInfo.description,
-        coord: elementInfo.coordinates,
+        coordinates: elementInfo.coordinates,
         size: elementInfo.size,
         actions: {
             action_label: map_informations.actions.translated_action_label_msg,
@@ -1544,14 +1556,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 activateExclusiveAccordions(modalRoot);
             }
-
-            // 4️⃣ Feedback visuel optionnel
-            contextZone.textContent = "Scan effectué.";
-            contextZone.classList.remove("hidden");
-            setTimeout(() => {
-                contextZone.classList.add("hidden");
-                contextZone.textContent = "";
-            }, 1500);
         }
     );
 
@@ -1674,7 +1678,17 @@ function createUnknownModal(modalId, data, is_npc) {
 
     // --- BODY ---
     let body_container_div = document.createElement('div');
-    body_container_div.classList.add('items-center','md:p-5','p-1');
+    body_container_div.classList.add(
+        'items-center',
+        'md:p-5',
+        'p-1',
+        'w-full',
+        'flex',
+        'flex-col',
+        'overflow-y-auto',
+        'md:max-h-[70vh]',
+        'max-h-[80vh]'
+    );
 
     // Placeholder generic image
     let unknown_img = document.createElement('img');
@@ -1690,6 +1704,35 @@ function createUnknownModal(modalId, data, is_npc) {
         statsSection.ship_statistics_warning_msg_container_p,
         statsSection.ship_detailed_statistics_container_div
     );
+
+    // === MODULES LABEL (UNKNOWN) ===
+    const modulesLabel = document.createElement("label");
+    modulesLabel.textContent = "MODULES:";
+    modulesLabel.classList.add(
+        "w-full",
+        "font-bold",
+        "font-shadow",
+        "text-white",
+        "text-base",
+        "mt-4"
+    );
+
+    body_container_div.append(modulesLabel);
+
+    // === MESSAGE PAR DÉFAUT (scan requis) ===
+    const modulesWarning = document.createElement("p");
+    modulesWarning.id = "statistics-warning-msg";
+    modulesWarning.classList.add(
+        "text-red-500",
+        "font-bold",
+        "text-xs",
+        "text-center",
+        "font-shadow",
+        "animate-pulse"
+    );
+    modulesWarning.textContent = "Scan requis pour afficher les modules.";
+
+    body_container_div.append(modulesWarning);
 
     // ACTIONS SECTION
     // === ACTIONS LABEL (même style que normal) ===
