@@ -304,9 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
 async function async_send_chat_msg(payload) {
-
-    console.log("SENDING MP", payload)
-    // payload est déjà un JSON.stringify({ recipient, subject, body, ... })
     try {
         
         const ws = window.canvasEngine?.ws;
@@ -315,7 +312,6 @@ async function async_send_chat_msg(payload) {
             console.error("[MP] WebSocket (canvasEngine.ws) non initialisé");
             return;
         }
-        console.log(payload)
         const msg = {
             type: "async_chat_message",
             message: payload

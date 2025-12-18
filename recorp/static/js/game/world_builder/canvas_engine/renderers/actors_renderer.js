@@ -186,7 +186,11 @@ export default class ActorsRenderer {
             (window.canvasEngine && window.canvasEngine.renderer && window.canvasEngine.renderer.sonar) ||
             null;
 
-        const visible = sonar ? sonar.isVisible(obj) : true;
+        const forcedVisible =
+            window.scannedTargets?.has(obj.id) ||
+            window.sharedTargets?.has(obj.id);
+
+        const visible = forcedVisible || (sonar ? sonar.isVisible(obj) : true);
 
         // Highlight du joueur courant lorsque pathfinding actif
         const engine = window.canvasEngine;
@@ -224,7 +228,7 @@ export default class ActorsRenderer {
             // si pas survolé → pas de bordure
             if (hover && hover === obj) {
                 const ctx = this.ctx;
-                const sonarVisible = this.sonar ? this.sonar.isVisible(obj) : true;
+                const sonarVisible = forcedVisible || (this.sonar ? this.sonar.isVisible(obj) : true);
 
                 // On détermine le type via obj.id : "pc_23", "npc_25", etc.
                 let isPc = false;

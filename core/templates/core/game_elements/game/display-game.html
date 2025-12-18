@@ -25,13 +25,13 @@
                 <div class="map-arrow" data-popper-arrow></div>
             </div>
         </li>
-        <li data-tooltip-target="faction-tooltip" data-tooltip-placement="right" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+        <li data-tooltip-target="event-tooltip" data-tooltip-placement="right" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
             <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
-                <i class="fa-solid fa-people-group fa-xl"></i>
+                <i class="fa-solid fa-mobile-screen-button fa-xl"></i>
             </div>
-            <div id="faction-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                {% translate "Faction" %}
-                <div class="map-arrow" data-popper-arrow></div>
+            <div id="event-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Events" %}
+                <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </li>
         <li data-tooltip-target="research-tooltip" data-tooltip-placement="right" data-modal-target="research-modal" data-modal-toggle="research-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
@@ -52,21 +52,21 @@
                 <div class="map-arrow" data-popper-arrow></div>
             </div>
         </li>
+        <li data-tooltip-target="faction-tooltip" data-tooltip-placement="right" data-modal-target="faction-modal" data-modal-toggle="faction-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
+            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
+                <i class="fa-solid fa-landmark fa-xl"></i>
+            </div>
+            <div id="faction-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Faction" %}
+                <div class="map-arrow" data-popper-arrow></div>
+            </div>
+        </li>
         <li data-tooltip-target="task-tooltip" data-tooltip-placement="right" data-tooltip-placement="right" data-modal-target="task-modal" data-modal-toggle="task-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
             <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
                 <i class="fa-solid fa-list-check fa-xl"></i>
             </div>
             <div id="task-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
                 {% translate "Tasks" %}
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
-        </li>
-        <li data-tooltip-target="event-tooltip" data-tooltip-placement="right" data-modal-target="event-modal" data-modal-toggle="event-modal" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 hover:border-[#B1F1CB] button-panel justify-center items-center z-1">
-            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
-                <i class="fa-solid fa-mobile-screen-button fa-xl"></i>
-            </div>
-            <div id="event-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                {% translate "Events" %}
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </li>
@@ -249,7 +249,7 @@
                 </div>
                 <label for="actionPoint-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Action points'%}</label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute"style="width:{% widthratio current_player_state.user.current_ap current_player_state.user.max_ap 100 %}%"></div>
+                    <div class="bg-blue-600 leading-none h-[15px] absolute" id="ap-percent" style="width:{% widthratio current_player_state.user.current_ap current_player_state.user.max_ap 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="actionPoint-container-value">
                         <span id="actionPoint-container-value-min">{{current_player_state.user.current_ap}}</span>/<span id="actionPoint-container-value-max">{{current_player_state.user.max_ap}}</span>
                     </span>
@@ -321,6 +321,7 @@
 
 </script>
 
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>  
 <script src="{% static 'world_builder/modals/modals.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/character_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/message_modal.js'%}" type='application/javascript'></script>

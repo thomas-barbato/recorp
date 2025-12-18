@@ -169,7 +169,6 @@ export function handlePlayerMove(msg) {
                 finalX: endX,
                 finalY: endY,
                 onComplete: () => {
-                    console.log(engine.camera && engine.camera.autoCenter)
                     try {
                         if (engine.camera && engine.camera.autoCenter) {
                             const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;

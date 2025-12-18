@@ -27,13 +27,15 @@ const FOREGROUND_ACTIONS = {
         key: "gather",
         label: "Récolte",
         icon: "/static/img/ux/gather_icon.svg",
-        requires: [{ type: "GATHERING" }]
+        requires: [{ type: "GATHERING" }],
+        ap_cost : 1
         },
         {
         key: "scan",
         label: "Scan",
         icon: "/static/img/ux/scan_resource_icon.svg",
-        requires: [{ type: "PROBE", name: "drilling probe" }]
+        requires: [{ type: "PROBE", name: "drilling probe" }],
+        ap_cost : 1
         }
     ],
 
@@ -82,7 +84,7 @@ const FOREGROUND_ACTIONS = {
         {
             key: "training",
             label: "Training",
-            iconify: "game-icons--teacher"
+            iconify: "game-icons--teacher",
         },
         {
             key: "craft",
@@ -104,6 +106,25 @@ const FOREGROUND_ACTIONS = {
     ],
     black_hole: []
 };
+
+const PC_NPC_EXTRA_ACTIONS = [
+    {
+        key: "share_to_group",
+        label: "Dévoiler au groupe",
+        iconify: "game-icons--radar-cross-section",
+        cost_ap: 1,
+        requires_scan: true,
+        requires_group: true,
+        warning_no_group: "Vous devez faire partie d'un groupe pour effectuer cette action."
+    },
+    {
+        key: "send_report",
+        label: "Envoyer un rapport",
+        iconClass: "fa-solid fa-envelope",
+        cost_ap: 0,
+        requires_scan: true
+    }
+];
 
 function groupModulesByCategory(modules) {
 
@@ -301,7 +322,7 @@ function createModuleCategoryAccordion(categoryKey, modules, uniqueModalId) {
 
     // BODY (initialement caché)
     const bodyDiv = document.createElement("div");
-    bodyDiv.classList.add("hidden","pl-2","pb-2","flex","flex-col","gap-3");
+    bodyDiv.classList.add("hidden","pl-2","flex","flex-col");
     bodyDiv.id = accordionId;
 
     // Chaque module formaté via createFormatedLabel
@@ -387,7 +408,6 @@ function buildModulesSection(modalId, data) {
 }
 
 function buildPcNpcImage(data, is_npc) {
-    console.log(data)
     const wrapper = document.createElement("div");
     wrapper.classList.add("flex", "justify-center", "w-full");
 
@@ -481,7 +501,7 @@ function createStandardModalShell(modalId, options = {}) {
     //
     const headerContainer = document.createElement("div");
     headerContainer.id = `${modalId}-header`;
-    headerContainer.classList.add("md:p-5","p-1","flex","flex-row","items-center");
+    headerContainer.classList.add("p-1","flex","flex-row","items-center");
 
     //
     // ==== HEADER API ====
@@ -522,7 +542,6 @@ function createStandardModalShell(modalId, options = {}) {
     bodyContainer.id = `${modalId}-body`;
     bodyContainer.classList.add(
         "items-center",
-        "md:p-5",
         "p-2",
         "flex",
         "flex-col",
@@ -546,7 +565,7 @@ function createStandardModalShell(modalId, options = {}) {
     // === FOOTER CONTAINER ===
     //
     const footerContainer = document.createElement("div");
-    footerContainer.classList.add("md:p-5","p-1","flex","flex-row","w-full","mx-auto");
+    footerContainer.classList.add("p-2","flex","flex-row","w-full","mx-auto");
 
     //
     // ==== FOOTER API ====
@@ -740,7 +759,7 @@ function createNpcModalData(npcData) {
             name: npcData.npc.displayed_name,
             faction_name: npcData.faction.name,
             id: npcData.npc.id,
-            coordinates : npcData.npc.coordinates
+            coordinates : npcData.npc.coordinates,
         },
         ship: {
             name: npcData.ship.name,
@@ -749,8 +768,11 @@ function createNpcModalData(npcData) {
             max_hp: npcData.ship.max_hp,
             current_hp: npcData.ship.current_hp,
             current_thermal_defense: npcData.ship.current_thermal_defense,
+            max_thermal_defense: npcData.ship.max_thermal_defense,
             current_missile_defense: npcData.ship.current_missile_defense,
+            max_missile_defense: npcData.ship.max_missile_defense,
             current_ballistic_defense: npcData.ship.current_ballistic_defense,
+            max_ballistic_defense: npcData.ship.max_ballistic_defense,
             max_movement: npcData.ship.max_movement,
             current_movement: npcData.ship.current_movement,
             status: npcData.ship.status,
@@ -781,6 +803,8 @@ function createPlayerModalData(playerData) {
             faction_name: playerData.faction.name,
             id: playerData.user.player,
             coordinates : playerData.user.coordinates,
+            current_ap : playerData.user.current_ap,
+            max_ap : playerData.user.current_ap
         },
         ship: {
             name: playerData.ship.name,
@@ -789,8 +813,11 @@ function createPlayerModalData(playerData) {
             max_hp: playerData.ship.max_hp,
             current_hp: playerData.ship.current_hp,
             current_thermal_defense: playerData.ship.current_thermal_defense,
+            max_thermal_defense: playerData.ship.max_thermal_defense,
             current_missile_defense: playerData.ship.current_missile_defense,
+            max_missile_defense: playerData.ship.max_missile_defense,
             current_ballistic_defense: playerData.ship.current_ballistic_defense,
+            max_ballistic_defense: playerData.ship.max_ballistic_defense,
             max_movement: playerData.ship.max_movement,
             current_movement: playerData.ship.current_movement,
             status: playerData.ship.status,
@@ -1007,13 +1034,26 @@ async function open_close_modal(modalId) {
     // 5) Fetch backend
     // --------------------------------------------------
     let responseData;
-    try {
-        const res = await fetch(`/play/modal-data/${elementType}/${elementId}/`, {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
-        });
+    const targetKey = `${elementType}_${elementId}`;
 
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        responseData = await res.json();
+    try {
+        if (window.scannedModalData?.[targetKey]) {
+
+            responseData = {
+                target: window.scannedModalData[targetKey],
+                current_player: window.currentPlayerState,
+                __fromScan: true
+            };
+
+        } else {
+
+            const res = await fetch(`/play/modal-data/${elementType}/${elementId}/`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            responseData = await res.json();
+        }
 
     } catch (err) {
         console.error("Modal fetch failed:", err);
@@ -1024,7 +1064,10 @@ async function open_close_modal(modalId) {
     // --------------------------------------------------
     // 6) Contexte UI (UNKNOWN = front only)
     // --------------------------------------------------
-    responseData.__ui = { isUnknown };
+    responseData.__ui = { 
+        isUnknown,
+        scanned: Boolean(window.scannedTargets?.has(targetKey))
+    };
 
     // --------------------------------------------------
     // 7) Construction réelle du modal
@@ -1034,7 +1077,6 @@ async function open_close_modal(modalId) {
         const parsed = define_modal_type(modalId);
         if (!parsed) {
             console.error("define_modal_type failed (parse)");
-            // suppression du loader.
             loader.remove();
             return;
         }
@@ -1043,8 +1085,9 @@ async function open_close_modal(modalId) {
         const extractedDataForModal = {
             found: true,
             type: parsed.type,
-            data: responseData.target,       // 👈 CIBLE
-            current_player: responseData.current_player
+            data: responseData.target,
+            current_player: responseData.current_player,
+            __fromScan: responseData.__fromScan === true
         };
 
         create_modal(modalId, parsed, extractedDataForModal);
@@ -1061,7 +1104,6 @@ async function open_close_modal(modalId) {
 }
 
 function create_modal(modalId, extractDataFromId, extractedDataForModal){
-    console.log(extractDataFromId, extractedDataForModal)
     let element_type = extractDataFromId.type;
     let modal = "";
     let modalData = "";
@@ -1072,7 +1114,11 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modalData = createPlayerModalData(extractedDataForModal.data)
                 modal = createUnknownPcModal(modalId, modalData);
             }else{
-                modalData = createPlayerModalData(extractedDataForModal.data)
+                modalData = createPlayerModalData(extractedDataForModal.data);
+                // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
+                if (extractedDataForModal?.__fromScan === true) {
+                    modalData._ui.scanned = true;
+                }
                 modal = create_pc_npc_modal(modalId, modalData, false);
             }
             break;
@@ -1082,6 +1128,10 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modal = createUnknownNpcModal(modalId, modalData);
             }else{
                 modalData = createNpcModalData(extractedDataForModal.data)
+                // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
+                if (extractedDataForModal?.__fromScan === true) {
+                    modalData._ui.scanned = true;
+                }
                 modal = create_pc_npc_modal(modalId, modalData, true);
             }
             break;
@@ -1267,6 +1317,20 @@ function buildForegroundActionsSection(modalId, data) {
             itemWrapper.append(costEl);
         }
 
+        // === COÛT (SEULEMENT SI DÉFINI) ===
+        if (typeof action.cost === "number") {
+            const costEl = document.createElement("div");
+            costEl.textContent = `${action.cost} cr`;
+            costEl.classList.add(
+                "text-xs",
+                "text-yellow-400",
+                "font-bold",
+                "mt-1",
+                "font-shadow"
+            );
+            itemWrapper.append(costEl);
+        }
+
         // === CLICK HANDLER ===
         btn.onclick = () => {
 
@@ -1315,13 +1379,13 @@ function buildForegroundActionsSection(modalId, data) {
 
 function create_foreground_modal(modalId, data) {
     const modal = createStandardModalShell(modalId);
-    console.log(data)
     const coords = `[X:${data.coordinates.x} Y:${data.coordinates.y}]`;
     modal.header.setTitle(`${data.name.toUpperCase()} ${coords}`);
     modal.header.setCloseButton(modalId);
     if (!data._ui) {
         data._ui = {
-            scanned: false
+            scanned: false,
+            shared: false
         };
     }
 
@@ -1357,7 +1421,7 @@ function create_foreground_modal(modalId, data) {
     if (data.type === "asteroid" || data.type === "star") {
         const resourcesLabel = document.createElement("label");
         resourcesLabel.textContent = "RESSOURCES :";
-        resourcesLabel.classList.add("font-bold", "text-white", "mt-4", "font-shadow", "w-full");
+        resourcesLabel.classList.add("font-bold", "text-white", "mt-2", "font-shadow", "w-full");
 
         modal.body.addSection(resourcesLabel);
         modal.body.addSection(
@@ -1368,7 +1432,7 @@ function create_foreground_modal(modalId, data) {
     // ACTIONS
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = "ACTIONS:";
-    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-4", "text-start", "font-shadow");
+    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-2", "text-start", "font-shadow");
     modal.body.addSection(actionsLabel);
 
     const actionsSection = buildForegroundActionsSection(modalId, data);
@@ -1414,6 +1478,8 @@ function showActionError(modalId, message) {
 }
 
 function buildActionsSection(modalId, data, is_npc, contextZone) {
+
+    const ws = window.canvasEngine?.ws;
 
     const modules = currentPlayer.ship.modules;
     const isUnknown = modalId.startsWith("modal-unknown");
@@ -1509,7 +1575,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         }
     );
     wrapper.append(grid);
-    grid.append(attackButton);
+    
 
     // ---------------------------
     // ACTION : SCAN
@@ -1521,45 +1587,78 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         scanIcon,
         "Scan",
         () => {
-            if (!hasProbe) {
-                return showMissingModuleError();
-            }
-
-            // 1️⃣ Marquer la cible comme scannée
-            data._ui.scanned = true;
-
-            const modalRoot = document.getElementById(modalId);
-            if (!modalRoot) return;
-
-            // 2️⃣ STATS : cacher warning, afficher stats détaillées
-            const warningMsg = modalRoot.querySelector("#statistics-warning-msg");
-            if (warningMsg) {
-                warningMsg.classList.add("hidden");
-            }
-
-            const detailedStats = modalRoot.querySelector("#ship-statistics-detailed");
-            if (detailedStats) {
-                detailedStats.classList.remove("hidden");
-            }
-
-            // 3️⃣ MODULES : remplacer le message par la vraie section modules
-            const modulesLabel = Array.from(
-                modalRoot.querySelectorAll("label")
-            ).find(l => l.textContent.trim() === "MODULES:");
-
-            if (modulesLabel) {
-                let next = modulesLabel.nextSibling;
-                if (next) next.remove();
-
-                const modulesSection = buildModulesSection(modalId, data);
-                modulesLabel.after(modulesSection);
-
-                activateExclusiveAccordions(modalRoot);
-            }
+            const info = define_modal_type(modalId);
+            ws.send({
+                type: "action_scan_pc_npc",
+                payload: {
+                    target_type: info.type,
+                    target_id: info.id
+                }
+            });
+            
         }
+        
     );
+    grid.innerHTML = "";
+    // Limiter l'utilisation du scan.
+    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship-probe")) {
+        scanButton.classList.add("opacity-40", "pointer-events-none");
+        // optionnel : petit texte
+        scanButton.title = "Déjà scanné";
+    }
 
+    // 1) Toujours visibles
+    grid.append(attackButton);
     grid.append(scanButton);
+
+    // 2) Actions post-scan : “à la suite” dans la grille
+    if (data._ui?.scanned === true) {
+        PC_NPC_EXTRA_ACTIONS.forEach(extra => {
+
+            // --- icon ---
+            let iconEl;
+
+            if (extra.iconify) {
+                iconEl = document.createElement("span");
+                iconEl.classList.add("iconify", "w-5", "h-5");
+                iconEl.setAttribute("data-icon", "game-icons:radar-cross-section");
+                // Iconify attend data-icon, pas une classe “game-icons--…”
+            } else if (extra.iconClass) {
+                iconEl = document.createElement("i");
+                extra.iconClass.split(" ").forEach(c => iconEl.classList.add(c));
+            } else {
+                iconEl = document.createElement("span");
+            }
+
+            // --- click handler ---
+            const btn = createActionButton(iconEl, extra.label, () => {
+            if (extra.requires_group && !currentPlayer?.group_id) {
+                showActionError(modalId, extra.warning_no_group);
+                return;
+            }
+
+            const ws = window.canvasEngine?.ws;
+            if (!ws?.send) return;
+
+            const info = define_modal_type(modalId);
+            ws.send({
+                type: extra.key === "share_to_group" ? "action_share_scan" : "action_send_report",
+                payload: { target_type: info.type, target_id: info.id }
+            });
+        });
+
+        // --- cost under button (same style as your other costs) ---
+        const cost = document.createElement("div");
+        cost.textContent = `Coût : ${extra.cost_ap} AP`;
+        cost.classList.add("text-xs","text-emerald-300","font-bold","mt-1","font-shadow","text-center");
+
+        const cell = document.createElement("div");
+        cell.classList.add("flex","flex-col","items-center");
+        cell.append(btn, cost);
+
+        grid.append(cell);
+    });
+}
 
     // ---------------------------
     // ACTION : E-WAR
@@ -1617,10 +1716,15 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     grid.append(tradeButton);
 
     // --- FILTRAGE UNKNOWN ---
-    if (isUnknown) {
+    if (isUnknown && data._ui?.scanned !== true) {
         grid.innerHTML = "";
         grid.append(attackButton);
-        grid.append(scanButton);
+        if (data._ui?.scanned === true) {
+            scanButton.classList.add("opacity-40", "pointer-events-none");
+            // optionnel : petit texte
+            scanButton.title = "Déjà scanné";
+        }
+        grid.append(scanButton);    
     }
 
     // Après avoir ajouté les boutons (et après le filtrage unknown)
@@ -1659,7 +1763,7 @@ function createUnknownModal(modalId, data, is_npc) {
 
     // --- HEADER ---
     let header_container_div = document.createElement('div');
-    header_container_div.classList.add('md:p-5','p-1','flex','flex-row');
+    header_container_div.classList.add('p-1','flex','flex-row');
 
     let header_div = document.createElement('h3');
     header_div.id = `${modalId}-header`;
@@ -1680,8 +1784,7 @@ function createUnknownModal(modalId, data, is_npc) {
     let body_container_div = document.createElement('div');
     body_container_div.classList.add(
         'items-center',
-        'md:p-5',
-        'p-1',
+        'p-2',
         'w-full',
         'flex',
         'flex-col',
@@ -1698,6 +1801,11 @@ function createUnknownModal(modalId, data, is_npc) {
     body_container_div.append(unknown_img);
 
     const statsSection = buildShipStatsSection(data);
+    // si déjà scanné (via scan_result → __fromScan), afficher les stats détaillées
+    if (data._ui?.scanned === true) {
+        statsSection.ship_statistics_warning_msg_container_p.classList.add("hidden");
+        statsSection.ship_detailed_statistics_container_div.classList.remove("hidden");
+    }
     body_container_div.append(
         statsSection.ship_statistics_container_label,
         statsSection.ship_statistics_container_div,
@@ -1714,7 +1822,7 @@ function createUnknownModal(modalId, data, is_npc) {
         "font-shadow",
         "text-white",
         "text-base",
-        "mt-4"
+        "mt-2"
     );
 
     body_container_div.append(modulesLabel);
@@ -1738,7 +1846,7 @@ function createUnknownModal(modalId, data, is_npc) {
     // === ACTIONS LABEL (même style que normal) ===
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
-    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-4");
+    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base");
     body_container_div.append(actionsLabel);
 
     // === CONTEXT ZONE (obligatoire pour éviter null) ===
@@ -1836,7 +1944,7 @@ function createUnknownModal(modalId, data, is_npc) {
 
     // --- FOOTER ---
     let footer_div = document.createElement('div');
-    footer_div.classList.add('md:p-5','p-1','flex','flex-row','w-[100%]','justify-end','align-center');
+    footer_div.classList.add('p-2','flex','flex-row','w-[100%]','justify-end','align-center');
 
     let footer_close = document.createElement("img");
     footer_close.src = "/static/img/ux/close.svg";
@@ -1885,6 +1993,10 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     // 2 — STATS SECTION
     //
     const statsSection = buildShipStatsSection(data);
+    if (data._ui?.scanned === true) {
+        statsSection.ship_statistics_warning_msg_container_p.classList.add("hidden");
+        statsSection.ship_detailed_statistics_container_div.classList.remove("hidden");
+    }
     modal.body.addSection(statsSection.ship_statistics_container_label);
     modal.body.addSection(statsSection.ship_statistics_warning_msg_container_p);
     modal.body.addSection(statsSection.ship_detailed_statistics_container_div);
@@ -1894,7 +2006,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     //
     const modulesLabel = document.createElement("label");
     modulesLabel.textContent = "MODULES:";
-    modulesLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-4");
+    modulesLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-2");
     modal.body.addSection(modulesLabel);
 
     //
@@ -1922,7 +2034,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     //
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
-    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-4");
+    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-2");
     modal.body.addSection(actionsLabel);
 
     //
@@ -1966,7 +2078,6 @@ function buildShipStatsSection(data) {
         "text-white",
         "text-justify",
         "text-base",
-        "mt-2",
         "w-full"
     );
 
@@ -1977,7 +2088,7 @@ function buildShipStatsSection(data) {
     // --- CONTENEUR STATS DÉTAILLÉES ---
     let ship_detailed_statistics_container_div = document.createElement("div");
     ship_detailed_statistics_container_div.id = "ship-statistics-detailed";
-    ship_detailed_statistics_container_div.classList.add("w-full", "mt-2", "hidden"); // ⬅ caché par défaut
+    ship_detailed_statistics_container_div.classList.add("w-full", "p-2", "hidden"); // ⬅ caché par défaut
 
     // Helper pour une barre de progression
     function createProgressBar(current, max, labelText) {
@@ -1985,7 +2096,7 @@ function buildShipStatsSection(data) {
 
         let label = document.createElement("label");
         label.textContent = labelText;
-        label.classList.add("font-bold", "font-shadow", "text-white", "text-xs", "mt-2");
+        label.classList.add("font-shadow", "text-white");
 
         let container = document.createElement("div");
         container.classList.add("w-full", "bg-red-600", "relative", "h-[15px]", "overflow-hidden");
@@ -2015,6 +2126,7 @@ function buildShipStatsSection(data) {
     }
 
     // --- HP ---
+    console.log(data)
     ship_detailed_statistics_container_div.append(
         createProgressBar(
             data.ship.current_hp,
@@ -2022,8 +2134,18 @@ function buildShipStatsSection(data) {
             "Hull points:"
         )
     );
-
-    // --- Movement ---
+    // --- AP ---
+    if(data.player.max_ap){
+        ship_detailed_statistics_container_div.append(
+            createProgressBar(
+                data.player.current_ap,
+                data.player.max_ap,
+                "Action points:"
+            )
+        );
+    }
+    
+        // --- Movement ---
     ship_detailed_statistics_container_div.append(
         createProgressBar(
             data.ship.current_movement,
@@ -2037,16 +2159,19 @@ function buildShipStatsSection(data) {
         {
             type: "DEFENSE_BALLISTIC",
             currentKey: "current_ballistic_defense",
+            maxKey: "max_ballistic_defense",
             label: "Ballistic defense:"
         },
         {
             type: "DEFENSE_THERMAL",
             currentKey: "current_thermal_defense",
+            maxKey: "max_thermal_defense",
             label: "Thermal defense:"
         },
         {
             type: "DEFENSE_MISSILE",
             currentKey: "current_missile_defense",
+            maxKey: "max_missile_defense",
             label: "Missile defense:"
         }
     ];
@@ -2054,10 +2179,16 @@ function buildShipStatsSection(data) {
     if (Array.isArray(data.ship.modules)) {
         DEF_CONFIG.forEach(defConf => {
             const mod = data.ship.modules.find(m => m.type === defConf.type && m.effect && typeof m.effect.defense !== "undefined");
-            if (!mod) return;
+            let currentVal;
+            let maxVal;
+            if (!mod){
+                currentVal = data.ship[defConf.currentKey] ?? 0;
+                maxVal = data.ship[defConf.maxKey] ?? 0;
 
-            const currentVal = data.ship[defConf.currentKey] ?? 0;
-            const maxVal = mod.effect.defense ?? 0;
+            }else{
+                currentVal = data.ship[defConf.currentKey] ?? 0;
+                maxVal = mod.effect.defense ?? 0;
+            }
 
             ship_detailed_statistics_container_div.append(
                 createProgressBar(currentVal, maxVal, defConf.label)
@@ -2071,7 +2202,7 @@ function buildShipStatsSection(data) {
         "text-justify",
         "font-shadow",
         "text-xs",
-        "lg:p-1",
+        "lg:p-2",
         "text-red-500",
         "animate-pulse",
         "font-bold",
@@ -2213,7 +2344,7 @@ function create_chat_modal(data){
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');
 
     let footer_container_div = document.createElement('div');
-    footer_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
+    footer_container_div.classList.add('p-2', 'flex', 'flex-row', 'w-[100%]',  'justify-end', 'align-center');
 
     container_div.append(header_container_div);
     container_div.append(content_div);
@@ -2262,3 +2393,46 @@ function createUnknownNpcModal(modalId, modalData) {
     return;
 }
 
+function refreshModalIfOpen(modalId) {
+    const el = document.getElementById(modalId);
+    if (!el) return false; // pas ouvert
+
+    // on remplace le contenu en réappelant open_close_modal (close puis open)
+    // close
+    open_close_modal(modalId);
+    // open
+    open_close_modal(modalId);
+    return true;
+}
+
+function refreshModalAfterScan(targetKey) {
+
+    const modalNormal = `modal-${targetKey}`;
+    const modalUnknown = `modal-unknown-${targetKey}`;
+
+    const normalOpen = document.getElementById(modalNormal);
+    const unknownOpen = document.getElementById(modalUnknown);
+
+    // Cas 1 : modal unknown ouvert → switch vers modal normal
+    if (unknownOpen) {
+        open_close_modal(modalUnknown); // close
+        open_close_modal(modalNormal);  // open avec nouvelles données
+        return;
+    }
+
+    // Cas 2 : modal normal déjà ouvert → refresh
+    if (normalOpen) {
+        open_close_modal(modalNormal);
+        open_close_modal(modalNormal);
+    }
+}
+
+function playerHasModule(type, requiredName) {
+    const modules = window.currentPlayer?.ship?.modules || [];
+
+    return modules.some(m =>
+        m.type === type &&
+        typeof m.name === "string" &&
+        m.name.toLowerCase() === requiredName.toLowerCase()
+    );
+}

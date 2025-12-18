@@ -117,7 +117,6 @@ class ModalDataService:
             target_y=coords["y"],
         )
 
-        # NOTE : hp / defenses / estimations seront ajoutées à l’étape C
         payload: Dict[str, Any] = {
             "type": "pc",
             "id": ship["player_id__id"],

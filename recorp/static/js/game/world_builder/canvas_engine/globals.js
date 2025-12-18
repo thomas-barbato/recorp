@@ -53,6 +53,9 @@ export function initGlobals() {
         window.mobile_radar_sweep_bool = mobile_radar_sweep_bool;
         window.pendingAction = pendingAction;
         window.atlas = atlas;
+        window.scannedTargets = new Set();
+        window.sharedTargets  = new Set();
+        window.scannedTargetData = {}; 
 
         return true;
     } catch (e) {

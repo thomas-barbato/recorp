@@ -11,6 +11,7 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 
 from core.models import SectorWarpZone
+from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
 
 logger = logging.getLogger("django")
 
@@ -168,6 +169,15 @@ class GameConsumer(WebsocketConsumer):
         # PRIVATE MESSAGE
         if msg_type == "async_send_mp":
             self.async_send_mp(data)
+            return
+        
+        # SCAN (PC / NPC)
+        if msg_type == "action_scan_pc_npc":
+            self._handle_scan_action_pc_npc(data.get("payload"))
+            return
+        # SHARE SCAN WITH GROUP (PC / NPC) (if scan success)
+        if msg_type == "share_scan":
+            self._handle_share_scan(data.get("payload"))
             return
 
         # MESSAGE GÉNÉRIQUE
@@ -1153,6 +1163,105 @@ class GameConsumer(WebsocketConsumer):
             "type": "async_remove_ship",
             "message": msg
         })
+        
+    def _handle_scan_action_pc_npc(self, payload):
+        target_type = payload.get("target_type")
+        target_id = payload.get("target_id")
+
+        # 1) Vérifier PA
+        player = PlayerAction(self.user.id)
+        can_consume_ap, remaning_ap = player.consume_ap(1)
+        player_id = player.get_player_id()
+        
+        if not can_consume_ap:
+            self._send_response({
+                "type": "action_failed",
+                "reason": "NOT_ENOUGH_AP"
+            })
+            return
+        
+        if target_type == "npc" or target_type == "pc":
+            module_name = "spaceship probe"
+        else:
+            module_name = "drilling probe"
+            
+        if not GetDataFromDB.check_if_player_has_module(player_id, module_name):
+            self._send_response({
+                "type": "action_failed",
+                "reason": "NO_MODULE_FOUND"
+            })
+            return
+            
+        # 2) Vérifier portée / visibilité (GetDataFromDB.is_in_range)
+        # 3) Construire les vraies données
+        if target_type == "pc":
+            data = build_pc_modal_data(target_id)
+        else:
+            data = build_npc_modal_data(target_id)
+        
+        # 4) Répondre AU JOUEUR uniquement
+        self._send_response({
+            "type": "scan_result",
+            "message": {
+                "target_key": f"{target_type}_{target_id}",
+                "data": data,
+                "remaining_ap": remaning_ap
+            }
+        })
+
+    def _handle_share_scan(self, payload):
+        target_type = payload.get("target_type")
+        target_id = payload.get("target_id")
+
+        player_action = PlayerAction(self.user.id)
+        
+        # 1) Vérifier groupe
+        group = GetDataFromDB.get_player_group(self.player_id)
+        if not group:
+            return
+
+        # 2) Consommer PA
+        if not player_action.consume_ap(1):
+            self._send_response({
+                "type": "action_failed",
+                "message": {
+                    "reason": "NOT_ENOUGH_AP"
+                },
+                
+            })
+            return
+
+        # 3) Reconstruire les vraies données
+        if target_type == "pc":
+            data = build_pc_modal_data(target_id)
+        else:
+            data = build_npc_modal_data(target_id)
+
+        # 4) Récupérer les membres
+        members = GetDataFromDB.get_group_member(group.group_id)
+
+        # 5) Broadcast ciblé
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "scan_shared",
+                "message": {
+                    "target_key": f"{target_type}_{target_id}",
+                    "data": data,
+                    "recipients": list(members),
+                }
+            }
+        )
+
+        # 6) Ack au joueur source
+        self._send_response({
+            "type": "scan_shared_ack",
+            "message": {
+                "target_key": f"{target_type}_{target_id}",
+            },
+            
+        })
+
 
     def async_user_join(self, event: Dict[str, Any]) -> None:
         """

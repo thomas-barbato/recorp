@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Optional, Dict, List, Tuple, Any
 from django.core import serializers
 from recorp.settings import BASE_DIR
-from django.db.models import Q
+from django.db.models import Q, F
 from functools import reduce
 import operator
 from django.utils import timezone
@@ -862,6 +862,20 @@ class PlayerAction:
         except Exception as e:
             logger.exception(f"Erreur create_chat_message ({channel}): {e}")
             return None, []
+        
+
+    def consume_ap(self, cost: int) -> bool:
+        if not self.player_id:
+            return False
+
+        updated = Player.objects.filter(
+            id=self.player_id,
+            current_ap__gte=cost
+        ).update(
+            current_ap=F("current_ap") - cost
+        )
+        player = Player.objects.filter(id=self.player_id).values('current_ap').first()
+        return updated > 0, player['current_ap']
     
     
 def send_admin_announcement(subject, body, recipient_ids=None, priority='HIGH'):

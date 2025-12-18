@@ -127,7 +127,18 @@ if (!ok) {
                     return (me.data.ship.visible_zone || []).includes(key);
                 }
 
-                const inRange = isInRange(obj);
+                let inRange = isInRange(obj);
+                let targetKey = null;
+
+                if (obj.type === 'player') {
+                    targetKey = `pc_${obj.data.user.player}`;
+                } else if (obj.type === 'npc') {
+                    targetKey = `npc_${obj.data.npc.id}`;
+                }
+
+                if (targetKey && (window.scannedTargets?.has(targetKey) || window.sharedTargets?.has(targetKey))) {
+                    inRange = true;
+                }
 
                 // -------------------------------
                 // 2) Flip si joueur clique sur lui-même

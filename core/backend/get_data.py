@@ -836,6 +836,16 @@ class GetDataFromDB:
         }[faction_name]
         
     @staticmethod
+    def get_player_group(player_id: int):
+        return PlayerGroup.objects.filter(player_id=player_id).first()
+    
+    @staticmethod
+    def get_group_member(group_id: int):
+        return PlayerGroup.objects.filter(
+            group_id=group_id
+        ).values_list("player_id", flat=True)
+        
+    @staticmethod
     def get_players_in_sector(sector_id: int) -> list[dict]:
         """
         Retourne la liste des joueurs présents dans un secteur donné.
@@ -904,3 +914,12 @@ class GetDataFromDB:
 
         except Exception as e:
             return []
+        
+    @staticmethod
+    def check_if_player_has_module(player_id, module_name):
+        
+        return PlayerShipModule.objects.filter(
+            player_ship_id__player_id=player_id,
+            player_ship_id__is_current_ship=True,
+            module_id__name=module_name
+        ).exists()
