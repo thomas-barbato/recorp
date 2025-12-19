@@ -1201,6 +1201,7 @@ function buildForegroundActionsSection(modalId, data) {
     );
 
     const type = data.type;
+    const alreadyScanned = data._ui?.scanned === true;
 
     // =========================
     // ZONE MESSAGE ERREUR
@@ -1303,7 +1304,26 @@ function buildForegroundActionsSection(modalId, data) {
         btn.append(iconEl, label);
         itemWrapper.append(btn);
 
-        // === COÛT (SEULEMENT SI DÉFINI) ===
+        // ============================
+        // COÛT AP 
+        // ============================
+        if (action.key === "scan") {
+            const apCostEl = document.createElement("div");
+            apCostEl.textContent = "0 AP";
+            apCostEl.classList.add(
+                "text-xs",
+                "text-emerald-300",
+                "font-bold",
+                "mt-1",
+                "font-shadow",
+                "text-center"
+            );
+            itemWrapper.append(apCostEl);
+        }
+
+        // ============================
+        // COÛT CR 
+        // ============================
         if (typeof action.cost === "number") {
             const costEl = document.createElement("div");
             costEl.textContent = `${action.cost} cr`;
@@ -1317,22 +1337,23 @@ function buildForegroundActionsSection(modalId, data) {
             itemWrapper.append(costEl);
         }
 
-        // === COÛT (SEULEMENT SI DÉFINI) ===
-        if (typeof action.cost === "number") {
-            const costEl = document.createElement("div");
-            costEl.textContent = `${action.cost} cr`;
-            costEl.classList.add(
-                "text-xs",
-                "text-yellow-400",
-                "font-bold",
-                "mt-1",
-                "font-shadow"
-            );
-            itemWrapper.append(costEl);
+        // ============================
+        // DÉSACTIVER SCAN SI DÉJÀ SCANNÉ (AU CHARGEMENT)
+        // ============================
+        if (action.key === "scan" && alreadyScanned) {
+            btn.classList.add("opacity-40", "pointer-events-none");
+            btn.title = "Déjà scanné";
         }
 
-        // === CLICK HANDLER ===
+        // ============================
+        // CLICK HANDLER
+        // ============================
         btn.onclick = () => {
+
+            // si scan déjà fait : ne rien faire
+            if (action.key === "scan" && data._ui?.scanned === true) {
+                return;
+            }
 
             // Vérification des modules requis
             if (action.requires) {
@@ -1352,18 +1373,22 @@ function buildForegroundActionsSection(modalId, data) {
                 }
             }
 
-            // === LOGIQUE SPÉCIFIQUE ===
+            // LOGIQUE scan (ton mock actuel)
             if (action.key === "scan") {
                 data._ui.scanned = true;
+
+                // révéler ressources
                 const resContainer = document.getElementById(`${modalId}-resources`);
                 if (resContainer) {
-                    resContainer.replaceWith(
-                        buildAsteroidResourcesSection(modalId, data)
-                    );
+                    resContainer.replaceWith(buildAsteroidResourcesSection(modalId, data));
                 }
+
+                // ✅ et désactiver immédiatement
+                btn.classList.add("opacity-40", "pointer-events-none");
+                btn.title = "Déjà scanné";
             }
 
-            // autres actions → handlers plus tard
+            // autres actions plus tard...
         };
 
         grid.append(itemWrapper);
@@ -1601,15 +1626,30 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     );
     grid.innerHTML = "";
     // Limiter l'utilisation du scan.
-    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship-probe")) {
+    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe")) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
-        // optionnel : petit texte
         scanButton.title = "Déjà scanné";
     }
 
+    // ✅ coût AP sous SCAN (PC/NPC)
+    const scanCost = document.createElement("div");
+    scanCost.textContent = "0 AP";
+    scanCost.classList.add(
+        "text-xs",
+        "text-emerald-300",
+        "font-bold",
+        "mt-1",
+        "font-shadow",
+        "text-center"
+    );
+
+    const scanCell = document.createElement("div");
+    scanCell.classList.add("flex", "flex-col", "items-center");
+    scanCell.append(scanButton, scanCost);
+
     // 1) Toujours visibles
     grid.append(attackButton);
-    grid.append(scanButton);
+    grid.append(scanCell);
 
     // 2) Actions post-scan : “à la suite” dans la grille
     if (data._ui?.scanned === true) {
@@ -1649,7 +1689,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
         // --- cost under button (same style as your other costs) ---
         const cost = document.createElement("div");
-        cost.textContent = `Coût : ${extra.cost_ap} AP`;
+        cost.textContent = `${extra.cost_ap} AP`;
         cost.classList.add("text-xs","text-emerald-300","font-bold","mt-1","font-shadow","text-center");
 
         const cell = document.createElement("div");

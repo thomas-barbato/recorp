@@ -833,3 +833,32 @@ class MessageReadStatus(models.Model):
             self.is_read = True
             self.read_at = timezone.now()
             self.save(update_fields=['is_read', 'read_at'])
+
+
+class ExpirableMixin(models.Model):
+    created_at = models.DateTimeField(default=timezone.now)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    invalidated = models.BooleanField(default=False)
+    invalidation_reason = models.CharField(max_length=32, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+    def is_active(self):
+        if self.invalidated:
+            return False
+        if self.expires_at and timezone.now() >= self.expires_at:
+            return False
+        return True
+    
+
+class ScanIntel(ExpirableMixin):
+    scanner = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="scan_author")
+    target_type = models.CharField(max_length=3)
+    target_id = models.IntegerField()
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="scan_sector")
+    
+class CombatEffect(ExpirableMixin):
+    target_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="combat_effect_author")
+    stat = models.CharField(max_length=32)
+    value = models.IntegerField(default=0)

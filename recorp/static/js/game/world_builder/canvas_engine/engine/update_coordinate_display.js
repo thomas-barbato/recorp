@@ -32,17 +32,19 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
         inSonar = window.canvasEngine.renderer.sonar.isVisible(obj);
     }
     if (obj) {
-        if (obj.type === "player"){
-            if(inSonar){
+        if (obj.type === "player") {
+            const key = `pc_${obj.data.user.player}`;
+            if (inSonar || window.scannedTargets?.has(key) || window.sharedTargets?.has(key)) {
                 name = obj.data.user.name;
-            }else{
+            } else {
                 name = "Unknown";
             }
         }
-        else if (obj.type === "npc"){
-            if(inSonar){
+        else if (obj.type === "npc") {
+            const key = `npc_${obj.data.npc.id}`;
+            if (inSonar || window.scannedTargets?.has(key) || window.sharedTargets?.has(key)) {
                 name = obj.data.npc.displayed_name;
-            }else{
+            } else {
                 name = "Unknown";
             }
         }
@@ -91,10 +93,27 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
 
     if (obj) {
         if (!sonarVisible) {
-            name = "Unknown";
-        } else {
-            if (obj.type === "player") name = obj.data.user.name;
-            else if (obj.type === "npc") name = obj.data.npc.displayed_name;
+            if (obj.type === "player") {
+                const key = `pc_${obj.data.user.player}`;
+                if (!window.scannedTargets?.has(key) && !window.sharedTargets?.has(key)) {
+                    name = "Unknown";
+                }else{
+                    name = obj.data.user.name;
+                }
+            } else if (obj.type === "npc") {
+                const key = `npc_${obj.data.npc.id}`;
+                if (!window.scannedTargets?.has(key) && !window.sharedTargets?.has(key)) {
+                    name = "Unknown";
+                }else{
+                    name = obj.data.npc.displayed_name;
+                }
+            }
+        }else{
+            if (obj.type === "player") {
+                name = obj.data.user.name;
+            } else if (obj.type === "npc") {
+                name = obj.data.npc.displayed_name;
+            }
         }
         
         if (obj.type === "foreground") name = obj.data.data.name;
