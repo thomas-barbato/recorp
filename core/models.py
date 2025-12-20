@@ -833,32 +833,72 @@ class MessageReadStatus(models.Model):
             self.is_read = True
             self.read_at = timezone.now()
             self.save(update_fields=['is_read', 'read_at'])
+            
+            
+class ScanEffect(models.Model):
+    SCAN_TARGET_TYPE = (
+        ("pc", "Player"),
+        ("npc", "NPC"),
+        ("foreground", "Foreground")
+    )
 
+    scanner = models.ForeignKey(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="scans_emitted"
+    )
 
-class ExpirableMixin(models.Model):
-    created_at = models.DateTimeField(default=timezone.now)
-    expires_at = models.DateTimeField(null=True, blank=True)
-    invalidated = models.BooleanField(default=False)
-    invalidation_reason = models.CharField(max_length=32, null=True, blank=True)
+    target_type = models.CharField(max_length=12, choices=SCAN_TARGET_TYPE)
+    target_id = models.PositiveIntegerField()
+
+    sector = models.ForeignKey(
+        Sector,
+        on_delete=models.CASCADE
+    )
+
+    expires_at = models.DateTimeField()
+    invalidated_at = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        abstract = True
+        indexes = [
+            models.Index(fields=["scanner", "target_type", "target_id"]),
+            models.Index(fields=["expires_at"]),
+        ]
+        
+class ScanIntel(models.Model):
+    SCAN_TARGET_TYPES = (
+        ("pc", "pc"),
+        ("npc", "npc"),
+    )
+
+    scanner_player_id = models.IntegerField(db_index=True)  # player_id de l'auteur
+    target_type = models.CharField(max_length=8, choices=SCAN_TARGET_TYPES)
+    target_id = models.IntegerField(db_index=True)          # id pc/npc selon target_type
+    sector_id = models.IntegerField(db_index=True)          # secteur où la cible était au moment du scan
+    
+    created_at = models.DateTimeField(default=timezone.now)
+    expires_at = models.DateTimeField(db_index=True)
+    invalidated_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["scanner_player_id", "sector_id"]),
+            models.Index(fields=["target_type", "target_id", "sector_id"]),
+        ]
 
     def is_active(self):
-        if self.invalidated:
-            return False
-        if self.expires_at and timezone.now() >= self.expires_at:
-            return False
-        return True
+        return timezone.now() < self.expires_at
     
+class ScanIntelGroup(models.Model):
+    # partage (pour plus tard / déjà utile avec share_scan)
+    scan = models.ForeignKey(ScanIntel, on_delete=models.CASCADE, related_name="scan_to_group")
+    group = models.ForeignKey(PlayerGroup, on_delete=models.CASCADE, related_name="group_reciever")
+    created_at = models.DateTimeField(default=timezone.now)
 
-class ScanIntel(ExpirableMixin):
-    scanner = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="scan_author")
-    target_type = models.CharField(max_length=3)
-    target_id = models.IntegerField()
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name="scan_sector")
-    
-class CombatEffect(ExpirableMixin):
-    target_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="combat_effect_author")
-    stat = models.CharField(max_length=32)
-    value = models.IntegerField(default=0)
+    class Meta:
+        unique_together = ("scan", "group")
+        indexes = [
+            models.Index(fields=["group"]),
+        ]

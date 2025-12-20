@@ -42,3 +42,22 @@ export function sendScanResultToGroup(msg){
     rebuildPcNpcModal(`modal-${msg.target_key}`, msg.data);
     window.canvasEngine?.renderer?.requestRedraw();
 }
+
+export function handleScanStateSync(msg) {
+    const targets = msg?.targets || [];
+
+    window.scannedTargets ??= new Set();
+    window.sharedTargets ??= new Set();
+    window.scannedModalData ??= {};
+
+    targets.forEach(t => {
+        if (t?.target_key) {
+            window.scannedTargets.add(t.target_key);
+            console.log(window.scannedModalData)
+            window.scannedModalData[t.target_key] = t.data;
+            refreshModalAfterScan(t.target_key);
+        }
+    });
+
+    window.canvasEngine?.renderer?.requestRedraw();
+}

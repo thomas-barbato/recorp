@@ -6,6 +6,8 @@ import math
 from django.core import serializers
 from django.contrib.auth.models import User
 from django.db.models import Q, QuerySet
+from django.utils import timezone
+from datetime import timedelta
 
 # Ajouter ces imports en haut du fichier get_data.py
 from channels.db import database_sync_to_async
@@ -18,7 +20,7 @@ from core.models import (
     Faction, FactionResource, Security, Sector, Player, PlayerShip,
     PlayerShipResource, PlayerShipModule, Ship, ShipCategory,
     Skill, Npc, NpcTemplateResource, NpcTemplate, NpcTemplateSkill, Module,
-    PlayerGroup
+    PlayerGroup, ScanIntel, ScanIntelGroup
 )
 
 
@@ -840,10 +842,12 @@ class GetDataFromDB:
         return PlayerGroup.objects.filter(player_id=player_id).first()
     
     @staticmethod
-    def get_group_member(group_id: int):
-        return PlayerGroup.objects.filter(
-            group_id=group_id
-        ).values_list("player_id", flat=True)
+    def get_group_member(player_id: int):
+        return list(
+            PlayerGroup.objects.filter(
+                player_id=player_id
+            ).values_list("player_id", flat=True)
+        )
         
     @staticmethod
     def get_players_in_sector(sector_id: int) -> list[dict]:
@@ -923,3 +927,11 @@ class GetDataFromDB:
             player_ship_id__is_current_ship=True,
             module_id__name=module_name
         ).exists()
+        
+    @staticmethod
+    def get_scan_target(player_id, sector_id):
+        
+        return ScanIntel.objects.filter(
+            scanner_player_id=player_id,
+            sector_id=sector_id
+        ).values('id', 'target_id', 'expires_at')

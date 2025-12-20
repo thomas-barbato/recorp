@@ -9,8 +9,9 @@ import datetime
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
+from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone
+from core.models import SectorWarpZone, ScanIntelGroup
 from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
 
 logger = logging.getLogger("django")
@@ -41,6 +42,7 @@ class GameConsumer(WebsocketConsumer):
         self._setup_room_connection()
         self._join_room_group()
         self._handle_authenticated_user()
+        self._send_scan_state_sync()
     
         # Maintenir la session active
         if hasattr(self.scope, 'session'):
@@ -1192,12 +1194,20 @@ class GameConsumer(WebsocketConsumer):
             })
             return
             
-        # 2) Vérifier portée / visibilité (GetDataFromDB.is_in_range)
         # 3) Construire les vraies données
         if target_type == "pc":
             data = build_pc_modal_data(target_id)
         else:
             data = build_npc_modal_data(target_id)
+            
+        sector_id_int = int(self.room)
+
+        scan = ActionRules.upsert_scan(
+            scanner_player_id=player_id,
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id_int
+        )
         
         # 4) Répondre AU JOUEUR uniquement
         self._send_response({
@@ -1205,7 +1215,8 @@ class GameConsumer(WebsocketConsumer):
             "message": {
                 "target_key": f"{target_type}_{target_id}",
                 "data": data,
-                "remaining_ap": remaning_ap
+                "remaining_ap": remaning_ap,
+                "expires_at": scan.expires_at.isoformat()
             }
         })
 
@@ -1214,13 +1225,19 @@ class GameConsumer(WebsocketConsumer):
         target_id = payload.get("target_id")
 
         player_action = PlayerAction(self.user.id)
+        player_id = player_action.get_player_id()
         
-        # 1) Vérifier groupe
-        group = GetDataFromDB.get_player_group(self.player_id)
+        group = GetDataFromDB.get_group_member(player_id)
         if not group:
+            self._send_response({
+                "type": "action_failed",
+                "message": {
+                    "reason": "NOT_IN_GROUP"
+                },
+                
+            })
             return
 
-        # 2) Consommer PA
         if not player_action.consume_ap(1):
             self._send_response({
                 "type": "action_failed",
@@ -1230,36 +1247,64 @@ class GameConsumer(WebsocketConsumer):
                 
             })
             return
-
-        # 3) Reconstruire les vraies données
-        if target_type == "pc":
-            data = build_pc_modal_data(target_id)
-        else:
-            data = build_npc_modal_data(target_id)
-
-        # 4) Récupérer les membres
-        members = GetDataFromDB.get_group_member(group.group_id)
-
-        # 5) Broadcast ciblé
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                "type": "scan_shared",
-                "message": {
-                    "target_key": f"{target_type}_{target_id}",
-                    "data": data,
-                    "recipients": list(members),
+        
+        sector_id_int = int(self.room)
+        scan = GetDataFromDB.get_scan_target(player_id, sector_id_int)
+        
+        ScanIntelGroup.objects.get_or_create(
+            scan=scan['id'],
+            group=group
+        )
+            
+        player_ids = GetDataFromDB.get_players_in_group(group)
+            
+        for pid in player_ids:
+            if pid == self.player_id:
+                continue
+            
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "scan_visibility_update",
+                    "message": {
+                        "add": [f"{target_type}_{target_id}"],
+                        "remove": [],
+                        "reason": "share"
+                    }
                 }
-            }
+            )
+            
+    def scan_visibility_update(self, event):
+        self._send_response({
+            "type": "scan_visibility_update",
+            "message": event.get("message", {})
+        })
+        
+    def _send_scan_state_sync(self):
+
+        sector_id_int = int(self.room)
+        scans = ActionRules.get_visible_scans_for_player(
+            self.player_id,
+            sector_id_int
         )
 
-        # 6) Ack au joueur source
+        payload = []
+
+        for scan in scans:
+            if scan.target_type == "pc":
+                data = build_pc_modal_data(scan.target_id)
+            else:
+                data = build_npc_modal_data(scan.target_id)
+            payload.append({
+                "target_key": f"{scan.target_type}_{scan.target_id}",
+                "data": data,
+                "type": scan.target_type
+            })
         self._send_response({
-            "type": "scan_shared_ack",
+            "type": "scan_state_sync",
             "message": {
-                "target_key": f"{target_type}_{target_id}",
-            },
-            
+                "targets": payload
+            }
         })
 
 

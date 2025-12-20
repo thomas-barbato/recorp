@@ -1309,7 +1309,7 @@ function buildForegroundActionsSection(modalId, data) {
         // ============================
         if (action.key === "scan") {
             const apCostEl = document.createElement("div");
-            apCostEl.textContent = "0 AP";
+            apCostEl.textContent = "1 AP";
             apCostEl.classList.add(
                 "text-xs",
                 "text-emerald-300",
@@ -1633,7 +1633,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     // ✅ coût AP sous SCAN (PC/NPC)
     const scanCost = document.createElement("div");
-    scanCost.textContent = "0 AP";
+    scanCost.textContent = "1 AP";
     scanCost.classList.add(
         "text-xs",
         "text-emerald-300",

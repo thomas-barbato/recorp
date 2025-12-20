@@ -7,6 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from core.backend.get_data import GetDataFromDB  # :contentReference[oaicite:1]{index=1}
 from core.backend.player_actions import PlayerAction
+from core.backend.action_rules import ActionRules
+
 from core.models import (
     Player,
     PlayerShip,
@@ -116,6 +118,13 @@ class ModalDataService:
             target_x=coords["x"],
             target_y=coords["y"],
         )
+        
+        scanned = ActionRules.has_active_scan(
+            scanner_id=current_player_id,
+            target_type="pc",
+            target_id=ship["player_id__id"],
+            sector_id=4
+        )
 
         payload: Dict[str, Any] = {
             "type": "pc",
@@ -133,7 +142,8 @@ class ModalDataService:
             },
             "visibility": {
                 "in_range": in_range,
-                "mode": "direct" if in_range else "unknown",
+                "mode": "direct" if in_range or scanned else "unknown",
+                "scanned": scanned,
             },
             "hp": None,          # rempli plus tard
             "defenses": None,    # rempli plus tard
@@ -145,9 +155,6 @@ class ModalDataService:
             payload["is_self"] = True
         else:
             payload["is_self"] = False
-            
-            
-        from core.backend.action_rules import ActionRules
 
         player_ship_id = PlayerShip.objects.filter(
             player_id=current_player_id,

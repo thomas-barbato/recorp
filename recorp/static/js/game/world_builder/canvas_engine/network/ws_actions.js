@@ -13,7 +13,11 @@ import {
     handlerShipAdded, 
     handlerWarpComplete 
 } from "../handlers/warp_handlers.js";
-import { getScanResult, sendScanResultToGroup } from "../handlers/modal_action_handlers.js";
+import { 
+    getScanResult, 
+    sendScanResultToGroup, 
+    handleScanStateSync 
+} from "../handlers/modal_action_handlers.js";
 
 // ===============================
 // ACTIONS MOTEUR CANVAS
@@ -56,4 +60,5 @@ ActionRegistry.register("npc_removed", removeNpc);
 // MODAL ACTIONS
 // ===============================
 ActionRegistry.register("scan_result", getScanResult);
-ActionRegistry.register("scan_shared_ack", sendScanResultToGroup);
+ActionRegistry.register("scan_visibility_update", sendScanResultToGroup);
+ActionRegistry.register("scan_state_sync", handleScanStateSync);

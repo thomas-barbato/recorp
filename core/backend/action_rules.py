@@ -2,9 +2,12 @@
 
 from typing import Dict, Any, Optional
 from django.utils.translation import gettext as _
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Q
 
-from core.models import PlayerShipModule, Module
-from core.backend.get_data import GetDataFromDB  # :contentReference[oaicite:0]{index=0}
+from core.models import PlayerShipModule, Module, ScanIntel, ScanIntelGroup
+
 
 
 class ActionRules:
@@ -62,9 +65,9 @@ class ActionRules:
 
     @classmethod
     def action_attack(cls, *,
-                      player_ship_id: int,
-                      player_coords: Dict[str, int],
-                      target_coords: Dict[str, int]) -> Dict[str, Any]:
+                    player_ship_id: int,
+                    player_coords: Dict[str, int],
+                    target_coords: Dict[str, int]) -> Dict[str, Any]:
 
         modules = cls._player_modules(player_ship_id)
 
@@ -104,6 +107,75 @@ class ActionRules:
             return {"enabled": False, "reason": _("Out of range")}
 
         return {"enabled": True, "reason": None}
+    
+    @staticmethod
+    def upsert_scan(scanner_player_id: int, target_type: str, target_id: int, sector_id: int) -> ScanIntel:
+        now = timezone.now()
+        expires = now + timedelta(hours=48)
+
+        scan, _ = ScanIntel.objects.update_or_create(
+            scanner_player_id=scanner_player_id,
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id,
+            defaults={
+                "created_at": now,
+                "expires_at": expires,
+            }
+        )
+        return scan
+    
+        
+    @staticmethod
+    def upsert_scan(scanner_player_id: int, target_type: str, target_id: int, sector_id: int) -> ScanIntel:
+        now = timezone.now()
+        expires = now + timedelta(hours=48)
+
+        scan, _ = ScanIntel.objects.update_or_create(
+            scanner_player_id=scanner_player_id,
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id,
+            defaults={
+                "created_at": now,
+                "expires_at": expires,
+            }
+        )
+        return scan
+    
+    @staticmethod
+    def share_scan_to_group(scan: ScanIntel, group):
+        ScanIntelGroup.objects.get_or_create(
+            scan=scan,
+            group=group
+        )
+        
+    @staticmethod
+    def get_visible_scans_for_player(player_id: int, sector_id: int):
+        now = timezone.now()
+        """
+        return ScanIntel.objects.filter(
+            sector_id=sector_id,
+            expires_at__gt=now
+        ).filter(
+            Q(scanner_player_id=player_id) |
+            Q(shared_groups__group__player__id=player_id)
+        ).distinct()"""
+        return ScanIntel.objects.filter(
+            sector_id=sector_id,
+            expires_at__gt=now
+        ).filter(scanner_player_id=player_id).distinct()
+        
+    @classmethod
+    def has_active_scan(scanner_id, target_type, target_id, sector_id) -> bool:
+        return ScanIntel.objects.filter(
+            scanner_player_id=scanner_id,
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id,
+            invalidated_at__isnull=True,
+            expires_at__gt=timezone.now()
+        ).exists()
 
     # ================
     # ACTION : HAIL (contact radio)
