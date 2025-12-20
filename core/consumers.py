@@ -164,7 +164,6 @@ class GameConsumer(WebsocketConsumer):
 
         # CHAT
         if msg_type == "async_chat_message":
-            print("ici")
             self.async_send_chat_msg(data)
             return
         
@@ -775,7 +774,6 @@ class GameConsumer(WebsocketConsumer):
 
 
     def _send_error_response(self, error_message: str) -> None:
-        print(error_message)
         return
         """Envoie une réponse d'erreur au client."""
         """

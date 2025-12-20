@@ -792,8 +792,6 @@ class PlayerAction:
             faction_id = player_data.values_list('faction_id', flat=True)[0]
             sector_id = player_data.values_list('sector_id', flat=True)[0]
             
-            print(sector_id)
-            
             msg_data = {
                 "content": content,
                 "author_id": author_id,

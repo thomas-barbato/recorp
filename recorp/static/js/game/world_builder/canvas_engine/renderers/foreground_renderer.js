@@ -2,114 +2,158 @@
 class ForegroundAnimationManager {
     constructor(spriteManager) {
         this.spriteManager = spriteManager;
-        this.animCache = new Map(); // cache global par clé (ex: "planet:planet_3")
-        this.instanceState = new WeakMap(); // état individuel (frame courante)
+
+        // cache global par type (planet:planet_3)
+        this.animCache = new Map();
+
+        // état par instance (index + time)
+        this.instanceState = new WeakMap();
+
+        // stock les vitesses d'animation FG.
+        this.instanceSpeedFactor = new WeakMap();
     }
 
-    // Déduit une clé unique basée sur le spritePath
     _makeKey(obj) {
-        // Ex: foreground/planet/planet_3/0.gif → planet:planet_3
         const parts = obj.spritePath.split("/");
         return `${parts[1]}:${parts[2]}`;
     }
 
-    // Animation globale = frames + durations (chargée une seule fois)
-    // État par instance = currentIndex + lastTime
     getFrameFor(obj) {
         const key = this._makeKey(obj);
 
-        // Si pas encore dans le cache → init immédiat
         if (!this.animCache.has(key)) {
-            this.animCache.set(key, {
-                initialized: false,
-                frames: [],
-                durations: [],
-                frameCount: 0
-            });
+            this.animCache.set(key, { initialized: false });
             this._initAnimation(obj, key);
-            return null; // on retourne la frame statique
+            return null;
         }
 
         const anim = this.animCache.get(key);
-
-        // Si animation pas prête → afficher statique
         if (!anim.initialized || anim.frameCount === 0) return null;
 
-        // Récupérer l’état *de cette instance*
         let state = this.instanceState.get(obj);
         if (!state) {
-            state = {
-                currentIndex: 0,
-                lastTime: performance.now()
-            };
+            state = { index: 0, lastTime: performance.now() };
             this.instanceState.set(obj, state);
         }
 
-        // Jouer l’animation
         const now = performance.now();
         let elapsed = now - state.lastTime;
 
-        while (elapsed > anim.durations[state.currentIndex]) {
-            elapsed -= anim.durations[state.currentIndex];
-            state.currentIndex = (state.currentIndex + 1) % anim.frameCount;
+        // ANIMATION SPEED + random value
+        const SPEED_BY_TYPE = {
+            planet:   { base: 6.0, variance: 0.6 },
+            star:     { base: 4.0, variance: 0.5 },
+            asteroid: { base: 1.8, variance: 0.4 },
+            station:  { base: 2.0, variance: 0.8 },
+            warp:     { base: 0.6, variance: 0.2 },
+            warpzone: { base: 0.6, variance: 0.2 },
+        };
+
+        const subtype = String(obj.subtype || "").toLowerCase();
+        const cfg = SPEED_BY_TYPE[subtype] ?? { base: 2.5, variance: 0.3 };
+
+        let factor = this.instanceSpeedFactor.get(obj);
+        if (factor === undefined) {
+            const seed = this._hash01(obj.id);
+            const rand = (seed * 2 - 1) * cfg.variance;
+            factor = Math.max(0.1, cfg.base + rand);
+            this.instanceSpeedFactor.set(obj, factor);
+        }
+
+        while (elapsed > anim.durations[state.index] * factor) {
+            elapsed -= anim.durations[state.index] * factor;
+            state.index = (state.index + 1) % anim.frameCount;
             state.lastTime = now - elapsed;
         }
 
-        return anim.frames[state.currentIndex];
+        return {
+            img: anim.image,
+            sx: state.index * anim.frameWidth,
+            sy: 0,
+            sw: anim.frameWidth,
+            sh: anim.frameHeight,
+        };
+    }
+    
+    _hash01(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) {
+            h = (h << 5) - h + str.charCodeAt(i);
+            h |= 0; // int32
+        }
+        return (Math.abs(h) % 1000) / 1000; // [0..1)
     }
 
-    // Chargement unique de l’animation
     _initAnimation(obj, key) {
-        if (!obj.spritePath.endsWith("0.gif")) {
-            this.animCache.get(key).initialized = true;
-            return;
-        }
-
-        // Path fixe, fiable
         const basePath = obj.spritePath.replace(/\/?0\.gif$/, "");
-        const jsonRel = `${basePath}/frames/animation.json`;
-        const jsonUrl = this.spriteManager.makeUrl(jsonRel);
+        const sheetUrl = this.spriteManager.makeUrl(`${basePath}/spritesheet.png`);
+        const jsonUrl = this.spriteManager.makeUrl(`${basePath}/animation.json`);
 
         fetch(jsonUrl)
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.json();
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) throw new Error("no spritesheet");
+
+                const anim = {
+                    initialized: false,
+                    image: null,
+                    frameCount: data.frame_count,
+                    frameWidth: data.frame_width,
+                    frameHeight: data.frame_height,
+                    durations: data.durations,
+                };
+
+                this.animCache.set(key, anim);
+
+                return this.spriteManager.ensure(sheetUrl).then(() => {
+                    anim.image = this.spriteManager.get(sheetUrl);
+                    anim.initialized = true;
+                });
             })
-            .then(animData => {
-                const anim = this.animCache.get(key);
+            .catch(() => {
+                // ❌ spritesheet absent → fallback frames
+                this._initFrameFallback(obj, key);
+            });
+    }
 
-                anim.frameCount = animData.frame_count || 0;
-                anim.durations = animData.durations || [];
+    _initFrameFallback(obj, key) {
+        // 👉 on garde ton ancien système tel quel
+        const basePath = obj.spritePath.replace(/\/?0\.gif$/, "");
+        const jsonUrl = this.spriteManager.makeUrl(`${basePath}/frames/animation.json`);
 
-                if (anim.frameCount === 0) throw new Error("Animation vide");
+        fetch(jsonUrl)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) throw new Error("no frames");
+
+                const anim = {
+                    initialized: false,
+                    frames: [],
+                    durations: data.durations,
+                    frameCount: data.frame_count
+                };
+
+                this.animCache.set(key, anim);
 
                 const promises = [];
-                const frames = new Array(anim.frameCount);
-
                 for (let i = 0; i < anim.frameCount; i++) {
-                    const frameRel = `${basePath}/frames/frame-${i}.png`;
-                    const frameUrl = this.spriteManager.makeUrl(frameRel);
-
+                    const url = this.spriteManager.makeUrl(`${basePath}/frames/frame-${i}.png`);
                     promises.push(
-                        this.spriteManager.ensure(frameUrl).then(() => {
-                            frames[i] = this.spriteManager.get(frameUrl);
+                        this.spriteManager.ensure(url).then(() => {
+                            anim.frames[i] = this.spriteManager.get(url);
                         })
                     );
                 }
 
                 return Promise.all(promises).then(() => {
-                    anim.frames = frames;
                     anim.initialized = true;
                 });
             })
-            .catch(err => {
-                const anim = this.animCache.get(key);
-                anim.initialized = true;
-                anim.frameCount = 0;
+            .catch(() => {
+                this.animCache.set(key, { initialized: true, frameCount: 0 });
             });
     }
 }
-
 // ============================================================================
 // Foreground Renderer
 // ============================================================================
@@ -140,27 +184,15 @@ export default class ForegroundRenderer {
             const img = this.spriteManager.get(imgUrl);
 
             // Animated frame
-            const animImg = this.animManager.getFrameFor(obj);
-            const finalImg = animImg || img;
-
-            if (finalImg) {
-                this.ctx.drawImage(finalImg, scr.x, scr.y, pxW, pxH);
-
-                // Hover highlight
-                const hover = window.canvasEngine?.hoverTarget || null;
-                if (hover && hover === obj) {
-                    this.ctx.save();
-                    this.ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
-                    this.ctx.setLineDash([4, 4]);
-                    this.ctx.strokeStyle = "rgba(226, 232, 240, 0.8)";
-                    this.ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
-                    this.ctx.restore();
-                }
-            } else {
-                // placeholder
-                this.ctx.fillStyle = 'rgba(180, 120, 255, 0.25)';
-                this.ctx.fillRect(scr.x, scr.y, pxW, pxH);
-                this.spriteManager.ensure(imgUrl).catch(() => {});
+            const anim = this.animManager.getFrameFor(obj);
+            if (anim) {
+                this.ctx.drawImage(
+                    anim.img,
+                    anim.sx, anim.sy, anim.sw, anim.sh,
+                    scr.x, scr.y, pxW, pxH
+                );
+            } else if (img) {
+                this.ctx.drawImage(img, scr.x, scr.y, pxW, pxH);
             }
         });
     }

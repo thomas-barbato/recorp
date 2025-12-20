@@ -81,6 +81,7 @@ from core.models import (
     Message,
 )
 
+from core.backend.admin.foreground_tools import generate_foreground_spritesheets_view
 
 class CustomAdminSite(admin.AdminSite):
     site_header = "recorp-admin"
@@ -142,7 +143,18 @@ class CustomAdminSite(admin.AdminSite):
                         "admin_url": "/admin/generate_missing_frames/",
                         "view_only": True,
                     },
-                    
+                    {
+                        "name": "Generate missing frames",
+                        "object_name": "generate missing frames",
+                        "admin_url": "/admin/generate_missing_frames/",
+                        "view_only": True,
+                    },
+                    {
+                        "name": "Generate sprite sheet",
+                        "object_name": "generate sprite sheet",
+                        "admin_url": "/admin/generate_sprite_sheet/",
+                        "view_only": True  
+                    },
                 ],
             }
         ]
@@ -240,6 +252,11 @@ class CustomAdminSite(admin.AdminSite):
                 self.admin_view(self.generate_missing_frames_view),
                 name="generate-missing-frames",
             ),
+            re_path(
+                r"^generate_sprite_sheet/$",
+                self.admin_view(generate_foreground_spritesheets_view),
+                name="generate-sprite-sheet",
+            )
         ] + urls
         return urls
     
@@ -1522,3 +1539,12 @@ class PrivateMessageAdmin(admin.ModelAdmin):
 @admin.register(PrivateMessageRecipients, site=admin_site)
 class PrivateMessageRecipientsAdmin(admin.ModelAdmin):
     model = PrivateMessageRecipients
+    
+# ⚙️ Injection de la vue dans l’admin
+admin.site.get_urls = lambda: [
+    path(
+        "tools/generate-foreground-spritesheets/",
+        generate_foreground_spritesheets_view,
+        name="generate_foreground_spritesheets",
+    ),
+] + admin.site.get_urls()
