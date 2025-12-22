@@ -55,7 +55,9 @@ export function initGlobals() {
         window.atlas = atlas;
         window.scannedTargets = new Set();
         window.sharedTargets  = new Set();
-        window.scannedTargetData = {}; 
+        window.scannedTargetData = {};
+        window.scannedMeta = {};
+        window.startCountdownTimer = startCountdownTimer;
 
         return true;
     } catch (e) {
@@ -63,3 +65,67 @@ export function initGlobals() {
         return false;
     }
 }
+
+/**
+ * Démarre un timer de compte à rebours dans un élément DOM.
+ *
+ * @param {HTMLElement} container - élément porteur du dataset.expiresAt
+ * @param {Object} options
+ * @param {Function} options.onExpire - callback optionnel à l'expiration
+ * @param {Boolean} options.showExpired - afficher "Expiré"
+ */
+export function startCountdownTimer(container, options = {}) {
+    if (!container?.dataset?.expiresAt) return;
+
+    const {
+        onExpire = null,
+        showExpired = true
+    } = options;
+
+    const label = container.querySelector(".countdown-label");
+    if (!label) return;
+
+    const expiresAt = new Date(container.dataset.expiresAt).getTime();
+    if (Number.isNaN(expiresAt)) return;
+
+    function update() {
+        const now = Date.now();
+        const diff = Math.max(0, expiresAt - now);
+        // if timer goes to 0.
+        if (diff <= 0) {
+            const targetKey = container.closest("[data-target-key]")?.dataset?.targetKey;
+            if (targetKey) {
+                window.scannedTargets?.delete(targetKey);
+                delete window.scannedMeta?.[targetKey];
+                if (typeof refreshModalAfterScan === "function") {
+                    refreshModalAfterScan(targetKey);
+                }
+            }
+
+            clearInterval(timer);
+            return;
+        }
+
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+
+        label.textContent =
+            `${String(h).padStart(2, "0")}:` +
+            `${String(m).padStart(2, "0")}:` +
+            `${String(s).padStart(2, "0")}`;
+    }
+
+    update();
+    const timer = setInterval(update, 1000);
+
+    // sécurité : cleanup si le node disparaît
+    const observer = new MutationObserver(() => {
+        if (!document.body.contains(container)) {
+            clearInterval(timer);
+            observer.disconnect();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+

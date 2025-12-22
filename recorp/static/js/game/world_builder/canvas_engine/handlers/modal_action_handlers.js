@@ -5,9 +5,13 @@ export function getScanResult(msg) {
 
     window.scannedTargets ??= new Set();
     window.scannedModalData ??= {};
+    window.scannedMeta ??= {};
 
     window.scannedTargets.add(target_key);
     window.scannedModalData[target_key] = data;
+    window.scannedMeta[target_key] = {
+        expires_at: msg.expires_at
+    };
 
     window.canvasEngine?.renderer?.requestRedraw();
     let progressBarApRemaining = document.getElementById("actionPoint-container-value-min");
@@ -49,15 +53,54 @@ export function handleScanStateSync(msg) {
     window.scannedTargets ??= new Set();
     window.sharedTargets ??= new Set();
     window.scannedModalData ??= {};
+    window.scannedMeta ??= {};
 
     targets.forEach(t => {
-        if (t?.target_key) {
-            window.scannedTargets.add(t.target_key);
-            console.log(window.scannedModalData)
-            window.scannedModalData[t.target_key] = t.data;
-            refreshModalAfterScan(t.target_key);
+        if (!t?.target_key) return;
+
+        window.scannedTargets.add(t.target_key);
+
+        if (t.expires_at) {
+            window.scannedMeta[t.target_key] = {
+                expires_at: t.expires_at
+            };
         }
+
+        if (t.data) {
+            window.scannedModalData[t.target_key] = t.data;
+        }
+
+        refreshModalAfterScan(t.target_key);
     });
 
+    window.canvasEngine?.renderer?.requestRedraw();
+}
+
+export function handleScanVisibilityUpdate(msg) {
+    const remove = msg?.remove || [];
+    if (!remove.length) return;
+
+    window.scannedTargets ??= new Set();
+    window.sharedTargets ??= new Set();
+    window.scannedMeta ??= {};
+
+    remove.forEach(targetKey => {
+        // 1️⃣ Nettoyage état global
+        window.scannedTargets.delete(targetKey);
+        window.sharedTargets.delete(targetKey);
+        delete window.scannedMeta[targetKey];
+        delete window.scannedModalData?.[targetKey];
+
+        // 2️⃣ Si un modal est ouvert → rebuild
+        const modalId = `modal-${targetKey}`;
+        const modalEl = document.getElementById(modalId);
+
+        if (modalEl) {
+            // rebuild propre du modal en mode UNKNOWN
+            if (typeof refreshModalAfterScan === "function") {
+                refreshModalAfterScan(targetKey);
+            }
+        }
+    });
     window.canvasEngine?.renderer?.requestRedraw();
 }

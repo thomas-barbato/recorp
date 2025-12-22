@@ -110,8 +110,8 @@ const FOREGROUND_ACTIONS = {
 const PC_NPC_EXTRA_ACTIONS = [
     {
         key: "share_to_group",
-        label: "Dévoiler au groupe",
-        iconify: "game-icons--radar-cross-section",
+        label: "Share to group",
+        icon: "/static/img/ux/gameIcons-radar-cross-section.svg",
         cost_ap: 1,
         requires_scan: true,
         requires_group: true,
@@ -119,7 +119,7 @@ const PC_NPC_EXTRA_ACTIONS = [
     },
     {
         key: "send_report",
-        label: "Envoyer un rapport",
+        label: "send report",
         iconClass: "fa-solid fa-envelope",
         cost_ap: 0,
         requires_scan: true
@@ -934,7 +934,7 @@ function createForegroundModalData(elementInfo, sectorData) {
                     .replaceAll('-', ' ')
                     .replaceAll('_', ' '),
                 warp_link_id: dest.warp_link_id,
-                original_name: dest.name // Conservation du nom original si besoin
+                original_name: dest.name
             }));
             return {
                 ...baseModalData,
@@ -1606,7 +1606,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     // ACTION : SCAN
     // ---------------------------
     const scanIcon = document.createElement("img");
-    scanIcon.src = "/static/img/ux/scan_resource_icon.svg";
+    scanIcon.src = "/static/img/ux/gameIcons-radar-cross-section.svg";
+    scanIcon.classList.add('text-white')
     
     const scanButton = createActionButton(
         scanIcon,
@@ -1660,14 +1661,13 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             if (extra.iconify) {
                 iconEl = document.createElement("span");
-                iconEl.classList.add("iconify", "w-5", "h-5");
-                iconEl.setAttribute("data-icon", "game-icons:radar-cross-section");
-                // Iconify attend data-icon, pas une classe “game-icons--…”
+                iconEl.classList.add("flex", "justify-center", "iconify", "game-icons--radar-cross-section", "w-5", "h-5");
             } else if (extra.iconClass) {
                 iconEl = document.createElement("i");
                 extra.iconClass.split(" ").forEach(c => iconEl.classList.add(c));
             } else {
-                iconEl = document.createElement("span");
+                iconEl = document.createElement("img");
+                iconEl.src = "/static/img/ux/gameIcons-brass-eye.svg"
             }
 
             // --- click handler ---
@@ -2012,26 +2012,91 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     });
 
     // === HEADER ===
-    const coords = data.player?.coordinates || data.coordinates;
-    const coordStr = coords ? ` [Y:${coords.y}, X:${coords.x}]` : "";
+const coords = data.player?.coordinates || data.coordinates;
+const coordStr = coords ? ` [Y:${coords.y}, X:${coords.x}]` : "";
 
-    modal.header.setTitle(
-        (data.player?.name || "UNKNOWN").toUpperCase() + coordStr
-    );
+// 1️⃣ Titre standard (crée modal.header.titleEl)
+modal.header.setTitle(
+    (data.player?.name || "UNKNOWN").toUpperCase() + coordStr
+);
 
+const targetKey =
+    (is_npc ? "npc_" : "pc_") + data.player.id;
+
+    // 2️⃣ On RECONSTRUIT le contenu du titleEl
+    if (data._ui?.scanned === true && window.scannedMeta?.[targetKey]) {
+
+        // Conteneur vertical central
+        const titleWrapper = document.createElement("div");
+        titleWrapper.classList.add(
+            "flex",
+            "flex-col",
+            "items-center",
+            "justify-center",
+            "w-full"
+        );
+
+        // --- Texte du titre ---
+        const titleText = document.createElement("div");
+        titleText.textContent =
+            (data.player?.name || "UNKNOWN").toUpperCase() + coordStr;
+
+        titleText.classList.add(
+            "text-lg",
+            "font-bold",
+            "uppercase",
+            "tracking-wide"
+        );
+
+        // --- Scan timer ---
+        const scanInfo = document.createElement("div");
+        scanInfo.classList.add(
+            "flex",
+            "items-center",
+            "justify-center",
+            "gap-2",
+            "text-xs",
+            "text-emerald-300",
+            "font-shadow",
+            "mt-1"
+        );
+
+        scanInfo.dataset.expiresAt =
+            window.scannedMeta[targetKey].expires_at;
+
+        const icon = document.createElement("img");
+        icon.src = "/static/img/ux/gameIcons-brass-eye.svg";
+        icon.classList.add("w-4", "h-4", "opacity-90");
+
+        const label = document.createElement("span");
+        label.classList.add("countdown-label");
+        label.textContent = "--:--:--";
+
+        scanInfo.append(icon, label);
+
+        // Assemblage
+        titleWrapper.append(titleText, scanInfo);
+
+        // 🔥 Remplacement du contenu du titleEl
+        modal.header.titleEl.innerHTML = "";
+        modal.header.titleEl.appendChild(titleWrapper);
+
+        // 🔥 Lancement du timer
+        if (window.startCountdownTimer) {
+            window.startCountdownTimer(scanInfo);
+        }
+    }
+
+    // 3️⃣ Croix de fermeture (inchangée)
     modal.header.setCloseButton(modalId);
 
     // === BODY ===
 
-    //
-    // 1 — IMAGE
-    //
+    // IMAGE
     const shipImage = buildPcNpcImage(data, is_npc);
     modal.body.addSection(shipImage);
 
-    //
-    // 2 — STATS SECTION
-    //
+    // STATS
     const statsSection = buildShipStatsSection(data);
     if (data._ui?.scanned === true) {
         statsSection.ship_statistics_warning_msg_container_p.classList.add("hidden");
@@ -2041,22 +2106,24 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     modal.body.addSection(statsSection.ship_statistics_warning_msg_container_p);
     modal.body.addSection(statsSection.ship_detailed_statistics_container_div);
 
-    //
-    // 3 — MODULES LABEL
-    //
+    // MODULES LABEL
     const modulesLabel = document.createElement("label");
     modulesLabel.textContent = "MODULES:";
-    modulesLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-2");
+    modulesLabel.classList.add(
+        "w-full",
+        "font-bold",
+        "font-shadow",
+        "text-white",
+        "text-base",
+        "mt-2"
+    );
     modal.body.addSection(modulesLabel);
 
-    //
-    // 4 — MODULES SECTION (weaponry / ewar / defensive / utility / probe)
-    //
+    // MODULES
     if (data._ui?.scanned === true) {
         modal.body.addSection(buildModulesSection(modalId, data));
     } else {
         const warning = document.createElement("p");
-        warning.id = "statistics-warning-msg";
         warning.classList.add(
             "text-red-500",
             "font-bold",
@@ -2066,43 +2133,40 @@ function create_pc_npc_modal(modalId, data, is_npc) {
             "animate-pulse"
         );
         warning.textContent = "Scan requis pour afficher les modules.";
-
         modal.body.addSection(warning);
     }
-    //
-    // 5 — ACTIONS LABEL
-    //
+
+    // ACTIONS LABEL
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
-    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base", "mt-2");
+    actionsLabel.classList.add(
+        "w-full",
+        "font-bold",
+        "font-shadow",
+        "text-white",
+        "text-base",
+        "mt-2"
+    );
     modal.body.addSection(actionsLabel);
 
-    //
-    // 7 — ACTIONS SECTION
-    //
+    // ACTION CONTEXT
     const contextZone = document.createElement("div");
     contextZone.id = modalId + "-action-context";
     contextZone.classList.add("hidden", "w-full", "mt-3");
     modal.body.addSection(contextZone);
 
-    // zone d’erreur
     const errorZone = document.createElement("div");
     errorZone.classList.add("action-error-msg", "hidden");
     errorZone.id = modalId + "-action-error-zone";
     modal.body.addSection(errorZone);
 
-    // 8 — ACTION CONTEXT ZONE (hidden)
     const actionsSection = buildActionsSection(modalId, data, is_npc, contextZone);
     modal.body.addSection(actionsSection);
 
-    //
-    // === FOOTER ===
-    //
+    // FOOTER
     modal.footer.setCloseButton(modalId);
 
-    //
-    // === POST INIT LOGIC ===
-    //
+    // Accordions
     setTimeout(() => activateExclusiveAccordions(modal.root), 50);
 
     return modal.root;

@@ -1295,6 +1295,7 @@ class GameConsumer(WebsocketConsumer):
                 data = build_npc_modal_data(scan.target_id)
             payload.append({
                 "target_key": f"{scan.target_type}_{scan.target_id}",
+                "expires_at": scan.expires_at.isoformat(),
                 "data": data,
                 "type": scan.target_type
             })
