@@ -939,6 +939,10 @@ video {
   margin-left: 0.5rem;
 }
 
+.ml-auto {
+  margin-left: auto;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
@@ -1237,10 +1241,6 @@ video {
   height: 100vh;
 }
 
-.h-64 {
-  height: 16rem;
-}
-
 .max-h-0 {
   max-height: 0px;
 }
@@ -1299,6 +1299,10 @@ video {
 
 .min-h-\[75px\] {
   min-height: 75px;
+}
+
+.min-h-\[90px\] {
+  min-height: 90px;
 }
 
 .min-h-screen {
@@ -2148,6 +2152,10 @@ video {
   gap: 2rem;
 }
 
+.gap-\[2px\] {
+  gap: 2px;
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -2833,6 +2841,10 @@ video {
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
+.border-yellow-400\/50 {
+  border-color: rgb(250 204 21 / 0.5);
+}
+
 .border-yellow-500\/50 {
   border-color: rgb(234 179 8 / 0.5);
 }
@@ -2898,6 +2910,10 @@ video {
 .bg-emerald-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(4 120 87 / var(--tw-bg-opacity));
+}
+
+.bg-emerald-700\/70 {
+  background-color: rgb(4 120 87 / 0.7);
 }
 
 .bg-emerald-700\/80 {
@@ -3028,6 +3044,10 @@ video {
 
 .bg-white\/50 {
   background-color: rgb(255 255 255 / 0.5);
+}
+
+.bg-yellow-700\/70 {
+  background-color: rgb(161 98 7 / 0.7);
 }
 
 .bg-yellow-900\/20 {
@@ -3479,10 +3499,6 @@ video {
 
 .pb-12 {
   padding-bottom: 3rem;
-}
-
-.pb-2 {
-  padding-bottom: 0.5rem;
 }
 
 .pb-20 {
@@ -4557,6 +4573,10 @@ video {
 
 .game-icons--missile-swarm {
   --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512'%3E%3Cpath fill='black' d='M17.34 17.38v34.08C37.24 85.91 61.4 120.5 95.03 151c6.97 24.6 23.57 43.7 46.27 53.9c-5.9-8.2-9.4-18.1-9.6-30.1c12 .1 21.9 3.7 30.1 9.6c-10.1-22.5-28.7-39-52.9-46c-40.28-36.2-66.64-78.82-89.03-121.02zm26.96 0C98.65 32.32 173.5 71.74 240.5 124.5l16.3-11.6C205.6 71.81 149.6 38.58 99.97 17.38zm110.1 0c28.4 8.14 52.8 19.57 75.3 32.83c13 21.96 34.1 36.14 58.6 40.15c-7.8-6.38-13.7-15.05-17-26.58c11.7-2.98 22.1-2.09 31.5 1.46c-15.5-19.08-37.8-30.23-63-30.76c-10.3-6.07-21-11.82-32.3-17.1zm171.3 4.96L321 71.62c-6.1 10.46-12.1 20.92-18.2 31.38c-14.6 11.2-26.3 18.7-40.6 29l39.6 22.8h.1l38.3-13.9c37.3 28.7 84.7 43.6 133.5 39.8c-21.2-44.6-57.8-78.2-101.5-96.03l-7-39.5zM194.9 148.8l-17.2 46.4c-8.6 8.4-17.2 17.1-25.7 25.7c-14.9 5.8-31.2 11.8-46.6 17.5l32.3 32.3l40.6-3.5c28.6 37.3 70.5 64 118.6 72.9c-8.9-48.5-35.6-90.5-73.1-119l3.4-40zm123.3 20l-18.2 6.6c17.1 17.7 33.5 38.1 44.3 52.6c1.1 24.4 12.1 46.1 30.6 61.3c-3.5-9.5-4.3-19.9-1.4-31.6c11.6 3.3 20.2 9.3 26.6 17.1c-4.1-25.4-19-47-42.3-59.9c-12-15.9-25.3-31.3-39.6-46.1M17.34 247.2v49.7c14.05 24.6 33.51 44.5 56.99 61c12.88 23.6 34.67 38.8 60.27 43c-7.8-6.4-13.8-15.1-17.1-26.6c11.7-3 22.2-2.1 31.6 1.5c-15-18.5-36.3-29.5-60.47-30.7c-35.62-23.9-60.18-54.2-71.29-97.9M441.3 249l-28.7 40.4c-10.5 6-20.9 12.1-31.4 18.1c-16.1 1.9-33.2 3.3-49.6 4.8l22.9 39.6l40.1 7.1c17.9 43.5 51.5 80.1 95.7 101.2c4-49.2-10.9-96.7-39.9-133.9l13.7-37.7zm-269.4 83.9l-4.6 49.3c-6.1 10.3-12.2 20.9-18.2 31.4c-13 9.6-27 19.4-40.5 28.9l39.6 22.9l38.3-13.9c37.3 28.7 84.6 43.6 133.4 39.8c-21.1-44.7-57.7-78.3-101.4-96.1l-7-39.5z'/%3E%3C/svg%3E");
+}
+
+.game-icons--radar-cross-section {
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512'%3E%3Cpath fill='black' d='M256 23C127.4 23 23 127.4 23 256s104.4 233 233 233s233-104.4 233-233S384.6 23 256 23m-9 18.2v78.1c-31.1 2-59.2 14.4-81.3 33.7l-55.2-55.29C146.7 64.39 194.4 43.36 247 41.2m18 0c52.6 2.16 100.3 23.19 136.5 56.51L346.2 153c-22-19.3-50.2-31.7-81.2-33.7zM97.71 110.5L153 165.7c-19.3 22.1-31.7 50.2-33.7 81.3H41.2c2.16-52.6 23.19-100.3 56.51-136.5m316.59 0c33.3 36.2 54.3 83.9 56.5 136.5h-78.1c-2-31-14.4-59.2-33.7-81.2zM247 137.3v38.6l.4.6l17.6-10v-29.2c26.1 2 49.8 12.3 68.5 28.4L322 177.2l11.2 14.4l13.1-13.1c16.1 18.7 26.4 42.4 28.4 68.5h-41.6l23.8 18h17.8c-.3 4.1-.9 8.2-1.6 12.2l15.8 12c2-7.8 3.3-15.9 3.8-24.2h78.1c-2.2 52.6-23.2 100.3-56.5 136.5l-33.7-33.7l-11.4 14.2l32.3 32.3c-36.2 33.3-83.9 54.3-136.5 56.5v-78.1c10.3-.7 20.3-2.5 29.8-5.3l-8.6-16.3c-6.8 1.8-13.9 3-21.2 3.6v-43.5l-.6-1.1l-17.4-2.2v46.8c-17.1-1.3-33.2-6.2-47.5-14l-12.2 13.8c17.7 10.3 38 16.8 59.7 18.2v78.1c-52.6-2.2-100.3-23.2-136.5-56.5l52.1-52.1l-11.3-14.3l-53.59 53.6C64.39 365.3 43.36 317.6 41.2 265h74.2l36.8-18h-14.9c2-26.1 12.3-49.8 28.4-68.5l10.8 10.8l13.1-12.5l-11.1-11.1c18.7-16.1 42.4-26.4 68.5-28.4m47 33.4l-45.1 25.6l-7.3 4.2l-19.4-29.7l-32.6 31l12.8 40.7l-80.7 39.5l58.5 73.3l43.2-48.5l52.6 6.5l49.7 93.7l71.9-88.6l-94.4-71.4l29.4-27.2z'/%3E%3C/svg%3E");
 }
 
 .game-icons--radar-sweep {
@@ -6950,36 +6970,10 @@ canvas {
 
 /**************************************************/
 
-.action-button-sf {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
-  border-radius: 0.75rem;
-  /* rounded-xl */
-  border: 1px solid rgba(52, 211, 153, 0.6);
-  /* emerald-400/60 */
-  background-color: rgba(6, 78, 59, 0.4);
-  /* bg-emerald-900/40 */
-  color: white;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
-  transition: transform 0.15s ease-in-out, 
-                box-shadow 0.15s ease-in-out;
-}
-
 .action-button-sf:hover {
   transform: scale(1.05);
   box-shadow: 0 0 18px rgba(16, 185, 129, 0.9);
   animation: pulse 1s infinite;
-}
-
-.action-button-sf-icon {
-  width: 32px;
-  height: 32px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .action-button-sf-label {
@@ -7025,7 +7019,10 @@ canvas {
   gap: var(--gap);
   padding: var(--pad);
   /* max 5 colonnes, boutons fixes, et wrap si pas la place */
-  grid-template-columns: repeat(var(--cols), var(--btn));
+  grid-template-columns: repeat(
+        auto-fit,
+        minmax(88px, 1fr)
+    );
   justify-content: center;
   justify-items: center;
   /* ✅ la bordure s’adapte au contenu */
@@ -7041,25 +7038,24 @@ canvas {
 
 .action-button-sf {
   width: var(--btn);
-  min-height: 96px;
-  /* ou plus */
-  height: var(--btn);
+  /* 🔥 NOUVEAU */
+  min-width: 88px;
+  /* largeur plancher lisible */
+  max-width: 120px;
+  /* évite les boutons trop larges */
+  min-height: 120px;
+  height: auto;
+  padding: 6px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   border-radius: 0.75rem;
   border: 1px solid rgba(52, 211, 153, 0.6);
   background-color: rgba(6, 78, 59, 0.4);
   color: white;
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
-  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.action-button-sf:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 18px rgba(16, 185, 129, 0.9);
-  animation: pulse 1s infinite;
 }
 
 .action-button-sf-icon {
@@ -7130,10 +7126,11 @@ canvas {
   height: 70px;
 }
 
-@media (max-width: 1023px) {
-  .action-button-sf {
-    width: 60px;
-    height: 60px;
+/* Tablette paysage */
+
+@media (max-width: 1024px) {
+  .action-grid-sf {
+    --btn: 92px;
   }
 
   .action-button-sf-label {
@@ -7147,10 +7144,9 @@ canvas {
   }
 }
 
-@media (max-width: 639px) {
-  .action-button-sf {
-    width: 50px;
-    height: 50px;
+@media (max-width: 768px) {
+  .action-grid-sf {
+    --btn: 92px;
   }
 
   .action-button-sf-label {
@@ -7161,6 +7157,22 @@ canvas {
     /* emerald-300 */
     text-align:  center;
     letter-spacing: 0.03em;
+  }
+}
+
+/* Laptop / 1080p */
+
+@media (max-width: 1280px) {
+  .action-grid-sf {
+    --btn: 96px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .action-grid-sf {
+    --btn: 84px;
   }
 }
 
@@ -8061,12 +8073,12 @@ canvas {
     overflow-y: hidden;
   }
 
-  .lg\:p-1 {
-    padding: 0.25rem;
-  }
-
   .lg\:p-12 {
     padding: 3rem;
+  }
+
+  .lg\:p-2 {
+    padding: 0.5rem;
   }
 
   .lg\:p-8 {

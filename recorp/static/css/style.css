@@ -1739,40 +1739,10 @@ canvas {
 /**************************************************/
 /**************** ACTION BUTTONS ******************/
 /**************************************************/
-
-.action-button-sf {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    width: 70px;
-    height: 70px;
-
-    border-radius: 0.75rem; /* rounded-xl */
-    border: 1px solid rgba(52, 211, 153, 0.6); /* emerald-400/60 */
-    
-    background-color: rgba(6, 78, 59, 0.4); /* bg-emerald-900/40 */
-
-    color: white;
-
-    box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
-
-    transition: transform 0.15s ease-in-out, 
-                box-shadow 0.15s ease-in-out;
-}
-
 .action-button-sf:hover {
     transform: scale(1.05);
     box-shadow: 0 0 18px rgba(16, 185, 129, 0.9);
     animation: pulse 1s infinite;
-}
-
-.action-button-sf-icon {
-    width: 32px;
-    height: 32px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .action-button-sf-label {
@@ -1815,7 +1785,10 @@ canvas {
     padding: var(--pad);
 
     /* max 5 colonnes, boutons fixes, et wrap si pas la place */
-    grid-template-columns: repeat(var(--cols), var(--btn));
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(88px, 1fr)
+    );
     justify-content: center;
     justify-items: center;
 
@@ -1831,26 +1804,28 @@ canvas {
 /* Bouton */
 .action-button-sf {
     width: var(--btn);
-    min-height: 96px; /* ou plus */
-    height: var(--btn);
+
+    /* 🔥 NOUVEAU */
+    min-width: 88px;          /* largeur plancher lisible */
+    max-width: 120px;         /* évite les boutons trop larges */
+
+    min-height: 120px;
+    height: auto;
+
+    padding: 6px 6px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 4px;
 
     border-radius: 0.75rem;
     border: 1px solid rgba(52, 211, 153, 0.6);
     background-color: rgba(6, 78, 59, 0.4);
     color: white;
+
     box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
-
-    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.action-button-sf:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 18px rgba(16, 185, 129, 0.9);
-    animation: pulse 1s infinite;
 }
 
 .action-button-sf-icon {
@@ -1911,11 +1886,10 @@ canvas {
     height: 70px;
 }
 
-@media (max-width: 1023px) {
-    .action-button-sf {
-        width: 60px;
-        height: 60px;
-    }
+/* Tablette paysage */
+@media (max-width: 1024px) {
+    .action-grid-sf { --btn: 92px; }
+    
     .action-button-sf-label {
         margin-top: 0.25rem;
         font-size: 9px;
@@ -1926,12 +1900,9 @@ canvas {
     }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 768px) {
 
-    .action-button-sf { 
-        width: 50px;
-        height: 50px;
-    }
+    .action-grid-sf { --btn: 92px; }
 
     .action-button-sf-label {
         margin-top: 0.25rem;
@@ -1941,6 +1912,16 @@ canvas {
         text-align:  center;
         letter-spacing: 0.03em;
     }
+}
+
+/* Laptop / 1080p */
+@media (max-width: 1280px) {
+    .action-grid-sf { --btn: 96px; }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .action-grid-sf { --btn: 84px; }
 }
 
 .text-purple-700{

@@ -37,13 +37,24 @@ export function getScanResult(msg) {
     refreshModalAfterScan(target_key);
 }
 
-export function sendScanResultToGroup(msg){
-    if (!msg.recipients.includes(window.current_player_id)) return;
+export function sendScanResultToGroup(msg) {
+    if (!msg?.recipients?.includes(window.current_player_id)) return;
+    if (!msg?.target_key) return;
+
+    window.scannedTargets ??= new Set();
+    window.sharedTargets ??= new Set();
+    window.scannedMeta ??= {};
 
     window.scannedTargets.add(msg.target_key);
     window.sharedTargets.add(msg.target_key);
 
-    rebuildPcNpcModal(`modal-${msg.target_key}`, msg.data);
+    if (msg.expires_at) {
+        window.scannedMeta[msg.target_key] = {
+            expires_at: msg.expires_at
+        };
+    }
+
+    refreshModalAfterScan(msg.target_key);
     window.canvasEngine?.renderer?.requestRedraw();
 }
 
@@ -85,13 +96,13 @@ export function handleScanVisibilityUpdate(msg) {
     window.scannedMeta ??= {};
 
     remove.forEach(targetKey => {
-        // 1️⃣ Nettoyage état global
+        // Nettoyage état global
         window.scannedTargets.delete(targetKey);
         window.sharedTargets.delete(targetKey);
         delete window.scannedMeta[targetKey];
         delete window.scannedModalData?.[targetKey];
 
-        // 2️⃣ Si un modal est ouvert → rebuild
+        // Si un modal est ouvert → rebuild
         const modalId = `modal-${targetKey}`;
         const modalEl = document.getElementById(modalId);
 

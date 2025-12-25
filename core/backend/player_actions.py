@@ -11,10 +11,12 @@ import operator
 from django.utils import timezone
 from django.contrib.auth.models import User
 from core.backend.get_data import GetDataFromDB
-# Ajouter ces imports en haut du fichier player_actions.py
+from core.backend.action_rules import ActionRules
 from channels.db import database_sync_to_async
-from asgiref.sync import sync_to_async
+from asgiref.sync import sync_to_async, async_to_sync
+from channels.layers import get_channel_layer
 logger = logging.getLogger("django")
+
 
 from core.models import (
     Planet,
@@ -874,6 +876,58 @@ class PlayerAction:
         )
         player = Player.objects.filter(id=self.player_id).values('current_ap').first()
         return updated > 0, player['current_ap']
+    
+
+    def _emit_scan_visibility_update(self, scan):
+            channel_layer = get_channel_layer()
+
+            payload = {
+                "type": "scan_visibility_update",
+                "target_key": f"{scan.target_type}_{scan.target_id}",
+                "expires_at": scan.expires_at.isoformat(),
+                "sector_id": scan.sector_id,
+            }
+
+            # joueur qui a scanné
+            async_to_sync(channel_layer.group_send)(
+                f"player_{scan.scanner_player_id}",
+                payload
+            )
+
+            # groupes partagés
+            for link in scan.scan_to_group.select_related("group"):
+                async_to_sync(channel_layer.group_send)(
+                    f"group_{link.group.id}",
+                    payload
+                )
+                
+    def _emit_scan_invalidation(self, target_type: str, target_id: int, sector_id: int):
+        channel_layer = get_channel_layer()
+
+        target_key = f"{target_type}_{target_id}"
+
+        payload = {
+            "type": "scan_visibility_update",
+            "remove": [target_key],
+            "reason": "invalidate",
+        }
+
+        async_to_sync(channel_layer.group_send)(
+            f"play_{sector_id}",
+            payload
+        )
+                
+    def perform_scan(self, target_type, target_id, sector_id):
+        scan = ActionRules.upsert_scan(
+            scanner_player_id=self.player_id,
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id
+        )
+        
+        self._emit_scan_visibility_update(scan)
+
+        return scan
     
     
 def send_admin_announcement(subject, body, recipient_ids=None, priority='HIGH'):

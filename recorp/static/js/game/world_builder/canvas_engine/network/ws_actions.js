@@ -16,6 +16,7 @@ import {
 import { 
     getScanResult, 
     sendScanResultToGroup, 
+    handleScanVisibilityUpdate,
     handleScanStateSync 
 } from "../handlers/modal_action_handlers.js";
 
@@ -60,5 +61,6 @@ ActionRegistry.register("npc_removed", removeNpc);
 // MODAL ACTIONS
 // ===============================
 ActionRegistry.register("scan_result", getScanResult);
-ActionRegistry.register("scan_visibility_update", sendScanResultToGroup);
+ActionRegistry.register("scan_share_to_group", sendScanResultToGroup);
+ActionRegistry.register("scan_visibility_update", handleScanVisibilityUpdate)
 ActionRegistry.register("scan_state_sync", handleScanStateSync);

@@ -1065,6 +1065,26 @@ class GameConsumer(WebsocketConsumer):
                 return
 
             destination_sector_id, dest_coord = dest
+            
+            # =======================
+            # 2.5) INVALIDATION DES SCANS (AVANT DE QUITTER LE SECTEUR)
+            # =======================
+
+            old_sector_id = current_sector_id  # déjà présent dans warp_data
+
+            # 1) Supprimer les scans en DB
+            ActionRules.invalidate_scans_for_target(
+                target_type="pc",
+                target_id=player_id,
+                sector_id=old_sector_id,
+            )
+
+            # 2) Notifier tous les clients du secteur
+            pa._emit_scan_invalidation(
+                target_type="pc",
+                target_id=player_id,
+                sector_id=old_sector_id,
+            )
 
             # =======================
             # 3) Mise à jour DB
@@ -1263,19 +1283,26 @@ class GameConsumer(WebsocketConsumer):
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
-                    "type": "scan_visibility_update",
+                    "type": "scan_share_to_group",
                     "message": {
-                        "add": [f"{target_type}_{target_id}"],
-                        "remove": [],
-                        "reason": "share"
+                        "target_key": f"{target_type}_{target_id}",
+                        "expires_at": scan["expires_at"].isoformat() if isinstance(scan, dict) else None,
+                        "recipients": player_ids,
                     }
                 }
             )
             
-    def scan_visibility_update(self, event):
+    def scan_share_to_group(self, event):
         self._send_response({
-            "type": "scan_visibility_update",
+            "type": "scan_share_to_group",
             "message": event.get("message", {})
+        })
+        
+    async def scan_visibility_update(self, event):
+        await self.send_json({
+            "type": "scan_visibility_update",
+            "remove": event.get("remove", []),
+            "reason": event.get("reason"),
         })
         
     def _send_scan_state_sync(self):
@@ -1305,7 +1332,6 @@ class GameConsumer(WebsocketConsumer):
                 "targets": payload
             }
         })
-
 
     def async_user_join(self, event: Dict[str, Any]) -> None:
         """

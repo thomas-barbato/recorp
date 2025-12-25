@@ -35,8 +35,6 @@ export function initGlobals() {
         map_informations = mapScript ? JSON.parse(mapScript.textContent) : null;
         current_player_id = playerScript ? JSON.parse(playerScript.textContent) : null;
         currentPlayer = currentPlayerData ? JSON.parse(currentPlayerData.textContent) : null;
-        current_player_data = currentPlayer;
-
         
         foregroundElement = map_informations?.sector_element || [];
         npcs = map_informations?.npc || [];

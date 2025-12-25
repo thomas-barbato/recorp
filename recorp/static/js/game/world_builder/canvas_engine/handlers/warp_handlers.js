@@ -128,9 +128,25 @@ export function handlerRemovePlayer(data){
 
     console.log("[WS] Suppression acteur →", actorId);
 
-    map.removeActorByPlayerId(data.player_id);
+    // 1️⃣ Supprimer l’acteur de la map
+    map.removeActorByPlayerId(shipId);
 
-    // Forcer un rafraîchissement du renderer
+    // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
+    if (window.scannedTargets?.has(actorId)) {
+        console.log("[SCAN] Invalidation locale (acteur quitté secteur) →", actorId);
+
+        window.scannedTargets.delete(actorId);
+        window.sharedTargets?.delete(actorId);
+        delete window.scannedMeta?.[actorId];
+        delete window.scannedModalData?.[actorId];
+
+        // Si un modal est ouvert → rebuild propre
+        if (typeof refreshModalAfterScan === "function") {
+            refreshModalAfterScan(actorId);
+        }
+    }
+
+    // 3️⃣ Redraw
     engine.renderer.requestRedraw();
 
 }

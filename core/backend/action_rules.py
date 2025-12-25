@@ -1,12 +1,15 @@
-# core/backend/action_rules.py
-
+# =======================================
+# CE FICHIER SERT A RECUPERER
+# DES DONNEES EN RAPPORT AVEC UNE ACTION 
+# QUE LE JOUEUR PEUT EFFECTUER.
+# =======================================
 from typing import Dict, Any, Optional
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Q
 
-from core.models import PlayerShipModule, Module, ScanIntel, ScanIntelGroup
+from core.models import PlayerShipModule, Module, ScanIntel, ScanIntelGroup, Npc, Player
 
 
 
@@ -153,18 +156,24 @@ class ActionRules:
     @staticmethod
     def get_visible_scans_for_player(player_id: int, sector_id: int):
         now = timezone.now()
-        """
-        return ScanIntel.objects.filter(
+
+        scans = ScanIntel.objects.filter(
             sector_id=sector_id,
-            expires_at__gt=now
-        ).filter(
-            Q(scanner_player_id=player_id) |
-            Q(shared_groups__group__player__id=player_id)
-        ).distinct()"""
-        return ScanIntel.objects.filter(
-            sector_id=sector_id,
-            expires_at__gt=now
-        ).filter(scanner_player_id=player_id).distinct()
+            expires_at__gt=now,
+            scanner_player_id=player_id
+        )
+
+        valid_scans = []
+
+        for scan in scans:
+            if scan.target_type == "pc":
+                if Player.objects.filter(id=scan.target_id, sector_id=sector_id).exists():
+                    valid_scans.append(scan)
+            elif scan.target_type == "npc":
+                if Npc.objects.filter(id=scan.target_id, sector_id=sector_id).exists():
+                    valid_scans.append(scan)
+
+        return valid_scans
         
     @classmethod
     def has_active_scan(scanner_id, target_type, target_id, sector_id) -> bool:
@@ -176,6 +185,18 @@ class ActionRules:
             invalidated_at__isnull=True,
             expires_at__gt=timezone.now()
         ).exists()
+        
+    @staticmethod
+    def invalidate_scans_for_target(target_type: str, target_id: int, sector_id: int):
+        """
+        Supprime tous les scans actifs pour une cible dans un secteur.
+        (auteur + groupes)
+        """
+        ScanIntel.objects.filter(
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id,
+        ).delete()
 
     # ================
     # ACTION : HAIL (contact radio)

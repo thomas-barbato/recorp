@@ -28,23 +28,25 @@ const FOREGROUND_ACTIONS = {
         label: "Récolte",
         icon: "/static/img/ux/gather_icon.svg",
         requires: [{ type: "GATHERING" }],
-        ap_cost : 1
+        ap_cost : 1,
+        cost: 0,
         },
         {
         key: "scan",
         label: "Scan",
         icon: "/static/img/ux/scan_resource_icon.svg",
         requires: [{ type: "PROBE", name: "drilling probe" }],
-        ap_cost : 1
+        ap_cost : 1,
+        cost: 0,
         }
     ],
 
     planet: [
-        { key: "set_home", label: "New Home", icon: "/static/img/ux/new_location.svg" },
-        { key: "join_faction", label: "Join Faction", icon: "/static/img/ux/join_faction.svg" },
-        { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg" },
-        { key: "market", label: "Market", icon: "/static/img/ux/market.svg" },
-        { key: "task", label: "Task", icon: "/static/img/ux/task.svg" },
+        { key: "set_home", label: "New Home", icon: "/static/img/ux/new_location.svg" , ap_cost: 1, cost: 1000  },
+        { key: "join_faction", label: "Join Faction", icon: "/static/img/ux/join_faction.svg" , ap_cost: 0, cost: 1000 },
+        { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg" , ap_cost: 0, cost: 0 },
+        { key: "market", label: "Market", icon: "/static/img/ux/market.svg" , ap_cost: 0, cost: 0 },
+        { key: "task", label: "Task", icon: "/static/img/ux/task.svg" , ap_cost: 0, cost: 0 },
         {
         key: "invade",
         label: "Invade",
@@ -62,21 +64,29 @@ const FOREGROUND_ACTIONS = {
             key: "corporation",
             label: "Corporation",
             icon: "/static/img/ux/join_faction.svg",
+            cost: 0,
+            ap_cost: 0
         },
         {
             key: "new_home",
             label: "New Home",
-            icon: "/static/img/ux/new_location.svg"
+            icon: "/static/img/ux/new_location.svg",
+            cost: 1000,
+            ap_cost: 1
         },
         {
             key: "dock",
             label: "Dock",
             icon: "/static/img/ux/dock.svg",
+            cost: 1000,
+            ap_cost: 1
         },
         {
             key: "market",
             label: "Market",
-            icon: "/static/img/ux/market.svg"
+            icon: "/static/img/ux/market.svg",
+            cost: 0,
+            ap_cost: 0
         },
     ],
 
@@ -85,23 +95,29 @@ const FOREGROUND_ACTIONS = {
             key: "training",
             label: "Training",
             iconify: "game-icons--teacher",
+            cost: 1000,
+            ap_cost: 1,
         },
         {
             key: "craft",
             label: "Craft",
-            iconify: "game-icons--crafting"
+            iconify: "game-icons--crafting",
+            cost: 0,
+            ap_cost: 1,
         },
         {
             key: "repair",
             label: "Repair",
             iconify: "game-icons--auto-repair",
-            cost: 1000
+            cost: 1000,
+            ap_cost: 1
         },
         {
             key: "refuel",
             label: "Refuel",
             iconify: "game-icons--fuel-tank",
-            cost: 1000
+            cost: 1000,
+            ap_cost: 1
         }
     ],
     black_hole: []
@@ -112,7 +128,7 @@ const PC_NPC_EXTRA_ACTIONS = [
         key: "share_to_group",
         label: "Share to group",
         icon: "/static/img/ux/gameIcons-radar-cross-section.svg",
-        cost_ap: 1,
+        ap_cost: 1,
         requires_scan: true,
         requires_group: true,
         warning_no_group: "Vous devez faire partie d'un groupe pour effectuer cette action."
@@ -121,7 +137,7 @@ const PC_NPC_EXTRA_ACTIONS = [
         key: "send_report",
         label: "send report",
         iconClass: "fa-solid fa-envelope",
-        cost_ap: 0,
+        ap_cost: 0,
         requires_scan: true
     }
 ];
@@ -1188,7 +1204,6 @@ function buildAsteroidResourcesSection(modalId, data) {
     return container;
 }
 
-
 function buildForegroundActionsSection(modalId, data) {
     const wrapper = document.createElement("div");
     wrapper.classList.add(
@@ -1279,7 +1294,20 @@ function buildForegroundActionsSection(modalId, data) {
 
         // === BOUTON ===
         const btn = document.createElement("div");
-        btn.classList.add("action-button-sf", "cursor-pointer", "font-shadow");
+        btn.classList.add(
+            "action-button-sf",
+            "cursor-pointer",
+            "font-shadow",
+            "flex",
+            "flex-col",
+            "items-center",
+            "justify-center",
+            "gap-1",
+            "text-center",
+            "min-h-[90px]",
+            "px-2",
+            "py-2"
+        );
 
         // === ICÔNE ===
         let iconEl;
@@ -1289,53 +1317,34 @@ function buildForegroundActionsSection(modalId, data) {
             iconEl.classList.add("action-button-sf-icon");
         } else if (action.iconify) {
             iconEl = document.createElement("span");
-            iconEl.classList.add(
-                "iconify",
-                action.iconify,
-                "action-button-sf-icon"
-            );
+            iconEl.classList.add("iconify", action.iconify, "action-button-sf-icon");
         }
 
         // === LABEL ===
         const label = document.createElement("div");
         label.textContent = action.label || "";
-        label.classList.add("action-button-sf-label", "font-shadow");
+        label.classList.add(
+            "action-button-sf-label",
+            "font-shadow",
+            "text-sm",
+            "font-bold"
+        );
 
-        btn.append(iconEl, label);
+        // 🔥 AJOUT DANS LE BON ORDRE
+        if (iconEl) btn.append(iconEl);
+        btn.append(label);
+
+        // === COÛTS (AP / CR) ===
+        const badge = createActionCostBadge({
+            ap_cost:action.ap_cost ?? null,
+            cost:typeof action.cost === "number" ? action.cost : null
+        });
+
+        if (badge) {
+            btn.append(badge);
+        }
+
         itemWrapper.append(btn);
-
-        // ============================
-        // COÛT AP 
-        // ============================
-        if (action.key === "scan") {
-            const apCostEl = document.createElement("div");
-            apCostEl.textContent = "1 AP";
-            apCostEl.classList.add(
-                "text-xs",
-                "text-emerald-300",
-                "font-bold",
-                "mt-1",
-                "font-shadow",
-                "text-center"
-            );
-            itemWrapper.append(apCostEl);
-        }
-
-        // ============================
-        // COÛT CR 
-        // ============================
-        if (typeof action.cost === "number") {
-            const costEl = document.createElement("div");
-            costEl.textContent = `${action.cost} cr`;
-            costEl.classList.add(
-                "text-xs",
-                "text-yellow-400",
-                "font-bold",
-                "mt-1",
-                "font-shadow"
-            );
-            itemWrapper.append(costEl);
-        }
 
         // ============================
         // DÉSACTIVER SCAN SI DÉJÀ SCANNÉ (AU CHARGEMENT)
@@ -1467,21 +1476,106 @@ function create_foreground_modal(modalId, data) {
     return modal.root;
 }
 
-function createActionButton(iconElement, label, onClick) {
+function createActionCostBadge(actionOrCosts = {}) {
+
+    const apCost =
+        typeof actionOrCosts.ap_cost === "number" ? actionOrCosts.ap_cost : null;
+
+    const crCost =
+        typeof actionOrCosts.cost === "number" ? actionOrCosts.cost : null;
+
+    if (
+        (apCost === null || apCost <= 0) &&
+        (crCost === null || crCost <= 0)
+    ) return null;
+
+    const wrapper = document.createElement("div");
+    wrapper.classList.add(
+        "flex",
+        "flex-col",
+        "items-center",
+        "gap-[2px]",
+        "mt-1",
+        "text-xs",
+        "font-bold",
+        "font-shadow"
+    );
+
+    if (typeof apCost === "number" && apCost > 0) {
+        const apLine = document.createElement("div");
+        apLine.textContent = `${apCost} AP`;
+        apLine.classList.add(
+            "px-2","py-[1px]","rounded-md",
+            "bg-emerald-700/70",
+            "text-emerald-200",
+            "border","border-emerald-400/40",
+            "whitespace-nowrap"
+        );
+        wrapper.append(apLine);
+    }
+
+    if (typeof crCost === "number" && crCost > 0) {
+        const crLine = document.createElement("div");
+        crLine.textContent = `${crCost} CR`;
+        crLine.classList.add(
+            "px-2","py-[1px]","rounded-md",
+            "bg-yellow-700/70",
+            "border","border-yellow-400/50",
+            "whitespace-nowrap"
+        );
+        crLine.style.color = "#fde047"; // 🟡 JAUNE FORCÉ
+        wrapper.append(crLine);
+    }
+
+    return wrapper;
+}
+
+function createActionButton(iconElement, label, onClick, cost = {}) {
     const btn = document.createElement("div");
-    btn.classList.add("action-button-sf", "cursor-pointer");
+    btn.classList.add(
+        "action-button-sf",
+        "cursor-pointer",
+        "font-shadow",
+        "flex",
+        "flex-col",
+        "items-center",
+        "justify-center",
+        "gap-1",
+        "text-center",
+        "min-h-[90px]",
+        "px-2",
+        "py-2"
+    );
 
+    // --- ICÔNE ---
     const iconWrapper = document.createElement("div");
-    iconWrapper.append(iconElement);
+    iconWrapper.classList.add("flex", "justify-center");
     iconElement.classList.add("action-button-sf-icon");
+    iconWrapper.append(iconElement);
 
-    const lbl = document.createElement("span");
-    lbl.classList.add("action-button-sf-label");
+    // --- LABEL ---
+    const lbl = document.createElement("div");
+    lbl.classList.add(
+        "action-button-sf-label",
+        "text-sm",
+        "font-bold"
+    );
     lbl.textContent = label;
 
     btn.append(iconWrapper, lbl);
-    btn.addEventListener("click", onClick);
 
+    // --- COÛT (AP / CR) ---
+    const badge = createActionCostBadge(cost);
+    if (badge) {
+        badge.classList.remove("ml-auto"); // sécurité
+        badge.classList.add(
+            "mt-1",
+            "text-xs"
+        );
+        btn.append(badge);
+    }
+
+    btn.addEventListener("click", onClick);
     return btn;
 }
 
@@ -1503,11 +1597,11 @@ function showActionError(modalId, message) {
 }
 
 function buildActionsSection(modalId, data, is_npc, contextZone) {
-
     const ws = window.canvasEngine?.ws;
-
+    
     const modules = currentPlayer.ship.modules;
     const isUnknown = modalId.startsWith("modal-unknown");
+    const currentAP = currentPlayer?.player?.current_ap ?? null;
 
     // Conteneur global
     const wrapper = document.createElement("div");
@@ -1597,7 +1691,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             });
 
             contextZone.append(list);
-        }
+        },
+        { ap_cost:1 }
     );
     wrapper.append(grid);
     
@@ -1622,7 +1717,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
             });
             
-        }
+        },
+        { ap_cost:1 }
         
     );
     grid.innerHTML = "";
@@ -1632,21 +1728,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         scanButton.title = "Déjà scanné";
     }
 
-    // ✅ coût AP sous SCAN (PC/NPC)
-    const scanCost = document.createElement("div");
-    scanCost.textContent = "1 AP";
-    scanCost.classList.add(
-        "text-xs",
-        "text-emerald-300",
-        "font-bold",
-        "mt-1",
-        "font-shadow",
-        "text-center"
-    );
-
     const scanCell = document.createElement("div");
     scanCell.classList.add("flex", "flex-col", "items-center");
-    scanCell.append(scanButton, scanCost);
+    scanCell.append(scanButton);
 
     // 1) Toujours visibles
     grid.append(attackButton);
@@ -1671,30 +1755,32 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             }
 
             // --- click handler ---
-            const btn = createActionButton(iconEl, extra.label, () => {
-            if (extra.requires_group && !currentPlayer?.group_id) {
-                showActionError(modalId, extra.warning_no_group);
-                return;
-            }
+            const btn = createActionButton(iconEl, extra.label, () => 
+                {
+                    if (extra.requires_group && !currentPlayer?.group_id) {
+                        showActionError(modalId, extra.warning_no_group);
+                        return;
+                    }
 
-            const ws = window.canvasEngine?.ws;
-            if (!ws?.send) return;
+                    const ws = window.canvasEngine?.ws;
+                    if (!ws?.send) return;
 
-            const info = define_modal_type(modalId);
-            ws.send({
-                type: extra.key === "share_to_group" ? "action_share_scan" : "action_send_report",
-                payload: { target_type: info.type, target_id: info.id }
-            });
-        });
+                    const info = define_modal_type(modalId);
+                    ws.send({
+                        type: extra.key === "share_to_group" ? "action_share_scan" : "action_send_report",
+                        payload: { target_type: info.type, target_id: info.id }
+                    });
+                },
+                { ap_cost:extra.ap_cost }
+            );
 
-        // --- cost under button (same style as your other costs) ---
-        const cost = document.createElement("div");
-        cost.textContent = `${extra.cost_ap} AP`;
-        cost.classList.add("text-xs","text-emerald-300","font-bold","mt-1","font-shadow","text-center");
+        if(extra.requires_group && !currentPlayer?.group_id){
+            btn.classList.add("opacity-40", "pointer-events-none");
+        }
 
         const cell = document.createElement("div");
         cell.classList.add("flex","flex-col","items-center");
-        cell.append(btn, cost);
+        cell.append(btn);
 
         grid.append(cell);
     });
@@ -1714,7 +1800,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             contextZone.innerHTML = "E-War disponible (à implémenter)";
             contextZone.classList.remove("hidden");
-        }
+        },
+        {ap : 1}
     );
 
     grid.append(ewarButton);
@@ -1733,7 +1820,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             contextZone.innerHTML = "Réparation (à implémenter)";
             contextZone.classList.remove("hidden");
-        }
+        },
+        {ap : 1}
     );
 
     grid.append(repButton);
@@ -1750,7 +1838,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             contextZone.innerHTML = "Commerce (à implémenter)";
             contextZone.classList.remove("hidden");
-        }
+        },
+        {ap : 0}
     );
 
     grid.append(tradeButton);
@@ -2539,4 +2628,10 @@ function playerHasModule(type, requiredName) {
         typeof m.name === "string" &&
         m.name.toLowerCase() === requiredName.toLowerCase()
     );
+}
+
+function disable_action(ap_cost, ap, element){
+    if (typeof ap_cost === "number" && ap !== null) {
+        ap < ap_cost == true ? element.classList.add("opacity-40", "pointer-events-none") : element.classList.remove("opacity-40", "pointer-events-none");
+    }
 }
