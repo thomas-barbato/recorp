@@ -1103,7 +1103,8 @@ async function open_close_modal(modalId) {
             type: parsed.type,
             data: responseData.target,
             current_player: responseData.current_player,
-            __fromScan: responseData.__fromScan === true
+            __fromScan: responseData.__fromScan === true,
+            __ui: responseData.__ui
         };
 
         create_modal(modalId, parsed, extractedDataForModal);
@@ -1128,11 +1129,19 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
         case "pc":
             if(extractDataFromId.isUnknown == true){
                 modalData = createPlayerModalData(extractedDataForModal.data)
-                modal = createUnknownPcModal(modalId, modalData);
+                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
+                modalData._ui = modalData._ui || {};
+                modalData._ui.scanned = window.scannedTargets?.has(targetKey) === true;
+                modal = createUnknownPcModal(modalId, modalData);   
             }else{
                 modalData = createPlayerModalData(extractedDataForModal.data);
+                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
+                modalData._ui = modalData._ui || {};
+                modalData._ui.scanned = window.scannedTargets?.has(targetKey) === true;
                 // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
                 if (extractedDataForModal?.__fromScan === true) {
+                    modalData._ui.scanned = true;
+                } else if (extractedDataForModal?.__ui?.scanned === true) {
                     modalData._ui.scanned = true;
                 }
                 modal = create_pc_npc_modal(modalId, modalData, false);
@@ -1146,6 +1155,8 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modalData = createNpcModalData(extractedDataForModal.data)
                 // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
                 if (extractedDataForModal?.__fromScan === true) {
+                    modalData._ui.scanned = true;
+                } else if (extractedDataForModal?.__ui?.scanned === true) {
                     modalData._ui.scanned = true;
                 }
                 modal = create_pc_npc_modal(modalId, modalData, true);
@@ -1344,6 +1355,15 @@ function buildForegroundActionsSection(modalId, data) {
             btn.append(badge);
         }
 
+        if(action.key == "invade" && !playerHasModule("COLONIZATION", "colonization module")) {
+            btn.classList.add("opacity-40", "pointer-events-none");
+        }
+        
+        let ap = action.ap_cost ?? null;
+        let cr_cost = action.cost ?? null;
+        
+        applyActionCostState({ ap_cost: ap, cost: cr_cost }, btn);
+        
         itemWrapper.append(btn);
 
         // ============================
@@ -1351,7 +1371,6 @@ function buildForegroundActionsSection(modalId, data) {
         // ============================
         if (action.key === "scan" && alreadyScanned) {
             btn.classList.add("opacity-40", "pointer-events-none");
-            btn.title = "Déjà scanné";
         }
 
         // ============================
@@ -1382,19 +1401,25 @@ function buildForegroundActionsSection(modalId, data) {
                 }
             }
 
-            // LOGIQUE scan (ton mock actuel)
+            // action scan
             if (action.key === "scan") {
-                data._ui.scanned = true;
+                const info = define_modal_type(modalId);
+                const targetKey = `${info.type}_${info.id}`;
 
-                // révéler ressources
-                const resContainer = document.getElementById(`${modalId}-resources`);
-                if (resContainer) {
-                    resContainer.replaceWith(buildAsteroidResourcesSection(modalId, data));
+                // 1️⃣ Persistance GLOBALE
+                if (!window.scannedTargets) {
+                    window.scannedTargets = new Set();
                 }
+                window.scannedTargets.add(targetKey);
 
-                // ✅ et désactiver immédiatement
-                btn.classList.add("opacity-40", "pointer-events-none");
-                btn.title = "Déjà scanné";
+                // (optionnel mais utile plus tard)
+                window.scannedMeta = window.scannedMeta || {};
+                window.scannedMeta[targetKey] = {
+                    expires_at: null // ou une vraie date plus tard
+                };
+
+                // 2️⃣ Rebuild immédiat du modal
+                refreshModalAfterScan(targetKey);
             }
 
             // autres actions plus tard...
@@ -1523,7 +1548,7 @@ function createActionCostBadge(actionOrCosts = {}) {
             "border","border-yellow-400/50",
             "whitespace-nowrap"
         );
-        crLine.style.color = "#fde047"; // 🟡 JAUNE FORCÉ
+        crLine.style.color = "#fde047"; //
         wrapper.append(crLine);
     }
 
@@ -1708,6 +1733,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         scanIcon,
         "Scan",
         () => {
+            if (scanButton.classList.contains("pointer-events-none")) return;
             const info = define_modal_type(modalId);
             ws.send({
                 type: "action_scan_pc_npc",
@@ -1716,27 +1742,26 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     target_id: info.id
                 }
             });
-            
         },
         { ap_cost:1 }
         
     );
+    applyScanState(data, scanButton);
+    applyActionCostState({ ap_cost: 1, cost: 0 }, scanButton);
+    
     grid.innerHTML = "";
     // Limiter l'utilisation du scan.
     if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe")) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
-        scanButton.title = "Déjà scanné";
     }
 
-    const scanCell = document.createElement("div");
-    scanCell.classList.add("flex", "flex-col", "items-center");
-    scanCell.append(scanButton);
+    // BLOQUER SI AP INSUFFISANTS
+    applyActionCostState({ ap_cost: 1, cost: 0 , key : "scan"}, scanButton);
 
-    // 1) Toujours visibles
     grid.append(attackButton);
-    grid.append(scanCell);
+    grid.append(scanButton);
 
-    // 2) Actions post-scan : “à la suite” dans la grille
+    // Actions post-scan : “à la suite” dans la grille
     if (data._ui?.scanned === true) {
         PC_NPC_EXTRA_ACTIONS.forEach(extra => {
 
@@ -1773,6 +1798,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 },
                 { ap_cost:extra.ap_cost }
             );
+            // BLOQUER SI AP INSUFFISANTS
+            applyActionCostState({ ap_cost: extra.ap_cost, cost: 0 }, btn);
 
         if(extra.requires_group && !currentPlayer?.group_id){
             btn.classList.add("opacity-40", "pointer-events-none");
@@ -1824,6 +1851,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         {ap : 1}
     );
 
+    // BLOQUER SI AP INSUFFISANTS
+    applyActionCostState({ ap_cost: 1, cost: 0 }, repButton);
     grid.append(repButton);
 
     // ---------------------------
@@ -1850,8 +1879,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         grid.append(attackButton);
         if (data._ui?.scanned === true) {
             scanButton.classList.add("opacity-40", "pointer-events-none");
-            // optionnel : petit texte
-            scanButton.title = "Déjà scanné";
         }
         grid.append(scanButton);    
     }
@@ -2630,8 +2657,43 @@ function playerHasModule(type, requiredName) {
     );
 }
 
-function disable_action(ap_cost, ap, element){
-    if (typeof ap_cost === "number" && ap !== null) {
-        ap < ap_cost == true ? element.classList.add("opacity-40", "pointer-events-none") : element.classList.remove("opacity-40", "pointer-events-none");
+function applyActionCostState(action, btn) {
+    
+    if (action?.key === "scan" && btn.title === "Cible déjà scannée") {
+        btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
+        return false;
     }
+    
+    const currentAP = window.currentPlayer?.user?.current_ap ?? 0;
+    const currentCR = 0; // CR non implémentés pour l’instant
+
+    const apCost = typeof action.ap_cost === "number" ? action.ap_cost : 0;
+    const crCost = typeof action.cost === "number" ? action.cost : 0;
+
+    let disabled = false;
+
+    if (apCost > 0 && currentAP < apCost) {
+        disabled = true;
+    }
+
+    if (crCost > 0 && currentCR < crCost) {
+        disabled = true;
+    }
+
+    if (disabled) {
+        btn.classList.add("opacity-40", "pointer-events-none");
+    } else {
+        btn.classList.remove("opacity-40", "pointer-events-none");
+    }
+
+    return !disabled;
+}
+
+function applyScanState(data, scanButton) {
+    if (data?._ui?.scanned === true) {
+        scanButton.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
+        scanButton.title = "Cible déjà scannée";
+        return false;
+    }
+    return true;
 }
