@@ -233,21 +233,30 @@
 
             <!-- Each stat block -->
             <div id="container-basic-stats" class="flex border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-2 w-full flex-col gap-1"> 
-                <label for="hp-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Hull points'%}</label> 
+                <label for="hp-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                    <span class="iconify game-icons--shieldcomb w-[20px] h-[20px]"></span>
+                    <span class="uppercase tracking-wider font-bold text-xs">{% translate 'Hull points'%}</span>
+                </label> 
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_hp current_player_state.ship.max_hp 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="hp-container-value">
                         <span id="hp-container-value-min">{{current_player_state.ship.current_hp}}</span>/<span id="hp-container-value-max">{{current_player_state.ship.max_hp}}</span>
                     </span>
                 </div>
-                <label for="movement-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Movement points'%}</label>
+                <label for="movement-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                    <span class="iconify game-icons--spaceship w-[20px] h-[20px]"></span>
+                    <span class="uppercase tracking-wider font-bold text-xs">{% translate 'Movement points' %}</span>
+                </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_movement current_player_state.ship.max_movement 100 %}%" id="movement-percent"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="movement-container-value">
                         <span id="movement-container-value-min">{{current_player_state.ship.current_movement}}</span>/<span id="movement-container-value-max">{{current_player_state.ship.max_movement}}</span>
                     </span>
                 </div>
-                <label for="actionPoint-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Action points'%}</label>
+                <label for="actionPoint-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                    <span class="iconify game-icons--targeting w-[20px] h-[20px]"></span>
+                    <span class="uppercase tracking-wider font-bold text-xs">{% translate 'Action points' %}</span>
+                </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" id="ap-percent" style="width:{% widthratio current_player_state.user.current_ap current_player_state.user.max_ap 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="actionPoint-container-value">
@@ -256,21 +265,30 @@
                 </div>
             </div>
             <div id="container-basic-stats" class="flex border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-2 w-full flex-col gap-1"> 
-                <label for="ballistic-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Ballistic defense'%}</label>
+                <label for="ballistic-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                    <span class="iconify game-icons--shield-reflect w-[20px] h-[20px]"></span>
+                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Ballistic defense" %}</span>
+                </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_ballistic_defense current_player_state.ship.max_ballistic_defense 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="ballistic-container-value">
                         <span id="ballistic-container-value-min">{{current_player_state.ship.current_ballistic_defense}}</span>/<span id="ballistic-container-value-max">{{current_player_state.ship.max_ballistic_defense}}</span>
                     </span>
                 </div>
-                <label for="thermal-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Thermal defense'%}</label>
+                <label for="thermal-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                    <span class="iconify game-icons--laser-warning w-[20px] h-[20px]"></span>
+                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Thermal defense" %}</span>
+                </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_thermal_defense current_player_state.ship.max_thermal_defense 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="thermal-container-value">
                         <span id="thermal-container-value-min">{{current_player_state.ship.current_thermal_defense}}</span>/<span id="thermal-container-value-max">{{current_player_state.ship.max_thermal_defense}}</span>
                     </span>
                 </div>
-                <label for="missile-container" class="font-bold font-shadow text-emerald-300 text-xs">{% translate 'Missile defense'%}</label>
+                <label for="missile-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                    <span class="iconify game-icons--dragon-shield w-[20px] h-[20px]"></span>
+                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Missile defense" %}</span>
+                </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_missile_defense current_player_state.ship.max_missile_defense 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="missile-container-value">
@@ -289,7 +307,7 @@
             <p class="text-emerald-400/60 italic text-center">{% translate "No active effects" %}</p>
         </fieldset>
         
-        <fieldset id="action-logs" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[200px] max-h-[200px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
+        <fieldset id="action-logs" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[150px] max-h-[150px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
             <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
                 {% translate "Action Logs" %}
             </legend>

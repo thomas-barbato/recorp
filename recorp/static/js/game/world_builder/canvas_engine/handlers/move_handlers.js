@@ -7,7 +7,7 @@
 import { updatePlayerCoords } from "../engine/update_coordinate_display.js";
 import { currentPlayer } from "../globals.js";
 
-export function updateHudMovement(playerId, remainingMovement, maxMove) {
+export function updateHudMovement(playerId, remainingMovement, maxMove, new_coordinates) {
     // On ne met à jour le HUD complet que pour le joueur courant
     if (String(playerId) !== String(window.current_player_id)) {
         return;
@@ -17,7 +17,7 @@ export function updateHudMovement(playerId, remainingMovement, maxMove) {
     const max = typeof maxMove === "number" && maxMove > 0 ? maxMove : remaining;
 
     // -------------------------
-    // PC : barre + texte
+    // PC
     // -------------------------
     try {
         const spanMin = document.getElementById("movement-container-value-min");
@@ -39,11 +39,14 @@ export function updateHudMovement(playerId, remainingMovement, maxMove) {
     }
 
     // -------------------------
-    // Mobile : valeur simple
+    // Mobile
     // -------------------------
     try {
         const spanCurrentMobile = document.getElementById("movement-container-value-current");
         const spanMaxMobile = document.getElementById("movement-container-value-max");
+
+        const spanCoordY = document.getElementById("player-coord-y-mobile");
+        const spanCoordX = document.getElementById("player-coord-x-mobile");
 
         if (spanCurrentMobile) {
             spanCurrentMobile.textContent = remaining.toString();
@@ -51,6 +54,14 @@ export function updateHudMovement(playerId, remainingMovement, maxMove) {
         if (spanMaxMobile && max) {
             spanMaxMobile.textContent = max.toString();
         }
+
+        if(spanCoordY){
+            spanCoordY.textContent = new_coordinates.y;
+        }
+        if(spanCoordX){
+            spanCoordX.textContent = new_coordinates.x;
+        }
+        
     } catch (e) {
         console.warn("[HUD] Erreur update HUD mobile movement:", e);
     }
@@ -222,7 +233,7 @@ export function handlePlayerMove(msg) {
     if (remaining != null) {
         syncMapInformationsMovement(playerId, remaining, maxMove);
         syncCanvasPlayerMovement(playerId, remaining, maxMove);
-        updateHudMovement(playerId, remaining, maxMove);
+        updateHudMovement(playerId, remaining, maxMove, {y : actor.y, x: actor.x});
         if (playerId === window.current_player_id && window.currentPlayer?.ship) {
             window.currentPlayer.ship.current_movement = remaining;
             if (typeof maxMove === "number") {

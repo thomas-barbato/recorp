@@ -193,6 +193,7 @@ function createFormatedLabel(module_object) {
         case "DEFENSE_BALLISTIC":
         case "DEFENSE_THERMAL":
         case "DEFENSE_MISSILE":
+            
             let parts = module_type.split('_');
             module_type = `${parts[1]} ${parts[0]}`;
             module_li = styledLine(`${module_object.effect.label}:`, `+${module_object.effect.defense}`);
@@ -1207,7 +1208,7 @@ function buildAsteroidResourcesSection(modalId, data) {
 
     const p = document.createElement("p");
     const name = res.translated_text_resource || res.name || "Ressource";
-    const max = res.max_quantity ?? res.max ?? "?"; // si tu l’ajoutes plus tard
+    const max = res.max_quantity ?? res.max ?? "?";
     p.textContent = `${name} : ${qty}${max !== "?" ? " / " + max : ""}`;
     p.classList.add("text-sm","text-white", "font-shadow");
     container.append(p);
@@ -1341,7 +1342,6 @@ function buildForegroundActionsSection(modalId, data) {
             "font-bold"
         );
 
-        // 🔥 AJOUT DANS LE BON ORDRE
         if (iconEl) btn.append(iconEl);
         btn.append(label);
 
@@ -1358,13 +1358,19 @@ function buildForegroundActionsSection(modalId, data) {
         if(action.key == "invade" && !playerHasModule("COLONIZATION", "colonization module")) {
             btn.classList.add("opacity-40", "pointer-events-none");
         }
-        
+
         let ap = action.ap_cost ?? null;
         let cr_cost = action.cost ?? null;
-        
+        // ============================
+        // DÉSACTIVER SI PAS ASSEZ D'AP / CR
+        // ============================
         applyActionCostState({ ap_cost: ap, cost: cr_cost }, btn);
-        
-        itemWrapper.append(btn);
+        // ============================
+        // DÉSACTIVER SCAN SI PAS DE MODULE
+        // ============================
+        if (action.key === "scan" && !playerHasModule("PROBE", "drilling probe")) {
+            btn.classList.add("opacity-40", "pointer-events-none");
+        }
 
         // ============================
         // DÉSACTIVER SCAN SI DÉJÀ SCANNÉ (AU CHARGEMENT)
@@ -1372,6 +1378,8 @@ function buildForegroundActionsSection(modalId, data) {
         if (action.key === "scan" && alreadyScanned) {
             btn.classList.add("opacity-40", "pointer-events-none");
         }
+        
+        itemWrapper.append(btn);
 
         // ============================
         // CLICK HANDLER
@@ -1747,16 +1755,18 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         
     );
     applyScanState(data, scanButton);
-    applyActionCostState({ ap_cost: 1, cost: 0 }, scanButton);
+    // BLOQUER SI AP INSUFFISANTS
+    applyActionCostState({ ap_cost: 1, cost: 0 , key : "scan" }, scanButton);
     
     grid.innerHTML = "";
     // Limiter l'utilisation du scan.
     if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe")) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
-    }
+    }   
 
-    // BLOQUER SI AP INSUFFISANTS
-    applyActionCostState({ ap_cost: 1, cost: 0 , key : "scan"}, scanButton);
+    // ============================
+    // DéSACTIVER SCAN SI PAS DE MODULE
+    // ============================
 
     grid.append(attackButton);
     grid.append(scanButton);
@@ -2311,12 +2321,26 @@ function buildShipStatsSection(data) {
     ship_detailed_statistics_container_div.classList.add("w-full", "p-2", "hidden"); // ⬅ caché par défaut
 
     // Helper pour une barre de progression
-    function createProgressBar(current, max, labelText) {
+    function createProgressBar(current, max, labelText, type) {
         let wrapper = document.createElement("div");
 
         let label = document.createElement("label");
-        label.textContent = labelText;
-        label.classList.add("font-shadow", "text-white");
+        let label_icon = document.createElement('span');
+        let label_text = document.createElement('span');
+        
+        let label_icon_className = "";
+
+        if(type == "hp"){ label_icon_className ="iconify game-icons--shieldcomb w-[20px] h-[20px]";}
+        if(type == "ap"){ label_icon_className = "iconify game-icons--targeting w-[20px] h-[20px]"; }
+        if(type == "movement"){ label_icon_className = "iconify game-icons--spaceship w-[20px] h-[20px]"; }
+        if(type == "DEFENSE_BALLISTIC"){ label_icon_className = "iconify game-icons--shield-reflect w-[20px] h-[20px]"; }
+        if(type == "DEFENSE_THERMAL"){ label_icon_className = "iconify game-icons--laser-warning w-[20px] h-[20px]"; }
+        if(type == "DEFENSE_MISSILE"){ label_icon_className = "iconify game-icons--dragon-shield w-[20px] h-[20px]"; }
+
+        label_icon.className = label_icon_className;
+        label_text.textContent = labelText;
+        label.append(label_icon, label_text)
+        label.classList.add("font-shadow", "text-white", "font-bold", "gap-2", "flex", "items-center");
 
         let container = document.createElement("div");
         container.classList.add("w-full", "bg-red-600", "relative", "h-[15px]", "overflow-hidden");
@@ -2346,12 +2370,12 @@ function buildShipStatsSection(data) {
     }
 
     // --- HP ---
-    console.log(data)
     ship_detailed_statistics_container_div.append(
         createProgressBar(
             data.ship.current_hp,
             data.ship.max_hp,
-            "Hull points:"
+            "Hull points:",
+            "hp"
         )
     );
     // --- AP ---
@@ -2360,7 +2384,8 @@ function buildShipStatsSection(data) {
             createProgressBar(
                 data.player.current_ap,
                 data.player.max_ap,
-                "Action points:"
+                "Action points:",
+                "ap"
             )
         );
     }
@@ -2370,7 +2395,8 @@ function buildShipStatsSection(data) {
         createProgressBar(
             data.ship.current_movement,
             data.ship.max_movement,
-            "Movement left:"
+            "Movement left:",
+            "movement"
         )
     );
 
@@ -2411,7 +2437,7 @@ function buildShipStatsSection(data) {
             }
 
             ship_detailed_statistics_container_div.append(
-                createProgressBar(currentVal, maxVal, defConf.label)
+                createProgressBar(currentVal, maxVal, defConf.label, defConf.type)
             );
         });
     }
@@ -2649,7 +2675,13 @@ function refreshModalAfterScan(targetKey) {
 
 function playerHasModule(type, requiredName) {
     const modules = window.currentPlayer?.ship?.modules || [];
-
+    console.log(type, requiredName)
+    console.log(modules)
+    console.log(modules.some(m =>
+        m.type === type &&
+        typeof m.name === "string" &&
+        m.name.toLowerCase() === requiredName.toLowerCase()
+    ))
     return modules.some(m =>
         m.type === type &&
         typeof m.name === "string" &&
