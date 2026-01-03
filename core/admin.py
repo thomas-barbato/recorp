@@ -138,13 +138,7 @@ class CustomAdminSite(admin.AdminSite):
                         "view_only": True,
                     },
                     {
-                        "name": "Generate missing frames",
-                        "object_name": "generate missing frames",
-                        "admin_url": "/admin/generate_missing_frames/",
-                        "view_only": True,
-                    },
-                    {
-                        "name": "Generate missing frames",
+                        "name": "Generate missing frames [NOT USED ANYMORE]",
                         "object_name": "generate missing frames",
                         "admin_url": "/admin/generate_missing_frames/",
                         "view_only": True,
@@ -581,7 +575,7 @@ class GetSectorDataView(LoginRequiredMixin, TemplateView):
                 )],
                 "station" : [e for e in sector.station_sector.values(
                     "source_id__size", "data", "coordinates", "id", "data__description", 
-                    "source_id", "source_id__data__type" 
+                    "source_id", "source_id__data__type", "source_id__data__animation" 
                 )],
                 "npc": [e for e in sector.npc_sector.values(
                     "id", "npc_template_id__ship_id__ship_category_id__size",
@@ -676,7 +670,6 @@ class SetSectorView(LoginRequiredMixin, TemplateView):
                     
                     source_id = map_elements[index][element]['data__animation'].split('_')[1]
                     StationResource.objects.create(
-                        quantity=0,
                         data={
                             "name": map_elements[index][element]["displayed_name"],
                             "description": map_elements[index][element]["description"]
@@ -777,7 +770,6 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                         
                         source_id = map_elements[index][element]['data__animation'].split('_')[1]
                         StationResource.objects.create(
-                            quantity=0,
                             data={
                                 "name": map_elements[index][element]["displayed_name"],
                                 "description": map_elements[index][element]["description"]
