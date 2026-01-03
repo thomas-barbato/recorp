@@ -399,13 +399,16 @@ function buildModulesSection(modalId, data) {
 
     const section = document.createElement("div");
     section.classList.add(
+        "flex",
+        "flex-col",
+        "gap-1",
         "w-full",
         "max-h-[35vh]",
         "pr-1",
         "custom-scroll",
-        "flex",
-        "flex-col",
-        "gap-1"
+        "sf-scroll",
+        "sf-scroll-emerald",
+    
     );
 
     const targetModules = data?.ship?.modules || [];
@@ -490,7 +493,7 @@ function createStandardModalShell(modalId, options = {}) {
         "hidden","overflow-hidden","fixed","top-0","right-0","left-0",
         "z-50","justify-center","items-center","w-full","h-full",
         "md:inset-0","backdrop-brightness-50","bg-black/40",
-        "backdrop-blur-md","animate-modal-fade", "border-2", "border-emerald-400/20"
+        "backdrop-blur-md","animate-modal-fade"
     );
 
     //
@@ -498,7 +501,7 @@ function createStandardModalShell(modalId, options = {}) {
     //
     const container = document.createElement("div");
     container.classList.add(
-        "fixed","md:p-3","top-50","right-0","left-0","z-50",
+        "fixed","md:p-3","right-0","left-0","z-50",
         "w-full","md:inset-0","h-screen"
     );
 
@@ -565,8 +568,21 @@ function createStandardModalShell(modalId, options = {}) {
         "gap-3",
         "overflow-y-auto",
         "md:max-h-[70vh]",
-        "max-h-[80vh]"
+        "max-h-[80vh]",
+        "no-scrollbar",
     );
+
+    // Par défaut
+    bodyContainer.classList.add("sf-scroll");
+
+    // Affinage visuel
+    if (modalId.includes("npc")) {
+        bodyContainer.classList.add("sf-scroll-red");
+    } else if (modalId.includes("pc")) {
+        bodyContainer.classList.add("sf-scroll-cyan");
+    } else {
+        bodyContainer.classList.add("sf-scroll-emerald");
+    }
 
     //
     // ==== BODY API ====
@@ -1219,12 +1235,14 @@ function buildAsteroidResourcesSection(modalId, data) {
 function buildForegroundActionsSection(modalId, data) {
     const wrapper = document.createElement("div");
     wrapper.classList.add(
-        "action-wrapper-sf",
         "flex",
         "flex-col",
-        "justify-center",
         "w-full",
-        "gap-2"
+        "gap-2",
+        "action-wrapper-sf",
+        "justify-center",
+        "sf-scroll",
+        "sf-scroll-emerald"
     );
 
     const type = data.type;
@@ -1286,6 +1304,7 @@ function buildForegroundActionsSection(modalId, data) {
     const grid = document.createElement("div");
     grid.classList.add(
         "action-grid-sf",
+        "safe-grid",
         "mx-auto"
     );
 
@@ -1642,6 +1661,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     const grid = document.createElement("div");
     grid.classList.add(
         "action-grid-sf", 
+        "safe-grid",
         "mx-auto"
     );
 

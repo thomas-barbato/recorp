@@ -1793,7 +1793,7 @@ canvas {
     justify-items: center;
 
     /* ✅ la bordure s’adapte au contenu */
-    width: fit-content;
+    width: 100%; 
     max-width: 100%;
 }
 
