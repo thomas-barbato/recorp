@@ -391,16 +391,19 @@ class PlayerAction:
         Returns:
             Optional[Tuple[int, Dict[str, int]]]: (ID secteur destination, coordonnées) ou None
         """
+        
         player_sector_id = self.get_player_sector_id()
         if not player_sector_id:
             return None
             
-        warpzone_exists = SectorWarpZone.objects.filter(
+        warpzone = SectorWarpZone.objects.filter(
             warp_home_id=warpzone_home_id,
             warp_destination_id=warpzone_destination_id,
-        ).exists()
+        )
         
-        if warpzone_exists is False:
+        sector_id = warpzone.values_list('warp_destination_id__sector_id', flat=True)[0]
+        
+        if warpzone.exists() is False:
             return
         
         player_spaceship = self.get_player_ship_size()
@@ -415,7 +418,7 @@ class PlayerAction:
         padding_h = spaceship_size_y + self.MIN_PADDING
         
         destination_cell = self._calculate_destination_coord(
-            warpzone_destination_id, 
+            sector_id, 
             spaceship_size_x, 
             spaceship_size_y, 
             padding_h, 
@@ -423,7 +426,7 @@ class PlayerAction:
         )
         
         if destination_cell:
-            return warpzone_destination_id, destination_cell
+            return sector_id, destination_cell
     
     def _calculate_destination_coord(self, destination_sector_id: int, spaceship_size_x: int, 
         spaceship_size_y: int, padding_h: int, padding_w: int) -> Optional[Dict[str, int]]:

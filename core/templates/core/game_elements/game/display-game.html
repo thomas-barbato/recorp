@@ -88,13 +88,13 @@
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </li>
-        <form data-tooltip-target="logout-tooltip" data-tooltip-placement="right" method="post" action="{% url 'core:logout_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center logout">
+        <form data-tooltip-target="backHome-tooltip" data-tooltip-placement="right" method="post" action="{% url 'core:index_view' %}" class="flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center logout">
             {% csrf_token %}
             <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.25]">
                 <i class="fa-solid fa-home fa-xl"></i>
             </div>
-            <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                {% translate "Logout" %}
+            <div id="backHome-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                {% translate "Home" %}
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
             <button type="submit" id="logout-btn" class="hidden"></button>
@@ -199,31 +199,7 @@
 </div>
 <div id="player-infos" class="flex z-20 lg:inline hidden order-3 w-2/12 h-auto my-2 mx-2 no-scrollbar bg-emerald-900/20 backdrop-blur-md border border-emerald-400/20 rounded-2xl shadow-lg shadow-emerald-900/40 overflow-y-auto transition-all duration-500 ease-out animate-fade-in">
     <div id="player-info-item-container" class="w-full flex flex-col items-center justify-center gap-4 p-4 text-sm thin-semi-transparent-scrollbar">
-        <!-- CHARACTER CARD -->
-        <fieldset id="player-fieldset" class="w-full flex border border-emerald-400/40 rounded-xl bg-emerald-950/40 p-3 shadow-inner shadow-emerald-900/30 select-none overflow-hidden">
-            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 
-                        bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
-                {% translate "Character" %}
-            </legend>
-            <div class="flex flex-row items-center justify-center gap-3 w-full overflow-hidden">
-                <!-- Image du joueur -->
-                <div class="flex-shrink-0 flex justify-center items-center w-[72px] h-[72px] rounded-lg border border-emerald-400/30 bg-gray-900/50 overflow-hidden shadow-md shadow-emerald-900/20">
-                    <img class="object-cover w-[72px] h-[72px] rounded-md" alt="player image" srcset="/static/img/users/{{current_player_state.user.player}}/0.gif">
-                </div>
-                <!-- Texte -->
-                <div class="flex flex-col justify-center text-left w-[calc(100%-88px)] overflow-hidden">
-                    <div class="text-emerald-300 font-bold text-sm leading-tight truncate">
-                        {{ current_player_state.user.name }}
-                    </div>
-                    <div class="text-emerald-200 text-xs leading-tight truncate">
-                        {{ current_player_state.user.archetype_name }}
-                    </div>
-                    <div class="text-emerald-400/90 italic text-xs leading-tight truncate">
-                        {{ current_player_state.faction.name }}
-                    </div>
-                </div>
-            </div>
-        </fieldset>
+        
 
         <!-- STATISTICS -->
         <fieldset id="statistics-fieldset" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-3 min-h-[100px] select-none">
@@ -296,6 +272,14 @@
                     </span>
                 </div>
             </div>
+        </fieldset>
+
+        <!-- ACTIONS CARD -->
+        <fieldset id="actions-fieldset" class="w-full flex border border-emerald-400/40 rounded-xl bg-emerald-950/40 p-3 shadow-inner shadow-emerald-900/30 select-none overflow-hidden">
+            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 
+                        bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                {% translate "ACTIONS" %}
+            </legend>
         </fieldset>
 
         <!-- STATUS -->

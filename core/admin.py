@@ -407,7 +407,7 @@ class CreateSectorView(LoginRequiredMixin, TemplateView):
             "id", "name"
         )
         context["warpzone_data"] = GetDataFromDB.get_table("warpzone_only").objects.values(
-            "id", "data__name"
+            "id", "name", "data__animation"
         )
         context["faction_data"] = GetDataFromDB.get_table("faction")[0].objects.all()
         context["size"] = GetDataFromDB.get_size()
@@ -607,7 +607,7 @@ class GetSectorElementTypeDataView(LoginRequiredMixin, TemplateView):
             "planet": [e for e in Planet.objects.filter(data__type="planet").values('id', 'name', 'data__animation', 'size')],
             "satellite": [e for e in Planet.objects.filter(data__type="satellite").values('id', 'name', 'data__animation', 'size')],
             "asteroid": [e for e in Asteroid.objects.values('id', 'name', 'data__animation', 'size')],
-            "warpzone": [e for e in Warp.objects.values('id', 'data__animation', 'size')],
+            "warpzone": [e for e in Warp.objects.values('id', 'name', 'data__animation', 'size')],
             "station": [e for e in Station.objects.values('id', 'name', 'data__animation', 'size')],
             "npc" : [e for e in NpcTemplate.objects.values(
                 "id", "ship_id", "ship_id__name", "ship_id__image",

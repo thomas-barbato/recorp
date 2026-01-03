@@ -62,7 +62,7 @@ class GetDataFromDB:
         "player": [User, Player, PlayerShipResource, PlayerShip],
         "npc": [Npc, NpcTemplate, NpcTemplateResource, NpcTemplateSkill],
         "warpzone": [Warp, WarpZone, SectorWarpZone],
-        "warpzone_only": WarpZone,
+        "warpzone_only": Warp,
         "resource": Resource,
         "ship": Ship,
         "security": Security,

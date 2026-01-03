@@ -52,7 +52,6 @@ if (!ok) {
 
         // center camera on player if exists
         const currentPlayerObj = map.findPlayerById(window.current_player_id);
-        console.log(currentPlayerObj)
         if (currentPlayerObj) {
             const centerX = currentPlayerObj.x + (currentPlayerObj.sizeX - 1) / 2;
             const centerY = currentPlayerObj.y + (currentPlayerObj.sizeY - 1) / 2;
