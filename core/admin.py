@@ -23,6 +23,7 @@ from core.forms import UploadImageForm, SetXpForm
 from core.views import admin_index
 from core.backend.generate_missing_frames import generate_missing_frames
 from django.contrib.auth.decorators import user_passes_test
+from core.forms import AdminImageResizeForm
 from core.models import (
     User,
     CashShop,
@@ -82,6 +83,7 @@ from core.models import (
 )
 
 from core.backend.admin.foreground_tools import generate_foreground_spritesheets_view
+from core.backend.admin.image_resize_tool import AdminImageResizeView
 
 class CustomAdminSite(admin.AdminSite):
     site_header = "recorp-admin"
@@ -111,6 +113,12 @@ class CustomAdminSite(admin.AdminSite):
                         "name": "upload new image element",
                         "object_name": "upload new image element",
                         "admin_url": "/admin/upload_image_element",
+                        "view_only": True,
+                    },
+                    {
+                        "name": "Resize & rotate image",
+                        "object_name": "resize_image",
+                        "admin_url": "/admin/tools/image-resize/",
                         "view_only": True,
                     },
                     {
@@ -170,6 +178,11 @@ class CustomAdminSite(admin.AdminSite):
                 r"^upload_image_element/$",
                 self.admin_view(UploadImageView.as_view()),
                 name="upload-image-element",
+            ),
+            re_path(
+                r"^tools/image-resize/$",
+                self.admin_view(AdminImageResizeView.as_view()),
+                name="admin-image-resize",
             ),
             re_path(
                 r"^create_foreground_item/$",

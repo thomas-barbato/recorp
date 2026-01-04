@@ -223,3 +223,30 @@ class SetXpForm(forms.ModelForm):
             self.instance.level = i
             self.instance.required_experience = int(self.instance.required_experience)
             super().save()
+            
+
+class AdminImageResizeForm(forms.Form):
+    image = forms.ImageField(label="Image PNG")
+    width = forms.IntegerField(label="Largeur (px)", min_value=1)
+    height = forms.IntegerField(label="Hauteur (px)", min_value=1)
+
+    rotate = forms.BooleanField(
+        label="Pivoter l’image ?",
+        required=False
+    )
+
+    rotation_angle = forms.IntegerField(
+        label="Angle de rotation (°)",
+        required=False,
+        initial=0
+    )
+
+    def clean(self):
+        cleaned = super().clean()
+        rotate = cleaned.get("rotate")
+        angle = cleaned.get("rotation_angle")
+
+        if rotate and angle is None:
+            raise forms.ValidationError("Veuillez préciser un angle de rotation")
+
+        return cleaned

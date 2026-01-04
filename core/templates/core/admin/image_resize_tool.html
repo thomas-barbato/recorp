@@ -1,0 +1,18 @@
+{# templates/admin/image_resize_tool.html #}
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Outil de redimensionnement d’image</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="module aligned">
+        {{ form.as_p }}
+    </fieldset>
+
+    <div class="submit-row">
+        <input type="submit" value="Traiter l’image" class="default">
+    </div>
+</form>
+{% endblock %}
