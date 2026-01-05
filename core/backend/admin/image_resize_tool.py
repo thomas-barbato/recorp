@@ -42,16 +42,20 @@ class AdminImageResizeView(TemplateView):
         output_dir = Path(settings.STATIC_ROOT) / "img" / "resized"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        # ouverture image (upload initial OU image temporaire)
+        # -------------------------
+        # Détermination image source
+        # -------------------------
         tmp_path = request.session.get("image_resize_tmp")
 
         if tmp_path and Path(tmp_path).exists():
+            # preview existante = source prioritaire
             img = Image.open(tmp_path).convert("RGBA").copy()
             image_name = Path(tmp_path).name
+            preview_exists = True
         else:
             image_file = form.cleaned_data["image"]
-            
-            # SÉCURITÉ : empêcher l'upload depuis /tmp
+
+            # sécurité : empêcher re-upload depuis /tmp
             if "tmp" in image_file.name.replace("\\", "/"):
                 form.add_error(
                     "image",
@@ -62,35 +66,43 @@ class AdminImageResizeView(TemplateView):
 
             img = Image.open(image_file).convert("RGBA")
             image_name = image_file.name
-            
-        # rotation AVANT resize (meilleure qualité)
-        if rotate and angle != 0:
-            img = img.rotate(-angle, expand=True, resample=Image.BICUBIC)
-            
-        # suppression des zones transparentes
-        img = crop_to_content(img)
+            preview_exists = False
 
-        # resize sans dégradation
-        if use_contain:
-            img = resize_contain(img, width, height)
-        else:
-            img = img.resize((width, height), Image.LANCZOS)
-            
-        context = {
-            "form": form,
-            "preview_after": image_to_base64(img),
-            "can_save": True
-        }
+        # -------------------------
+        # Pipeline de transformation
+        # -------------------------
+        def process_image(source_img):
+            if rotate and angle != 0:
+                source_img = source_img.rotate(
+                    -angle,
+                    expand=True,
+                    resample=Image.BICUBIC
+                )
 
-        # si bouton "Aperçu" cliqué
+            source_img = crop_to_content(source_img)
+
+            if use_contain:
+                source_img = resize_contain(source_img, width, height)
+            else:
+                source_img = source_img.resize(
+                    (width, height),
+                    Image.LANCZOS
+                )
+
+            return source_img
+
+        # =========================
+        # MODE PREVIEW
+        # =========================
         if "preview" in request.POST:
+            img = process_image(img)
+
             tmp_dir = Path(settings.MEDIA_ROOT) / "tmp"
             tmp_dir.mkdir(parents=True, exist_ok=True)
 
             tmp_name = f"{uuid4().hex}.png"
             tmp_path = tmp_dir / tmp_name
 
-            # 🔥 ON SAUVEGARDE L’IMAGE FINALE
             img.save(tmp_path, format="PNG")
 
             request.session["image_resize_preview"] = {
@@ -100,24 +112,25 @@ class AdminImageResizeView(TemplateView):
             request.session["image_resize_tmp"] = str(tmp_path)
 
             return redirect(request.path)
-        
-        # dossier de sortie
-        output_dir = Path(settings.STATIC_ROOT) / "img" / "resized"
-        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # =========================
+        # MODE SAVE
+        # =========================
+        if preview_exists:
+            # preview déjà calculée → on copie
+            final_img = img
+        else:
+            # pas de preview → on calcule maintenant
+            final_img = process_image(img)
 
         output_path = output_dir / image_name
-
-        # casser toute référence fichier (Windows)
-        final_img = img.copy()
+        final_img = final_img.copy()  # sécurité Windows
         final_img.save(output_path, format="PNG")
-        
-        # nettoyage img
-        img = None
+
         # nettoyage tmp
         tmp_path = request.session.pop("image_resize_tmp", None)
         if tmp_path and Path(tmp_path).exists():
             Path(tmp_path).unlink()
-        
 
         messages.success(
             request,
