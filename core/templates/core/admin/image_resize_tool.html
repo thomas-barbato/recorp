@@ -1,9 +1,12 @@
-{# templates/admin/image_resize_tool.html #}
 {% extends "admin/base_site.html" %}
-{% load static %}
 
 {% block content %}
-<h1>Outil de redimensionnement d’image</h1>
+<h1>🖼️ Outil de redimensionnement</h1>
+{% if preview_after %}
+<p style="color:#6ee7b7;">
+    ✔ Image chargée
+</p>
+{% endif %}
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -12,7 +15,28 @@
     </fieldset>
 
     <div class="submit-row">
-        <input type="submit" value="Traiter l’image" class="default">
+        <button type="submit" name="preview">👁 Aperçu</button>
+        <button type="submit" name="save" class="default">💾 Sauvegarder</button>
     </div>
 </form>
+
+{% if preview_after %}
+<hr>
+<h2>Prévisualisation</h2>
+
+<div style="display:flex; gap:40px;">
+    <div>
+        <h3>Preview</h3>
+        <img src="data:image/png;base64,{{ preview_after }}" style=" 
+            background:#111;
+            max-width: 300px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            image-rendering: pixelated;
+            border: 1px dashed #444;"
+        >
+    </div>
+</div>
+{% endif %}
 {% endblock %}

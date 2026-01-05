@@ -224,11 +224,36 @@ class SetXpForm(forms.ModelForm):
             self.instance.required_experience = int(self.instance.required_experience)
             super().save()
             
+PRESET_CHOICES = [
+    ("", "— Taille personnalisée —"),
+    ("32x32", "w-32 × h-32 (vaisseau leger - asteroid)"),
+    ("64x32", "w-64 × h-32 (vaisseau medium)"),
+    ("96x64", "w-96 × h-64 (vaisseau lourd)"),
+    ("96x96", "w-96 × h-96 (vaisseau super lourd)"),
+    ("64x64", "w-64 × h-64 (étoile)"),
+    ("64x96", "w-64 × h-96 (warpzone)"),
+    ("96x96", "w-96 × h-96 (satellite)"),
+    ("96x128", "w-96 × h-128 (station)"),
+    ("128x128", "w-128 × h-128 (planete)"),
+]
 
 class AdminImageResizeForm(forms.Form):
     image = forms.ImageField(label="Image PNG")
-    width = forms.IntegerField(label="Largeur (px)", min_value=1)
-    height = forms.IntegerField(label="Hauteur (px)", min_value=1)
+
+    preset = forms.ChoiceField(
+        label="Preset de résolution",
+        choices=PRESET_CHOICES,
+        required=False
+    )
+    
+    width = forms.IntegerField(label="Largeur X (px)", min_value=32, required=False)
+    height = forms.IntegerField(label="Hauteur Y (px)", min_value=32, required=False)
+
+    use_contain = forms.BooleanField(
+        label="Conserver le ratio (mode contain)",
+        required=False,
+        initial=True
+    )
 
     rotate = forms.BooleanField(
         label="Pivoter l’image ?",
@@ -242,11 +267,34 @@ class AdminImageResizeForm(forms.Form):
     )
 
     def clean(self):
+        
         cleaned = super().clean()
-        rotate = cleaned.get("rotate")
-        angle = cleaned.get("rotation_angle")
 
-        if rotate and angle is None:
-            raise forms.ValidationError("Veuillez préciser un angle de rotation")
+        preset = cleaned.get("preset")
+        width = cleaned.get("width")
+        height = cleaned.get("height")
+        rotate = cleaned.get("rotate")
+        rotation_angle = cleaned.get("rotation_angle")
+
+        # 🎯 gestion du preset
+        if preset:
+            w, h = preset.split("x")
+            cleaned["width"] = int(w)
+            cleaned["height"] = int(h)
+            cleaned["preset"] = preset
+            cleaned["rotate"] = rotate
+            cleaned["rotation_angle"] = rotation_angle
+        else:
+            if not width or not height:
+                raise forms.ValidationError(
+                    "Veuillez renseigner une largeur et une hauteur ou choisir un preset."
+                )
+
+        # 🔁 validation rotation
+        if rotate and rotation_angle is None:
+            raise forms.ValidationError(
+                "Veuillez préciser un angle de rotation"
+            )
 
         return cleaned
+    

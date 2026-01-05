@@ -1458,6 +1458,12 @@ class MessageAdmin(admin.ModelAdmin):
     model = Message
     
 @admin.register(PrivateMessage, site=admin_site)
+    
+
+@admin.register(PrivateMessageRecipients, site=admin_site)
+class PrivateMessageRecipientsAdmin(admin.ModelAdmin):
+    model = PrivateMessageRecipients
+    
 class PrivateMessageAdmin(admin.ModelAdmin):
     list_display = ('subject', 'sender', 'priority', 'timestamp', 'recipient_count')
     list_filter = ('priority', 'timestamp')
@@ -1539,11 +1545,6 @@ class PrivateMessageAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
         extra_context['show_announcement_button'] = True
         return super().changelist_view(request, extra_context)
-    
-
-@admin.register(PrivateMessageRecipients, site=admin_site)
-class PrivateMessageRecipientsAdmin(admin.ModelAdmin):
-    model = PrivateMessageRecipients
     
 # ⚙️ Injection de la vue dans l’admin
 admin.site.get_urls = lambda: [
