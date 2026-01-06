@@ -33,7 +33,7 @@ from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from core.backend.tiles import UploadThisImage
+from core.backend.admin.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction

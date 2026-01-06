@@ -5,25 +5,81 @@
 <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
 <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
 
-
 <div class="flex w-full item-center" style="">
-   <form class="flex flex-col items-center w-full" method="POST" action="" enctype="multipart/form-data">
+   {% if messages %}
+      <ul class="messages">
+         {% for message in messages %}
+               <li class="{{ message.tags }}">
+                  {{ message }}
+               </li>
+         {% endfor %}
+      </ul>
+   {% endif %}
+   <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <img id="img-preview" src="">
-      {% for item in form %}
-         {% if not "image_url" in item.label %}
-            <div class="mt-2 w-full font-bold">
-               {{ item.label }}
-            </div>
-         {% endif %}
-         <div class="mt-2 w-full self-center">
-            {{ item }}
-         </div>
-      {% endfor %}
-      <input class="mt-2 self-center" type="submit" value="Save it to db">
+
+      <div>
+         {{ form.category.label_tag }}
+         {{ form.category }}
+      </div>
+
+      <div id="fg-type-wrapper">
+         {{ form.foreground_type.label_tag }}
+         {{ form.foreground_type }}
+      </div>
+
+      <div id="dir-name-wrapper">
+         {{ form.directory_name.label_tag }}
+         {{ form.directory_name }}
+      </div>
+
+      <div>
+         {{ form.file.label_tag }}
+         {{ form.file }}
+      </div>
+
+      <button type="submit">Upload</button>
    </form>
 </div>
 
+<style>
+   .messages li.success {
+      color: #22c55e;
+   }
+   .messages li.error {
+      color: #ef4444;
+   }
+</style>
+
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+         const category = document.getElementById("id_category");
+         const fgType = document.getElementById("id_foreground_type");
+
+         const fgWrapper = document.getElementById("fg-type-wrapper");
+         const dirWrapper = document.getElementById("dir-name-wrapper");
+
+         function updateVisibility() {
+            if (category.value === "foreground") {
+                  fgWrapper.style.display = "block";
+
+                  if (fgType.value === "ships") {
+                     dirWrapper.style.display = "none";
+                  } else {
+                     dirWrapper.style.display = "block";
+                  }
+            } else {
+                  fgWrapper.style.display = "none";
+                  dirWrapper.style.display = "none";
+            }
+         }
+
+         category.addEventListener("change", updateVisibility);
+         fgType.addEventListener("change", updateVisibility);
+
+         updateVisibility();
+   });
+</script>
 <script src="{% static 'world_builder/admin/add_map_element.js' %}"></script>
 {% endblock %}
 

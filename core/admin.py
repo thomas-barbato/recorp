@@ -16,12 +16,11 @@ from django.contrib.messages import get_messages
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
-from core.backend.tiles import UploadThisImage
+from core.backend.admin.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
 from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
 from core.forms import UploadImageForm, SetXpForm
 from core.views import admin_index
-from core.backend.generate_missing_frames import generate_missing_frames
 from django.contrib.auth.decorators import user_passes_test
 from core.forms import AdminImageResizeForm
 from core.models import (
@@ -122,6 +121,12 @@ class CustomAdminSite(admin.AdminSite):
                         "view_only": True,
                     },
                     {
+                        "name": "Generate sprite sheet",
+                        "object_name": "generate sprite sheet",
+                        "admin_url": "/admin/generate_sprite_sheet/",
+                        "view_only": True  
+                    },
+                    {
                         "name": "create foreground item",
                         "object_name": "create foreground item",
                         "admin_url": "/admin/create_foreground_item/",
@@ -145,18 +150,6 @@ class CustomAdminSite(admin.AdminSite):
                         "admin_url": "/admin/sector_gestion/warpzone/warpzone_link_add",
                         "view_only": True,
                     },
-                    {
-                        "name": "Generate missing frames [NOT USED ANYMORE]",
-                        "object_name": "generate missing frames",
-                        "admin_url": "/admin/generate_missing_frames/",
-                        "view_only": True,
-                    },
-                    {
-                        "name": "Generate sprite sheet",
-                        "object_name": "generate sprite sheet",
-                        "admin_url": "/admin/generate_sprite_sheet/",
-                        "view_only": True  
-                    },
                 ],
             }
         ]
@@ -176,7 +169,7 @@ class CustomAdminSite(admin.AdminSite):
             ),
             re_path(
                 r"^upload_image_element/$",
-                self.admin_view(UploadImageView.as_view()),
+                self.admin_view(UploadImageView),
                 name="upload-image-element",
             ),
             re_path(
@@ -255,56 +248,50 @@ class CustomAdminSite(admin.AdminSite):
                 name="warpzone_link_delete",
             ),
             re_path(
-                r"^generate_missing_frames/$",
-                self.admin_view(self.generate_missing_frames_view),
-                name="generate-missing-frames",
-            ),
-            re_path(
                 r"^generate_sprite_sheet/$",
                 self.admin_view(generate_foreground_spritesheets_view),
                 name="generate-sprite-sheet",
             )
         ] + urls
         return urls
-    
-    def generate_missing_frames_view(self, request):
-        if not request.user.is_superuser:
-            messages.error(request, "Permission denied: superuser only.")
-            return redirect("/admin/")
-
-        logs, errors = generate_missing_frames()
-
-        for l in logs:
-            messages.success(request, l)
-
-        for e in errors:
-            messages.error(request, e)
-
-        if not errors:
-            messages.success(request, "✔ Toutes les frames manquantes ont été générées.")
-
-        return redirect("/admin/")
 
 
-class UploadImageView(LoginRequiredMixin, TemplateView):
-    template_name = "add_map_element.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context["form"] = UploadImageForm
-        return context
-
-    def post(self, request):
+def UploadImageView(request):
+    if request.method == "POST":
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
-            category = form.cleaned_data.get("category")
-            type = form.cleaned_data.get("type")
-            img = request.FILES["img_input"]
-            file_directory_name = form.cleaned_data.get("file_directory_name")
-            UploadThisImage(img, category, type, file_directory_name).save()
-            messages.success(self.request, "Success")
-        return HttpResponseRedirect(request.path)
+            try:
+                category = form.cleaned_data["category"]
+                fg_type = form.cleaned_data.get("foreground_type")
+                directory_name = form.cleaned_data.get("directory_name")
+                uploaded_file = form.cleaned_data["file"]
 
+                ships_mode = (category == "foreground" and fg_type == "ships")
+
+                if category == "foreground":
+                    final_dir = "ships" if ships_mode else directory_name
+                else:
+                    final_dir = ""
+
+                uploader = UploadThisImage(
+                    uploaded_file=uploaded_file,
+                    category=category,
+                    element_id="admin",
+                    directory_name=final_dir,
+                )
+
+                saved_path = uploader.save(ships_mode=ships_mode)
+
+                messages.success(request, f"Upload réussi : {saved_path.name}")
+
+            except Exception as e:
+                messages.error(request, f"Erreur lors de l'upload : {e}")
+        else:
+            messages.error(request, "Formulaire invalide.")
+    else:
+        form = UploadImageForm()
+
+    return render(request, "add_map_element.html", {"form": form})
 
 class CreateForegroundItemView(LoginRequiredMixin, TemplateView):
     template_name = "create_foreground_item.html"

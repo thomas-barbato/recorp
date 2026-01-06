@@ -3,7 +3,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
 from django.urls import path
 
-from core.backend.sprite_sheet_generator import generate_missing_spritesheets
+from core.backend.admin.sprite_sheet_generator import generate_missing_spritesheets
 
 
 @staff_member_required

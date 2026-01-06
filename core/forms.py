@@ -16,29 +16,58 @@ from core.backend.validators import (
 from core.models import User, Player, Archetype, SkillExperience
 
 
+CATEGORY_CHOICES = [
+    ("background", "Background"),
+    ("foreground", "Foreground"),
+]
+
+FOREGROUND_TYPES = [
+    ("planet", "Planet"),
+    ("asteroid", "Asteroid"),
+    ("warpzone", "Warpzone"),
+    ("station", "Station"),
+    ("ships", "Ships"),
+]
+
+
 class UploadImageForm(forms.Form):
-    CATEGORIES = (
-        ("BACKGROUND", "background"),
-        ("FOREGROUND", "foreground"),
+    category = forms.ChoiceField(
+        choices=CATEGORY_CHOICES,
+        label="Category"
     )
 
-    TYPES = (
-        ("PLANET", "planet"),
-        ("ASTEROID", "asteroid"),
-        ("STATION", "station"),
-        ("SATELLITE", "satellite"),
-        ("STAR", "star"),
-        ("BLACKHOLE", "blackhole"),
-        ("WARPZONE", "warpzone"),
+    foreground_type = forms.ChoiceField(
+        choices=FOREGROUND_TYPES,
+        required=False,
+        label="Type"
     )
 
-    img_input = forms.ImageField(label="image_url", required=True)
-    category = forms.ChoiceField(choices=CATEGORIES, required=True)
-    type = forms.ChoiceField(choices=TYPES, required=False)
-    file_directory_name = forms.CharField(
-        label="name directory were this map will be saved", required=True
+    directory_name = forms.CharField(
+        required=False,
+        label="Nom du dossier"
     )
 
+    file = forms.ImageField(label="Image")
+    
+    def clean(self):
+        cleaned = super().clean()
+
+        category = cleaned.get("category")
+        fg_type = cleaned.get("foreground_type")
+        directory_name = cleaned.get("directory_name")
+
+        if category == "foreground":
+            if not fg_type:
+                raise forms.ValidationError(
+                    "Le type est obligatoire pour un élément foreground."
+                )
+
+            if fg_type != "ships" and not directory_name:
+                raise forms.ValidationError(
+                    "Le nom du dossier est obligatoire pour ce type."
+                )
+
+        return cleaned
 
 class LoginForm(AuthenticationForm):
     """docstring"""

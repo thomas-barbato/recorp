@@ -30,8 +30,8 @@ function fadeOut(el) {
             opacity -= 0.1;
             el.style.opacity = opacity;
         } else {
-            clearInterval(interval); // Stop the interval when opacity reaches 0
-            el.classList.add('hidden'); // Hide the element
+            clearInterval(interval);
+            el.classList.add('hidden');
         }
     }, 50);
 }
