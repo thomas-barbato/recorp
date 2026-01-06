@@ -445,9 +445,9 @@ function buildPcNpcImage(data, is_npc) {
         const sizeX = data.ship.size.x;
         const sizeY = data.ship.size.y;
 
-        img.src = `/static/img/foreground/ships/${data.ship.image}.png`;
-        img.style.width = (32 * sizeX) + "px";
-        img.style.height = (32 * sizeY) + "px";
+        img.src = `/static/img/foreground/ships/illustration/${data.ship.image}.png`;
+        img.style.width = "96px";
+        img.style.height = "96px";
         img.style.maxWidth = "none";
         img.style.objectFit = "contain";
         // Si ton format NPC diffère, dis-le moi, je l’adapte.

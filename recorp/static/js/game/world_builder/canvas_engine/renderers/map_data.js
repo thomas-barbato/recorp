@@ -83,7 +83,7 @@ export default class MapData {
                 sizeY,
                 image: shipImage,
                 spritePath: shipImage ? `foreground/SHIPS/${shipImage}.png` : null,
-                reversedSprite: shipImage ? `foreground/SHIPS/${shipImage}-reversed.png` : null
+                reversedSprite: shipImage ? `foreground/SHIPS/${shipImage}.png` : null
             };
 
             // stockage par ID joueur
@@ -117,7 +117,7 @@ export default class MapData {
                 sizeY,
                 image: shipImage,
                 spritePath: shipImage ? `foreground/SHIPS/${shipImage}.png` : null,
-                reversedSprite: shipImage ? `foreground/SHIPS/${shipImage}-reversed.png` : null
+                reversedSprite: shipImage ? `foreground/SHIPS/${shipImage}.png` : null
             };
 
             this.worldObjects.push(obj);
@@ -358,7 +358,7 @@ export default class MapData {
 
         const image = ship.image || null;
         const spritePath = image ? `foreground/SHIPS/${image}.png` : null;
-        const reversedSprite = image ? `foreground/SHIPS/${image}-reversed.png` : null;
+        const reversedSprite = image ? `foreground/SHIPS/${image}.png` : null;
 
         const obj = {
             id: `pc_${playerId}`,
@@ -508,7 +508,7 @@ export default class MapData {
         // Image & sprites
         const img = npcData.image || npcData.ship?.image || null;
         const spritePath = img ? `foreground/SHIPS/${img}.png` : null;
-        const reversedSprite = img ? `foreground/SHIPS/${img}-reversed.png` : null;
+        const reversedSprite = img ? `foreground/SHIPS/${img}.png` : null;
 
         // Construction du worldObject NPC
         const obj = {
