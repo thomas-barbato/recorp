@@ -29,6 +29,8 @@ class UploadThisImage:
     def _get_and_create_dir(self):
         if self.category == "users":
             self.save_path = self.parent_path
+            if os.path.exists(self.save_path) is False:
+                self.save_path.mkdir(parents=True, exist_ok=True)
         else:
             self.save_path = self.parent_path / self.directory_name
         self.save_path.mkdir(parents=True, exist_ok=True)

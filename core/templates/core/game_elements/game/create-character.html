@@ -9,7 +9,7 @@
     {% include "index-top-panel.html" %}
     
     <main class="flex-1 flex items-center justify-center w-full pt-24 pb-20 overflow-y-auto pt-24 pb-20">
-        <form class="w-full max-w-7xl mx-auto">
+        <form class="w-full max-w-7xl mx-auto" method="post" enctype="multipart/form-data">
             <!-- ÉTAPE 1 : Sélection de faction -->
             <div id="character-faction" class="flex flex-col gap-6">
                 <!-- En-tête -->
@@ -111,7 +111,7 @@
                                 <div class="flex flex-col md:flex-row gap-4 items-start">
                                     <!-- Vaisseau -->
                                     <div class="flex justify-center items-center p-4 bg-zinc-800/50 rounded-lg border border-emerald-500/20">
-                                        <img class="{% if archetype.ship_id__ship_category_id__size.x == 1 and archetype.ship_id__ship_category_id__size.y == 1 %}w-16 h-16{% else %}w-24 h-24{% endif %}" src="{% static 'img/foreground/ships/'|add:archetype.ship_id__image|add:'.png' %}" alt="Vaisseau">
+                                        <img class="" src="{% static 'img/foreground/ships/illustration/'|add:archetype.ship_id__image|add:'.png' %}" alt="Vaisseau">
                                     </div>
 
                                     <!-- Points de compétences -->

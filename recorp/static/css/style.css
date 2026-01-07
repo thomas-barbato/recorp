@@ -1754,6 +1754,24 @@ canvas {
     letter-spacing: 0.03em;
 }
 
+/**************************************************/
+/**************** ATTACK ACTION BUTTONS ***********/
+/**************************************************/
+.attack-action-button-sf:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.9);
+    animation: pulse 1s infinite;
+}
+
+.attack-action-button-sf-label {
+    margin-top: 0.25rem;
+    font-size: 5px;
+    font-weight: bold;
+    color: rgb(110, 231, 183); /* emerald-300 */
+    text-align: center;
+    letter-spacing: 0.03em;
+}
+
 /* Error message */
 .action-error-msg {
     margin-top: 0.5rem;

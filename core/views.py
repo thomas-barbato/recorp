@@ -33,7 +33,8 @@ from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from core.backend.admin.tiles import UploadThisImage
+from django.core.files.base import ContentFile
+from core.backend.user_avatar import UserAvatarWriter
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
@@ -271,13 +272,14 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             
             form = CreateCharacterForm(data, request.FILES)
             if form.is_valid():
-                contains_image = True if request.FILES.get('file') else False
+                uploaded_file = request.FILES.get("file")
+                contains_image = uploaded_file is not None
                 new_player = Player(
                     name=data["name"],
                     faction_id=data["faction"],
                     archetype_id=data["archetype"],
                     image=contains_image,
-                    sector_id=Sector.objects.filter(name__contains="tuto").values_list('id', flat=True),
+                    sector_id=Sector.objects.filter(name__contains="tuto").values_list('id', flat=True).first(),
                     coordinates = {"x" : 15, "y": 15 },
                     description=data["description"],
                     user_id=self.request.user.id
@@ -395,22 +397,24 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                         skill_id = skill_id
                     )
                 
-                if contains_image is True:
-                    
-                    upload_file = UploadThisImage(request.FILES.get('file'), "users", new_player.id, new_player.id)
-                    upload_file.save()
-                    
+                uploaded_file = request.FILES.get("file")
+
+                if uploaded_file:
+                    UserAvatarWriter(uploaded_file, new_player.id).save()
                 else:
-                    # PILE can't read .svg, so we transform this img in png.
-                    default_svg = os.path.join(settings.STATIC_ROOT, 'img', 'ux', 'default-user.svg')
+                    default_svg = os.path.join(
+                        settings.BASE_DIR,
+                        "static",
+                        "img",
+                        "ux",
+                        "default-user.svg"
+                    )
+
                     png_bytes = cairosvg.svg2png(url=default_svg)
+                    tmp_file = ContentFile(png_bytes)
+                    tmp_file.name = "default.png"
 
-                    tmp_file = BytesIO(png_bytes)
-                    tmp_file.name = 'default.png'
-
-                    upload_file = UploadThisImage(tmp_file, "users", new_player.id, new_player.id)
-                    upload_file.save()
-                    
+                    UserAvatarWriter(tmp_file, new_player.id).save()
                 
             else:
                 print(form.errors)
