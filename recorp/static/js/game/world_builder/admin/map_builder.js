@@ -404,7 +404,6 @@ class MapElementsManager {
 
     handleLoadSavedElementOnMap(value){
         for(let type in value){
-            console.log(type)
             if(type != "sector"){
                 for(let i in value[type]){
                     CONFIG.LAST_UUID = crypto.randomUUID();

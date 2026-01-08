@@ -141,6 +141,10 @@
     // NPC MODAL DATA
     // ===================================================
     function createNpcModalData(npcData) {
+        console.log("==========")
+        console.log("NPCDATA")
+        console.log(npcData)
+        console.log("==========")
 
         return {
             _ui: { scanned: false },

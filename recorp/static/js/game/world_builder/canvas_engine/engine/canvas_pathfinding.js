@@ -182,7 +182,6 @@ export default class CanvasPathfinding {
         // -- Calcul du coût du chemin --
         const pathCost = path.length;
         let pmRemaining = 0;
-        console.log(window.currentPlayer?.ship?.current_movement)
         if (window.currentPlayer?.ship?.current_movement != null) {
             pmRemaining = window.currentPlayer.ship.current_movement;
         }

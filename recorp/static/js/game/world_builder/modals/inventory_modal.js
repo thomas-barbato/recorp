@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
-    console.log(currentPlayer)
+    
     currentPlayer.ship.modules.forEach(module => {
 
         let module_type = module.type;

@@ -114,13 +114,14 @@
                 __ui: responseData.__ui
             };
 
-            // ⚠️ signature attendue par ton create_modal(modalId, parsed, extractedDataForModal)
             create_modal(modalId, parsed, extractedDataForModal);
 
-            modal.remove(); // enlève le calque fantôme
+            modal.remove();
+
             const built = document.getElementById(modalId);
             if (built) built.classList.remove("hidden");
             loader.remove();
+            
         } catch (e) {
             console.error("define_modal_type failed:", e);
             loader.innerText = "Erreur de décodage";

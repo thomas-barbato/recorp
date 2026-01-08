@@ -355,7 +355,6 @@
 
     img_input.addEventListener('change', e => {
         const f = e.target.files[0];
-        console.log(f)
         if (f) {
             reader.readAsDataURL(f);
             img_user.classList.add('border-emerald-500');

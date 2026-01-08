@@ -69,9 +69,6 @@ export default class PathfindingController {
         if (this.lockedTarget &&
             this.lockedTarget.x === tileX &&
             this.lockedTarget.y === tileY) {
-            // ici plus tard : envoi WS / déplacement réel
-            console.log("[Pathfinding] Confirmation de déplacement vers :", tileX, tileY);
-            // on nettoie le chemin (ou on pourra le laisser jusqu'à la fin de l'anim)
             this.clear();
             return;
         }
@@ -143,8 +140,6 @@ export default class PathfindingController {
         // 2) choisir la tile de départ la plus proche de la destination
         let bestStart = null;
         let bestDist = Infinity;
-        console.log("[PF] ring:", ring);
-        console.log("[PF] bestStart:", bestStart);
 
         for (const c of ring) {
             if (!this._isWalkable(c.x, c.y)) continue;

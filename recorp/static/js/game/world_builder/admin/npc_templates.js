@@ -55,7 +55,8 @@ npc_submit_button.addEventListener('click', function() {
     let template_select = document.querySelector('#template-select');
     let template_selected_name = template_select.options[template_select.selectedIndex].value;
     let template_name = document.querySelector('#template-name-input').value;
-    let template_displayed_name = document.querySelector('#template-displayed-name-input').value;
+    const displayedNameInput =document.querySelector('#template-displayed-name-input');
+    let template_displayed_name = displayedNameInput ? displayedNameInput.value.trim() : "";
     let selected_ship = ship_select.options[ship_select.selectedIndex];
     let ship_id = selected_ship.value;
     selected_spaceship_name = selected_ship.textContent;
@@ -204,7 +205,7 @@ npc_submit_button.addEventListener('click', function() {
             module_element_li_span_name.textContent = `${module_info_array[module].name.split(' -')[0]}`;
             module_element_li_span_effects.classList.add('text-center', 'text-shadow');
             module_element_li_span_effects.textContent = `${module_info_array[module].name.split(' -')[1]}`;
-
+            console.log(module_info_array[module])
             if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT" || module_info_array[module].type == "HOLD") {
                 if (module_info_array[module].type == "HULL") {
                     template_hp_module_bonus = module_info_array[module].effects.hp;
@@ -406,7 +407,7 @@ function save_or_update_npc_template() {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRFToken': csrf_token
         });
-
+        
         let url = 'npc_template_add';
         if (edit_template == true) {
             url = 'npc_template_update';

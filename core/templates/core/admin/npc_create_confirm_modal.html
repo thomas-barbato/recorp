@@ -1,64 +1,128 @@
-<div id="npc-create-confirmation-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-full">
+<div id="npc-create-confirmation-modal"
+     data-modal-backdrop="static"
+     tabindex="-1"
+     aria-hidden="true"
+     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full">
+
     <div class="relative p-4 w-1/2 max-w-2xl h-full gap-1">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-2">
+
+            <!-- HEADER -->
             <div class="flex text-center p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <b class="text-md w-full text-center" id="npc-template-modal-title"></b>
             </div>
-            <div id="npc-template-modal-body-container gap-1" class="overflow-y-scroll h-max-[80vh]">
+
+            <!-- BODY -->
+            <div id="npc-template-modal-body-container"
+                 class="overflow-y-scroll max-h-[80vh] gap-1">
+
                 <div class="flex flex-col">
-                    <img src="" class="object-center mx-auto w-100 mt-1 hidden" id="npc-template-modal-spaceship">
-                    <p id="npc-template-modal-spaceship-warning" class="text-red-600 font-bold text-center">You must select a spaceship in order to create this template...
+                    <img src=""
+                         class="object-center mx-auto w-100 mt-1 hidden"
+                         id="npc-template-modal-spaceship">
+
+                    <p id="npc-template-modal-spaceship-warning"
+                       class="text-red-600 font-bold text-center">
+                        You must select a spaceship in order to create this template...
+                    </p>
                 </div>
+
+                <!-- NAME -->
                 <div class="flex flex-col">
-                    <label for="npc-template-modal-template-name" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center text-md text-shadow">Name:
-                    </label >
+                    <label class="text-center text-md text-shadow">Name:</label>
                     <p id="npc-template-modal-name" class="p-2 text-center">Nothing Selected</p>
-                    <span id="npc-template-modal-name-warning" class="text-red-600 text-md text-shadow font-bold text-center">In order to create a template you must define a name.</span>
+                    <span id="npc-template-modal-name-warning"
+                          class="text-red-600 font-bold text-center">
+                        In order to create a template you must define a name.
+                    </span>
                 </div>
+
+                <!-- DISPLAYED NAME -->
                 <div class="flex flex-col">
-                    <label for="npc-template-modal-template-displayed-name" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center text-md text-shadow">Dispalyed Name:
-                    </label >
+                    <label class="text-center text-md text-shadow">Displayed Name:</label>
                     <p id="npc-template-modal-displayed-name" class="p-2 text-center">Nothing Selected</p>
-                    <span id="npc-template-modal-displayed-name-warning" class="text-red-600 text-md text-shadow font-bold text-center">In order to create a template you must define a displayed name.</span>
+                    <span id="npc-template-modal-displayed-name-warning"
+                          class="text-red-600 font-bold text-center">
+                        In order to create a template you must define a displayed name.
+                    </span>
                 </div>
+
+                <!-- SKILLS -->
                 <div class="flex flex-col">
-                    <label for="npc-template-modal-skills" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center text-md text-shadow">Skills:
-                    </label >
-                    <ul id="npc-template-modal-skills-ul" class="w-[100%] grid grid-cols-2 row-span-2 gap-1 mx-auto bg-gray-800 text-center text-md p-2 border border-white text-md text-shadow">
+                    <label class="text-center text-md text-shadow">Skills:</label>
+                    <ul id="npc-template-modal-skills-ul"
+                        class="grid grid-cols-2 gap-1 mx-auto bg-gray-800 p-2 border border-white">
                     </ul>
                 </div>
+
+                <!-- MODULES -->
                 <div class="flex flex-col">
-                    <label for="npc-template-modal-modules" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center text-md text-shadow">Modules: <span id="npc-template-modal-module-moduleCount" class="text-lime-400 text-md text-shadow">(0 selected)</span>
+                    <label class="text-center text-md text-shadow">
+                        Modules:
+                        <span id="npc-template-modal-module-moduleCount"
+                              class="text-lime-400">(0 selected)</span>
                     </label>
-                    <span id="npc-template-modal-module-moduleCount-warning" class="text-red-600 text-md text-shadow font-bold text-center">You must limit the number of modules to <b id="npc-template-modal-module-moduleCount-warning-value" class="text-md text-shadow">0</b> (spaceship capacity limit)</span>
-                    <span id="npc-template-modal-module-spaceship-warning" class="text-red-600 text-md text-shadow font-bold text-center">You must select a spaceship in order to select modules</span>
-                    <ul id="npc-template-modal-module-ul" class="w-[100%] mx-auto bg-gray-800 text-center p-2 border border-white text-md text-shadow font-bold">
-                        <li class="text-red-600 font-bold w-[100%] list-none font-bold text-center" id="npc-template-modal-module-warning-li">Nothing selected...</li>
+
+                    <span id="npc-template-modal-module-moduleCount-warning"
+                          class="text-red-600 font-bold text-center">
+                        You must limit the number of modules to
+                        <b id="npc-template-modal-module-moduleCount-warning-value">0</b>
+                    </span>
+
+                    <span id="npc-template-modal-module-spaceship-warning"
+                          class="text-red-600 font-bold text-center">
+                        You must select a spaceship in order to select modules
+                    </span>
+
+                    <ul id="npc-template-modal-module-ul"
+                        class="mx-auto bg-gray-800 p-2 border border-white">
+                        <li id="npc-template-modal-module-warning-li"
+                            class="text-red-600 font-bold text-center list-none">
+                            Nothing selected...
+                        </li>
                     </ul>
                 </div>
+
+                <!-- RESOURCES -->
                 <div class="flex flex-col gap-1">
-                    <label for="npc-template-modal-resource" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">Resources:
-                    </label >
-                    <ul id="npc-template-modal-resource-ul" class="w-[100%] mx-auto bg-gray-800 text-center text-md p-2 border border-white">
-                        <li class="text-red-600 font-bold w-[100%] list-none" id="npc-template-modal-resource-warning-li">Nothing selected...</li>
+                    <label class="text-center">Resources:</label>
+                    <ul id="npc-template-modal-resource-ul"
+                        class="mx-auto bg-gray-800 p-2 border border-white">
+                        <li id="npc-template-modal-resource-warning-li"
+                            class="text-red-600 font-bold list-none">
+                            Nothing selected...
+                        </li>
                     </ul>
                 </div>
+
+                <!-- STATISTICS -->
                 <div class="flex flex-col gap-1">
-                    <label for="npc-template-modal-statistics" class="leading-relaxed text-gray-500 dark:text-gray-400 text-center">Statistics:
-                    </label >
-                    <ul id="npc-template-modal-resource-ul" class="w-[100%] mx-auto bg-gray-800 text-center text-md p-2 border border-white">
-                        <li class="font-bold w-[100%] list-none" id="npc-template-modal-resource-statistics-hp-li">Hull points: <span id="npc-template-modal-resource-statistics-hp-li-value" class="text-green-400"></span></li>
-                        <li class="font-bold w-[100%] list-none" id="npc-template-modal-resource-statistics-hp-li-reminder">(YourbaseShipeHP + ModuleHPBoostValue ) + (50 * (RepairSkill / 100))</li>
-                        <li class="font-bold w-[100%] list-none" id="npc-template-modal-resource-statistics-movement-li">Movement points:  <span id="npc-template-modal-resource-statistics-movement-li-value" class="text-green-400"></span></li>
-                        <li class="font-bold w-[100%] list-none" id="npc-template-modal-resource-statistics-hp-li-reminder">(YourBaseShipMove + ModuleMoveBoostValue) + (25 * (ShipDrivingSkill / 100))</li>
-                        <li class="font-bold w-[100%] list-none" id="npc-template-modal-resource-statistics-holdCapacity-li">Hold capacity:  <span id="npc-template-modal-resource-statistics-holdCapacity-li-value" class="">0</span></li>
+                    <label class="text-center">Statistics:</label>
+                    <ul id="npc-template-modal-statistics-ul"
+                        class="mx-auto bg-gray-800 p-2 border border-white">
+                        <li class="font-bold list-none">
+                            Hull points:
+                            <span id="npc-template-modal-statistics-hp-value" class="text-green-400"></span>
+                        </li>
+                        <li class="font-bold list-none">
+                            Movement points:
+                            <span id="npc-template-modal-statistics-movement-value" class="text-green-400"></span>
+                        </li>
+                        <li class="font-bold list-none">
+                            Hold capacity:
+                            <span id="npc-template-modal-statistics-hold-value" class=""></span>
+                        </li>
                     </ul>
                 </div>
+
             </div>
+
+            <!-- FOOTER -->
             <div class="flex w-100 items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button data-modal-hide="npc-create-confirmation-modal" id="npc-create-btn" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
                 <button data-modal-hide="npc-create-confirmation-modal" id="npc-cancel-btn" type="button" class="py-2.5 px-5 ms-3 font-medium text-gray-900 text-md focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
             </div>
+
         </div>
     </div>
 </div>

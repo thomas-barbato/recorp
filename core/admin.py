@@ -83,6 +83,7 @@ from core.models import (
 
 from core.backend.admin.foreground_tools import generate_foreground_spritesheets_view
 from core.backend.admin.image_resize_tool import AdminImageResizeView
+from core.backend.admin.npc_stats import compute_npc_final_stats
 
 class CustomAdminSite(admin.AdminSite):
     site_header = "recorp-admin"
@@ -882,10 +883,17 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             skill_dict[skill["name"]] = {"id": int(skill["id"]), "level": level}
 
         spaceship = Ship.objects.filter(id=data_from_post["data"]["ship"]).values(
-            "id", "default_hp", "default_movement", "ship_category_id__name"
+            "id",
+            "default_hp",
+            "default_movement",
+            "ship_category_id__name",
+            "default_ballistic_defense",
+            "default_thermal_defense",
+            "default_missile_defense",
         )[0]
-        module_bonus_hp = module_dict["HULL"]["hp"] if "HULL" in module_dict else 0
-        module_bonus_move = (
+        
+        module_hp = module_dict["HULL"]["hp"] if "HULL" in module_dict else 0
+        module_move = (
             module_dict["MOVEMENT"]["movement"] if "MOVEMENT" in module_dict else 0
         )
         module_ballistic_defense = (
@@ -906,18 +914,33 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         module_hold_capacity = (
             module_dict["HOLD"]["capacity"] if "HOLD" in module_dict else 0
         )
+        repair_level = skill_dict.get("REPAIRE", {}).get("level", 0)
+        ship_category_skill = skill_dict.get(
+            spaceship["ship_category_id__name"].upper(), {}
+        ).get("level", 0)
+
         hp_total = int(
-            (spaceship["default_hp"] + int(module_bonus_hp))
-            + (50 * (int(skill_dict["repaire"]["level"]) / 100))
-        )
-        move_total = int(
-            (spaceship["default_movement"] + int(module_bonus_move))
-            + (
-                25
-                * (int(skill_dict[spaceship["ship_category_id__name"]]["level"]) / 100)
-            )
+            (spaceship["default_hp"] + int(module_hp))
+            + (50 * (repair_level / 100))
         )
 
+        move_total = int(
+            (spaceship["default_movement"] + int(module_move))
+            + (25 * (ship_category_skill / 100))
+        )
+        
+        ballistic_defense_total = int(
+            (spaceship["default_ballistic_defense"]) + int(module_ballistic_defense)
+        )
+        
+        thermal_defense_total = int(
+            (spaceship["default_thermal_defense"]) + int(module_thermal_defense)
+        )
+        
+        missile_defense_total = int(
+            (spaceship["default_missile_defense"]) + int(module_missile_defense)
+        )
+        
         new_template = NpcTemplate.objects.create(
             name=data_from_post["data"]["name"],
             displayed_name=data_from_post["data"]["displayed_name"],
@@ -927,9 +950,9 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             module_id_list=module_id_list,
             max_hp=hp_total,
             max_movement=move_total,
-            max_missile_defense=module_missile_defense,
-            max_thermal_defense=module_thermal_defense,
-            max_ballistic_defense=module_ballistic_defense,
+            max_missile_defense=missile_defense_total,
+            max_thermal_defense=thermal_defense_total,
+            max_ballistic_defense=ballistic_defense_total,
             hold_capacity=module_hold_capacity,
             behavior=data_from_post["data"]["behavior"]
         )

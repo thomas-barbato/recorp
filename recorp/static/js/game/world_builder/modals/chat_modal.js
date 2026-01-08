@@ -140,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const div = document.createElement("div");
         div.className = `chat-msg rounded-md p-1 ${bgClass} ${sideClass}`;
-        console.log(`${faction_color}`)
         div.innerHTML = `
             <div class="flex items-center flex-wrap gap-1">
                 ${faction ? `<small class="${faction_color} font-shadow">(${faction})</small>` : ''}

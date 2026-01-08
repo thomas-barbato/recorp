@@ -32,10 +32,7 @@ export function handleIncomingPrivateMessage(payload) {
 // Message pour AUTEUR
 export function handlePrivateMessageSent(payload) {
     let data = typeof payload === "string" ? JSON.parse(payload) : payload;
-
-    // Confirmation: { id: sender_id }
-    console.log("[MP] Message envoyé !", data);
-
+    
     // Optionnel : toast visuel
     if (window.showToast) {
         window.showToast(gettext("Message sent ✓"), true);

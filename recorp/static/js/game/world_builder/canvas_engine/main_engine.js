@@ -181,7 +181,6 @@ if (!ok) {
                 // 4) Ouverture / fermeture du modal
                 // -------------------------------
                 if (typeof open_close_modal === 'function') {
-                    console.log(modalId)
                     open_close_modal(modalId);
                 } else {
                     console.warn('open_close_modal is not defined');

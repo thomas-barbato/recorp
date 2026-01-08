@@ -329,7 +329,30 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             // --- click handler ---
             const btn = createActionButton(iconEl, extra.label, () => 
-                {
+            {
+                if (extra.requires_group && !currentPlayer?.group_id) {
+                    showActionError(modalId, extra.warning_no_group);
+                    return;
+                }
+
+                const ws = window.canvasEngine?.ws;
+                if (!ws?.send) return;
+
+                const info = define_modal_type(modalId);
+                // ACTION : SEND REPORT
+                if (extra.key === "send_report") {
+                    openSendReportModal({
+                        targetKey: `${info.type}_${info.id}`,
+                        targetType: info.type,
+                        targetId: info.id,
+                        modalData: data,
+                        modalId: modalId,
+                    });
+                    return;
+                }
+
+                // ACTION : SHARE SCAN (WS)
+                if (extra.key === "share_to_group") {
                     if (extra.requires_group && !currentPlayer?.group_id) {
                         showActionError(modalId, extra.warning_no_group);
                         return;
@@ -338,16 +361,18 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     const ws = window.canvasEngine?.ws;
                     if (!ws?.send) return;
 
-                    const info = define_modal_type(modalId);
                     ws.send({
-                        type: extra.key === "share_to_group" ? "action_share_scan" : "action_send_report",
-                        payload: { target_type: info.type, target_id: info.id }
+                        type: "action_share_scan",
+                        payload: {
+                            target_type: info.type,
+                            target_id: info.id
+                        }
                     });
-                },
-                { ap_cost:extra.ap_cost }
-            );
-            // BLOQUER SI AP INSUFFISANTS
-            applyActionCostState({ ap_cost: extra.ap_cost, cost: 0 }, btn);
+                    return;
+                }
+        },{ ap_cost: extra.ap_cost });
+        // BLOQUER SI AP INSUFFISANTS
+        applyActionCostState({ ap_cost: extra.ap_cost, cost: 0 }, btn);
 
         if(extra.requires_group && !currentPlayer?.group_id){
             btn.classList.add("opacity-40", "pointer-events-none");
@@ -619,6 +644,18 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     window.scannedMeta[targetKey] = { expires_at: null };
 
                     refreshModalAfterScan(targetKey);
+                }
+
+                if (action.key === "send_report") {
+                    console.log(info)
+                    console.log(data)
+                    openSendReportModal({
+                        targetKey,
+                        targetType,
+                        targetId,
+                        modalData: data
+                    });
+                    return;
                 }
             };
 
