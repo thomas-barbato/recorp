@@ -144,7 +144,6 @@ if (!ok) {
                 // 2) Flip si joueur clique sur lui-même
                 // -------------------------------
                 if (obj.type === 'player' && String(obj.data.user.player) === String(window.current_player_id)) {
-                    console.log("%c[CANVAS] Flip ship envoyé via WebSocket color:#00ff9d;font-weight:bold;");
                     ws.send({
                         type: "canvas_flip_ship",
                         message: JSON.stringify({

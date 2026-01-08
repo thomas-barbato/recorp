@@ -13,16 +13,16 @@ export default class WebSocketManager {
         this.socket = new WebSocket(this.url);
 
         this.socket.onopen = () => {
-            console.log("[WS] Connected to", this.url);
+            console.log("You are connected...");
         };
 
         this.socket.onclose = (e) => {
-            console.warn("[WS] Connection closed, retrying...", e.reason);
+            console.warn("Connection closed, retrying...", e.reason);
             setTimeout(() => this.connect(), 1000);
         };
 
         this.socket.onerror = (err) => {
-            console.error("[WS] Error:", err);
+            console.error("Connection Error:", err);
         };
 
         this.socket.onmessage = (event) => this._onMessage(event.data);

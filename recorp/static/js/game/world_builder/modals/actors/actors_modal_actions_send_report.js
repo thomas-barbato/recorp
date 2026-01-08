@@ -145,22 +145,22 @@
      * Génération du texte du rapport (lecture seule)
      */
     function renderIntelReport(data) {
-        console.log(data)
+        
         const lines = [];
         const user = data.user || {};
         const ship = data.ship || {};
-        const faction = data.faction || {};
+        const faction = data.player.faction_name || {};
         const user_type = user.is_npc == true ? "NPC" : "PLAYER";
         // === IDENTITÉ ===
-        lines.push(`NAME: ${user.name ?? "UNKNOWN"}`);
+        lines.push(`NAME: ${data.player.name}`);
         lines.push(`TYPE: ${user_type}`);
 
-        if (faction.name) {
-            lines.push(`FACTION: ${faction.name}`);
+        if (faction) {
+            lines.push(`FACTION: ${faction}`);
         }
 
-        if (user.coordinates) {
-            lines.push(`POSITION: X${user.coordinates.x} Y${user.coordinates.y}`);
+        if (data.player.coordinates) {
+            lines.push(`POSITION: [Y: ${data.player.coordinates.y} ; X: ${data.player.coordinates.x}]`);
         }
 
         // === SHIP ===
@@ -185,9 +185,6 @@
 
         // === DEFENSES ===
         if (ship.current_ballistic_defense !== undefined) {
-            lines.push("");
-            lines.push("--- DEFENSES ---");
-            console.log(ship)
             lines.push(`Ballistic: ${ship.current_ballistic_defense} / ${ship.max_ballistic_defense}`);
             lines.push(`Thermal: ${ship.current_thermal_defense} / ${ship.max_thermal_defense}`);
             lines.push(`Missile: ${ship.current_missile_defense} / ${ship.max_missile_defense}`);

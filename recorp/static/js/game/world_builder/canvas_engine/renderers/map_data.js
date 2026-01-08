@@ -397,8 +397,6 @@ export default class MapData {
                 // mode défensif : ne rien casser si le prefetch foire
             }
         }
-
-        console.log("[MAP] addPlayerActor →", obj.id, "(", x, y, ")");
     }
 
     // ======================================================================

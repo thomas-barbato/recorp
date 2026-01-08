@@ -31,9 +31,6 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modalData = createNpcModalData(extractedDataForModal.data)
                 modal = createUnknownNpcModal(modalId, modalData);
             }else{
-                console.log("......................")
-                console.log(extractedDataForModal)
-                console.log("...................")
                 modalData = createNpcModalData(extractedDataForModal.data)
                 // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
                 if (extractedDataForModal?.__fromScan === true) {

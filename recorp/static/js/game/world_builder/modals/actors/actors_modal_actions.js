@@ -647,8 +647,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 if (action.key === "send_report") {
-                    console.log(info)
-                    console.log(data)
                     openSendReportModal({
                         targetKey,
                         targetType,

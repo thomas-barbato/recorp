@@ -412,7 +412,7 @@ class MapElementsManager {
                     const imagePath = type === CONFIG.ELEMENT_TYPES.NPC
                         ? `${CONFIG.FOREGROUND_PATH}ships/${this_element.npc_template_id__ship_id__image}.png`
                         : `${CONFIG.FOREGROUND_PATH}${type}/${this_element.source_id__data__animation}/0.gif`;
-                    console.log(imagePath)
+
                     if(type != "npc"){
                         data = {
                             image_url: imagePath,

@@ -126,14 +126,11 @@ export function handlerRemovePlayer(data){
     const map = engine.map;
     if (!map) return;
 
-    console.log("[WS] Suppression acteur →", actorId);
-
     // 1️⃣ Supprimer l’acteur de la map
     map.removeActorByPlayerId(shipId);
 
     // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
     if (window.scannedTargets?.has(actorId)) {
-        console.log("[SCAN] Invalidation locale (acteur quitté secteur) →", actorId);
 
         window.scannedTargets.delete(actorId);
         window.sharedTargets?.delete(actorId);
@@ -166,8 +163,6 @@ export function handlerUserJoin(data){
     if (!engine) return;
 
     const map = engine.map;
-
-    console.log("[WS] Nouveaux acteurs ajoutés", actors);
 
     actors.forEach(actor => {
         map.addPlayerActor(actor);

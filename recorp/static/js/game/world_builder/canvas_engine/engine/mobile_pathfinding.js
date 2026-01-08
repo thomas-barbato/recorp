@@ -280,6 +280,4 @@ export function initMobilePathfinding(engine) {
 
     // init
     refreshButtons();
-
-    console.log("[MOBILE PF] Mobile pathfinding initialisé.");
 }

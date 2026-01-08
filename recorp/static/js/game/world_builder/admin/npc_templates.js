@@ -205,7 +205,7 @@ npc_submit_button.addEventListener('click', function() {
             module_element_li_span_name.textContent = `${module_info_array[module].name.split(' -')[0]}`;
             module_element_li_span_effects.classList.add('text-center', 'text-shadow');
             module_element_li_span_effects.textContent = `${module_info_array[module].name.split(' -')[1]}`;
-            console.log(module_info_array[module])
+            
             if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT" || module_info_array[module].type == "HOLD") {
                 if (module_info_array[module].type == "HULL") {
                     template_hp_module_bonus = module_info_array[module].effects.hp;
