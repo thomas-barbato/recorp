@@ -145,22 +145,29 @@
      * Génération du texte du rapport (lecture seule)
      */
     function renderIntelReport(data) {
-        
+        console.log(data)
         const lines = [];
         const user = data.user || {};
         const ship = data.ship || {};
         const faction = data.player.faction_name || {};
-        const user_type = user.is_npc == true ? "NPC" : "PLAYER";
+        console.log(`user.is_npc = ${user.is_npc}`)
+        const user_type = typeof user.is_npc == "undefined" ? "NPC" : "PLAYER";
         // === IDENTITÉ ===
         lines.push(`NAME: ${data.player.name}`);
+        
+        lines.push("");
+        lines.push("--- TARGET ---");
         lines.push(`TYPE: ${user_type}`);
-
         if (faction) {
             lines.push(`FACTION: ${faction}`);
         }
+        let sector_name = document.getElementById('sector-name')?.textContent;
+        if (data.player.coordinates && sector_name) {
+            lines.push(`POSITION: ${sector_name} [Y: ${data.player.coordinates.y} ; X: ${data.player.coordinates.x}]`);
+        }
 
-        if (data.player.coordinates) {
-            lines.push(`POSITION: [Y: ${data.player.coordinates.y} ; X: ${data.player.coordinates.x}]`);
+        if (data.player.current_ap && data.player.max_ap){
+            lines.push(`AP: ${data.player.current_ap} / ${data.player.max_ap}`)
         }
 
         // === SHIP ===
@@ -169,6 +176,10 @@
 
         if (ship.name) {
             lines.push(`SHIP NAME: ${ship.name}`);
+        }
+
+        if (ship.category) {
+            lines.push(`SHIP CATEGORY: ${ship.category}`);
         }
 
         if (ship.current_hp !== undefined) {
