@@ -31,7 +31,6 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
         .filter(id=player_id)
         .first()
     )
-
     if not player:
         return None
 

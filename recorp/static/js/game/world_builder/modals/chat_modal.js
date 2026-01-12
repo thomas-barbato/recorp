@@ -61,13 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         [chatTabSector, chatTabFaction, chatTabGroup].forEach((b) => {
             if (!b) return;
-            b.classList.remove("border-b-2", "border-emerald-400", "text-emerald-400");
-            b.classList.add("border-b", "border-transparent", "text-emerald-300", "hover:text-emerald-200");
+            b.classList.remove("border-b-2", "border-emerald-400", "hover:text-emerald-200", "text-emerald-400", "font-semibold", "font-orbitron");
+            b.classList.add("border-b", "border-transparent", "hover:text-emerald-200", "transition", "font-orbitron");
         });
         const activeTab = document.getElementById(`tab-${tab}`);
         if (activeTab) {
-            activeTab.classList.remove("border-transparent", "text-emerald-300", "hover:text-emerald-200");
-            activeTab.classList.add("border-b-2", "border-emerald-400", "text-emerald-400");
+            activeTab.classList.remove("border-b", "border-transparent", "hover:text-emerald-200", "transition", "font-orbitron");
+            activeTab.classList.add("border-b-2", "border-emerald-400", "hover:text-emerald-200", "text-emerald-400", "font-semibold", "font-orbitron");
         }
 
         Object.keys(chatContainers).forEach(k => {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         div.className = `chat-msg rounded-md p-1 ${bgClass} ${sideClass}`;
         div.innerHTML = `
             <div class="flex items-center flex-wrap gap-1">
-                ${faction ? `<small class="${faction_color} font-shadow">(${faction})</small>` : ''}
+                ${faction ? `<small class="${faction_color} font-shadow font-bold">(${faction})</small>` : ''}
                 <span class="font-bold font-shadow ${faction_color || 'text-emerald-400'}">${escapeHtml(author)}</span>
                 <small class="text-emerald-500/60 italic font-shadow ml-2">${timestamp || ''}</small>
             </div>

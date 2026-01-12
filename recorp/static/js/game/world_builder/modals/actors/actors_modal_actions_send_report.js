@@ -24,7 +24,6 @@
 
         // Fermer le modal courant (cible)
         open_close_modal(targetModalId)
-
         createSendReportModal(modalData, targetModalId);
     };
 
@@ -78,44 +77,50 @@
 
                 <!-- Recipients -->
                 <div>
-                    <label class="text-xs text-emerald-300 uppercase tracking-wide">
+                    <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
                         Recipients
                     </label>
-                    <div class="mt-1 p-2 bg-black/40 border border-emerald-500/30 rounded">
+                    <div class="p-2 bg-black/40 border border-emerald-500/30 rounded">
                         <input
+                            id="recipient"
                             type="text"
                             placeholder="Enter player name..."
                             class="w-full bg-transparent text-emerald-200 outline-none text-sm"
-                            disabled
                         />
-                        <p class="text-xs text-emerald-500 mt-1">
-                            (autocomplete next step)
-                        </p>
-                    </div>
-                </div>
+                        <input id="recipient-player-id" type="hidden" value="">
 
-                <!-- Intel report preview -->
-                <div>
-                    <label class="text-xs text-emerald-300 uppercase tracking-wide">
-                        Intel report
-                    </label>
-
-                    <div class="mt-2 p-3 bg-black/50 border border-emerald-500/20 rounded font-mono text-xs text-emerald-200 whitespace-pre-wrap">
-                        ${renderIntelReport(modalData)}
+                        <div id="recipient-autocomplete"
+                            class="absolute left-0 right-0 bg-zinc-900/90 border border-emerald-500/20 rounded shadow-lg hidden z-50 max-h-44 overflow-y-auto text-xs">
+                        </div>
                     </div>
                 </div>
 
                 <!-- Optional message -->
                 <div>
-                    <label class="text-xs text-emerald-300 uppercase tracking-wide">
+                    <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
                         Optional message
                     </label>
                     <textarea
+                        id="optional-message"
                         rows="3"
-                        class="mt-1 w-full bg-black/40 border border-emerald-500/30 rounded
+                        placeholder="Add a personal note…"
+                        class="w-full bg-black/40 border border-emerald-500/30 rounded
                         text-emerald-200 text-sm p-2 resize-none outline-none"
-                        placeholder="Add a personal note…"></textarea>
+                        placeholder="Add a personal note…">
+                    </textarea>
                 </div>
+
+                <!-- Intel report preview -->
+                <div>
+                    <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
+                        Intel report
+                    </label>
+
+                    <div id="report-content" class="p-3 bg-black/50 border border-emerald-500/20 rounded text-xs text-emerald-200 whitespace-pre-wrap">
+                        ${renderIntelReport(modalData)}
+                    </div>
+                </div>
+
             </div>
         `;
     }
@@ -145,13 +150,12 @@
      * Génération du texte du rapport (lecture seule)
      */
     function renderIntelReport(data) {
-        console.log(data)
         const lines = [];
         const user = data.user || {};
         const ship = data.ship || {};
         const faction = data.player.faction_name || {};
-        console.log(`user.is_npc = ${user.is_npc}`)
-        const user_type = typeof user.is_npc == "undefined" ? "NPC" : "PLAYER";
+        
+        const user_type = data.player.is_npc == false ? "PLAYER": "NPC" ;
         // === IDENTITÉ ===
         lines.push(`NAME: ${data.player.name}`);
         
@@ -186,8 +190,8 @@
             lines.push(`HP: ${ship.current_hp} / ${ship.max_hp}`);
         }
 
-        if (user.current_ap !== undefined) {
-            lines.push(`AP: ${user.current_ap} / ${user.max_ap}`);
+        if (data.player.current_ap !== undefined) {
+            lines.push(`AP: ${data.player.current_ap} / ${data.player.max_ap}`);
         }
 
         if (ship.current_movement !== undefined) {
@@ -219,6 +223,9 @@
     function bindSendReportEvents(modalId, targetModalId) {
         const modal = document.getElementById(modalId);
 
+        // Autocomplete destinataire
+        bindRecipientAutocomplete(modal);
+
         modal.querySelector("#send-report-close")?.addEventListener("click", () => {
             modal?.remove();
             open_close_modal(targetModalId);
@@ -228,7 +235,42 @@
             open_close_modal(targetModalId);
         });
 
-        modal.querySelector("#send-report-submit")?.addEventListener("click", () => {
+        modal.querySelector("#send-report-submit")?.addEventListener("click", async (e) => {
+            const btn = e.target;
+            const recipient = modal.querySelector("#recipient")?.value?.trim();
+            const recipientId = modal.querySelector("#recipient-player-id")?.value;
+            const optionalMessage = modal.querySelector("#optional-message")?.value || "";
+
+            if (!recipient || !recipientId) {
+                showToast(gettext("Recipient not found"), false);
+                return;
+            }
+
+            const report = renderIntelReport(lastTargetContext.modalData);
+            const body = composeFinalMessage(optionalMessage, report);
+            const subject = `Scan report — ${lastTargetContext.modalData.player.name}`;
+
+            const payload = {
+                recipient,
+                recipient_type: "player",
+                subject,
+                body,
+                senderId: currentPlayer.user.player
+            };
+
+            setLoadingState(btn, true);
+            try {
+                await sendPrivateMessage(payload);
+                showToast(gettext("Report sent ✓"), true);
+                modal.remove();
+                open_close_modal(targetModalId);
+            } catch (err) {
+                console.error("[SEND REPORT]", err);
+                showToast(gettext("Send failed ✗"), false);
+            } finally {
+                setLoadingState(btn, false);
+            }
+            
             modal?.remove();
             open_close_modal(targetModalId);
         });
@@ -251,6 +293,91 @@
         );
 
         lastTargetContext = null;
+    }
+
+    function bindRecipientAutocomplete(modalEl) {
+        const input = modalEl.querySelector("#recipient");
+        const hidden = modalEl.querySelector("#recipient-player-id");
+        const box = modalEl.querySelector("#recipient-autocomplete");
+
+        if (!input || !hidden || !box) return;
+
+        let t = null;
+
+        function clear() {
+            box.innerHTML = "";
+            box.classList.add("hidden");
+        }
+
+        async function search(q) {
+            try {
+                const res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`);
+                const data = await res.json();
+                const results = data?.results || [];
+
+                if (!results.length) {
+                    clear();
+                    return;
+                }
+                box.innerHTML = "";
+                results.forEach(p => {
+                    const row = document.createElement("div");
+                    row.className = "px-3 py-1 text-xs hover:bg-emerald-500/10 cursor-pointer";
+                    row.textContent = `${p.name} — ${p.faction || ""}`;
+
+                    row.addEventListener("click", () => {
+                        input.value = p.name;
+                        hidden.value = String(p.id);
+                        clear();
+                    });
+
+                    box.appendChild(row);
+                });
+
+                box.classList.remove("hidden");
+
+            } catch (err) {
+                console.error("[send_report autocomplete] error:", err);
+                clear();
+            }
+        }
+
+        input.addEventListener("input", () => {
+            const q = input.value.trim();
+
+            // IMPORTANT: si l'utilisateur retape, on invalide l'ID sélectionné
+            hidden.value = "";
+
+            if (q.length < 2) {
+                clear();
+                return;
+            }
+
+            clearTimeout(t);
+            t = setTimeout(() => search(q), 250);
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!box.contains(e.target) && e.target !== input) clear();
+        });
+    }
+
+    function composeFinalMessage(optionalText, reportText) {
+        const cleanOptional = optionalText?.trim();
+
+        if (!cleanOptional) {
+            return reportText;
+        }
+
+        return (
+            cleanOptional +
+            "\n\n" +        // ← séparation VISUELLE claire
+            reportText
+        );
+    }
+
+    function sendReportData(){
+
     }
 
 })();

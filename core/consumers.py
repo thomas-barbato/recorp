@@ -437,7 +437,7 @@ class GameConsumer(WebsocketConsumer):
             data = event["message"]
             if isinstance(data, str):
                 data = json.loads(data)
-            
+                
             author_id = data.get("sender_id")
             content = data.get("content")
             channel = data.get("channel")  # "sector", "faction" ou "group"

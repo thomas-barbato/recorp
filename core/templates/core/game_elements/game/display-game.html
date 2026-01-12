@@ -203,7 +203,7 @@
 
         <!-- STATISTICS -->
         <fieldset id="statistics-fieldset" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-3 min-h-[100px] select-none">
-            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+            <legend class="text-sm uppercase tracking-wider font-orbitron font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
                 {% translate "Statistics" %}
             </legend>
 
@@ -211,7 +211,7 @@
             <div id="container-basic-stats" class="flex border border-[#B1F1CB] rounded bg-emerald-900/40 rounded-md p-2 w-full flex-col gap-1"> 
                 <label for="hp-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
                     <span class="iconify game-icons--shieldcomb w-[20px] h-[20px]"></span>
-                    <span class="uppercase tracking-wider font-bold text-xs">{% translate 'Hull points'%}</span>
+                    <span class="uppercase tracking-wider font-bold text-xs font-orbritron">{% translate 'Hull points'%}</span>
                 </label> 
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
                     <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_hp current_player_state.ship.max_hp 100 %}%"></div>
@@ -277,14 +277,14 @@
         <!-- ACTIONS CARD -->
         <fieldset id="actions-fieldset" class="w-full flex border border-emerald-400/40 rounded-xl bg-emerald-950/40 p-3 shadow-inner shadow-emerald-900/30 select-none overflow-hidden">
             <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 
-                        bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+                        bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
                 {% translate "ACTIONS" %}
             </legend>
         </fieldset>
 
         <!-- STATUS -->
         <fieldset id="status-fieldset"class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-2 min-h-[75px] select-none">
-            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
                 {% translate "Effects" %}
             </legend>
             <!-- Future dynamic status effects could go here -->
@@ -292,7 +292,7 @@
         </fieldset>
         
         <fieldset id="action-logs" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[150px] max-h-[150px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
-            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
+            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
                 {% translate "Action Logs" %}
             </legend>
             <ul id="player-log-container" class="flex flex-col-reverse gap-0.5">

@@ -76,7 +76,7 @@
             </div>
             <!-- Texte -->
             <div class="flex flex-col text-left w-full overflow-hidden gap-1">
-                <div class="text-emerald-300 font-bold text-sm leading-tight truncate">
+                <div class="text-emerald-300 font-bold text-sm leading-tight truncate font-orbitron">
                     {{ current_player_state.user.name }}
                 </div>
                 <!-- Player coords -->
@@ -88,20 +88,20 @@
             </div>
         </div>
         <div class="flex flex-wrap justify-center items-center gap-2 mx-auto">
-          <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner">
+          <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
             <b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span>
           </p>
-          <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner">
+          <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
             <b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}
           </p>
-          <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner">
+          <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
             <b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}
           </p>
 
           <!-- Target coords -->
           <div class="flex items-center bg-zinc-800/70 border border-emerald-500/30 rounded-lg overflow-hidden">
             <i class="fa-solid fa-satellite-dish px-2 text-emerald-200"></i>
-            <span id="target-coord-name" class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center w-[125px]">
+            <span id="target-coord-name" class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center w-[125px] font-orbitron">
                   {% translate 'Nothing selected' %}
             </span>
             <span id="target-coord-y" class="flex bg-zinc-900/70 text-emerald-400 font-bold p-1 w-[25px] invisible">00</span>

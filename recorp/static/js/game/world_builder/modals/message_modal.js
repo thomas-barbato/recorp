@@ -227,11 +227,11 @@ function showMessage(data) {
         <p class="text-sm">${gettext("From")}: <span class="text-emerald-200">${data.sender}</span></p>
         <p class="text-xs text-emerald-400/70">${data.timestamp}</p>
         <hr class="border-emerald-500/30">
-        <p class="text-emerald-200 text-sm leading-relaxed">${data.body}</p>
+        <p class="text-emerald-200 text-sm leading-relaxed whitespace-pre-wrap">${data.body}</p>
 
         <div class="flex justify-end gap-2 mt-4">
-            <button id="reply" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-zinc-900 rounded font-semibold transition">${gettext("Reply")}</button>
-            <button id="back" class="px-4 py-2 border border-emerald-400 text-emerald-400 rounded hover:bg-emerald-400 hover:text-zinc-900 transition">${gettext("Back")}</button>
+            <button id="reply" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-zinc-900 rounded font-semibold transition font-orbitron">${gettext("Reply")}</button>
+            <button id="back" class="px-4 py-2 border border-emerald-400 text-emerald-400 rounded hover:bg-emerald-400 hover:text-zinc-900 transition font-orbitron">${gettext("Back")}</button>
         </div>
     </div>`;
 
@@ -248,7 +248,7 @@ function showMessage(data) {
             <p class="text-sm">${gettext("From")}: <span class="text-emerald-200">${data.sender}</span></p>
             <p class="text-xs text-emerald-400/70">${data.timestamp}</p>
             <hr class="border-emerald-500/30">
-            <p class="text-emerald-200 text-sm leading-relaxed">${data.body}</p>
+            <p class="text-emerald-200 text-sm leading-relaxed whitespace-pre-wrap">${data.body}</p>
         </div>
         <div class="p-4 space-y-4 text-sm md:text-base text-emerald-300 animate-fade-in">
             <input id="reply-recipient" type="text" value="${data.sender}" readonly
@@ -531,7 +531,7 @@ function bindComposeEvents() {
     });
 }
 
-// ✅ === NOTIFICATION DEPUIS WEBSOCKET ===
+// === NOTIFICATION DEPUIS WEBSOCKET ===
 function showPrivateMessageNotification(note) {
     // Recharger le compteur quand un nouveau message arrive
     loadUnreadCount();

@@ -24,7 +24,7 @@
 
         <!-- 📦 INVENTAIRE -->
         <div class="order-1 lg:order-2 lg:w-1/2 w-full p-3 flex flex-col md:custom-scroll gap-2">
-            <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest">{% translate "Inventory" %}</h3>
+            <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron">{% translate "Inventory" %}</h3>
             <p class="text-emerald-200 text-xs mb-2">{% translate "Max Capacity" %}: <span class="font-bold text-emerald-400">25 / 100</span></p>
 
             <div id="inventory-list" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1">
@@ -68,11 +68,11 @@
         </div>
 
             <div class="order-2 lg:order-1 lg:w-1/2 w-full p-3 flex flex-col overflow-y-auto custom-scroll gap-2">
-                <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest">{% translate "Equipped Modules" %}</h3>
+                <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron">{% translate "Equipped Modules" %}</h3>
 
                 {% for category in module_categories %}
                 <fieldset class="flex border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all">
-                    <legend class="text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase">
+                    <legend class="text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase font-orbitron">
                         {% translate category|from_underscore_to_space %}
                     </legend>
                     <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">

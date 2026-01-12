@@ -199,7 +199,7 @@
                 id: playerData.user.player,
                 coordinates: playerData.user.coordinates,
                 current_ap: playerData.user.current_ap,
-                max_ap: playerData.user.current_ap
+                max_ap: playerData.user.max_ap
             },
 
             ship: {

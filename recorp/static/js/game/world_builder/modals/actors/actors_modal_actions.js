@@ -1,9 +1,6 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 (function () {
 
-    // ===== EXTRACTION STRICTE DE actors_modals.js =====
-    // (fonctions liées aux actions PC/NPC + Foreground)
-
     function createActionCostBadge(cost = {}) {
         const apCost = cost?.ap_cost ?? null;
         const crCost = cost?.cost ?? null;
@@ -29,7 +26,8 @@
                 "px-2","py-[1px]","rounded-md",
                 "bg-emerald-700/70",
                 "text-emerald-200",
-                "border","border-emerald-400/40",
+                "border",
+                "border-emerald-400/40",
                 "whitespace-nowrap"
             );
             wrapper.append(apLine);
@@ -311,6 +309,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     // Actions post-scan : “à la suite” dans la grille
     if (data._ui?.scanned === true) {
+        console.log("DATA :")
+        console.log(data)
+        console.log("=======")
         PC_NPC_EXTRA_ACTIONS.forEach(extra => {
 
             // --- icon ---
