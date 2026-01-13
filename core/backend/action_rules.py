@@ -114,25 +114,7 @@ class ActionRules:
     @staticmethod
     def upsert_scan(scanner_player_id: int, target_type: str, target_id: int, sector_id: int) -> ScanIntel:
         now = timezone.now()
-        expires = now + timedelta(hours=48)
-
-        scan, _ = ScanIntel.objects.update_or_create(
-            scanner_player_id=scanner_player_id,
-            target_type=target_type,
-            target_id=target_id,
-            sector_id=sector_id,
-            defaults={
-                "created_at": now,
-                "expires_at": expires,
-            }
-        )
-        return scan
-    
-        
-    @staticmethod
-    def upsert_scan(scanner_player_id: int, target_type: str, target_id: int, sector_id: int) -> ScanIntel:
-        now = timezone.now()
-        expires = now + timedelta(hours=48)
+        expires = now + timedelta(seconds=30)
 
         scan, _ = ScanIntel.objects.update_or_create(
             scanner_player_id=scanner_player_id,
@@ -157,12 +139,31 @@ class ActionRules:
     def get_visible_scans_for_player(player_id: int, sector_id: int):
         now = timezone.now()
 
-        scans = ScanIntel.objects.filter(
+        # 1) Scans faits par le joueur lui-même
+        direct_scans = ScanIntel.objects.filter(
             sector_id=sector_id,
             expires_at__gt=now,
+            invalidated_at__isnull=True,
             scanner_player_id=player_id
         )
 
+        # 2) Groupes du joueur
+        groups = ScanIntelGroup.objects.filter(
+            group__player_id=player_id
+        ).values_list("scan_id", flat=True)
+
+        # 3) Scans partagés via groupe
+        shared_scans = ScanIntel.objects.filter(
+            id__in=groups,
+            sector_id=sector_id,
+            expires_at__gt=now,
+            invalidated_at__isnull=True
+        )
+
+        # 4) Union + déduplication
+        scans = (direct_scans | shared_scans).distinct()
+
+        # 5) Vérifier que la cible existe toujours dans le secteur
         valid_scans = []
 
         for scan in scans:
@@ -174,7 +175,7 @@ class ActionRules:
                     valid_scans.append(scan)
 
         return valid_scans
-        
+            
     @classmethod
     def has_active_scan(scanner_id, target_type, target_id, sector_id) -> bool:
         return ScanIntel.objects.filter(
@@ -196,7 +197,34 @@ class ActionRules:
             target_type=target_type,
             target_id=target_id,
             sector_id=sector_id,
-        ).delete()
+            invalidated_at__isnull=True
+        ).update(invalidated_at=timezone.now())
+        
+    @staticmethod
+    def invalidate_expired_scans(sector_id: int):
+        """
+        Docstring for invalidate_expired_scans
+        
+        retourne la liste des cibles invalidées (important pour le WS).
+        
+        :param sector_id: Description
+        :type sector_id: int
+        """
+        now = timezone.now()
+
+        expired = ScanIntel.objects.filter(
+            sector_id=sector_id,
+            expires_at__lte=now,
+            invalidated_at__isnull=True
+        )
+
+        targets = list(
+            expired.values("target_type", "target_id")
+        )
+
+        expired.update(invalidated_at=now)
+
+        return targets
 
     # ================
     # ACTION : HAIL (contact radio)

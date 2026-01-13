@@ -34,7 +34,7 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
     if (obj) {
         if (obj.type === "player") {
             const key = `pc_${obj.data.user.player}`;
-            if (inSonar || window.scannedTargets?.has(key) || window.sharedTargets?.has(key)) {
+            if (inSonar || window.isScanned(key)) {
                 name = obj.data.user.name;
             } else {
                 name = "Unknown";
@@ -42,7 +42,7 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
         }
         else if (obj.type === "npc") {
             const key = `npc_${obj.data.npc.id}`;
-            if (inSonar || window.scannedTargets?.has(key) || window.sharedTargets?.has(key)) {
+            if (inSonar || window.isScanned(key)) {
                 name = obj.data.npc.displayed_name;
             } else {
                 name = "Unknown";
@@ -95,14 +95,14 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
         if (!sonarVisible) {
             if (obj.type === "player") {
                 const key = `pc_${obj.data.user.player}`;
-                if (!window.scannedTargets?.has(key) && !window.sharedTargets?.has(key)) {
+                if (!window.isScanned(key)) {
                     name = "Unknown";
                 }else{
                     name = obj.data.user.name;
                 }
             } else if (obj.type === "npc") {
                 const key = `npc_${obj.data.npc.id}`;
-                if (!window.scannedTargets?.has(key) && !window.sharedTargets?.has(key)) {
+                if (!window.isScanned(key)) {
                     name = "Unknown";
                 }else{
                     name = obj.data.npc.displayed_name;

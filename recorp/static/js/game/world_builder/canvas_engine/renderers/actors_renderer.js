@@ -186,9 +186,7 @@ export default class ActorsRenderer {
             (window.canvasEngine && window.canvasEngine.renderer && window.canvasEngine.renderer.sonar) ||
             null;
 
-        const forcedVisible =
-            window.scannedTargets?.has(obj.id) ||
-            window.sharedTargets?.has(obj.id);
+        const forcedVisible = window.isScanned(obj.id);
 
         const visible = forcedVisible || (sonar ? sonar.isVisible(obj) : true);
 

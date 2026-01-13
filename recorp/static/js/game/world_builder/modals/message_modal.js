@@ -419,8 +419,8 @@ newMsgBtn.addEventListener('click', () => {
     });
 });
 
-function showToast(message, success = true) {
-    let container = document.getElementById("toast-container");
+function showToast(message, success = true, element_id = "toast-container") {
+    let container = document.getElementById(element_id);
     if (!container) return;
 
     let toast = document.createElement("div");

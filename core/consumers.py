@@ -5,13 +5,14 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 import datetime
+from django.utils import timezone
 
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone, ScanIntelGroup
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel
 from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
 
 logger = logging.getLogger("django")
@@ -42,7 +43,6 @@ class GameConsumer(WebsocketConsumer):
         self._setup_room_connection()
         self._join_room_group()
         self._handle_authenticated_user()
-        self._send_scan_state_sync()
     
         # Maintenir la session active
         if hasattr(self.scope, 'session'):
@@ -56,6 +56,7 @@ class GameConsumer(WebsocketConsumer):
         self.user = self.scope["user"]
         self.player_id = PlayerAction(self.user.id).get_player_id()
         self._cache_store = StoreInCache(self.room_group_name, self.user)
+        
         self.accept()
 
     def _join_room_group(self) -> None:
@@ -113,9 +114,32 @@ class GameConsumer(WebsocketConsumer):
         """
         Réception sécurisée des messages WebSocket
         """
-        # 1) Rien à traiter
-        if not text_data:
-            return
+        # 0) Vérifie tous les timers
+        try:
+            expired_targets = ActionRules.invalidate_expired_scans(int(self.room))
+
+            if expired_targets:
+                print(expired_targets)
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "effects_invalidated",
+                        "payload": [
+                            {
+                                "effect": "scan",
+                                "target_type": t["target_type"],
+                                "target_id": t["target_id"],
+                            }
+                            for t in expired_targets
+                        ],
+                    }
+                )
+        except Exception as e:
+            logger.error(f"Scan invalidation failed: {e}")
+                
+            # 1) Rien à traiter
+            if not text_data:
+                return
 
         # 2) L'utilisateur doit être authentifié
         if not self.user.is_authenticated:
@@ -151,6 +175,10 @@ class GameConsumer(WebsocketConsumer):
         # SYNC
         if msg_type == "request_data_sync":
             self._handle_data_sync_request(data)
+            return
+        
+        if msg_type == "request_scan_state_sync":
+            self.send_scan_state_sync()
             return
 
         # MOVE
@@ -1304,34 +1332,6 @@ class GameConsumer(WebsocketConsumer):
             "remove": event.get("remove", []),
             "reason": event.get("reason"),
         })
-        
-    def _send_scan_state_sync(self):
-
-        sector_id_int = int(self.room)
-        scans = ActionRules.get_visible_scans_for_player(
-            self.player_id,
-            sector_id_int
-        )
-
-        payload = []
-
-        for scan in scans:
-            if scan.target_type == "pc":
-                data = build_pc_modal_data(scan.target_id)
-            else:
-                data = build_npc_modal_data(scan.target_id)
-            payload.append({
-                "target_key": f"{scan.target_type}_{scan.target_id}",
-                "expires_at": scan.expires_at.isoformat(),
-                "data": data,
-                "type": scan.target_type
-            })
-        self._send_response({
-            "type": "scan_state_sync",
-            "message": {
-                "targets": payload
-            }
-        })
 
     def async_user_join(self, event: Dict[str, Any]) -> None:
         """
@@ -1346,6 +1346,46 @@ class GameConsumer(WebsocketConsumer):
         }
         self._send_response(response)
 
+    def effects_invalidated(self, event):
+        """
+        Reçoit l'invalidation d'effets (scan, buff, debuff…)
+        """
+        self._send_response({
+            "type": "effects_invalidated",
+            "payload": event.get("payload", []),
+        })
+        
+    def send_scan_state_sync(self):
+        sector_id = int(self.room)
+        scans = ActionRules.get_visible_scans_for_player(
+            self.player_id,
+            sector_id
+        )
+
+        if not scans:
+            return
+
+        targets = []
+
+        for scan in scans:
+            if scan.target_type == "pc":
+                data = build_pc_modal_data(scan.target_id)
+            else:
+                data = build_npc_modal_data(scan.target_id)
+
+            targets.append({
+                "target_key": f"{scan.target_type}_{scan.target_id}",
+                "expires_at": scan.expires_at.isoformat(),
+                "data": data,
+            })
+        
+        self._send_response({
+            "type": "scan_state_sync",
+            "message": {
+                "targets": targets,
+            }
+        })
+
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
         
@@ -1354,3 +1394,4 @@ class GameConsumer(WebsocketConsumer):
                 self.send(text_data=json.dumps(response))
             except Exception as e:
                 logger.error(f"Erreur lors de l'envoi de la réponse: {e}")
+    

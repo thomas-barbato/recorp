@@ -136,7 +136,7 @@ if (!ok) {
                     targetKey = `npc_${obj.data.npc.id}`;
                 }
 
-                if (targetKey && (window.scannedTargets?.has(targetKey) || window.sharedTargets?.has(targetKey))) {
+                if (targetKey && (window.isScanned(targetKey) || window.sharedTargets?.has(targetKey))) {
                     inRange = true;
                 }
 
@@ -281,6 +281,13 @@ if (!ok) {
         const ws_url = `${ws_scheme}://${window.location.host}/ws/play_${window.map_informations.sector.id}/`;
         const ws = new WebSocketManager(ws_url);
         ws.connect();
+        
+        ws.on("open", () => {
+            console.log("[SCAN] WS open → request_scan_state_sync");
+            ws.send({
+                type: "request_scan_state_sync"
+            });
+        });
 
         const loop = new UpdateLoop({ fps: FPS, map, renderer, camera, input });
         window.addEventListener('resize', () => {

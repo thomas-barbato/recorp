@@ -8,21 +8,17 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
         case "pc":
             if(extractDataFromId.isUnknown == true){
                 modalData = createPlayerModalData(extractedDataForModal.data)
-                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
-                modalData._ui = modalData._ui || {};
-                modalData._ui.scanned = window.scannedTargets?.has(targetKey) === true;
                 modal = createUnknownPcModal(modalId, modalData);   
             }else{
                 modalData = createPlayerModalData(extractedDataForModal.data);
                 const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
+                const isScanned = window.isScanned(targetKey);
                 modalData._ui = modalData._ui || {};
-                modalData._ui.scanned = window.scannedTargets?.has(targetKey) === true;
+                modalData._ui.scanned = isScanned;
                 // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
-                if (extractedDataForModal?.__fromScan === true) {
+                if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
                     modalData._ui.scanned = true;
-                } else if (extractedDataForModal?.__ui?.scanned === true) {
-                    modalData._ui.scanned = true;
-                }
+                } 
                 modal = create_pc_npc_modal(modalId, modalData, false);
             }
             break;
@@ -32,12 +28,14 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modal = createUnknownNpcModal(modalId, modalData);
             }else{
                 modalData = createNpcModalData(extractedDataForModal.data)
+                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
+                const isScanned = window.isScanned(targetKey);
+                modalData._ui = modalData._ui || {};
+                modalData._ui.scanned = isScanned;
                 // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
-                if (extractedDataForModal?.__fromScan === true) {
+                if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
                     modalData._ui.scanned = true;
-                } else if (extractedDataForModal?.__ui?.scanned === true) {
-                    modalData._ui.scanned = true;
-                }
+                } 
                 modal = create_pc_npc_modal(modalId, modalData, true);
             }
             break;
@@ -434,6 +432,7 @@ const targetKey =
         // --- Scan timer ---
         const scanInfo = document.createElement("div");
         scanInfo.classList.add(
+            "scan-timer",
             "flex",
             "items-center",
             "justify-center",
@@ -444,8 +443,8 @@ const targetKey =
             "mt-1"
         );
 
-        scanInfo.dataset.expiresAt =
-            window.scannedMeta[targetKey].expires_at;
+        const meta = window.getScanMeta(targetKey);
+        if (meta?.expires_at) scanInfo.dataset.expiresAt = meta.expires_at;
 
         const icon = document.createElement("img");
         icon.src = "/static/img/ux/gameIcons-brass-eye.svg";
@@ -456,17 +455,22 @@ const targetKey =
         label.textContent = "--:--:--";
 
         scanInfo.append(icon, label);
-
-        // Assemblage
+        
         titleWrapper.append(titleText, scanInfo);
 
-        // 🔥 Remplacement du contenu du titleEl
         modal.header.titleEl.innerHTML = "";
         modal.header.titleEl.appendChild(titleWrapper);
 
-        // 🔥 Lancement du timer
-        if (window.startCountdownTimer) {
-            window.startCountdownTimer(scanInfo);
+        // après avoir injecté le HTML du timer
+        const root = modal?.root || modal;
+        const timerContainer = root?.querySelector?.(".scan-timer");
+
+        if (timerContainer && window.startCountdownTimer) {
+            window.startCountdownTimer(timerContainer, {
+                onExpire: () => {
+                    console.log("Scan expired (client)");
+                }
+            });
         }
     }
 

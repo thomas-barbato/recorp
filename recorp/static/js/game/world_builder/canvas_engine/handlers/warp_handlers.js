@@ -130,10 +130,9 @@ export function handlerRemovePlayer(data){
     map.removeActorByPlayerId(shipId);
 
     // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
-    if (window.scannedTargets?.has(actorId)) {
+    if (window.isScanned(actorId)) {
 
-        window.scannedTargets.delete(actorId);
-        window.sharedTargets?.delete(actorId);
+        window.clearScan(actorId);
         delete window.scannedMeta?.[actorId];
         delete window.scannedModalData?.[actorId];
 

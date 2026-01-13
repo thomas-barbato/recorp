@@ -78,7 +78,7 @@
                 <!-- Recipients -->
                 <div>
                     <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
-                        Recipients
+                        Recipient
                     </label>
                     <div class="p-2 bg-black/40 border border-emerald-500/30 rounded">
                         <input
@@ -88,11 +88,11 @@
                             class="w-full bg-transparent text-emerald-200 outline-none text-sm"
                         />
                         <input id="recipient-player-id" type="hidden" value="">
-
                         <div id="recipient-autocomplete"
                             class="absolute left-0 right-0 bg-zinc-900/90 border border-emerald-500/20 rounded shadow-lg hidden z-50 max-h-44 overflow-y-auto text-xs">
                         </div>
                     </div>
+                    <div id="report-toast-container" class="mt-2"></div>
                 </div>
 
                 <!-- Optional message -->
@@ -238,12 +238,22 @@
         modal.querySelector("#send-report-submit")?.addEventListener("click", async (e) => {
             const btn = e.target;
             const recipient = modal.querySelector("#recipient")?.value?.trim();
-            const recipientId = modal.querySelector("#recipient-player-id")?.value;
+            let recipientId = modal.querySelector("#recipient-player-id")?.value;
             const optionalMessage = modal.querySelector("#optional-message")?.value || "";
 
-            if (!recipient || !recipientId) {
+            if (!recipient) {
                 showToast(gettext("Recipient not found"), false);
                 return;
+            }
+
+            // Fallback si pas d’ID (saisie manuelle)
+            if (!recipientId) {
+                recipientId = await resolveRecipientIdByName(recipient);
+
+                if (!recipientId) {
+                    showToast(gettext("Unknown player"), false, "report-toast-container");
+                    return;
+                }
             }
 
             const report = renderIntelReport(lastTargetContext.modalData);
@@ -261,18 +271,13 @@
             setLoadingState(btn, true);
             try {
                 await sendPrivateMessage(payload);
-                showToast(gettext("Report sent ✓"), true);
-                modal.remove();
-                open_close_modal(targetModalId);
+                window.showToast(gettext("Report sent ✓"), true, "report-toast-container");
             } catch (err) {
                 console.error("[SEND REPORT]", err);
-                showToast(gettext("Send failed ✗"), false);
+                window.showToast(gettext("Send failed ✗"), false, "report-toast-container");
             } finally {
                 setLoadingState(btn, false);
             }
-            
-            modal?.remove();
-            open_close_modal(targetModalId);
         });
     }
 
@@ -376,8 +381,19 @@
         );
     }
 
-    function sendReportData(){
+    async function resolveRecipientIdByName(name) {
+        const res = await fetch(`/messages/search_players/?q=${encodeURIComponent(name)}`);
+        if (!res.ok) return null;
 
+        const data = await res.json();
+        const results = data?.results || [];
+
+        // match EXACT (case-insensitive)
+        const exact = results.find(
+            p => p.name.toLowerCase() === name.toLowerCase()
+        );
+
+        return exact ? String(exact.id) : null;
     }
 
 })();

@@ -93,7 +93,7 @@
         // 6) Contexte UI (UNKNOWN = front only)
         responseData.__ui = {
             isUnknown,
-            scanned: Boolean(window.scannedTargets?.has(targetKey))
+            scanned: Boolean(window.isScanned(targetKey))
         };
 
         // 7) Construction réelle du modal

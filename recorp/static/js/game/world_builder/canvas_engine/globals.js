@@ -55,7 +55,82 @@ export function initGlobals() {
         window.sharedTargets  = new Set();
         window.scannedTargetData = {};
         window.scannedMeta = {};
+        window.scannedModalData = {};
+        // ===============================
+        // Timed effects (foundation)
+        // ===============================
         window.startCountdownTimer = startCountdownTimer;
+        window.activeEffects = {
+            scan: new Map(),
+            share_scan: new Map(),
+            buff: new Map(),
+            debuff: new Map(),
+            craft: new Map(),
+            gather: new Map(),
+            research: new Map(),
+        };
+
+        window.registerEffect = function (effectType, key, payload) {
+            if (!window.activeEffects?.[effectType]) return;
+            window.activeEffects[effectType].set(key, payload);
+        };
+
+        window.unregisterEffect = function (effectType, key) {
+            if (!window.activeEffects?.[effectType]) return;
+            window.activeEffects[effectType].delete(key);
+        };
+
+        window.hasEffect = function (effectType, key) {
+            return window.activeEffects?.[effectType]?.has(key) === true;
+        };
+
+        window.getEffect = function (effectType, key) {
+            return window.activeEffects?.[effectType]?.get(key) || null;
+        };
+
+        window.isScanned = function (targetKey) {
+            return (
+                window.activeEffects?.scan?.has(targetKey) === true ||
+                window.activeEffects?.share_scan?.has(targetKey) === true ||
+                window.sharedTargets?.has(targetKey) === true   // legacy
+            );
+        };
+
+        window.hasDirectScan = function (targetKey) {
+            return window.activeEffects?.scan?.has(targetKey) === true;
+        };
+
+        window.hasSharedScan = function (targetKey) {
+            return window.activeEffects?.share_scan?.has(targetKey) === true;
+        };
+
+        /**
+         * Retourne les métadonnées de scan (priorité à activeEffects)
+         * { expires_at, data? } | null
+         */
+        window.getScanMeta = function (targetKey) {
+            if (window.activeEffects?.scan?.has(targetKey)) {
+                return window.activeEffects.scan.get(targetKey);
+            }
+            // fallback legacy
+            if (window.scannedMeta?.[targetKey]) {
+                return window.scannedMeta[targetKey];
+            }
+            return null;
+        };
+
+        /**
+         * Helper de purge scan (appelé UNIQUEMENT depuis WS effects_invalidated)
+         */
+        window.clearScan = function (targetKey) {
+            // canonique
+            window.activeEffects?.scan?.delete(targetKey);
+
+            // legacy (temporaire)
+            window.scannedTargets?.delete(targetKey);
+            delete window.scannedMeta?.[targetKey];
+            delete window.scannedModalData?.[targetKey];
+        };
 
         return true;
     } catch (e) {
@@ -86,21 +161,17 @@ export function startCountdownTimer(container, options = {}) {
     const expiresAt = new Date(container.dataset.expiresAt).getTime();
     if (Number.isNaN(expiresAt)) return;
 
+    let timer = null
+
     function update() {
         const now = Date.now();
         const diff = Math.max(0, expiresAt - now);
         // if timer goes to 0.
         if (diff <= 0) {
-            const targetKey = container.closest("[data-target-key]")?.dataset?.targetKey;
-            if (targetKey) {
-                window.scannedTargets?.delete(targetKey);
-                delete window.scannedMeta?.[targetKey];
-                if (typeof refreshModalAfterScan === "function") {
-                    refreshModalAfterScan(targetKey);
-                }
+            if (typeof onExpire === "function") {
+                onExpire();
             }
-
-            clearInterval(timer);
+            if (timer !== null) clearInterval(timer);
             return;
         }
 
@@ -115,7 +186,7 @@ export function startCountdownTimer(container, options = {}) {
     }
 
     update();
-    const timer = setInterval(update, 1000);
+    timer = setInterval(update, 1000);
 
     // sécurité : cleanup si le node disparaît
     const observer = new MutationObserver(() => {

@@ -1,16 +1,28 @@
 export function getScanResult(msg) {
+    
     if (!msg?.target_key || !msg?.data) return;
-    const { target_key, data} = msg;
+    const { target_key, data, expires_at} = msg;
     const remaning_ap = msg?.remaining_ap
 
     window.scannedTargets ??= new Set();
     window.scannedModalData ??= {};
     window.scannedMeta ??= {};
 
+    // scan timer status
+    window.registerEffect("scan", target_key, {
+        expires_at: expires_at,
+        data: data,
+    });
+
+    /* Exemple:
+    registerEffect("buff", "player_23:cloak", { expires_at });
+    */
+
+    // scan status
     window.scannedTargets.add(target_key);
     window.scannedModalData[target_key] = data;
     window.scannedMeta[target_key] = {
-        expires_at: msg.expires_at
+        expires_at: expires_at
     };
 
     window.canvasEngine?.renderer?.requestRedraw();
@@ -45,8 +57,9 @@ export function sendScanResultToGroup(msg) {
     window.sharedTargets ??= new Set();
     window.scannedMeta ??= {};
 
-    window.scannedTargets.add(msg.target_key);
-    window.sharedTargets.add(msg.target_key);
+    window.registerEffect("share_scan", msg.target_key, {
+        expires_at: msg.expires_at
+    });
 
     if (msg.expires_at) {
         window.scannedMeta[msg.target_key] = {
@@ -59,32 +72,45 @@ export function sendScanResultToGroup(msg) {
 }
 
 export function handleScanStateSync(msg) {
-    const targets = msg?.targets || [];
+    const targets = msg?.message?.targets || msg?.targets || [];
 
     window.scannedTargets ??= new Set();
     window.sharedTargets ??= new Set();
     window.scannedModalData ??= {};
     window.scannedMeta ??= {};
 
+    // (optionnel) garder l'id du modal actuellement ouvert
+    const openedModal = document.querySelector("#modal-container > .modal"); // adapte si besoin
+    const openedId = openedModal?.id || null;
+
     targets.forEach(t => {
         if (!t?.target_key) return;
+
+        window.registerEffect("scan", t.target_key, {
+            expires_at: t.expires_at,
+            data: t.data,
+        });
 
         window.scannedTargets.add(t.target_key);
 
         if (t.expires_at) {
-            window.scannedMeta[t.target_key] = {
-                expires_at: t.expires_at
-            };
+            window.scannedMeta[t.target_key] = { expires_at: t.expires_at };
         }
-
         if (t.data) {
             window.scannedModalData[t.target_key] = t.data;
         }
-
-        refreshModalAfterScan(t.target_key);
     });
 
+    //  redraw
     window.canvasEngine?.renderer?.requestRedraw();
+
+    // si un modal est ouvert, le rafraîchir une seule fois
+    if (openedId && typeof refreshModalAfterScan === "function") {
+        // openedId est du style "modal-pc_12" ou "modal-unknown-pc_12"
+        // on extrait le targetKey
+        const m = openedId.match(/(pc_\d+|npc_\d+)/);
+        if (m) refreshModalAfterScan(m[1]);
+    }
 }
 
 export function handleScanVisibilityUpdate(msg) {
@@ -97,8 +123,7 @@ export function handleScanVisibilityUpdate(msg) {
 
     remove.forEach(targetKey => {
         // Nettoyage état global
-        window.scannedTargets.delete(targetKey);
-        window.sharedTargets.delete(targetKey);
+        window.clearScan(targetKey);
         delete window.scannedMeta[targetKey];
         delete window.scannedModalData?.[targetKey];
 

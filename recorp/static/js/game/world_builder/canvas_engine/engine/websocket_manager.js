@@ -14,6 +14,11 @@ export default class WebSocketManager {
 
         this.socket.onopen = () => {
             console.log("You are connected...");
+            if (this.handlers.has("open")) {
+                for (const cb of this.handlers.get("open")) {
+                    cb();
+                }
+            }
         };
 
         this.socket.onclose = (e) => {

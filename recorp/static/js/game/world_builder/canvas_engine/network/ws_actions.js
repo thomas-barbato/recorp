@@ -5,6 +5,7 @@ import { handleIncomingChatMessage } from "../handlers/chat_handlers.js";
 import { handlePlayerMove, handleUpdateMovementGeneric } from "../handlers/move_handlers.js";
 import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handlers/message_handlers.js";
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
+import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -64,3 +65,8 @@ ActionRegistry.register("scan_result", getScanResult);
 ActionRegistry.register("scan_share_to_group", sendScanResultToGroup);
 ActionRegistry.register("scan_visibility_update", handleScanVisibilityUpdate)
 ActionRegistry.register("scan_state_sync", handleScanStateSync);
+
+// ===============================
+// TIMERS
+// ===============================
+ActionRegistry.register("effects_invalidated", invalidateTimerEffect);
