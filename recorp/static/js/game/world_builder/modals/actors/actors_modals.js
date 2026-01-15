@@ -15,10 +15,6 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 const isScanned = window.isScanned(targetKey);
                 modalData._ui = modalData._ui || {};
                 modalData._ui.scanned = isScanned;
-                // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
-                if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
-                    modalData._ui.scanned = true;
-                } 
                 modal = create_pc_npc_modal(modalId, modalData, false);
             }
             break;
@@ -467,8 +463,13 @@ const targetKey =
 
         if (timerContainer && window.startCountdownTimer) {
             window.startCountdownTimer(timerContainer, {
+                expires_at: meta.expires_at,
                 onExpire: () => {
-                    console.log("Scan expired (client)");
+                    // Marque l’expiration locale
+                    window.scanExpiredLocal.add(targetKey);
+                    // Redraw carte (vaisseau / npc / foreground)
+                    window.canvasEngine?.renderer?.requestRedraw();
+                    
                 }
             });
         }

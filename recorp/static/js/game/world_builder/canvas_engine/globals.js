@@ -39,6 +39,23 @@ export function initGlobals() {
         foregroundElement = map_informations?.sector_element || [];
         npcs = map_informations?.npc || [];
 
+        window.UI_EVENT_CONFIG = {
+            move: {
+                label: "déplacement",
+                icon: "/static/img/ux/gameIcons-arrow.svg",
+            },
+
+            scan_add: {
+                label: "scan",
+                icon: "/static/img/ux/gameIcons-brass-eye.svg",
+            },
+
+            scan_remove: {
+                label: "scan",
+                icon: "/static/img/ux/gameIcons-brass-eye.svg",
+            },
+        };
+
         // Expose legacy globals on window for older scripts (chat, modals...)
         window.map_informations = map_informations;
         window.current_player_id = current_player_id;
@@ -56,6 +73,7 @@ export function initGlobals() {
         window.scannedTargetData = {};
         window.scannedMeta = {};
         window.scannedModalData = {};
+        window.scanExpiredLocal = new Set();
         // ===============================
         // Timed effects (foundation)
         // ===============================
@@ -89,6 +107,7 @@ export function initGlobals() {
         };
 
         window.isScanned = function (targetKey) {
+            if (window.scanExpiredLocal?.has(targetKey)) { return false; }
             return (
                 window.activeEffects?.scan?.has(targetKey) === true ||
                 window.activeEffects?.share_scan?.has(targetKey) === true ||
@@ -132,6 +151,30 @@ export function initGlobals() {
             delete window.scannedModalData?.[targetKey];
         };
 
+        window.effectVisualTimers ??= new Map();
+        window.scheduleEffectVisualExpire = function (effect, targetKey, expiresAt) {
+            const key = `${effect}:${targetKey}`;
+
+            // Nettoyer un ancien timer si présent
+            if (window.effectVisualTimers.has(key)) {
+                clearTimeout(window.effectVisualTimers.get(key));
+            }
+
+            const delay = Math.max(0, new Date(expiresAt).getTime() - Date.now());
+
+            const timeoutId = setTimeout(() => {
+                // ⚠️ VISUEL UNIQUEMENT
+                if (effect === "scan") {
+                    window.scanExpiredLocal.add(targetKey);
+                    window.canvasEngine?.renderer?.requestRedraw();
+                }
+
+                window.effectVisualTimers.delete(key);
+            }, delay);
+
+            window.effectVisualTimers.set(key, timeoutId);
+        };
+
         return true;
     } catch (e) {
         console.error('initGlobals failed', e);
@@ -168,10 +211,16 @@ export function startCountdownTimer(container, options = {}) {
         const diff = Math.max(0, expiresAt - now);
         // if timer goes to 0.
         if (diff <= 0) {
+            // Affichage UI uniquement
+            label.textContent = "00:00:00";
+
+            // Empêcher tout re-trigger
+            clearInterval(timer);
+
+            // Signal purement visuel (optionnel)
             if (typeof onExpire === "function") {
                 onExpire();
             }
-            if (timer !== null) clearInterval(timer);
             return;
         }
 
@@ -197,4 +246,5 @@ export function startCountdownTimer(container, options = {}) {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 }
+
 

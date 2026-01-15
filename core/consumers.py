@@ -119,7 +119,7 @@ class GameConsumer(WebsocketConsumer):
             expired_targets = ActionRules.invalidate_expired_scans(int(self.room))
 
             if expired_targets:
-                print(expired_targets)
+                
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
                     {

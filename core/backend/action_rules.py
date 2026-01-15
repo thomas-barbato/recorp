@@ -116,15 +116,24 @@ class ActionRules:
         now = timezone.now()
         expires = now + timedelta(seconds=30)
 
-        scan, _ = ScanIntel.objects.update_or_create(
+        # Invalider tous les scans actifs précédents pour cette cible
+        ScanIntel.objects.filter(
             scanner_player_id=scanner_player_id,
             target_type=target_type,
             target_id=target_id,
             sector_id=sector_id,
-            defaults={
-                "created_at": now,
-                "expires_at": expires,
-            }
+            invalidated_at__isnull=True
+        ).update(invalidated_at=now)
+
+        # Créer un nouveau scan propre
+        scan = ScanIntel.objects.create(
+            scanner_player_id=scanner_player_id,
+            target_type=target_type,
+            target_id=target_id,
+            sector_id=sector_id,
+            created_at=now,
+            expires_at=expires,
+            invalidated_at=None
         )
         return scan
     

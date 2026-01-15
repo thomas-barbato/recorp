@@ -14,6 +14,15 @@ export function getScanResult(msg) {
         data: data,
     });
 
+    // supprime l'ancienne instance de ce scan.
+    window.scanExpiredLocal.delete(target_key);
+
+    window.scheduleEffectVisualExpire(
+        "scan",
+        target_key,
+        expires_at
+    );
+
     /* Exemple:
     registerEffect("buff", "player_23:cloak", { expires_at });
     */
@@ -79,7 +88,7 @@ export function handleScanStateSync(msg) {
     window.scannedModalData ??= {};
     window.scannedMeta ??= {};
 
-    // (optionnel) garder l'id du modal actuellement ouvert
+    // garder l'id du modal actuellement ouvert
     const openedModal = document.querySelector("#modal-container > .modal"); // adapte si besoin
     const openedId = openedModal?.id || null;
 
@@ -90,6 +99,15 @@ export function handleScanStateSync(msg) {
             expires_at: t.expires_at,
             data: t.data,
         });
+
+        // supprime l'ancienne instance de ce scan.
+        window.scanExpiredLocal.delete(t.target_key);
+
+        window.scheduleEffectVisualExpire(
+            "scan",
+            t.target_key,
+            t.expires_at
+        );
 
         window.scannedTargets.add(t.target_key);
 
@@ -106,7 +124,6 @@ export function handleScanStateSync(msg) {
 
     // si un modal est ouvert, le rafraîchir une seule fois
     if (openedId && typeof refreshModalAfterScan === "function") {
-        // openedId est du style "modal-pc_12" ou "modal-unknown-pc_12"
         // on extrait le targetKey
         const m = openedId.match(/(pc_\d+|npc_\d+)/);
         if (m) refreshModalAfterScan(m[1]);
