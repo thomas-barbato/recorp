@@ -189,8 +189,8 @@ export function handlePlayerMove(msg) {
                             const centerY = endY + (sizeY - 1) / 2;
 
                             engine.camera.centerOn(centerX, centerY);
-
-                            renderMoveCostAbovePlayer(playerId, msg.move_cost);
+                            
+                            window.renderScanTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
                             // mise à jour de la position du joueur.
                             if (playerId === window.current_player_id) {
                                 currentPlayer.user.coordinates.x = endX;
@@ -203,7 +203,7 @@ export function handlePlayerMove(msg) {
                             engine.renderer.requestRedraw();
                             window.canvasEngine.renderer.requestRedraw();
 
-                            // ⭐ FIX SONAR : remettre à zéro pour réinitialiser la rotation
+                            // remettre à zéro pour réinitialiser la rotation
                             if (window.canvasEngine?.renderer?.ui?.sonar) {
                                 window.canvasEngine.renderer.ui.sonar._sonarPulseTime = 0;
                             }

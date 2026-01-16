@@ -14,6 +14,10 @@ export function getScanResult(msg) {
         data: data,
     });
 
+    /* Exemple:
+    registerEffect("buff", "player_23:cloak", { expires_at });
+    */
+
     // supprime l'ancienne instance de ce scan.
     window.scanExpiredLocal.delete(target_key);
 
@@ -23,10 +27,6 @@ export function getScanResult(msg) {
         expires_at
     );
 
-    /* Exemple:
-    registerEffect("buff", "player_23:cloak", { expires_at });
-    */
-
     // scan status
     window.scannedTargets.add(target_key);
     window.scannedModalData[target_key] = data;
@@ -35,6 +35,8 @@ export function getScanResult(msg) {
     };
 
     window.canvasEngine?.renderer?.requestRedraw();
+    window.renderScanTextAboveTarget(target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
+
     let progressBarApRemaining = document.getElementById("actionPoint-container-value-min");
     let progressBarApMax = document.getElementById("actionPoint-container-value-max").textContent;
     let progressBarApWidth = document.getElementById("ap-percent");
@@ -78,6 +80,7 @@ export function sendScanResultToGroup(msg) {
 
     refreshModalAfterScan(msg.target_key);
     window.canvasEngine?.renderer?.requestRedraw();
+    window.renderScanTextAboveTarget(msg.target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
 }
 
 export function handleScanStateSync(msg) {

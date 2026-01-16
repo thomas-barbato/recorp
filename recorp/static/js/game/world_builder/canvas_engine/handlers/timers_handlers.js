@@ -7,18 +7,19 @@ export function invalidateTimerEffect(event) {
 
     list.forEach(e => {
         const key = `${e.target_type}_${e.target_id}`;
-
+        
         if (e.effect === "scan") {
             window.clearScan(key);
             window.scanExpiredLocal?.delete(key);
             window.scanExpiredLocal.delete(targetKey);
-            // (optionnel) cleanup du timer visuel
+            // (optionnel) cleanup du timer visuel  
             const effect_key = `scan:${targetKey}`;
             if (window.effectVisualTimers?.has(effect_key)) {
                 clearTimeout(window.effectVisualTimers.get(effect_key));
                 window.effectVisualTimers.delete(effect_key);
             }
         } else {
+
             window.unregisterEffect(e.effect, key);
         }
 

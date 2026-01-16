@@ -12,8 +12,9 @@ class FloatingMessageManager {
         // Registre logique -> fichier
         this.iconMap = {
             // Actions
-            ship: "spaceship.svg",
+            movement: "ship.svg",
             invisible: "invisible.svg",
+            scan: "scan_ship.svg",
 
             // Attaques envoyées
             missile: "missile.svg",
@@ -25,6 +26,7 @@ class FloatingMessageManager {
             thermal_shield: "thermal_shield.svg",
             ballistic_shield: "ballistic_shield.svg",
             hull: "hull.svg",
+
         };
 
         // Images préchargées

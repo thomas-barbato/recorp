@@ -39,23 +39,6 @@ export function initGlobals() {
         foregroundElement = map_informations?.sector_element || [];
         npcs = map_informations?.npc || [];
 
-        window.UI_EVENT_CONFIG = {
-            move: {
-                label: "déplacement",
-                icon: "/static/img/ux/gameIcons-arrow.svg",
-            },
-
-            scan_add: {
-                label: "scan",
-                icon: "/static/img/ux/gameIcons-brass-eye.svg",
-            },
-
-            scan_remove: {
-                label: "scan",
-                icon: "/static/img/ux/gameIcons-brass-eye.svg",
-            },
-        };
-
         // Expose legacy globals on window for older scripts (chat, modals...)
         window.map_informations = map_informations;
         window.current_player_id = current_player_id;
@@ -142,11 +125,13 @@ export function initGlobals() {
          * Helper de purge scan (appelé UNIQUEMENT depuis WS effects_invalidated)
          */
         window.clearScan = function (targetKey) {
+            
             // canonique
             window.activeEffects?.scan?.delete(targetKey);
 
             // legacy (temporaire)
             window.scannedTargets?.delete(targetKey);
+
             delete window.scannedMeta?.[targetKey];
             delete window.scannedModalData?.[targetKey];
         };
@@ -163,10 +148,12 @@ export function initGlobals() {
             const delay = Math.max(0, new Date(expiresAt).getTime() - Date.now());
 
             const timeoutId = setTimeout(() => {
-                // ⚠️ VISUEL UNIQUEMENT
+                // VISUEL UNIQUEMENT
                 if (effect === "scan") {
                     window.scanExpiredLocal.add(targetKey);
                     window.canvasEngine?.renderer?.requestRedraw();
+                    // affiche message de suppression de scan.
+                    window.renderScanTextAboveTarget(targetKey, "- scan", "rgba(231, 0, 11, 0.95)", "scan");
                 }
 
                 window.effectVisualTimers.delete(key);
@@ -174,6 +161,29 @@ export function initGlobals() {
 
             window.effectVisualTimers.set(key, timeoutId);
         };
+
+        window.renderScanTextAboveTarget = function(targetKey, text, color = "rgba(0,255,180,0.95)", icon = "ship") {
+            const engine = window.canvasEngine;
+            if (!engine || !engine.map || !engine.renderer) return;
+
+            const actor = engine.map.findActorByKey(targetKey);
+            if (!actor) return;
+
+            const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
+            const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
+
+            const worldX = (actor.renderX ?? actor.x) + (sizeX - 1) / 2;
+            const worldY = (actor.renderY ?? actor.y) + (sizeY - 1) / 2;
+
+            engine.renderer.addFloatingMessage({
+                text,
+                icon: icon,
+                worldX,
+                worldY,
+                duration: 2000,
+                color: color
+            });
+        }
 
         return true;
     } catch (e) {

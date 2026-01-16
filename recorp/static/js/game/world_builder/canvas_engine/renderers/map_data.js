@@ -133,7 +133,7 @@ export default class MapData {
 
     findPlayerById(id) {
         if (id == null) return null;
-
+        
         // on tolère number / string
         const keyStr = String(id);
         const keyNum = Number.isFinite(Number(id)) ? Number(id) : null;
@@ -146,6 +146,41 @@ export default class MapData {
         }
 
         return null;
+    }
+
+    findNpcById(id) {
+        if (id == null) return null;
+
+        const idStr = String(id);
+        const idNum = Number.isFinite(Number(id)) ? Number(id) : null;
+
+        if (this.npcs?.[idStr]) return this.npcs[idStr];
+        if (idNum !== null && this.npcs?.[idNum]) return this.npcs[idNum];
+
+        // fallback : chercher dans worldObjects
+        return this.worldObjects.find(o =>
+            o.type === "npc" &&
+            (String(o.id) === `npc_${idStr}`)
+        ) || null;
+    }
+
+    findActorByKey(targetKey) {
+        if (!targetKey) return null;
+
+        // targetKey attendu : "pc_23", "npc_12", "foreground_5", etc.
+        const [type, id] = targetKey.split("_");
+        if (!type || !id) return null;
+
+        switch (type) {
+            case "pc":
+                return this.findPlayerById(id);
+
+            case "npc":
+                return this.findNpcById(id);
+
+            default:
+                return this.worldObjects.find(o => o.id === targetKey) || null;
+        }
     }
 
     getCurrentPlayer() {

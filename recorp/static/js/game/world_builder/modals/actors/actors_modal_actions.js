@@ -325,7 +325,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 extra.iconClass.split(" ").forEach(c => iconEl.classList.add(c));
             } else {
                 iconEl = document.createElement("img");
-                iconEl.src = "/static/img/ux/gameIcons-brass-eye.svg"
+                iconEl.src = "/static/img/ux/scan_ship.svg"
             }
 
             // --- click handler ---

@@ -443,8 +443,8 @@ const targetKey =
         if (meta?.expires_at) scanInfo.dataset.expiresAt = meta.expires_at;
 
         const icon = document.createElement("img");
-        icon.src = "/static/img/ux/gameIcons-brass-eye.svg";
-        icon.classList.add("w-4", "h-4", "opacity-90");
+        icon.src = "/static/img/ux/scan_ship.svg";
+        icon.classList.add("w-5", "h-5", "opacity-90");
 
         const label = document.createElement("span");
         label.classList.add("countdown-label");
@@ -594,7 +594,7 @@ function buildShipStatsSection(data) {
 
         if(type == "hp"){ label_icon_className ="iconify game-icons--shieldcomb w-[20px] h-[20px]";}
         if(type == "ap"){ label_icon_className = "iconify game-icons--targeting w-[20px] h-[20px]"; }
-        if(type == "movement"){ label_icon_className = "iconify game-icons--spaceship w-[20px] h-[20px]"; }
+        if(type == "movement"){ label_icon_className = "iconify game-icons--interceptor-ship w-[20px] h-[20px]"; }
         if(type == "DEFENSE_BALLISTIC"){ label_icon_className = "iconify game-icons--shield-reflect w-[20px] h-[20px]"; }
         if(type == "DEFENSE_THERMAL"){ label_icon_className = "iconify game-icons--laser-warning w-[20px] h-[20px]"; }
         if(type == "DEFENSE_MISSILE"){ label_icon_className = "iconify game-icons--dragon-shield w-[20px] h-[20px]"; }
