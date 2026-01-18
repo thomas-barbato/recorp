@@ -6,7 +6,7 @@ class FloatingMessageManager {
         this.messages = [];
         this.maxMessages = 8; // nombre max de messages simultanés
 
-        // Chemin de base vers les icônes (servies par Django sous /static/floating_icon/...)
+        // Chemin de base vers les icônes
         this.iconBaseUrl = "/static/floating_icon/";
 
         // Registre logique -> fichier
@@ -88,21 +88,11 @@ class FloatingMessageManager {
 
     _drawIcon(ctx, iconKey, x, y, size) {
         const img = this.icons[iconKey];
+        
         if (img) {
             const half = size / 2;
             ctx.drawImage(img, x - half, y - half, size, size);
-        } else {
-            // fallback: petit symbole unicode
-            const fallbackChar = iconKey === "ship" ? "🚀" : "◆";
-            ctx.font = "18px Orbitron, sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = "rgb(255,255,255)";
-            ctx.strokeText(fallbackChar, x, y);
-            ctx.fillText(fallbackChar, x, y);
-        }
+        } 
     }
 
     updateAndRender(ctx, camera) {

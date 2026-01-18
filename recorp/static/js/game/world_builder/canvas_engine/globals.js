@@ -77,8 +77,14 @@ export function initGlobals() {
         };
 
         window.unregisterEffect = function (effectType, key) {
+            
+            if (!effectType || !key) return;
+
             if (!window.activeEffects?.[effectType]) return;
             window.activeEffects[effectType].delete(key);
+            
+            // 🔥 RECYCLAGE MODAL ICI
+            window.refreshModalIfOpen?.(key);
         };
 
         window.hasEffect = function (effectType, key) {
@@ -153,7 +159,9 @@ export function initGlobals() {
                     window.scanExpiredLocal.add(targetKey);
                     window.canvasEngine?.renderer?.requestRedraw();
                     // affiche message de suppression de scan.
-                    window.renderScanTextAboveTarget(targetKey, "- scan", "rgba(231, 0, 11, 0.95)", "scan");
+                    window.renderTextAboveTarget(targetKey, "- scan", "rgba(231, 0, 11, 0.95)", "scan");
+                    // ferme modal après expiration du timer.
+                    window.refreshModalIfOpen(targetKey);
                 }
 
                 window.effectVisualTimers.delete(key);
@@ -162,7 +170,7 @@ export function initGlobals() {
             window.effectVisualTimers.set(key, timeoutId);
         };
 
-        window.renderScanTextAboveTarget = function(targetKey, text, color = "rgba(0,255,180,0.95)", icon = "ship") {
+        window.renderTextAboveTarget = function(targetKey, text, color = "rgba(0,255,180,0.95)", icon = null) {
             const engine = window.canvasEngine;
             if (!engine || !engine.map || !engine.renderer) return;
 
@@ -185,6 +193,32 @@ export function initGlobals() {
             });
         }
 
+        window.refreshModalIfOpen = function (targetKey) {
+            if (!targetKey) return;
+
+            // modal normal
+            const modal = document.getElementById(`modal-${targetKey}`);
+            if (!modal) return;
+
+            // Empêche toute boucle
+            if (modal.dataset._refreshing === "1") return;
+            modal.dataset._refreshing = "1";
+
+            // Ferme puis rouvre au prochain tick
+            setTimeout(() => {
+                try {
+                    window.open_close_modal?.(targetKey);
+                    window.open_close_modal?.(targetKey);
+                } finally {
+                    // Nettoyage sécurité
+                    setTimeout(() => {
+                        const m = document.getElementById(`modal-${targetKey}`);
+                        if (m) delete m.dataset._refreshing;
+                    }, 0);
+                }
+            }, 0);
+        };
+
         return true;
     } catch (e) {
         console.error('initGlobals failed', e);
@@ -194,12 +228,7 @@ export function initGlobals() {
 
 /**
  * Démarre un timer de compte à rebours dans un élément DOM.
- *
- * @param {HTMLElement} container - élément porteur du dataset.expiresAt
- * @param {Object} options
- * @param {Function} options.onExpire - callback optionnel à l'expiration
- * @param {Boolean} options.showExpired - afficher "Expiré"
- */
+ **/
 export function startCountdownTimer(container, options = {}) {
     if (!container?.dataset?.expiresAt) return;
 
@@ -256,5 +285,31 @@ export function startCountdownTimer(container, options = {}) {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 }
+
+window.refreshModalIfOpen = function (targetKey) {
+    if (!targetKey) return;
+
+    // modal normal
+    const modal = document.getElementById(`modal-${targetKey}`);
+    if (!modal) return;
+
+    // Empêche toute boucle
+    if (modal.dataset._refreshing === "1") return;
+    modal.dataset._refreshing = "1";
+
+    // Ferme puis rouvre au prochain tick
+    setTimeout(() => {
+        try {
+            window.open_close_modal?.(targetKey);
+            window.open_close_modal?.(targetKey);
+        } finally {
+            // Nettoyage sécurité
+            setTimeout(() => {
+                const m = document.getElementById(`modal-${targetKey}`);
+                if (m) delete m.dataset._refreshing;
+            }, 0);
+        }
+    }, 0);
+};
 
 

@@ -1936,3 +1936,24 @@ canvas {
 .text-purple-700{
     color:oklch(55.8% 0.288 302.321)
 }
+
+/* Fieldsets UI scrollables */
+#actions-fieldset,
+#status-fieldset,
+#action-logs {
+    overflow-x: hidden;      /* jamais de scroll horizontal */
+    overflow-y: auto;        /* scroll vertical si besoin */
+    min-width: 0;            /* CRUCIAL pour flexbox */
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#action-logs li {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+#actions-fieldset * {
+    min-width: 0;
+}

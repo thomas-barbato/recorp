@@ -1169,6 +1169,10 @@ video {
   height: 2rem;
 }
 
+.h-\[150px\] {
+  height: 150px;
+}
+
 .h-\[15px\] {
   height: 15px;
 }
@@ -1265,6 +1269,10 @@ video {
   max-height: 100%;
 }
 
+.max-h-\[100px\] {
+  max-height: 100px;
+}
+
 .min-h-\[100px\] {
   min-height: 100px;
 }
@@ -1279,10 +1287,6 @@ video {
 
 .min-h-\[200px\] {
   min-height: 200px;
-}
-
-.min-h-\[75px\] {
-  min-height: 75px;
 }
 
 .min-h-\[90px\] {
@@ -7071,6 +7075,31 @@ canvas {
 
 .text-purple-700{
   color:oklch(55.8% 0.288 302.321)
+}
+
+/* Fieldsets UI scrollables */
+
+#actions-fieldset,
+#status-fieldset,
+#action-logs {
+  overflow-x: hidden;
+  /* jamais de scroll horizontal */
+  overflow-y: auto;
+  /* scroll vertical si besoin */
+  min-width: 0;
+  /* CRUCIAL pour flexbox */
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+#action-logs li {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+#actions-fieldset * {
+  min-width: 0;
 }
 
 @media (min-width: 640px) {

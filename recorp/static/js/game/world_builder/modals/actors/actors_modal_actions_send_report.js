@@ -42,7 +42,6 @@
 
         modal.innerHTML = `
             <div class="relative shadow-2xl md:w-[60vw] md:max-w-2xl md:h-[80vh] w-full h-full flex flex-col md:overflow-hidden transition-all bg-zinc-950/95 border md:border border-emerald-500/40 md:rounded-2xl shadow-[0_0_30px_rgba(10,185,129,0.4)] scale-100 opacity-100">
-
                 ${renderHeader()}
                 ${renderBody(modalData)}
                 ${renderFooter()}
@@ -63,8 +62,7 @@
                     TRANSMISSION — INTEL REPORT
                 </h2>
 
-                <button id="send-report-close"
-                    class="text-emerald-300 hover:text-red-400 transition">
+                <button id="send-report-close" class="text-emerald-300 hover:text-red-400 transition">
                     ✕
                 </button>
             </div>
@@ -273,7 +271,6 @@
                 await sendPrivateMessage(payload);
                 window.showToast(gettext("Report sent ✓"), true, "report-toast-container");
             } catch (err) {
-                console.error("[SEND REPORT]", err);
                 window.showToast(gettext("Send failed ✗"), false, "report-toast-container");
             } finally {
                 setLoadingState(btn, false);
@@ -342,7 +339,6 @@
                 box.classList.remove("hidden");
 
             } catch (err) {
-                console.error("[send_report autocomplete] error:", err);
                 clear();
             }
         }

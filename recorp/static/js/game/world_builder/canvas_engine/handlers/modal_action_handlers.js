@@ -2,7 +2,8 @@ export function getScanResult(msg) {
     
     if (!msg?.target_key || !msg?.data) return;
     const { target_key, data, expires_at} = msg;
-    const remaning_ap = msg?.remaining_ap
+    const remaning_ap = msg?.remaining_ap;
+    const sender_id = `pc_${window.current_player_id}`;
 
     window.scannedTargets ??= new Set();
     window.scannedModalData ??= {};
@@ -35,27 +36,11 @@ export function getScanResult(msg) {
     };
 
     window.canvasEngine?.renderer?.requestRedraw();
-    window.renderScanTextAboveTarget(target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
 
-    let progressBarApRemaining = document.getElementById("actionPoint-container-value-min");
-    let progressBarApMax = document.getElementById("actionPoint-container-value-max").textContent;
-    let progressBarApWidth = document.getElementById("ap-percent");
-    let apRemaningText = document.getElementById("ap-container-value-min");
-
-    if(progressBarApRemaining){
-        progressBarApRemaining.textContent = remaning_ap;
-    }
-
-    if(progressBarApMax){
-        if(progressBarApWidth){
-            let ap_percent = Math.max(0, Math.min(100, (remaning_ap / parseInt(progressBarApMax)) * 100));
-            progressBarApWidth.style.width = `${ap_percent}%`; 
-        }
-    }
-
-    if(apRemaningText){
-        apRemaningText.textContent = remaning_ap;
-    }
+    syncCanvasPlayerAp(window.current_player_id, remaning_ap)
+    
+    window.renderTextAboveTarget(sender_id, "- 1 AP", "rgba(231, 0, 11, 0.95)");
+    window.renderTextAboveTarget(target_key, "+ scan", "rgba(0,255,180,0.95)", "scan");
 
     refreshModalAfterScan(target_key);
 }
@@ -80,7 +65,7 @@ export function sendScanResultToGroup(msg) {
 
     refreshModalAfterScan(msg.target_key);
     window.canvasEngine?.renderer?.requestRedraw();
-    window.renderScanTextAboveTarget(msg.target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
+    window.renderTextAboveTarget(msg.target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
 }
 
 export function handleScanStateSync(msg) {
@@ -159,4 +144,36 @@ export function handleScanVisibilityUpdate(msg) {
         }
     });
     window.canvasEngine?.renderer?.requestRedraw();
+}
+
+function syncCanvasPlayerAp(playerId, remainingAp) {
+    const engine = window.canvasEngine;
+    if (!engine || !engine.map) return;
+
+    const actor = engine.map.findPlayerById(playerId);
+    if (!actor || !actor.data || !actor.data.ship) return;
+
+    if (typeof remainingAp === "number") {
+        window.currentPlayer.user.current_ap = remainingAp;
+    }
+
+    let progressBarApRemaining = document.getElementById("actionPoint-container-value-min");
+    let progressBarApMax = document.getElementById("actionPoint-container-value-max").textContent;
+    let progressBarApWidth = document.getElementById("ap-percent");
+    let apRemaningText = document.getElementById("ap-container-value-min");
+
+    if(progressBarApRemaining){
+        progressBarApRemaining.textContent = remainingAp;
+    }
+
+    if(progressBarApMax){
+        if(progressBarApWidth){
+            let ap_percent = Math.max(0, Math.min(100, (remainingAp / parseInt(progressBarApMax)) * 100));
+            progressBarApWidth.style.width = `${ap_percent}%`; 
+        }
+    }
+
+    if(apRemaningText){
+        apRemaningText.textContent = remainingAp;
+    }
 }

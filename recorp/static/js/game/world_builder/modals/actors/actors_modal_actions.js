@@ -272,6 +272,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     const scanIcon = document.createElement("img");
     scanIcon.src = "/static/img/ux/gameIcons-radar-cross-section.svg";
     scanIcon.classList.add('text-white')
+
+    let ap_cost = 1;
     
     const scanButton = createActionButton(
         scanIcon,
@@ -287,16 +289,16 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
             });
         },
-        { ap_cost:1 }
+        { ap_cost:ap_cost  }
         
     );
     applyScanState(data, scanButton);
     // BLOQUER SI AP INSUFFISANTS
-    applyActionCostState({ ap_cost: 1, cost: 0 , key : "scan" }, scanButton);
+    applyActionCostState({ ap_cost: ap_cost , cost: 0 , key : "scan" }, scanButton);
     
     grid.innerHTML = "";
     // Limiter l'utilisation du scan.
-    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe")) {
+    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe") || ap_cost > window.currentPlayer.user.current_ap) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
     }   
 
@@ -309,9 +311,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     // Actions post-scan : “à la suite” dans la grille
     if (data._ui?.scanned === true) {
-        console.log("DATA :")
-        console.log(data)
-        console.log("=======")
         PC_NPC_EXTRA_ACTIONS.forEach(extra => {
 
             // --- icon ---
@@ -607,7 +606,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn.classList.add("opacity-40", "pointer-events-none");
             }
 
-            if (action.key === "scan" && alreadyScanned) {
+            if (action.key === "scan" && (alreadyScanned || !playerHasModule("PROBE", "drilling probe") || action.ap_cost > window.currentPlayer.user.current_ap)) 
+            {
                 btn.classList.add("opacity-40", "pointer-events-none");
             }
 

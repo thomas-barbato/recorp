@@ -190,7 +190,7 @@ export function handlePlayerMove(msg) {
 
                             engine.camera.centerOn(centerX, centerY);
                             
-                            window.renderScanTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
+                            window.renderTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
                             // mise à jour de la position du joueur.
                             if (playerId === window.current_player_id) {
                                 currentPlayer.user.coordinates.x = endX;
@@ -267,27 +267,4 @@ export function handlePlayerMove(msg) {
     if (engine.renderer && typeof engine.renderer.requestRedraw === "function") {
         engine.renderer.requestRedraw();
     }
-}
-
-function renderMoveCostAbovePlayer(playerId, cost) {
-    const engine = window.canvasEngine;
-    if (!engine || !engine.map || !engine.renderer) return;
-
-    const actor = engine.map.findPlayerById(playerId);
-    if (!actor) return;
-
-    const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
-    const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
-
-    const worldX = (actor.renderX ?? actor.x) + (sizeX - 1) / 2;
-    const worldY = (actor.renderY ?? actor.y) + (sizeY - 1) / 2;
-
-    engine.renderer.addFloatingMessage({
-        text: cost,
-        icon: "ship",
-        worldX,
-        worldY,
-        duration: 1200,
-        color: "rgba(0,255,180,0.95)"
-    });
 }
