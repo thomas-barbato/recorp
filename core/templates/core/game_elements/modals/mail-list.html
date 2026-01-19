@@ -27,11 +27,6 @@
             <!-- Avatar + Scan-->
             <div class="relative w-14 min-w-14 h-14">
                 <img src='{% static msg.avatar_url %}' alt="{{ msg.name }}" class="w-14 h-14 rounded-lg object-cover border border-emerald-400/50 shadow-lg">
-                <!-- Effet glitch -->
-                <div class="absolute inset-0 bg-emerald-500/20 mix-blend-screen opacity-30 rounded-lg blur-[1px]"></div>
-
-                <!-- Radar scan (hover) -->
-                <div class="absolute inset-0 rounded-lg border border-emerald-400/40 opacity-0 group-hover:opacity-40 animate-radar"></div>
             </div>
 
             <div class="flex flex-col flex-1 min-w-0">
@@ -80,7 +75,7 @@
     {% endfor %}
     <!-- PAGINATION -->
     {% if page_obj %}
-    <div id="pagination-controls" class="flex justify-between items-center mt-4 text-emerald-300 text-xs">
+    <div id="message-pagination-controls" class="flex justify-between items-center mt-4 text-emerald-300 text-xs">
         <button id="prev-page" class="px-3 py-1 z-2 border border-emerald-500/40 rounded hover:bg-emerald-500/20 transition disabled:opacity-30 {% if has_previous %}cursor-pointer{% endif %}" {% if not has_previous %}disabled{% endif %}>
             ← {% translate "Previous" %}
         </button>

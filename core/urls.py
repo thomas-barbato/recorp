@@ -43,11 +43,20 @@ urlpatterns = [
         core_views.ChangeSectorGameView.as_view(template_name="play.html"),
         name="changeSector_view",
     ),
+    path(
+        "events/", 
+        core_views.get_player_logs, name="player_logs"
+    ),
+    path(
+        "events/preview/", 
+        core_views.get_player_logs_preview, name="player_logs_preview"
+    ),
     path('logout', auth_views.LogoutView.as_view(
         next_page='/', 
         http_method_names = ['post']
         ), 
-        name='logout_view'),
+        name='logout_view'
+    ),
     path(
         "play/modal-data/<str:element_type>/<int:element_id>/",
         core_views.modal_data_view,

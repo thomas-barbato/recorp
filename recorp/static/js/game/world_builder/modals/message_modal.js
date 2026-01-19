@@ -4,6 +4,7 @@ let content = document.getElementById('mail-modal-content');
 let openBtn = document.getElementById('message-modal-button');
 let openBtnMobile = document.getElementById('message-modal-button-mobile');
 let closeBtn = document.getElementById('close-mail-modal');
+let closeBtnBottom = document.getElementById('close-mail-modal-bottom');
 let mailList = document.getElementById('mail-list');
 let searchInput = document.getElementById('search-message');
 let tabInbox = document.getElementById('tab-inbox');
@@ -18,7 +19,7 @@ let isModalOpen = false;
 window.mpNotificationQueue = [];
 window.mpNotificationIsShowing = false;
 
-// ✅ Charger le compteur au démarrage
+// Charger le compteur au démarrage
 loadUnreadCount();
 
 function closeModal() {
@@ -48,6 +49,7 @@ function openModal() {
 openBtnMobile.addEventListener(action_listener_touch_click, openModal);
 openBtn.addEventListener(action_listener_touch_click, openModal);
 closeBtn.addEventListener(action_listener_touch_click, closeModal);
+closeBtnBottom.addEventListener(action_listener_touch_click, closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
 // ✅ === CHARGEMENT DU COMPTEUR NON LUS ===

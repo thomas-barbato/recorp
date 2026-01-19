@@ -101,7 +101,30 @@
         </form>
     </ul>
 </div>
-<div id="map-background" class="lg:w-9/12 w-full h-full order-2 flex flex-col mx-0 lg:overflow-y-hidden overflow-x-hidden no-scrollbar mt-2 select-none lg:flex lg:justify-center lg:items-center">
+<div id="map-background" class="lg:w-9/12 w-full h-full order-2 flex flex-col mx-0 lg:overflow-y-hidden overflow-x-hidden no-scrollbar mt-2 select-none lg:flex lg:justify-center lg:items-center gap-2">
+    <div class="hidden lg:flex flex-col w-full text-center z-20 border-none rounded-xl select-none">
+        <div class="flex flex-wrap justify-center items-center gap-2 mx-auto">
+            <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+            <b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span>
+            </p>
+            <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+            <b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}
+            </p>
+            <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+            <b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}
+            </p>
+
+            <!-- Target coords -->
+            <div class="flex items-center bg-zinc-800/70 border border-emerald-500/30 rounded-lg overflow-hidden">
+            <i class="fa-solid fa-satellite-dish px-2 text-emerald-200"></i>
+            <span id="target-coord-name" class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center w-[125px] font-orbitron">
+                    {% translate 'Nothing selected' %}
+            </span>
+            <span id="target-coord-y" class="flex bg-zinc-900/70 text-emerald-400 font-bold p-1 w-[25px] invisible">00</span>
+            <span id="target-coord-x" class="flex bg-emerald-400 text-zinc-900 font-bold p-1 rounded-r w-[25px] invisible">00</span>
+            </div>
+        </div>
+    </div>
     <!-- WRAPPER PRINCIPAL -->
     <div id="canvas-wrapper" class="relative flex border-b border-r border-emerald-400/50 lg:mb-0 mb-2">
 
@@ -177,11 +200,11 @@
                     </button>
                 </div>
             </div>
-            <fieldset id="action-logs" class="w-[95vw] border border-emerald-400/40 rounded-md bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[200px] max-h-[200px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
+            <fieldset id="events-mobile-log" class="w-[95vw] border border-emerald-400/40 rounded-md bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[200px] max-h-[200px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
                 <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
-                    {% translate "Action Logs" %}
+                    {% translate "Events Logs" %}
                 </legend>
-                <ul id="player-log-container" class="flex flex-col-reverse gap-0.5">
+                <ul id="player-event-mobile-container" class="flex flex-col-reverse gap-0.5">
                     <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
                     <li class="opacity-80">{% translate "You scanned a ship." %}</li>
                     <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
@@ -293,11 +316,11 @@
             </div>
         </fieldset>
         
-        <fieldset id="action-logs" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[150px] max-h-[150px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
+        <fieldset id="events-log" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[150px] max-h-[150px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
             <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
                 {% translate "Action Logs" %}
             </legend>
-            <ul id="player-log-container" class="flex flex-col-reverse gap-1 break-all wrap-anywhere">
+            <ul id="player-event-container" class="flex flex-col-reverse gap-1 break-all wrap-anywhere">
                 <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>
                 <li class="opacity-80">{% translate "You scanned a ship." %}</li>
                 <li class="opacity-70 italic">{% translate "You entered the sector." %}</li>

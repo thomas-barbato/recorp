@@ -56,7 +56,9 @@ from core.models import (
     PrivateMessageRecipients,
     PlayerGroup,
     Message,
-    MessageReadStatus
+    MessageReadStatus,
+    Log,
+    PlayerLog,
 
 )
 from recorp.settings import LOGIN_REDIRECT_URL, BASE_DIR
@@ -1023,3 +1025,71 @@ def modal_data_view(request, element_type: str, element_id: int):
             "current_player": current_player,
             "target": target_element
         })
+        
+        
+@login_required
+def get_player_logs(request):
+    """
+    Logs COMPLETS du joueur (pour event-modal)
+    Pagination standard
+    """
+    try:
+        player = Player.objects.get(user=request.user)
+    except Player.DoesNotExist:
+        return JsonResponse({"error": "player_not_found"}, status=404)
+
+    qs = (
+        PlayerLog.objects
+        .select_related("log")
+        .filter(player=player)
+        .order_by("-created_at")
+    )
+
+    paginator = Paginator(qs, 20)  # 20 par page pour le modal
+    page_number = request.GET.get("page", 1)
+    page = paginator.get_page(page_number)
+
+    return JsonResponse({
+        "page": page.number,
+        "pages": paginator.num_pages,
+        "results": [
+            {
+                "id": pl.id,
+                "log_type": pl.log.log_type,
+                "content": pl.log.content,
+                "created_at": pl.log.created_at.isoformat(),
+            }
+            for pl in page
+        ]
+    })
+    
+    
+@login_required
+def get_player_logs_preview(request):
+    """
+    Logs récents pour HUD (desktop + mobile)
+    MAX 25 logs
+    """
+    try:
+        player = Player.objects.get(user=request.user)
+    except Player.DoesNotExist:
+        return JsonResponse({"error": "player_not_found"}, status=404)
+
+    qs = (
+        PlayerLog.objects
+        .select_related("log")
+        .filter(player=player)
+        .order_by("-created_at")[:25]
+    )
+
+    return JsonResponse({
+        "results": [
+            {
+                "id": pl.id,
+                "log_type": pl.log.log_type,
+                "content": pl.log.content,
+                "created_at": pl.log.created_at.isoformat(),
+            }
+            for pl in qs
+        ]
+    })

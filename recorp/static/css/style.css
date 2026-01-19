@@ -1940,7 +1940,8 @@ canvas {
 /* Fieldsets UI scrollables */
 #actions-fieldset,
 #status-fieldset,
-#action-logs {
+#events-mobile-log,
+#events-log {
     overflow-x: hidden;      /* jamais de scroll horizontal */
     overflow-y: auto;        /* scroll vertical si besoin */
     min-width: 0;            /* CRUCIAL pour flexbox */
@@ -1948,7 +1949,8 @@ canvas {
     box-sizing: border-box;
 }
 
-#action-logs li {
+#events-mobile-log,
+#events-log li {
     word-break: break-word;
     overflow-wrap: anywhere;
     white-space: normal;

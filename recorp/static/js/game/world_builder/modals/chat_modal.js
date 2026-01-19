@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatOpenBtn = document.getElementById("chat-modal-button");
     const chatOpenBtnMobile = document.getElementById("chat-modal-button-mobile");
     const chatCloseBtn = document.getElementById("close-chat-modal");
+    const chatCloseBtnBottom = document.getElementById("close-chat-modal-bottom");
     const chatInput = document.getElementById("chat-input");
     const chatSendBtn = document.getElementById("chat-send");
 
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatOpenBtn) chatOpenBtn.addEventListener(action_listener_touch_click, openModal);
     if (chatOpenBtnMobile) chatOpenBtnMobile.addEventListener(action_listener_touch_click, openModal);
     if (chatCloseBtn) chatCloseBtn.addEventListener(action_listener_touch_click, closeModal);
+    if (chatCloseBtnBottom) chatCloseBtnBottom.addEventListener(action_listener_touch_click, closeModal);
     chatModal.addEventListener(action_listener_touch_click, (e) => {
         if (e.target === chatModal) closeModal();
     });
