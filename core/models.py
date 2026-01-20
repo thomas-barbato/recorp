@@ -266,7 +266,7 @@ class Player(models.Model):
     )
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
-    coordinates = models.JSONField()
+    coordinates = models.JSONField(null=True)
     last_time_warpzone = models.DateTimeField(default=timezone.now, auto_now=False)
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -317,7 +317,7 @@ class SkillEffect(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
     min_level_range = models.PositiveIntegerField(default=0)
     max_level_range = models.PositiveIntegerField(default=1)
-    effect = models.JSONField()
+    effect = models.JSONField(null=True)
     expertise = models.CharField(
         max_length=20, choices=EXPERTISE_CHOICE, default=EXPERTISE_CHOICE[0]
     )
@@ -360,11 +360,12 @@ class Log(models.Model):
         ("ZONE_CHANGE", "zone change"),
         ("DEATH", "death"),
         ("KILL", "kill"),
-        ("CRAFT_END", "craft end"),
-        ("RESEARCH_END", "research end"),
+        ("CRAFT", "craft"),
+        ("RESEARCH", "research"),
         ("LEVEL_UP", "level up"),
+        ("OTHER", "other"),
     )
-    content = models.TextField(max_length=2500, blank=True)
+    content = models.JSONField(null=True)
     log_type = models.CharField(
         max_length=20, choices=LOG_TYPE_CHOICES, default=LOG_TYPE_CHOICES[0]
     )
@@ -459,7 +460,7 @@ class Npc(models.Model):
     missile_defense = models.SmallIntegerField(default=0)
     thermal_defense = models.SmallIntegerField(default=0)
     ballistic_defense = models.SmallIntegerField(default=0)
-    coordinates = models.JSONField()
+    coordinates = models.JSONField(null=True)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )
@@ -526,13 +527,25 @@ class ArchetypeModule(models.Model):
 
 
 class PlayerLog(models.Model):
+    
+    ROLE_TYPE_CHOICES = (
+        ("TRANSMITTER", "transmitter"),
+        ("RECEIVER", "receiver"),
+        ("OBSERVER", "observer"),
+    )
+    
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     log = models.ForeignKey(Log, on_delete=models.CASCADE)
+    role = models.CharField(
+        max_length=30,
+        choices=ROLE_TYPE_CHOICES,
+        default="TRANSMITTER"
+    )
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player.name} : {self.log}"
+        return f"{self.player.name} - {self.role} : {self.log}"
 
 
 class PlayerResource(models.Model):

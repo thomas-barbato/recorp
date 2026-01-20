@@ -41,7 +41,8 @@ from core.models import (
     Message, 
     PlayerGroup,
     Group,
-    MessageReadStatus
+    MessageReadStatus,
+    PlayerLog
 )
 
 
@@ -127,6 +128,27 @@ class PlayerAction:
             return Player.objects.filter(id=other_player_id).values_list("name", flat=True).first()
         except Player.DoesNotExist:
             return None
+        
+    def get_player_log(self, log):
+        return PlayerLog.objects.filter(log=log)
+        
+        
+    def get_other_player_data(self, other_player_id: int) -> Player:
+        """
+        Récupère l'ID utilisateur d'un autre joueur.
+        
+        Args:
+            other_player_id (int): ID de l'autre joueur
+            
+        Returns:
+            Player instance
+        """
+        try:
+            return Player.objects.filter(id=other_player_id).all()
+        except Player.DoesNotExist:
+            return None
+        
+        
 
     def get_other_player_user_id(self, other_player_id: int) -> Optional[int]:
         """

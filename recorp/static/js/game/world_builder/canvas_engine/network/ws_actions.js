@@ -6,6 +6,7 @@ import { handlePlayerMove, handleUpdateMovementGeneric } from "../handlers/move_
 import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handlers/message_handlers.js";
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
 import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
+import { getEventsLog } from "../handlers/events_handlers.js";
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -70,3 +71,9 @@ ActionRegistry.register("scan_state_sync", handleScanStateSync);
 // TIMERS
 // ===============================
 ActionRegistry.register("effects_invalidated", invalidateTimerEffect);
+
+// ===============================
+// EVENTS
+// ===============================
+ActionRegistry.register("event_log", getEventsLog);
+

@@ -14,6 +14,7 @@ from core.backend.action_rules import ActionRules
 
 from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel
 from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
+from core.backend.player_logs import create_event_log
 
 logger = logging.getLogger("django")
 
@@ -1180,6 +1181,26 @@ class GameConsumer(WebsocketConsumer):
                     },
                 }
             )
+            
+            playerObj = pa.get_player_data()
+            player_instance = playerObj.first()
+            
+            db = GetDataFromDB
+            destination_from = db.get_sector_name(old_sector_id)
+            destination_to = db.get_sector_name(destination_sector_id)
+            
+            payload = {
+                "event": "ZONE_CHANGE",
+                "from": destination_from,
+                "to": destination_to
+            }
+
+            create_event_log(
+                players_roles=[(player_instance, "TRANSMITTER")],
+                log_type="ZONE_CHANGE",
+                payload=payload
+            )
+
 
         except Exception as e:
             logger.exception(f"async_warp_travel ERROR: {e}")
@@ -1239,13 +1260,42 @@ class GameConsumer(WebsocketConsumer):
                 "reason": "NO_MODULE_FOUND"
             })
             return
-            
+        
+        target_name = ""
+        transmitter_playerObj = player.get_player_data()
+        transmitter_instance = transmitter_playerObj.first()
+        
         # 3) Construire les vraies données
         if target_type == "pc":
             data = build_pc_modal_data(target_id)
+            receiver_playerObj = player.get_other_player_data(data['user']['player'])
+            receiver_instance = receiver_playerObj.first()
+            target_name = receiver_instance.name
+            players_roles = [
+                (transmitter_instance, "TRANSMITTER"), 
+                (receiver_instance, "RECEIVER")
+            ]
+            
         else:
             data = build_npc_modal_data(target_id)
-            
+            target_name = data['npc']['displayed_name']
+            players_roles = [(transmitter_instance, "TRANSMITTER")]
+        
+        payload = {
+            "event": "OTHER",
+            "author": transmitter_instance.name,
+            "target": target_name
+        }
+
+        log = create_event_log(
+            players_roles=players_roles,
+            log_type="OTHER",
+            payload=payload
+        )
+        
+        player_logs = player.get_player_log(log=log)
+        self.push_event_log(player_logs)
+
         sector_id_int = int(self.room)
 
         scan = ActionRules.upsert_scan(
@@ -1385,6 +1435,27 @@ class GameConsumer(WebsocketConsumer):
                 "targets": targets,
             }
         })
+        
+    def push_event_log(self, player_logs):
+        """
+        Envoie des logs temps réel en respectant EXACTEMENT
+        le format WS attendu par ActionRegistry.
+        """
+
+        for pl in player_logs:
+            self._send_response({
+                "type": "event_log",
+                "message": {
+                        "action": "event_log",
+                        "data": {
+                            "id": pl.id,
+                            "log_type": pl.log.log_type,
+                            "payload": pl.log.content,
+                            "role": pl.role,
+                            "created_at": pl.log.created_at.isoformat(),
+                        }
+                    }
+            })
 
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""

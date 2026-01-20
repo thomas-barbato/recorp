@@ -19,17 +19,20 @@ export const LOG_TYPE_STYLE = {
         color: "text-emerald-400",
         glow: "drop-shadow-[0_0_6px_rgba(52,211,153,0.6)]"
     },
-    CRAFT_END: {
+    CRAFT: {
         color: "text-purple-300",
         glow: ""
     },
-    RESEARCH_END: {
+    RESEARCH: {
         color: "text-indigo-300",
         glow: ""
     },
     LEVEL_UP: {
         color: "text-yellow-300",
         glow: "drop-shadow-[0_0_6px_rgba(250,204,21,0.7)]"
+    },
+    OTHER: {
+        color: "text-white"
     }
 };
 

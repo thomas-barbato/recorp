@@ -830,6 +830,14 @@ class GetDataFromDB:
         return [e for e in Player.objects.filter(name=name).values('id', 'sector_id')]
     
     @staticmethod
+    def get_sector_name(sector_id):
+        sectorName = Sector.objects.filter(id=sector_id)
+        if sectorName.exists is False:
+            return
+        return sectorName.values_list('name', flat=True)[0]
+        
+    
+    @staticmethod
     def get_faction_badge_color_class(faction_name):
         return {
             'culte technologie': 'text-orange-400',
