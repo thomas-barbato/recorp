@@ -1282,14 +1282,14 @@ class GameConsumer(WebsocketConsumer):
             players_roles = [(transmitter_instance, "TRANSMITTER")]
         
         payload = {
-            "event": "OTHER",
+            "event": "SCAN",
             "author": transmitter_instance.name,
             "target": target_name
         }
 
         log = create_event_log(
             players_roles=players_roles,
-            log_type="OTHER",
+            log_type="SCAN",
             payload=payload
         )
         
@@ -1446,13 +1446,13 @@ class GameConsumer(WebsocketConsumer):
             self._send_response({
                 "type": "event_log",
                 "message": {
-                        "action": "event_log",
+                        "type": "event_log",
                         "data": {
                             "id": pl.id,
                             "log_type": pl.log.log_type,
-                            "payload": pl.log.content,
                             "role": pl.role,
-                            "created_at": pl.log.created_at.isoformat(),
+                            "content": pl.log.content,
+                            "created_at": pl.created_at.isoformat(),
                         }
                     }
             })

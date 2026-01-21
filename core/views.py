@@ -457,8 +457,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             map_range = GetDataFromDB.get_resolution_sized_map("is_mobile")
         elif user_agent.is_tablet:
             map_range = GetDataFromDB.get_resolution_sized_map("is_tablet")
-
-        context["loop"] = range(10)
+            
         context["map_size_range"] = {"cols": range(40), "rows": range(40)}
 
         if Sector.objects.filter(id=player.get_player_sector()).exists():
@@ -517,6 +516,24 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 "translated_statistics_msg_label": _("statistics"),
             }
             
+            logs_qs = (
+                PlayerLog.objects
+                .select_related("log")
+                .filter(player_id=player.get_player_id())
+                .order_by("-log__created_at")[:25]
+            )
+            
+            player_event_logs = [
+                {
+                    "id": pl.id,
+                    "log_type": pl.log.log_type,
+                    "role": pl.role,
+                    "content": pl.log.content,
+                    "created_at": pl.log.created_at.isoformat(),
+                }
+                for pl in logs_qs
+            ]
+            
             player_id = player.get_player_id()
             
             result_dict["sector"] = data["sector"]  
@@ -529,6 +546,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             context["current_player_state"] = build_pc_modal_data(player_id)
             context["current_player_id"] = player_id
             context["module_categories"] = modules_category
+            context["player_event_logs"] = player_event_logs
             return context
         
         else:
@@ -1057,6 +1075,7 @@ def get_player_logs(request):
                 "id": pl.id,
                 "log_type": pl.log.log_type,
                 "content": pl.log.content,
+                "role": pl.role,
                 "created_at": pl.log.created_at.isoformat(),
             }
             for pl in page
@@ -1086,6 +1105,7 @@ def get_player_logs_preview(request):
         "results": [
             {
                 "id": pl.id,
+                "role": pl.role,
                 "log_type": pl.log.log_type,
                 "content": pl.log.content,
                 "created_at": pl.log.created_at.isoformat(),

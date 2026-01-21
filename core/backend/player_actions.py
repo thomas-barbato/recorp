@@ -130,7 +130,7 @@ class PlayerAction:
             return None
         
     def get_player_log(self, log):
-        return PlayerLog.objects.filter(log=log)
+        return PlayerLog.objects.select_related("log").filter(log=log)
         
         
     def get_other_player_data(self, other_player_id: int) -> Player:

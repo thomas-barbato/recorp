@@ -1,5 +1,6 @@
 import { currentPlayer, initGlobals } from './globals.js';
 import './touch.js';
+import '../events/events_hud.js'
 import SpriteManager from './engine/sprite_manager.js';
 import CanvasManager from './engine/canvas_manager.js';
 import Camera from './engine/camera.js';
@@ -20,6 +21,7 @@ import {
     updateHoverTooltip, 
     hideHoverTooltip
 } from "./engine/update_coordinate_display.js";
+
 
 const ok = initGlobals();
 if (!ok) {

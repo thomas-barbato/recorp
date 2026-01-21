@@ -86,12 +86,6 @@ export function handleWarpTravel(sectorWarpZoneId) {
             size: { x: sizeX, y: sizeY }
         };
 
-        console.log(
-            "%c[CANVAS] Envoi async_warp_travel →",
-            "color:#00ff9d;font-weight:bold;",
-            payload
-        );
-
         // loading screen optionnel
         if (window.sectorLoader) {
             try {

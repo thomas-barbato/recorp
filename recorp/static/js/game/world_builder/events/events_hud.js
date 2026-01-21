@@ -1,32 +1,41 @@
 import { renderEventLog } from "./events_renderer.js";
 
-async function loadHudEvents() {
-    const res = await fetch("/events/preview/");
-    if (!res.ok) return;
+function loadInitialEventLogs() {
+    const script = document.getElementById("script_player_event_logs");
+    if (!script) {
+        console.warn("No script_player_event_logs found");
+        return;
+    }
 
-    const data = await res.json();
+    let logs;
+    try {
+        logs = JSON.parse(script.textContent);
+    } catch (e) {
+        console.error("Invalid event logs JSON", e);
+        return;
+    }
 
     const desktopContainer = document.getElementById("player-event-container");
-    const mobileContainer = document.getElementById("player-event-mobile-container");
+    const mobileContainer  = document.getElementById("player-event-mobile-container");
 
-    if (!desktopContainer && !mobileContainer) return;
+    logs.forEach((log) => {
+        renderEventLog(log, {
+            container: desktopContainer,
+            mode: "hud",
+            isMobile: false,
+            prepend: false
+        });
+    });
 
-    data.results.reverse().forEach(log => {
-        if (desktopContainer) {
-            renderEventLog(log, {
-                container: desktopContainer,
-                prepend: true,
-                mode: "hud"
-            });
-        }
-        if (mobileContainer) {
-            renderEventLog(log, {
-                container: mobileContainer,
-                prepend: true,
-                mode: "hud"
-            });
-        }
+    logs.forEach((log) => {
+        renderEventLog(log, {
+            container: mobileContainer,
+            mode: "hud",
+            isMobile: true,
+            prepend: false
+        });
     });
 }
 
-document.addEventListener("DOMContentLoaded", loadHudEvents);
+// ✅ appel immédiat
+loadInitialEventLogs();

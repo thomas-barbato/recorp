@@ -357,6 +357,7 @@ class Log(models.Model):
     LOG_TYPE_CHOICES = (
         ("ATTACK", "attack"),
         ("DEFENSE", "defense"),
+        ("SCAN", "scan"),
         ("ZONE_CHANGE", "zone change"),
         ("DEATH", "death"),
         ("KILL", "kill"),

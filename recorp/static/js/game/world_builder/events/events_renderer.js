@@ -2,41 +2,124 @@ import { LOG_TYPE_STYLE, DEFAULT_LOG_STYLE } from "./events_config.js";
 
 function formatTimestamp(isoDate) {
     const d = new Date(isoDate);
-    return d.toLocaleTimeString([], {
+
+    const date = d.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    });
+
+    const time = d.toLocaleTimeString("fr-FR", {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit"
     });
+
+    return `${date} ${time}`;
 }
 
-export function renderEventLog(log, { container, prepend = true, mode = "hud" }) {
-    const style = LOG_TYPE_STYLE[log.log_type] || DEFAULT_LOG_STYLE;
+export function renderEventLog(
+    log,
+    {
+        container,
+        prepend = true,
+        mode = "hud",
+        isMobile = false
+    }
+) {
+    if (!container) return;
+
+    const p = log.content || {};
+    const eventType =
+        p.event ||
+        log.log_type ||
+        "DEFAULT";
+
+    const style = LOG_TYPE_STYLE[eventType] || DEFAULT_LOG_STYLE;
 
     const li = document.createElement("li");
     li.className = `
-        flex flex-col gap-0.5
+        flex items-center gap-2
+        text-xs leading-tight
         ${style.color}
-        ${style.glow}
-        ${mode === "modal" ? "p-2 rounded-md bg-emerald-900/20" : ""}
+        ${style.glow || ""}
+        ${mode === "modal" ? "p-2 rounded-md" : ""}
     `;
+
+    const showTimestamp = (mode === "modal") || isMobile;
+    const timestampHtml = showTimestamp
+        ?   `<span class="opacity-50 font-mono whitespace-nowrap text-white">
+                ${formatTimestamp(log.created_at)}
+            </span>`
+        : "";
 
     li.innerHTML = `
-        <div class="flex justify-between items-center text-[10px] opacity-70">
-            <span class="uppercase tracking-wider font-bold">
-                ${log.log_type.replace("_", " ")}
-            </span>
-            <span class="font-mono">
-                ${formatTimestamp(log.created_at)}
-            </span>
-        </div>
-        <div class="text-xs break-words">
-            ${log.content}
-        </div>
+        ${timestampHtml}
+        <span class="wrap">
+            ${buildEventText(log)}
+        </span>
     `;
 
-    if (prepend) {
-        container.prepend(li);
-    } else {
-        container.append(li);
+    if (prepend) container.prepend(li);
+    else container.append(li);
+}
+
+function buildEventText(log) {
+    const p = log.content || {};
+    const role = log.role;
+
+    console.log(log)
+
+    const eventType = p.event || log.log_type;
+
+    switch (eventType) {
+
+        /* =======================
+            ZONE CHANGE
+        ======================= */
+        case "ZONE_CHANGE":
+            if (p.from && p.to) {
+                return `Changement de zone : <b>${p.from}</b> → <b>${p.to}</b>`;
+            }
+            return "Changement de zone";
+
+        /* =======================
+            SCAN
+        ======================= */
+        case "SCAN":
+            if (role === "TRANSMITTER") {
+                return `Vous avez scanné <b>${p.target}</b>`;
+            }
+            if (role === "RECEIVER") {
+                return `<b>${p.author}</b> vous a scanné`;
+            }
+            if (role === "OBSERVER") {
+                return `<b>${p.author}</b> a scanné <b>${p.target}</b>`;
+            }
+            return "Scan";
+
+        /* =======================
+            ATTACK
+        ======================= */
+        case "ATTACK":
+            if (role === "TRANSMITTER") {
+                return `Vous attaquez <b>${p.target}</b>`;
+            }
+            if (role === "RECEIVER") {
+                return `<b>${p.author}</b> vous attaque`;
+            }
+            if (role === "OBSERVER") {
+                return `<b>${p.author}</b> attaque <b>${p.target}</b>`;
+            }
+            return "Attaque";
+
+        /* =======================
+            FALLBACK
+        ======================= */
+        default:
+            if (p.author && p.target) {
+                return `<b>${p.author}</b> → <b>${p.target}</b>`;
+            }
+            return "Événement";
     }
 }

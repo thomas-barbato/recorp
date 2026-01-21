@@ -4,6 +4,7 @@
 {{ map_informations|json_script:"script_map_informations" }}
 {{ current_player_state|json_script:"script_current_player_state" }}
 {{ current_player_id|json_script:"script_current_player_id" }}
+{{ player_event_logs|json_script:"script_player_event_logs" }}
 
 <div id="button-menu" class="hidden lg:flex justify-center items-center order-1 m-2 w-1/12">
     <ul class="flex flex-col h-auto gap-6 p-4 bg-emerald-900/40 border border-emerald-400/40 rounded-md">
@@ -200,7 +201,7 @@
                     </button>
                 </div>
             </div>
-            <fieldset id="events-mobile-log" class="w-[95vw] border border-emerald-400/40 rounded-md bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[200px] max-h-[200px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
+            <fieldset id="events-mobile-log" class="w-[95vw] border border-emerald-400/40 rounded-md bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[200px] max-h-[200px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar">
                 <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm">
                     {% translate "Events Logs" %}
                 </legend>
@@ -305,7 +306,7 @@
             </div>
         </fieldset>
         
-        <fieldset id="events-log" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[150px] max-h-[150px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar select-none">
+        <fieldset id="events-log" class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-1 overflow-y-auto min-h-[150px] max-h-[150px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar">
             <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
                 {% translate "Events Logs" %}
             </legend>

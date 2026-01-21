@@ -1,9 +1,7 @@
 import { renderEventLog } from "../../events/events_renderer.js"
 
 export function getEventsLog(payload){
-    console.log("dedans")
     const log = payload.data;
-    console.log(log)
     // =========================
     // HUD DESKTOP
     // =========================

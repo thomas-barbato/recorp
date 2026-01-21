@@ -1,5 +1,4 @@
 export async function handleSectorSync(message) {
-    console.log("[WS] sector_sync reçu :", message);
 
     const raw = message.data || message;
 
