@@ -201,14 +201,14 @@
         const footer = {
             el: footerContainer,
             setCloseButton(modalId) {
-                const closeBtn = document.createElement("img");
-                closeBtn.src = "/static/img/ux/close.svg";
-                closeBtn.classList.add(
-                    "inline-block","w-[5%]","h-[5%]",
-                    "cursor-pointer","hover:animate-pulse","mx-auto"
-                );
+                let footer_container = document.createElement('div')
+                footer_container.className = "w-full flex justify-center items-center py-3  relative z-10";
+                let closeBtn = document.createElement('button');
+                closeBtn.className = "text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all";
+                closeBtn.textContent= gettext('close');
                 closeBtn.onclick = () => open_close_modal(modalId);
-                this.el.append(closeBtn);
+                footer_container.append(closeBtn)
+                this.el.append(footer_container);
             }
         };
 

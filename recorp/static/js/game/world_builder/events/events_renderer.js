@@ -30,14 +30,11 @@ export function renderEventLog(
     if (!container) return;
 
     const p = log.content || {};
-    const eventType =
-        p.event ||
-        log.log_type ||
-        "DEFAULT";
-
+    const eventType = p.event || log.log_type || "DEFAULT";
     const style = LOG_TYPE_STYLE[eventType] || DEFAULT_LOG_STYLE;
 
     const li = document.createElement("li");
+
     li.className = `
         flex items-center gap-2
         text-xs leading-tight
@@ -48,7 +45,7 @@ export function renderEventLog(
 
     const showTimestamp = (mode === "modal") || isMobile;
     const timestampHtml = showTimestamp
-        ?   `<span class="opacity-50 font-mono whitespace-nowrap text-white">
+        ? `<span class="opacity-50 font-mono whitespace-nowrap text-white">
                 ${formatTimestamp(log.created_at)}
             </span>`
         : "";
@@ -60,15 +57,17 @@ export function renderEventLog(
         </span>
     `;
 
+    // IMPORTANT :
+    // - HUD: container est en flex-col-reverse => pour avoir "nouveau en haut visuellement", on fait append (prepend=false)
+    // - MODAL: prepend/append dépend du contexte (pagination vs temps réel)
     if (prepend) container.prepend(li);
     else container.append(li);
 }
 
+
 function buildEventText(log) {
     const p = log.content || {};
     const role = log.role;
-
-    console.log(log)
 
     const eventType = p.event || log.log_type;
 
@@ -79,7 +78,7 @@ function buildEventText(log) {
         ======================= */
         case "ZONE_CHANGE":
             if (p.from && p.to) {
-                return `Changement de zone : <b>${p.from}</b> → <b>${p.to}</b>`;
+                return `Changement de zone : <b>${p.from.replace('_',' ').replace('-',' ')}</b> → <b>${p.to.replace('_',' ').replace('-',' ')}</b>`;
             }
             return "Changement de zone";
 
@@ -87,6 +86,7 @@ function buildEventText(log) {
             SCAN
         ======================= */
         case "SCAN":
+            console.log(`DANS SCAN : ${role}`)
             if (role === "TRANSMITTER") {
                 return `Vous avez scanné <b>${p.target}</b>`;
             }

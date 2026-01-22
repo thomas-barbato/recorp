@@ -1,85 +1,77 @@
-// static/world_builder/modals/events_modal.js
 import { renderEventLog } from "../events/events_renderer.js";
 
 /* =========================
    STATE
 ========================= */
 let currentPage = 1;
-let maxPages = null;
-let hasNext = false;
-let hasPrevious = false;
-let loading = false;
+let totalPages = 1;
+let isLoading = false;
 let isOpen = false;
 
-// gettext safe (au cas où non exposé globalement)
+// gettext safe
 const t = window.gettext || ((s) => s);
 
 /* =========================
    DATA / PAGINATION
 ========================= */
 async function loadEventModalPage(page = 1) {
-    if (loading) return;
-    loading = true;
+    if (isLoading) return;
+    isLoading = true;
 
     const container = document.getElementById("event-modal-log-container");
     if (!container) {
-        loading = false;
+        isLoading = false;
         return;
     }
 
+    container.innerHTML = "";
+
     try {
-        const res = await fetch(`/events/?page=${page}`, {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
-        });
-        if (!res.ok) return;
+        const res = await fetch(`/events/?page=${page}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const data = await res.json();
 
-        // Backend-driven pagination (comme messages)
-        currentPage = data.current_page ?? data.page ?? page;
-        maxPages = data.total_pages ?? data.pages ?? 1;
-        hasNext = !!data.has_next;
-        hasPrevious = !!data.has_previous;
-
-        container.innerHTML = "";
+        // 🔥 ADAPTATION À TON BACKEND
+        currentPage = data.page;
+        totalPages = data.pages;
 
         (data.results || []).forEach(log => {
             renderEventLog(log, {
                 container,
-                prepend: false,
-                mode: "modal"
+                mode: "modal",
+                prepend: false   // historique = append
             });
         });
 
-        updateEventPaginationUI();
-
+        updatePaginationControls();
     } catch (e) {
-        console.error("[event-modal] load error", e);
-    } finally {
-        loading = false;
+        console.error("[event-modal] load failed", e);
     }
+
+    isLoading = false;
 }
 
-function updateEventPaginationUI() {
+function updatePaginationControls() {
     const prevBtn = document.getElementById("event-prev-page");
     const nextBtn = document.getElementById("event-next-page");
     const indicator = document.getElementById("event-page-indicator");
 
     if (indicator) {
-        indicator.textContent = `${t("Page")} ${currentPage} / ${maxPages || 1}`;
+        indicator.textContent = `${t("Page")} ${currentPage} / ${totalPages}`;
     }
 
-    if (prevBtn) prevBtn.disabled = !hasPrevious;
-    if (nextBtn) nextBtn.disabled = !hasNext;
+    if (prevBtn) prevBtn.disabled = currentPage <= 1;
+    if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
 }
 
-function bindEventPagination() {
+function bindPaginationButtons() {
     const prevBtn = document.getElementById("event-prev-page");
     const nextBtn = document.getElementById("event-next-page");
 
     if (prevBtn) {
         prevBtn.onclick = () => {
-            if (hasPrevious) {
+            if (currentPage > 1) {
                 loadEventModalPage(currentPage - 1);
             }
         };
@@ -87,36 +79,23 @@ function bindEventPagination() {
 
     if (nextBtn) {
         nextBtn.onclick = () => {
-            if (hasNext) {
+            if (currentPage < totalPages) {
                 loadEventModalPage(currentPage + 1);
             }
         };
     }
 }
 
-function initEventModal() {
-    currentPage = 1;
-    maxPages = null;
-    hasNext = false;
-    hasPrevious = false;
-
-    bindEventPagination();
-    loadEventModalPage(1);
-}
-
 /* =========================
-   MODAL LIFECYCLE (CHAT-LIKE)
+   MODAL LIFECYCLE (CONSERVÉ)
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("event-modal");
     const content = document.getElementById("event-modal-content");
     const closeBtn = document.getElementById("close-event-modal");
-    const container = document.getElementById("event-modal-log-container");
+    const closeBtnBottom = document.getElementById("close-event-modal-bottom");
 
-    if (!modal || !content || !container) {
-        console.warn("[event-modal] missing DOM nodes");
-        return;
-    }
+    if (!modal || !content) return;
 
     function openModal() {
         if (isOpen) return;
@@ -124,43 +103,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         modal.classList.remove("hidden");
 
-        // animation IN (comme chat)
         setTimeout(() => {
             content.classList.remove("scale-90", "opacity-0");
             content.classList.add("scale-100", "opacity-100");
         }, 50);
 
         document.body.style.overflow = "hidden";
-        initEventModal();
+
+        currentPage = 1;
+        bindPaginationButtons();
+        loadEventModalPage(1);
     }
 
     function closeModal() {
         if (!isOpen) return;
         isOpen = false;
 
-        // animation OUT
         content.classList.add("scale-90", "opacity-0");
         content.classList.remove("scale-100", "opacity-100");
 
         setTimeout(() => {
             modal.classList.add("hidden");
             document.body.style.overflow = "";
-
-            // reset propre
-            currentPage = 1;
-            maxPages = null;
-            hasNext = false;
-            hasPrevious = false;
-            loading = false;
-
-            if (container) container.innerHTML = "";
         }, 300);
     }
 
-    /* =========================
-       OPEN TRIGGERS (PC + MOBILE)
-       Interception du système externe
-    ========================= */
+    // OPEN triggers (PC + mobile)
     document
         .querySelectorAll('[data-modal-target="event-modal"]')
         .forEach(el => {
@@ -171,28 +139,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }, true);
         });
 
-    /* =========================
-       CLOSE TRIGGERS
-    ========================= */
-    if (closeBtn) {
-        closeBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeModal();
-        });
-    }
+    // CLOSE triggers
+    if (closeBtn) closeBtn.onclick = closeModal;
+    if (closeBtnBottom) closeBtnBottom.onclick = closeModal;
 
-    // clic backdrop = close
     modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
+        if (e.target === modal) closeModal();
     });
 
-    // ESC = close (bonus cohérent)
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && isOpen) {
-            closeModal();
-        }
+        if (e.key === "Escape" && isOpen) closeModal();
     });
 });

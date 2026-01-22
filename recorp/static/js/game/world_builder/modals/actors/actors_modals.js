@@ -360,14 +360,13 @@ function createUnknownModal(modalId, data, is_npc) {
     body_container_div.append(weapon_container);
 
     // --- FOOTER ---
-    let footer_div = document.createElement('div');
-    footer_div.classList.add('p-2','flex','flex-row','w-[100%]','justify-end','align-center');
-
-    let footer_close = document.createElement("img");
-    footer_close.src = "/static/img/ux/close.svg";
-    footer_close.classList.add('inline-block','w-[5%]','h-[5%]','cursor-pointer','hover:animate-pulse', 'mx-auto');
-    footer_close.setAttribute('onclick', `open_close_modal('${e.id}')`);
-    footer_div.append(footer_close);
+    let footer_div  = document.createElement('div')
+    footer_div.className = "w-full flex justify-center items-center py-3  relative z-10";
+    let closeBtn = document.createElement('button');
+    closeBtn.className = "text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all";
+    closeBtn.textContent= gettext('close');
+    closeBtn.onclick = () => open_close_modal(modalId);
+    footer_div .append(closeBtn)
 
     // Final assembly
     content_div.append(header_container_div);

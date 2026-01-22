@@ -1063,7 +1063,7 @@ def get_player_logs(request):
         .order_by("-created_at")
     )
 
-    paginator = Paginator(qs, 20)  # 20 par page pour le modal
+    paginator = Paginator(qs, 25)  # 20 par page pour le modal
     page_number = request.GET.get("page", 1)
     page = paginator.get_page(page_number)
 

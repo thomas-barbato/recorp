@@ -205,6 +205,7 @@ class GameConsumer(WebsocketConsumer):
         if msg_type == "action_scan_pc_npc":
             self._handle_scan_action_pc_npc(data.get("payload"))
             return
+        
         # SHARE SCAN WITH GROUP (PC / NPC) (if scan success)
         if msg_type == "share_scan":
             self._handle_share_scan(data.get("payload"))
@@ -1443,19 +1444,29 @@ class GameConsumer(WebsocketConsumer):
         """
 
         for pl in player_logs:
-            self._send_response({
-                "type": "event_log",
-                "message": {
-                        "type": "event_log",
-                        "data": {
-                            "id": pl.id,
-                            "log_type": pl.log.log_type,
-                            "role": pl.role,
-                            "content": pl.log.content,
-                            "created_at": pl.created_at.isoformat(),
-                        }
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "event_log",
+                    "target_player_id": pl.player_id,
+                    "data": {
+                        "id": pl.id,
+                        "log_type": pl.log.log_type,
+                        "role": pl.role,
+                        "content": pl.log.content,
+                        "created_at": pl.created_at.isoformat(),
                     }
-            })
+                }
+            )
+            
+    def event_log(self, event):
+        # 🔐 filtre CRUCIAL
+        if event.get("target_player_id") != self.player_id:
+            return
+        self._send_response({
+            "type": "event_log",
+            "message": event['data']
+        })
 
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
