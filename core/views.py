@@ -5,7 +5,6 @@ from urllib import request
 import json
 import os
 from io import BytesIO
-import cairosvg
 from django.core.files import File
 from django.conf import settings
 from PIL import Image
@@ -404,17 +403,17 @@ class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 if uploaded_file:
                     UserAvatarWriter(uploaded_file, new_player.id).save()
                 else:
-                    default_svg = os.path.join(
+                    default_png_path = os.path.join(
                         settings.BASE_DIR,
                         "static",
                         "img",
                         "ux",
-                        "default-user.svg"
+                        "default-user.png"
                     )
 
-                    png_bytes = cairosvg.svg2png(url=default_svg)
-                    tmp_file = ContentFile(png_bytes)
-                    tmp_file.name = "default.png"
+                    with open(default_png_path, "rb") as f:
+                        tmp_file = ContentFile(f.read())
+                        tmp_file.name = "default.png"
 
                     UserAvatarWriter(tmp_file, new_player.id).save()
                 

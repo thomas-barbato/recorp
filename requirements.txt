@@ -15,6 +15,5 @@ django-user-agents==0.4.0
 mysql-connector-python==8.3.0
 flake8==7.1.1
 pre_commit==3.8.0
-cairosvg==2.8.2
 celery-redbeat==2.3.3
 celery[redis]==5.5.3
