@@ -1,6 +1,18 @@
 # recorp
 A web browser game project.
 
+- Before anything, create a mysqluser :
+
+CREATE DATABASE recorp_db
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+CREATE USER 'login'@'localhost'
+IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON recorp_db.* TO 'login'@'localhost';
+FLUSH PRIVILEGES;
+
+
 to install tailwind:
 
 - Install nodejs
