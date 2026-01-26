@@ -38,11 +38,6 @@ export function getScanResult(msg) {
     window.canvasEngine?.renderer?.requestRedraw();
 
     syncCanvasPlayerAp(window.current_player_id, remaning_ap)
-
-    window.ModalLive?.notify?.(`pc_${playerId}`, "ap_update", {
-        ap: remaning_ap,
-        max_ap: maxAp
-    });
     
     window.renderTextAboveTarget(sender_id, "- 1 AP", "rgba(231, 0, 11, 0.95)");
     window.renderTextAboveTarget(target_key, "+ scan", "rgba(0,255,180,0.95)", "scan");
@@ -180,5 +175,40 @@ function syncCanvasPlayerAp(playerId, remainingAp) {
 
     if(apRemaningText){
         apRemaningText.textContent = remainingAp;
+    }
+}
+
+export function entity_state_update(msg){
+    const { entity_key, change_type, changes } = msg;
+
+    if (!window.ModalLive?.isOpen?.(entity_key)) {
+        console.log("NOT OPENED")
+        return;
+    }
+
+    // 🔹 Modal vivant (observer)
+    switch (change_type) {
+        case "mp_update":
+            window.ModalLive?.notify?.(entity_key, "mp_update", {
+                x: changes.position?.x,
+                y: changes.position?.y,
+                mp: changes.movement?.current,
+                max_mp: changes.movement?.max
+            });
+            break;
+
+        case "ap_update":
+            window.ModalLive?.notify?.(entity_key, "ap_update", {
+                ap: changes.ap?.current,
+                max_ap: changes.ap?.max
+            });
+            break;
+
+        case "hp_update":
+            window.ModalLive?.notify?.(entity_key, "hp_update", {
+                hp: changes.hp?.current,
+                max_hp: changes.hp?.max
+            });
+            break;
     }
 }

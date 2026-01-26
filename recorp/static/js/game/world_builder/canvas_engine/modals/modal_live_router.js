@@ -6,22 +6,9 @@
         if (!modalEl) return;
 
         switch (updateType) {
-
-            case "scan_start":
-            case "scan_shared":
-                applyScanState(modalEl, payload);
-                break;
-
-            case "scan_expired":
-                applyScanExpiredState(modalEl);
-                break;
                 
-            case "movement":
-                updateModalCoordinates(modalEl, payload);
-                updateModalMp(modalEl, payload);
-                break;
-
             case "mp_update":
+                updateModalCoordinates(modalEl, payload);
                 updateModalMp(modalEl, payload);
                 break;
 
@@ -31,11 +18,9 @@
 
             case "ap_update":
                 updateModalAp(modalEl, payload);
-                updateModalActionAvailability(modalEl, payload);
                 break;
 
             default:
-                // futur
                 break;
         }
     };
@@ -44,58 +29,44 @@
     // PATCHERS DOM
     // ----------------------------
 
-    function updateModalActionAvailability(modalEl, { ap }) {
-        if (ap == null) return;
-
-        const buttons = modalEl.querySelectorAll(".action-button-sf");
-
-        buttons.forEach(btn => {
-            const costEl = btn.querySelector("[data-ap-cost]");
-            if (!costEl) return;
-
-            const cost = parseInt(costEl.dataset.apCost, 10);
-            if (Number.isNaN(cost)) return;
-
-            if (ap < cost) {
-                btn.classList.add("opacity-40", "pointer-events-none");
-            } else {
-                btn.classList.remove("opacity-40", "pointer-events-none");
-            }
-        });
-    }
-
     function updateModalCoordinates(modalEl, { x, y }) {
         if (x == null || y == null) return;
 
-        const header = modalEl.querySelector("h3");
-        if (!header) return;
+        const coordSpan = modalEl.querySelector("[data-role='coordinates']");
+        if (!coordSpan) return;
 
-        // Remplace uniquement le [Y:?, X:?]
-        header.textContent = header.textContent.replace(
-            /\[Y:\d+,\s*X:\d+\]/,
-            `[Y:${y}, X:${x}]`
-        );
+        coordSpan.textContent = `[Y:${y}, X:${x}]`;
     }
 
     function updateModalMp(modalEl, { mp, max_mp }) {
-        if (mp == null || max_mp == null) return;
+        if (mp == null) return;
 
-        // Texte MP
         const mpText = modalEl.querySelector(
             "#ship-statistics-detailed span[data-stat='movement-text']"
         );
-        if (mpText) {
-            mpText.textContent = `${mp} / ${max_mp}`;
-        }
-
-        // Barre MP
         const mpBar = modalEl.querySelector(
             "#ship-statistics-detailed div[data-stat='movement-bar']"
         );
-        if (mpBar) {
-            const pct = Math.max(0, Math.min(100, (mp / max_mp) * 100));
-            mpBar.style.width = `${pct}%`;
+
+        let max = max_mp;
+
+        // lire le max depuis le DOM
+        if (max == null && mpText) {
+            const parts = mpText.textContent.split("/");
+            if (parts.length === 2) {
+                const parsed = parseInt(parts[1], 10);
+                if (!Number.isNaN(parsed)) {
+                    max = parsed;
+                }
+            }
         }
+
+        if (max == null) return;
+
+        mpText.textContent = `${mp} / ${max}`;
+
+        const pct = Math.max(0, Math.min(100, (mp / max) * 100));
+        mpBar.style.width = `${pct}%`;
     }
 
     function updateModalHp(modalEl, { hp, max_hp }) {
@@ -129,5 +100,4 @@
             bar.style.width = `${pct}%`;
         }
     }
-
 })();

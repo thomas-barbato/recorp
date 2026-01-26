@@ -388,42 +388,70 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     });
 
     // === HEADER ===
-const coords = data.player?.coordinates || data.coordinates;
-const coordStr = coords ? ` [Y:${coords.y}, X:${coords.x}]` : "";
+    const coords = data.player?.coordinates || data.coordinates;
+    const coordStr = coords ? `[Y:${coords.y}, X:${coords.x}]` : "";
 
-// 1️⃣ Titre standard (crée modal.header.titleEl)
-modal.header.setTitle(
-    (data.player?.name || "UNKNOWN").toUpperCase() + coordStr
-);
+    // Nettoyage du header
+    modal.header.el.innerHTML = "";
 
-const targetKey =
-    (is_npc ? "npc_" : "pc_") + data.player.id;
+    // Wrapper vertical
+    const headerWrapper = document.createElement("div");
+    headerWrapper.classList.add("flex", "flex-col", "w-full");
+
+    // ── Ligne 1 : nom + coords + close ──
+    const topRow = document.createElement("div");
+    topRow.classList.add(
+        "flex",
+        "flex-row",
+        "items-center",
+        "justify-between",
+        "w-full"
+    );
+
+    const left = document.createElement("div");
+    left.classList.add("flex", "flex-row", "items-center", "gap-1", "w-full", "justify-center");
+
+    const nameEl = document.createElement("span");
+    nameEl.textContent = (data.player?.name || "UNKNOWN").toUpperCase();
+    nameEl.classList.add("lg:text-xl","text-md","text-center",
+                        "font-bold","flex",
+                        "text-white","justify-center");
+
+    const coordEl = document.createElement("span");
+    coordEl.dataset.role = "coordinates";
+    coordEl.textContent = coordStr;
+    coordEl.classList.add("lg:text-xl","text-md","text-center",
+                        "font-bold","flex",
+                        "text-white","justify-center" );
+
+    left.append(nameEl, coordEl);
+
+
+    topRow.append(left);
+
+    // ── Ligne 2 : countdown (VIDE, volontairement) ──
+    const bottomRow = document.createElement("div");
+    bottomRow.classList.add(
+        "scan-timer-container",
+        "flex",
+        "justify-center",
+        "mt-1",
+        "text-xl"
+    );
+
+    // Assemblage
+    headerWrapper.append(topRow, bottomRow);
+    modal.header.el.append(headerWrapper);
+
+    const targetKey = (is_npc ? "npc_" : "pc_") + data.player.id;
 
     // 2️⃣ On RECONSTRUIT le contenu du titleEl
     if (data._ui?.scanned === true && window.scannedMeta?.[targetKey]) {
 
-        // Conteneur vertical central
-        const titleWrapper = document.createElement("div");
-        titleWrapper.classList.add(
-            "flex",
-            "flex-col",
-            "items-center",
-            "justify-center",
-            "w-full"
-        );
-
         // --- Texte du titre ---
         const titleText = document.createElement("div");
-        titleText.textContent =
-            (data.player?.name || "UNKNOWN").toUpperCase() + coordStr;
-
-        titleText.classList.add(
-            "text-lg",
-            "font-bold",
-            "uppercase",
-            "tracking-wide"
-        );
-
+        nameEl.textContent = (data.player?.name || "UNKNOWN").toUpperCase();
+        coordEl.textContent = coordStr;
         // --- Scan timer ---
         const scanInfo = document.createElement("div");
         scanInfo.classList.add(
@@ -432,10 +460,10 @@ const targetKey =
             "items-center",
             "justify-center",
             "gap-2",
-            "text-xs",
+            "text-xl",
             "text-emerald-300",
             "font-shadow",
-            "mt-1"
+            "font-bold"
         );
 
         const meta = window.getScanMeta(targetKey);
@@ -451,10 +479,7 @@ const targetKey =
 
         scanInfo.append(icon, label);
         
-        titleWrapper.append(titleText, scanInfo);
-
-        modal.header.titleEl.innerHTML = "";
-        modal.header.titleEl.appendChild(titleWrapper);
+        bottomRow.append(titleText, scanInfo);
 
         // après avoir injecté le HTML du timer
         const root = modal?.root || modal;

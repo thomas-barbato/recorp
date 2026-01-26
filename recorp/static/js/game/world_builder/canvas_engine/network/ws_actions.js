@@ -19,7 +19,8 @@ import {
     getScanResult, 
     sendScanResultToGroup, 
     handleScanVisibilityUpdate,
-    handleScanStateSync 
+    handleScanStateSync,
+    entity_state_update
 } from "../handlers/modal_action_handlers.js";
 
 // ===============================
@@ -66,6 +67,11 @@ ActionRegistry.register("scan_result", getScanResult);
 ActionRegistry.register("scan_share_to_group", sendScanResultToGroup);
 ActionRegistry.register("scan_visibility_update", handleScanVisibilityUpdate)
 ActionRegistry.register("scan_state_sync", handleScanStateSync);
+
+// ===============================
+// MODAL UPDATE
+// ===============================
+ActionRegistry.register("entity_state_update", entity_state_update);
 
 // ===============================
 // TIMERS

@@ -826,6 +826,8 @@ class GameConsumer(WebsocketConsumer):
             # Mise à jour du cache
             self._cache_store.update_player_position(message, self.player_id)
             self._cache_store.update_player_range_finding()
+            movement_remaining = player_action.get_player_movement_remaining()
+            movement_max = int(player_action.get_playerShip().values_list('max_movement', flat=True)[0])
             # Préparer la réponse pour CE joueur
             response = {
                 "type": "player_move",
@@ -834,9 +836,9 @@ class GameConsumer(WebsocketConsumer):
                     "end_x": message["end_x"],
                     "end_y": message["end_y"],
                     "move_cost": message["move_cost"],
-                    "move": player_action.get_player_movement_remaining(),
+                    "move": movement_remaining,
                     "path": message["path"],
-                    "max_move": int(player_action.get_playerShip().values_list('max_movement', flat=True)[0]),
+                    "max_move": movement_max,
                     "is_reversed": message.get("is_reversed", False),
                     "size": {
                         "x": message.get("size_x", 1),
@@ -852,6 +854,27 @@ class GameConsumer(WebsocketConsumer):
             }
 
             self._send_response(response)
+
+            if message["player"] == self.player_id:
+
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "entity_state_update",
+                        "entity_key": f"pc_{message['player']}",
+                        "change_type": "mp_update",
+                        "changes": {
+                            "position": {
+                                "x": message["end_x"],
+                                "y": message["end_y"],
+                            },
+                            "movement": {
+                                "current": movement_remaining,
+                                "max": movement_max,
+                            }
+                        }
+                    }
+                )
 
         except Exception as e:
             logger.error(f"Erreur async_move: {e}")
@@ -1460,13 +1483,30 @@ class GameConsumer(WebsocketConsumer):
             )
             
     def event_log(self, event):
-        # 🔐 filtre CRUCIAL
         if event.get("target_player_id") != self.player_id:
             return
         self._send_response({
             "type": "event_log",
             "message": event['data']
         })
+
+    def entity_state_update(self, event):
+        """
+        Reçoit une mise à jour d'état d'une entité (PC / NPC)
+        et la forward telle quelle au client WebSocket.
+        """
+        try:
+            self._send_response({
+                "type": "entity_state_update",
+                "message": {
+                    "entity_key": event.get("entity_key"),
+                    "change_type": event.get("change_type"),
+                    "changes": event.get("changes", {}),
+                }
+            })
+
+        except Exception as e:
+            logger.error(f"Erreur entity_state_update: {e}")
 
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
