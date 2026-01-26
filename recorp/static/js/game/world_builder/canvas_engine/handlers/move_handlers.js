@@ -136,6 +136,12 @@ export function handleUpdateMovementGeneric(msg) {
     syncMapInformationsMovement(playerId, remaining, maxMove);
     syncCanvasPlayerMovement(playerId, remaining, maxMove);
     updateHudMovement(playerId, remaining, maxMove);
+
+    const targetKey = `pc_${playerId}`;
+    window.ModalLive?.notify?.(targetKey, "mp_update", {
+        mp: remaining,
+        max_mp: maxMove
+    });
 }
 
 /**
@@ -241,6 +247,15 @@ export function handlePlayerMove(msg) {
             }
         }
     }
+
+    // MODAL LIVE UPDATE (coords + MP)
+    const targetKey = `pc_${playerId}`;
+    window.ModalLive?.notify?.(targetKey, "movement", {
+        x: actor.x,
+        y: actor.y,
+        mp: remaining,
+        max_mp: maxMove
+    });
 
     // ----------------------------------------------------------
     // 3) RECENTRAGE DIRECT (si pas d'animation)

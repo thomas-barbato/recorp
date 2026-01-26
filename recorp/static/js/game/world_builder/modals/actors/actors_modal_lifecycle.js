@@ -15,16 +15,19 @@
         return true;
     }
 
-    // ⚠️ Extraction fidèle de TON modals.js
     async function open_close_modal(modalId) {
         if (!modalId || typeof modalId !== "string") return;
 
         const modalContainer = document.getElementById("modal-container");
         if (!modalContainer) return;
 
-        // 1) Toggle close si même modal déjà ouvert
+        // Toggle close si même modal déjà ouvert
         const existing = document.getElementById(modalId);
         if (existing) {
+
+            // unregister du modal vivant
+            window.ModalLive?.unregister?.(modalId);
+
             existing.remove();
             return;
         }
@@ -32,14 +35,20 @@
         // Un seul modal à la fois
         modalContainer.innerHTML = "";
 
-        // 2) Création du conteneur modal (VIDE)
+        // sécurité : un seul modal à la fois → on purge le registry
+        window.ModalLive?._registry?.clear?.();
+
+        // Création du conteneur modal (VIDE)
         const modal = document.createElement("div");
         modal.id = modalId;
         modal.className = "absolute inset-0 pointer-events-auto z-50";
 
         modalContainer.appendChild(modal);
 
-        // 3) Loader GLOBAL (dans modal-container)
+        // register du modal vivant
+        window.ModalLive?.register?.(modalId);
+
+        // Loader GLOBAL (dans modal-container)
         const loader = document.createElement("div");
         loader.id = "modal-loader";
         loader.className = `
@@ -51,7 +60,7 @@
 
         modalContainer.appendChild(loader);
 
-        // 4) Parse modalId
+        // Parse modalId
         const raw = modalId.replace("modal-", "");
         const isUnknown = raw.startsWith("unknown-");
         const clean = isUnknown ? raw.replace("unknown-", "") : raw;
@@ -65,7 +74,7 @@
             return;
         }
 
-        // 5) Fetch backend (ou cache scan)
+        // Fetch backend (ou cache scan)
         let responseData;
         const targetKey = `${elementType}_${elementId}`;
 
@@ -90,13 +99,13 @@
             return;
         }
 
-        // 6) Contexte UI (UNKNOWN = front only)
+        // Contexte UI (UNKNOWN = front only)
         responseData.__ui = {
             isUnknown,
             scanned: Boolean(window.isScanned(targetKey))
         };
 
-        // 7) Construction réelle du modal
+        // Construction réelle du modal
         try {
             const parsed = define_modal_type(modalId);
             if (!parsed) {

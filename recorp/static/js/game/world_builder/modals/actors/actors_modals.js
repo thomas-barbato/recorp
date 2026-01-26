@@ -625,6 +625,20 @@ function buildShipStatsSection(data) {
         let percent = max > 0 ? Math.round((current * 100) / max) : 0;
         content.style.width = (percent > 100 ? 100 : percent) + "%";
 
+        if (type === "movement") {
+            text.dataset.stat = "movement-text";
+            content.dataset.stat = "movement-bar";
+        }
+
+        if (type === "hp") {
+            text.dataset.stat = "hp-text";
+            content.dataset.stat = "hp-bar";
+        }
+        if (type === "ap") {
+            text.dataset.stat = "ap-text";
+            content.dataset.stat = "ap-bar";
+        }
+
         container.append(text, content);
         wrapper.append(label, container);
         return wrapper;

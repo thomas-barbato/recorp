@@ -13,6 +13,8 @@ import { initMobilePathfinding } from "./engine/mobile_pathfinding.js";
 import { resizeCanvasWrapper } from "./engine/canvas_wrapper_resize.js"
 import WebSocketManager from "./engine/websocket_manager.js";
 import "./network/ws_actions.js";
+import "./modals/modal_live_registry.js";
+import "./modals/modal_live_router.js"
 import {
     isDesktop,
     updatePlayerCoords,
