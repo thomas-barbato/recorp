@@ -1340,6 +1340,21 @@ class GameConsumer(WebsocketConsumer):
             }
         })
 
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "entity_state_update",
+                "entity_key": f"pc_{player_id}",
+                "change_type": "ap_update",
+                "changes": {
+                    "ap": {
+                        "current": remaning_ap,
+                        "max": player.get_player_max_ap(),
+                    }
+                }
+            }
+        )
+
     def _handle_share_scan(self, payload):
         target_type = payload.get("target_type")
         target_id = payload.get("target_id")

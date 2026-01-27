@@ -83,6 +83,12 @@ class PlayerAction:
             return self.player.values_list("id", flat=True).first()
         return None
     
+    def get_player_max_ap(self) -> Optional[int]:
+        """Récupère le maximum de points d'action du joueur."""
+        if self.player.exists():
+            return self.player.values_list("max_ap", flat=True).first()
+        return None
+    
     def get_session_key(self) -> List[str]:
         """Récupère les clés de session du joueur."""
         return list(LoggedInUser.objects.filter(user_id=self.id).values_list('session_key', flat=True))
