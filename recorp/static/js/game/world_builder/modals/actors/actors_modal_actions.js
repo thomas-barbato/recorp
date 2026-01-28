@@ -1,4 +1,5 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
+
 (function () {
 
     function createActionCostBadge(cost = {}) {
@@ -165,11 +166,41 @@
 
     
 function buildActionsSection(modalId, data, is_npc, contextZone) {
-    const ws = window.canvasEngine?.ws;
     
+    const ws = window.canvasEngine?.ws;
+    const map = window.canvasEngine?.map;
     const modules = currentPlayer.ship.modules;
     const isUnknown = modalId.startsWith("modal-unknown");
     const currentAP = currentPlayer?.player?.current_ap ?? null;
+
+    const formatRangeTooltip = r => {
+        if (typeof r?.distance === "number" && typeof r?.maxRange === "number") {
+            return `Hors de portée (${r.distance.toFixed(1)} / ${r.maxRange.toFixed(1)})`;
+        }
+        return "Action indisponible (portée non définie)";
+    };
+
+    const transmitterActor = map.getCurrentPlayer();
+    if (!transmitterActor) return;
+
+    let receiverActor = null;
+    const parsed = define_modal_type(modalId);
+
+    if (parsed && map) {
+        // pc / npc → clé standard
+        if (parsed.type === "pc" || parsed.type === "npc") {
+            receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
+        }
+        // foreground
+        else if (parsed.isForegroundElement) {
+            receiverActor = map.findActorByKey(parsed.elementName);
+        }
+    }
+
+    if (!receiverActor) {
+        // la cible n'existe réellement plus (destroy, warp, autre secteur)
+        return;
+    }
 
     // Conteneur global
     const wrapper = document.createElement("div");
@@ -218,44 +249,64 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "WEAPONRY") return;
 
-                const wrapper = document.createElement("div");
-                wrapper.classList.add(
-                    "flex",
-                    "flex-row",
-                    "justify-between",
-                    "items-center",
-                    "p-2",
-                    "rounded-lg",
-                    "bg-black/40",
-                    "border",
-                    "border-emerald-400/40",
-                    "gap-4"
-                );
-
-                // description
-                const left = document.createElement("div");
-                left.classList.add('w-full');
-                left.innerHTML = createFormatedLabel(m); // convert string → element
-                const temp = document.createElement("div");
-                temp.innerHTML = left.innerHTML.trim();
-                left.innerHTML = "";
-                left.append(temp.firstChild);
-
-                // bouton attaque
-                const rightIcon = document.createElement("img");
-                rightIcon.src = "/static/img/ux/target_icon.svg";
-                rightIcon.classList.add("action-button-sf-icon");
-
-                const rightBtn = document.createElement("div");
-                rightBtn.classList.add("action-button-sf", "cursor-pointer");
-                rightBtn.append(rightIcon);
-
-                rightBtn.addEventListener("click", () => {
-                    // TODO: attaquer via websocket avec module m.id
-                    console.log("Attaque avec module :", m.id);
+                const rangeResult = window.computeModuleRange({
+                    module: m,
+                    transmitterActor: transmitterActor,
+                    receiverActor: receiverActor
                 });
 
-                wrapper.append(left, rightBtn);
+                const wrapper = document.createElement("div");
+                wrapper.classList.add(
+                    "flex", "flex-row", "justify-between",
+                    "items-center", "p-2", "rounded-lg",
+                    "border", "gap-4", "border-emerald-900"
+                );
+                
+                if (!rangeResult.allowed) {
+                    wrapper.classList.remove("border-emerald-900", "border");
+                    wrapper.classList.add("opacity-40", "pointer-events-none", "bg-red-600");
+                    
+                    if (rangeResult.distance !== null) {
+                        wrapper.title =
+                            `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                    }
+                }else{
+                    wrapper.classList.add("border-emerald-900");
+                }
+
+                // description module
+                const left = document.createElement("div");
+                left.classList.add("w-full");
+                left.innerHTML = createFormatedLabel(m);
+
+                // bouton attaque réel
+                const btnIcon = document.createElement("img");
+                btnIcon.src = "/static/img/ux/target_icon.svg";
+                btnIcon.classList.add("action-button-sf-icon");
+
+                const btn = document.createElement("div");
+                btn.classList.add("action-button-sf");
+
+                if (!rangeResult.allowed) {
+                    btn.classList.add("cursor-not-allowed");
+                }
+
+                btn.append(btnIcon);
+
+                btn.addEventListener("click", () => {
+                    if (!rangeResult.allowed) return;
+
+                    ws.send({
+                        type: "action_attack",
+                        payload: {
+                            subtype: `attack-${m.id}`,
+                            module_id: m.id,
+                            target_key: targetKey
+                        }
+                    });
+                });
+
+                wrapper.append(left, btn);
                 list.append(wrapper);
             });
 
@@ -281,6 +332,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             if (scanButton.classList.contains("pointer-events-none")) return;
             const info = define_modal_type(modalId);
+            
             ws.send({
                 type: "action_scan_pc_npc",
                 payload: {

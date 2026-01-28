@@ -130,14 +130,14 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
 
     if (player) {
         const map = window.canvasEngine?.map;
-        dist = computeTooltipDistance(map, player, tx, ty);
+        dist = computeTooltipDistance(map, player, obj);
     }
 
     tooltip.innerHTML = `
-        <div class="font-bold text-emerald-300">${name}</div>
+        <div class="font-bold text-emerald-300">${dist > 0 ? name : "You"}</div>
         <div class="text-emerald-500 font-bold">Y:<span class="text-emerald-300 font-bold">${ty.toString().padStart(2,"0")}</span> / X:<span class="text-emerald-300 font-bold">${tx.toString().padStart(2,"0")}</span></div>
         ${
-            dist !== null
+            dist !== null && dist > 0
                 ? `<div class="text-emerald-500 font-bold">Distance: <span class="text-emerald-300">${dist}</span></div>`
                 : ""
         }
@@ -165,26 +165,28 @@ export function hideHoverTooltip() {
     tooltip.classList.remove("visible");
     tooltip.classList.add("hidden");
 }
+// prend en compte l'element entier et n'utilise plus seulement la position x/y de la cible.
+function computeTooltipDistance(map, playerActor, hoveredObj) {
+    if (!map || !playerActor || !hoveredObj) return null;
 
-function computeTooltipDistance(map, player, tx, ty) {
-    if (!map || !player) return null;
+    const getSize = (actor) => ({
+        x: actor.sizeX || actor.size?.x || 1,
+        y: actor.sizeY || actor.size?.y || 1
+    });
 
-    const pf = map.pathfinder;
-    const controller = pf?.controller;
+    const getCenter = (actor, size) => ({
+        x: actor.x + (size.x - 1) / 2,
+        y: actor.y + (size.y - 1) / 2
+    });
 
-    // ✓ Si destination = dernière destination pathfinding => vraie distance A*
-    if (
-        controller &&
-        controller.lastDest &&
-        controller.lastDest.x === tx &&
-        controller.lastDest.y === ty &&
-        Array.isArray(controller.lastPath)
-    ) {
-        return controller.lastPath.length; // ✓ vraie distance A*
-    }
+    const pSize = getSize(playerActor);
+    const tSize = getSize(hoveredObj);
 
-    // ✓ Survol simple = distance pré-calculée de ton moteur = Manhattan
-    const dx = Math.abs(tx - player.x);
-    const dy = Math.abs(ty - player.y);
-    return dx + dy;
+    const pC = getCenter(playerActor, pSize);
+    const tC = getCenter(hoveredObj, tSize);
+
+    const dx = Math.abs(pC.x - tC.x);
+    const dy = Math.abs(pC.y - tC.y);
+
+    return Math.max(dx, dy);
 }

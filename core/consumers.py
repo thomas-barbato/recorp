@@ -1324,8 +1324,8 @@ class GameConsumer(WebsocketConsumer):
 
         scan = ActionRules.upsert_scan(
             scanner_player_id=player_id,
-            target_type=target_type,
-            target_id=target_id,
+            receiver_type=target_type,
+            receiver_id=target_id,
             sector_id=sector_id_int
         )
         

@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Q
+import math
 
 from core.models import PlayerShipModule, Module, ScanIntel, ScanIntelGroup, Npc, Player
 
@@ -61,6 +62,68 @@ class ActionRules:
     @staticmethod
     def _distance(a, b):
         return abs(a["x"] - b["x"]) + abs(a["y"] - b["y"])
+    
+    @classmethod
+    def get_size(cls, actor):
+        """
+        Normalise la taille d'un actor.
+        actor peut être PC, NPC, ou foreground.
+        """
+        if hasattr(actor, "size_x") and hasattr(actor, "size_y"):
+            return actor.size_x or 1, actor.size_y or 1
+
+        # fallback si stocké autrement
+        if hasattr(actor, "size"):
+            return actor.size.get("x", 1), actor.size.get("y", 1)
+
+        return 1, 1
+
+    @classmethod
+    def get_center(cls, actor):
+        """
+        Centre logique (en tuiles) de l'actor.
+        """
+        sx, sy = cls.get_size(actor)
+        return (
+            actor.x + (sx - 1) / 2,
+            actor.y + (sy - 1) / 2
+        )
+
+    @classmethod
+    def compute_entity_distance(cls, actor_a, actor_b):
+        """
+        Distance Chebyshev (cohérente avec le front).
+        """
+        ax, ay = cls.get_center(actor_a)
+        bx, by = cls.get_center(actor_b)
+
+        dx = abs(ax - bx)
+        dy = abs(ay - by)
+
+        return max(dx, dy)
+    
+    @classmethod
+    def can_use_module_on_receiver(cls,transmitter, receiver, module):
+        """
+        Règle serveur finale.
+        """
+        # 1️⃣ module sans portée = portée infinie
+        if not module.effect or module.effect.get("range") is None:
+            return True, None
+
+        max_range = module.effect["range"]
+
+        # 2️⃣ distance réelle
+        distance = cls.compute_entity_distance(transmitter, receiver)
+
+        if distance <= max_range:
+            return True, None
+
+        return False, {
+            "reason": "out_of_range",
+            "distance": float(distance),
+            "max_range": float(max_range)
+        }
 
     # ================
     # ACTION : ATTACK
@@ -70,7 +133,7 @@ class ActionRules:
     def action_attack(cls, *,
                     player_ship_id: int,
                     player_coords: Dict[str, int],
-                    target_coords: Dict[str, int]) -> Dict[str, Any]:
+                    receiver_coords: Dict[str, int]) -> Dict[str, Any]:
 
         modules = cls._player_modules(player_ship_id)
 
@@ -83,7 +146,7 @@ class ActionRules:
         if rng is None:
             return {"enabled": False, "reason": _("Weapon has no range")}
 
-        dist = cls._distance(player_coords, target_coords)
+        dist = cls._distance(player_coords, receiver_coords)
         if dist > rng:
             return {"enabled": False, "reason": _("Out of range")}
 
@@ -97,7 +160,7 @@ class ActionRules:
     def action_scan(cls, *,
                     player_ship_id: int,
                     player_coords: Dict[str, int],
-                    target_coords: Dict[str, int]) -> Dict[str, Any]:
+                    receiver_coords: Dict[str, int]) -> Dict[str, Any]:
 
         modules = cls._player_modules(player_ship_id)
 
@@ -106,21 +169,21 @@ class ActionRules:
 
         rng = cls._get_module_range(modules, cls.SCAN_TYPES) or 1
 
-        if cls._distance(player_coords, target_coords) > rng:
+        if cls._distance(player_coords, receiver_coords) > rng:
             return {"enabled": False, "reason": _("Out of range")}
 
         return {"enabled": True, "reason": None}
     
     @staticmethod
-    def upsert_scan(scanner_player_id: int, target_type: str, target_id: int, sector_id: int) -> ScanIntel:
+    def upsert_scan(scanner_player_id: int, receiver_type: str, receiver_id: int, sector_id: int) -> ScanIntel:
         now = timezone.now()
         expires = now + timedelta(seconds=30)
 
         # Invalider tous les scans actifs précédents pour cette cible
         ScanIntel.objects.filter(
             scanner_player_id=scanner_player_id,
-            target_type=target_type,
-            target_id=target_id,
+            target_type=receiver_type,
+            target_id=receiver_id,
             sector_id=sector_id,
             invalidated_at__isnull=True
         ).update(invalidated_at=now)
@@ -128,8 +191,8 @@ class ActionRules:
         # Créer un nouveau scan propre
         scan = ScanIntel.objects.create(
             scanner_player_id=scanner_player_id,
-            target_type=target_type,
-            target_id=target_id,
+            target_type=receiver_type,
+            target_id=receiver_id,
             sector_id=sector_id,
             created_at=now,
             expires_at=expires,
@@ -176,35 +239,35 @@ class ActionRules:
         valid_scans = []
 
         for scan in scans:
-            if scan.target_type == "pc":
-                if Player.objects.filter(id=scan.target_id, sector_id=sector_id).exists():
+            if scan.receiver_type == "pc":
+                if Player.objects.filter(id=scan.receiver_id, sector_id=sector_id).exists():
                     valid_scans.append(scan)
-            elif scan.target_type == "npc":
-                if Npc.objects.filter(id=scan.target_id, sector_id=sector_id).exists():
+            elif scan.receiver_type == "npc":
+                if Npc.objects.filter(id=scan.receiver_id, sector_id=sector_id).exists():
                     valid_scans.append(scan)
 
         return valid_scans
             
     @classmethod
-    def has_active_scan(scanner_id, target_type, target_id, sector_id) -> bool:
+    def has_active_scan(scanner_id, receiver_type, receiver_id, sector_id) -> bool:
         return ScanIntel.objects.filter(
             scanner_player_id=scanner_id,
-            target_type=target_type,
-            target_id=target_id,
+            receiver_type=receiver_type,
+            receiver_id=receiver_id,
             sector_id=sector_id,
             invalidated_at__isnull=True,
             expires_at__gt=timezone.now()
         ).exists()
         
     @staticmethod
-    def invalidate_scans_for_target(target_type: str, target_id: int, sector_id: int):
+    def invalidate_scans_for_receiver(receiver_type: str, receiver_id: int, sector_id: int):
         """
         Supprime tous les scans actifs pour une cible dans un secteur.
         (auteur + groupes)
         """
         ScanIntel.objects.filter(
-            target_type=target_type,
-            target_id=target_id,
+            receiver_type=receiver_type,
+            receiver_id=receiver_id,
             sector_id=sector_id,
             invalidated_at__isnull=True
         ).update(invalidated_at=timezone.now())
@@ -227,13 +290,13 @@ class ActionRules:
             invalidated_at__isnull=True
         )
 
-        targets = list(
-            expired.values("target_type", "target_id")
+        receivers = list(
+            expired.values("receiver_type", "receiver_id")
         )
 
         expired.update(invalidated_at=now)
 
-        return targets
+        return receivers
 
     # ================
     # ACTION : HAIL (contact radio)
@@ -242,10 +305,10 @@ class ActionRules:
     @classmethod
     def action_hail(cls, *,
                     player_coords: Dict[str, int],
-                    target_coords: Dict[str, int]) -> Dict[str, Any]:
+                    receiver_coords: Dict[str, int]) -> Dict[str, Any]:
 
         # Exemple simple : portée fixe de 8 cases
-        if cls._distance(player_coords, target_coords) > 8:
+        if cls._distance(player_coords, receiver_coords) > 8:
             return {"enabled": False, "reason": _("Out of comms range")}
 
         return {"enabled": True, "reason": None}
@@ -258,7 +321,7 @@ class ActionRules:
     def action_dock(cls, *,
                     player_ship_id: int,
                     player_coords: Dict[str, int],
-                    target_coords: Dict[str, int]) -> Dict[str, Any]:
+                    receiver_coords: Dict[str, int]) -> Dict[str, Any]:
 
         modules = cls._player_modules(player_ship_id)
 
@@ -266,7 +329,7 @@ class ActionRules:
             return {"enabled": False, "reason": _("Docking module required")}
 
         # Portée 1 obligatoire (touching)
-        if cls._distance(player_coords, target_coords) > 1:
+        if cls._distance(player_coords, receiver_coords) > 1:
             return {"enabled": False, "reason": _("Too far to dock")}
 
         return {"enabled": True, "reason": None}
@@ -279,14 +342,14 @@ class ActionRules:
     def action_mine(cls, *,
                     player_ship_id: int,
                     player_coords: Dict[str, int],
-                    target_coords: Dict[str, int]) -> Dict[str, Any]:
+                    receiver_coords: Dict[str, int]) -> Dict[str, Any]:
 
         modules = cls._player_modules(player_ship_id)
 
         if not cls._has_module(modules, cls.MINE_TYPES):
             return {"enabled": False, "reason": _("Mining module required")}
 
-        if cls._distance(player_coords, target_coords) > 1:
+        if cls._distance(player_coords, receiver_coords) > 1:
             return {"enabled": False, "reason": _("Too far to mine")}
 
         return {"enabled": True, "reason": None}
