@@ -142,6 +142,8 @@ export function handleUpdateMovementGeneric(msg) {
         mp: remaining,
         max_mp: maxMove
     });
+    window.ModalLive?.notify?.(targetKey, "range_maybe_changed", {});
+
 }
 
 /**
@@ -193,7 +195,6 @@ export function handlePlayerMove(msg) {
 
                             const centerX = endX + (sizeX - 1) / 2;
                             const centerY = endY + (sizeY - 1) / 2;
-
                             engine.camera.centerOn(centerX, centerY);
                             
                             window.renderTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
@@ -206,6 +207,7 @@ export function handlePlayerMove(msg) {
                                 updatePlayerCoords(actor);
                             }
 
+                            window.ModalLive?.notify?.(`pc_${playerId}`, "range_maybe_changed", {});
                             engine.renderer.requestRedraw();
                             window.canvasEngine.renderer.requestRedraw();
 
@@ -256,6 +258,8 @@ export function handlePlayerMove(msg) {
         mp: remaining,
         max_mp: maxMove
     });
+
+    window.ModalLive?.notify?.(targetKey, "range_maybe_changed", {});
 
     // ----------------------------------------------------------
     // 3) RECENTRAGE DIRECT (si pas d'animation)

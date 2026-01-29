@@ -1,8 +1,15 @@
 (function () {
 
     window.onModalLiveUpdate = function ({ targetKey, updateType, payload }) {
-        const modalId = `modal-${targetKey}`;
-        const modalEl = document.getElementById(modalId);
+        // Supporte modal normal ET modal unknown
+        let modalId = `modal-${targetKey}`;
+        let modalEl = document.getElementById(modalId);
+
+        if (!modalEl) {
+            modalId = `modal-unknown-${targetKey}`;
+            modalEl = document.getElementById(modalId);
+        }
+
         if (!modalEl) return;
 
         switch (updateType) {
@@ -18,6 +25,13 @@
 
             case "ap_update":
                 updateModalAp(modalEl, payload);
+                break;
+
+            case "range_maybe_changed":
+                console.log("Range maybe changed for", modalId);
+                if (typeof window.refreshModalActionRanges === "function") {
+                    window.refreshModalActionRanges(modalId);
+                }
                 break;
 
             default:

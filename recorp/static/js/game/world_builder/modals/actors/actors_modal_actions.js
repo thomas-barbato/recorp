@@ -306,6 +306,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     });
                 });
 
+                wrapper.dataset.actionKey = "attack";
+                wrapper.dataset.moduleId = m.id;
+                wrapper.dataset.moduleType = "WEAPONRY";
+                btn.dataset.moduleId = String(m.id);
                 wrapper.append(left, btn);
                 list.append(wrapper);
             });
@@ -344,6 +348,17 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         { ap_cost:ap_cost  }
         
     );
+
+    scanButton.dataset.actionKey = "scan";
+    const probeModule = modules.find(m => m.type === "PROBE" && m.name === "spaceship probe");
+    if (probeModule) {
+        scanButton.dataset.moduleId = String(probeModule.id);   // ✅ clé pour refresh
+    } else {
+        // optionnel : garder moduleName si tu veux fallback
+        scanButton.dataset.moduleName = "spaceship probe";
+    }
+    scanButton.dataset.modalId = modalId;
+
     applyScanState(data, scanButton);
     // BLOQUER SI AP INSUFFISANTS
     applyActionCostState({ ap_cost: ap_cost , cost: 0 , key : "scan" }, scanButton);
@@ -352,12 +367,41 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     // Limiter l'utilisation du scan.
     if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe") || ap_cost > window.currentPlayer.user.current_ap) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
-    }   
+    }
+
+    // ============================
+    // RANGE CHECK — SCAN (PC / NPC)
+    // ============================
+    if (
+        !scanButton.classList.contains("pointer-events-none") &&
+        typeof window.computeModuleRange === "function"
+    ) {
+        const probeModule = modules.find(
+            m => m.type === "PROBE" && m.name === "spaceship probe"
+        );
+
+        if (probeModule) {
+            const rangeResult = window.computeModuleRange({
+                module: probeModule,
+                transmitterActor,
+                receiverActor
+            });
+
+            if (!rangeResult.allowed) {
+                scanButton.classList.add("opacity-40", "pointer-events-none");
+
+                if (typeof rangeResult.distance === "number") {
+                    scanButton.title =
+                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                }
+            }
+        }
+    }
 
     // ============================
     // DéSACTIVER SCAN SI PAS DE MODULE
     // ============================
-
+    attackButton.dataset.actionKey = "attack-menu";
     grid.append(attackButton);
     grid.append(scanButton);
 
@@ -450,12 +494,87 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             if (!hasEwar) return showMissingModuleError();
 
-            contextZone.innerHTML = "E-War disponible (à implémenter)";
-            contextZone.classList.remove("hidden");
+            // ouvrir weaponry dans contextZone
+            contextZone.innerHTML = "";
+            contextZone.classList.contains('hidden') == true ? contextZone.classList.remove("hidden") : contextZone.classList.add("hidden");
+
+            const list = document.createElement("div");
+            list.classList.add("flex", "flex-col", "gap-2", "mt-2");
+
+            // modules weaponry
+            modules.forEach(m => {
+                if (m.type !== "ELECTRONIC_WARFARE") return;
+
+                const rangeResult = window.computeModuleRange({
+                    module: m,
+                    transmitterActor: transmitterActor,
+                    receiverActor: receiverActor
+                });
+
+                const wrapper = document.createElement("div");
+                wrapper.classList.add(
+                    "flex", "flex-row", "justify-between",
+                    "items-center", "p-2", "rounded-lg",
+                    "border", "gap-4", "border-emerald-900"
+                );
+                
+                if (!rangeResult.allowed) {
+                    wrapper.classList.remove("border-emerald-900", "border");
+                    wrapper.classList.add("opacity-40", "pointer-events-none", "bg-red-600");
+                    
+                    if (rangeResult.distance !== null) {
+                        wrapper.title =
+                            `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                    }
+                }else{
+                    wrapper.classList.add("border-emerald-900");
+                }
+
+                // description module
+                const left = document.createElement("div");
+                left.classList.add("w-full");
+                left.innerHTML = createFormatedLabel(m);
+
+                // bouton attaque réel
+                const btnIcon = document.createElement("img");
+                btnIcon.src = "/static/img/ux/target_icon.svg";
+                btnIcon.classList.add("action-button-sf-icon");
+
+                const btn = document.createElement("div");
+                btn.classList.add("action-button-sf");
+
+                if (!rangeResult.allowed) {
+                    btn.classList.add("cursor-not-allowed");
+                }
+
+                btn.append(btnIcon);
+
+                btn.addEventListener("click", () => {
+                    if (!rangeResult.allowed) return;
+
+                    ws.send({
+                        type: "action_electronic_warfare",
+                        payload: {
+                            subtype: `electronic_warfare-${m.id}`,
+                            module_id: m.id,
+                            target_key: targetKey
+                        }
+                    });
+                });
+
+                wrapper.dataset.actionKey = "electronic_warfare";
+                wrapper.dataset.moduleId = m.id;
+                wrapper.dataset.moduleType = "ELECTRONIC_WARFARE";
+                wrapper.append(left, btn);
+                list.append(wrapper);
+            });
+
+            contextZone.append(list);
         },
         {ap : 1}
     );
-
+    
+    ewarButton.dataset.actionKey = "electronic-warfare-menu";
     grid.append(ewarButton);
 
     // ---------------------------
@@ -500,6 +619,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     // --- FILTRAGE UNKNOWN ---
     if (isUnknown && data._ui?.scanned !== true) {
+        
+        attackButton.dataset.actionKey = "attack-menu";
         grid.innerHTML = "";
         grid.append(attackButton);
         if (data._ui?.scanned === true) {
@@ -529,7 +650,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             "action-wrapper-sf",
             "justify-center",
             "sf-scroll",
-            "sf-scroll-emerald"
+            "sf-scroll-emerald",
+            "p-2",
+            "bg-zinc-950/95", 
+            "border", 
+            "border-emerald-700/40"
         );
 
         const type = data.type;
@@ -654,6 +779,20 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn
             );
 
+            if (action.key === "scan") {
+                btn.dataset.actionKey = "scan";
+                btn.dataset.modalId = modalId;
+
+                const probeModule = (window.currentPlayer?.ship?.modules || []).find(
+                    m => m.type === "PROBE" && m.name === "drilling probe"
+                );
+                if (probeModule) {
+                    btn.dataset.moduleId = String(probeModule.id);
+                } else {
+                    btn.dataset.moduleName = "drilling probe";
+                }
+            }
+
             if (action.key === "scan" && !playerHasModule("PROBE", "drilling probe")) {
                 btn.classList.add("opacity-40", "pointer-events-none");
             }
@@ -661,6 +800,36 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             if (action.key === "scan" && (alreadyScanned || !playerHasModule("PROBE", "drilling probe") || action.ap_cost > window.currentPlayer.user.current_ap)) 
             {
                 btn.classList.add("opacity-40", "pointer-events-none");
+            }
+
+
+            if (action.key === "scan" && !btn.classList.contains("pointer-events-none") && typeof window.computeModuleRange === "function" ) {
+                const map = window.canvasEngine?.map;
+                const transmitterActor = map?.getCurrentPlayer?.() || null;
+
+                const parsed = define_modal_type(modalId);
+                const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
+
+                const probeModule = (window.currentPlayer?.ship?.modules || []).find(
+                    m => m.type === "PROBE" && m.name === "drilling probe"
+                );
+
+                if (transmitterActor && receiverActor && probeModule) {
+                    const rangeResult = window.computeModuleRange({
+                        module: probeModule,
+                        transmitterActor,
+                        receiverActor
+                    });
+
+                    if (!rangeResult.allowed) {
+                        btn.classList.add("opacity-40", "pointer-events-none");
+
+                        if (typeof rangeResult.distance === "number") {
+                            btn.title =
+                                `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                        }
+                    }
+                }
             }
 
             itemWrapper.append(btn);
@@ -729,4 +898,59 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     window.buildActionsSection = buildActionsSection;
     window.buildForegroundActionsSection = buildForegroundActionsSection;
 
+    window.refreshModalActionRanges = function (modalId) {
+        if (!modalId || typeof window.computeModuleRange !== "function") return;
+
+        const map = window.canvasEngine?.map;
+        if (!map) return;
+
+        const parsed = define_modal_type(modalId);
+        if (!parsed) return;
+
+        const transmitterActor = map.getCurrentPlayer?.();
+        if (!transmitterActor) return;
+
+        let receiverActor = null;
+
+        if (parsed.type === "pc" || parsed.type === "npc") {
+            receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
+        }
+        if (!receiverActor && parsed.originalType) {
+            receiverActor = map.findActorByKey(`${parsed.originalType}_${parsed.id}`);
+        }
+        if (!receiverActor && parsed.isForegroundElement) {
+            receiverActor = map.findActorByKey(parsed.elementName);
+        }
+        if (!receiverActor) return;
+
+        const modules = window.currentPlayer?.ship?.modules || [];
+
+        // 🔁 TOUS les boutons liés à un module
+        const modalEl = document.getElementById(modalId);
+        if (!modalEl) return;
+
+        modalEl.querySelectorAll("[data-module-id]").forEach(btn => {
+            const moduleId = parseInt(btn.dataset.moduleId, 10);
+            if (!moduleId) return;
+
+            const module = modules.find(m => m.id === moduleId);
+            if (!module || !module.effect?.range) return;
+
+            const rr = window.computeModuleRange({
+                module,
+                transmitterActor,
+                receiverActor
+            });
+
+            if (!rr.allowed) {
+                btn.classList.add("opacity-40", "pointer-events-none");
+                btn.title = `Hors de portée (${rr.distance.toFixed(1)} / ${rr.maxRange})`;
+            } else {
+                btn.classList.remove("opacity-40", "pointer-events-none");
+                btn.title = "";
+            }
+        });
+    };
+
 })();
+

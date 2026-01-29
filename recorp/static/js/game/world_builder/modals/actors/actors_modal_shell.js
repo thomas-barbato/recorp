@@ -104,8 +104,8 @@
 
         const {
             border = borderColor,
-            gradientFrom = "from-emerald-700/90",
-            gradientTo = "to-black/70"
+            gradientFrom = "from-emerald-700",
+            gradientTo = "to-black"
         } = options;
 
         // === ROOT ===
