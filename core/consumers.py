@@ -1048,8 +1048,11 @@ class GameConsumer(WebsocketConsumer):
             * les joueurs du nouveau secteur -> async_user_join
             * le joueur lui-même        -> async_warp_complete
         """
+        print("dedans async_warp_travel")
         try:
+            print("dedans async_warp_travel try")
             raw = event.get("message")
+            print(f"raw warp data: {raw}")
             if isinstance(raw, str):
                 warp_data = json.loads(raw)
             else:
@@ -1105,6 +1108,9 @@ class GameConsumer(WebsocketConsumer):
 
             warp_home_id = links.warp_home_id
             warp_destination_id = links.warp_destination_id
+
+            print("warp_home_id:", warp_home_id)
+            print("warp_destination_id:", warp_destination_id)
 
             dest = pa.player_travel_to_destination(warp_home_id, warp_destination_id)
             if not dest:
@@ -1324,8 +1330,8 @@ class GameConsumer(WebsocketConsumer):
 
         scan = ActionRules.upsert_scan(
             scanner_player_id=player_id,
-            receiver_type=target_type,
-            receiver_id=target_id,
+            target_type=target_type,
+            target_id=target_id,
             sector_id=sector_id_int
         )
         

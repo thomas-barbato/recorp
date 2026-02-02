@@ -324,6 +324,8 @@ class PlayerAction:
         Returns:
             bool: True si la mise à jour a réussi
         """
+        print(sector_id, "sector_id to set")
+        print(coordinates, "coordinates to set")
         if not self.player_id:
             return False
             
@@ -430,6 +432,8 @@ class PlayerAction:
         )
         
         sector_id = warpzone.values_list('warp_destination_id__sector_id', flat=True)[0]
+
+        print(sector_id, "sector_id destination")
         
         if warpzone.exists() is False:
             return

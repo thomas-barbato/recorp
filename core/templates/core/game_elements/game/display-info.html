@@ -68,14 +68,14 @@
 
     <!-- === SECTOR INFO (DESKTOP) === -->
     <div id="info-sector-container" class="hidden lg:flex flex-col w-full text-center z-20 border-none rounded-xl select-none">
-      <div class="flex flex-row w-full">
-        <div class="flex flex-row gap-3 justify-start items-center overflow-hidden">
+      <div class="flex flex-row w-full justify-between items-center">
+        <div class="flex flex-row gap-3 w-auto items-center overflow-hidden">
             <!-- Image du joueur -->
             <div class="flex-shrink-0 flex justify-center items-center w-[72px] h-[72px] rounded-lg border border-emerald-400/40 bg-emerald-900/20 overflow-hidden shadow-md shadow-emerald-900/20">
                 <img class="object-cover w-[72px] h-[72px] rounded-md" alt="player image" srcset="/static/img/users/{{current_player_state.user.player}}/0.gif">
             </div>
             <!-- Texte -->
-            <div class="flex flex-col text-left w-full overflow-hidden gap-1">
+            <div class="flex flex-col text-left overflow-hidden gap-1">
                 <div class="text-emerald-300 font-bold text-sm leading-tight truncate font-orbitron">
                     {{ current_player_state.user.name }}
                 </div>
@@ -87,19 +87,42 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-wrap justify-center items-center gap-2 mx-auto">
+        <div class="hidden lg:flex flex-col text-center z-20 border-none rounded-xl select-none items-center">
+          <div class="flex flex-wrap justify-center items-center gap-2 mx-auto">
+              <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+              <b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span>
+              </p>
+              <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+              <b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}
+              </p>
+              <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+              <b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}
+              </p>
+
+              <!-- Target coords -->
+              <div class="flex items-center bg-zinc-800/70 border border-emerald-500/30 rounded-lg overflow-hidden">
+              <i class="fa-solid fa-satellite-dish px-2 text-emerald-200"></i>
+              <span id="target-coord-name" class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center w-[125px] font-orbitron">
+                      {% translate 'Nothing selected' %}
+              </span>
+              <span id="target-coord-y" class="flex bg-zinc-900/70 text-emerald-400 font-bold p-1 w-[25px] invisible">00</span>
+              <span id="target-coord-x" class="flex bg-emerald-400 text-zinc-900 font-bold p-1 rounded-r w-[25px] invisible">00</span>
+              </div>
+          </div>
         </div>
-        <form data-tooltip-target="logout-tooltip" data-tooltip-placement="left" method="post" action="{% url 'core:logout_view' %}" class="flex p-2 items-center justify-center text-emerald-400 hover:text-emerald-300 cursor-pointer logout">
-            {% csrf_token %}
-            <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.05]">
-                <span class="fa fa-sign-out-alt fa-2x"></span>
-            </div>
-            <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
-                {% translate "Log out" %}
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
-            <button type="submit" id="logout-btn" class="hidden"></button>
-        </form>
+        <div class="hidden lg:flex flex-col text-center z-20 border-none rounded-xl select-none items-center">
+          <form data-tooltip-target="logout-tooltip" data-tooltip-placement="left" method="post" action="{% url 'core:logout_view' %}" class="flex p-2 items-center justify-center text-emerald-400 hover:text-emerald-300 cursor-pointer logout">
+              {% csrf_token %}
+              <div class="w-auto flex items-center shadow-inner shadow-emerald-900/30 transition-transform duration-300 hover:scale-[1.05]">
+                  <span class="fa fa-sign-out-alt fa-2x"></span>
+              </div>
+              <div id="logout-tooltip" role="tooltip" class="absolute z-98 invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip  text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md">
+                  {% translate "Log out" %}
+                  <div class="tooltip-arrow" data-popper-arrow></div>
+              </div>
+              <button type="submit" id="logout-btn" class="hidden"></button>
+          </form>
+        </div>
       </div>
     </div>
     <!-- === SECTOR INFO (MOBILE) === -->

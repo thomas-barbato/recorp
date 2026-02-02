@@ -13,6 +13,8 @@ export function updatePlayerCoords(playerObj) {
 
     px.textContent = String(playerObj.x).padStart(2, "0");
     py.textContent = String(playerObj.y).padStart(2, "0");
+
+    console.log(px, py)
 }
 
 export function updateTargetCoords(obj, tx, ty, sectorName) {

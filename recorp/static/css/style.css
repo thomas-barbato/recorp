@@ -1959,3 +1959,179 @@ canvas {
 #actions-fieldset * {
     min-width: 0;
 }
+
+/* ===========================================
+   PC / NPC / UNKNOWN / SECTOR MODAL COLOR THEMES
+============================================ */
+
+:root {
+    --modal-bg: rgba(9, 11, 16, 0.95);
+    --modal-border-alpha: 0.45;
+}
+
+/* PLAYER (PC) */
+.modal-pc {
+    --modal-accent: #10b981; /* emerald */
+}
+
+/* NPC */
+.modal-npc {
+    --modal-accent: #38bdf8; /* cyan */
+}
+
+/* SECTOR ELEMENT */
+.modal-sector {
+    --modal-accent: #a78bfa; /* violet */
+}
+
+/* UNKNOWN (neutre, plus rouge) */
+.modal-unknown {
+    --modal-accent: #64748b; /* slate */
+}
+
+.modal-sf {
+    background: var(--modal-bg);
+    border: 1px solid color-mix(in srgb, var(--modal-accent) var(--modal-border-alpha), transparent);
+    box-shadow:
+        0 0 30px color-mix(in srgb, var(--modal-accent) 35%, transparent);
+    border-radius: 1rem;
+}
+
+.modal-sf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem 1.25rem;
+
+    border-bottom: 1px solid color-mix(in srgb, var(--modal-accent) 40%, transparent);
+
+    background: linear-gradient(
+        to right,
+        color-mix(in srgb, var(--modal-accent) 45%, transparent),
+        rgba(24, 24, 27, 0.6)
+    );
+
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.6);
+}
+
+.modal-sf-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--modal-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ===============================
+   MODAL COLOR THEMES
+================================ */
+
+:root {
+    --modal-bg: rgba(9, 11, 16, 0.95);
+    --modal-border-alpha: 0.45;
+}
+
+.modal-sf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem 1.25rem;
+
+    border-bottom: 1px solid color-mix(in srgb, var(--modal-accent) 40%, transparent);
+
+    background: linear-gradient(
+        to right,
+        color-mix(in srgb, var(--modal-accent) 45%, transparent),
+        rgba(24, 24, 27, 0.6)
+    );
+
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.6);
+}
+
+.modal-sf-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--modal-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-sf-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background: rgba(0,0,0,0.25);
+}
+
+.modal-sf-footer {
+    border-top: 1px solid color-mix(in srgb, var(--modal-accent) 30%, transparent);
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
+    padding: 0.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.modal-unknown .core {
+    background: red;
+}
+
+.modal-sf {
+    background: var(--modal-bg);
+    border: 1px solid color-mix(in srgb, var(--modal-accent) var(--modal-border-alpha), transparent);
+    box-shadow:
+        0 0 30px color-mix(in srgb, var(--modal-accent) 35%, transparent);
+    border-radius: 1rem;
+}
+
+
+/* PLAYER (PC) */
+.modal-pc {
+    --modal-accent: #38bdf8; /* cyan */
+}
+
+/* NPC */
+.modal-npc {
+    --modal-accent: #f30606; /* slate */
+}
+
+/* SECTOR ELEMENT */
+.modal-sector {
+    --modal-accent: #10b981; /* emerald */
+}
+
+/* UNKNOWN (neutre, plus rouge) */
+.modal-unknown {
+    --modal-accent: #f30606; /* slate */
+}
+
+
+.red-border-with-glow{
+    border: 1px solid rgba(231, 0, 11, 0.5);
+    box-shadow:
+        0 0 30px rgba(231, 0, 11, 0.45),
+        inset 0 0 12px rgba(231, 0, 11, 0.3);
+}
+
+.cyan-border-with-glow{
+    border: 1px solid rgba(0, 211, 242, 0.45);
+    box-shadow:
+        0 0 30px rgba(0, 211, 242, 0.4),
+        inset 0 0 12px rgba(0, 211, 242, 0.25);
+}
+
+.emerald-border-with-glow{
+    border: 1px solid rgba(64, 247, 201, 0.5);
+    box-shadow:
+        0 0 30px rgba(64, 247, 201, 0.4),
+        inset 0 0 12px rgba(34, 196, 155, 0.25);
+}

@@ -103,29 +103,7 @@
     </ul>
 </div>
 <div id="map-background" class="lg:w-9/12 w-full h-full order-2 flex flex-col mx-0 lg:overflow-y-hidden overflow-x-hidden no-scrollbar mt-2 select-none lg:flex lg:justify-center lg:items-center gap-2">
-    <div class="hidden lg:flex flex-col w-full text-center z-20 border-none rounded-xl select-none">
-        <div class="flex flex-wrap justify-center items-center gap-2 mx-auto">
-            <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
-            <b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span>
-            </p>
-            <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
-            <b>{% translate "Faction" %}</b> {{ map_informations.sector.faction.name }}
-            </p>
-            <p class="px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
-            <b>{% translate "Security" %}</b> {{ map_informations.sector.security.translated_name }}
-            </p>
-
-            <!-- Target coords -->
-            <div class="flex items-center bg-zinc-800/70 border border-emerald-500/30 rounded-lg overflow-hidden">
-            <i class="fa-solid fa-satellite-dish px-2 text-emerald-200"></i>
-            <span id="target-coord-name" class="font-bold bg-zinc-900/70 text-emerald-200 px-2 py-1 truncate text-center w-[125px] font-orbitron">
-                    {% translate 'Nothing selected' %}
-            </span>
-            <span id="target-coord-y" class="flex bg-zinc-900/70 text-emerald-400 font-bold p-1 w-[25px] invisible">00</span>
-            <span id="target-coord-x" class="flex bg-emerald-400 text-zinc-900 font-bold p-1 rounded-r w-[25px] invisible">00</span>
-            </div>
-        </div>
-    </div>
+    
     <!-- WRAPPER PRINCIPAL -->
     <div id="canvas-wrapper" class="relative flex border-b border-r border-emerald-400/50 lg:mb-0 mb-2">
 
@@ -159,7 +137,6 @@
         </div>
     </div>
     <div class="context-menu" id="contextMenu"></div>
-    <div id="modal-container" class="z-[100]"></div>
     <div class="w-full flex justify-center items-center z-100 lg:order-99 order-3 sm:hidden mb-3" dir="ltr" id="mobile-cross">
         <div class="flex w-full justify-center gap-2 flex-col justify-center items-center">
             <div class="flex w-full justify-center items-center gap-2">

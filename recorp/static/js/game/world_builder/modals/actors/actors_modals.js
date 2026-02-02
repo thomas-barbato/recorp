@@ -91,8 +91,79 @@ function buildAsteroidResourcesSection(modalId, data) {
 
 function create_foreground_modal(modalId, data) {
     const modal = createStandardModalShell(modalId);
-    const coords = `[X:${data.coordinates.x} Y:${data.coordinates.y}]`;
-    modal.header.setTitle(`${data.name.toUpperCase()} ${coords}`);
+    // === HEADER (UNIFIÉ, STYLE CHAT / PC / NPC) ===
+    const coords = `[Y:${data.coordinates.y}, X:${data.coordinates.x}]`;
+
+    // Nettoyage complet
+    modal.header.el.innerHTML = "";
+
+    // Classes header (emerald = secteur)
+    modal.header.el.classList.add(
+        "flex",
+        "w-full",
+        "justify-between",
+        "items-start",
+        "px-5",
+        "py-4",
+        "border-b",
+        "border-emerald-700",
+        "bg-gradient-to-r",
+        "from-emerald-700/60",
+        "to-zinc-900/60",
+        "shadow-inner",
+        "rounded-t-xl"
+    );
+
+    // Wrapper vertical
+    const headerWrapper = document.createElement("div");
+    headerWrapper.classList.add("flex", "flex-col", "w-full");
+
+    // ── Ligne 1 : nom + coords ──
+    const topRow = document.createElement("div");
+    topRow.classList.add(
+        "flex",
+        "flex-row",
+        "items-center",
+        "justify-between",
+        "w-full"
+    );
+
+    const left = document.createElement("div");
+    left.classList.add(
+        "flex",
+        "flex-row",
+        "items-center",
+        "gap-1",
+        "w-full",
+        "justify-start"
+    );
+
+    const nameEl = document.createElement("span");
+    nameEl.textContent = data.name.toUpperCase();
+    nameEl.classList.add(
+        "lg:text-xl",
+        "text-md",
+        "font-bold",
+        "text-white",
+        "font-orbitron"
+    );
+
+    const coordEl = document.createElement("span");
+    coordEl.dataset.role = "coordinates";
+    coordEl.textContent = coords;
+    coordEl.classList.add(
+        "text-md",
+        "text-white"
+    );
+
+    left.append(nameEl, coordEl);
+    topRow.append(left);
+
+    // Assemblage
+    headerWrapper.append(topRow);
+    modal.header.el.append(headerWrapper);
+
+    // Close button (inchangé)
     modal.header.setCloseButton(modalId);
     if (!data._ui) {
         data._ui = {
@@ -157,80 +228,74 @@ function create_foreground_modal(modalId, data) {
 
 function createUnknownModal(modalId, data, is_npc) {
 
-    let e = document.createElement('div');
-    e.id = modalId;
-    e.setAttribute('aria-hidden', true);
-    e.setAttribute('tabindex', -1);
-    e.classList.add(
-        'hidden', 'overflow-hidden', 'fixed', 'top-0', 'right-0', 'left-0',
-        'z-50', 'justify-center', 'items-center', 'w-full', 'h-full', 'md:inset-0',
-        'backdrop-brightness-50', 'bg-black/40', 'backdrop-blur-md', 'animate-modal-fade'
+    // 👉 On réutilise EXACTEMENT le shell NPC
+    const modal = createStandardModalShell(modalId);
+
+    // === HEADER (identique NPC) ===
+    const coords = data.player?.coordinates || data.coordinates;
+    const coordStr = coords ? `[Y:${coords.y}, X:${coords.x}]` : "";
+
+    modal.header.el.innerHTML = "";
+    modal.header.el.classList.add(
+        "flex",
+        "w-full",
+        "justify-between",
+        "items-center",
+        "px-5",
+        "py-4",
+        "border-b",
+        "border-red-800",
+        "bg-gradient-to-r",
+        "from-red-700/60",
+        "to-zinc-900/60",
+        "shadow-inner",
+        "rounded-t-xl"
     );
 
-    let container_div = document.createElement('div');
-    container_div.classList.add("fixed","md:p-3","top-50","right-0","left-0","z-50","w-full","md:inset-0","h-screen");
+    const headerWrapper = document.createElement("div");
+    headerWrapper.classList.add("flex", "flex-col", "w-full");
 
-    // 🔥 Always RED background for UNKNOWN
-    let content_div = document.createElement('div');
-    content_div.classList.add(
-        'flex','rounded-lg','shadow','w-full','lg:w-1/4','rounded-t',
-        'justify-center','mx-auto','flex-col','border-2','border-red-800',
-        'bg-gradient-to-b','from-red-600/70','to-black/70','items-center','gap-2'
+    const topRow = document.createElement("div");
+    topRow.classList.add("flex", "items-center", "justify-between", "w-full");
+
+    const left = document.createElement("div");
+    left.classList.add("flex", "items-center", "gap-1");
+
+    const nameEl = document.createElement("span");
+    nameEl.textContent = "UNKNOWN";
+    nameEl.classList.add(
+        "lg:text-xl",
+        "text-md",
+        "font-bold",
+        "text-white",
+        "font-orbitron"
     );
 
-    // --- HEADER ---
-    let header_container_div = document.createElement('div');
-    header_container_div.classList.add('p-1','flex','flex-row');
+    const coordEl = document.createElement("span");
+    coordEl.textContent = coordStr;
+    coordEl.dataset.role = "coordinates";
+    coordEl.classList.add("text-md", "text-white");
 
-    let header_div = document.createElement('h3');
-    header_div.id = `${modalId}-header`;
-    header_div.classList.add(
-        'lg:text-xl','text-md','text-center','font-shadow','font-bold',
-        'flex-wrap','text-justify','justify-center','text-white','p-1','flex','w-[95%]'
+    left.append(nameEl, coordEl);
+    topRow.append(left);
+
+    headerWrapper.append(topRow);
+    modal.header.el.append(headerWrapper);
+
+    modal.header.setCloseButton(modalId);
+
+    // Image UNKNOWN
+    const unknownImg = document.createElement("img");
+    unknownImg.src = "/static/img/ux/unknown-spaceship.png";
+    unknownImg.classList.add(
+        "mx-auto",
+        "object-center",
+        "h-[100px]",
+        "w-[100px]",
     );
-    header_div.textContent = "Unknown";
+    modal.body.addSection(unknownImg);
 
-    let header_close = document.createElement("img");
-    header_close.src = '/static/img/ux/close.svg';
-    header_close.classList.add('inline-block','w-[5%]','h-[5%]','cursor-pointer','hover:animate-pulse');
-    header_close.setAttribute('onclick', `open_close_modal('${e.id}')`);
-
-    header_container_div.append(header_div, header_close);
-
-    // --- BODY ---
-    let body_container_div = document.createElement('div');
-    body_container_div.classList.add(
-        'items-center',
-        'p-2',
-        'w-full',
-        'flex',
-        'flex-col',
-        'overflow-y-auto',
-        'md:max-h-[70vh]',
-        'max-h-[80vh]'
-    );
-
-    // Placeholder generic image
-    let unknown_img = document.createElement('img');
-    unknown_img.src = "/static/img/ux/unknown_target_icon.svg";
-    unknown_img.alt = "unknown-target";
-    unknown_img.classList.add('mx-auto','object-center','h-[80px]','w-[80px]','pt-1','rounded-full');
-    body_container_div.append(unknown_img);
-
-    const statsSection = buildShipStatsSection(data);
-    // si déjà scanné (via scan_result → __fromScan), afficher les stats détaillées
-    if (data._ui?.scanned === true) {
-        statsSection.ship_statistics_warning_msg_container_p.classList.add("hidden");
-        statsSection.ship_detailed_statistics_container_div.classList.remove("hidden");
-    }
-    body_container_div.append(
-        statsSection.ship_statistics_container_label,
-        statsSection.ship_statistics_container_div,
-        statsSection.ship_statistics_warning_msg_container_p,
-        statsSection.ship_detailed_statistics_container_div
-    );
-
-    // === MODULES LABEL (UNKNOWN) ===
+    // MODULES LABEL
     const modulesLabel = document.createElement("label");
     modulesLabel.textContent = "MODULES:";
     modulesLabel.classList.add(
@@ -241,12 +306,10 @@ function createUnknownModal(modalId, data, is_npc) {
         "text-base",
         "mt-2"
     );
+    modal.body.addSection(modulesLabel);
 
-    body_container_div.append(modulesLabel);
-
-    // === MESSAGE PAR DÉFAUT (scan requis) ===
     const modulesWarning = document.createElement("p");
-    modulesWarning.id = "statistics-warning-msg";
+    modulesWarning.textContent = "Scan requis pour afficher les modules.";
     modulesWarning.classList.add(
         "text-red-500",
         "font-bold",
@@ -255,137 +318,44 @@ function createUnknownModal(modalId, data, is_npc) {
         "font-shadow",
         "animate-pulse"
     );
-    modulesWarning.textContent = "Scan requis pour afficher les modules.";
+    modal.body.addSection(modulesWarning);
 
-    body_container_div.append(modulesWarning);
-
-    // ACTIONS SECTION
-    // === ACTIONS LABEL (même style que normal) ===
+    // ACTIONS
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
-    actionsLabel.classList.add("w-full", "font-bold", "font-shadow", "text-white", "text-base");
-    body_container_div.append(actionsLabel);
+    actionsLabel.classList.add(
+        "w-full",
+        "font-bold",
+        "font-shadow",
+        "text-white",
+        "text-base",
+        "mt-2"
+    );
+    modal.body.addSection(actionsLabel);
 
-    // === CONTEXT ZONE (obligatoire pour éviter null) ===
     const contextZone = document.createElement("div");
     contextZone.id = modalId + "-action-context";
     contextZone.classList.add("hidden", "w-full", "mt-3");
-    body_container_div.append(contextZone);
+    modal.body.addSection(contextZone);
 
-    // === ERROR ZONE (pour le message rouge 5s) ===
     const errorZone = document.createElement("div");
     errorZone.id = modalId + "-action-error-zone";
     errorZone.classList.add("action-error-msg", "hidden");
-    body_container_div.append(errorZone);
+    modal.body.addSection(errorZone);
 
-    // === ACTIONS GRID (utilise buildActionsSection) ===
     const actionsSection = buildActionsSection(modalId, data, is_npc, contextZone);
-    body_container_div.append(actionsSection);
+    modal.body.addSection(actionsSection);
 
-    // Now the part with WEAPON MODULES (from currentPlayer)
-    // ACCORDION
-    let weapon_container = document.createElement('div');
-    weapon_container.id = "accordion-collapse";
-    weapon_container.classList.add('mt-5','hidden');
+    // FOOTER
+    modal.footer.setCloseButton(modalId);
 
-    // Category 1
-    let h3_cat1 = document.createElement('h3');
-    let btn_cat1 = document.createElement('button');
-    btn_cat1.type = "button";
-    btn_cat1.classList.add('flex','items-center','justify-between','w-full','p-2','font-bold','text-white','mb-1');
-
-    let btn_cat1_span = document.createElement('span');
-    btn_cat1_span.textContent = "Weaponry";
-
-    let btn_cat1_svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    btn_cat1_svg.setAttribute("fill","none");
-    btn_cat1_svg.setAttribute("viewBox","0 0 10 6");
-    btn_cat1_svg.classList.add('w-3','h-3','rotate-180','shrink-0');
-
-    let btn_cat1_path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    btn_cat1_path.setAttribute("stroke","currentColor");
-    btn_cat1_path.setAttribute("stroke-linecap","round");
-    btn_cat1_path.setAttribute("stroke-linejoin","round");
-    btn_cat1_path.setAttribute("stroke-width","2");
-    btn_cat1_path.setAttribute("d","M9 5 5 1 1 5");
-    btn_cat1_svg.append(btn_cat1_path);
-
-    btn_cat1.append(btn_cat1_span, btn_cat1_svg);
-    h3_cat1.append(btn_cat1);
-
-    let body_cat1 = document.createElement('div');
-    body_cat1.id = "offensive-module-body-1";
-    body_cat1.classList.add('hidden');
-    btn_cat1.addEventListener('click', ()=> display_attack_options(e.id, 1));
-
-    // Populate modules from currentPlayer..ship.modules
-    for (let mod of currentPlayer.ship.modules) {
-        if (mod.type !== "WEAPONRY") continue;
-
-        let mod_div = document.createElement('div');
-        mod_div.classList.add(
-            'flex','flex-col','py-2','px-4','mb-1','rounded-md','border',
-            'hover:border-gray-800','border-slate-400','hover:bg-slate-300',
-            'bg-gray-800','text-white','hover:text-gray-800','cursor-pointer',
-            'divide-y','divide-dashed','divide-white','hover:divide-gray-800'
-        );
-
-        let mod_name = document.createElement('p');
-        mod_name.classList.add('font-bold');
-        mod_name.textContent = mod.name;
-        mod_div.append(mod_name);
-
-        // Damages, range, etc (UNCHANGED)
-        if (mod.effect.damage_type) {
-            let dmg_span = document.createElement('span');
-            dmg_span.innerHTML = `<small>Damage type: </small><small class="text-blue-500 font-bold">${mod.effect.damage_type}</small>`;
-            let dmg_val = document.createElement('span');
-            dmg_val.innerHTML = `<small>Damages: </small><small class="text-blue-500 font-bold">${mod.effect.min_damage} - ${mod.effect.max_damage}</small>`;
-            let range = document.createElement('span');
-            range.innerHTML = `<small>Range: </small><small class="text-blue-500 font-bold">${mod.effect.range}</small>`;
-            let cth = document.createElement('span');
-            cth.innerHTML = `<small>Chance to hit: </small><small class="text-blue-500 font-bold">100%</small>`;
-
-            mod_div.append(dmg_span, dmg_val, range, cth);
-        }
-
-        body_cat1.append(mod_div);
-    }
-
-    weapon_container.append(
-        h3_cat1,
-        body_cat1
-    );
-
-    body_container_div.append(weapon_container);
-
-    // --- FOOTER ---
-    let footer_div  = document.createElement('div')
-    footer_div.className = "w-full flex justify-center items-center py-3  relative z-10";
-    let closeBtn = document.createElement('button');
-    closeBtn.className = "text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all";
-    closeBtn.textContent= gettext('close');
-    closeBtn.onclick = () => open_close_modal(modalId);
-    footer_div .append(closeBtn)
-
-    // Final assembly
-    content_div.append(header_container_div);
-    content_div.append(body_container_div);
-    content_div.append(footer_div);
-    container_div.append(content_div);
-    e.append(container_div);
-
-    return e;
+    return modal.root;
 }
 
 function create_pc_npc_modal(modalId, data, is_npc) {
 
     // === MODAL SHELL ===
-    const modal = createStandardModalShell(modalId, {
-        border: is_npc ? "border-red-800" : "border-cyan-600",
-        gradientFrom: is_npc ? "from-red-700/70" : "from-cyan-600/70",
-        gradientTo: "to-black/70"
-    });
+    const modal = createStandardModalShell(modalId);
 
     // === HEADER ===
     const coords = data.player?.coordinates || data.coordinates;
@@ -393,6 +363,27 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
     // Nettoyage du header
     modal.header.el.innerHTML = "";
+
+    let header_gradientFrom = is_npc ? "from-red-700/60" : "from-cyan-600/60";
+    let header_gradientTo = "to-zinc-900/60";
+    let header_border =  is_npc ? "border-red-800" : "border-cyan-600";
+    
+    modal.header.el.classList.add(
+        "flex", 
+        "w-full",
+        "justify-between", 
+        "items-center", 
+        "px-5", 
+        "py-4", 
+        "border-b", 
+        header_border, 
+        header_gradientFrom, 
+        "bg-gradient-to-r", 
+        header_gradientTo, 
+        "shadow-inner",
+        "rounded-t-xl",
+        "items-start"
+    );
 
     // Wrapper vertical
     const headerWrapper = document.createElement("div");
@@ -409,19 +400,18 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     );
 
     const left = document.createElement("div");
-    left.classList.add("flex", "flex-row", "items-center", "gap-1", "w-full", "justify-center");
+    left.classList.add("flex", "flex-row", "items-center", "gap-1", "w-full", "justify-start");
 
     const nameEl = document.createElement("span");
     nameEl.textContent = (data.player?.name || "UNKNOWN").toUpperCase();
     nameEl.classList.add("lg:text-xl","text-md","text-center",
                         "font-bold","flex",
-                        "text-white","justify-center");
+                        "text-white","justify-center", "font-orbitron");
 
     const coordEl = document.createElement("span");
     coordEl.dataset.role = "coordinates";
     coordEl.textContent = coordStr;
-    coordEl.classList.add("lg:text-xl","text-md","text-center",
-                        "font-bold","flex",
+    coordEl.classList.add("text-md","text-center","flex",
                         "text-white","justify-center" );
 
     left.append(nameEl, coordEl);

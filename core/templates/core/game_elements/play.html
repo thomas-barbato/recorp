@@ -29,6 +29,7 @@
     <!-- === NOTIFICATION SYSTEM (MP RECEIVED) === -->
     <div id="mp-notification-container" class="fixed top-2 left-2 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
     <div id="connection-error" class="fixed top-50 right-50 z-[9999] flex flex-col gap-3 items-end pointer-events-none"></div>
+    <div id="modal-container" class="z-[100]"></div>
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
         {% include "top-panel.html" %}
         <header class="flex w-full main-info-container flex-col">

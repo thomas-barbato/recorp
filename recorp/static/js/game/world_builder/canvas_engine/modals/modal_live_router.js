@@ -28,7 +28,6 @@
                 break;
 
             case "range_maybe_changed":
-                console.log("Range maybe changed for", modalId);
                 if (typeof window.refreshModalActionRanges === "function") {
                     window.refreshModalActionRanges(modalId);
                 }

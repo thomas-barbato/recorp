@@ -43,11 +43,42 @@
                 "border","border-yellow-400/50",
                 "whitespace-nowrap"
             );
-            crLine.style.color = "#fde047"; //
+            crLine.style.color = "#fde047";
             wrapper.append(crLine);
         }
 
         return wrapper;
+    }
+
+    function createActionRangeBadge(range) {
+        if (typeof range !== "number" || range <= 0) return null;
+
+        const badge = document.createElement("div");
+        badge.classList.add(
+            "px-2",
+            "py-[1px]",
+            "rounded-md",
+            "text-xs",
+            "font-bold",
+            "font-shadow",
+            "border",
+            "whitespace-nowrap",
+            "bg-sky-800/70",
+            "border-sky-400/40",
+            "text-sky-200",
+            "flex",
+            "items-center",
+            "gap-1"
+        );
+
+        const icon = document.createElement("span");
+        icon.textContent = "🛰";
+
+        const label = document.createElement("span");
+        label.textContent = range;
+
+        badge.append(icon, label);
+        return badge;
     }
 
     function createActionButton(iconElement, label, onClick, cost = {}) {
@@ -93,6 +124,14 @@
                 "text-xs"
             );
             btn.append(badge);
+        }
+        console.log(cost)
+        if (cost?.range !== undefined) {
+            const rangeBadge = createActionRangeBadge(cost.range);
+            if (rangeBadge) {
+                rangeBadge.classList.add("mt-1");
+                btn.append(rangeBadge);
+            }
         }
 
         btn.addEventListener("click", onClick);
@@ -249,6 +288,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "WEAPONRY") return;
 
+                const range = m.effect?.range === "number"
+
                 const rangeResult = window.computeModuleRange({
                     module: m,
                     transmitterActor: transmitterActor,
@@ -261,19 +302,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     "items-center", "p-2", "rounded-lg",
                     "border", "gap-4", "border-emerald-900"
                 );
-                
-                if (!rangeResult.allowed) {
-                    wrapper.classList.remove("border-emerald-900", "border");
-                    wrapper.classList.add("opacity-40", "pointer-events-none", "bg-red-600");
-                    
-                    if (rangeResult.distance !== null) {
-                        wrapper.title =
-                            `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                    }
-                }else{
-                    wrapper.classList.add("border-emerald-900");
-                }
-
                 // description module
                 const left = document.createElement("div");
                 left.classList.add("w-full");
@@ -306,10 +334,31 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     });
                 });
 
+                const apBadge = createActionCostBadge({ ap_cost: 1 });
+                if (apBadge) {
+                    btn.append(apBadge);
+                }
+                const rangeBadge = createActionRangeBadge(m.effect?.range);
+
+                if (rangeBadge) {
+                    rangeBadge.dataset.role = "range-badge";
+                    rangeBadge.dataset.moduleId = String(m.id);
+                    btn.append(rangeBadge);
+                }
+
                 wrapper.dataset.actionKey = "attack";
                 wrapper.dataset.moduleId = m.id;
                 wrapper.dataset.moduleType = "WEAPONRY";
                 btn.dataset.moduleId = String(m.id);
+                
+                
+                if (!rangeResult.allowed) {
+                    btn.classList.remove("border-emerald-900", "border");
+                    btn.classList.add("opacity-40", "pointer-events-none", "bg-red-600");
+                }else{
+                    btn.classList.add("border-emerald-900");
+                }
+
                 wrapper.append(left, btn);
                 list.append(wrapper);
             });
@@ -329,7 +378,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     scanIcon.classList.add('text-white')
 
     let ap_cost = 1;
-    
+
+    const spaceShipProb = modules.find(
+        m => m.type === "PROBE" && m.name === "spaceship probe" &&  m.effect?.range 
+    );
+        
     const scanButton = createActionButton(
         scanIcon,
         "Scan",
@@ -345,14 +398,18 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
             });
         },
-        { ap_cost:ap_cost  }
+        { 
+            ap_cost:ap_cost  ,
+            range: spaceShipProb?.effect?.range  
+        }
+        
         
     );
 
     scanButton.dataset.actionKey = "scan";
     const probeModule = modules.find(m => m.type === "PROBE" && m.name === "spaceship probe");
     if (probeModule) {
-        scanButton.dataset.moduleId = String(probeModule.id);   // ✅ clé pour refresh
+        scanButton.dataset.moduleId = String(probeModule.id);   // clé pour refresh
     } else {
         // optionnel : garder moduleName si tu veux fallback
         scanButton.dataset.moduleName = "spaceship probe";
@@ -571,7 +628,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             contextZone.append(list);
         },
-        {ap : 1}
+        {ap_cost: ap_cost}
     );
     
     ewarButton.dataset.actionKey = "electronic-warfare-menu";
@@ -583,6 +640,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     const repIcon = document.createElement("img");
     repIcon.src = "/static/img/ux/repaire_icon.svg";
 
+    const repairModule = modules.find(
+        m => m.type === "REPAIRE" && m.effect?.range
+    );
+
     const repButton = createActionButton(
         repIcon,
         "Repaire",
@@ -592,8 +653,12 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             contextZone.innerHTML = "Réparation (à implémenter)";
             contextZone.classList.remove("hidden");
         },
-        {ap : 1}
+        {
+            ap_cost: ap_cost,
+            range: repairModule?.effect?.range
+        }
     );
+    
 
     // BLOQUER SI AP INSUFFISANTS
     applyActionCostState({ ap_cost: 1, cost: 0 }, repButton);
@@ -653,8 +718,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             "sf-scroll-emerald",
             "p-2",
             "bg-zinc-950/95", 
-            "border", 
-            "border-emerald-700/40"
         );
 
         const type = data.type;
@@ -890,6 +953,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     // ===== Bridge global (comme les autres étapes) =====
     window.createActionCostBadge = createActionCostBadge;
+    window.createActionRangeBadge = createActionRangeBadge;
     window.createActionButton = createActionButton;
     window.playerHasModule = playerHasModule;
     window.showActionError = showActionError;

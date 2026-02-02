@@ -91,22 +91,22 @@
     // ===================================================
     // SHELL STANDARD DU MODAL
     // ===================================================
-    function createStandardModalShell(modalId, options = {}) {
+    function createStandardModalShell(modalId) {
 
         let borderColor = "";
 
-        if (!modalId.includes("npc") && !modalId.includes("pc")) {
-            borderColor = "border-emerald-400";
+        // ✅ priorité au prefix UNKNOWN
+        const isUnknown = modalId.includes("modal-unknown-");
+
+        if (isUnknown) {
+            // UNKNOWN doit avoir un visuel indépendant du vrai type (PC/NPC)
+            borderColor = "red-border-with-glow"; // ou une classe neutre si tu préfères
+        } else if (!modalId.includes("npc") && !modalId.includes("pc")) {
+            borderColor = "emerald-border-with-glow";
         } else {
             const is_npc = modalId.includes("npc");
-            borderColor = is_npc ? "border-red-800" : "border-teal-600";
+            borderColor = is_npc ? "red-border-with-glow" : "cyan-border-with-glow";
         }
-
-        const {
-            border = borderColor,
-            gradientFrom = "from-emerald-700",
-            gradientTo = "to-black"
-        } = options;
 
         // === ROOT ===
         const root = document.createElement("div");
@@ -114,10 +114,14 @@
         root.setAttribute("aria-hidden", true);
         root.setAttribute("tabindex", -1);
         root.classList.add(
-            "hidden","overflow-hidden","fixed","top-0","right-0","left-0",
-            "z-50","justify-center","items-center","w-full","h-full",
-            "md:inset-0","backdrop-brightness-50","bg-black/40",
-            "backdrop-blur-md","animate-modal-fade"
+            "hidden",
+            "fixed","inset-0",
+            "z-50",
+            "flex","items-center","justify-center",
+            "bg-black/40",
+            "backdrop-blur-md",
+            "backdrop-brightness-50",
+            "animate-modal-fade"
         );
 
         // === CONTAINER ===
@@ -129,11 +133,11 @@
 
         // === CONTENT ===
         const content = document.createElement("div");
+        
         content.classList.add(
-            "flex","rounded-lg","shadow","w-full","lg:w-1/4","rounded-t",
-            "justify-center","mx-auto","flex-col","border","border-2", border,
-            "bg-gradient-to-b", gradientFrom, gradientTo,
-            "font-shadow"
+            "flex","shadow","w-full","md:w-1/4","rounded-t-xl",
+            "justify-center","mx-auto","flex-col","border", borderColor, "transition-all", "bg-zinc-950/95",
+            "md:rounded-2xl", "scale-100", "opacity-100", "font-shadow"
         );
 
         // === HEADER ===
