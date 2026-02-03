@@ -14,7 +14,6 @@
             "flex-col",
             "items-center",
             "gap-1",
-            "mt-1",
             "text-xs",
             "font-bold",
             "font-shadow"
@@ -72,7 +71,7 @@
         );
 
         const icon = document.createElement("span");
-        icon.textContent = "🛰";
+        icon.textContent = "dist:";
 
         const label = document.createElement("span");
         label.textContent = range;
@@ -120,12 +119,11 @@
         if (badge) {
             badge.classList.remove("ml-auto"); // sécurité
             badge.classList.add(
-                "mt-1",
                 "text-xs"
             );
             btn.append(badge);
         }
-        console.log(cost)
+        
         if (cost?.range !== undefined) {
             const rangeBadge = createActionRangeBadge(cost.range);
             if (rangeBadge) {
@@ -282,7 +280,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             contextZone.classList.contains('hidden') == true ? contextZone.classList.remove("hidden") : contextZone.classList.add("hidden");
 
             const list = document.createElement("div");
-            list.classList.add("flex", "flex-col", "gap-2", "mt-2");
+            list.classList.add("flex", "flex-col", "gap-2");
 
             // modules weaponry
             modules.forEach(m => {
@@ -353,8 +351,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 
                 
                 if (!rangeResult.allowed) {
-                    btn.classList.remove("border-emerald-900", "border");
-                    btn.classList.add("opacity-40", "pointer-events-none", "bg-red-600");
+                    btn.classList.remove("border-emerald-900");
+                    btn.classList.add("opacity-40", "pointer-events-none");
                 }else{
                     btn.classList.add("border-emerald-900");
                 }

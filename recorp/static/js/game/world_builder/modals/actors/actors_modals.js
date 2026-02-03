@@ -204,7 +204,7 @@ function create_foreground_modal(modalId, data) {
     if (data.type === "asteroid" || data.type === "star") {
         const resourcesLabel = document.createElement("label");
         resourcesLabel.textContent = "RESSOURCES :";
-        resourcesLabel.classList.add("font-bold", "text-white", "mt-2", "font-shadow", "w-full");
+        resourcesLabel.classList.add("font-bold", "text-white", "mt-2", "font-shadow", "w-full","font-orbitron");
 
         modal.body.addSection(resourcesLabel);
         modal.body.addSection(
@@ -215,7 +215,7 @@ function create_foreground_modal(modalId, data) {
     // ACTIONS
     const actionsLabel = document.createElement("label");
     actionsLabel.textContent = "ACTIONS:";
-    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-2", "text-start", "font-shadow");
+    actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-2", "text-start", "font-shadow","font-orbitron");
     modal.body.addSection(actionsLabel);
 
     const actionsSection = buildForegroundActionsSection(modalId, data);
@@ -304,7 +304,8 @@ function createUnknownModal(modalId, data, is_npc) {
         "font-shadow",
         "text-white",
         "text-base",
-        "mt-2"
+        "mt-2",
+        "font-orbitron"
     );
     modal.body.addSection(modulesLabel);
 
@@ -329,7 +330,8 @@ function createUnknownModal(modalId, data, is_npc) {
         "font-shadow",
         "text-white",
         "text-base",
-        "mt-2"
+        "mt-2",
+        "font-orbitron"
     );
     modal.body.addSection(actionsLabel);
 
@@ -517,7 +519,8 @@ function create_pc_npc_modal(modalId, data, is_npc) {
         "font-shadow",
         "text-white",
         "text-base",
-        "mt-2"
+        "mt-2",
+        "font-orbitron"
     );
     modal.body.addSection(modulesLabel);
 
@@ -547,7 +550,8 @@ function create_pc_npc_modal(modalId, data, is_npc) {
         "font-shadow",
         "text-white",
         "text-base",
-        "mt-2"
+        "mt-2",
+        "font-orbitron"
     );
     modal.body.addSection(actionsLabel);
 
@@ -584,7 +588,8 @@ function buildShipStatsSection(data) {
         "text-white",
         "text-justify",
         "text-base",
-        "w-full"
+        "w-full",
+        "font-orbitron"    
     );
 
     // --- CONTENEUR "SIMPLE STATS" (laissé vide pour compat) ---
@@ -616,7 +621,7 @@ function buildShipStatsSection(data) {
         label_icon.className = label_icon_className;
         label_text.textContent = labelText;
         label.append(label_icon, label_text)
-        label.classList.add("font-shadow", "text-white", "font-bold", "gap-2", "flex", "items-center");
+        label.classList.add("font-shadow", "text-white", "gap-2", "flex", "items-center", "font-orbitron");
 
         let container = document.createElement("div");
         container.classList.add("w-full", "bg-red-600", "relative", "h-[15px]", "overflow-hidden");

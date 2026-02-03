@@ -11,9 +11,9 @@
         targetType,
         targetId,
         modalData,
-        targetModalId,
+        targetModalId
     }) {
-        // Sauvegarde du contexte pour réouverture
+        // Sauvegarde contexte
         lastTargetContext = {
             targetKey,
             targetType,
@@ -21,11 +21,21 @@
             modalData,
             targetModalId
         };
+        
+        const targetEl = document.getElementById(targetModalId);
+        if (targetEl) {
+            window.ModalLive?.unregister?.(targetModalId);
+            targetEl.remove();
+        }
+        
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+            modalContainer.innerHTML = "";
+        }
 
-        // Fermer le modal courant (cible)
-        open_close_modal(targetModalId)
         createSendReportModal(modalData, targetModalId);
     };
+
 
     /**
      * Création du modal Send Report

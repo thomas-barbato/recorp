@@ -110,7 +110,6 @@ function createFormatedLabel(module_object) {
 
     let module_tooltip_ul = document.createElement('ul');
     let module_tooltip_name = document.createElement('span');
-    let module_tooltip_moduleType = document.createElement('small');
 
     module_tooltip_ul.className = `
         flex flex-col gap-1 font-bold text-xs
@@ -119,10 +118,8 @@ function createFormatedLabel(module_object) {
     `;
     module_tooltip_name.className = "font-bold text-emerald-300 text-sm";
     module_tooltip_name.textContent = module_name;
-    module_tooltip_moduleType.className = "italic text-emerald-400/80 mb-1";
 
     module_tooltip_ul.append(module_tooltip_name);
-    module_tooltip_ul.append(module_tooltip_moduleType);
 
     let module_li, module_li_label, module_li_value;
 
@@ -168,11 +165,11 @@ function createFormatedLabel(module_object) {
             if ('can_scavenge' in module_object.effect) {
                 module_li = styledLine(`${module_object.effect.label}`, `✔️`);
             } else if ('display_mineral_data' in module_object.effect) {
-                module_li = styledLine(`${module_object.effect.label}`, `range: ${module_object.effect.range}`);
+                module_li = styledLine(`${module_object.effect.label}`);
             } else {
                 module_li = styledLine(
                     `${module_object.effect.label}:`,
-                    `+${module_object.effect.gathering_amount}, range: ${module_object.effect.range}`
+                    `+${module_object.effect.gathering_amount}`
                 );
             }
             module_tooltip_ul.append(module_li);
@@ -198,15 +195,15 @@ function createFormatedLabel(module_object) {
             if ("aiming_discrease" in module_object.effect) {
                 module_li = styledLine(
                     `${module_object.effect.label}:`,
-                    `-${module_object.effect.aiming_discrease}% — range ${module_object.effect.range}`
+                    `-${module_object.effect.aiming_discrease}%`
                 );
             } else if ("movement_discrease" in module_object.effect) {
                 module_li = styledLine(
                     `${module_object.effect.label}:`,
-                    `-${module_object.effect.movement_discrease}% — range ${module_object.effect.range}`
+                    `-${module_object.effect.movement_discrease}%`
                 );
             } else if ("display_ship_data" in module_object.effect) {
-                module_li = styledLine(`${module_object.effect.label}`, `range ${module_object.effect.range}`);
+                module_li = styledLine(`${module_object.effect.label}`);
             }
             module_tooltip_ul.append(module_li);
             break;
@@ -215,12 +212,12 @@ function createFormatedLabel(module_object) {
             if ("aiming_increase" in module_object.effect) {
                 module_li = styledLine(
                     `${module_object.effect.label}:`,
-                    `+${module_object.effect.aiming_increase}% — range ${module_object.effect.range || "?"}`
+                    `+${module_object.effect.aiming_increase}%`
                 );
             } else {
                 module_li = styledLine(
                     `${module_object.effect.label}:`,
-                    `damages: ${module_object.effect.min_damage} - ${module_object.effect.max_damage} — range ${module_object.effect.range}`
+                    `damages: ${module_object.effect.min_damage} - ${module_object.effect.max_damage}`
                 );
             }
             module_tooltip_ul.append(module_li);
@@ -231,15 +228,13 @@ function createFormatedLabel(module_object) {
             module_tooltip_ul.append(module_li);
             break;
     }
-
-    module_tooltip_moduleType.textContent = module_type;
     return module_tooltip_ul.outerHTML;
 }
 
 // Ligne stylisée pour tooltip
 function styledLine(label, value) {
     let li = document.createElement('li');
-    li.className = "flex justify-between border-b border-emerald-800/20 py-[1px] gap-2";
+    li.className = "flex justify-start items-cente border-b border-emerald-800/20 py-[1px] gap-2";
     let l = document.createElement('span');
     let v = document.createElement('span');
     l.className = "font-bold text-emerald-300";

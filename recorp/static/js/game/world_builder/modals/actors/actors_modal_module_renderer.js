@@ -20,10 +20,8 @@
         `;
         module_tooltip_name.className = "font-bold text-emerald-300 text-sm font-shadow";
         module_tooltip_name.textContent = module_name;
-        module_tooltip_moduleType.className = "italic text-emerald-400/80 font-shadow mb-1";
 
         module_tooltip_ul.append(module_tooltip_name);
-        module_tooltip_ul.append(module_tooltip_moduleType);
 
         let module_li;
 

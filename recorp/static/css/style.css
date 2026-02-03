@@ -1745,6 +1745,8 @@ canvas {
     animation: pulse 1s infinite;
 }
 
+
+
 .action-button-sf-label {
     margin-top: 0.25rem;
     font-size: 10px;
@@ -1821,18 +1823,18 @@ canvas {
 
     /* 🔥 NOUVEAU */
     min-width: 88px;          /* largeur plancher lisible */
-    max-width: 120px;         /* évite les boutons trop larges */
+    max-width: 100px;         /* évite les boutons trop larges */
 
-    min-height: 120px;
+    min-height: 100px;
     height: auto;
 
-    padding: 6px 6px;
+    padding: 2px 2px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 3px;
 
     border-radius: 0.75rem;
     border: 1px solid rgba(52, 211, 153, 0.6);
@@ -1851,7 +1853,7 @@ canvas {
 
 .action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     color: rgb(110, 231, 183);
     text-align: center;
@@ -1875,7 +1877,7 @@ canvas {
         --btn: 56px;
         --cols: 4;
     }
-    .action-button-sf-label { font-size: 9px; }
+    .action-button-sf-label { font-size: 10px; }
 }
 
 /* Phone */
@@ -1884,7 +1886,7 @@ canvas {
         --btn: 52px;
         --cols: 3;
     }
-    .action-button-sf-label { font-size: 8px; }
+    .action-button-sf-label { font-size: 10px; }
 }
 
 /* Tiny phone */
@@ -1901,7 +1903,7 @@ canvas {
     
     .action-button-sf-label {
         margin-top: 0.25rem;
-        font-size: 9px;
+        font-size: 10px;
         font-weight: bold;
         color: rgb(110, 231, 183); /* emerald-300 */
         text-align: center;
@@ -1915,7 +1917,7 @@ canvas {
 
     .action-button-sf-label {
         margin-top: 0.25rem;
-        font-size: 8px;
+        font-size: 10px;
         font-weight: bold;
         color: rgb(110, 231, 183); /* emerald-300 */
         text-align:  center;

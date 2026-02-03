@@ -135,7 +135,11 @@
         const content = document.createElement("div");
         
         content.classList.add(
-            "flex","shadow","w-full","md:w-1/4","rounded-t-xl",
+            "flex","shadow","rounded-t-xl",
+            "max-w-w-[98%]",
+            "md:max-w-[600px]",
+            "lg:max-w-[680px]",
+            "xl:max-w-[520px]",
             "justify-center","mx-auto","flex-col","border", borderColor, "transition-all", "bg-zinc-950/95",
             "md:rounded-2xl", "scale-100", "opacity-100", "font-shadow"
         );
