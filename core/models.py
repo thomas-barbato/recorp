@@ -135,6 +135,7 @@ class Sector(models.Model):
         default=Faction.get_default_pk,
         related_name="faction_sector",
     )
+    is_tutorial_zone = models.BooleanField(default=False)
     is_faction_level_starter = models.BooleanField(default=False)
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

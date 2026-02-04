@@ -9,7 +9,7 @@ from django.core.files import File
 from django.conf import settings
 from PIL import Image
 from pathlib import Path
-from django.db import models
+from django.db import models, transaction
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
@@ -243,182 +243,179 @@ class CreateAccountView(TemplateView):
         return redirect("/")
 
 
-class CreateCharacterView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
-    
+class CreateCharacterView(LoginRequiredMixin, TemplateView):
+
     login_url = LOGIN_REDIRECT_URL
-    redirect_field_name = "login_redirect"
-    form_class = CreateCharacterForm()
     template_name = "create-character.html"
-    redirect_authenticated_user = True
-    
+
+    # --------------------------------------------------
+    # GET : affichage de la page de création
+    # --------------------------------------------------
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.get_context_data())
+
+    # --------------------------------------------------
+    # CONTEXT : données nécessaires au template
+    # --------------------------------------------------
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context["factions"] = GetDataFromDB().get_faction_queryset()
-        context["form"] = self.form_class
-        context["archetype_data"] = Archetype.objects.values('name', 'id', 'data', 'ship_id__image', 'description')
-        context["archetype_modules"] = ArchetypeModule.objects.values('archetype_id', 'module_id__name', 'module_id__type', 'module_id__effect')
+        context["archetype_data"] = Archetype.objects.values(
+            "id",
+            "name",
+            "data",
+            "ship_id__image",
+            "description",
+        )
+        context["archetype_modules"] = ArchetypeModule.objects.values(
+            "archetype_id",
+            "module_id__name",
+            "module_id__type",
+            "module_id__effect",
+        )
+
         return context
-    
+
+    # --------------------------------------------------
+    # POST : création effective du personnage
+    # --------------------------------------------------
+
+    login_url = LOGIN_REDIRECT_URL
+    template_name = "create-character.html"
+
     def post(self, request, **kwargs):
-        if request.POST.get('name') and request.POST.get('faction'):
-            data = {
-                'name' : request.POST.get('name'),
-                'faction': request.POST.get('faction'),
-                'archetype': request.POST.get('archetype'),
-                'image': request.POST.get('id_image'),
-                'description': request.POST.get('description'),
-                'user' : self.request.user.id,
-                'in_tutoriel_zone': True,
-            }
-            
-            form = CreateCharacterForm(data, request.FILES)
-            if form.is_valid():
-                uploaded_file = request.FILES.get("file")
-                contains_image = uploaded_file is not None
-                new_player = Player(
-                    name=data["name"],
-                    faction_id=data["faction"],
-                    archetype_id=data["archetype"],
-                    image=contains_image,
-                    sector_id=Sector.objects.filter(name__contains="tuto").values_list('id', flat=True).first(),
-                    coordinates = {"x" : 15, "y": 15 },
-                    description=data["description"],
-                    user_id=self.request.user.id
+
+        name = request.POST.get("name")
+        faction_id = request.POST.get("faction")
+        archetype_id = request.POST.get("archetype")
+
+        if not name or not faction_id or not archetype_id:
+            return render(request, self.template_name, self.get_context_data())
+
+        # 🔒 TRANSACTION GLOBALE
+        with transaction.atomic():
+
+            # -------------------------
+            # Secteur tutoriel (SAFE)
+            # -------------------------
+            sector_id = (
+                Sector.objects
+                .filter(is_tutorial_zone=True)
+                .values_list("id", flat=True)
+                .first()
+            )
+
+            if not sector_id:
+                raise RuntimeError("Tutoriel sector not found (creation aborted)")
+
+            # -------------------------
+            # Player
+            # -------------------------
+            player = Player.objects.create(
+                name=name,
+                faction_id=int(faction_id),
+                archetype_id=int(archetype_id),
+                sector_id=sector_id,
+                coordinates={"x": 15, "y": 15},
+                description=request.POST.get("description"),
+                user=request.user,
+            )
+
+            # -------------------------
+            # Vaisseau + stats
+            # -------------------------
+            archetype = Archetype.objects.get(id=archetype_id)
+            ship = Ship.objects.get(id=archetype.ship_id)
+
+            current_hp = ship.default_hp
+            current_movement = ship.default_movement
+            current_ballistic_defense = ship.default_ballistic_defense
+            current_thermal_defense = ship.default_thermal_defense
+            current_missile_defense = ship.default_missile_defense
+            current_cargo_size = 3
+
+            modules = ArchetypeModule.objects.filter(archetype_id=archetype_id)
+
+            for m in modules:
+                effect = m.module.effect
+                mtype = m.module.type
+
+                if "DEFENSE" in mtype:
+                    if "BALLISTIC" in mtype:
+                        current_ballistic_defense += effect.get("defense", 0)
+                    elif "THERMAL" in mtype:
+                        current_thermal_defense += effect.get("defense", 0)
+                    elif "MISSILE" in mtype:
+                        current_missile_defense += effect.get("defense", 0)
+
+                elif "MOVEMENT" in mtype:
+                    current_movement += effect.get("movement", 0)
+
+                elif "HULL" in mtype:
+                    current_hp += effect.get("hp", 0)
+
+                elif "HOLD" in mtype:
+                    current_cargo_size += effect.get("capacity", 0)
+
+            player_ship = PlayerShip.objects.create(
+                player=player,
+                ship=ship,
+                is_current_ship=True,
+                status="FULL",
+                current_hp=current_hp,
+                max_hp=current_hp,
+                current_movement=current_movement,
+                max_movement=current_movement,
+                current_cargo_size=current_cargo_size,
+                current_ballistic_defense=current_ballistic_defense,
+                max_ballistic_defense=current_ballistic_defense,
+                current_thermal_defense=current_thermal_defense,
+                max_thermal_defense=current_thermal_defense,
+                current_missile_defense=current_missile_defense,
+                max_missile_defense=current_missile_defense,
+            )
+
+            # -------------------------
+            # Modules du vaisseau
+            # -------------------------
+            for m in modules:
+                PlayerShipModule.objects.create(
+                    player_ship=player_ship,
+                    module=m.module
                 )
-                
-                try:
-                    new_player.save()
-                except Exception as e:
-                    print("Erreur au save du Player:", e)
-                    
-                archetype_module_list = [e for e in ArchetypeModule.objects.filter(archetype_id=int(data["archetype"])).values('module_id', 'module_id__type', 'module_id__name', 'module_id__effect', 'module_id__type')]
-                module_list = [e['module_id'] for e in archetype_module_list]
-                archetype_data = [e for e in Archetype.objects.filter(id=data["archetype"]).values('ship_id', 'data')]
-                
-                default_ship_values = Ship.objects.filter(id=archetype_data[0]['ship_id']).values(
-                    'default_hp',
-                    'default_movement',
-                    'default_ballistic_defense',
-                    'default_thermal_defense',
-                    'default_missile_defense'
-                )[0]
-                
-                current_hp = default_ship_values['default_hp']
-                max_hp = default_ship_values['default_hp']
-                current_movement = default_ship_values['default_movement']
-                current_ballistic_defense = default_ship_values['default_ballistic_defense']
-                current_thermal_defense = default_ship_values['default_thermal_defense']
-                current_missile_defense = default_ship_values['default_missile_defense']
-                max_ballistic_defense = default_ship_values['default_ballistic_defense']
-                max_thermal_defense = default_ship_values['default_thermal_defense']
-                max_missile_defense = default_ship_values['default_missile_defense']
-                max_movement = default_ship_values['default_movement']
-                current_cargo_size = 3
-                        
-                for module in archetype_module_list:
-                    if "DEFENSE" in module["module_id__type"]:
-                        if "BALLISTIC" in module["module_id__type"]:
-                            current_ballistic_defense += module["module_id__effect"]["defense"]
-                            max_ballistic_defense += module["module_id__effect"]["defense"]
-                        elif "THERMAL" in module["module_id__type"]:
-                            current_thermal_defense += module["module_id__effect"]["defense"]
-                            max_thermal_defense += module["module_id__effect"]["defense"]
-                        elif "MISSILE" in module["module_id__type"]:
-                            current_missile_defense += module["module_id__effect"]["defense"]
-                            max_missile_defense += module["module_id__effect"]["defense"]
-                    elif "MOVEMENT" in module["module_id__type"]:
-                        current_movement += module["module_id__effect"]['movement']
-                        max_movement += module["module_id__effect"]['movement']
-                    elif "HULL" in module["module_id__type"]:
-                        current_hp += module["module_id__effect"]['hp']
-                        max_hp += module["module_id__effect"]['hp']
-                    elif "HOLD" in module["module_id__type"]:
-                        current_cargo_size += module["module_id__effect"]['capacity']
-                try:
-                    PlayerShip.objects.create(
-                        is_current_ship=True,
-                        is_reversed=False,
-                        current_hp=current_hp,
-                        max_hp=current_hp,
-                        current_cargo_size=current_cargo_size,
-                        current_movement=current_movement,
-                        max_movement=current_movement,
-                        current_missile_defense=current_missile_defense,
-                        current_ballistic_defense=current_ballistic_defense,
-                        current_thermal_defense=current_thermal_defense,
-                        max_missile_defense=max_missile_defense,
-                        max_ballistic_defense=max_ballistic_defense,
-                        max_thermal_defense=max_thermal_defense,
-                        status="FULL",
-                        player_id=new_player.id,
-                        ship_id=archetype_data[0]['ship_id']
-                    )
-                    
-                except Exception as e:
-                    print("Erreur au save du PlayerShip:", e)
-                    
-                new_player_ship_id = PlayerShip.objects.filter(
-                        is_current_ship=True,
-                        is_reversed=False,
-                        current_hp=current_hp,
-                        max_hp=current_hp,
-                        current_cargo_size=current_cargo_size,
-                        current_movement=current_movement,
-                        max_movement=current_movement,
-                        current_missile_defense=current_missile_defense,
-                        current_ballistic_defense=current_ballistic_defense,
-                        current_thermal_defense=current_thermal_defense,
-                        max_missile_defense=max_missile_defense,
-                        max_ballistic_defense=max_ballistic_defense,
-                        max_thermal_defense=max_thermal_defense,
-                        status="FULL",
-                        player_id=new_player.id,
-                        ship_id=archetype_data[0]['ship_id']).values_list('id', flat=True)[0]
-                
-                for id in module_list:
-                    PlayerShipModule.objects.create(
-                        module_id=id,
-                        player_ship_id=new_player_ship_id
-                    )
-                
-                skill_list = [e for e in Skill.objects.values('id', 'name')]
-                
-                for skill in skill_list:
-                    skill_name = skill['name']
-                    skill_id = skill['id']
-                    skill_level = 0
-                    
-                    if archetype_data[0]['data'].get(skill_name):
-                        skill_level = archetype_data[0]['data'][skill_name]
-                        
-                    PlayerSkill.objects.create(
-                        level = skill_level,
-                        progress = 0.0,
-                        player_id = new_player.id,
-                        skill_id = skill_id
-                    )
-                
-                uploaded_file = request.FILES.get("file")
 
-                if uploaded_file:
-                    UserAvatarWriter(uploaded_file, new_player.id).save()
-                else:
-                    default_png_path = os.path.join(
-                        settings.BASE_DIR,
-                        "static",
-                        "img",
-                        "ux",
-                        "default-user.png"
-                    )
+            # -------------------------
+            # Skills
+            # -------------------------
+            for skill in Skill.objects.all():
+                base_level = archetype.data.get(skill.name, 0)
+                PlayerSkill.objects.create(
+                    player=player,
+                    skill=skill,
+                    level=base_level,
+                    progress=0.0
+                )
 
-                    with open(default_png_path, "rb") as f:
-                        tmp_file = ContentFile(f.read())
-                        tmp_file.name = "default.png"
+            # -------------------------
+            # Avatar
+            # -------------------------
+            uploaded_file = request.FILES.get("file")
 
-                    UserAvatarWriter(tmp_file, new_player.id).save()
-                
+            if uploaded_file:
+                UserAvatarWriter(uploaded_file, player.id).save()
             else:
-                print(form.errors)
+                default_png_path = os.path.join(
+                    settings.BASE_DIR,
+                    "recorp","static", "img", "ux", "default-user.png"
+                )
+                with open(default_png_path, "rb") as f:
+                    tmp = ContentFile(f.read())
+                    tmp.name = "default.png"
+                UserAvatarWriter(tmp, player.id).save()
+
+        return redirect("/")
+
 
 
 class PasswordRecoveryView(FormView):
@@ -435,7 +432,7 @@ class DisplayTutorialView(LoginRequiredMixin, TemplateView):
 class DisplayGameView(LoginRequiredMixin, TemplateView):
     login_url = LOGIN_REDIRECT_URL
     redirect_field_name = "login_redirect"
-    template_name = "play_canvas.html"
+    template_name = "play.html"
     
     def get(self, request, *args, **kwargs):
         player = PlayerAction(self.request.user.id)

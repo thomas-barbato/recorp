@@ -27,6 +27,24 @@
                 cost: 0
             }
         ],
+        star: [
+            {
+                key: "gather",
+                label: "Récolte",
+                icon: "/static/img/ux/gather_icon.svg",
+                requires: [{ type: "GATHERING" }],
+                ap_cost: 1,
+                cost: 0
+            },
+            {
+                key: "scan",
+                label: "Scan",
+                icon: "/static/img/ux/scan_resource_icon.svg",
+                requires: [{ type: "PROBE", name: "drilling probe" }],
+                ap_cost: 1,
+                cost: 0
+            }
+        ],
 
         planet: [
             { key: "set_home", label: "New Home", icon: "/static/img/ux/new_location.svg", ap_cost: 1, cost: 1000 },

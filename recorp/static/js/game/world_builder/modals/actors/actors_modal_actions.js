@@ -318,6 +318,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 btn.append(btnIcon);
+                decorateActionButtonWithRangeAndAp(btn, m, 1);
 
                 btn.addEventListener("click", () => {
                     if (!rangeResult.allowed) return;
@@ -331,7 +332,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                         }
                     });
                 });
-
+                /*
                 const apBadge = createActionCostBadge({ ap_cost: 1 });
                 if (apBadge) {
                     btn.append(apBadge);
@@ -343,7 +344,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     rangeBadge.dataset.moduleId = String(m.id);
                     btn.append(rangeBadge);
                 }
-
+                */
                 wrapper.dataset.actionKey = "attack";
                 wrapper.dataset.moduleId = m.id;
                 wrapper.dataset.moduleType = "WEAPONRY";
@@ -363,7 +364,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             contextZone.append(list);
         },
-        { ap_cost:1 }
+        { ap_cost:0 }
     );
     wrapper.append(grid);
     
@@ -395,13 +396,14 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     target_id: info.id
                 }
             });
-        },
-        { 
-            ap_cost:ap_cost  ,
-            range: spaceShipProb?.effect?.range  
-        }
-        
-        
+        },{ } 
+    );
+    
+    // ➕ badges RANGE + AP via helper
+    decorateActionButtonWithRangeAndAp(
+        scanButton,
+        spaceShipProb,
+        ap_cost
     );
 
     scanButton.dataset.actionKey = "scan";
@@ -575,7 +577,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 
                 if (!rangeResult.allowed) {
                     wrapper.classList.remove("border-emerald-900", "border");
-                    wrapper.classList.add("opacity-40", "pointer-events-none", "bg-red-600");
+                    wrapper.classList.add("opacity-40", "pointer-events-none");
                     
                     if (rangeResult.distance !== null) {
                         wrapper.title =
@@ -603,6 +605,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 btn.append(btnIcon);
+                decorateActionButtonWithRangeAndAp(btn, m, 1);
 
                 btn.addEventListener("click", () => {
                     if (!rangeResult.allowed) return;
@@ -625,8 +628,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             });
 
             contextZone.append(list);
-        },
-        {ap_cost: ap_cost}
+        }
     );
     
     ewarButton.dataset.actionKey = "electronic-warfare-menu";
@@ -648,13 +650,66 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             if (!hasRepaire) return showMissingModuleError();
 
-            contextZone.innerHTML = "Réparation (à implémenter)";
-            contextZone.classList.remove("hidden");
+            contextZone.innerHTML = "";
+            contextZone.classList.toggle("hidden");
+
+            const list = document.createElement("div");
+            list.classList.add("flex", "flex-col", "gap-2", "mt-2");
+
+            modules.forEach(m => {
+                if (m.type !== "REPAIRE") return;
+
+                const rangeResult = window.computeModuleRange({
+                    module: m,
+                    transmitterActor,
+                    receiverActor
+                });
+
+                const wrapper = document.createElement("div");
+                wrapper.classList.add(
+                    "flex", "flex-row", "justify-between",
+                    "items-center", "p-2", "rounded-lg",
+                    "border", "gap-4", "border-emerald-900"
+                );
+
+                if (!rangeResult.allowed) {
+                    wrapper.classList.add("opacity-40", "pointer-events-none");
+                }
+
+                // description module
+                const left = document.createElement("div");
+                left.classList.add("w-full");
+                left.innerHTML = createFormatedLabel(m);
+
+                // bouton action réelle
+                const btnIcon = document.createElement("img");
+                btnIcon.src = "/static/img/ux/repaire_icon.svg";
+                btnIcon.classList.add("action-button-sf-icon");
+
+                const btn = document.createElement("div");
+                btn.classList.add("action-button-sf");
+                btn.append(btnIcon);
+                decorateActionButtonWithRangeAndAp(btn, m, 1);
+
+                btn.addEventListener("click", () => {
+                    if (!rangeResult.allowed) return;
+
+                    ws.send({
+                        type: "action_repaire",
+                        payload: {
+                            module_id: m.id,
+                            target_key: targetKey
+                        }
+                    });
+                });
+
+                wrapper.append(left, btn);
+                list.append(wrapper);
+            });
+
+            contextZone.append(list);
         },
-        {
-            ap_cost: ap_cost,
-            range: repairModule?.effect?.range
-        }
+        { ap_cost: 0 }
     );
     
 
@@ -810,7 +865,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             } else if (action.iconify) {
                 iconEl = document.createElement("span");
                 iconEl.classList.add("iconify", action.iconify, "action-button-sf-icon");
-            }
+            }   
 
             const label = document.createElement("div");
             label.textContent = action.label || "";
@@ -822,14 +877,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             );
 
             if (iconEl) btn.append(iconEl);
+
             btn.append(label);
-
-            const badge = createActionCostBadge({
-                ap_cost: action.ap_cost ?? null,
-                cost: typeof action.cost === "number" ? action.cost : null
-            });
-
-            if (badge) btn.append(badge);
 
             if (action.key === "invade" && !playerHasModule("COLONIZATION", "colonization module")) {
                 btn.classList.add("opacity-40", "pointer-events-none");
@@ -841,57 +890,156 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             );
 
             if (action.key === "scan") {
+
+                const drillProbeModule = (window.currentPlayer?.ship?.modules || []).find(
+                    m => m.type === "PROBE" && m.name === "drilling probe"
+                )
+
                 btn.dataset.actionKey = "scan";
                 btn.dataset.modalId = modalId;
 
-                const probeModule = (window.currentPlayer?.ship?.modules || []).find(
-                    m => m.type === "PROBE" && m.name === "drilling probe"
-                );
-                if (probeModule) {
-                    btn.dataset.moduleId = String(probeModule.id);
+                if (drillProbeModule) {
+                    btn.dataset.moduleId = String(drillProbeModule.id);
                 } else {
                     btn.dataset.moduleName = "drilling probe";
                 }
-            }
 
-            if (action.key === "scan" && !playerHasModule("PROBE", "drilling probe")) {
-                btn.classList.add("opacity-40", "pointer-events-none");
-            }
-
-            if (action.key === "scan" && (alreadyScanned || !playerHasModule("PROBE", "drilling probe") || action.ap_cost > window.currentPlayer.user.current_ap)) 
-            {
-                btn.classList.add("opacity-40", "pointer-events-none");
-            }
-
-
-            if (action.key === "scan" && !btn.classList.contains("pointer-events-none") && typeof window.computeModuleRange === "function" ) {
-                const map = window.canvasEngine?.map;
-                const transmitterActor = map?.getCurrentPlayer?.() || null;
-
-                const parsed = define_modal_type(modalId);
-                const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
-
-                const probeModule = (window.currentPlayer?.ship?.modules || []).find(
-                    m => m.type === "PROBE" && m.name === "drilling probe"
+                // ✅ UN SEUL appel au helper (RANGE + AP)
+                decorateActionButtonWithRangeAndAp(
+                    btn,
+                    drillProbeModule,
+                    action.ap_cost ?? 1
                 );
 
-                if (transmitterActor && receiverActor && probeModule) {
-                    const rangeResult = window.computeModuleRange({
-                        module: probeModule,
-                        transmitterActor,
-                        receiverActor
-                    });
+                // -------------------------
+                // Désactivation : règles UI
+                // -------------------------
+                const apCost = action.ap_cost ?? 1;
+                const currentAp = window.currentPlayer?.user?.current_ap ?? 0;
 
-                    if (!rangeResult.allowed) {
-                        btn.classList.add("opacity-40", "pointer-events-none");
+                if (
+                    alreadyScanned ||
+                    !playerHasModule("PROBE", "drilling probe") ||
+                    apCost > currentAp
+                ) {
+                    btn.classList.add("opacity-40", "pointer-events-none");
+                }
 
-                        if (typeof rangeResult.distance === "number") {
-                            btn.title =
-                                `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                // -------------------------
+                // Désactivation : portée
+                // -------------------------
+                if (
+                    !btn.classList.contains("pointer-events-none") &&
+                    typeof window.computeModuleRange === "function"
+                ) {
+                    const map = window.canvasEngine?.map;
+                    const transmitterActor = map?.getCurrentPlayer?.() || null;
+
+                    const parsed = define_modal_type(modalId);
+                    const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
+
+                    if (transmitterActor && receiverActor && drillProbeModule) {
+                        const rangeResult = window.computeModuleRange({
+                            module: drillProbeModule,
+                            transmitterActor,
+                            receiverActor
+                        });
+
+                        if (!rangeResult.allowed) {
+                            btn.classList.add("opacity-40", "pointer-events-none");
+
+                            if (typeof rangeResult.distance === "number") {
+                                btn.title =
+                                    `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                            }
                         }
                     }
                 }
             }
+
+            if (action.key === "gather") {
+
+                btn.dataset.actionKey = "gather";
+                btn.dataset.modalId = modalId;
+
+                // --- récupération du module GATHERING (peut être absent) ---
+                const gatheringModule = (window.currentPlayer?.ship?.modules || []).find(
+                    m => m.type === "GATHERING"
+                );
+
+                if (gatheringModule) {
+                    btn.dataset.moduleId = String(gatheringModule.id);
+                }
+
+                // ✅ UN SEUL appel au helper
+                // - AP toujours affiché
+                // - Range affichée seulement si le module existe
+                decorateActionButtonWithRangeAndAp(
+                    btn,
+                    gatheringModule,
+                    action.ap_cost ?? 1
+                );
+
+                // -------------------------
+                // Désactivation : règles UI
+                // -------------------------
+                const apCost = action.ap_cost ?? 1;
+                const currentAp = window.currentPlayer?.user?.current_ap ?? 0;
+
+                if (
+                    !gatheringModule ||           // module absent
+                    apCost > currentAp            // AP insuffisants
+                ) {
+                    btn.classList.add("opacity-40", "pointer-events-none");
+                }
+
+                // -------------------------
+                // Désactivation : portée
+                // -------------------------
+                if (
+                    !btn.classList.contains("pointer-events-none") &&
+                    gatheringModule &&
+                    typeof window.computeModuleRange === "function"
+                ) {
+                    const map = window.canvasEngine?.map;
+                    const transmitterActor = map?.getCurrentPlayer?.() || null;
+
+                    const parsed = define_modal_type(modalId);
+                    const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
+
+                    if (transmitterActor && receiverActor) {
+                        const rangeResult = window.computeModuleRange({
+                            module: gatheringModule,
+                            transmitterActor,
+                            receiverActor
+                        });
+
+                        if (!rangeResult.allowed) {
+                            btn.classList.add("opacity-40", "pointer-events-none");
+
+                            if (typeof rangeResult.distance === "number") {
+                                btn.title =
+                                    `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                            }
+                        }
+                    }
+                }
+            }
+
+            
+
+            if (action.key !== "scan" && action.key !== "gather") {
+                const costBadge = createActionCostBadge({
+                    ap_cost: action.ap_cost ?? null,
+                    cost: action.cost ?? null
+                });
+
+                if (costBadge) {
+                    costBadge.classList.add("mt-1");
+                    btn.append(costBadge);
+                }
+            }
+                        
 
             itemWrapper.append(btn);
 
@@ -949,6 +1097,28 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         return wrapper;
     }
 
+    function decorateActionButtonWithRangeAndAp(btn, module, apCost = 1) {
+        if (!btn) return;
+
+        // --- RANGE (uniquement si module présent) ---
+        if (module && typeof module.effect?.range === "number") {
+            const rangeBadge = createActionRangeBadge(module.effect.range);
+            if (rangeBadge) {
+                rangeBadge.classList.add("mt-1");
+                btn.append(rangeBadge);
+            }
+        }
+
+        // --- AP (toujours affiché si défini) ---
+        if (typeof apCost === "number" && apCost > 0) {
+            const apBadge = createActionCostBadge({ ap_cost: apCost });
+            if (apBadge) {
+                apBadge.classList.add("mt-1");
+                btn.append(apBadge);
+            }
+        }
+    }
+
     // ===== Bridge global (comme les autres étapes) =====
     window.createActionCostBadge = createActionCostBadge;
     window.createActionRangeBadge = createActionRangeBadge;
@@ -959,6 +1129,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     window.applyScanState = applyScanState;
     window.buildActionsSection = buildActionsSection;
     window.buildForegroundActionsSection = buildForegroundActionsSection;
+    window.decorateActionButtonWithRangeAndAp = decorateActionButtonWithRangeAndAp;
 
     window.refreshModalActionRanges = function (modalId) {
         if (!modalId || typeof window.computeModuleRange !== "function") return;
