@@ -47,7 +47,7 @@
         ],
 
         planet: [
-            { key: "set_home", label: "New Home", icon: "/static/img/ux/new_location.svg", ap_cost: 1, cost: 1000 },
+            { key: "set_home", label: "New Home", icon: "/static/img/ux/new_location.svg", ap_cost: 0, cost: 1000 },
             { key: "join_faction", label: "Join Faction", icon: "/static/img/ux/join_faction.svg", ap_cost: 0, cost: 1000 },
             { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg", ap_cost: 0, cost: 0 },
             { key: "market", label: "Market", icon: "/static/img/ux/market.svg", ap_cost: 0, cost: 0 },
@@ -66,14 +66,14 @@
 
         satellite: [
             { key: "corporation", label: "Corporation", icon: "/static/img/ux/join_faction.svg", cost: 0, ap_cost: 0 },
-            { key: "new_home", label: "New Home", icon: "/static/img/ux/new_location.svg", cost: 1000, ap_cost: 1 },
-            { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg", cost: 1000, ap_cost: 1 },
+            { key: "new_home", label: "New Home", icon: "/static/img/ux/new_location.svg", cost: 1000, ap_cost: 0 },
+            { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg", cost: 1000, ap_cost: 0 },
             { key: "market", label: "Market", icon: "/static/img/ux/market.svg", cost: 0, ap_cost: 0 }
         ],
 
         station: [
-            { key: "training", label: "Training", iconify: "game-icons--teacher", cost: 1000, ap_cost: 1 },
-            { key: "craft", label: "Craft", iconify: "game-icons--crafting", cost: 0, ap_cost: 1 },
+            { key: "training", label: "Training", iconify: "game-icons--teacher", cost: 0, ap_cost: 0 },
+            { key: "craft", label: "Craft", iconify: "game-icons--crafting", cost: 0, ap_cost: 0 },
             { key: "repair", label: "Repair", iconify: "game-icons--auto-repair", cost: 1000, ap_cost: 1 },
             { key: "refuel", label: "Refuel", iconify: "game-icons--fuel-tank", cost: 1000, ap_cost: 1 }
         ],

@@ -402,68 +402,115 @@ class MapElementsManager {
     }
 
 
-    handleLoadSavedElementOnMap(value){
-        for(let type in value){
-            if(type != "sector"){
-                for(let i in value[type]){
-                    CONFIG.LAST_UUID = crypto.randomUUID();
-                    let data = {};
-                    let this_element = value[type][i];
-                    const imagePath = type === CONFIG.ELEMENT_TYPES.NPC
-                        ? `${CONFIG.FOREGROUND_PATH}ships/${this_element.npc_template_id__ship_id__image}.png`
-                        : `${CONFIG.FOREGROUND_PATH}${type}/${this_element.source_id__data__animation}/0.gif`;
+    handleLoadSavedElementOnMap(value) {
 
-                    if(type != "npc"){
-                        data = {
-                            image_url: imagePath,
-                            data__animation: `${type}_${this_element.source_id}`,
-                            id: this_element.id,
-                            name: this_element.data.name,
-                            displayed_name: this_element.data.name,
-                            size: this_element.source_id__size,
-                            coordinates: this_element.coordinates,
-                            description : this_element.data__description,
-                            temp_uuid: CONFIG.LAST_UUID,
-                            template_id : this_element.npc_template_id,
-                            type: type,
-                        }
-                    }else{
-                        data = {
-                            image_url: imagePath,
-                            data__animation: `${type}_${this_element.npc_template_id}`,
-                            id: this_element.id,
-                            name: this_element.npc_template_id__name,
-                            displayed_name: this_element.npc_template_id__displayed_name,
-                            size: this_element.npc_template_id__ship_id__ship_category_id__size,
-                            coordinates: this_element.coordinates,
-                            temp_uuid: CONFIG.LAST_UUID,
-                            source_id: this_element.source_id,
-                            description: this_element.data__description,
-                            faction: this_element.faction_id,
-                            type: type,
-                        }
+        // ==============================
+        // 1️⃣ Préparation des liens de warp
+        // ==============================
+        const warpLinks = new Map();
+
+        if (Array.isArray(value.warpzone_links)) {
+            value.warpzone_links.forEach(link => {
+                if (link.warp_home_id && link.warp_destination_id) {
+                    warpLinks.set(link.warp_home_id, link.warp_destination_id);
+                }
+            });
+        }
+
+        // ==============================
+        // 2️⃣ On itère UNIQUEMENT sur les types de map connus
+        // ==============================
+        const MAP_TYPES = Object.keys(CONFIG.SAVED_ELEMENT_ON_MAP.map);
+
+        for (let type of MAP_TYPES) {
+
+            // sécurité : le backend peut ne rien renvoyer pour ce type
+            if (!value[type] || typeof value[type] !== "object") {
+                continue;
+            }
+
+            for (let i in value[type]) {
+
+                CONFIG.LAST_UUID = crypto.randomUUID();
+                let this_element = value[type][i];
+                let data = {};
+
+                // ==============================
+                // 3️⃣ Construction du chemin d’image
+                // ==============================
+                const imagePath = type === CONFIG.ELEMENT_TYPES.NPC
+                    ? `${CONFIG.FOREGROUND_PATH}ships/${this_element.npc_template_id__ship_id__image}.png`
+                    : `${CONFIG.FOREGROUND_PATH}${type}/${this_element.source_id__data__animation}/0.gif`;
+
+                // ==============================
+                // 4️⃣ Cas NON-NPC (planet, station, warpzone, etc.)
+                // ==============================
+                if (type !== "npc") {
+
+                    const elementName =
+                        this_element.data?.name
+                        || this_element.data__name
+                        || this_element.displayed_name
+                        || "Unnamed element";
+
+                    data = {
+                        image_url: imagePath,
+                        data__animation: `${type}_${this_element.source_id}`,
+                        id: this_element.id,
+                        source_db_id: this_element.id,
+                        name: elementName,
+                        displayed_name: elementName,
+                        size: this_element.source_id__size,
+                        coordinates: this_element.coordinates,
+                        description: this_element.data__description || null,
+                        temp_uuid: CONFIG.LAST_UUID,
+                        type: type,
+                    };
+
+                    // ➕ destination UNIQUEMENT pour les warpzones
+                    if (type === "warpzone") {
+                        data.destination = warpLinks.get(this_element.id) || null;
                     }
-                    let nextIndex = this.functionality.getNextIndex(CONFIG.SAVED_ELEMENT_ON_MAP.map[type]);
-                    CONFIG.SAVED_ELEMENT_ON_MAP.map[type][nextIndex] = data;
-                    CONFIG.LAST_ELEMENT_SELECTED = data
-                    this.functionality.appendDataMenu()
+
                 }
-            }else{
-                
-                let this_element = value[type];
-                let data = {
-                    'sector_id': this_element.id,
-                    'displayed_name': this_element.name,
-                    'name': this_element.name,
-                    'description': this_element.description,
-                    'image': this_element.image,
-                    'is_faction_starter': this_element.is_faction_level_starter,
-                    'faction': this_element.faction_id,
-                    'security_level': this_element.security_id,
+                // ==============================
+                // 5️⃣ Cas NPC
+                // ==============================
+                else {
+
+                    data = {
+                        image_url: imagePath,
+                        data__animation: `${type}_${this_element.npc_template_id}`,
+                        id: this_element.id,
+                        name: this_element.npc_template_id__name,
+                        displayed_name: this_element.npc_template_id__displayed_name,
+                        size: this_element.npc_template_id__ship_id__ship_category_id__size,
+                        coordinates: this_element.coordinates,
+                        temp_uuid: CONFIG.LAST_UUID,
+                        source_id: this_element.source_id,
+                        description: this_element.data__description || null,
+                        faction: this_element.faction_id,
+                        type: type,
+                    };
                 }
-                CONFIG.SAVED_ELEMENT_ON_MAP.sector = data;
+
+                // ==============================
+                // 6️⃣ Injection dans la map locale + UI
+                // ==============================
+                const nextIndex = this.functionality.getNextIndex(
+                    CONFIG.SAVED_ELEMENT_ON_MAP.map[type]
+                );
+
+                CONFIG.SAVED_ELEMENT_ON_MAP.map[type][nextIndex] = data;
+                CONFIG.LAST_ELEMENT_SELECTED = data;
+
+                this.functionality.appendDataMenu();
             }
         }
+
+        // ==============================
+        // 7️⃣ Dessin final sur la carte
+        // ==============================
         this.handleSectorLoadDraw();
     }
 
@@ -607,6 +654,8 @@ class UIElementFunctionality {
             type : type,
             size: size,
             temp_uuid : uuid,
+            source_db_id: CONFIG.LAST_ELEMENT_SELECTED.source_db_id || null,
+            destination: null
         }
 
     }
@@ -858,6 +907,10 @@ class AppManager {
         if(value == "none"){
             return;
         }
+
+        // 🔑 FIX CRITIQUE : conserver l’ID du secteur
+        CONFIG.SAVED_ELEMENT_ON_MAP.sector.sector_id = value;
+
         await this.mapManager.loadSectorData(value);
     }
 

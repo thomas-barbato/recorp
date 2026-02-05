@@ -582,7 +582,12 @@ class GetSectorDataView(LoginRequiredMixin, TemplateView):
                     "id", "npc_template_id__ship_id__ship_category_id__size",
                     "npc_template_id__ship_id__image", "npc_template_id__ship_id__name",
                     "npc_template_id", "coordinates", "npc_template_id__name", "npc_template_id__displayed_name"
-                )]
+                )],
+                "warpzone_links": list(
+                    SectorWarpZone.objects.filter(
+                        warp_home__sector_id=sector_id
+                    ).values("warp_home_id", "warp_destination_id")
+                )
             }
         except Sector.DoesNotExist:
             return tuple()
@@ -721,10 +726,16 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
         
         sector_elements = json.load(request)
         map_elements = sector_elements["map"]
-        sector_data = sector_elements["sector"]
-        sector_pk = sector_data["sector_id"]
+        sector_data = sector_elements.get("sector")
+        if not sector_data:
+            return JsonResponse({"error": "Missing sector data"}, status=400)
+
+        sector_pk = sector_data.get("sector_id")
+        if not sector_pk:
+            return JsonResponse({"error": "Missing sector_id for update"}, status=400)
+                    
         response = {"success": False}
-        
+
         if GetDataFromDB.check_if_table_pk_exists("sector", sector_pk):
             Sector.objects.filter(id=sector_pk).update(
                 name=sector_data["name"],
@@ -734,9 +745,32 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                 security_id=sector_data["security_level"],
                 description=sector_data["description"]
             )
+
+            oldwarpHome = list(
+                SectorWarpZone.objects.filter(
+                    warp_home__sector_id=sector_pk
+                ).values("warp_home_id", "warp_destination_id")
+            )
+
+            oldWarpDest = list(
+                SectorWarpZone.objects.filter(
+                    warp_destination__sector_id=sector_pk
+                ).values("warp_home_id", "warp_destination_id")
+            )
+
+            existing_warp_links = list(
+                SectorWarpZone.objects.filter(
+                    warp_home__sector_id=sector_pk
+                ).values(
+                    "warp_home_id",
+                    "warp_destination_id"
+                )
+            )
             
             GetDataFromDB.delete_items_from_sector(sector_pk)
-            
+            old_to_new_warpzone_ids = {}
+            pending_links = []
+
             for index in map_elements:
                 for element in map_elements[index]:
                 
@@ -782,9 +816,10 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                         )
                         
                     elif index == "warpzone":
-                        
                         source_id = map_elements[index][element]['data__animation'].split('_')[1]
-                        WarpZone.objects.create(
+                        old_id = map_elements[index][element].get("source_db_id")
+
+                        new_warpzone = WarpZone.objects.create(
                             data={
                                 "name": map_elements[index][element]["displayed_name"],
                                 "description": map_elements[index][element]["description"]
@@ -792,7 +827,42 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                             coordinates=map_elements[index][element]["coordinates"],
                             sector_id=sector_pk,
                             source_id=source_id
-                        )   
+                        )
+
+                        if old_id:
+                            old_to_new_warpzone_ids[old_id] = new_warpzone.id
+
+                        # stocke le lien pour plus tard
+                        destination = map_elements[index][element].get("destination")
+                        if destination:
+                            pending_links.append((old_id, destination))
+
+                        new_warpzone_id = new_warpzone.id
+
+                        for home in oldwarpHome:
+
+                            old_dest_id = home["warp_destination_id"]
+
+                            if not new_warpzone_id or not old_dest_id:
+                                continue
+
+                            SectorWarpZone.objects.create(
+                                warp_home_id=new_warpzone_id,
+                                warp_destination_id=old_dest_id
+                            )
+                        
+                        for dest in oldWarpDest:
+                            
+                            old_home_id = dest["warp_home_id"]
+
+                            if not new_warpzone_id or not old_home_id:
+                                continue
+
+                            SectorWarpZone.objects.create(
+                                warp_home_id=old_home_id,
+                                warp_destination_id=new_warpzone_id
+                            )
+
                     elif index == "npc":
                         source_id = map_elements[index][element]["data__animation"].split('_')[1]
                         ThisNpcTemplate = NpcTemplate.objects.filter(id=source_id)
@@ -810,6 +880,28 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                             npc_template_id=ThisNpcTemplate.values_list('id', flat=True)[0],
                             sector_id=sector_pk
                         )
+
+            for old_home_id, old_dest_id in pending_links:
+                new_home_id = old_to_new_warpzone_ids.get(old_home_id)
+                new_dest_id = old_to_new_warpzone_ids.get(old_dest_id)
+
+                if not new_home_id or not new_dest_id:
+                    continue
+
+                # 🔒 sécurité : pas d'auto-lien
+                if new_home_id == new_dest_id:
+                    continue
+
+                # ✅ création du lien UNIQUEMENT tel que défini
+                if not SectorWarpZone.objects.filter(
+                    warp_home_id=new_home_id,
+                    warp_destination_id=new_dest_id
+                ).exists():
+                    SectorWarpZone.objects.create(
+                        warp_home_id=new_home_id,
+                        warp_destination_id=new_dest_id
+                    )
+
         return JsonResponse(json.dumps({}), safe=False)
 
 class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
