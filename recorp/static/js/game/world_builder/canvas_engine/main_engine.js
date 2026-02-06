@@ -23,7 +23,7 @@ import {
     updateHoverTooltip, 
     hideHoverTooltip
 } from "./engine/update_coordinate_display.js";
-
+import GameWorkerClient from "../workers/game_worker_client.js";
 
 const ok = initGlobals();
 if (!ok) {
@@ -287,7 +287,6 @@ if (!ok) {
         ws.connect();
         
         ws.on("open", () => {
-            console.log("[SCAN] WS open → request_scan_state_sync");
             ws.send({
                 type: "request_scan_state_sync"
             });
@@ -338,6 +337,8 @@ if (!ok) {
             });
         }
 
+        const gameWorker = new GameWorkerClient();
+
         window.canvasEngine = { 
             canvases, 
             camera, 
@@ -347,6 +348,7 @@ if (!ok) {
             loop, 
             ws,
             pathfinding: canvasPathfinding,
+            gameWorker
         };
 
         try {

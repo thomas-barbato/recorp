@@ -1,3 +1,5 @@
+let hoverRequestId = 0;
+
 export function isDesktop() {
     return window.innerWidth >= 1024;   // breakpoint PC/tablette large
 }
@@ -86,6 +88,8 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
     const tooltip = document.getElementById("tooltip-hover");
     if (!tooltip) return;
 
+    const worker = window.canvasEngine?.gameWorker;
+
     // ---------------------------
     // Determine display name
     // ---------------------------
@@ -126,11 +130,45 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
     // Distance from player
     // ---------------------------
     let dist = null;
+    
     const player = window.canvasEngine?.map?.findPlayerById(window.current_player_id);
 
-    if (player) {
-        const map = window.canvasEngine?.map;
-        dist = computeTooltipDistance(map, player, obj);
+    if (worker && player && obj) {
+
+        const requestId = ++hoverRequestId;
+
+        // SNAPSHOT IMMUTABLE
+        const snapshot = {
+            tooltip,
+            name,
+            tx,
+            ty,
+            isSelf: obj === player,
+        };
+
+        worker.call("compute_distance", {
+            from: {
+                x: player.x,
+                y: player.y,
+                sizeX: player.sizeX,
+                sizeY: player.sizeY
+            },
+            to: {
+                x: obj.x,
+                y: obj.y,
+                sizeX: obj.sizeX,
+                sizeY: obj.sizeY
+            }
+        }).then(dist => {
+
+            // réponse obsolète
+            if (requestId !== hoverRequestId) return;
+
+            renderTooltip({
+                ...snapshot,
+                dist
+            });
+        });
     }
 
     tooltip.innerHTML = `
@@ -165,28 +203,23 @@ export function hideHoverTooltip() {
     tooltip.classList.remove("visible");
     tooltip.classList.add("hidden");
 }
-// prend en compte l'element entier et n'utilise plus seulement la position x/y de la cible.
-function computeTooltipDistance(map, playerActor, hoveredObj) {
-    if (!map || !playerActor || !hoveredObj) return null;
 
-    const getSize = (actor) => ({
-        x: actor.sizeX || actor.size?.x || 1,
-        y: actor.sizeY || actor.size?.y || 1
-    });
-
-    const getCenter = (actor, size) => ({
-        x: actor.x + (size.x - 1) / 2,
-        y: actor.y + (size.y - 1) / 2
-    });
-
-    const pSize = getSize(playerActor);
-    const tSize = getSize(hoveredObj);
-
-    const pC = getCenter(playerActor, pSize);
-    const tC = getCenter(hoveredObj, tSize);
-
-    const dx = Math.abs(pC.x - tC.x);
-    const dy = Math.abs(pC.y - tC.y);
-
-    return Math.max(dx, dy);
+function renderTooltip({ tooltip, name, tx, ty, dist, isSelf }) {
+    tooltip.innerHTML = `
+        <div class="font-bold text-emerald-300">
+            ${isSelf ? "You" : name}
+        </div>
+        <div class="text-emerald-500 font-bold">
+            Y:<span class="text-emerald-300">${ty.toString().padStart(2,"0")}</span>
+            /
+            X:<span class="text-emerald-300">${tx.toString().padStart(2,"0")}</span>
+        </div>
+        ${
+            !isSelf
+                ? `<div class="text-emerald-500 font-bold">
+                    Distance: <span class="text-emerald-300">${dist}</span>
+                  </div>`
+                : ""
+        }
+    `;
 }

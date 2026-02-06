@@ -464,7 +464,7 @@ export default class MapData {
 
         const after = this.worldObjects.length;
         if (before !== after) {
-            console.log(`[MAP] removeActorByPlayerId(${pidStr}) → ${before} -> ${after}`);
+            console.warn(`[MAP] removeActorByPlayerId(${pidStr}) → ${before} -> ${after}`);
         }
     }
 

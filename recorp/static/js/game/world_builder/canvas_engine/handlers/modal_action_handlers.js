@@ -43,6 +43,7 @@ export function getScanResult(msg) {
     window.renderTextAboveTarget(target_key, "+ scan", "rgba(0,255,180,0.95)", "scan");
 
     refreshModalAfterScan(target_key);
+    refreshOpenedModalRanges();
 }
 
 export function sendScanResultToGroup(msg) {
@@ -66,6 +67,8 @@ export function sendScanResultToGroup(msg) {
     refreshModalAfterScan(msg.target_key);
     window.canvasEngine?.renderer?.requestRedraw();
     window.renderTextAboveTarget(msg.target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
+    refreshOpenedModalRanges();
+
 }
 
 export function handleScanStateSync(msg) {
@@ -115,6 +118,7 @@ export function handleScanStateSync(msg) {
         // on extrait le targetKey
         const m = openedId.match(/(pc_\d+|npc_\d+)/);
         if (m) refreshModalAfterScan(m[1]);
+        refreshOpenedModalRanges();
     }
 }
 
@@ -144,6 +148,7 @@ export function handleScanVisibilityUpdate(msg) {
         }
     });
     window.canvasEngine?.renderer?.requestRedraw();
+    refreshOpenedModalRanges();
 }
 
 function syncCanvasPlayerAp(playerId, remainingAp) {
@@ -178,6 +183,15 @@ function syncCanvasPlayerAp(playerId, remainingAp) {
     }
 }
 
+function refreshOpenedModalRanges() {
+    const modal = document.querySelector("#modal-container > .modal");
+    if (!modal) return;
+
+    if (typeof window.refreshModalActionRanges === "function") {
+        window.refreshModalActionRanges(modal.id);
+    }
+}
+
 export function entity_state_update(msg){
     const { entity_key, change_type, changes } = msg;
 
@@ -195,6 +209,7 @@ export function entity_state_update(msg){
                 mp: changes.movement?.current,
                 max_mp: changes.movement?.max
             });
+            refreshOpenedModalRanges();
             break;
 
         case "ap_update":

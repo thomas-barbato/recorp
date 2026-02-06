@@ -286,20 +286,13 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "WEAPONRY") return;
 
-                const range = m.effect?.range === "number"
-
-                const rangeResult = window.computeModuleRange({
-                    module: m,
-                    transmitterActor: transmitterActor,
-                    receiverActor: receiverActor
-                });
-
                 const wrapper = document.createElement("div");
                 wrapper.classList.add(
                     "flex", "flex-row", "justify-between",
                     "items-center", "p-2", "rounded-lg",
                     "border", "gap-4", "border-emerald-900"
                 );
+
                 // description module
                 const left = document.createElement("div");
                 left.classList.add("w-full");
@@ -313,15 +306,23 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 const btn = document.createElement("div");
                 btn.classList.add("action-button-sf");
 
-                if (!rangeResult.allowed) {
-                    btn.classList.add("cursor-not-allowed");
-                }
-
                 btn.append(btnIcon);
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
+                // async range
+                window.computeModuleRange({
+                    module: m,
+                    transmitterActor,
+                    receiverActor
+                }).then(rangeResult => {
+                    if (!rangeResult.allowed) {
+                        btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
+                        wrapper.classList.add("opacity-40");
+                    }
+                });
+
                 btn.addEventListener("click", () => {
-                    if (!rangeResult.allowed) return;
+                    if (btn.classList.contains("pointer-events-none")) return;
 
                     ws.send({
                         type: "action_attack",
@@ -332,31 +333,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                         }
                     });
                 });
-                /*
-                const apBadge = createActionCostBadge({ ap_cost: 1 });
-                if (apBadge) {
-                    btn.append(apBadge);
-                }
-                const rangeBadge = createActionRangeBadge(m.effect?.range);
 
-                if (rangeBadge) {
-                    rangeBadge.dataset.role = "range-badge";
-                    rangeBadge.dataset.moduleId = String(m.id);
-                    btn.append(rangeBadge);
-                }
-                */
                 wrapper.dataset.actionKey = "attack";
                 wrapper.dataset.moduleId = m.id;
                 wrapper.dataset.moduleType = "WEAPONRY";
                 btn.dataset.moduleId = String(m.id);
-                
-                
-                if (!rangeResult.allowed) {
-                    btn.classList.remove("border-emerald-900");
-                    btn.classList.add("opacity-40", "pointer-events-none");
-                }else{
-                    btn.classList.add("border-emerald-900");
-                }
 
                 wrapper.append(left, btn);
                 list.append(wrapper);
@@ -429,31 +410,20 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     // ============================
     // RANGE CHECK — SCAN (PC / NPC)
     // ============================
-    if (
-        !scanButton.classList.contains("pointer-events-none") &&
-        typeof window.computeModuleRange === "function"
-    ) {
-        const probeModule = modules.find(
-            m => m.type === "PROBE" && m.name === "spaceship probe"
-        );
+    window.computeModuleRange({
+        module: probeModule,
+        transmitterActor,
+        receiverActor
+    }).then(rangeResult => {
+        if (!rangeResult.allowed) {
+            scanButton.classList.add("opacity-40", "pointer-events-none");
 
-        if (probeModule) {
-            const rangeResult = window.computeModuleRange({
-                module: probeModule,
-                transmitterActor,
-                receiverActor
-            });
-
-            if (!rangeResult.allowed) {
-                scanButton.classList.add("opacity-40", "pointer-events-none");
-
-                if (typeof rangeResult.distance === "number") {
-                    scanButton.title =
-                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                }
+            if (typeof rangeResult.distance === "number") {
+                scanButton.title =
+                    `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
             }
         }
-    }
+    });
 
     // ============================
     // DéSACTIVER SCAN SI PAS DE MODULE
@@ -562,10 +532,20 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "ELECTRONIC_WARFARE") return;
 
-                const rangeResult = window.computeModuleRange({
+                window.computeModuleRange({
                     module: m,
-                    transmitterActor: transmitterActor,
-                    receiverActor: receiverActor
+                    transmitterActor,
+                    receiverActor
+                }).then(rangeResult => {
+                    if (!rangeResult.allowed) {
+                        wrapper.classList.add("opacity-40", "pointer-events-none");
+                        btn.classList.add("cursor-not-allowed");
+
+                        if (typeof rangeResult.distance === "number") {
+                            wrapper.title =
+                                `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                        }
+                    }
                 });
 
                 const wrapper = document.createElement("div");
@@ -608,7 +588,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
                 btn.addEventListener("click", () => {
-                    if (!rangeResult.allowed) return;
+                    if (btn.classList.contains("cursor-not-allowed")) return;
 
                     ws.send({
                         type: "action_electronic_warfare",
@@ -659,10 +639,14 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "REPAIRE") return;
 
-                const rangeResult = window.computeModuleRange({
+                window.computeModuleRange({
                     module: m,
                     transmitterActor,
                     receiverActor
+                }).then(rangeResult => {
+                    if (!rangeResult.allowed) {
+                        wrapper.classList.add("opacity-40", "pointer-events-none");
+                    }
                 });
 
                 const wrapper = document.createElement("div");
@@ -692,7 +676,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
                 btn.addEventListener("click", () => {
-                    if (!rangeResult.allowed) return;
+                    if (wrapper.classList.contains("pointer-events-none")) return;
 
                     ws.send({
                         type: "action_repaire",
@@ -939,20 +923,20 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
 
                     if (transmitterActor && receiverActor && drillProbeModule) {
-                        const rangeResult = window.computeModuleRange({
-                            module: drillProbeModule,
+                        window.computeModuleRange({
+                            module: gatheringModule,
                             transmitterActor,
                             receiverActor
-                        });
+                        }).then(rangeResult => {
+                            if (!rangeResult.allowed) {
+                                btn.classList.add("opacity-40", "pointer-events-none");
 
-                        if (!rangeResult.allowed) {
-                            btn.classList.add("opacity-40", "pointer-events-none");
-
-                            if (typeof rangeResult.distance === "number") {
-                                btn.title =
-                                    `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                                if (typeof rangeResult.distance === "number") {
+                                    btn.title =
+                                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                                }
                             }
-                        }
+                        });
                     }
                 }
             }
@@ -1008,20 +992,20 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
 
                     if (transmitterActor && receiverActor) {
-                        const rangeResult = window.computeModuleRange({
-                            module: gatheringModule,
+                        window.computeModuleRange({
+                            module: drillProbeModule,
                             transmitterActor,
                             receiverActor
-                        });
+                        }).then(rangeResult => {
+                            if (!rangeResult.allowed) {
+                                btn.classList.add("opacity-40", "pointer-events-none");
 
-                        if (!rangeResult.allowed) {
-                            btn.classList.add("opacity-40", "pointer-events-none");
-
-                            if (typeof rangeResult.distance === "number") {
-                                btn.title =
-                                    `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                                if (typeof rangeResult.distance === "number") {
+                                    btn.title =
+                                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                                }
                             }
-                        }
+                        });
                     }
                 }
             }
@@ -1157,8 +1141,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         if (!receiverActor) return;
 
         const modules = window.currentPlayer?.ship?.modules || [];
-
-        // 🔁 TOUS les boutons liés à un module
         const modalEl = document.getElementById(modalId);
         if (!modalEl) return;
 

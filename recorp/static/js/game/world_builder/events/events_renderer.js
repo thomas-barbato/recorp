@@ -86,7 +86,6 @@ function buildEventText(log) {
             SCAN
         ======================= */
         case "SCAN":
-            console.log(`DANS SCAN : ${role}`)
             if (role === "TRANSMITTER") {
                 return `Vous avez scanné <b>${p.target}</b>`;
             }
