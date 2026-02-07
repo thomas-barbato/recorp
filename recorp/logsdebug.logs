@@ -25839,3 +25839,411 @@ Not Found: /favicon.ico
 [mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:56601][0m
 [32mHTTP GET /play/modal-data/pc/24/ 302 [0.02, 127.0.0.1:56601][0m
 [mHTTP GET /fr/play/modal-data/pc/24/ 200 [0.05, 127.0.0.1:56601][0m
+Watching for file changes with StatReloader
+Internal Server Error: /
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on 'localhost:3306' (10061)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 288, in ensure_connection
+    self.connect()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 269, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 413, in get_new_connection
+    cnx = mysql.connector.connect(**conn_params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\wamp64\www\recorp\core\middleware.py", line 8, in __call__
+    if request.user.is_authenticated:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\functional.py", line 266, in inner
+    self._setup()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\functional.py", line 419, in _setup
+    self._wrapped = self._setupfunc()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\middleware.py", line 25, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\middleware.py", line 11, in get_user
+    request._cached_user = auth.get_user(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\__init__.py", line 198, in get_user
+    user = backend.get_user(user_id)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\backends.py", line 161, in get_user
+    user = UserModel._default_manager.get(pk=user_id)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 635, in get
+    num = len(clone)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 382, in __len__
+    self._fetch_all()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1886, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 93, in __iter__
+    results = compiler.execute_sql(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor = self.connection.cursor()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 329, in cursor
+    return self._cursor()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 305, in _cursor
+    self.ensure_connection()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 287, in ensure_connection
+    with self.wrap_database_errors:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 288, in ensure_connection
+    self.connect()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\base\base.py", line 269, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 413, in get_new_connection
+    cnx = mysql.connector.connect(**conn_params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+django.db.utils.DatabaseError: (2003, "2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)", 'HY000')
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[32mHTTP GET / 302 [0.07, 127.0.0.1:54616][0m
+[mHTTP GET /fr/ 200 [0.19, 127.0.0.1:54616][0m
+[mHTTP GET /static/css/style.css 200 [0.02, 127.0.0.1:54616][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.11, 127.0.0.1:59672][0m
+[mHTTP GET /static/css/output.css 200 [0.12, 127.0.0.1:49234][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.12, 127.0.0.1:54616][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.15, 127.0.0.1:53964][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.15, 127.0.0.1:56211][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.16, 127.0.0.1:55092][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.06, 127.0.0.1:55092][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55092][0m
+[mHTTP GET /fr/account/create 200 [0.05, 127.0.0.1:55092][0m
+[mHTTP GET /static/js/game/world_builder/account/register.js 200 [0.03, 127.0.0.1:55092][0m
+[mHTTP POST /fr/account/create 200 [0.18, 127.0.0.1:55092][0m
+[32mHTTP GET / 302 [0.02, 127.0.0.1:55092][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:55092][0m
+[32mHTTP POST /fr/ 302 [0.18, 127.0.0.1:55092][0m
+[mHTTP GET /fr/play/create_character 200 [0.07, 127.0.0.1:55092][0m
+[mHTTP GET /static/js/quill/quill_element.js 200 [0.06, 127.0.0.1:53964][0m
+[mHTTP GET /static/ux/default-user.svg 200 [0.09, 127.0.0.1:55092][0m
+[mHTTP GET /static/js/quill/quill.js 200 [0.14, 127.0.0.1:56211][0m
+[32mHTTP GET /fr/admin 301 [0.02, 127.0.0.1:56211][0m
+[32mHTTP GET /fr/admin/ 302 [0.04, 127.0.0.1:56211][0m
+[mHTTP GET /fr/admin/login/?next=/fr/admin/ 200 [0.18, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/css/base.css 200 [0.04, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.05, 127.0.0.1:53964][0m
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.05, 127.0.0.1:55092][0m
+[mHTTP GET /static/admin/css/login.css 200 [0.05, 127.0.0.1:54616][0m
+[mHTTP GET /static/admin/js/theme.js 200 [0.06, 127.0.0.1:59672][0m
+[mHTTP GET /static/admin/css/responsive.css 200 [0.06, 127.0.0.1:49234][0m
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.02, 127.0.0.1:56211][0m
+[32mHTTP POST /fr/admin/login/?next=/fr/admin/ 302 [0.18, 127.0.0.1:56211][0m
+[mHTTP GET /fr/admin/ 200 [0.06, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.01, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/img/icon-viewlink.svg 200 [0.01, 127.0.0.1:59672][0m
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/img/icon-changelink.svg 200 [0.01, 127.0.0.1:49234][0m
+[mHTTP GET /fr/admin/core/faction/ 200 [0.10, 127.0.0.1:49234][0m
+[mHTTP GET /static/admin/css/changelists.css 200 [0.02, 127.0.0.1:49234][0m
+[mHTTP GET /static/admin/js/jquery.init.js 200 [0.02, 127.0.0.1:54616][0m
+[mHTTP GET /static/admin/js/core.js 200 [0.06, 127.0.0.1:55092][0m
+[mHTTP GET /static/admin/js/admin/RelatedObjectLookups.js 200 [0.06, 127.0.0.1:53964][0m
+[mHTTP GET /static/admin/js/urlify.js 200 [0.05, 127.0.0.1:54616][0m
+[mHTTP GET /static/admin/js/actions.js 200 [0.05, 127.0.0.1:49234][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.07, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/js/prepopulate.js 200 [0.02, 127.0.0.1:55092][0m
+[mHTTP GET /static/admin/js/vendor/jquery/jquery.js 200 [0.12, 127.0.0.1:59672][0m
+[mHTTP GET /static/admin/js/vendor/xregexp/xregexp.js 200 [0.07, 127.0.0.1:53964][0m
+[mHTTP GET /static/admin/js/filters.js 200 [0.02, 127.0.0.1:53964][0m
+[mHTTP GET /static/admin/img/tooltag-add.svg 200 [0.01, 127.0.0.1:59672][0m
+[mHTTP GET /fr/admin/core/faction/add/ 200 [0.13, 127.0.0.1:59672][0m
+[mHTTP GET /static/admin/css/forms.css 200 [0.01, 127.0.0.1:59672][0m
+[mHTTP GET /static/admin/js/prepopulate_init.js 200 [0.02, 127.0.0.1:49234][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.02, 127.0.0.1:56211][0m
+[mHTTP GET /static/admin/css/widgets.css 200 [0.02, 127.0.0.1:59672][0m
+[mHTTP GET /static/admin/js/calendar.js 200 [0.04, 127.0.0.1:53964][0m
+[mHTTP GET /static/admin/js/admin/DateTimeShortcuts.js 200 [0.04, 127.0.0.1:55092][0m
+[mHTTP GET /static/admin/js/change_form.js 200 [0.02, 127.0.0.1:53964][0m
+[mHTTP GET /static/admin/img/icon-clock.svg 200 [0.01, 127.0.0.1:55092][0m
+[mHTTP GET /static/admin/img/icon-calendar.svg 200 [0.02, 127.0.0.1:53964][0m
+[mHTTP POST /fr/admin/core/faction/add/ 200 [0.03, 127.0.0.1:53964][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.02, 127.0.0.1:53964][0m
+[mHTTP POST /fr/admin/core/faction/add/ 200 [0.03, 127.0.0.1:53964][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.05, 127.0.0.1:53964][0m
+Watching for file changes with StatReloader
+[32mHTTP GET /fr/admin/ 302 [0.08, 127.0.0.1:53633][0m
+[mHTTP GET /fr/admin/login/?next=/fr/admin/ 200 [0.02, 127.0.0.1:53633][0m
+[mHTTP POST /fr/admin/login/?next=/fr/admin/ 200 [0.17, 127.0.0.1:53633][0m
+Watching for file changes with StatReloader
+[32mHTTP POST /fr/admin/login/?next=/fr/admin/ 302 [0.19, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/ 200 [0.10, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/core/faction/ 200 [0.09, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.01, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/core/ship/ 200 [0.03, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.01, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/ 200 [0.03, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/core/ship/ 200 [0.03, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.02, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/core/ship/add/ 200 [0.05, 127.0.0.1:65269][0m
+[mHTTP GET /static/admin/img/icon-deletelink.svg 200 [0.01, 127.0.0.1:65269][0m
+[mHTTP GET /fr/admin/jsi18n/ 200 [0.02, 127.0.0.1:50291][0m
+[32mHTTP GET / 302 [0.02, 127.0.0.1:55973][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:55973][0m
+[32mHTTP POST /fr/ 302 [0.17, 127.0.0.1:55973][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:55973][0m
+[32mHTTP POST /fr/ 302 [0.18, 127.0.0.1:55973][0m
+[32mHTTP GET / 302 [0.02, 127.0.0.1:55973][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:55973][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-brands-400.woff2 200 [0.02, 127.0.0.1:55973][0m
+[32mHTTP GET /play 302 [0.02, 127.0.0.1:55973][0m
+Internal Server Error: /fr/play/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Unknown column 'core_sector.is_tutorial_zone' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 187, in execute
+    return self.cursor.execute(query, new_args)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'core_sector.is_tutorial_zone' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 442, in get
+    return super().get(request, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\views\generic\base.py", line 228, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\wamp64\www\recorp\core\views.py", line 542, in get_context_data
+    context["current_player_state"] = build_pc_modal_data(player_id)
+  File "D:\wamp64\www\recorp\core\backend\modal_builder.py", line 32, in build_pc_modal_data
+    .first()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1059, in first
+    for obj in queryset[:1]:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1886, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 93, in __iter__
+    results = compiler.execute_sql(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 187, in execute
+    return self.cursor.execute(query, new_args)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+django.db.utils.ProgrammingError: (1054, "1054 (42S22): Unknown column 'core_sector.is_tutorial_zone' in 'field list'", '42S22')
+[35;1mHTTP GET /fr/play/ 500 [0.37, 127.0.0.1:55973][0m
+Watching for file changes with StatReloader
+[mHTTP GET /fr/play/ 200 [0.38, 127.0.0.1:65296][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:65296][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:57328][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:64928][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:52509][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:58932][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:52266][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:57328][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.05, 127.0.0.1:64928][0m
+[mHTTP GET /static/world_builder/modals/events_modal.js 200 [0.05, 127.0.0.1:58932][0m
+[mHTTP GET /fr/play/ 200 [0.06, 127.0.0.1:65296][0m
+[mHTTP GET /static/css/output.css 200 [0.01, 127.0.0.1:65224][0m
+[mHTTP GET /static/css/style.css 200 [0.01, 127.0.0.1:55373][0m
+[mHTTP GET /static/fontawesome/css/fontawesome.css 200 [0.01, 127.0.0.1:55969][0m
+[mHTTP GET /static/fontawesome/css/brands.css 200 [0.01, 127.0.0.1:63088][0m
+[mHTTP GET /static/fontawesome/css/solid.css 200 [0.01, 127.0.0.1:64282][0m
+[mHTTP GET /static/tailwind/flowbite.min.js 200 [0.01, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/external_var_and_fun.js 200 [0.01, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/main_engine.js 200 [0.01, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/modals/events_modal.js 200 [0.01, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/modals/chat_modal.js 200 [0.01, 127.0.0.1:64282][0m
+[mHTTP GET /static/js/game/world_builder/loading_screen/loading_screen.js 200 [0.01, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/utils/range_utils.js 200 [0.01, 127.0.0.1:64282][0m
+[mHTTP GET /static/ux/cancel_icon.svg 200 [0.02, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_actions_send_report.js 200 [0.02, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/modals/events_modal.js 200 [0.01, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_config.js 200 [0.02, 127.0.0.1:55150][0m
+[mHTTP GET /static/fontawesome/webfonts/fa-solid-900.woff2 200 [0.01, 127.0.0.1:64282][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.04, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_module_renderer.js 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_utils.js 200 [0.04, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_shell.js 200 [0.05, 127.0.0.1:55150][0m
+[mHTTP GET /static/img/users/23/0.gif 200 [0.10, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_lifecycle.js 200 [0.06, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/canvas_engine/globals.js 200 [0.04, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_data_mapper.js 200 [0.07, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/canvas_engine/touch.js 200 [0.03, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/events/events_renderer.js 200 [0.07, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/events/events_hud.js 200 [0.04, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/camera.js 200 [0.03, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_manager.js 200 [0.04, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/input.js 200 [0.04, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/map_data.js 200 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/renderer.js 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/sprite_manager.js 200 [0.07, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_loop.js 200 [0.03, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_pathfinding.js 200 [0.04, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/mobile_pathfinding.js 200 [0.04, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/canvas_wrapper_resize.js 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/websocket_manager.js 200 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/modals/modal_live_registry.js 200 [0.04, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/ws_actions.js 200 [0.05, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/workers/game_worker_client.js 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_actions.js 200 [0.04, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/modals/modal_live_router.js 200 [0.05, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/background_renderer.js 200 [0.03, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/events/events_config.js 200 [0.04, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/foreground_renderer.js 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/update_coordinate_display.js 200 [0.08, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/actors_renderer.js 200 [0.04, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/ui_renderer.js 200 [0.05, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/sonar_system.js 200 [0.04, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/floating_message_manager.js 200 [0.05, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/canvas_engine/engine/image_loader.js 200 [0.04, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/canvas_engine/network/action_registry.js 200 [0.04, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/npc_handlers.js 200 [0.01, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/chat_handlers.js 200 [0.04, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/timers_handlers.js 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/move_handlers.js 200 [0.05, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/modal_action_handlers.js 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/warp_handlers.js 200 [0.04, 127.0.0.1:65224][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/events_handlers.js 200 [0.04, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/canvas_engine/renderers/pathfinding_renderer.js 200 [0.04, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/canvas_engine/handlers/message_handlers.js 200 [0.09, 127.0.0.1:64282][0m
+[mHTTP GET /static/world_builder/modals/character_modal.js 200 [0.05, 127.0.0.1:55969][0m
+[mHTTP GET /static/world_builder/modals/inventory_modal.js 200 [0.05, 127.0.0.1:55150][0m
+[mHTTP GET /static/world_builder/modals/message_modal.js 200 [0.06, 127.0.0.1:65224][0m
+[mHTTP GET /static/js/game/world_builder/account/logout.js 200 [0.04, 127.0.0.1:55373][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modals.js 200 [0.08, 127.0.0.1:63088][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:57306]
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/0.gif 200 [0.29, 127.0.0.1:64282][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/0.gif 200 [0.29, 127.0.0.1:55150][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/0.gif 200 [0.29, 127.0.0.1:65224][0m
+[mHTTP GET /static/img/foreground/star/star_1/0.gif 200 [0.29, 127.0.0.1:55969][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:57306]
+[mHTTP GET /static/img/foreground/planet/planete_1/0.gif 200 [0.30, 127.0.0.1:55373][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/animation.json 200 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /static/img/foreground/star/star_1/animation.json 200 [0.03, 127.0.0.1:65224][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/animation.json 200 [0.03, 127.0.0.1:55150][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/animation.json 200 [0.04, 127.0.0.1:64282][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/animation.json 200 [0.03, 127.0.0.1:55373][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/animation.json 200 [0.02, 127.0.0.1:63088][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/animation.json 200 [0.01, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.22, 127.0.0.1:55150][0m
+[mHTTP GET /static/js/game/world_builder/workers/game_worker.js 200 [0.21, 127.0.0.1:55373][0m
+[mHTTP GET /static/img/foreground/SHIPS/light_10.png 200 [0.20, 127.0.0.1:55969][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/0.gif 200 [0.21, 127.0.0.1:64282][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/0.gif 200 [0.21, 127.0.0.1:63088][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.22, 127.0.0.1:65224][0m
+[mHTTP GET /static/img/foreground/SHIPS/light_3.png 200 [0.05, 127.0.0.1:55150][0m
+[mHTTP GET /static/js/game/world_builder/workers/systems/index.js 200 [0.01, 127.0.0.1:55150][0m
+[mHTTP GET /static/img/foreground/SHIPS/light_5.png 200 [0.08, 127.0.0.1:55969][0m
+[mHTTP GET /static/img/foreground/SHIPS/medium_14.png 200 [0.08, 127.0.0.1:64282][0m
+[mHTTP GET /static/img/foreground/SHIPS/light_2.png 200 [0.09, 127.0.0.1:63088][0m
+[mHTTP GET /static/img/foreground/satellite/moon_1/spritesheet.png 200 [0.04, 127.0.0.1:55150][0m
+[mHTTP GET /static/js/game/world_builder/workers/systems/distance.js 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /static/img/foreground/SHIPS/light_1.png 200 [0.10, 127.0.0.1:55373][0m
+[mHTTP GET /static/img/background/bg_space_5/0.webp 200 [0.09, 127.0.0.1:65224][0m
+[mHTTP GET /static/img/foreground/star/star_1/spritesheet.png 200 [0.02, 127.0.0.1:63088][0m
+[mHTTP GET /static/img/foreground/planet/planete_2/spritesheet.png 200 [0.01, 127.0.0.1:55373][0m
+[mHTTP GET /static/img/foreground/planet/planete_1/spritesheet.png 200 [0.03, 127.0.0.1:55150][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_3/spritesheet.png 200 [0.02, 127.0.0.1:65224][0m
+[mHTTP GET /static/js/game/world_builder/workers/systems/range.js 200 [0.06, 127.0.0.1:64282][0m
+[mHTTP GET /static/img/foreground/warpzone/warpzone_1/spritesheet.png 200 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /static/img/foreground/asteroid/asteroid_1/spritesheet.png 200 [0.06, 127.0.0.1:55969][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:55969][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:63088][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:55969][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:63088][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:63088][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:63088][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:63088][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:55969][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:55969][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:63088][0m
