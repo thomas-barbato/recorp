@@ -1,18 +1,28 @@
 window.computeModuleRange = function ({ module, transmitterActor, receiverActor }) {
-    const maxRange = module.effect?.range ?? 0;
 
-    console.log(module.name, "range check", { transmitterActor, receiverActor, maxRange });
-
-    // fallback de sécurité
-    if (!window.canvasEngine?.gameWorker) {
-        const distance = computeTooltipDistance(transmitterActor, receiverActor);
-        return {
-            allowed: distance <= maxRange,
-            distance,
-            maxRange
-        };
+    if (!module || !transmitterActor || !receiverActor) {
+        return Promise.resolve({
+            allowed: false,
+            distance: null,
+            maxRange: null,
+            reason: "missing_data"
+        });
     }
-    
+
+    if (
+        !module.effect ||
+        typeof module.effect.range !== "number"
+    ) {
+        return Promise.resolve({
+            allowed: false,
+            distance: null,
+            maxRange: null,
+            reason: "no_range"
+        });
+    }
+
+    const maxRange = module.effect.range;
+
     return window.canvasEngine.gameWorker
         .call("compute_distance", {
             from: {
@@ -28,11 +38,19 @@ window.computeModuleRange = function ({ module, transmitterActor, receiverActor 
                 sizeY: receiverActor.sizeY
             }
         })
-        .then(distance => {
+        .then(distance => ({
+            allowed: distance <= maxRange,
+            distance,
+            maxRange,
+            reason: "ok"
+        }))
+        .catch(err => {
+            console.error("computeModuleRange worker error", err);
             return {
-                allowed: distance <= maxRange,
-                distance,
-                maxRange
+                allowed: false,
+                distance: null,
+                maxRange: null,
+                reason: "worker_error"
             };
         });
 };
