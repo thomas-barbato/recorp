@@ -457,7 +457,6 @@ class Npc(models.Model):
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
     hp = models.SmallIntegerField(default=0)
-    max_hp = models.SmallIntegerField(default=0)
     movement = models.PositiveSmallIntegerField(default=0)
     missile_defense = models.SmallIntegerField(default=0)
     thermal_defense = models.SmallIntegerField(default=0)

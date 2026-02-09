@@ -12,9 +12,16 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc
 from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
 from core.backend.player_logs import create_event_log
+
+from core.backend.combat_engine import (
+    ActorAdapter,
+    WeaponProfile,
+    CombatAction,
+    resolve_combat_action,
+)
 
 logger = logging.getLogger("django")
 
@@ -209,6 +216,11 @@ class GameConsumer(WebsocketConsumer):
         # SHARE SCAN WITH GROUP (PC / NPC) (if scan success)
         if msg_type == "share_scan":
             self._handle_share_scan(data.get("payload"))
+            return
+        
+        # COMBAT ACTION
+        if msg_type == "action_attack":
+            self._handle_combat_action(data.get("payload"))
             return
 
         # MESSAGE GÉNÉRIQUE
@@ -1522,6 +1534,117 @@ class GameConsumer(WebsocketConsumer):
 
         except Exception as e:
             logger.error(f"Erreur entity_state_update: {e}")
+
+    def _handle_combat_action(self, payload: dict) -> None:
+        
+        try:
+            if not payload:
+                return
+
+            module_id = payload.get("module_id")
+            target_key = payload.get("target_key")
+
+            print(module_id, target_key )
+            if not module_id or not target_key:
+                return
+
+            # -----------------------
+            # Résolution attaquant
+            # -----------------------
+            pa = PlayerAction(self.user.id)
+            can_consume, remaining_ap = pa.consume_ap(1)
+
+            if not can_consume:
+                return
+
+            source_player_id = pa.get_player_id()
+
+            source_ship = PlayerShip.objects.select_related("player").get(
+                player_id=source_player_id
+            )
+            source_ad = ActorAdapter(source_ship, "PC")
+
+            # -----------------------
+            # Résolution cible
+            # -----------------------
+            target_type, target_id = target_key.split("_")
+
+            if target_type == "pc":
+                target_ship = PlayerShip.objects.select_related("player").get(
+                    player_id=int(target_id)
+                )
+                target_ad = ActorAdapter(target_ship, "PC")
+            else:
+                target_npc = Npc.objects.select_related("npc_template").get(
+                    id=int(target_id)
+                )
+                target_ad = ActorAdapter(target_npc, "NPC")
+
+            # -----------------------
+            # Module weaponry
+            # -----------------------
+            module = source_ship.modules.get(id=module_id)
+
+            effect = module.effect or {}
+            print(module)
+            print(effect)
+            weapon = WeaponProfile(
+                damage_type=effect.get("damage_type", "MISSILE"),
+                min_damage=int(effect.get("min_damage", 1)),
+                max_damage=int(effect.get("max_damage", 1)),
+                range_tiles=int(effect.get("range", 1)),
+            )
+            print(weapon)
+
+            # -----------------------
+            # Distance / visibilité
+            # (le front fait déjà le visuel,
+            #  le backend recalculera plus tard si besoin)
+            # -----------------------
+            distance = payload.get("distance", weapon.range_tiles)
+            visibility = payload.get("visibility", "UNKNOWN")
+
+            action = CombatAction(
+                action_type="ATTACK",
+                source=source_ad,
+                target=target_ad,
+                weapon=weapon,
+                visibility=visibility,
+                attacker_invisible=False,
+                is_counter=False,
+            )
+
+            # -----------------------
+            # Riposte : armes de la cible
+            # -----------------------
+            target_weapons = self._get_weapons_for_target(target_ad)
+
+            events = resolve_combat_action(
+                action,
+                distance_tiles=distance,
+                target_weapons=target_weapons,
+            )
+
+            # -----------------------
+            # Broadcast
+            # -----------------------
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "combat_events",
+                    "events": [e.__dict__ for e in events],
+                }
+            )
+
+        except Exception:
+            logger.exception("action_attack failed")
+    
+    def combat_events(self, event):
+        print(event)
+        self._send_response({
+            "type": "combat_events",
+            "events": event.get("events", []),
+        })
 
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""

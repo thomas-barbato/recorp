@@ -81,6 +81,7 @@
     }
 
     function createActionButton(iconElement, label, onClick, cost = {}) {
+        console.log(cost)
         const btn = document.createElement("div");
         btn.classList.add(
             "action-button-sf",
@@ -315,7 +316,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     transmitterActor,
                     receiverActor
                 }).then(rangeResult => {
-                    if (!rangeResult.allowed) {
+                    if (rangeResult.reason === "ok" && !rangeResult.allowed) {
                         btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
                         wrapper.classList.add("opacity-40");
                     }
@@ -323,7 +324,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 btn.addEventListener("click", () => {
                     if (btn.classList.contains("pointer-events-none")) return;
-
+                    const targetKey = `${receiverActor.type}_${receiverActor.id}`;
                     ws.send({
                         type: "action_attack",
                         payload: {
@@ -345,7 +346,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             contextZone.append(list);
         },
-        { ap_cost:0 }
+        { ap_cost:1 }
     );
     wrapper.append(grid);
     
@@ -415,7 +416,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         transmitterActor,
         receiverActor
     }).then(rangeResult => {
-        if (!rangeResult.allowed) {
+        if (rangeResult.reason === "ok" && !rangeResult.allowed) {
             scanButton.classList.add("opacity-40", "pointer-events-none");
 
             if (typeof rangeResult.distance === "number") {
@@ -521,91 +522,70 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             if (!hasEwar) return showMissingModuleError();
 
-            // ouvrir weaponry dans contextZone
+            // ouvrir E-WAR dans contextZone
             contextZone.innerHTML = "";
             contextZone.classList.contains('hidden') == true ? contextZone.classList.remove("hidden") : contextZone.classList.add("hidden");
 
             const list = document.createElement("div");
             list.classList.add("flex", "flex-col", "gap-2", "mt-2");
 
-            // modules weaponry
+            // modules E-WAR
             modules.forEach(m => {
                 if (m.type !== "ELECTRONIC_WARFARE") return;
 
-                window.computeModuleRange({
-                    module: m,
-                    transmitterActor,
-                    receiverActor
-                }).then(rangeResult => {
-                    if (!rangeResult.allowed) {
-                        wrapper.classList.add("opacity-40", "pointer-events-none");
-                        btn.classList.add("cursor-not-allowed");
-
-                        if (typeof rangeResult.distance === "number") {
-                            wrapper.title =
-                                `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                        }
-                    }
-                });
-
+                // 1️⃣ wrapper (menu visible)
                 const wrapper = document.createElement("div");
                 wrapper.classList.add(
                     "flex", "flex-row", "justify-between",
                     "items-center", "p-2", "rounded-lg",
                     "border", "gap-4", "border-emerald-900"
                 );
-                
-                if (!rangeResult.allowed) {
-                    wrapper.classList.remove("border-emerald-900", "border");
-                    wrapper.classList.add("opacity-40", "pointer-events-none");
-                    
-                    if (rangeResult.distance !== null) {
-                        wrapper.title =
-                            `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                    }
-                }else{
-                    wrapper.classList.add("border-emerald-900");
-                }
 
-                // description module
+                // 2️⃣ description module (⚠️ INDISPENSABLE)
                 const left = document.createElement("div");
                 left.classList.add("w-full");
                 left.innerHTML = createFormatedLabel(m);
 
-                // bouton attaque réel
+                // 3️⃣ bouton
                 const btnIcon = document.createElement("img");
                 btnIcon.src = "/static/img/ux/target_icon.svg";
                 btnIcon.classList.add("action-button-sf-icon");
 
                 const btn = document.createElement("div");
                 btn.classList.add("action-button-sf");
-
-                if (!rangeResult.allowed) {
-                    btn.classList.add("cursor-not-allowed");
-                }
-
                 btn.append(btnIcon);
+
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
+                // handler click (sync, basé sur l’UI)
                 btn.addEventListener("click", () => {
-                    if (btn.classList.contains("cursor-not-allowed")) return;
+                    if (btn.classList.contains("pointer-events-none")) return;
 
                     ws.send({
-                        type: "action_electronic_warfare",
+                        type: "action_ewar",
                         payload: {
-                            subtype: `electronic_warfare-${m.id}`,
                             module_id: m.id,
                             target_key: targetKey
                         }
                     });
                 });
 
-                wrapper.dataset.actionKey = "electronic_warfare";
-                wrapper.dataset.moduleId = m.id;
-                wrapper.dataset.moduleType = "ELECTRONIC_WARFARE";
                 wrapper.append(left, btn);
                 list.append(wrapper);
+
+                // portée ASYNCHRONE (UNIQUEMENT du visuel)
+                window.computeModuleRange({
+                    module: m,
+                    transmitterActor,
+                    receiverActor
+                }).then(rangeResult => {
+                    if (rangeResult.reason === "ok" && !rangeResult.allowed) {
+                        wrapper.classList.add("opacity-40", "pointer-events-none");
+                        btn.classList.add("cursor-not-allowed");
+                    }
+                });
             });
+
 
             contextZone.append(list);
         }
@@ -617,12 +597,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     // ---------------------------
     // ACTION : REPAIRE
     // ---------------------------
-    const repIcon = document.createElement("img");
-    repIcon.src = "/static/img/ux/repaire_icon.svg";
 
-    const repairModule = modules.find(
-        m => m.type === "REPAIRE" && m.effect?.range
-    );
+    const repIcon = document.createElement("img");
+    repIcon.src = "/static/img/ux/repair_icon.svg";
 
     const repButton = createActionButton(
         repIcon,
@@ -639,16 +616,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "REPAIRE") return;
 
-                window.computeModuleRange({
-                    module: m,
-                    transmitterActor,
-                    receiverActor
-                }).then(rangeResult => {
-                    if (!rangeResult.allowed) {
-                        wrapper.classList.add("opacity-40", "pointer-events-none");
-                    }
-                });
-
                 const wrapper = document.createElement("div");
                 wrapper.classList.add(
                     "flex", "flex-row", "justify-between",
@@ -656,30 +623,27 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     "border", "gap-4", "border-emerald-900"
                 );
 
-                if (!rangeResult.allowed) {
-                    wrapper.classList.add("opacity-40", "pointer-events-none");
-                }
-
-                // description module
+                // 2️⃣ description
                 const left = document.createElement("div");
                 left.classList.add("w-full");
                 left.innerHTML = createFormatedLabel(m);
 
-                // bouton action réelle
                 const btnIcon = document.createElement("img");
-                btnIcon.src = "/static/img/ux/repaire_icon.svg";
+                btnIcon.src = "/static/img/ux/repair_icon.svg";
                 btnIcon.classList.add("action-button-sf-icon");
 
                 const btn = document.createElement("div");
                 btn.classList.add("action-button-sf");
                 btn.append(btnIcon);
+
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
+                // click handler (basé UNIQUEMENT sur l’UI)
                 btn.addEventListener("click", () => {
-                    if (wrapper.classList.contains("pointer-events-none")) return;
-
+                    if (btn.classList.contains("pointer-events-none")) return;
+                    const targetKey = `${receiverActor.type}_${receiverActor.id}`;
                     ws.send({
-                        type: "action_repaire",
+                        type: "action_repair",
                         payload: {
                             module_id: m.id,
                             target_key: targetKey
@@ -689,6 +653,20 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 wrapper.append(left, btn);
                 list.append(wrapper);
+
+                // portée ASYNCHRONE (visuel seulement)
+                window.computeModuleRange({
+                    module: m,
+                    transmitterActor,
+                    receiverActor
+                }).then(rangeResult => {
+                    
+                    if (rangeResult.reason === "ok" && !rangeResult.allowed) {
+                        wrapper.classList.add("opacity-40", "pointer-events-none");
+                        btn.classList.add("cursor-not-allowed");
+                    }
+
+                });
             });
 
             contextZone.append(list);
@@ -1103,7 +1081,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         }
     }
 
-    // ===== Bridge global (comme les autres étapes) =====
+    // ===== Bridge global =====
     window.createActionCostBadge = createActionCostBadge;
     window.createActionRangeBadge = createActionRangeBadge;
     window.createActionButton = createActionButton;
@@ -1150,7 +1128,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             const module = modules.find(m => m.id === moduleId);
             if (!module || !module.effect?.range) return;
-
+            
             const rr = window.computeModuleRange({
                 module,
                 transmitterActor,

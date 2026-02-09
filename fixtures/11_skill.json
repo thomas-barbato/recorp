@@ -1,253 +1,165 @@
-[{
-        "model": "core.skill",
-        "pk": 1,
-        "fields": {
-            "name": "Frigate",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Steering",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 2,
-        "fields": {
-            "name": "Destroyer",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Steering",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 3,
-        "fields": {
-            "name": "Battlecruiser",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Steering",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 4,
-        "fields": {
-            "name": "Dreadnought",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Steering",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 5,
-        "fields": {
-            "name": "Thermal Weapon",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Offensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 6,
-        "fields": {
-            "name": "Ballistic Weapon",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Offensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 7,
-        "fields": {
-            "name": "Missile Weapon",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Offensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 8,
-        "fields": {
-            "name": "Electronic Warfare",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Offensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 9,
-        "fields": {
-            "name": "Evasive maneuver",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Defensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 10,
-        "fields": {
-            "name": "Thermal Shield",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Defensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 11,
-        "fields": {
-            "name": "Ballistic Shield",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Defensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 12,
-        "fields": {
-            "name": "Missile Shield",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Defensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 13,
-        "fields": {
-            "name": "Counter Electronic Warfare",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Defensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 14,
-        "fields": {
-            "name": "Repaire",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Utility",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 15,
-        "fields": {
-            "name": "Shield Amelioration",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Utility",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 16,
-        "fields": {
-            "name": "Hide Signature",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Utility",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 17,
-        "fields": {
-            "name": "Detection",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Utility",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 18,
-        "fields": {
-            "name": "Mining",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Industry",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 19,
-        "fields": {
-            "name": "Refining",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Industry",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 20,
-        "fields": {
-            "name": "Crafting",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Industry",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 21,
-        "fields": {
-            "name": "Research",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Industry",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    },
-    {
-        "model": "core.skill",
-        "pk": 22,
-        "fields": {
-            "name": "Planetary Exploitation",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Industry",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
-    }, {
-        "model": "core.skill",
-        "pk": 23,
-        "fields": {
-            "name": "Sharpshooting",
-            "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
-            "category": "Offensive",
-            "created_at": "2020-03-21 12:38:15",
-            "updated_at": "2020-03-21 12:38:15"
-        }
+[
+{
+    "model": "core.skill",
+    "pk": 1,
+    "fields": {
+        "name": "Frigate",
+        "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
+        "category": "Steering",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
     }
+},
+{
+    "model": "core.skill",
+    "pk": 2,
+    "fields": {
+        "name": "Destroyer",
+        "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
+        "category": "Steering",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 3,
+    "fields": {
+        "name": "Battlecruiser",
+        "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
+        "category": "Steering",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 4,
+    "fields": {
+        "name": "Dreadnought",
+        "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum",
+        "category": "Steering",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 5,
+    "fields": {
+        "name": "Thermal weapon",
+        "category": "Offensive",
+        "description": "Enhances thermal weapon systems.\n• Increases thermal damage (up to +25%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 6,
+    "fields": {
+        "name": "Ballistic weapon",
+        "category": "Offensive",
+        "description": "Optimizes ballistic weapon handling.\n• Increases ballistic accuracy (up to +10%)\n• Increases ballistic damage (up to +25%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 7,
+    "fields": {
+        "name": "Missile weapon",
+        "category": "Offensive",
+        "description": "Improves missile weapon systems.\n• Increases missile accuracy (up to +20%)\n• Increases missile damage (up to +25%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 8,
+    "fields": {
+        "name": "Electronic warfare",
+        "category": "Offensive",
+        "description": "Enhances electronic warfare capabilities.\n• Increases debuff success chance (up to +30%)\n• Increases debuff duration (up to +20%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 9,
+    "fields": {
+        "name": "Evasive maneuver",
+        "category": "Defensive",
+        "description": "Improves ship maneuverability.\n• Increases evasion chance (up to +20%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 1,
+    "fields": {
+        "name": "Counter electronic warfare",
+        "category": "Defensive",
+        "description": "Improves resistance to electronic attacks.\n• Increases resistance to debuffs (up to +30%)\n• Reduces debuff duration (up to -20%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 14,
+    "fields": {
+        "name": "repair",
+        "category": "Utility",
+        "description": "Improves onboard repair systems.\n• Increases repair efficiency (up to +30%)\n• Reduces repair duration (up to -30%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 15,
+    "fields": {
+        "name": "Shield enhancement",
+        "category": "Utility",
+        "description": "Enhances shield systems.\n• Improves shield damage absorption (up to +20%)"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 16,
+    "fields": {
+        "name": "Hide signature",
+        "category": "Utility",
+        "description": "Reduces ship signature.\n• Improves stealth and invisibility effectiveness",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 17,
+    "fields": {
+        "name": "Detection",
+        "category": "Utility",
+        "description": "Improves detection and scanning systems.\n• Improves scan efficiency (up to +30%)\n• Reduces accuracy penalties against unscanned targets",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+},
+{
+    "model": "core.skill",
+    "pk": 23,
+    "fields": {
+        "name": "Sharpshooting",
+        "category": "Offensive",
+        "description": "Improves weapon accuracy.\n• Increases overall weapon precision (up to +10%)",
+        "created_at": "2020-03-21 12:38:15",
+        "updated_at": "2020-03-21 12:38:15"
+    }
+}
 ]
