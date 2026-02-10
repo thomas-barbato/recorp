@@ -324,10 +324,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 btn.addEventListener("click", () => {
                     if (btn.classList.contains("pointer-events-none")) return;
-                    const targetKey = `${receiverActor.type}_${receiverActor.id}`;
+                    const targetKey = receiverActor.id;
                     ws.send({
                         type: "action_attack",
                         payload: {
+                            player: window.currentPlayer.user.player,
                             subtype: `attack-${m.id}`,
                             module_id: m.id,
                             target_key: targetKey

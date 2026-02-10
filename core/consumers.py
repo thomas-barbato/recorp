@@ -1540,29 +1540,48 @@ class GameConsumer(WebsocketConsumer):
         try:
             if not payload:
                 return
+            
+            pa = PlayerAction(self.user.id)
+            source_player_id = pa.get_player_id()
+            
+            if payload.get("player") != source_player_id:
+                return
 
             module_id = payload.get("module_id")
             target_key = payload.get("target_key")
-
-            print(module_id, target_key )
+            
             if not module_id or not target_key:
                 return
 
             # -----------------------
             # Résolution attaquant
             # -----------------------
-            pa = PlayerAction(self.user.id)
             can_consume, remaining_ap = pa.consume_ap(1)
 
             if not can_consume:
                 return
 
-            source_player_id = pa.get_player_id()
-
             source_ship = PlayerShip.objects.select_related("player").get(
                 player_id=source_player_id
             )
             source_ad = ActorAdapter(source_ship, "PC")
+
+            attacker_key = self.get_entity_key_from_adapter(source_ad)
+            
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "entity_state_update",
+                    "entity_key": attacker_key,
+                    "change_type": "ap_update",
+                    "changes": {
+                        "ap": {
+                            "current": remaining_ap,
+                            "max": pa.get_player_max_ap(),
+                        }
+                    }
+                }
+            )
 
             # -----------------------
             # Résolution cible
@@ -1583,18 +1602,25 @@ class GameConsumer(WebsocketConsumer):
             # -----------------------
             # Module weaponry
             # -----------------------
-            module = source_ship.modules.get(id=module_id)
+            
+            psm = source_ship.player_ship_module.select_related("module").filter(
+                module_id=module_id
+            ).first()
 
+            if not psm:
+                raise ValueError(f"Module {module_id} non équipé sur ce vaisseau")
+
+            module = psm.module
             effect = module.effect or {}
-            print(module)
-            print(effect)
+
+            damage_type = effect.get("damage_type", "MISSILE").upper()
+
             weapon = WeaponProfile(
-                damage_type=effect.get("damage_type", "MISSILE"),
+                damage_type=damage_type,
                 min_damage=int(effect.get("min_damage", 1)),
                 max_damage=int(effect.get("max_damage", 1)),
                 range_tiles=int(effect.get("range", 1)),
             )
-            print(weapon)
 
             # -----------------------
             # Distance / visibilité
@@ -1625,6 +1651,37 @@ class GameConsumer(WebsocketConsumer):
                 target_weapons=target_weapons,
             )
 
+            for ev in events:
+                if ev.type != "ATTACK_HIT":
+                    continue
+
+                is_counter = ev.payload.get("is_counter", False)
+
+                # Qui a pris les dégâts ?
+                damaged_ad = source_ad if is_counter else target_ad
+
+                entity_key = self.get_entity_key_from_adapter(damaged_ad)
+
+                print("entity_key", entity_key)
+
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "entity_state_update",
+                        "entity_key": entity_key,
+                        "change_type": "hp_update",
+                        "changes": {
+                            "hp": {
+                                "current": ev.payload["hull_remaining"],
+                            },
+                            "shield": {
+                                "current": ev.payload["shield_remaining"],
+                                "damage_type": ev.payload["damage_type"],
+                            }
+                        }
+                    }
+                )
+
             # -----------------------
             # Broadcast
             # -----------------------
@@ -1638,9 +1695,55 @@ class GameConsumer(WebsocketConsumer):
 
         except Exception:
             logger.exception("action_attack failed")
+
+
+    def _get_weapons_for_target(self, target_ad):
+
+        weapons = []
+
+        # PC
+        if target_ad.kind == "PC":
+            ship = target_ad.actor
+            psm_qs = ship.player_ship_module.select_related("module").filter(
+                module__type="WEAPONRY",
+            )
+
+            for psm in psm_qs:
+                effect = psm.module.effect or {}
+                weapons.append(
+                    WeaponProfile(
+                        damage_type=effect.get("damage_type", "MISSILE").upper(),
+                        min_damage=int(effect.get("min_damage", 1)),
+                        max_damage=int(effect.get("max_damage", 1)),
+                        range_tiles=int(effect.get("range", 1)),
+                    )
+                )
+
+        # NPC
+        elif target_ad.kind == "NPC":
+            npc = target_ad.actor
+            for weapon in npc.npc_template.weapons.all():
+                weapons.append(
+                    WeaponProfile(
+                        damage_type=weapon.damage_type.upper(),
+                        min_damage=weapon.min_damage,
+                        max_damage=weapon.max_damage,
+                        range_tiles=weapon.range_tiles,
+                    )
+                )
+
+        return weapons
+    
+    def get_entity_key_from_adapter(self, adapter):
+        if adapter.kind == "PC":
+            return f"pc_{adapter.actor.player_id}"
+        elif adapter.kind == "NPC":
+            return f"npc_{adapter.actor.id}"
+        else:
+            raise ValueError(f"Unknown actor kind: {adapter.kind}")
+    
     
     def combat_events(self, event):
-        print(event)
         self._send_response({
             "type": "combat_events",
             "events": event.get("events", []),

@@ -171,16 +171,6 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
         });
     }
 
-    tooltip.innerHTML = `
-        <div class="font-bold text-emerald-300">${dist > 0 ? name : "You"}</div>
-        <div class="text-emerald-500 font-bold">Y:<span class="text-emerald-300 font-bold">${ty.toString().padStart(2,"0")}</span> / X:<span class="text-emerald-300 font-bold">${tx.toString().padStart(2,"0")}</span></div>
-        ${
-            dist !== null && dist > 0
-                ? `<div class="text-emerald-500 font-bold">Distance: <span class="text-emerald-300">${dist}</span></div>`
-                : ""
-        }
-    `;
-
     if (!evt) return;
 
     // Position dynamique
