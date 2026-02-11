@@ -81,7 +81,7 @@
     }
 
     function createActionButton(iconElement, label, onClick, cost = {}) {
-        console.log(cost)
+        
         const btn = document.createElement("div");
         btn.classList.add(
             "action-button-sf",

@@ -82,23 +82,65 @@
         mpBar.style.width = `${pct}%`;
     }
 
-    function updateModalHp(modalEl, { hp, max_hp }) {
-        if (hp == null || max_hp == null) return;
+    function updateModalHp(modalEl, { hp, shield, damage_type }) {
 
-        const text = modalEl.querySelector("[data-stat='hp-text']");
-        const bar  = modalEl.querySelector("[data-stat='hp-bar']");
+        // 🔹 HULL
+        if (hp != null) {
 
-        if (text) {
-            text.textContent = `${hp} / ${max_hp}`;
+            const hullTextEl = modalEl.querySelector("[data-hull-current]");
+            const hullBarEl = modalEl.querySelector('[data-stat="hp-bar"]');
+
+            if (hullTextEl && hullBarEl) {
+
+                const currentText = hullTextEl.textContent; // "34 / 50"
+                const parts = currentText.split("/");
+
+                if (parts.length === 2) {
+                    const max = parseInt(parts[1].trim(), 10);
+
+                    // Update texte
+                    hullTextEl.textContent = `${hp} / ${max}`;
+
+                    // Update largeur
+                    const percent = max > 0 ? (hp / max) * 100 : 0;
+                    hullBarEl.style.width = `${percent}%`;
+                }
+            }
         }
 
-        if (bar) {
-            const pct = Math.max(0, Math.min(100, (hp / max_hp) * 100));
-            bar.style.width = `${pct}%`;
+        // 🔹 SHIELD
+        if (shield != null && damage_type) {
+
+            const shieldTextEl = modalEl.querySelector(
+                `[data-shield-type="${damage_type}"]`
+            );
+
+            const shieldBarEl = modalEl.querySelector(
+                `[data-stat="DEFENSE_${damage_type}-bar"]`
+            );
+
+            if (shieldTextEl && shieldBarEl) {
+
+                const currentText = shieldTextEl.textContent;
+                const parts = currentText.split("/");
+
+                if (parts.length === 2) {
+                    const max = parseInt(parts[1].trim(), 10);
+
+                    // Update texte
+                    shieldTextEl.textContent = `${shield} / ${max}`;
+
+                    // Update largeur
+                    const percent = max > 0 ? (shield / max) * 100 : 0;
+                    shieldBarEl.style.width = `${percent}%`;
+                }
+            }
         }
     }
 
+
     function updateModalAp(modalEl, { ap, max_ap }) {
+        console.log("Updating AP in modal:",modalEl.id, { ap, max_ap });
         if (ap == null || max_ap == null) return;
 
         const text = modalEl.querySelector("[data-stat='ap-text']");

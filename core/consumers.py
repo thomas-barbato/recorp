@@ -1556,32 +1556,11 @@ class GameConsumer(WebsocketConsumer):
             # -----------------------
             # Résolution attaquant
             # -----------------------
-            can_consume, remaining_ap = pa.consume_ap(1)
-
-            if not can_consume:
-                return
 
             source_ship = PlayerShip.objects.select_related("player").get(
                 player_id=source_player_id
             )
             source_ad = ActorAdapter(source_ship, "PC")
-
-            attacker_key = self.get_entity_key_from_adapter(source_ad)
-            
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    "type": "entity_state_update",
-                    "entity_key": attacker_key,
-                    "change_type": "ap_update",
-                    "changes": {
-                        "ap": {
-                            "current": remaining_ap,
-                            "max": pa.get_player_max_ap(),
-                        }
-                    }
-                }
-            )
 
             # -----------------------
             # Résolution cible
@@ -1651,18 +1630,39 @@ class GameConsumer(WebsocketConsumer):
                 target_weapons=target_weapons,
             )
 
+            # -----------------------
+            # Toujours envoyer AP attaquant
+            # -----------------------
+
+            attacker_key = self.get_entity_key_from_adapter(source_ad)
+
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "entity_state_update",
+                    "entity_key": attacker_key,
+                    "change_type": "ap_update",
+                    "changes": {
+                        "ap": {
+                            "current": source_ad.get_ap(),
+                            "max": source_ad.get_max_ap(),
+                        }
+                    }
+                }
+            )
+
+            # -----------------------
+            # Envoyer HP pour chaque HIT
+            # -----------------------
+
             for ev in events:
                 if ev.type != "ATTACK_HIT":
                     continue
 
                 is_counter = ev.payload.get("is_counter", False)
 
-                # Qui a pris les dégâts ?
                 damaged_ad = source_ad if is_counter else target_ad
-
                 entity_key = self.get_entity_key_from_adapter(damaged_ad)
-
-                print("entity_key", entity_key)
 
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
@@ -1683,15 +1683,45 @@ class GameConsumer(WebsocketConsumer):
                 )
 
             # -----------------------
-            # Broadcast
+            # Si riposte tentée → envoyer AP cible
             # -----------------------
+
+            counter_attempt = any(
+                ev.payload.get("is_counter", False)
+                for ev in events
+            )
+
+            if counter_attempt and target_ad.kind == "PC":
+
+                target_key = self.get_entity_key_from_adapter(target_ad)
+
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "entity_state_update",
+                        "entity_key": target_key,
+                        "change_type": "ap_update",
+                        "changes": {
+                            "ap": {
+                                "current": target_ad.get_ap(),
+                                "max": target_ad.get_max_ap(),
+                            }
+                        }
+                    }
+                )
+
+            # -----------------------
+            # 4️⃣ Broadcast combat events
+            # -----------------------
+
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
                     "type": "combat_events",
-                    "events": [e.__dict__ for e in events],
+                    "events": [e.__dict__ for e in events]
                 }
             )
+
 
         except Exception:
             logger.exception("action_attack failed")
@@ -1746,7 +1776,9 @@ class GameConsumer(WebsocketConsumer):
     def combat_events(self, event):
         self._send_response({
             "type": "combat_events",
-            "events": event.get("events", []),
+            "message": {
+                "events": event.get("events", [])
+            }
         })
 
     def _send_response(self, response: Dict[str, Any]) -> None:

@@ -295,6 +295,20 @@ function createUnknownModal(modalId, data, is_npc) {
     );
     modal.body.addSection(unknownImg);
 
+    // ACTIONS
+    const actionsLabel = document.createElement("label");
+    actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
+    actionsLabel.classList.add(
+        "w-full",
+        "font-bold",
+        "font-shadow",
+        "text-white",
+        "text-base",
+        "mt-2",
+        "font-orbitron"
+    );
+    modal.body.addSection(actionsLabel);
+
     // MODULES LABEL
     const modulesLabel = document.createElement("label");
     modulesLabel.textContent = "MODULES:";
@@ -321,19 +335,6 @@ function createUnknownModal(modalId, data, is_npc) {
     );
     modal.body.addSection(modulesWarning);
 
-    // ACTIONS
-    const actionsLabel = document.createElement("label");
-    actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
-    actionsLabel.classList.add(
-        "w-full",
-        "font-bold",
-        "font-shadow",
-        "text-white",
-        "text-base",
-        "mt-2",
-        "font-orbitron"
-    );
-    modal.body.addSection(actionsLabel);
 
     const contextZone = document.createElement("div");
     contextZone.id = modalId + "-action-context";
@@ -437,7 +438,6 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
     const targetKey = (is_npc ? "npc_" : "pc_") + data.player.id;
 
-    // 2️⃣ On RECONSTRUIT le contenu du titleEl
     if (data._ui?.scanned === true && window.scannedMeta?.[targetKey]) {
 
         // --- Texte du titre ---
@@ -652,11 +652,25 @@ function buildShipStatsSection(data) {
 
         if (type === "hp") {
             text.dataset.stat = "hp-text";
+            text.dataset.hullCurrent = current;
             content.dataset.stat = "hp-bar";
         }
         if (type === "ap") {
             text.dataset.stat = "ap-text";
             content.dataset.stat = "ap-bar";
+        }
+        
+        if(type == "DEFENSE_BALLISTIC"){ 
+            text.dataset.shieldType = "BALLISTIC";
+            content.dataset.stat = "DEFENSE_BALLISTIC-bar"; 
+        }
+        if(type == "DEFENSE_THERMAL"){ 
+            text.dataset.shieldType = "THERMAL"; 
+            content.dataset.stat = "DEFENSE_THERMAL-bar"; 
+        }
+        if(type == "DEFENSE_MISSILE"){ 
+            text.dataset.shieldType = "MISSILE"; 
+            content.dataset.stat = "DEFENSE_MISSILE-bar"; 
         }
 
         container.append(text, content);

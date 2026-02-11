@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Tuple, Literal
+from typing import Any, Dict, Optional, Tuple, Literal, List
 import random
 
 DamageType = Literal["MISSILE", "THERMAL", "BALLISTIC"]
@@ -77,6 +77,11 @@ class ActorAdapter:
             # PlayerShip -> player.current_ap
             return int(self.actor.player.current_ap)
         return int(self.actor.current_ap)
+    
+    def get_max_ap(self):
+        if self.kind == "PC":
+            return self.actor.player.max_ap
+        return self.actor.max_ap
 
     def spend_ap(self, amount: int) -> None:
         if self.kind == "PC":
@@ -360,18 +365,23 @@ def can_counterattack(action: CombatAction) -> bool:
 
 
 def resolve_combat_action(
-    action: CombatAction,
-    *,
-    distance_tiles: int,
-    target_weapons: list[WeaponProfile],
-) -> list[CombatEvent]:
-    """
-    Orchestrateur central du moteur de combat.
-    Gère :
-    - l'action initiale
-    - la riposte automatique (si possible)
-    """
-    events: list[CombatEvent] = []
+        action: CombatAction,
+        distance_tiles: int,
+        target_weapons: List[WeaponProfile] | None = None,
+    ) -> List[CombatEvent]:
+
+    events: List[CombatEvent] = []
+
+    # 🔒 Vérifier portée
+    if distance_tiles > action.weapon.range_tiles:
+        return events  # aucune action, aucun coût
+
+    # 🔒 Vérifier AP attaquant
+    if action.source.get_ap() < 1:
+        return events
+
+    # ✅ Consommer AP attaquant
+    action.source.spend_ap(1)
 
     # --- ACTION PRINCIPALE ---
     if action.action_type == "ATTACK":
@@ -411,6 +421,9 @@ def resolve_combat_action(
 
     if action.target.get_ap() < 1:
         return events
+    
+    # consommer AP pour riposte
+    action.target.spend_ap(1)
 
     counter_weapon = select_best_weapon_for_counter(
         weapons=target_weapons,

@@ -7,6 +7,7 @@ import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handl
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
 import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
 import { getEventsLog } from "../handlers/events_handlers.js";
+import { handleCombatEvents } from "../handlers/combat_handlers.js";
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -82,4 +83,9 @@ ActionRegistry.register("effects_invalidated", invalidateTimerEffect);
 // EVENTS
 // ===============================
 ActionRegistry.register("event_log", getEventsLog);
+
+// ===============================
+// COMBAT
+// ===============================
+ActionRegistry.register("combat_events", handleCombatEvents);
 

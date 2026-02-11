@@ -194,7 +194,7 @@ function refreshOpenedModalRanges() {
 
 export function entity_state_update(msg){
     const { entity_key, change_type, changes } = msg;
-    console.log(entity_key, change_type, changes);  
+    
     if (!window.ModalLive?.isOpen?.(entity_key)) {
         console.log("NOT OPENED")
         return;
@@ -220,6 +220,7 @@ export function entity_state_update(msg){
             break;
 
         case "hp_update":
+            console.log(changes)
             window.ModalLive?.notify?.(entity_key, "hp_update", {
                 hp: changes.hp?.current,
                 shield: changes.shield?.current,
