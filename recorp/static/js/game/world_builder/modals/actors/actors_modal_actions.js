@@ -1126,56 +1126,80 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     window.decorateActionButtonWithRangeAndAp = decorateActionButtonWithRangeAndAp;
 
     window.refreshModalActionRanges = function (modalId) {
-        if (!modalId || typeof window.computeModuleRange !== "function") return;
+        if (!modalId) return;
 
-        const map = window.canvasEngine?.map;
-        if (!map) return;
+        const applyState = (btnEl, rr) => {
+            if (rr && rr.reason === "ok" && !rr.allowed) {
+                btnEl.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
+            } else {
+                btnEl.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed");
+            }
+        };
 
-        const parsed = define_modal_type(modalId);
-        if (!parsed) return;
+        // =====================================================
+        // 🔥 COMBAT SCENE SUPPORT
+        // =====================================================
+        if (modalId === "modal-combat") {
+            const context = window.ActionSceneManager?.getContext?.();
+            if (!context) return;
 
-        const transmitterActor = map.getCurrentPlayer?.();
-        if (!transmitterActor) return;
+            const engine = window.canvasEngine;
+            if (!engine?.map) return;
 
-        let receiverActor = null;
+            const transmitterActor = engine.map.findActorByKey(context.attackerKey);
+            const receiverActor = engine.map.findActorByKey(context.targetKey);
+            if (!transmitterActor || !receiverActor) return;
 
-        if (parsed.type === "pc" || parsed.type === "npc") {
-            receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
+            const modules = window.currentPlayer?.ship?.modules || [];
+            const modalEl = document.getElementById("modal-combat");
+            if (!modalEl) return;
+
+            modalEl.querySelectorAll("[data-module-id]").forEach(btn => {
+                const moduleId = parseInt(btn.dataset.moduleId, 10);
+                const module = modules.find(m => m.id === moduleId);
+                if (!module) return;
+
+                // computeModuleRange est async dans ton projet
+                const p = window.computeModuleRange?.({ module, transmitterActor, receiverActor });
+                if (!p || typeof p.then !== "function") return;
+
+                p.then(rr => applyState(btn, rr)).catch(() => {});
+            });
+
+            return;
         }
-        if (!receiverActor && parsed.originalType) {
-            receiverActor = map.findActorByKey(`${parsed.originalType}_${parsed.id}`);
-        }
-        if (!receiverActor && parsed.isForegroundElement) {
-            receiverActor = map.findActorByKey(parsed.elementName);
-        }
-        if (!receiverActor) return;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        // =====================================================
+        // 🧠 LOGIQUE NORMALE DES MODALS (PC / NPC / UNKNOWN)
+        // =====================================================
         const modalEl = document.getElementById(modalId);
         if (!modalEl) return;
 
+        const raw = modalId.replace("modal-", "");
+        const isUnknown = raw.startsWith("unknown-");
+        const clean = isUnknown ? raw.replace("unknown-", "") : raw;
+
+        const engine = window.canvasEngine;
+        if (!engine?.map) return;
+
+        const transmitterActor = engine.map.getCurrentPlayer?.();
+        const receiverActor = engine.map.findActorByKey(clean);
+        if (!transmitterActor || !receiverActor) return;
+
+        const modules = window.currentPlayer?.ship?.modules || [];
+
         modalEl.querySelectorAll("[data-module-id]").forEach(btn => {
             const moduleId = parseInt(btn.dataset.moduleId, 10);
-            if (!moduleId) return;
-
             const module = modules.find(m => m.id === moduleId);
-            if (!module || !module.effect?.range) return;
-            
-            const rr = window.computeModuleRange({
-                module,
-                transmitterActor,
-                receiverActor
-            });
+            if (!module) return;
 
-            if (!rr.allowed) {
-                btn.classList.add("opacity-40", "pointer-events-none");
-                btn.title = `Hors de portée (${rr.distance.toFixed(1)} / ${rr.maxRange})`;
-            } else {
-                btn.classList.remove("opacity-40", "pointer-events-none");
-                btn.title = "";
-            }
+            const p = window.computeModuleRange?.({ module, transmitterActor, receiverActor });
+            if (!p || typeof p.then !== "function") return;
+
+            p.then(rr => applyState(btn, rr)).catch(() => {});
         });
     };
+
 
 })();
 

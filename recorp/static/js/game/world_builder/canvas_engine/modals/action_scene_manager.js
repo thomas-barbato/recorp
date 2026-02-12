@@ -96,28 +96,43 @@ class ActionSceneManager {
         backdrop.id = "combat-scene-backdrop";
         backdrop.classList.add(
             "fixed", "inset-0",
-            "bg-black/80",
+            "bg-black/40",
             "flex",
-            "items-center",
             "justify-center",
-            "z-[9999]"
+            "backdrop-blur-md", 
+            "backdrop-brightness-50", 
+            "animate-modal-fade",
+            "z-[9999]", 
+            "md:p-3",
+            "right-0",
+            "left-0",
+            "z-50",
+            "w-full",
+            "h-screen",
+            "md:inset-0",
         );
 
         // Container principal
         const container = document.createElement("div");
-        container.id = "combat-scene";
+        container.id = "modal-combat";
+        container.dataset.modalId = "modal-combat";
         container.classList.add(
-            "w-[90%]",
-            "max-w-[1000px]",
+            "flex","shadow","rounded-t-xl",
+            "max-h-[70vh]",
+            "w-[98%]",
+            "md:w-[600px]",
+            "lg:w-[680px]",
+            "xl:w-[520px]",
             "bg-zinc-900",
             "border",
             "border-emerald-500/40",
             "rounded-xl",
             "shadow-2xl",
-            "p-6",
+            "p-3",
             "flex",
             "flex-col",
-            "gap-4"
+            "gap-4",
+            "h-screen"
         );
 
         // Header
@@ -149,19 +164,32 @@ class ActionSceneManager {
             distance.textContent = "Distance: ?";
         });
 
-        // Preview zone
-        const preview = document.createElement("div");
-        preview.classList.add(
-            "h-[200px]",
-            "border",
-            "border-emerald-500/20",
-            "rounded-lg",
-            "flex",
-            "items-center",
-            "justify-center",
-            "text-emerald-300"
-        );
-        preview.textContent = "Preview Canvas Placeholder";
+        const visualWrapper = document.createElement("div");
+        visualWrapper.classList.add("relative", "w-full", "h-32", "overflow-hidden", "bg-[#020617]");
+
+        // 🌌 Background spatial (CSS only)
+        const stars1 = document.createElement("div");
+        stars1.classList.add("stars-layer", "l1");
+
+        const stars2 = document.createElement("div");
+        stars2.classList.add("stars-layer", "l2");
+
+        const stars3 = document.createElement("div");
+        stars3.classList.add("stars-layer", "l3");
+
+        visualWrapper.append(stars1, stars2, stars3);
+
+        // 🚀 Ships canvas
+        const shipsCanvas = document.createElement("canvas");
+        shipsCanvas.id = "combat-ships";
+        shipsCanvas.classList.add("absolute", "inset-0");
+
+        // 💬 Overlay canvas
+        const overlayCanvas = document.createElement("canvas");
+        overlayCanvas.id = "combat-overlay";
+        overlayCanvas.classList.add("absolute", "inset-0", "pointer-events-none");
+
+        visualWrapper.append(shipsCanvas, overlayCanvas);
 
         // Stats
         const stats = document.createElement("div");
@@ -195,7 +223,7 @@ class ActionSceneManager {
         // Log placeholder
         const log = document.createElement("div");
         log.classList.add(
-            "h-[120px]",
+            "h-[60px]",
             "overflow-y-auto",
             "border",
             "border-emerald-500/20",
@@ -205,6 +233,17 @@ class ActionSceneManager {
             "text-emerald-300"
         );
         log.textContent = "Combat log...";
+
+        // Modules container
+        const modulesContainer = document.createElement("div");
+        modulesContainer.id = "combat-modules";
+        modulesContainer.classList.add(
+            "flex",
+            "flex-wrap",
+            "gap-3",
+            "justify-center",
+            "mt-4"
+        );
 
         // Footer
         const footer = document.createElement("div");
@@ -232,13 +271,173 @@ class ActionSceneManager {
 
         footer.append(closeBtn);
 
-        container.append(header, distance, preview, stats, log, footer);
+        container.append(header, distance, visualWrapper, stats, log, modulesContainer, footer);
         backdrop.append(container);
         document.body.append(backdrop);
 
         this._rootEl = backdrop;
         this._initStatsFromRuntime();
+        this._buildCombatModules();
+        this._initCombatCanvases(attacker, target);
     }
+
+    _buildCombatModules() {
+
+        if (!this.isActive("combat")) return;
+
+        const context = this.getContext();
+        if (!context) return;
+
+        const container = document.getElementById("combat-modules");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        const me = window.currentPlayer;
+        if (!me?.ship?.modules) return;
+
+        const weaponModules = me.ship.modules.filter(m => m.type === "WEAPONRY");
+
+        if (!weaponModules.length) {
+            container.textContent = "Aucun module d'attaque";
+            return;
+        }
+
+        weaponModules.forEach(module => {
+
+            const btn = document.createElement("button");
+            btn.classList.add(
+                "px-4",
+                "py-2",
+                "bg-emerald-600",
+                "hover:bg-emerald-700",
+                "rounded",
+                "text-white",
+                "text-sm"
+            );
+            const apCost = 1;
+            btn.textContent = `${module.name} (AP:${apCost})`;
+
+            btn.addEventListener("click", () => {
+
+                window.ws?.send(JSON.stringify({
+                    type: "action_attack",
+                    payload: {
+                        target_id: context.targetKey.split("_")[1],
+                        module_id: module.id
+                    }
+                }));
+
+            });
+
+            container.append(btn);
+        });
+        window.refreshModalActionRanges?.("modal-combat");
+    }
+
+    _buildCombatModules() {
+
+        if (!this.isActive("combat")) return;
+
+        const context = this.getContext();
+        if (!context) return;
+
+        const container = document.getElementById("combat-modules");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        const engine = window.canvasEngine;
+        if (!engine?.map) return;
+
+        const transmitterActor = engine.map.findActorByKey(context.attackerKey);
+        const receiverActor = engine.map.findActorByKey(context.targetKey);
+
+        if (!transmitterActor || !receiverActor) return;
+
+        const modules = window.currentPlayer?.ship?.modules || [];
+
+        const list = document.createElement("div");
+        list.classList.add("flex", "flex-col", "gap-2");
+
+        modules.forEach(m => {
+
+            if (m.type !== "WEAPONRY") return;
+
+            const wrapper = document.createElement("div");
+            wrapper.classList.add(
+                "flex", "flex-row", "justify-between",
+                "items-center", "p-2", "rounded-lg",
+                "border", "gap-4", "border-emerald-900"
+            );
+
+            // === LEFT DESCRIPTION ===
+            const left = document.createElement("div");
+            left.classList.add("w-full");
+            left.innerHTML = window.createFormatedLabel
+                ? window.createFormatedLabel(m)
+                : m.name;
+
+            // === ATTACK BUTTON ===
+            const btnIcon = document.createElement("img");
+            btnIcon.src = "/static/img/ux/target_icon.svg";
+            btnIcon.classList.add("action-button-sf-icon");
+
+            const btn = document.createElement("div");
+            btn.classList.add("action-button-sf");
+
+            btn.append(btnIcon);
+
+            // AP = 1 (comme ton système actuel)
+            window.decorateActionButtonWithRangeAndAp?.(btn, m, 1);
+
+            // === ASYNC RANGE CHECK ===
+            window.computeModuleRange?.({
+                module: m,
+                transmitterActor,
+                receiverActor
+            }).then(rangeResult => {
+
+                if (rangeResult.reason === "ok" && !rangeResult.allowed) {
+                    btn.classList.add(
+                        "opacity-40",
+                        "pointer-events-none",
+                        "cursor-not-allowed"
+                    );
+                    wrapper.classList.add("opacity-40");
+                }
+            });
+
+            // === CLICK HANDLER ===
+            btn.addEventListener("click", () => {
+
+                if (btn.classList.contains("pointer-events-none")) return;
+
+                window.canvasEngine?.ws?.send({
+                    type: "action_attack",
+                    payload: {
+                        player: window.currentPlayer.user.player,
+                        subtype: `attack-${m.id}`,
+                        module_id: m.id,
+                        target_key: receiverActor.id
+                    }
+                });
+            });
+
+            wrapper.dataset.actionKey = "attack";
+            wrapper.dataset.moduleId = m.id;
+            wrapper.dataset.moduleType = "WEAPONRY";
+
+            btn.dataset.moduleId = String(m.id);
+
+            wrapper.append(left, btn);
+            list.append(wrapper);
+        });
+
+        container.append(list);
+    }
+
+
 
     _initStatsFromRuntime() {
 
@@ -250,28 +449,51 @@ class ActionSceneManager {
         const attackerContainer = document.getElementById("combat-attacker-stats");
         const targetContainer = document.getElementById("combat-target-stats");
 
-        // ===== Attacker (toujours visible) =====
+        // ===== Attacker =====
         const me = window.currentPlayer;
 
         if (me && attackerContainer) {
-            attackerContainer.querySelector(".hp").textContent = me.current_hp ?? "--";
-            attackerContainer.querySelector(".ap").textContent = me.current_ap ?? "--";
-            attackerContainer.querySelector(".shield-missile").textContent = me.current_missile_defense ?? "--";
-            attackerContainer.querySelector(".shield-thermal").textContent = me.current_thermal_defense ?? "--";
-            attackerContainer.querySelector(".shield-ballistic").textContent = me.current_ballistic_defense ?? "--";
+
+            attackerContainer.querySelector(".hp").textContent =
+                me.ship?.current_hp ?? "--";
+
+            attackerContainer.querySelector(".ap").textContent =
+                me.user?.current_ap ?? "--";
+
+            attackerContainer.querySelector(".shield-missile").textContent =
+                me.ship?.current_missile_defense ?? "--";
+
+            attackerContainer.querySelector(".shield-thermal").textContent =
+                me.ship?.current_thermal_defense ?? "--";
+
+            attackerContainer.querySelector(".shield-ballistic").textContent =
+                me.ship?.current_ballistic_defense ?? "--";
         }
 
-        // ===== Target (uniquement si scannée) =====
+        // ===== Target =====
         const scanned = window.scannedModalData?.[context.targetKey];
 
-        if (scanned && targetContainer) {
-            targetContainer.querySelector(".hp").textContent = scanned.current_hp ?? "--";
-            targetContainer.querySelector(".ap").textContent = scanned.current_ap ?? "--";
-            targetContainer.querySelector(".shield-missile").textContent = scanned.current_missile_defense ?? "--";
-            targetContainer.querySelector(".shield-thermal").textContent = scanned.current_thermal_defense ?? "--";
-            targetContainer.querySelector(".shield-ballistic").textContent = scanned.current_ballistic_defense ?? "--";
-        }
+        if (!scanned || !targetContainer) return;
+
+        // HP
+        targetContainer.querySelector(".hp").textContent =
+            scanned.ship?.current_hp ?? "--";
+
+        // AP (only if PC)
+        targetContainer.querySelector(".ap").textContent =
+            scanned.user?.current_ap ?? "--";
+
+        // Shields
+        targetContainer.querySelector(".shield-missile").textContent =
+            scanned.ship?.current_missile_defense ?? "--";
+
+        targetContainer.querySelector(".shield-thermal").textContent =
+            scanned.ship?.current_thermal_defense ?? "--";
+
+        targetContainer.querySelector(".shield-ballistic").textContent =
+            scanned.ship?.current_ballistic_defense ?? "--";
     }
+
 
     _handleEntityUpdate(msg) {
         if (!this.isActive("combat")) return;
@@ -370,6 +592,73 @@ class ActionSceneManager {
         }
     }
 
+    _initCombatCanvases(attacker, target) {
+
+        const shipsCanvas = document.getElementById("combat-ships");
+        const overlayCanvas = document.getElementById("combat-overlay");
+        if (!shipsCanvas || !overlayCanvas) return;
+
+        const wrapper = shipsCanvas.parentElement;
+        const rect = wrapper.getBoundingClientRect();
+
+        if (!rect.width || !rect.height) return;
+
+        shipsCanvas.width = rect.width;
+        shipsCanvas.height = rect.height;
+
+        overlayCanvas.width = rect.width;
+        overlayCanvas.height = rect.height;
+
+        const ctx = shipsCanvas.getContext("2d");
+        if (!ctx) return;
+
+        ctx.clearRect(0, 0, shipsCanvas.width, shipsCanvas.height);
+
+        const tile = 32;
+
+        const attackerW = attacker.sizeX * tile;
+        const attackerH = attacker.sizeY * tile;
+
+        const targetW = target.sizeX * tile;
+        const targetH = target.sizeY * tile;
+
+        const centerY = shipsCanvas.height / 2;
+
+        const attackerX = 40;
+        const attackerY = centerY - attackerH / 2;
+
+        const targetX = shipsCanvas.width - targetW - 40;
+        const targetY = centerY - targetH / 2;
+
+        const attackerImg = new Image();
+        attackerImg.src = `/static/img/${attacker.spritePath}`;
+
+        const targetImg = new Image();
+        targetImg.src = `/static/img/${target.spritePath}`;
+
+        attackerImg.onload = () => {
+            ctx.drawImage(attackerImg, attackerX, attackerY, attackerW, attackerH);
+        };
+
+        targetImg.onload = () => {
+
+            ctx.save();
+
+            // Flip horizontal
+            ctx.scale(-1, 1);
+
+            ctx.drawImage(
+                targetImg,
+                -targetX - targetW,  // important
+                targetY,
+                targetW,
+                targetH
+            );
+
+            ctx.restore();
+        };
+    }
+
     _recomputeDistance(movedKey = null) {
         if (!this.isActive("combat")) return;
 
@@ -408,10 +697,17 @@ class ActionSceneManager {
                 sizeY: target.sizeY
             }
         }).then(dist => {
-            const distanceNode = document.querySelector("#combat-scene .text-sky-300");
+
+            const distanceNode =
+                document.querySelector("#modal-combat .text-sky-300");
+
             if (distanceNode) {
                 distanceNode.textContent = `Distance: ${dist}`;
             }
+
+            // recalcul range après mouvement
+            window.refreshModalActionRanges?.("modal-combat");
+
         });
     }
 }

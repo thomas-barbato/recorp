@@ -115,9 +115,12 @@
         root.setAttribute("tabindex", -1);
         root.classList.add(
             "hidden",
-            "fixed","inset-0",
+            "fixed",
+            "inset-0",
             "z-50",
-            "flex","items-center","justify-center",
+            "flex",
+            "items-center",
+            "justify-center",
             "bg-black/40",
             "backdrop-blur-md",
             "backdrop-brightness-50",
