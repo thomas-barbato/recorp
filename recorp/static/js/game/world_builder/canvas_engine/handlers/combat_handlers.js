@@ -94,3 +94,90 @@ function renderAttackEvaded(payload) {
 
     window.addCombatLog?.(msg);
 }
+
+// ===============================
+// HUD (AP / HP / SHIELD) updates
+// ===============================
+
+export function handleCombatStateUpdate(msg) {
+    console.log(msg)
+    if (!msg || !msg.entity_key || !msg.change_type || !msg.changes) return;
+
+    console.log("dedans")
+
+    const { entity_key, change_type, changes } = msg;
+
+    // HUD = uniquement le joueur local
+    // entity_key attendu: "pc_68"
+    const parts = String(entity_key).split("_");
+    if (parts.length !== 2) return;
+
+    const [kind, id] = parts;
+    if (kind !== "pc") return;
+
+    // window.current_player_id doit exister chez toi
+    if (String(id) !== String(window.current_player_id)) return;
+
+    if (change_type === "ap_update") {
+        const current = changes?.ap?.current;
+        if (current == null) return;
+
+        // Desktop HUD
+        const apDesktop = document.getElementById("actionPoint-container-value-min");
+        if (apDesktop) apDesktop.textContent = current;
+
+        // Mobile HUD
+        const apMobile = document.getElementById("ap-container-value-min");
+        if (apMobile) apMobile.textContent = current;
+
+        return;
+    }
+
+    if (change_type === "hp_update") {
+        const hpCurrent = changes?.hp?.current;
+        if (hpCurrent != null) {
+            const hpEl = document.getElementById("hp-container-value-min");
+            if (hpEl) hpEl.textContent = hpCurrent;
+        }
+
+        const hpMax = parseInt(
+            document.getElementById("hp-container-value-max")?.textContent,
+            10
+        );
+
+        if (hpCurrent != null && hpMax) {
+            const percent = (hpCurrent / hpMax) * 100;
+            const hpBar = document.getElementById("hp-percent");
+            if (hpBar) hpBar.style.width = `${percent}%`;
+        }
+
+        // Shield partiel (par type) : { current, damage_type }
+        const shieldCurrent = changes?.shield?.current;
+        const dmgType = changes?.shield?.damage_type;
+
+        if (shieldCurrent != null && dmgType) {
+            const map = {
+                MISSILE: "missile-container-value-min",
+                THERMAL: "thermal-container-value-min",
+                BALLISTIC: "ballistic-container-value-min",
+            };
+
+            const elId = map[dmgType];
+            if (elId) {
+                const el = document.getElementById(elId);
+                if (el) el.textContent = shieldCurrent;
+            }
+
+            const maxEl = document.getElementById(`${dmgType.toLowerCase()}-container-value-max`);
+            const percentEl = document.getElementById(`${dmgType.toLowerCase()}-percent`);
+
+            if (maxEl && percentEl) {
+                const max = parseInt(maxEl.textContent, 10);
+                if (max > 0) {
+                    const percent = (shieldCurrent / max) * 100;
+                    percentEl.style.width = `${percent}%`;
+                }
+            }
+        }
+    }
+}

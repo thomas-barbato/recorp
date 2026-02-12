@@ -7,7 +7,7 @@ import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handl
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
 import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
 import { getEventsLog } from "../handlers/events_handlers.js";
-import { handleCombatEvents } from "../handlers/combat_handlers.js";
+import { handleCombatEvents, handleCombatStateUpdate } from "../handlers/combat_handlers.js";
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -23,6 +23,16 @@ import {
     handleScanStateSync,
     entity_state_update
 } from "../handlers/modal_action_handlers.js";
+
+
+
+function entity_state_update_router(msg) {
+    // HUD
+    handleCombatStateUpdate(msg);
+
+    // Modal live
+    entity_state_update(msg);
+}
 
 // ===============================
 // ACTIONS MOTEUR CANVAS
@@ -72,7 +82,7 @@ ActionRegistry.register("scan_state_sync", handleScanStateSync);
 // ===============================
 // MODAL UPDATE
 // ===============================
-ActionRegistry.register("entity_state_update", entity_state_update);
+ActionRegistry.register("entity_state_update", entity_state_update_router);
 
 // ===============================
 // TIMERS

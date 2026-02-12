@@ -1,6 +1,6 @@
 /**
  * Met à jour le HUD des points de mouvement pour le joueur courant.
- * - PC : #movement-container-value-min / #movement-container-value-max / #movement-percent
+ * - PC : #movement-container-value-min / #movement-container-value-max / #mp-percent
  * - Mobile : #movement-container-value-current / #movement-container-value-max
  */
 
@@ -22,7 +22,7 @@ export function updateHudMovement(playerId, remainingMovement, maxMove, new_coor
     try {
         const spanMin = document.getElementById("movement-container-value-min");
         const spanMax = document.getElementById("movement-container-value-max");
-        const bar = document.getElementById("movement-percent");
+        const bar = document.getElementById("mp-percent");
 
         if (spanMin) {
             spanMin.textContent = remaining.toString();

@@ -205,7 +205,7 @@
                     <span class="uppercase tracking-wider font-bold text-xs font-orbritron">{% translate 'Hull points'%}</span>
                 </label> 
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_hp current_player_state.ship.max_hp 100 %}%"></div>
+                    <div id="hp-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_hp current_player_state.ship.max_hp 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="hp-container-value">
                         <span id="hp-container-value-min">{{current_player_state.ship.current_hp}}</span>/<span id="hp-container-value-max">{{current_player_state.ship.max_hp}}</span>
                     </span>
@@ -215,7 +215,7 @@
                     <span class="uppercase tracking-wider font-bold text-xs">{% translate 'Movement points' %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_movement current_player_state.ship.max_movement 100 %}%" id="movement-percent"></div>
+                    <div id="mp-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_movement current_player_state.ship.max_movement 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="movement-container-value">
                         <span id="movement-container-value-min">{{current_player_state.ship.current_movement}}</span>/<span id="movement-container-value-max">{{current_player_state.ship.max_movement}}</span>
                     </span>
@@ -225,7 +225,7 @@
                     <span class="uppercase tracking-wider font-bold text-xs">{% translate 'Action points' %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute" id="ap-percent" style="width:{% widthratio current_player_state.user.current_ap current_player_state.user.max_ap 100 %}%"></div>
+                    <div id="ap-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.user.current_ap current_player_state.user.max_ap 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="actionPoint-container-value">
                         <span id="actionPoint-container-value-min">{{current_player_state.user.current_ap}}</span>/<span id="actionPoint-container-value-max">{{current_player_state.user.max_ap}}</span>
                     </span>
@@ -237,7 +237,7 @@
                     <span class="uppercase tracking-wider text-xs font-bold">{% translate "Ballistic defense" %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_ballistic_defense current_player_state.ship.max_ballistic_defense 100 %}%"></div>
+                    <div id="ballistic-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_ballistic_defense current_player_state.ship.max_ballistic_defense 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="ballistic-container-value">
                         <span id="ballistic-container-value-min">{{current_player_state.ship.current_ballistic_defense}}</span>/<span id="ballistic-container-value-max">{{current_player_state.ship.max_ballistic_defense}}</span>
                     </span>
@@ -247,7 +247,7 @@
                     <span class="uppercase tracking-wider text-xs font-bold">{% translate "Thermal defense" %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_thermal_defense current_player_state.ship.max_thermal_defense 100 %}%"></div>
+                    <div id="termal-percent" id="thermal-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_thermal_defense current_player_state.ship.max_thermal_defense 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="thermal-container-value">
                         <span id="thermal-container-value-min">{{current_player_state.ship.current_thermal_defense}}</span>/<span id="thermal-container-value-max">{{current_player_state.ship.max_thermal_defense}}</span>
                     </span>
@@ -257,7 +257,7 @@
                     <span class="uppercase tracking-wider text-xs font-bold">{% translate "Missile defense" %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_missile_defense current_player_state.ship.max_missile_defense 100 %}%"></div>
+                    <div id="missile-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_missile_defense current_player_state.ship.max_missile_defense 100 %}%"></div>
                     <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="missile-container-value">
                         <span id="missile-container-value-min">{{current_player_state.ship.current_missile_defense}}</span>/<span id="missile-container-value-max">{{current_player_state.ship.max_missile_defense}}</span>
                     </span>
