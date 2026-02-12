@@ -194,7 +194,10 @@ export function initGlobals() {
         }
 
         window.refreshModalIfOpen = function (targetKey) {
+
             if (!targetKey) return;
+            // Pendant une ActionScene, on bloque les refresh auto (sinon conflits/overlay)
+            if (window.ActionSceneManager?.isActive?.()) return;
 
             // modal normal
             const modal = document.getElementById(`modal-${targetKey}`);
@@ -285,31 +288,4 @@ export function startCountdownTimer(container, options = {}) {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 }
-
-window.refreshModalIfOpen = function (targetKey) {
-    if (!targetKey) return;
-
-    // modal normal
-    const modal = document.getElementById(`modal-${targetKey}`);
-    if (!modal) return;
-
-    // Empêche toute boucle
-    if (modal.dataset._refreshing === "1") return;
-    modal.dataset._refreshing = "1";
-
-    // Ferme puis rouvre au prochain tick
-    setTimeout(() => {
-        try {
-            window.open_close_modal?.(targetKey);
-            window.open_close_modal?.(targetKey);
-        } finally {
-            // Nettoyage sécurité
-            setTimeout(() => {
-                const m = document.getElementById(`modal-${targetKey}`);
-                if (m) delete m.dataset._refreshing;
-            }, 0);
-        }
-    }, 0);
-};
-
 

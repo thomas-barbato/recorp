@@ -139,6 +139,19 @@ export function handlerRemovePlayer(data){
     // 3️⃣ Redraw
     engine.renderer.requestRedraw();
 
+    // Fermer CombatScene si cible ou joueur concerné
+    if (window.ActionSceneManager?.isActive?.("combat")) {
+        const context = window.ActionSceneManager.getContext?.();
+        const removedKey = `pc_${data.player_id}`;
+
+        if (context &&
+            (context.attackerKey === removedKey ||
+            context.targetKey === removedKey)) {
+
+            window.ActionSceneManager.close({ reason: "actor_removed" });
+        }
+    }
+
 }
 
 export function handlerShipRemoved(data){
@@ -148,6 +161,19 @@ export function handlerShipRemoved(data){
 
     map.removeActorByPlayerId(data.player_id);
     engine.renderer.requestRedraw();
+
+    // Fermer CombatScene si cible ou joueur concerné
+    if (window.ActionSceneManager?.isActive?.("combat")) {
+        const context = window.ActionSceneManager.getContext?.();
+        const removedKey = `pc_${data.ship_id}`;
+
+        if (context &&
+            (context.attackerKey === removedKey ||
+            context.targetKey === removedKey)) {
+
+            window.ActionSceneManager.close({ reason: "actor_removed" });
+        }
+    }
 }
 
 export function handlerUserJoin(data){
@@ -173,7 +199,12 @@ export function handlerShipAdded(data){
 }
 
 export function handlerWarpComplete(){
+    // Fermer CombatScene si cible ou joueur concerné
+    if (window.ActionSceneManager?.isActive?.("combat")) {
+        window.ActionSceneManager.close({ reason: "warp_complete" });
+    }
     window.location.reload()
+
 }
 
 // Rendre disponible globalement pour modals.js

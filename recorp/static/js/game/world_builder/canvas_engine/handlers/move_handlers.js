@@ -208,6 +208,12 @@ export function handlePlayerMove(msg) {
                             }
 
                             window.ModalLive?.notify?.(`pc_${playerId}`, "range_maybe_changed", {});
+                            // CombatScene distance update
+                            if (window.ActionSceneManager?.isActive?.("combat")) {
+                                window.ActionSceneManager._recomputeDistance?.(`pc_${playerId}`);
+                            }
+
+                            // on redessine.
                             engine.renderer.requestRedraw();
                             window.canvasEngine.renderer.requestRedraw();
 

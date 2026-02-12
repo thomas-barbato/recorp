@@ -100,10 +100,8 @@ function renderAttackEvaded(payload) {
 // ===============================
 
 export function handleCombatStateUpdate(msg) {
-    console.log(msg)
+    
     if (!msg || !msg.entity_key || !msg.change_type || !msg.changes) return;
-
-    console.log("dedans")
 
     const { entity_key, change_type, changes } = msg;
 

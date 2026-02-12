@@ -15,6 +15,7 @@ import WebSocketManager from "./engine/websocket_manager.js";
 import "./network/ws_actions.js";
 import "./modals/modal_live_registry.js";
 import "./modals/modal_live_router.js"
+import "./modals/action_scene_manager.js";
 import {
     isDesktop,
     updatePlayerCoords,

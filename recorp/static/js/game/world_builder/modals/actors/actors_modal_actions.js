@@ -276,12 +276,42 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             if (!hasWeaponry) return showMissingModuleError();
 
+            // 🔴 Fermer le modal actuel
+            if (typeof open_close_modal === "function") {
+                open_close_modal(modalId);
+            }
+
+            // 🔵 Construire les clés attacker / target
+            const attackerKey = `pc_${window.current_player_id}`;
+            const parsed = define_modal_type(modalId);
+
+            let targetKey = null;
+
+            if (parsed?.type) {
+                targetKey = `${parsed.type}_${parsed.id}`;
+            } else if (parsed?.originalType) {
+                targetKey = `${parsed.originalType}_${parsed.id}`;
+            }
+
+            if (!targetKey) return;
+
+            // 🟢 Ouvrir ActionScene (vide pour l’instant)
+            window.ActionSceneManager.open("combat", {
+                attackerKey,
+                targetKey,
+                originalModalId: modalId
+            });
+
+            console.log("Combat ActionScene opened:", attackerKey, targetKey);
+
+            /*
             // ouvrir weaponry dans contextZone
             contextZone.innerHTML = "";
             contextZone.classList.contains('hidden') == true ? contextZone.classList.remove("hidden") : contextZone.classList.add("hidden");
 
             const list = document.createElement("div");
             list.classList.add("flex", "flex-col", "gap-2");
+            
 
             // modules weaponry
             modules.forEach(m => {
@@ -346,6 +376,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             });
 
             contextZone.append(list);
+            */
         },
         { ap_cost:1 }
     );

@@ -32,6 +32,10 @@ function entity_state_update_router(msg) {
 
     // Modal live
     entity_state_update(msg);
+
+    if (window.ActionSceneManager?.isActive?.("combat")) {
+        window.ActionSceneManager._handleEntityUpdate?.(msg);
+    }
 }
 
 // ===============================
