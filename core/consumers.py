@@ -12,7 +12,7 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module
 from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
 from core.backend.player_logs import create_event_log
 
@@ -1751,14 +1751,29 @@ class GameConsumer(WebsocketConsumer):
 
         # NPC
         elif target_ad.kind == "NPC":
-            npc = target_ad.actor
-            for weapon in npc.npc_template.weapons.all():
+            npc = Npc.objects.get(id=target_ad.id)
+
+            if not npc.npc_template:
+                return []
+            
+            module_ids = npc.npc_template.module_id_list or []
+
+            if not module_ids:
+                return []
+
+            psm_qs = Module.objects.filter(
+                type="WEAPONRY",
+                id__in=module_ids
+            )
+
+            for psm in psm_qs:
+                effect = psm.effect or {}
                 weapons.append(
                     WeaponProfile(
-                        damage_type=weapon.damage_type.upper(),
-                        min_damage=weapon.min_damage,
-                        max_damage=weapon.max_damage,
-                        range_tiles=weapon.range_tiles,
+                        damage_type=effect.get("damage_type", "MISSILE").upper(),
+                        min_damage=int(effect.get("min_damage", 1)),
+                        max_damage=int(effect.get("max_damage", 1)),
+                        range_tiles=int(effect.get("range", 1)),
                     )
                 )
 

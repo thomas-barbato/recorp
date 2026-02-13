@@ -441,7 +441,7 @@ class ActionSceneManager {
                         player: window.currentPlayer.user.player,
                         subtype: `attack-${m.id}`,
                         module_id: m.id,
-                        target_key: receiverActor.id
+                        target_key: context.targetKey
                     }
                 });
             });
@@ -934,8 +934,18 @@ window.playCombatAnimation = function (payload) {
     if (!sourceKey || !targetKey) return;
 
     // mapping left/right basé sur attacker/target context (modal simpliste)
-    const fromSide = (sourceKey === ctx.attackerKey) ? "left" : "right";
-    const toSide = (fromSide === "left") ? "right" : "left";
+    const isCounter = payload?.is_counter === true;
+
+    let fromSide;
+    let toSide;
+
+    if (isCounter) {
+        fromSide = "right";
+        toSide = "left";
+    } else {
+        fromSide = "left";
+        toSide = "right";
+    }
 
     const weaponType = payload?.damage_type || payload?.weaponType || "thermal";
     const result = (payload?.type === "MISS" || payload?.type === "EVADE") ? "miss" : "hit";
