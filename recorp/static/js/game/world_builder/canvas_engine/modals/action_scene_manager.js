@@ -2,8 +2,11 @@
 
 class ActionSceneManager {
     constructor() {
-        this._active = null;     // { type, context, openedAt }
-        this._rootEl = null;     // container DOM si besoin plus tard
+        this._active = null; // { type, context, openedAt }
+        this._rootEl = null; // container DOM
+        // combat animation runtime
+        this._combatAnim = null; // { engine, queue }
+        this._combatCanvasPositions = null; // { left, right }
     }
 
     isActive(type = null) {
@@ -65,6 +68,14 @@ class ActionSceneManager {
         this._unbindMovementListener();
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
+
+        // cleanup combat anim si présent
+        if (this._combatAnim) {
+            this._combatAnim.queue?.dispose?.();
+            this._combatAnim = null;
+        }
+        this._combatCanvasPositions = null;
+
         return true;
     }
 
@@ -279,6 +290,17 @@ class ActionSceneManager {
         this._initStatsFromRuntime();
         this._buildCombatModules();
         this._initCombatCanvases(attacker, target);
+
+        // init animation engine + queue
+        if (overlayCanvas && this._combatCanvasPositions) {
+            const engine = new CombatAnimationEngine({
+                overlayCanvas,
+                positions: this._combatCanvasPositions,
+                durationMs: 350
+            });
+            const queue = new CombatAnimationQueue(engine);
+            this._combatAnim = { engine, queue };
+        }
     }
 
     _buildCombatModules() {
@@ -630,6 +652,12 @@ class ActionSceneManager {
         const targetX = shipsCanvas.width - targetW - 40;
         const targetY = centerY - targetH / 2;
 
+        // positions centres pour projectiles
+        this._combatCanvasPositions = {
+            left:  { x: attackerX + attackerW / 2, y: attackerY + attackerH / 2 },
+            right: { x: targetX + targetW / 2,   y: targetY + targetH / 2 }
+        };
+
         const attackerImg = new Image();
         attackerImg.src = `/static/img/${attacker.spritePath}`;
 
@@ -712,8 +740,211 @@ class ActionSceneManager {
     }
 }
 
+
+// ===============================
+// Combat animations (overlay)
+// ===============================
+
+class CombatAnimationEngine {
+    constructor({ overlayCanvas, positions, durationMs = 350 }) {
+        this.canvas = overlayCanvas;
+        this.ctx = overlayCanvas?.getContext?.("2d") || null;
+        this.positions = positions || null;
+        this.durationMs = durationMs;
+
+        this._rafId = null;
+        this._running = false;
+        this._imgCache = new Map();
+    }
+
+    clear() {
+        if (!this.ctx || !this.canvas) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    dispose() {
+        if (this._rafId) cancelAnimationFrame(this._rafId);
+        this._rafId = null;
+        this._running = false;
+        this.clear();
+        this._imgCache.clear();
+    }
+
+    async _loadImage(src) {
+        if (!src) return null;
+        if (this._imgCache.has(src)) return this._imgCache.get(src);
+
+        const img = new Image();
+        const p = new Promise((resolve) => {
+            img.onload = () => resolve(img);
+            img.onerror = () => resolve(null);
+        });
+        img.src = src;
+
+        const loaded = await p;
+        this._imgCache.set(src, loaded);
+        return loaded;
+    }
+
+    _drawRotatedImage(img, x, y, angleRad, desiredPx = 24) {
+        if (!this.ctx || !img) return;
+
+        const w0 = img.naturalWidth || img.width || desiredPx;
+        const h0 = img.naturalHeight || img.height || desiredPx;
+
+        // scale "soft" → évite projectiles énormes si le png est grand
+        const scale = desiredPx / Math.max(w0, h0);
+        const w = w0 * scale;
+        const h = h0 * scale;
+
+        this.ctx.save();
+        this.ctx.translate(x, y);
+        this.ctx.rotate(angleRad);
+        this.ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        this.ctx.restore();
+    }
+
+    /**
+     * data:
+     * { weaponType, fromSide, toSide, result }
+     */
+    async playProjectile(data) {
+        if (!this.ctx || !this.canvas || !this.positions) return;
+
+        const { weaponType, fromSide, toSide } = data || {};
+        const from = this.positions?.[fromSide];
+        const to = this.positions?.[toSide];
+
+        if (!from || !to) return;
+
+        const weapon = String(weaponType || "").toLowerCase() || "thermal";
+        const imgSrc = `/static/img/ux/projectiles/${weapon}/red.png`;
+        const img = await this._loadImage(imgSrc);
+
+        // Même si l'image manque → on ne bloque pas la queue
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const angle = Math.atan2(dy, dx);
+
+        // sécurité: si une anim est déjà en cours (normalement queue empêche),
+        // on la stoppe proprement
+        if (this._rafId) cancelAnimationFrame(this._rafId);
+        this._rafId = null;
+
+        this._running = true;
+
+        const start = performance.now();
+        const duration = this.durationMs;
+
+        return new Promise((resolve) => {
+            const step = (now) => {
+                if (!this._running) {
+                    this.clear();
+                    return resolve();
+                }
+
+                const t = Math.min((now - start) / duration, 1);
+
+                const x = from.x + dx * t;
+                const y = from.y + dy * t;
+
+                // ✅ nettoyage frame-by-frame
+                this.clear();
+
+                if (img) {
+                    this._drawRotatedImage(img, x, y, angle, 24);
+                }
+
+                if (t < 1) {
+                    this._rafId = requestAnimationFrame(step);
+                } else {
+                    // ✅ nettoyage final
+                    this.clear();
+                    this._rafId = null;
+                    this._running = false;
+                    resolve();
+                }
+            };
+
+            this._rafId = requestAnimationFrame(step);
+        });
+    }
+}
+
+class CombatAnimationQueue {
+    constructor(engine) {
+        this.engine = engine;
+        this.queue = [];
+        this.running = false;
+        this._disposed = false;
+    }
+
+    dispose() {
+        this._disposed = true;
+        this.queue.length = 0;
+        this.running = false;
+        this.engine?.dispose?.();
+    }
+
+    async enqueue(animData) {
+        if (this._disposed) return;
+        this.queue.push(animData);
+        if (this.running) return;
+
+        this.running = true;
+        while (!this._disposed && this.queue.length > 0) {
+            const next = this.queue.shift();
+            try {
+                await this.engine.playProjectile(next);
+            } catch (e) {
+                // on ne bloque jamais la queue
+                this.engine?.clear?.();
+            }
+        }
+        this.running = false;
+    }
+}
+
+
 // Singleton
 export const actionSceneManager = new ActionSceneManager();
 
 // Compat globale (important car une partie de ton code est encore "non-module")
 window.ActionSceneManager = actionSceneManager;
+
+// ===============================
+// Global hook called by combat_handlers.js
+// ===============================
+window.playCombatAnimation = function (payload) {
+    const mgr = window.ActionSceneManager;
+    if (!mgr || !mgr.isActive?.("combat")) return;
+
+    const ctx = mgr.getContext?.();
+    if (!ctx) return;
+
+    const q = mgr._combatAnim?.queue;
+    const pos = mgr._combatCanvasPositions;
+    if (!q || !pos) return;
+
+    // payload vient de combat_handlers.js :contentReference[oaicite:5]{index=5}
+    // payload.type: "HIT" | "MISS" | "EVADE"
+    const sourceKey = payload?.source;
+    const targetKey = payload?.target;
+
+    if (!sourceKey || !targetKey) return;
+
+    // mapping left/right basé sur attacker/target context (modal simpliste)
+    const fromSide = (sourceKey === ctx.attackerKey) ? "left" : "right";
+    const toSide = (fromSide === "left") ? "right" : "left";
+
+    const weaponType = payload?.damage_type || payload?.weaponType || "thermal";
+    const result = (payload?.type === "MISS" || payload?.type === "EVADE") ? "miss" : "hit";
+
+    q.enqueue({
+        kind: "projectile",
+        weaponType,
+        fromSide,
+        toSide,
+        result
+    });
+};

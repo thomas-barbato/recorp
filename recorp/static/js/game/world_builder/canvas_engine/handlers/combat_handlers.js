@@ -37,8 +37,8 @@ export function handleCombatEvents(message) {
 function renderAttackHit(payload) {
 
     const {
-        source,
-        target,
+        source_id,
+        target_id,
         damage_type,
         damage_to_shield,
         damage_to_hull,
@@ -51,13 +51,25 @@ function renderAttackHit(payload) {
         + `${damage_to_shield} shield / `
         + `${damage_to_hull} hull`;
 
-    console.log(msg);
+    console.log(source_id, target_id);
 
-    // Préparation animations futures
+    const ctx = window.ActionSceneManager?.getContext?.();
+    if (!ctx) return;
+
+    let sourceKey, targetKey;
+
+    if (payload.is_counter) {
+        sourceKey = ctx.targetKey;
+        targetKey = ctx.attackerKey;
+    } else {
+        sourceKey = ctx.attackerKey;
+        targetKey = ctx.targetKey;
+    }
+
     window.playCombatAnimation?.({
         type: "HIT",
-        source,
-        target,
+        source: sourceKey,
+        target: targetKey,
         damage_type,
         is_counter
     });
@@ -72,13 +84,28 @@ function renderAttackMiss(payload) {
 
     console.log(msg);
 
+    const ctx = window.ActionSceneManager?.getContext?.();
+    if (!ctx) return;
+
+    const sourceKey =
+        ctx.attackerKey.endsWith(`_${payload.source_id}`)
+            ? ctx.attackerKey
+            : ctx.targetKey;
+
+    const targetKey =
+        sourceKey === ctx.attackerKey
+            ? ctx.targetKey
+            : ctx.attackerKey;
+
     window.playCombatAnimation?.({
         type: "MISS",
-        ...payload
+        source: sourceKey,
+        target: targetKey,
+        damage_type: payload.damage_type,
+        is_counter: payload.is_counter
     });
-
-    window.addCombatLog?.(msg);
-}
+        window.addCombatLog?.(msg);
+    }
 
 function renderAttackEvaded(payload) {
 
