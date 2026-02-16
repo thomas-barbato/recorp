@@ -1560,8 +1560,16 @@ class GameConsumer(WebsocketConsumer):
             source_ship = PlayerShip.objects.select_related("player").get(
                 player_id=source_player_id
             )
+
             source_ad = ActorAdapter(source_ship, "PC")
 
+            # si joueur n'a pas de pv, alors il ne peut pas attaquer
+            if source_ad.get_hp() <= 0:
+                return
+            # si joueur n'a pas d'AP, alors il ne peut pas attaquer
+            if source_ad.get_ap() <= 0:
+                return
+            
             # -----------------------
             # Résolution cible
             # -----------------------
@@ -1577,6 +1585,11 @@ class GameConsumer(WebsocketConsumer):
                     id=int(target_id)
                 )
                 target_ad = ActorAdapter(target_npc, "NPC")
+
+            # si cible n'a pas de pv, alors elle ne peut
+            # être attaquée
+            if target_ad.get_hp() <= 0:
+                return
 
             # -----------------------
             # Module weaponry

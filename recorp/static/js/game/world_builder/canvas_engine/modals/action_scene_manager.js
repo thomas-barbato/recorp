@@ -129,8 +129,9 @@ class ActionSceneManager {
         container.dataset.modalId = "modal-combat";
         container.classList.add(
             "flex","shadow","rounded-t-xl",
-            "max-h-[70vh]",
-            "w-[98%]",
+            "h-full",
+            "md:h-[70vh]",
+            "w-full",
             "md:w-[600px]",
             "lg:w-[680px]",
             "xl:w-[520px]",
@@ -176,9 +177,9 @@ class ActionSceneManager {
         });
 
         const visualWrapper = document.createElement("div");
-        visualWrapper.classList.add("relative", "w-full", "h-32", "overflow-hidden", "bg-[#020617]");
+        visualWrapper.classList.add("relative", "w-full", "h-40", "overflow-hidden", "bg-[#020617]");
 
-        // 🌌 Background spatial (CSS only)
+        // Background spatial (CSS only)
         const stars1 = document.createElement("div");
         stars1.classList.add("stars-layer", "l1");
 
@@ -190,17 +191,29 @@ class ActionSceneManager {
 
         visualWrapper.append(stars1, stars2, stars3);
 
-        // 🚀 Ships canvas
-        const shipsCanvas = document.createElement("canvas");
-        shipsCanvas.id = "combat-ships";
-        shipsCanvas.classList.add("absolute", "inset-0");
+        // Ships container
+        const shipsLayer = document.createElement("div");
+        shipsLayer.classList.add("absolute", "inset-0", "flex", "items-center", "justify-between", "px-10");
+        shipsLayer.id = "combat-ships-layer";
 
-        // 💬 Overlay canvas
+        // Attacker
+        const attackerImg = document.createElement("img");
+        attackerImg.id = "combat-ship-left";
+        attackerImg.classList.add("transition-transform", "duration-300");
+        shipsLayer.append(attackerImg);
+
+        // Target (flip horizontal)
+        const targetImg = document.createElement("img");
+        targetImg.id = "combat-ship-right";
+        targetImg.classList.add("transition-transform", "duration-300", "scale-x-[-1]");
+        shipsLayer.append(targetImg);
+
+        // Overlay canvas
         const overlayCanvas = document.createElement("canvas");
         overlayCanvas.id = "combat-overlay";
         overlayCanvas.classList.add("absolute", "inset-0", "pointer-events-none");
 
-        visualWrapper.append(shipsCanvas, overlayCanvas);
+        visualWrapper.append(shipsLayer, overlayCanvas);
 
         // Stats
         const stats = document.createElement("div");
@@ -253,7 +266,9 @@ class ActionSceneManager {
             "flex-wrap",
             "gap-3",
             "justify-center",
-            "mt-4"
+            "mt-4",
+            "overflow-y-scroll",
+            "h-[24vh]"
         );
 
         // Footer
@@ -444,6 +459,7 @@ class ActionSceneManager {
                         target_key: context.targetKey
                     }
                 });
+                this._applyCooldown(btn, 1000);
             });
 
             wrapper.dataset.actionKey = "attack";
@@ -458,8 +474,6 @@ class ActionSceneManager {
 
         container.append(list);
     }
-
-
 
     _initStatsFromRuntime() {
 
@@ -589,6 +603,27 @@ class ActionSceneManager {
         }
     }
 
+    _applyCooldown(btn, duration = 1000) {
+
+        btn.classList.add("opacity-40", "pointer-events-none");
+
+        const overlay = document.createElement("div");
+        overlay.classList.add(
+            "absolute",
+            "inset-0",
+            "bg-black/60",
+            "rounded-lg",
+        );
+
+        btn.style.position = "relative";
+        btn.appendChild(overlay);
+
+        setTimeout(() => {
+            overlay.remove();
+            btn.classList.remove("opacity-40", "pointer-events-none");
+        }, duration);
+    }
+
     _bindMovementListener() {
         this._movementHandler = (e) => {
             if (!this.isActive("combat")) return;
@@ -616,26 +651,40 @@ class ActionSceneManager {
 
     _initCombatCanvases(attacker, target) {
 
-        const shipsCanvas = document.getElementById("combat-ships");
+        const DEFAULT_PIVOT_X = 0.5;
+        const DEFAULT_PIVOT_Y = 0.3;
+
+        const shipsLayer = document.getElementById("combat-ships-layer");
         const overlayCanvas = document.getElementById("combat-overlay");
-        if (!shipsCanvas || !overlayCanvas) return;
+        if (!shipsLayer || !overlayCanvas) return;
 
-        const wrapper = shipsCanvas.parentElement;
+        const wrapper = shipsLayer.parentElement;
         const rect = wrapper.getBoundingClientRect();
-
         if (!rect.width || !rect.height) return;
-
-        shipsCanvas.width = rect.width;
-        shipsCanvas.height = rect.height;
 
         overlayCanvas.width = rect.width;
         overlayCanvas.height = rect.height;
 
-        const ctx = shipsCanvas.getContext("2d");
-        if (!ctx) return;
+        const dpr = window.devicePixelRatio || 1;
 
-        ctx.clearRect(0, 0, shipsCanvas.width, shipsCanvas.height);
+        overlayCanvas.width = rect.width * dpr;
+        overlayCanvas.height = rect.height * dpr;
 
+        overlayCanvas.style.width = rect.width + "px";
+        overlayCanvas.style.height = rect.height + "px";
+
+        const ctx = overlayCanvas.getContext("2d");
+        ctx.scale(dpr, dpr);
+
+        const leftEl = document.getElementById("combat-ship-left");
+        const rightEl = document.getElementById("combat-ship-right");
+        if (!leftEl || !rightEl) return;
+
+        // chemins images
+        leftEl.src = `/static/img/${attacker.spritePath}`;
+        rightEl.src = `/static/img/${target.spritePath}`;
+
+        // tailles sprites
         const tile = 32;
 
         const attackerW = attacker.sizeX * tile;
@@ -644,48 +693,40 @@ class ActionSceneManager {
         const targetW = target.sizeX * tile;
         const targetH = target.sizeY * tile;
 
-        const centerY = shipsCanvas.height / 2;
+        leftEl.style.width = `${attackerW}px`;
+        leftEl.style.height = `${attackerH}px`;
 
-        const attackerX = 40;
-        const attackerY = centerY - attackerH / 2;
+        rightEl.style.width = `${targetW}px`;
+        rightEl.style.height = `${targetH}px`;
 
-        const targetX = shipsCanvas.width - targetW - 40;
-        const targetY = centerY - targetH / 2;
+        leftEl.style.setProperty('--flip', '1');
+        rightEl.style.setProperty('--flip', '-1');
 
-        // positions centres pour projectiles
+        // calcul centres pour projectiles
+        const wrapperRect = wrapper.getBoundingClientRect();
+        const leftRect = leftEl.getBoundingClientRect();
+        const rightRect = rightEl.getBoundingClientRect();  
+
         this._combatCanvasPositions = {
-            left:  { x: attackerX + attackerW / 2, y: attackerY + attackerH / 2 },
-            right: { x: targetX + targetW / 2,   y: targetY + targetH / 2 }
+            left: {
+                x: leftRect.left - wrapperRect.left + leftRect.width * DEFAULT_PIVOT_X,
+                y: leftRect.top - wrapperRect.top + leftRect.height * DEFAULT_PIVOT_Y
+            },
+            right: {
+                x: rightRect.left - wrapperRect.left + rightRect.width * DEFAULT_PIVOT_X,
+                y: rightRect.top - wrapperRect.top + rightRect.height * DEFAULT_PIVOT_Y
+            }
         };
 
-        const attackerImg = new Image();
-        attackerImg.src = `/static/img/${attacker.spritePath}`;
-
-        const targetImg = new Image();
-        targetImg.src = `/static/img/${target.spritePath}`;
-
-        attackerImg.onload = () => {
-            ctx.drawImage(attackerImg, attackerX, attackerY, attackerW, attackerH);
+        // tailles pour shield impact
+        this._combatSpriteSizes = {
+            left:  { w: attackerW, h: attackerH },
+            right: { w: targetW,   h: targetH }
         };
 
-        targetImg.onload = () => {
-
-            ctx.save();
-
-            // Flip horizontal
-            ctx.scale(-1, 1);
-
-            ctx.drawImage(
-                targetImg,
-                -targetX - targetW,  // important
-                targetY,
-                targetW,
-                targetH
-            );
-
-            ctx.restore();
-        };
+        this._combatActors = { attacker, target };
     }
+
 
     _recomputeDistance(movedKey = null) {
         if (!this.isActive("combat")) return;
@@ -804,6 +845,86 @@ class CombatAnimationEngine {
         this.ctx.restore();
     }
 
+    playShieldImpact({ side, damageType }) {
+
+        if (!this.ctx || !this.canvas || !this.positions) return;
+
+        const pos = this.positions[side];
+        if (!pos) return;
+
+        const sizeMap = window.ActionSceneManager?._combatSpriteSizes;
+        if (!sizeMap) return;
+
+        const spriteSize = sizeMap[side];
+        if (!spriteSize) return;
+
+        const baseRadius = Math.max(spriteSize.w, spriteSize.h) * 0.6;
+
+        const COLORS = {
+            MISSILE:   "#22c55e",
+            THERMAL:   "#ef4444",
+            BALLISTIC: "#3b82f6"
+        };
+
+        const color = COLORS[damageType?.toUpperCase()] || "#ffffff";
+
+        const duration = 900;
+        const start = performance.now();
+
+        const animate = (now) => {
+
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Fade plus doux
+            const alpha = 1 - (progress * 0.8);
+
+            // Pulse léger (agrandissement progressif)
+            const radius = baseRadius * (1 + progress * 0.15);
+
+            this.clear();
+
+            this.ctx.save();
+            this.ctx.globalAlpha = alpha;
+
+            // Glow plus intense
+            this.ctx.shadowColor = color;
+            this.ctx.shadowBlur = 30;
+
+            this.ctx.strokeStyle = color;
+            this.ctx.lineWidth = 5;
+
+            this.ctx.beginPath();
+            this.ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+            this.ctx.stroke();
+
+            this.ctx.restore();
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                this.clear();
+            }
+        };
+
+        requestAnimationFrame(animate);
+    }
+
+    playDodge({ side }) {
+
+        const el = side === "left"
+            ? document.getElementById("combat-ship-left")
+            : document.getElementById("combat-ship-right");
+
+        if (!el) return;
+
+        el.classList.add("animate-dodge");
+
+        setTimeout(() => {
+            el.classList.remove("animate-dodge");
+        }, 350);
+    }
+
     /**
      * data:
      * { weaponType, fromSide, toSide, result }
@@ -811,7 +932,7 @@ class CombatAnimationEngine {
     async playProjectile(data) {
         if (!this.ctx || !this.canvas || !this.positions) return;
 
-        const { weaponType, fromSide, toSide } = data || {};
+        const { weaponType, fromSide, toSide, damageToShield } = data || {};
         const from = this.positions?.[fromSide];
         const to = this.positions?.[toSide];
 
@@ -848,7 +969,7 @@ class CombatAnimationEngine {
                 const x = from.x + dx * t;
                 const y = from.y + dy * t;
 
-                // ✅ nettoyage frame-by-frame
+                // nettoyage frame-by-frame
                 this.clear();
 
                 if (img) {
@@ -858,7 +979,15 @@ class CombatAnimationEngine {
                 if (t < 1) {
                     this._rafId = requestAnimationFrame(step);
                 } else {
-                    // ✅ nettoyage final
+
+                    // Impact moment précis
+                    if (damageToShield > 0) {
+                        this.playShieldImpact({
+                            side: toSide,
+                            damageType: weaponType
+                        });
+                    }
+
                     this.clear();
                     this._rafId = null;
                     this._running = false;
@@ -866,7 +995,7 @@ class CombatAnimationEngine {
                 }
             };
 
-            this._rafId = requestAnimationFrame(step);
+            requestAnimationFrame(step);
         });
     }
 }
@@ -948,13 +1077,28 @@ window.playCombatAnimation = function (payload) {
     }
 
     const weaponType = payload?.damage_type || payload?.weaponType || "thermal";
-    const result = (payload?.type === "MISS" || payload?.type === "EVADE") ? "miss" : "hit";
+    let result;
+    if (payload?.type === "MISS" || payload?.type === "EVADE") {
+        result = "miss";
+        mgr._combatAnim?.engine?.playDodge({ side: toSide });
+    }else{
+        result = "hit";
+    }
 
     q.enqueue({
         kind: "projectile",
         weaponType,
         fromSide,
         toSide,
-        result
+        result,
+        damageToShield: payload?.damage_to_shield || 0
     });
+    /*
+    // Shield impact si dégâts bouclier
+    if (payload?.damage_to_shield > 0) {
+        mgr._combatAnim?.engine?.playShieldImpact({
+            side: toSide,
+            damageType: weaponType
+        });
+    }*/
 };

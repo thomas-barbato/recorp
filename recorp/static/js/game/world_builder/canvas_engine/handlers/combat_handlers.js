@@ -71,6 +71,8 @@ function renderAttackHit(payload) {
         source: sourceKey,
         target: targetKey,
         damage_type,
+        damage_to_shield,
+        damage_to_hull,
         is_counter
     });
 
