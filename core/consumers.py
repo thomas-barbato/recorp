@@ -220,7 +220,6 @@ class GameConsumer(WebsocketConsumer):
         
         # COMBAT ACTION
         if msg_type == "action_attack":
-            print(data)
             self._handle_combat_action(data.get("payload"))
             return
 
@@ -1627,7 +1626,6 @@ class GameConsumer(WebsocketConsumer):
                 target_ad
             )
 
-            print("REAL BACKEND DISTANCE:", distance)
             visibility = payload.get("visibility", "UNKNOWN")
 
             action = CombatAction(
@@ -1767,15 +1765,11 @@ class GameConsumer(WebsocketConsumer):
 
             if not module_ids:
                 return []
-            
-            print("module_ids", module_ids)
 
             psm_qs = Module.objects.filter(
                 id__in=module_ids,
                 type="WEAPONRY",
             )
-
-            print([e for e in psm_qs])
 
             for psm in psm_qs:
                 effect = psm.effect or {}

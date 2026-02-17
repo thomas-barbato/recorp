@@ -360,10 +360,6 @@ def resolve_attack(
         final_damage
     )
 
-    if is_critical:
-        print("CRITICAL HIT!", weapon.damage_type)
-
-
     events.append(
         CombatEvent(
             "ATTACK_HIT",
@@ -414,8 +410,6 @@ def select_best_weapon_for_counter(
     Sélectionne la meilleure arme pour une riposte.
     V1 : priorité à la portée maximale.
     """
-    print(distance_tiles)
-
     in_range = [w for w in weapons if w.range_tiles >= distance_tiles]
     
     if not in_range:
