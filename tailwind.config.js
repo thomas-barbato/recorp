@@ -21,7 +21,8 @@ module.exports = {
             // that is animation class
             animation: {
                 fade: 'fadeOut 10s ease-in-out',
-                dodge: 'dodge 0.35s ease-out'
+                dodge: 'dodge 0.35s ease-out',
+                'float-damage': 'float-damage 1.2s ease-out forwards'
             },
             // that is actual animation
             keyframes: theme => ({
@@ -35,6 +36,12 @@ module.exports = {
                     '60%':  { transform: 'scaleX(var(--flip)) translateY(8px)' },
                     '100%': { transform: 'scaleX(var(--flip)) translateY(0px)' },
                 },
+                'float-damage': {
+                    '0%':   { opacity: '0', transform: 'translate(-50%, 10px) scale(0.6)' },
+                    '15%':  { opacity: '1', transform: 'translate(-50%, 0px) scale(1.2)' },
+                    '60%':  { opacity: '1', transform: 'translate(-50%, -25px) scale(1)' },
+                    '100%': { opacity: '0', transform: 'translate(-50%, -55px) scale(0.9)' }
+                }
             }),
         },
     },

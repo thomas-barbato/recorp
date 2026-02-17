@@ -998,6 +998,35 @@ class CombatAnimationEngine {
             requestAnimationFrame(step);
         });
     }
+
+    playFloatingDamage({ side, amount, color }) {
+
+        const pos = this.positions?.[side];
+        if (!pos) return;
+
+        const el = document.createElement("div");
+        el.textContent = `-${amount}`;
+        el.classList.add(
+            "absolute",
+            "font-extrabold",
+            "text-2xl",
+            "md:text-3xl",
+            "pointer-events-none",
+            "drop-shadow-[0_0_6px_rgba(255,255,255,0.7)]",
+            "animate-float-damage"
+        );
+        el.style.color = color;
+
+        const wrapper = document.getElementById("combat-ships-layer")?.parentElement;
+        if (!wrapper) return;
+
+        wrapper.appendChild(el);
+
+        el.style.left = `${pos.x}px`;
+        el.style.top = `${pos.y}px`;
+
+        setTimeout(() => el.remove(), 1200);
+    }
 }
 
 class CombatAnimationQueue {
@@ -1083,6 +1112,11 @@ window.playCombatAnimation = function (payload) {
         mgr._combatAnim?.engine?.playDodge({ side: toSide });
     }else{
         result = "hit";
+        mgr._combatAnim?.engine?.playFloatingDamage({
+            side: toSide,
+            amount: payload.damage_to_hull,
+            color: "#f87171"
+        });
     }
 
     q.enqueue({
