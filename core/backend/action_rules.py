@@ -141,6 +141,7 @@ class ActionRules:
 
     @staticmethod
     def upsert_scan(scanner_player_id: int, target_type: str, target_id: int, sector_id: int) -> ScanIntel:
+        
         now = timezone.now()
         expires = now + timedelta(seconds=30)
 

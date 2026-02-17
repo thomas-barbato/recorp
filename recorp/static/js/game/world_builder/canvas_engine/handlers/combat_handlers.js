@@ -17,54 +17,44 @@ export function handleCombatEvents(message) {
         switch (ev.type) {
 
             case "ATTACK_HIT":
-                renderAttackHit(ev.payload);
+                renderModalAttackHit(ev.payload);
                 break;
 
             case "ATTACK_MISS":
-                renderAttackMiss(ev.payload);
+                renderModalAttackMiss(ev.payload);
                 break;
 
             case "ATTACK_EVADED":
-                renderAttackEvaded(ev.payload);
+                renderModalAttackEvaded(ev.payload);
                 break;
 
             default:
                 console.warn("[Combat] Unknown event:", ev);
+                break;
         }
     });
 }
 
-function renderAttackHit(payload) {
+function renderModalAttackHit(payload) {
+    if (!isRelevantForMyCombatModal(payload)) return;
+
+    const ctx = window.ActionSceneManager?.getContext?.();
+    if (!ctx || !ctx.attackerKey) return;
 
     const {
-        source_id,
-        target_id,
         damage_type,
         damage_to_shield,
         damage_to_hull,
-        is_counter
+        is_counter,
+        is_critical
     } = payload;
 
     const label = is_counter ? "Riposte" : "Attaque";
+    const msg = `${label} ${damage_type} : ${damage_to_shield} shield / ${damage_to_hull} hull`;
 
-    const msg = `${label} ${damage_type} : `
-        + `${damage_to_shield} shield / `
-        + `${damage_to_hull} hull`;
-
-    console.log(source_id, target_id);
-
-    const ctx = window.ActionSceneManager?.getContext?.();
-    if (!ctx) return;
-
-    let sourceKey, targetKey;
-
-    if (payload.is_counter) {
-        sourceKey = ctx.targetKey;
-        targetKey = ctx.attackerKey;
-    } else {
-        sourceKey = ctx.attackerKey;
-        targetKey = ctx.targetKey;
-    }
+    // Dans TON modal : on inverse juste source/target visuellement si riposte
+    const sourceKey = is_counter ? ctx.targetKey : ctx.attackerKey;
+    const targetKey = is_counter ? ctx.attackerKey : ctx.targetKey;
 
     window.playCombatAnimation?.({
         type: "HIT",
@@ -73,31 +63,24 @@ function renderAttackHit(payload) {
         damage_type,
         damage_to_shield,
         damage_to_hull,
-        is_counter
+        is_counter,
+        is_critical
     });
 
     window.addCombatLog?.(msg);
 }
 
-function renderAttackMiss(payload) {
+function renderModalAttackMiss(payload) {
+    if (!isRelevantForMyCombatModal(payload)) return;
+
+    const ctx = window.ActionSceneManager?.getContext?.();
+    if (!ctx || !ctx.attackerKey) return;
 
     const label = payload.is_counter ? "Riposte" : "Attaque";
     const msg = `${label} ratée`;
 
-    console.log(msg);
-
-    const ctx = window.ActionSceneManager?.getContext?.();
-    if (!ctx) return;
-
-    const sourceKey =
-        ctx.attackerKey.endsWith(`_${payload.source_id}`)
-            ? ctx.attackerKey
-            : ctx.targetKey;
-
-    const targetKey =
-        sourceKey === ctx.attackerKey
-            ? ctx.targetKey
-            : ctx.attackerKey;
+    const sourceKey = payload.is_counter ? ctx.targetKey : ctx.attackerKey;
+    const targetKey = payload.is_counter ? ctx.attackerKey : ctx.targetKey;
 
     window.playCombatAnimation?.({
         type: "MISS",
@@ -106,19 +89,29 @@ function renderAttackMiss(payload) {
         damage_type: payload.damage_type,
         is_counter: payload.is_counter
     });
-        window.addCombatLog?.(msg);
-    }
 
-function renderAttackEvaded(payload) {
+    window.addCombatLog?.(msg);
+}
+
+
+function renderModalAttackEvaded(payload) {
+    if (!isRelevantForMyCombatModal(payload)) return;
+
+    const ctx = window.ActionSceneManager?.getContext?.();
+    if (!ctx || !ctx.attackerKey) return;
 
     const label = payload.is_counter ? "Riposte" : "Attaque";
     const msg = `${label} esquivée`;
 
-    console.log(msg);
+    const sourceKey = payload.is_counter ? ctx.targetKey : ctx.attackerKey;
+    const targetKey = payload.is_counter ? ctx.attackerKey : ctx.targetKey;
 
     window.playCombatAnimation?.({
         type: "EVADE",
-        ...payload
+        source: sourceKey,
+        target: targetKey,
+        damage_type: payload.damage_type,
+        is_counter: payload.is_counter
     });
 
     window.addCombatLog?.(msg);
@@ -207,4 +200,11 @@ export function handleCombatStateUpdate(msg) {
             }
         }
     }
+}
+
+function isRelevantForMyCombatModal(payload) {
+    const me = String(window.current_player_id);
+    const s = String(payload?.source_player_id);
+    const t = String(payload?.target_player_id);
+    return (s === me) || (t === me);
 }

@@ -12,7 +12,7 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule
 from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
 from core.backend.player_logs import create_event_log
 
@@ -220,6 +220,7 @@ class GameConsumer(WebsocketConsumer):
         
         # COMBAT ACTION
         if msg_type == "action_attack":
+            print(data)
             self._handle_combat_action(data.get("payload"))
             return
 
@@ -1619,7 +1620,14 @@ class GameConsumer(WebsocketConsumer):
             # (le front fait déjà le visuel,
             #  le backend recalculera plus tard si besoin)
             # -----------------------
-            distance = payload.get("distance", weapon.range_tiles)
+            from core.backend.combat_engine import compute_distance_between_actors
+
+            distance = compute_distance_between_actors(
+                source_ad,
+                target_ad
+            )
+
+            print("REAL BACKEND DISTANCE:", distance)
             visibility = payload.get("visibility", "UNKNOWN")
 
             action = CombatAction(
@@ -1746,13 +1754,31 @@ class GameConsumer(WebsocketConsumer):
 
         # PC
         if target_ad.kind == "PC":
-            ship = target_ad.actor
-            psm_qs = ship.player_ship_module.select_related("module").filter(
-                module__type="WEAPONRY",
+
+            ship_id = PlayerShip.objects.filter(
+                is_current_ship=True, 
+                player_id=target_ad.actor.player_id
+            ).values_list('id', flat=True)[0]
+
+            if not ship_id:
+                return []
+            
+            module_ids = PlayerShipModule.objects.filter(player_ship_id=ship_id).values("module_id") or []
+
+            if not module_ids:
+                return []
+            
+            print("module_ids", module_ids)
+
+            psm_qs = Module.objects.filter(
+                id__in=module_ids,
+                type="WEAPONRY",
             )
 
+            print([e for e in psm_qs])
+
             for psm in psm_qs:
-                effect = psm.module.effect or {}
+                effect = psm.effect or {}
                 weapons.append(
                     WeaponProfile(
                         damage_type=effect.get("damage_type", "MISSILE").upper(),

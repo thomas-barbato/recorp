@@ -105,6 +105,7 @@ export function syncMapInformationsMovement(playerId, remainingMovement, maxMove
  * pour que toutes les logiques qui lisent me.data.ship.* soient cohérentes.
  */
 export function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
+    console.log(playerId)
     const engine = window.canvasEngine;
     if (!engine || !engine.map) return;
 
@@ -124,8 +125,9 @@ export function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
  */
 export function handleUpdateMovementGeneric(msg) {
     if (!msg) return;
-
+    console.log(msg)
     const playerId = msg.player_id ?? msg.player ?? window.current_player_id;
+    console.log(playerId)
     const remaining = msg.move;
     const maxMove = msg.max_move ?? msg.max_movement;
 
@@ -195,7 +197,10 @@ export function handlePlayerMove(msg) {
 
                             const centerX = endX + (sizeX - 1) / 2;
                             const centerY = endY + (sizeY - 1) / 2;
-                            engine.camera.centerOn(centerX, centerY);
+
+                            if(playerId == window.current_player_id){
+                                engine.camera.centerOn(centerX, centerY);
+                            }
                             
                             window.renderTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
                             // mise à jour de la position du joueur.
@@ -273,6 +278,7 @@ export function handlePlayerMove(msg) {
     if (!animationUsed) {
         try {
             if (engine.camera && engine.camera.autoCenter) {
+
                 const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
                 const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
 
@@ -280,6 +286,7 @@ export function handlePlayerMove(msg) {
                 const centerY = endY + (sizeY - 1) / 2;
 
                 engine.camera.centerOn(centerX, centerY);
+
             }
         } catch (e) {
             console.warn("[WS player_move] camera recenter error:", e);

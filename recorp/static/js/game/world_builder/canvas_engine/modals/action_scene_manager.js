@@ -999,17 +999,27 @@ class CombatAnimationEngine {
         });
     }
 
-    playFloatingDamage({ side, amount, color }) {
-
+    playFloatingDamage({ side, amount, is_critical = false }) {
+        console.log("damage amount", amount)
         const pos = this.positions?.[side];
         if (!pos) return;
 
         const el = document.createElement("div");
-        el.textContent = `-${amount}`;
+
+        let color = !is_critical ? "#f87171" : "#facc15";
+
+        if(!is_critical){
+            color = "#f87171";
+            el.textContent = `-${amount}`;
+        }else{
+            color = "#facc15";
+            el.textContent = `CRIT -${amount}`;
+        }
+        
         el.classList.add(
             "absolute",
             "font-extrabold",
-            "text-2xl",
+            "text-2xl", 
             "md:text-3xl",
             "pointer-events-none",
             "drop-shadow-[0_0_6px_rgba(255,255,255,0.7)]",
@@ -1112,10 +1122,11 @@ window.playCombatAnimation = function (payload) {
         mgr._combatAnim?.engine?.playDodge({ side: toSide });
     }else{
         result = "hit";
+        console.log(payload)
         mgr._combatAnim?.engine?.playFloatingDamage({
             side: toSide,
-            amount: payload.damage_to_hull,
-            color: "#f87171"
+            amount: payload.damage_to_hull > 0 ? payload.damage_to_hull : payload.damage_to_shield,
+            is_critical: payload.is_critical
         });
     }
 
@@ -1127,12 +1138,4 @@ window.playCombatAnimation = function (payload) {
         result,
         damageToShield: payload?.damage_to_shield || 0
     });
-    /*
-    // Shield impact si dégâts bouclier
-    if (payload?.damage_to_shield > 0) {
-        mgr._combatAnim?.engine?.playShieldImpact({
-            side: toSide,
-            damageType: weaponType
-        });
-    }*/
 };

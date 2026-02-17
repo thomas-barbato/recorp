@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple, Literal, List
 import random
+from core.models import PlayerShip, ShipCategory
+
 
 DamageType = Literal["MISSILE", "THERMAL", "BALLISTIC"]
 VisibilityState = Literal["SCANNED", "SONAR", "UNKNOWN"]
@@ -40,6 +42,15 @@ SKILL_WEAPON_BY_DMG: Dict[DamageType, str] = {
 
 SKILL_SHARPSHOOTING = "Advanced Targeting"
 SKILL_EVASIVE = "Evasive Maneuver"
+
+BASE_CRIT_CHANCE = 0.05 # 5%
+CRIT_PER_AT = 0.005 # 0.5% par point Advanced Targeting
+
+CRIT_MULTIPLIERS = {
+    "THERMAL": 1.4,
+    "BALLISTIC": 1.6,
+    "MISSILE": 1.9,
+}
 
 
 @dataclass(frozen=True)
@@ -267,6 +278,16 @@ def resolve_attack(
     hit_chance = base_hit + precision_bonus - evasion_bonus + vis_mod + invis_bonus + weapon.accuracy_bonus
     hit_chance = clamp(hit_chance, min_hit, max_hit)
 
+    if attacker_ad.kind == "NPC":
+        source_player_id = attacker_ad.actor.id
+    else:
+        source_player_id = attacker_ad.actor.player_id
+
+    if defender_ad.kind == "NPC":
+        target_player_id = defender_ad.actor.id
+    else:
+        target_player_id = defender_ad.actor.player_id
+
     # --- Roll to hit ---
     hit_roll = roll_pct()
     if hit_roll >= hit_chance:
@@ -274,6 +295,10 @@ def resolve_attack(
             CombatEvent(
                 "ATTACK_MISS",
                 {
+                    "source_kind": attacker_ad.kind,
+                    "target_kind": defender_ad.kind,
+                    "source_player_id": source_player_id,
+                    "target_player_id": target_player_id,
                     "source_id": attacker_ad.id,
                     "target_id": defender_ad.id,
                     "damage_type": weapon.damage_type,
@@ -292,6 +317,10 @@ def resolve_attack(
             CombatEvent(
                 "ATTACK_EVADED",
                 {
+                    "source_kind": attacker_ad.kind,
+                    "target_kind": defender_ad.kind,
+                    "source_player_id": source_player_id,
+                    "target_player_id": target_player_id,
                     "source_id": attacker_ad.id,
                     "target_id": defender_ad.id,
                     "damage_type": weapon.damage_type,
@@ -307,12 +336,42 @@ def resolve_attack(
     # --- Damage ---
     rolled_damage = random.randint(weapon.min_damage, weapon.max_damage)
     final_damage = int(round(rolled_damage * (1.0 + (damage_bonus / 100.0))))
-    to_shield, to_hull, shield_after = apply_damage(defender_ad, weapon.damage_type, final_damage)
+
+    # --- CRITICAL CHECK ---
+    is_critical = False
+
+    crit_chance = BASE_CRIT_CHANCE + (
+        get_skill_level_for_actor(
+            attacker_ad.actor,
+            attacker_ad.kind,
+            SKILL_SHARPSHOOTING
+        ) * CRIT_PER_AT
+    )
+
+    if random.random() < crit_chance:
+        is_critical = True
+        multiplier = CRIT_MULTIPLIERS.get(weapon.damage_type, 1.5)
+        final_damage = weapon.max_damage + (weapon.max_damage * multiplier)
+
+    # --- Apply damage ---
+    to_shield, to_hull, shield_after = apply_damage(
+        defender_ad,
+        weapon.damage_type,
+        final_damage
+    )
+
+    if is_critical:
+        print("CRITICAL HIT!", weapon.damage_type)
+
 
     events.append(
         CombatEvent(
             "ATTACK_HIT",
             {
+                "source_kind": attacker_ad.kind,
+                "target_kind": defender_ad.kind,
+                "source_player_id": source_player_id,
+                "target_player_id": target_player_id,
                 "source_id": attacker_ad.id,
                 "target_id": defender_ad.id,
                 "damage_type": weapon.damage_type,
@@ -325,6 +384,7 @@ def resolve_attack(
                 "final_damage": final_damage,
                 "damage_to_shield": to_shield,
                 "damage_to_hull": to_hull,
+                "is_critical": is_critical,
                 "shield_remaining": shield_after,
                 "hull_remaining": defender_ad.get_hp(),
             },
@@ -354,7 +414,10 @@ def select_best_weapon_for_counter(
     Sélectionne la meilleure arme pour une riposte.
     V1 : priorité à la portée maximale.
     """
+    print(distance_tiles)
+
     in_range = [w for w in weapons if w.range_tiles >= distance_tiles]
+    
     if not in_range:
         return None
     return max(in_range, key=lambda w: w.range_tiles)
@@ -421,9 +484,6 @@ def resolve_combat_action(
 
     if action.target.get_ap() < 1:
         return events
-    
-    # consommer AP pour riposte
-    action.target.spend_ap(1)
 
     counter_weapon = select_best_weapon_for_counter(
         weapons=target_weapons,
@@ -432,6 +492,9 @@ def resolve_combat_action(
 
     if not counter_weapon:
         return events
+    
+    # consommer AP pour riposte
+    action.target.spend_ap(1)
 
     # --- CRÉATION DE L'ACTION DE RIPOSTE ---
     counter_action = CombatAction(
@@ -457,3 +520,93 @@ def resolve_combat_action(
         ev.payload["is_counter"] = True
 
     return events + counter_events
+
+def compute_distance_tiles(
+    ax: int,
+    ay: int,
+    aw: int,
+    ah: int,
+    bx: int,
+    by: int,
+    bw: int,
+    bh: int,
+) -> int:
+    """
+    Calcule la distance en tiles entre deux entités rectangulaires.
+    Distance bord-à-bord (comme le worker JS).
+    """
+
+    # bornes attaquant
+    a_left = ax
+    a_right = ax + aw - 1
+    a_top = ay
+    a_bottom = ay + ah - 1
+
+    # bornes cible
+    b_left = bx
+    b_right = bx + bw - 1
+    b_top = by
+    b_bottom = by + bh - 1
+
+    # distance horizontale
+    if a_right < b_left:
+        dx = b_left - a_right
+    elif b_right < a_left:
+        dx = a_left - b_right
+    else:
+        dx = 0
+
+    # distance verticale
+    if a_bottom < b_top:
+        dy = b_top - a_bottom
+    elif b_bottom < a_top:
+        dy = a_top - b_bottom
+    else:
+        dy = 0
+
+    # distance euclidienne
+    return int((dx ** 2 + dy ** 2) ** 0.5)
+
+
+def compute_distance_between_actors(source_ad, target_ad):
+    """
+    Calcule la distance réelle en tiles entre deux ActorAdapter.
+    """
+
+    # --- SOURCE ---
+    if source_ad.kind == "PC":
+        player = source_ad.actor.player
+        coords = player.coordinates or {"x": 0, "y": 0}
+        ship = source_ad.actor.ship
+        size = ship.ship_category.size or {"x": 1, "y": 1}
+
+    else:  # NPC
+        npc = source_ad.actor
+        coords = npc.coordinates or {"x": 0, "y": 0}
+        ship = npc.npc_template.ship
+        size = ship.ship_category.size or {"x": 1, "y": 1}
+
+    ax = coords.get("x", 0)
+    ay = coords.get("y", 0)
+    aw = size.get("x", 1)
+    ah = size.get("y", 1)
+
+    # --- TARGET ---
+    if target_ad.kind == "PC":
+        player = target_ad.actor.player
+        coords = player.coordinates or {"x": 0, "y": 0}
+        ship = target_ad.actor.ship
+        size = ship.ship_category.size or {"x": 1, "y": 1}
+
+    else:
+        npc = target_ad.actor
+        coords = npc.coordinates or {"x": 0, "y": 0}
+        ship = npc.npc_template.ship
+        size = ship.ship_category.size or {"x": 1, "y": 1}
+
+    bx = coords.get("x", 0)
+    by = coords.get("y", 0)
+    bw = size.get("x", 1)
+    bh = size.get("y", 1)
+
+    return compute_distance_tiles(ax, ay, aw, ah, bx, by, bw, bh)
