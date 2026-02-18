@@ -406,7 +406,17 @@ export default class MapData {
             sizeY,
             image,
             spritePath,
-            reversedSprite
+            reversedSprite,
+            runtime : {
+                current_hp: null,
+                current_ap: null,
+                current_movement: null,
+                shields: {
+                    MISSILE: null,
+                    THERMAL: null,
+                    BALLISTIC: null
+                }
+            }
         };
 
         // players indexé à la fois par number et par string pour plus de robustesse

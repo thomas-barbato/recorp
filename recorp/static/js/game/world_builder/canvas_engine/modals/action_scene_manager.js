@@ -509,6 +509,9 @@ class ActionSceneManager {
         // ===== Target =====
         const scanned = window.scannedModalData?.[context.targetKey];
 
+        console.log("scanned")
+        console.log(scanned)
+
         if (!scanned || !targetContainer) return;
 
         // HP

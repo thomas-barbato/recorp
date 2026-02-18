@@ -194,7 +194,45 @@ function refreshOpenedModalRanges() {
 
 export function entity_state_update(msg){
     const { entity_key, change_type, changes } = msg;
-    
+
+    // 🧠 Toujours hydrater le runtime state, même si le modal n'est pas ouvert
+
+    const actor = window.canvasEngine?.map?.findActorByKey?.(entity_key);
+    if (actor) {
+        if (!actor.runtime) actor.runtime = {};
+
+        switch (change_type) {
+            case "ap_update":
+                // changes.ap = {current, max}
+                if (changes.ap?.current != null) actor.runtime.current_ap = changes.ap.current;
+                if (changes.ap?.max != null) actor.runtime.max_ap = changes.ap.max;
+                break;
+
+            case "hp_update":
+                // changes.hp = {current, max} ; changes.shield = {...} (selon ton backend)
+                if (changes.hp?.current != null) actor.runtime.current_hp = changes.hp.current;
+                if (changes.hp?.max != null) actor.runtime.max_hp = changes.hp.max;
+
+                if (!actor.runtime.shields) actor.runtime.shields = {};
+                
+                if (changes.shield?.damage_type && changes.shield?.current != null) {
+                    actor.runtime.shields[changes.shield.damage_type] = changes.shield.current;
+                }
+
+                // si tu n'envoies qu'un "snapshot" shield côté WS, on stocke au moins ça
+                if (changes.shield?.current != null){ actor.runtime.shield_current = changes.shield.current; }
+                if (changes.shield?.damage_type != null){ actor.runtime.shield_damage_type = changes.shield.damage_type;}
+                break;
+
+            case "mp_update":
+                if (changes.movement?.current != null) actor.runtime.current_movement = changes.movement.current;
+                if (changes.movement?.max != null) actor.runtime.max_movement = changes.movement.max;
+                if (changes.position?.x != null) actor.runtime.x = changes.position.x;
+                if (changes.position?.y != null) actor.runtime.y = changes.position.y;
+                break;
+        }
+    }
+        
     if (!window.ModalLive?.isOpen?.(entity_key)) {
         console.log("NOT OPENED")
         return;

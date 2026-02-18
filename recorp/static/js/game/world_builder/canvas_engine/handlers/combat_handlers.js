@@ -60,13 +60,15 @@ function normalizeActorKey(k) {
 function extractCombatKeysFromPayload(payload) {
     if (!payload) return { attackerKey: null, targetKey: null };
 
-    const attackerKey = payload.source_player_id != null
-        ? `pc_${payload.source_player_id}`
-        : null;
+    const attackerKey =
+        payload.source_kind === "NPC"
+            ? `npc_${payload.source_id}`
+            : `pc_${payload.source_player_id}`;
 
-    const targetKey = payload.target_player_id != null
-        ? `pc_${payload.target_player_id}`
-        : null;
+    const targetKey =
+        payload.target_kind === "NPC"
+            ? `npc_${payload.target_id}`
+            : `pc_${payload.target_player_id}`;
 
     return { attackerKey, targetKey };
 }
@@ -84,6 +86,10 @@ function isRelevantForMyCombatModal(payload) {
 
     const cA = normalizeActorKey(ctx.attackerKey);
     const cB = normalizeActorKey(ctx.targetKey);
+
+    console.log(`cA = ${cA}, targetKey = ${targetKey}, attackerKey = ${attackerKey}`);
+    console.log(`cB = ${cB}, targetKey = ${targetKey}, attackerKey = ${attackerKey}`);
+
 
     // match direct (A,B) ou inversé (B,A)
     return (
@@ -116,7 +122,6 @@ function renderModalAttackHit(payload) {
     if (!payload) return;
 
     // ✅ Bloque tout si ce combat ne correspond pas au modal actuel
-    console.log(payload)
     if (!isRelevantForMyCombatModal(payload)) return;
 
     // Le modal est concerné, donc logs ok
@@ -134,7 +139,7 @@ function renderModalAttackHit(payload) {
 
     safeAddCombatLog(msg);
 
-    // ✅ Animations uniquement pour l'attaquant local
+    // Animations uniquement pour l'attaquant local
     if (!shouldAnimateForMe(payload)) return;
 
     // Pour l'animation, on utilise les keys du payload (plus fiable que ctx)
@@ -159,12 +164,11 @@ function renderModalAttackHit(payload) {
 
 function renderModalAttackMiss(payload) {
     if (!payload) return;
-    console.log(payload)
     if (!isRelevantForMyCombatModal(payload)) return;
 
     const label = payload.is_counter ? "Riposte" : "Attaque";
     safeAddCombatLog(`${label} ratée`);
-
+    
     if (!shouldAnimateForMe(payload)) return;
 
     const { attackerKey, targetKey } = extractCombatKeysFromPayload(payload);
@@ -189,7 +193,7 @@ function renderModalAttackEvaded(payload) {
 
     const label = payload.is_counter ? "Riposte" : "Attaque";
     safeAddCombatLog(`${label} esquivée`);
-
+    
     if (!shouldAnimateForMe(payload)) return;
 
     const { attackerKey, targetKey } = extractCombatKeysFromPayload(payload);

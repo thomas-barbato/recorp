@@ -531,16 +531,16 @@ def compute_distance_tiles(
     """
 
     # bornes attaquant
-    a_left = ax
-    a_right = ax + aw - 1
-    a_top = ay
-    a_bottom = ay + ah - 1
+    a_left = int(ax)
+    a_right = int(ax) + int(aw) - 1
+    a_top = int(ay)
+    a_bottom = int(ay) + int(ah) - 1
 
     # bornes cible
-    b_left = bx
-    b_right = bx + bw - 1
-    b_top = by
-    b_bottom = by + bh - 1
+    b_left = int(bx)
+    b_right = int(bx) + int(bw) - 1
+    b_top = int(by)
+    b_bottom = int(by) + int(bh) - 1
 
     # distance horizontale
     if a_right < b_left:

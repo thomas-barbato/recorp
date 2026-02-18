@@ -83,7 +83,9 @@
     }
 
     function updateModalHp(modalEl, { hp, shield, damage_type }) {
-
+        console.log("===========")
+        console.log(hp, shield, damage_type)
+        console.log("===========")
         // 🔹 HULL
         if (hp != null) {
 
