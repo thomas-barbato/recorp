@@ -277,9 +277,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             if (!hasWeaponry) return showMissingModuleError();
 
             // 🔴 Fermer le modal actuel
+            /*
             if (typeof open_close_modal === "function") {
                 open_close_modal(modalId);
-            }
+            }*/
 
             // 🔵 Construire les clés attacker / target
             const attackerKey = `pc_${window.current_player_id}`;
@@ -295,12 +296,15 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             if (!targetKey) return;
 
+            window.ModalModeManager.enter(modalId, "combat", { attackerKey, targetKey });
+            /*
             // 🟢 Ouvrir ActionScene (vide pour l’instant)
             window.ActionSceneManager.open("combat", {
                 attackerKey,
                 targetKey,
                 originalModalId: modalId
             });
+            */
 
             console.log("Combat ActionScene opened:", attackerKey, targetKey);
         },

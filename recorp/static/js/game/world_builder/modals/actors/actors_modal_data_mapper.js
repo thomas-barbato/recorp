@@ -141,12 +141,11 @@
     // NPC MODAL DATA
     // ===================================================
     function createNpcModalData(npcData) {
-        console.log(npcData)
-        console.log("DANS createNpcModalData")
         const entityKey = `npc_${npcData.npc.id}`;
         const rt = getRuntimeForEntityKey(entityKey);
-        console.log(rt)
 
+        console.log("DANS RT")
+        console.log(rt)
         return {
             _ui: { scanned: false },
 
@@ -163,11 +162,11 @@
                 description: npcData.ship.category_description,
                 current_hp: rt?.current_hp ?? npcData.ship.current_hp,
                 max_hp: rt?.max_hp ?? npcData.ship.max_hp,
-                current_thermal_defense: rt?.current_thermal_defense ?? npcData.ship.current_thermal_defense,
+                current_thermal_defense: rt?.shields?.THERMAL ?? npcData.ship.current_thermal_defense,
                 max_thermal_defense: npcData.ship.max_thermal_defense,
-                current_missile_defense: rt?.current_missile_defense ?? npcData.ship.current_missile_defense,
+                current_missile_defense: rt?.shields?.MISSILE ?? npcData.ship.current_missile_defense,
                 max_missile_defense: npcData.ship.max_missile_defense,
-                current_ballistic_defense: rt?.current_ballistic_defense ?? npcData.ship.current_ballistic_defense,
+                current_ballistic_defense: rt?.shields?.BALLISTIC ?? npcData.ship.current_ballistic_defense,
                 max_ballistic_defense: npcData.ship.max_ballistic_defense,
                 current_movement: rt?.current_movement ?? npcData.ship.current_movement,
                 max_movement: rt?.max_movement ?? npcData.ship.max_movement,
@@ -192,11 +191,8 @@
     // PLAYER MODAL DATA
     // ===================================================
     function createPlayerModalData(playerData) {
-
-        console.log("DANS createPlayerModalData")
         const entityKey = `pc_${playerData.user.player}`;
         const rt = getRuntimeForEntityKey(entityKey);
-        console.log(rt)
 
         return {
             _ui: { scanned: false },
@@ -218,11 +214,11 @@
                 description: playerData.ship.category_description,
                 current_hp: rt?.current_hp ?? playerData.ship.current_hp,
                 max_hp: rt?.max_hp ?? playerData.ship.max_hp,
-                current_thermal_defense: rt?.current_thermal_defense ?? playerData.ship.current_thermal_defense,
+                current_thermal_defense: rt?.shields?.THERMAL ?? playerData.ship.current_thermal_defense,
                 max_thermal_defense: playerData.ship.max_thermal_defense,
-                current_missile_defense: rt?.current_missile_defense ?? playerData.ship.current_missile_defense,
+                current_missile_defense: rt?.shields?.MISSILE ?? playerData.ship.current_missile_defense,
                 max_missile_defense: playerData.ship.max_missile_defense,
-                current_ballistic_defense: rt?.current_ballistic_defense ?? playerData.ship.current_ballistic_defense,
+                current_ballistic_defense: rt?.shields?.BALLISTIC ?? playerData.ship.current_ballistic_defense,
                 max_ballistic_defense: playerData.ship.max_ballistic_defense,
                 current_movement: rt?.current_movement ?? playerData.ship.current_movement,
                 max_movement: rt?.max_movement ?? playerData.ship.max_movement,

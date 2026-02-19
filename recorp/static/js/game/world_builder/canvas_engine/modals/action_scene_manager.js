@@ -289,9 +289,8 @@ class ActionSceneManager {
         closeBtn.addEventListener("click", () => {
             this.close({ reason: "manual" });
 
-            // réouvrir modal cible
-            if (typeof window.open_close_modal === "function") {
-                open_close_modal(context.originalModalId);
+            if (window.ModalModeManager?.exit) {
+                window.ModalModeManager.exit(context.originalModalId);
             }
         });
 

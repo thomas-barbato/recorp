@@ -123,9 +123,10 @@
                 __ui: responseData.__ui
             };
             // garde en mémoire les données d'extractedDataForModal
-            // meme si l'ont passe en mode combat ou autre...
+            // meme si l'ont passe en mode combat ou autre..
             window.modalDataCache ??= {};
             window.modalDataCache[modalId] = extractedDataForModal;
+            
 
             create_modal(modalId, parsed, extractedDataForModal);
 
