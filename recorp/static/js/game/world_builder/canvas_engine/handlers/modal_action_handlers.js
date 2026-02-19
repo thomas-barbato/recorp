@@ -192,63 +192,85 @@ function refreshOpenedModalRanges() {
     }
 }
 
-export function entity_state_update(msg){
+export function entity_state_update(msg) {
     const { entity_key, change_type, changes } = msg;
 
-    // 🧠 Toujours hydrater le runtime state, même si le modal n'est pas ouvert
-
     const actor = window.canvasEngine?.map?.findActorByKey?.(entity_key);
+
+    // =========================
+    // 🧠 1️⃣ HYDRATATION RUNTIME
+    // =========================
     if (actor) {
-        if (!actor.runtime) actor.runtime = {};
+
+        // init runtime
+        if (!actor.runtime) {
+            actor.runtime = {};
+        }
+
+        // init shields structure (une seule fois)
+        if (!actor.runtime.shields) {
+            actor.runtime.shields = {
+                MISSILE: 0,
+                THERMAL: 0,
+                BALLISTIC: 0
+            };
+        }
 
         switch (change_type) {
+
             case "ap_update":
-                // changes.ap = {current, max}
-                if (changes.ap?.current != null) actor.runtime.current_ap = changes.ap.current;
-                if (changes.ap?.max != null) actor.runtime.max_ap = changes.ap.max;
+                if (changes.ap?.current != null) {
+                    actor.runtime.current_ap = changes.ap.current;
+                }
+                if (changes.ap?.max != null) {
+                    actor.runtime.max_ap = changes.ap.max;
+                }
                 break;
 
             case "hp_update":
-                // changes.hp = {current, max} ; changes.shield = {...} (selon ton backend)
-                if (changes.hp?.current != null) actor.runtime.current_hp = changes.hp.current;
-                if (changes.hp?.max != null) actor.runtime.max_hp = changes.hp.max;
-
-                if (!actor.runtime.shields) actor.runtime.shields = {};
-                
-                if (changes.shield?.damage_type && changes.shield?.current != null) {
-                    actor.runtime.shields[changes.shield.damage_type] = changes.shield.current;
+                if (changes.hp?.current != null) {
+                    actor.runtime.current_hp = changes.hp.current;
+                }
+                if (changes.hp?.max != null) {
+                    actor.runtime.max_hp = changes.hp.max;
                 }
 
-                // si tu n'envoies qu'un "snapshot" shield côté WS, on stocke au moins ça
-                if (changes.shield?.current != null){ actor.runtime.shield_current = changes.shield.current; }
-                if (changes.shield?.damage_type != null){ actor.runtime.shield_damage_type = changes.shield.damage_type;}
+                // 🔥 Nouveau format complet
+                if (changes.shields) {
+                    actor.runtime.shields = {
+                        ...actor.runtime.shields,
+                        ...changes.shields
+                    };
+                }
                 break;
 
             case "mp_update":
-                if (changes.movement?.current != null) actor.runtime.current_movement = changes.movement.current;
-                if (changes.movement?.max != null) actor.runtime.max_movement = changes.movement.max;
-                if (changes.position?.x != null) actor.runtime.x = changes.position.x;
-                if (changes.position?.y != null) actor.runtime.y = changes.position.y;
+                if (changes.movement?.current != null) {
+                    actor.runtime.current_movement = changes.movement.current;
+                }
+                if (changes.movement?.max != null) {
+                    actor.runtime.max_movement = changes.movement.max;
+                }
+                if (changes.position?.x != null) {
+                    actor.runtime.x = changes.position.x;
+                }
+                if (changes.position?.y != null) {
+                    actor.runtime.y = changes.position.y;
+                }
                 break;
         }
+
+        console.log("RUNTIME UPDATE", entity_key, actor.runtime);
     }
-        
+
+    // ====================================
+    // 🖥 2️⃣ UI LIVE (si modal ouvert)
+    // ====================================
     if (!window.ModalLive?.isOpen?.(entity_key)) {
-        console.log("NOT OPENED")
         return;
     }
 
-    // 🔹 Modal vivant (observer)
     switch (change_type) {
-        case "mp_update":
-            window.ModalLive?.notify?.(entity_key, "mp_update", {
-                x: changes.position?.x,
-                y: changes.position?.y,
-                mp: changes.movement?.current,
-                max_mp: changes.movement?.max
-            });
-            refreshOpenedModalRanges();
-            break;
 
         case "ap_update":
             window.ModalLive?.notify?.(entity_key, "ap_update", {
@@ -258,11 +280,18 @@ export function entity_state_update(msg){
             break;
 
         case "hp_update":
-            console.log(changes)
             window.ModalLive?.notify?.(entity_key, "hp_update", {
                 hp: changes.hp?.current,
-                shield: changes.shield?.current,
-                damage_type: changes.shield?.damage_type
+                shields: changes.shields
+            });
+            break;
+
+        case "mp_update":
+            window.ModalLive?.notify?.(entity_key, "mp_update", {
+                x: changes.position?.x,
+                y: changes.position?.y,
+                mp: changes.movement?.current,
+                max_mp: changes.movement?.max
             });
             break;
     }

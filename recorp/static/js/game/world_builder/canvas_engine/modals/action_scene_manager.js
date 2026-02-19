@@ -483,54 +483,82 @@ class ActionSceneManager {
         if (!context) return;
 
         const attackerContainer = document.getElementById("combat-attacker-stats");
-        const targetContainer = document.getElementById("combat-target-stats");
+        const targetContainer   = document.getElementById("combat-target-stats");
+        if (!attackerContainer || !targetContainer) return;
 
-        // ===== Attacker =====
-        const me = window.currentPlayer;
+        const engine = window.canvasEngine;
+        if (!engine?.map) return;
 
-        if (me && attackerContainer) {
+        const attackerActor = engine.map.findActorByKey(context.attackerKey);
+        const targetActor   = engine.map.findActorByKey(context.targetKey);
 
-            attackerContainer.querySelector(".hp").textContent =
-                me.ship?.current_hp ?? "--";
+        const attackerRt = attackerActor?.runtime;
+        const targetRt   = targetActor?.runtime;
 
-            attackerContainer.querySelector(".ap").textContent =
-                me.user?.current_ap ?? "--";
+        console.log("context.targetKey", context.targetKey)
 
-            attackerContainer.querySelector(".shield-missile").textContent =
-                me.ship?.current_missile_defense ?? "--";
+        const isTargetScanned = window.isScanned?.(context.targetKey) === true;
 
-            attackerContainer.querySelector(".shield-thermal").textContent =
-                me.ship?.current_thermal_defense ?? "--";
+        // ======================================================
+        // 🟢 JOUEUR LOCAL (toujours visible)
+        // ======================================================
 
-            attackerContainer.querySelector(".shield-ballistic").textContent =
-                me.ship?.current_ballistic_defense ?? "--";
+        console.log(attackerActor?.data?.ship)
+
+        attackerContainer.querySelector(".hp").textContent =
+            attackerRt?.current_hp ??
+            window.currentPlayer?.ship?.current_hp ??
+            "--";
+
+        attackerContainer.querySelector(".ap").textContent =
+            attackerRt?.current_ap ??
+            window.currentPlayer?.user?.current_ap ??
+            "--";
+
+        attackerContainer.querySelector(".shield-missile").textContent =
+            attackerRt?.shields?.MISSILE ??
+            window.currentPlayer?.ship?.current_missile_defense ??
+            "--";
+
+        attackerContainer.querySelector(".shield-thermal").textContent =
+            attackerRt?.shields?.THERMAL ??
+            window.currentPlayer?.ship?.current_thermal_defense ??
+            "--";
+
+        attackerContainer.querySelector(".shield-ballistic").textContent =
+            attackerRt?.shields?.BALLISTIC ??
+            window.currentPlayer?.ship?.current_ballistic_defense ??
+            "--";
+
+        // ======================================================
+        // 🔴 CIBLE (visible uniquement si scannée)
+        // ======================================================
+
+        if (isTargetScanned) {
+
+            targetContainer.querySelector(".hp").textContent =
+                targetRt?.current_hp ?? "--";
+
+            targetContainer.querySelector(".ap").textContent =
+                targetRt?.current_ap ?? "--";
+
+            targetContainer.querySelector(".shield-missile").textContent =
+                targetRt?.shields?.MISSILE ?? "--";
+
+            targetContainer.querySelector(".shield-thermal").textContent =
+                targetRt?.shields?.THERMAL ?? "--";
+
+            targetContainer.querySelector(".shield-ballistic").textContent =
+                targetRt?.shields?.BALLISTIC ?? "--";
+
+        } else {
+
+            targetContainer.querySelector(".hp").textContent = "???";
+            targetContainer.querySelector(".ap").textContent = "???";
+            targetContainer.querySelector(".shield-missile").textContent = "???";
+            targetContainer.querySelector(".shield-thermal").textContent = "???";
+            targetContainer.querySelector(".shield-ballistic").textContent = "???";
         }
-
-        // ===== Target =====
-        const scanned = window.scannedModalData?.[context.targetKey];
-
-        console.log("scanned")
-        console.log(scanned)
-
-        if (!scanned || !targetContainer) return;
-
-        // HP
-        targetContainer.querySelector(".hp").textContent =
-            scanned.ship?.current_hp ?? "--";
-
-        // AP (only if PC)
-        targetContainer.querySelector(".ap").textContent =
-            scanned.user?.current_ap ?? "--";
-
-        // Shields
-        targetContainer.querySelector(".shield-missile").textContent =
-            scanned.ship?.current_missile_defense ?? "--";
-
-        targetContainer.querySelector(".shield-thermal").textContent =
-            scanned.ship?.current_thermal_defense ?? "--";
-
-        targetContainer.querySelector(".shield-ballistic").textContent =
-            scanned.ship?.current_ballistic_defense ?? "--";
     }
 
 
@@ -570,24 +598,22 @@ class ActionSceneManager {
 
         if (!container) return;
 
-        // HULL
         if (changes.hp?.current != null) {
             const hpSpan = container.querySelector(".hp");
             if (hpSpan) hpSpan.textContent = changes.hp.current;
         }
 
-        // SHIELD par type
-        if (changes.shield?.current != null && changes.shield?.damage_type) {
+        if (changes.shields) {
+            const shields = changes.shields;
 
-            const type = changes.shield.damage_type;
+            if (shields.MISSILE != null)
+                container.querySelector(".shield-missile").textContent = shields.MISSILE;
 
-            const shieldSpan = container.querySelector(
-                `.shield-${type.toLowerCase()}`
-            );
+            if (shields.THERMAL != null)
+                container.querySelector(".shield-thermal").textContent = shields.THERMAL;
 
-            if (shieldSpan) {
-                shieldSpan.textContent = changes.shield.current;
-            }
+            if (shields.BALLISTIC != null)
+                container.querySelector(".shield-ballistic").textContent = shields.BALLISTIC;
         }
     }
 

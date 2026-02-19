@@ -87,10 +87,6 @@ function isRelevantForMyCombatModal(payload) {
     const cA = normalizeActorKey(ctx.attackerKey);
     const cB = normalizeActorKey(ctx.targetKey);
 
-    console.log(`cA = ${cA}, targetKey = ${targetKey}, attackerKey = ${attackerKey}`);
-    console.log(`cB = ${cB}, targetKey = ${targetKey}, attackerKey = ${attackerKey}`);
-
-
     // match direct (A,B) ou inversé (B,A)
     return (
         (cA === attackerKey && cB === targetKey) ||

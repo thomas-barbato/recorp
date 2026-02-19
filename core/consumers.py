@@ -1682,7 +1682,7 @@ class GameConsumer(WebsocketConsumer):
 
                 damaged_ad = source_ad if is_counter else target_ad
                 entity_key = self.get_entity_key_from_adapter(damaged_ad)
-
+                
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
                     {
@@ -1693,10 +1693,7 @@ class GameConsumer(WebsocketConsumer):
                             "hp": {
                                 "current": ev.payload["hull_remaining"],
                             },
-                            "shield": {
-                                "current": ev.payload["shield_remaining"],
-                                "damage_type": ev.payload["damage_type"],
-                            }
+                            "shields": ev.payload["shields"],
                         }
                     }
                 )

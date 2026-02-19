@@ -137,6 +137,13 @@ class ActorAdapter:
         setattr(self.actor, attr, max(0, int(new_value)))
         self.actor.save(update_fields=[attr])
 
+    def get_all_shields(self) -> Dict[DamageType, int]:
+        return {
+            "MISSILE": self.get_shield("MISSILE"),
+            "THERMAL": self.get_shield("THERMAL"),
+            "BALLISTIC": self.get_shield("BALLISTIC"),
+        }
+
 
 # ---- Skill levels: you will optimize later with prefetch/select_related ----
 def get_skill_level_for_actor(actor: Any, actor_kind: Literal["PC", "NPC"], skill_name: str) -> int:
@@ -354,7 +361,7 @@ def resolve_attack(
         final_damage = weapon.max_damage + (weapon.max_damage * multiplier)
 
     # --- Apply damage ---
-    to_shield, to_hull, shield_after = apply_damage(
+    to_shield, to_hull, _ = apply_damage(
         defender_ad,
         weapon.damage_type,
         final_damage
@@ -381,8 +388,8 @@ def resolve_attack(
                 "damage_to_shield": to_shield,
                 "damage_to_hull": to_hull,
                 "is_critical": is_critical,
-                "shield_remaining": shield_after,
                 "hull_remaining": defender_ad.get_hp(),
+                "shields": defender_ad.get_all_shields(),
             },
         )
     )
@@ -482,7 +489,7 @@ def resolve_combat_action(
     counter_weapon = select_best_weapon_for_counter(
         weapons=target_weapons,
         distance_tiles=distance_tiles,
-    )
+    )   
 
     if not counter_weapon:
         return events
@@ -560,7 +567,6 @@ def compute_distance_tiles(
 
     # distance euclidienne
     return int((dx ** 2 + dy ** 2) ** 0.5)
-
 
 def compute_distance_between_actors(source_ad, target_ad):
     """

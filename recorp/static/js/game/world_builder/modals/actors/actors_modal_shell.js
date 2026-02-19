@@ -111,6 +111,7 @@
         // === ROOT ===
         const root = document.createElement("div");
         root.id = modalId;
+        root.dataset.mode = "info";
         root.setAttribute("aria-hidden", true);
         root.setAttribute("tabindex", -1);
         root.classList.add(
