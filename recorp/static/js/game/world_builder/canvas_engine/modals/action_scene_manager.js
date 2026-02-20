@@ -1123,9 +1123,11 @@ class CombatAnimationEngine {
                             side: toSide,
                             damageType: weaponType
                         });
+                    } else {
+                        // si pas de shield impact → on clear normalement
+                        this.clear();
                     }
 
-                    this.clear();
                     this._rafId = null;
                     this._running = false;
                     resolve();

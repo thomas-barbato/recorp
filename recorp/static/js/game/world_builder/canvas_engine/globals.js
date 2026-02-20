@@ -104,6 +104,31 @@ export function initGlobals() {
             );
         };
 
+        window.isTargetInSonarRange = function (targetKey) {
+            try {
+                const engine = window.canvasEngine;
+                if (!engine?.map || !engine?.renderer) return false;
+
+                const actor = engine.map.findActorByKey?.(targetKey);
+                if (!actor) return false;
+
+                // sonar moderne
+                if (engine.renderer.sonar?.isVisible) {
+                    return engine.renderer.sonar.isVisible(actor);
+                }
+
+                // fallback : visible_zone backend (comme main_engine.js)
+                const me = engine.map.findPlayerById?.(window.current_player_id);
+                if (!me) return false;
+
+                const key = `${actor.x}_${actor.y}`;
+                return (me.data?.ship?.visible_zone || []).includes(key);
+
+            } catch (e) {
+                return false;
+            }
+        };
+
         window.hasDirectScan = function (targetKey) {
             return window.activeEffects?.scan?.has(targetKey) === true;
         };
@@ -156,7 +181,8 @@ export function initGlobals() {
             const timeoutId = setTimeout(() => {
                 if (effect === "scan") {
 
-                    // upprimer l'effet actif (important)
+                    // supprimer l'effet actif (important)
+                    window.clearScan?.(targetKey);
                     window.activeEffects?.scan?.delete(targetKey);
                     window.activeEffects?.share_scan?.delete(targetKey);
 
@@ -220,8 +246,9 @@ export function initGlobals() {
             // Ferme puis rouvre au prochain tick
             setTimeout(() => {
                 try {
-                    window.open_close_modal?.(targetKey);
-                    window.open_close_modal?.(targetKey);
+                    const modalId = `modal-${targetKey}`;
+                    window.open_close_modal?.(modalId);
+                    window.open_close_modal?.(modalId);
                 } finally {
                     // Nettoyage sécurité
                     setTimeout(() => {

@@ -53,26 +53,36 @@
         const modal = document.getElementById(modalId);
         if (!modal) return;
 
-        const body = document.getElementById(`${modalId}-body`);
-        if (!body) return;
-
-        const cached = window.modalDataCache?.[modalId];
-        if (!cached) return;
-
-        // 🔥 Fermer proprement le combat
+        // Fermer proprement la scène combat
         if (window.ActionSceneManager?.close) {
             window.ActionSceneManager.close({ silent: true });
         }
 
-        // 🔥 Supprimer complètement le modal existant
-        modal.remove();
+        // Déduire la targetKey depuis modalId :
+        // modal-npc_1223 / modal-unknown-npc_1223 => npc_1223
+        const raw = modalId.replace("modal-", "");
+        const targetKey = raw.startsWith("unknown-") ? raw.replace("unknown-", "") : raw;
 
-        // 🔥 Le recréer proprement (modal de base)
-        if (typeof window.open_close_modal === "function") {
-            open_close_modal(modalId);
+        // Choisir le bon modalId à rouvrir (UNKNOWN si hors sonar ET non scanné)
+        let reopenId = `modal-${targetKey}`;
+
+        const isPcOrNpc = targetKey.startsWith("pc_") || targetKey.startsWith("npc_");
+        if (isPcOrNpc) {
+            const inSonar = window.isTargetInSonarRange?.(targetKey) === true;
+            const scanned = window.isScanned?.(targetKey) === true;
+
+            if (!inSonar && !scanned) {
+                reopenId = `modal-unknown-${targetKey}`;
+            }
         }
 
-        modal.dataset.mode = "info";
+        // Fermer l'actuel modal (on le retire du DOM)
+        modal.remove();
+
+        // Réouvrir le bon modal
+        if (typeof window.open_close_modal === "function") {
+            window.open_close_modal(reopenId);
+        }
     }
     
     // ---- Bridge global ----
