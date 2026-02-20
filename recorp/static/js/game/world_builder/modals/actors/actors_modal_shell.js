@@ -177,7 +177,24 @@
                     "inline-block","w-[5%]","h-[5%]",
                     "cursor-pointer","hover:animate-pulse"
                 );
-                closeBtn.onclick = () => open_close_modal(modalId);
+                //closeBtn.onclick = () => open_close_modal(modalId);
+                closeBtn.onclick = () => {
+                    const root = document.getElementById(modalId);
+                    const mode = root?.dataset?.mode || "info";
+
+                    console.log(root)
+                    console.log(mode)
+
+                    if (mode !== "info" && window.ModalModeManager?.exit) {
+                        console.log("DEDANS MDR")
+                        console.log("mode", mode)
+                        console.log(window.ModalModeManager?.exit)
+                        window.ModalModeManager.exit(modalId);
+                        return;
+                    }
+                    open_close_modal(modalId);
+                };
+                                
                 this.el.append(closeBtn);
             }
         };
@@ -218,7 +235,19 @@
                 let closeBtn = document.createElement('button');
                 closeBtn.className = "text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all";
                 closeBtn.textContent= gettext('close');
-                closeBtn.onclick = () => open_close_modal(modalId);
+                closeBtn.onclick = () => {
+
+                    const root = document.getElementById(modalId);
+                    const mode = root?.dataset?.mode || "info";
+
+                    if (mode !== "info" && window.ModalModeManager?.exit) {
+                        window.ModalModeManager.exit(modalId);
+                        return;
+                    }
+
+                    open_close_modal(modalId);
+
+                };
                 footer_container.append(closeBtn)
                 this.el.append(footer_container);
             }

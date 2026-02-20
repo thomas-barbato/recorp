@@ -15,6 +15,8 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 const isScanned = window.isScanned(targetKey);
                 modalData._ui = modalData._ui || {};
                 modalData._ui.scanned = isScanned;
+                console.log("isScanned?", targetKey, window.isScanned(targetKey));
+                console.log("expired?", window.scanExpiredLocal?.has?.(targetKey));
                 modal = create_pc_npc_modal(modalId, modalData, false);
             }
             break;
@@ -28,6 +30,8 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 const isScanned = window.isScanned(targetKey);
                 modalData._ui = modalData._ui || {};
                 modalData._ui.scanned = isScanned;
+                console.log("isScanned?", targetKey, window.isScanned(targetKey));
+                console.log("expired?", window.scanExpiredLocal?.has?.(targetKey));
                 // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
                 if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
                     modalData._ui.scanned = true;
@@ -485,6 +489,12 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                     window.scanExpiredLocal.add(targetKey);
                     // Redraw carte (vaisseau / npc / foreground)
                     window.canvasEngine?.renderer?.requestRedraw();
+                    // supprimer le timer manuellement 
+                    // sert principalement pour le modal "non base"
+                    timerContainer.remove();
+                    window.dispatchEvent(new CustomEvent("scan:expired", {
+                        detail: { targetKey }
+                    }));
                     
                 }
             });

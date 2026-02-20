@@ -154,14 +154,24 @@ export function initGlobals() {
             const delay = Math.max(0, new Date(expiresAt).getTime() - Date.now());
 
             const timeoutId = setTimeout(() => {
-                // VISUEL UNIQUEMENT
                 if (effect === "scan") {
+
+                    // upprimer l'effet actif (important)
+                    window.activeEffects?.scan?.delete(targetKey);
+                    window.activeEffects?.share_scan?.delete(targetKey);
+
+                    // Marquer expiré localement
                     window.scanExpiredLocal.add(targetKey);
+
                     window.canvasEngine?.renderer?.requestRedraw();
-                    // affiche message de suppression de scan.
                     window.renderTextAboveTarget(targetKey, "- scan", "rgba(231, 0, 11, 0.95)", "scan");
-                    // ferme modal après expiration du timer.
+
+                    // Refresh modal base si ouvert
                     window.refreshModalIfOpen(targetKey);
+
+                    window.dispatchEvent(new CustomEvent("scan:expired", {
+                        detail: { targetKey }
+                    }));
                 }
 
                 window.effectVisualTimers.delete(key);

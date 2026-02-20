@@ -10,8 +10,8 @@
         if (!el) return false; // pas ouvert
 
         // close puis open
-        open_close_modal(modalId);
-        open_close_modal(modalId);
+        window.open_close_modal?.(modalId);
+        window.open_close_modal?.(modalId);
         return true;
     }
 

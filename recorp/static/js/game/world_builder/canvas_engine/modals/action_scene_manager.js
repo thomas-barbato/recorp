@@ -7,6 +7,7 @@ class ActionSceneManager {
         // combat animation runtime
         this._combatAnim = null; // { engine, queue }
         this._combatCanvasPositions = null; // { left, right }
+        this._mountNode = null; // si défini, la scène est rendue dans ce node (body du modal)
     }
 
     isActive(type = null) {
@@ -21,6 +22,79 @@ class ActionSceneManager {
 
     getActive() {
         return this._active;
+    }
+
+    _isTargetScannedNow() {
+        const ctx = this.getContext?.();
+        if (!ctx) return false;
+        return window.isScanned?.(ctx.targetKey) === true;
+    }
+
+    _setTargetHiddenUI() {
+        const targetContainer = document.getElementById("combat-target-stats");
+        if (!targetContainer) return;
+
+        targetContainer.querySelector(".hp").textContent = "???";
+        targetContainer.querySelector(".ap").textContent = "???";
+        targetContainer.querySelector(".shield-missile").textContent = "???";
+        targetContainer.querySelector(".shield-thermal").textContent = "???";
+        targetContainer.querySelector(".shield-ballistic").textContent = "???";
+    }
+
+    _getTargetSnapshotFromModalCache() {
+        const ctx = this.getContext?.();
+        if (!ctx) return null;
+
+        const modalId = ctx.originalModalId; // le modal "de base" de la cible
+        const cached = window.modalDataCache?.[modalId];
+        if (!cached?.data) return null;
+
+        // cached.data = responseData.target (structure pc/npc complète)
+        // on récupère les champs utiles de snapshot :
+        const d = cached.data;
+
+        // PC:
+        const ship = d?.ship;
+        const user = d?.user;
+
+        // NPC:
+        const npcShip = d?.ship;
+        const npcObj = d?.npc;
+
+        return {
+            hp: ship?.current_hp ?? npcShip?.current_hp,
+            ap: user?.current_ap ?? null,
+            shields: {
+                MISSILE: ship?.current_missile_defense ?? npcShip?.current_missile_defense,
+                THERMAL: ship?.current_thermal_defense ?? npcShip?.current_thermal_defense,
+                BALLISTIC: ship?.current_ballistic_defense ?? npcShip?.current_ballistic_defense,
+            }
+        };
+    }
+
+    _bindScanListener() {
+        this._scanExpiredHandler = (e) => {
+            if (!this.isActive("combat")) return;
+
+            const ctx = this.getContext?.();
+            if (!ctx) return;
+
+            const expiredKey = e.detail?.targetKey;
+            if (!expiredKey) return;
+
+            // si la cible du combat perd le scan => on masque immédiatement
+            if (expiredKey === ctx.targetKey) {
+                this._setTargetHiddenUI();
+            }
+        };
+
+        window.addEventListener("scan:expired", this._scanExpiredHandler);
+    }
+
+    _unbindScanListener() {
+        if (!this._scanExpiredHandler) return;
+        window.removeEventListener("scan:expired", this._scanExpiredHandler);
+        this._scanExpiredHandler = null;
     }
 
     /**
@@ -40,10 +114,29 @@ class ActionSceneManager {
             openedAt: Date.now(),
         };
 
+        this._mountNode = context.mountNode || null;
+        this._context = context || {};
+
         if (type === "combat") {
             this._mountCombatScene(context);
+
+            this._onScanExpired = (ev) => {
+
+                const k = ev?.detail?.targetKey;
+                if (!k) return;
+
+                // si le scan expiré concerne la cible courante
+                // alors on change les stats adverse en "???"
+                if (k === this._context?.targetKey) {
+                    this._setTargetHiddenUI();
+                }
+            };
+
+            window.addEventListener("scan:expired", this._onScanExpired);
+
         }
 
+        this._bindMovementListener();
         this._bindMovementListener();
 
         window.dispatchEvent(new CustomEvent("actionscene:open", { detail: this._active }));
@@ -66,8 +159,14 @@ class ActionSceneManager {
         this._active = null;
 
         this._unbindMovementListener();
+        this._unbindScanListener();
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
+
+        if (this._onScanExpired) {
+            window.removeEventListener("scan:expired", this._onScanExpired);
+            this._onScanExpired = null;
+        }
 
         // cleanup combat anim si présent
         if (this._combatAnim) {
@@ -75,6 +174,7 @@ class ActionSceneManager {
             this._combatAnim = null;
         }
         this._combatCanvasPositions = null;
+        this._context = null;
 
         return true;
     }
@@ -93,6 +193,8 @@ class ActionSceneManager {
             return;
         }
 
+        const mountNode = context.mountNode || this._mountNode || null;
+
         // Utilisation du worker existant
         const worker = window.canvasEngine?.gameWorker;
 
@@ -102,50 +204,67 @@ class ActionSceneManager {
             return;
         }
 
-        // Backdrop
-        const backdrop = document.createElement("div");
-        backdrop.id = "combat-scene-backdrop";
-        backdrop.classList.add(
-            "fixed", "inset-0",
-            "bg-black/40",
-            "flex",
-            "justify-center",
-            "backdrop-blur-md", 
-            "backdrop-brightness-50", 
-            "animate-modal-fade",
-            "z-[9999]", 
-            "md:p-3",
-            "right-0",
-            "left-0",
-            "z-50",
-            "w-full",
-            "h-screen",
-            "md:inset-0",
-        );
+        // Backdrop (uniquement si pas de mountNode)
+        let backdrop = null;
+        if (!mountNode) {
+            backdrop = document.createElement("div");
+            backdrop.id = "combat-scene-backdrop";
+            backdrop.classList.add(
+                "fixed", "inset-0",
+                "bg-black/40",
+                "flex",
+                "justify-center",
+                "backdrop-blur-md",
+                "backdrop-brightness-50",
+                "animate-modal-fade",
+                "z-[9999]",
+                "md:p-3",
+                "right-0",
+                "left-0",
+                "z-50",
+                "w-full",
+                "h-screen",
+                "md:inset-0",
+            );
+        }
 
         // Container principal
         const container = document.createElement("div");
-        container.id = "modal-combat";
+        container.id = mountNode ? `${context.originalModalId}-combat-scene` : "modal-combat";
         container.dataset.modalId = "modal-combat";
-        container.classList.add(
-            "flex","shadow","rounded-t-xl",
-            "h-full",
-            "md:h-[70vh]",
-            "w-full",
-            "md:w-[600px]",
-            "lg:w-[680px]",
-            "xl:w-[520px]",
-            "bg-zinc-900",
-            "border",
-            "border-emerald-500/40",
-            "rounded-xl",
-            "shadow-2xl",
-            "p-3",
-            "flex",
-            "flex-col",
-            "gap-4",
-            "h-screen"
-        );
+
+        if (mountNode) {
+            // mode "renderer" : on ne remet pas de bg/border, car le modal de base fournit le skin
+            container.classList.add(
+                "w-full",
+                "h-full",
+                "flex",
+                "flex-col",
+                "gap-1",
+                "p-2"
+            );
+        } else {
+            // mode "overlay" : comportement actuel
+            container.classList.add(
+                "flex","shadow","rounded-t-xl",
+                "h-full",
+                "md:h-[70vh]",
+                "w-full",
+                "md:w-[600px]",
+                "lg:w-[680px]",
+                "xl:w-[520px]",
+                "bg-zinc-900",
+                "border",
+                "border-emerald-500/40",
+                "rounded-xl",
+                "shadow-2xl",
+                "p-3",
+                "flex",
+                "flex-col",
+                "gap-4",
+                "h-screen"
+            );
+        }
 
         // Header
         const header = document.createElement("div");
@@ -248,7 +367,6 @@ class ActionSceneManager {
         const log = document.createElement("div");
         log.classList.add(
             "h-[60px]",
-            "overflow-y-auto",
             "border",
             "border-emerald-500/20",
             "rounded-lg",
@@ -264,9 +382,9 @@ class ActionSceneManager {
         modulesContainer.classList.add(
             "flex",
             "flex-wrap",
-            "gap-3",
+            "gap-1",
             "justify-center",
-            "mt-4",
+            "mt-2",
             "overflow-y-scroll",
             "h-[24vh]"
         );
@@ -275,32 +393,19 @@ class ActionSceneManager {
         const footer = document.createElement("div");
         footer.classList.add("flex", "justify-end");
 
-        const closeBtn = document.createElement("button");
-        closeBtn.textContent = "Fermer";
-        closeBtn.classList.add(
-            "px-4",
-            "py-2",
-            "bg-red-600",
-            "rounded",
-            "text-white",
-            "hover:bg-red-700"
-        );
-
-        closeBtn.addEventListener("click", () => {
-            this.close({ reason: "manual" });
-
-            if (window.ModalModeManager?.exit) {
-                window.ModalModeManager.exit(context.originalModalId);
-            }
-        });
-
-        footer.append(closeBtn);
-
         container.append(header, distance, visualWrapper, stats, log, modulesContainer, footer);
-        backdrop.append(container);
-        document.body.append(backdrop);
 
-        this._rootEl = backdrop;
+        // Montage DOM
+        if (mountNode) {
+            mountNode.innerHTML = "";
+            mountNode.appendChild(container);
+            this._rootEl = container; // close() retire juste le container (parfait)
+        } else {
+            backdrop.append(container);
+            document.body.append(backdrop);
+            this._rootEl = backdrop;
+        }
+        
         this._initStatsFromRuntime();
         this._buildCombatModules();
         this._initCombatCanvases(attacker, target);
@@ -494,69 +599,53 @@ class ActionSceneManager {
         const attackerRt = attackerActor?.runtime;
         const targetRt   = targetActor?.runtime;
 
-        console.log("context.targetKey", context.targetKey)
-
         const isTargetScanned = window.isScanned?.(context.targetKey) === true;
 
         // ======================================================
         // 🟢 JOUEUR LOCAL (toujours visible)
         // ======================================================
 
-        console.log(attackerActor?.data?.ship)
-
         attackerContainer.querySelector(".hp").textContent =
             attackerRt?.current_hp ??
-            window.currentPlayer?.ship?.current_hp ??
-            "--";
+            window.currentPlayer?.ship?.current_hp ?? "0";
 
         attackerContainer.querySelector(".ap").textContent =
             attackerRt?.current_ap ??
-            window.currentPlayer?.user?.current_ap ??
-            "--";
+            window.currentPlayer?.user?.current_ap ?? "0";
 
         attackerContainer.querySelector(".shield-missile").textContent =
-            attackerRt?.shields?.MISSILE ??
-            window.currentPlayer?.ship?.current_missile_defense ??
-            "--";
+            window.currentPlayer?.ship?.current_missile_defense ?? "0";
 
         attackerContainer.querySelector(".shield-thermal").textContent =
-            attackerRt?.shields?.THERMAL ??
-            window.currentPlayer?.ship?.current_thermal_defense ??
-            "--";
+            window.currentPlayer?.ship?.current_thermal_defense ?? "0";
 
         attackerContainer.querySelector(".shield-ballistic").textContent =
-            attackerRt?.shields?.BALLISTIC ??
-            window.currentPlayer?.ship?.current_ballistic_defense ??
-            "--";
+            window.currentPlayer?.ship?.current_ballistic_defense ?? "0";
 
         // ======================================================
         // 🔴 CIBLE (visible uniquement si scannée)
         // ======================================================
 
         if (isTargetScanned) {
+            const snap = this._getTargetSnapshotFromModalCache();
 
             targetContainer.querySelector(".hp").textContent =
-                targetRt?.current_hp ?? "--";
+                targetRt?.current_hp ?? snap?.hp ?? "--";
 
             targetContainer.querySelector(".ap").textContent =
-                targetRt?.current_ap ?? "--";
+                targetRt?.current_ap ?? snap?.ap ?? "--";
 
             targetContainer.querySelector(".shield-missile").textContent =
-                targetRt?.shields?.MISSILE ?? "--";
+                targetRt?.shields?.MISSILE ?? snap?.shields?.MISSILE ?? "--";
 
             targetContainer.querySelector(".shield-thermal").textContent =
-                targetRt?.shields?.THERMAL ?? "--";
+                targetRt?.shields?.THERMAL ?? snap?.shields?.THERMAL ?? "--";
 
             targetContainer.querySelector(".shield-ballistic").textContent =
-                targetRt?.shields?.BALLISTIC ?? "--";
+                targetRt?.shields?.BALLISTIC ?? snap?.shields?.BALLISTIC ?? "--";
 
         } else {
-
-            targetContainer.querySelector(".hp").textContent = "???";
-            targetContainer.querySelector(".ap").textContent = "???";
-            targetContainer.querySelector(".shield-missile").textContent = "???";
-            targetContainer.querySelector(".shield-thermal").textContent = "???";
-            targetContainer.querySelector(".shield-ballistic").textContent = "???";
+            this._setTargetHiddenUI();
         }
     }
 
@@ -590,6 +679,16 @@ class ActionSceneManager {
 
     _updateCombatHp(entityKey, changes) {
 
+        const ctx = this.getContext?.();
+        if (!ctx) return;
+
+        const isTarget = entityKey === ctx.targetKey;
+        if (isTarget && !this._isTargetScannedNow()) {
+            // Si la cible n'est pas scannée, on ne révèle rien.
+            this._setTargetHiddenUI();
+            return;
+        }
+
         const container =
             entityKey === this._active.context.attackerKey
                 ? document.getElementById("combat-attacker-stats")
@@ -617,6 +716,16 @@ class ActionSceneManager {
     }
 
     _updateCombatAp(entityKey, changes) {
+
+        const ctx = this.getContext?.();
+        if (!ctx) return;
+
+        const isTarget = entityKey === ctx.targetKey;
+        if (isTarget && !this._isTargetScannedNow()) {
+            // Si la cible n'est pas scannée, on ne révèle rien.
+            this._setTargetHiddenUI();
+            return;
+        }
 
         const container =
             entityKey === this._active.context.attackerKey
@@ -1028,7 +1137,7 @@ class CombatAnimationEngine {
     }
 
     playFloatingDamage({ side, amount, is_critical = false }) {
-        console.log("damage amount", amount)
+        
         const pos = this.positions?.[side];
         if (!pos) return;
 
@@ -1146,16 +1255,19 @@ window.playCombatAnimation = function (payload) {
     const weaponType = payload?.damage_type || payload?.weaponType || "thermal";
     let result;
     if (payload?.type === "MISS" || payload?.type === "EVADE") {
+
         result = "miss";
         mgr._combatAnim?.engine?.playDodge({ side: toSide });
+
     }else{
+
         result = "hit";
-        console.log(payload)
         mgr._combatAnim?.engine?.playFloatingDamage({
             side: toSide,
             amount: payload.damage_to_hull > 0 ? payload.damage_to_hull : payload.damage_to_shield,
             is_critical: payload.is_critical
         });
+
     }
 
     q.enqueue({
