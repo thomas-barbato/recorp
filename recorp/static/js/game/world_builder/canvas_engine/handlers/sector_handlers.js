@@ -1,23 +1,36 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+}
+
+function getMapDataStore() {
+    return window.mapData || null;
+}
+
 export async function handleSectorSync(message) {
 
     const raw = message.data || message;
 
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) {
         console.warn("[sector_sync] canvasEngine non prêt");
         return;
     }
 
     // Prépare la MapData (nouveau cache minimal)
-    if (!window.mapData) {
+    const mapData = getMapDataStore();
+    if (!mapData) {
         console.error("[sector_sync] mapData manquant");
         return;
     }
 
-    window.mapData.raw = raw;
+    mapData.raw = raw;
 
     // prepare peut être async
-    const res = window.mapData.prepare?.();
+    const res = mapData.prepare?.();
     if (res && typeof res.then === "function") {
         await res;
     }
@@ -34,5 +47,4 @@ export async function handleSectorSync(message) {
         window.sectorLoader.hide?.();
     }
 
-    console.log("[WS] sector_sync appliqué ✓");
 }

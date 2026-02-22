@@ -17,6 +17,16 @@
         return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
     }
 
+    function getActionSceneManager() {
+        return window.ActionSceneManager || null;
+    }
+
+    function computeModuleRangeAsync(args) {
+        const p = window.computeModuleRange?.(args);
+        if (!p || typeof p.then !== "function") return null;
+        return p;
+    }
+
     function getActionRuntimeContext(modalId) {
         const engine = getEngine();
         const map = engine?.map ?? null;
@@ -407,11 +417,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     // ============================
     // RANGE CHECK — SCAN (PC / NPC)
     // ============================
-    window.computeModuleRange({
+    computeModuleRangeAsync({
         module: probeModule,
         transmitterActor,
         receiverActor
-    }).then(rangeResult => {
+    })?.then(rangeResult => {
         if (rangeResult.reason === "ok" && !rangeResult.allowed) {
             scanButton.classList.add("opacity-40", "pointer-events-none");
 
@@ -570,11 +580,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 list.append(wrapper);
 
                 // portée ASYNCHRONE (UNIQUEMENT du visuel)
-                window.computeModuleRange({
+                computeModuleRangeAsync({
                     module: m,
                     transmitterActor,
                     receiverActor
-                }).then(rangeResult => {
+                })?.then(rangeResult => {
                     if (rangeResult.reason === "ok" && !rangeResult.allowed) {
                         wrapper.classList.add("opacity-40", "pointer-events-none");
                         btn.classList.add("cursor-not-allowed");
@@ -651,11 +661,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 list.append(wrapper);
 
                 // portée ASYNCHRONE (visuel seulement)
-                window.computeModuleRange({
+                computeModuleRangeAsync({
                     module: m,
                     transmitterActor,
                     receiverActor
-                }).then(rangeResult => {
+                })?.then(rangeResult => {
                     
                     if (rangeResult.reason === "ok" && !rangeResult.allowed) {
                         wrapper.classList.add("opacity-40", "pointer-events-none");
@@ -745,8 +755,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             if (
                 !btn ||
                 btn.classList.contains("pointer-events-none") ||
-                !module ||
-                typeof window.computeModuleRange !== "function"
+                !module
             ) {
                 return;
             }
@@ -755,11 +764,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             const receiverActor = foregroundReceiverActor;
             if (!transmitterActor || !receiverActor) return;
 
-            window.computeModuleRange({
+            computeModuleRangeAsync({
                 module,
                 transmitterActor,
                 receiverActor
-            }).then(rangeResult => {
+            })?.then(rangeResult => {
                 if (!rangeResult?.allowed) {
                     btn.classList.add("opacity-40", "pointer-events-none");
 
@@ -1123,7 +1132,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         // 🔥 COMBAT SCENE SUPPORT
         // =====================================================
         if (modalId === "modal-combat") {
-            const context = window.ActionSceneManager?.getContext?.();
+            const context = getActionSceneManager()?.getContext?.();
             if (!context) return;
 
             const engine = getEngine();
@@ -1143,8 +1152,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 if (!module) return;
 
                 // computeModuleRange est async dans ton projet
-                const p = window.computeModuleRange?.({ module, transmitterActor, receiverActor });
-                if (!p || typeof p.then !== "function") return;
+                const p = computeModuleRangeAsync({ module, transmitterActor, receiverActor });
+                if (!p) return;
 
                 p.then(rr => applyState(btn, rr)).catch(() => {});
             });
@@ -1177,8 +1186,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             const module = modules.find(m => m.id === moduleId);
             if (!module) return;
 
-            const p = window.computeModuleRange?.({ module, transmitterActor, receiverActor });
-            if (!p || typeof p.then !== "function") return;
+            const p = computeModuleRangeAsync({ module, transmitterActor, receiverActor });
+            if (!p) return;
 
             p.then(rr => applyState(btn, rr)).catch(() => {});
         });
