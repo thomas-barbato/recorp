@@ -741,13 +741,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         const type = data.type;
         const alreadyScanned = data._ui?.scanned === true;
 
-        function getForegroundRangeActors() {
-            return {
-                transmitterActor: foregroundTransmitterActor,
-                receiverActor: foregroundReceiverActor,
-            };
-        }
-
         function computeAndDisableIfOutOfRange(btn, module) {
             if (
                 !btn ||
@@ -758,7 +751,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 return;
             }
 
-            const { transmitterActor, receiverActor } = getForegroundRangeActors();
+            const transmitterActor = foregroundTransmitterActor;
+            const receiverActor = foregroundReceiverActor;
             if (!transmitterActor || !receiverActor) return;
 
             window.computeModuleRange({
@@ -1014,15 +1008,17 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 if (action.key === "scan") {
                     const info = foregroundParsed ?? define_modal_type(modalId);
-                    const targetKey = `${info.type}_${info.id}`;
+                    if (!info?.type || info?.id == null) return;
+                    if (!actionCtx.ws) return;
 
-                    window.scannedTargets = window.scannedTargets || new Set();
-                    window.scannedTargets.add(targetKey);
-
-                    window.scannedMeta = window.scannedMeta || {};
-                    window.scannedMeta[targetKey] = { expires_at: null };
-
-                    refreshModalAfterScan(targetKey);
+                    actionCtx.ws.send({
+                        type: "action_scan_pc_npc",
+                        payload: {
+                            target_type: info.type,
+                            target_id: info.id
+                        }
+                    });
+                    return;
                 }
 
                 if (action.key === "send_report") {

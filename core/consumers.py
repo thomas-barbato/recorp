@@ -13,7 +13,11 @@ from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
 from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule
-from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
+from core.backend.modal_builder import (
+    build_npc_modal_data,
+    build_pc_modal_data,
+    build_sector_element_modal_data,
+)
 from core.backend.player_logs import create_event_log
 
 from core.backend.combat_engine import (
@@ -1192,11 +1196,23 @@ class GameConsumer(WebsocketConsumer):
                 (transmitter_instance, "TRANSMITTER"), 
                 (receiver_instance, "RECEIVER")
             ]
-            
-        else:
+
+        elif target_type == "npc":
             data = build_npc_modal_data(target_id)
-            target_name = data['npc']['displayed_name']
+            target_name = (data or {}).get('npc', {}).get('displayed_name', f"npc_{target_id}")
             players_roles = [(transmitter_instance, "TRANSMITTER")]
+
+        else:
+            data = build_sector_element_modal_data(target_type, int(target_id))
+            target_name = (data or {}).get('data', {}).get('name', f"{target_type}_{target_id}")
+            players_roles = [(transmitter_instance, "TRANSMITTER")]
+
+        if not data:
+            self._send_response({
+                "type": "action_failed",
+                "reason": "INVALID_TARGET"
+            })
+            return
         
         payload = {
             "event": "SCAN",
@@ -1352,8 +1368,10 @@ class GameConsumer(WebsocketConsumer):
         for scan in scans:
             if scan.target_type == "pc":
                 data = build_pc_modal_data(scan.target_id)
-            else:
+            elif scan.target_type == "npc":
                 data = build_npc_modal_data(scan.target_id)
+            else:
+                data = build_sector_element_modal_data(scan.target_type, scan.target_id)
 
             targets.append({
                 "target_key": f"{scan.target_type}_{scan.target_id}",

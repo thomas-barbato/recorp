@@ -46,6 +46,16 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
             }
             let foregroundData = extractForegroundModalData(extractedDataForModal)
             modalData = createForegroundModalData(foregroundData, extractedDataForModal.data)
+            if (modalData) {
+                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
+                const isScanned = window.isScanned?.(targetKey) === true;
+                modalData._ui = modalData._ui || {};
+                modalData._ui.scanned = isScanned;
+
+                if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
+                    modalData._ui.scanned = true;
+                }
+            }
             modal = create_foreground_modal(modalId, modalData)
             break;
     }
