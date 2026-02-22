@@ -8393,3 +8393,170 @@ WebSocket CONNECT /ws/play_3/ [127.0.0.1:64447]
 [mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61952][0m
 [32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61952][0m
 [mHTTP GET /fr/chat/unread-counts/ 200 [0.02, 127.0.0.1:61952][0m
+Watching for file changes with StatReloader
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:64775]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:64775]
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:59721]
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:59721]
+[32mHTTP GET /play/modal-data/pc/69/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/play/modal-data/pc/69/ 200 [0.06, 127.0.0.1:61179][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:61186][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.06, 127.0.0.1:61187][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61187][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61187][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:61186][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61187][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:61186][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:61187][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61187][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:64775]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 68
+[32mHTTP POST /fr/logout 302 [0.04, 127.0.0.1:61187][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:61187][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:61187][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:61187][0m
+[32mHTTP POST /fr/ 302 [0.20, 127.0.0.1:61187][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.04, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.04, 127.0.0.1:57900][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET / 302 [0.02, 127.0.0.1:61187][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:61187][0m
+Not Found: /favicon.ico
+[32mHTTP GET /play 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/play/ 200 [0.06, 127.0.0.1:61186][0m
+[mHTTP GET /static/world_builder/modals/actors/actors_modal_actions.js 200 [0.00, 127.0.0.1:61626][0m
+[36mHTTP GET /static/world_builder/modals/actors/actors_modals.js 304 [0.00, 127.0.0.1:61630][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.02, 127.0.0.1:61186][0m
+[36mHTTP GET /static/world_builder/canvas_engine/modals/modal_live_router.js 304 [0.00, 127.0.0.1:61186][0m
+[36mHTTP GET /static/world_builder/canvas_engine/modals/action_scene_manager.js 304 [0.00, 127.0.0.1:61186][0m
+[36mHTTP GET /static/world_builder/canvas_engine/handlers/move_handlers.js 304 [0.00, 127.0.0.1:61626][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.08, 127.0.0.1:61186][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:61637]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:61186][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:61637]
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:61626][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61186][0m
+[32mHTTP GET /play/modal-data/asteroid/323/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/play/modal-data/asteroid/323/ 200 [0.03, 127.0.0.1:61186][0m
+[32mHTTP GET /events/?page=1 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/events/?page=1 200 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:61637]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 24
+[32mHTTP POST /fr/logout 302 [0.02, 127.0.0.1:61186][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:61186][0m
+[mHTTP GET /fr/ 200 [0.00, 127.0.0.1:61186][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:61186][0m
+[32mHTTP POST /fr/ 302 [0.18, 127.0.0.1:61186][0m
+[32mHTTP GET / 302 [0.02, 127.0.0.1:61186][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:61186][0m
+Not Found: /favicon.ico
+[32mHTTP GET /play 302 [0.02, 127.0.0.1:56264][0m
+[mHTTP GET /fr/play/ 200 [0.19, 127.0.0.1:56264][0m
+[36mHTTP GET /static/world_builder/utils/range_utils.js 304 [0.00, 127.0.0.1:56271][0m
+[36mHTTP GET /static/world_builder/modals/actors/actors_modal_actions.js 304 [0.00, 127.0.0.1:56272][0m
+[36mHTTP GET /static/world_builder/modals/actors/actors_modals.js 304 [0.00, 127.0.0.1:56271][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.02, 127.0.0.1:56264][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:56274][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56281]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:56272][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56281]
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:56271][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:56272][0m
+WebSocket DISCONNECT /ws/play_3/ [127.0.0.1:56281]
+WebSocket déconnecté proprement - Code: 1001, Joueur: 25
+[32mHTTP POST /fr/logout 302 [0.02, 127.0.0.1:56264][0m
+[32mHTTP GET / 302 [0.01, 127.0.0.1:56264][0m
+[mHTTP GET /fr/ 200 [0.01, 127.0.0.1:56264][0m
+Not Found: /favicon.ico
+[32mHTTP POST /fr/ 302 [0.19, 127.0.0.1:56264][0m
+[32mHTTP GET / 302 [0.02, 127.0.0.1:56264][0m
+[mHTTP GET /fr/ 200 [0.02, 127.0.0.1:56264][0m
+Not Found: /favicon.ico
+[32mHTTP GET /play 302 [0.03, 127.0.0.1:56264][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.04, 127.0.0.1:61179][0m
+[mHTTP GET /fr/play/ 200 [0.07, 127.0.0.1:56264][0m
+[36mHTTP GET /static/world_builder/modals/actors/actors_modal_actions.js 304 [0.00, 127.0.0.1:56264][0m
+[mHTTP GET /fr/jsi18n/ 200 [0.02, 127.0.0.1:56271][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:56271][0m
+WebSocket HANDSHAKING /ws/play_3/ [127.0.0.1:56343]
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:56271][0m
+WebSocket CONNECT /ws/play_3/ [127.0.0.1:56343]
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:56336][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:56271][0m
+[32mHTTP GET /play/modal-data/asteroid/323/ 302 [0.02, 127.0.0.1:56264][0m
+[mHTTP GET /fr/play/modal-data/asteroid/323/ 200 [0.03, 127.0.0.1:56264][0m
+[32mHTTP GET /play/modal-data/pc/62/ 302 [0.02, 127.0.0.1:61179][0m
+[mHTTP GET /fr/play/modal-data/pc/62/ 200 [0.05, 127.0.0.1:61179][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.03, 127.0.0.1:57900][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.03, 127.0.0.1:61179][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.03, 127.0.0.1:57900][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:61179][0m
+[32mHTTP GET /messages/unread-count/ 302 [0.02, 127.0.0.1:56271][0m
+[mHTTP GET /fr/messages/unread-count/ 200 [0.02, 127.0.0.1:56271][0m
+[32mHTTP GET /chat/unread-counts/ 302 [0.02, 127.0.0.1:56271][0m
+[mHTTP GET /fr/chat/unread-counts/ 200 [0.03, 127.0.0.1:56271][0m

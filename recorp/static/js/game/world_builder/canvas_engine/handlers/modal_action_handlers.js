@@ -1,9 +1,35 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine;
+}
+
+function getCurrentPlayerId() {
+    return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
+}
+
+function requestWorldRedraw() {
+    getEngine()?.renderer?.requestRedraw?.();
+}
+
+function getOpenedModalTargetKey(openedId) {
+    if (!openedId) return null;
+    const parsed = window.define_modal_type?.(openedId);
+    if (parsed?.type && parsed.id != null) {
+        return `${parsed.type}_${parsed.id}`;
+    }
+    const m = openedId.match(/([a-z_]+_\d+)$/);
+    return m ? m[1] : null;
+}
+
 export function getScanResult(msg) {
     
     if (!msg?.target_key || !msg?.data) return;
     const { target_key, data, expires_at} = msg;
     const remaning_ap = msg?.remaining_ap;
-    const sender_id = `pc_${window.current_player_id}`;
+    const sender_id = `pc_${getCurrentPlayerId()}`;
 
     window.scannedTargets ??= new Set();
     window.scannedModalData ??= {};
@@ -35,9 +61,9 @@ export function getScanResult(msg) {
         expires_at: expires_at
     };
 
-    window.canvasEngine?.renderer?.requestRedraw();
+    requestWorldRedraw();
 
-    syncCanvasPlayerAp(window.current_player_id, remaning_ap)
+    syncCanvasPlayerAp(getCurrentPlayerId(), remaning_ap)
     
     window.renderTextAboveTarget(sender_id, "- 1 AP", "rgba(231, 0, 11, 0.95)");
     window.renderTextAboveTarget(target_key, "+ scan", "rgba(0,255,180,0.95)", "scan");
@@ -47,7 +73,7 @@ export function getScanResult(msg) {
 }
 
 export function sendScanResultToGroup(msg) {
-    if (!msg?.recipients?.includes(window.current_player_id)) return;
+    if (!msg?.recipients?.includes(getCurrentPlayerId())) return;
     if (!msg?.target_key) return;
 
     window.scannedTargets ??= new Set();
@@ -65,7 +91,7 @@ export function sendScanResultToGroup(msg) {
     }
 
     refreshModalAfterScan(msg.target_key);
-    window.canvasEngine?.renderer?.requestRedraw();
+    requestWorldRedraw();
     window.renderTextAboveTarget(msg.target_key, "+ scan", "rgba(0,255,180,0.95)", "scan")
     refreshOpenedModalRanges();
 
@@ -111,13 +137,12 @@ export function handleScanStateSync(msg) {
     });
 
     //  redraw
-    window.canvasEngine?.renderer?.requestRedraw();
+    requestWorldRedraw();
 
     // si un modal est ouvert, le rafraîchir une seule fois
     if (openedId && typeof refreshModalAfterScan === "function") {
-        // on extrait le targetKey
-        const m = openedId.match(/(pc_\d+|npc_\d+)/);
-        if (m) refreshModalAfterScan(m[1]);
+        const targetKey = getOpenedModalTargetKey(openedId);
+        if (targetKey) refreshModalAfterScan(targetKey);
         refreshOpenedModalRanges();
     }
 }
@@ -147,13 +172,13 @@ export function handleScanVisibilityUpdate(msg) {
             }
         }
     });
-    window.canvasEngine?.renderer?.requestRedraw();
+    requestWorldRedraw();
     refreshOpenedModalRanges();
 }
 
 function syncCanvasPlayerAp(playerId, remainingAp) {
     const gs = window.GameState || null;
-    const engine = gs?.canvasEngine ?? window.canvasEngine;
+    const engine = gs?.canvasEngine ?? getEngine();
     if (!engine || !engine.map) return;
 
     const actor = engine.map.findPlayerById(playerId);

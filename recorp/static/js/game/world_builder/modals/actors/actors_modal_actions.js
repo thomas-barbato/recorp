@@ -771,6 +771,45 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             }).catch(() => {});
         }
 
+        function getForegroundTargetInfo() {
+            const info = foregroundParsed ?? define_modal_type(modalId);
+            if (!info?.type || info?.id == null) return null;
+            return {
+                targetType: info.type,
+                targetId: info.id,
+                targetKey: `${info.type}_${info.id}`
+            };
+        }
+
+        function executeForegroundAction(actionKey) {
+            const target = getForegroundTargetInfo();
+            if (!target) return false;
+
+            if (actionKey === "scan") {
+                if (!actionCtx.ws) return false;
+                actionCtx.ws.send({
+                    type: "action_scan_pc_npc",
+                    payload: {
+                        target_type: target.targetType,
+                        target_id: target.targetId
+                    }
+                });
+                return true;
+            }
+
+            if (actionKey === "send_report") {
+                openSendReportModal({
+                    targetKey: target.targetKey,
+                    targetType: target.targetType,
+                    targetId: target.targetId,
+                    modalData: data
+                });
+                return true;
+            }
+
+            return false;
+        }
+
         const errorZone = document.createElement("div");
         errorZone.id = modalId + "-action-error-zone";
         errorZone.classList.add(
@@ -1007,27 +1046,12 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 if (action.key === "scan") {
-                    const info = foregroundParsed ?? define_modal_type(modalId);
-                    if (!info?.type || info?.id == null) return;
-                    if (!actionCtx.ws) return;
-
-                    actionCtx.ws.send({
-                        type: "action_scan_pc_npc",
-                        payload: {
-                            target_type: info.type,
-                            target_id: info.id
-                        }
-                    });
+                    executeForegroundAction("scan");
                     return;
                 }
 
                 if (action.key === "send_report") {
-                    openSendReportModal({
-                        targetKey,
-                        targetType,
-                        targetId,
-                        modalData: data
-                    });
+                    executeForegroundAction("send_report");
                     return;
                 }
             };
