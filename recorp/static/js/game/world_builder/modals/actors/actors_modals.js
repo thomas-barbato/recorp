@@ -1,3 +1,15 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+}
+
+function requestWorldRedraw() {
+    getEngine()?.renderer?.requestRedraw?.();
+}
+
 function applyScannedUiState(modalData, extractDataFromId, extractedDataForModal) {
     if (!modalData || !extractDataFromId?.type || extractDataFromId?.id == null) return modalData;
 
@@ -490,7 +502,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                     // Marque l’expiration locale
                     window.scanExpiredLocal.add(targetKey);
                     // Redraw carte (vaisseau / npc / foreground)
-                    window.canvasEngine?.renderer?.requestRedraw();
+                    requestWorldRedraw();
                     // supprimer le timer manuellement 
                     // sert principalement pour le modal "non base"
                     timerContainer.remove();

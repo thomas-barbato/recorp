@@ -18,9 +18,8 @@ export function handleCombatEvents(message) {
     events.forEach(ev => {
         if (!ev || !ev.type) return;
 
-        switch (ev.type) {
+            switch (ev.type) {
             case "ATTACK_HIT":
-                console.log(ev.payload)
                 renderModalAttackHit(ev.payload);
                 break;
 

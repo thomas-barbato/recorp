@@ -182,13 +182,7 @@
                     const root = document.getElementById(modalId);
                     const mode = root?.dataset?.mode || "info";
 
-                    console.log(root)
-                    console.log(mode)
-
                     if (mode !== "info" && window.ModalModeManager?.exit) {
-                        console.log("DEDANS MDR")
-                        console.log("mode", mode)
-                        console.log(window.ModalModeManager?.exit)
                         window.ModalModeManager.exit(modalId);
                         return;
                     }

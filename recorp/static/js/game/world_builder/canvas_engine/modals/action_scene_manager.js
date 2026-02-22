@@ -31,6 +31,51 @@ class ActionSceneManager {
         return this._getCurrentPlayerData()?.ship?.modules || [];
     }
 
+    _getTargetDisplayNameFromCache(ctx) {
+        if (!ctx) return null;
+        const modalId = ctx.originalModalId;
+        const cached = window.modalDataCache?.[modalId];
+        const d = cached?.data;
+        return (
+            d?.user?.name ||
+            d?.npc?.displayed_name ||
+            d?.name ||
+            d?.ship?.name ||
+            null
+        );
+    }
+
+    _showCombatEscapeMessage(ctx, reason) {
+        if (!ctx) return;
+        if (reason !== "actor_removed" && reason !== "warp_complete") return;
+
+        const targetName =
+            this._getTargetDisplayNameFromCache(ctx) ||
+            ctx.targetKey ||
+            "La cible";
+
+        const mountNode =
+            this._mountNode ||
+            (ctx.originalModalId ? document.getElementById(`${ctx.originalModalId}-body`) : null);
+
+        if (!mountNode) return;
+
+        mountNode.innerHTML = "";
+
+        const msg = document.createElement("div");
+        msg.classList.add(
+            "text-red-500",
+            "font-bold",
+            "text-center",
+            "animate-pulse",
+            "font-shadow",
+            "mt-4"
+        );
+        msg.textContent = `${targetName} s'est echappe`;
+
+        mountNode.append(msg);
+    }
+
     isActive(type = null) {
         if (!this._active) return false;
         if (!type) return true;
@@ -159,6 +204,8 @@ class ActionSceneManager {
     close(meta = {}) {
         if (!this._active) return false;
 
+        const ctx = this._context || this._active?.context || null;
+
         if (this._rootEl) {
             this._rootEl.remove();
             this._rootEl = null;
@@ -169,6 +216,8 @@ class ActionSceneManager {
 
         this._unbindMovementListener();
         this._unbindScanListener();
+
+        this._showCombatEscapeMessage(ctx, meta?.reason);
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
 

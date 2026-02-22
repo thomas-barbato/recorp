@@ -53,6 +53,36 @@ function closeCombatSceneIfActorAffected(removedKey, reason = "actor_removed") {
     }
 }
 
+function resolveRemovedActorKey(data) {
+    if (!data) return null;
+    if (data.actor_key) return String(data.actor_key);
+    if (data.target_key) return String(data.target_key);
+    if (data.player_id != null) return `pc_${data.player_id}`;
+    if (data.player != null) return `pc_${data.player}`;
+    if (data.id != null) return `pc_${data.id}`;
+    if (data.ship_id != null) return `pc_${data.ship_id}`;
+    if (data.npc_id != null) return `npc_${data.npc_id}`;
+    return null;
+}
+
+function removeActorFromMap(map, actorKey, data) {
+    if (!map) return;
+    if (actorKey?.startsWith("npc_")) {
+        const npcId = actorKey.replace("npc_", "");
+        map.removeNpcById?.(npcId);
+        return;
+    }
+
+    const playerId =
+        data?.player_id ??
+        data?.player ??
+        data?.id ??
+        (actorKey?.startsWith("pc_") ? actorKey.replace("pc_", "") : null);
+    if (playerId != null) {
+        map.removeActorByPlayerId(playerId);
+    }
+}
+
 export function handlerWarpFailed(data) {
     console.warn("[warp] Warp impossible :", data);
 
@@ -170,8 +200,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
 
 export function handlerRemovePlayer(data){
     
-    const shipId = data.player_id;
-    const actorId = `pc_${shipId}`;
+    const actorId = resolveRemovedActorKey(data) || (data?.player_id != null ? `pc_${data.player_id}` : null);
 
     const engine = getEngine();
     if (!engine) return;
@@ -180,10 +209,10 @@ export function handlerRemovePlayer(data){
     if (!map) return;
 
     // 1️⃣ Supprimer l’acteur de la map
-    map.removeActorByPlayerId(shipId);
+    removeActorFromMap(map, actorId, data);
 
     // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
-    if (isTargetScanned(actorId)) {
+    if (actorId && isTargetScanned(actorId)) {
         purgeScanData(actorId);
         refreshScannedTargetUi(actorId);
     }
@@ -192,23 +221,23 @@ export function handlerRemovePlayer(data){
     requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
-    closeCombatSceneIfActorAffected(`pc_${data.player_id}`, "actor_removed");
+    if (actorId) closeCombatSceneIfActorAffected(actorId, "actor_removed");
 
 }
 
 export function handlerShipRemoved(data){
-    const actorId = `pc_${data.ship_id}`;
+    const actorId = resolveRemovedActorKey(data) || (data?.ship_id != null ? `pc_${data.ship_id}` : null);
     const engine = getEngine();
     if (!engine) return;
 
     const map = engine.map;
     if (!map) return;
 
-    map.removeActorByPlayerId(data.player_id);
+    removeActorFromMap(map, actorId, data);
     requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
-    closeCombatSceneIfActorAffected(`pc_${data.ship_id}`, "actor_removed");
+    if (actorId) closeCombatSceneIfActorAffected(actorId, "actor_removed");
 }
 
 export function handlerUserJoin(data){
