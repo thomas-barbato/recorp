@@ -424,60 +424,6 @@ class ActionSceneManager {
 
         container.innerHTML = "";
 
-        const me = getGameState()?.currentPlayer ?? window.currentPlayer;
-        if (!me?.ship?.modules) return;
-
-        const weaponModules = me.ship.modules.filter(m => m.type === "WEAPONRY");
-
-        if (!weaponModules.length) {
-            container.textContent = "Aucun module d'attaque";
-            return;
-        }
-
-        weaponModules.forEach(module => {
-
-            const btn = document.createElement("button");
-            btn.classList.add(
-                "px-4",
-                "py-2",
-                "bg-emerald-600",
-                "hover:bg-emerald-700",
-                "rounded",
-                "text-white",
-                "text-sm"
-            );
-            const apCost = 1;
-            btn.textContent = `${module.name} (AP:${apCost})`;
-
-            btn.addEventListener("click", () => {
-
-                window.ws?.send(JSON.stringify({
-                    type: "action_attack",
-                    payload: {
-                        target_id: context.targetKey.split("_")[1],
-                        module_id: module.id
-                    }
-                }));
-
-            });
-
-            container.append(btn);
-        });
-        window.refreshModalActionRanges?.("modal-combat");
-    }
-
-    _buildCombatModules() {
-
-        if (!this.isActive("combat")) return;
-
-        const context = this.getContext();
-        if (!context) return;
-
-        const container = document.getElementById("combat-modules");
-        if (!container) return;
-
-        container.innerHTML = "";
-
         const engine = getGameState()?.canvasEngine ?? window.canvasEngine;
         if (!engine?.map) return;
 

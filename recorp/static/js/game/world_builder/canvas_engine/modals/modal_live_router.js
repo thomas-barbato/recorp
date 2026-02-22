@@ -83,9 +83,6 @@
     }
 
     function updateModalHp(modalEl, { hp, shield, damage_type, shields }) {
-        console.log("===========")
-        console.log(hp, shield, damage_type)
-        console.log("===========")
         // 🔹 HULL
         if (hp != null) {
 
@@ -153,7 +150,6 @@
 
 
     function updateModalAp(modalEl, { ap, max_ap }) {
-        console.log("Updating AP in modal:",modalEl.id, { ap, max_ap });
         if (ap == null || max_ap == null) return;
 
         const text = modalEl.querySelector("[data-stat='ap-text']");

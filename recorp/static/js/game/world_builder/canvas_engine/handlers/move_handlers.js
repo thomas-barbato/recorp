@@ -11,7 +11,7 @@ function getGameState() {
     return window.GameState || null;
 }
 
-export function updateHudMovement(playerId, remainingMovement, maxMove, new_coordinates) {
+function updateHudMovement(playerId, remainingMovement, maxMove, new_coordinates) {
     // On ne met à jour le HUD complet que pour le joueur courant
     const currentPlayerId = getGameState()?.currentPlayerId ?? window.current_player_id;
     if (String(playerId) !== String(currentPlayerId)) {
@@ -79,7 +79,7 @@ export function updateHudMovement(playerId, remainingMovement, maxMove, new_coor
  * On cherche le bon PC dans map_informations.pc[]
  * puis on met à jour ship.current_movement / ship.max_movement.
  */
-export function syncMapInformationsMovement(playerId, remainingMovement, maxMove) {
+function syncMapInformationsMovement(playerId, remainingMovement, maxMove) {
     const gs = getGameState();
     if (gs?.updatePlayerMovement) {
         gs.updatePlayerMovement(playerId, { current: remainingMovement, max: maxMove });
@@ -115,14 +115,13 @@ export function syncMapInformationsMovement(playerId, remainingMovement, maxMove
  * Met à jour aussi l’acteur dans la MapData (côté canvas)
  * pour que toutes les logiques qui lisent me.data.ship.* soient cohérentes.
  */
-export function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
+function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
     const gs = getGameState();
     if (gs?.updatePlayerMovement) {
         gs.updatePlayerMovement(playerId, { current: remainingMovement, max: maxMove });
         return;
     }
 
-    console.log(playerId)
     const engine = gs?.canvasEngine ?? window.canvasEngine;
     if (!engine || !engine.map) return;
 
@@ -142,9 +141,7 @@ export function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
  */
 export function handleUpdateMovementGeneric(msg) {
     if (!msg) return;
-    console.log(msg)
     const playerId = msg.player_id ?? msg.player ?? getGameState()?.currentPlayerId ?? window.current_player_id;
-    console.log(playerId)
     const remaining = msg.move;
     const maxMove = msg.max_move ?? msg.max_movement;
 
