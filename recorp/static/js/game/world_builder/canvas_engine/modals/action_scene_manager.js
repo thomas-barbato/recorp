@@ -1,5 +1,9 @@
 // ActionSceneManager (foundation) — UI-only, no gameplay.
 
+function getGameState() {
+    return window.GameState || null;
+}
+
 class ActionSceneManager {
     constructor() {
         this._active = null; // { type, context, openedAt }
@@ -166,7 +170,7 @@ class ActionSceneManager {
 
     _mountCombatScene(context) {
 
-        const engine = window.canvasEngine;
+        const engine = getGameState()?.canvasEngine ?? window.canvasEngine;
         if (!engine || !engine.map || !engine.renderer) return;
 
         const attacker = engine.map.findActorByKey(context.attackerKey);
@@ -181,7 +185,7 @@ class ActionSceneManager {
         const mountNode = context.mountNode || this._mountNode || null;
 
         // Utilisation du worker existant
-        const worker = window.canvasEngine?.gameWorker;
+        const worker = engine?.gameWorker;
 
         if (!worker || typeof worker.call !== "function") {
             console.warn("CombatScene: worker unavailable");
@@ -420,7 +424,7 @@ class ActionSceneManager {
 
         container.innerHTML = "";
 
-        const me = window.currentPlayer;
+        const me = getGameState()?.currentPlayer ?? window.currentPlayer;
         if (!me?.ship?.modules) return;
 
         const weaponModules = me.ship.modules.filter(m => m.type === "WEAPONRY");
@@ -474,7 +478,7 @@ class ActionSceneManager {
 
         container.innerHTML = "";
 
-        const engine = window.canvasEngine;
+        const engine = getGameState()?.canvasEngine ?? window.canvasEngine;
         if (!engine?.map) return;
 
         const transmitterActor = engine.map.findActorByKey(context.attackerKey);
@@ -482,7 +486,7 @@ class ActionSceneManager {
 
         if (!transmitterActor || !receiverActor) return;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        const modules = getGameState()?.currentPlayer?.ship?.modules || window.currentPlayer?.ship?.modules || [];
 
         const list = document.createElement("div");
         list.classList.add("flex", "flex-col", "gap-2");
@@ -540,10 +544,10 @@ class ActionSceneManager {
 
                 if (btn.classList.contains("pointer-events-none")) return;
 
-                window.canvasEngine?.ws?.send({
+                (getGameState()?.canvasEngine?.ws ?? window.canvasEngine?.ws)?.send({
                     type: "action_attack",
                     payload: {
-                        player: window.currentPlayer.user.player,
+                        player: (getGameState()?.currentPlayer ?? window.currentPlayer)?.user?.player,
                         subtype: `attack-${m.id}`,
                         module_id: m.id,
                         target_key: context.targetKey
@@ -576,7 +580,7 @@ class ActionSceneManager {
         const targetContainer   = document.getElementById("combat-target-stats");
         if (!attackerContainer || !targetContainer) return;
 
-        const engine = window.canvasEngine;
+        const engine = getGameState()?.canvasEngine ?? window.canvasEngine;
         if (!engine?.map) return;
 
         const attackerActor = engine.map.findActorByKey(context.attackerKey);
@@ -593,20 +597,20 @@ class ActionSceneManager {
 
         attackerContainer.querySelector(".hp").textContent =
             attackerRt?.current_hp ??
-            window.currentPlayer?.ship?.current_hp ?? "0";
+            (getGameState()?.currentPlayer ?? window.currentPlayer)?.ship?.current_hp ?? "0";
 
         attackerContainer.querySelector(".ap").textContent =
             attackerRt?.current_ap ??
-            window.currentPlayer?.user?.current_ap ?? "0";
+            (getGameState()?.currentPlayer ?? window.currentPlayer)?.user?.current_ap ?? "0";
 
         attackerContainer.querySelector(".shield-missile").textContent =
-            window.currentPlayer?.ship?.current_missile_defense ?? "0";
+            (getGameState()?.currentPlayer ?? window.currentPlayer)?.ship?.current_missile_defense ?? "0";
 
         attackerContainer.querySelector(".shield-thermal").textContent =
-            window.currentPlayer?.ship?.current_thermal_defense ?? "0";
+            (getGameState()?.currentPlayer ?? window.currentPlayer)?.ship?.current_thermal_defense ?? "0";
 
         attackerContainer.querySelector(".shield-ballistic").textContent =
-            window.currentPlayer?.ship?.current_ballistic_defense ?? "0";
+            (getGameState()?.currentPlayer ?? window.currentPlayer)?.ship?.current_ballistic_defense ?? "0";
 
         // ======================================================
         // 🔴 CIBLE (visible uniquement si scannée)
@@ -870,7 +874,7 @@ class ActionSceneManager {
             return;
         }
 
-        const engine = window.canvasEngine;
+        const engine = getGameState()?.canvasEngine ?? window.canvasEngine;
         if (!engine || !engine.map) return;
 
         const attacker = engine.map.findActorByKey(context.attackerKey);

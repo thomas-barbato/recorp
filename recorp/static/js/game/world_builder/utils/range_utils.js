@@ -1,9 +1,13 @@
+function getEngine() {
+    return window.GameState?.canvasEngine ?? window.canvasEngine ?? null;
+}
+
 window.computeActorsDistance = function ({ transmitterActor, receiverActor }) {
     if (!transmitterActor || !receiverActor) {
         return Promise.resolve(null);
     }
 
-    const worker = window.canvasEngine?.gameWorker;
+    const worker = getEngine()?.gameWorker;
     if (!worker || typeof worker.call !== "function") {
         return Promise.resolve(null);
     }
