@@ -722,6 +722,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         const currentPlayerModules = actionCtx.modules || [];
         const foregroundReceiverActor = actionCtx.receiverActor;
         const foregroundTransmitterActor = actionCtx.transmitterActor;
+        const foregroundParsed = actionCtx.parsed;
 
         const wrapper = document.createElement("div");
         wrapper.classList.add(
@@ -739,6 +740,42 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
         const type = data.type;
         const alreadyScanned = data._ui?.scanned === true;
+
+        function getForegroundRangeActors() {
+            return {
+                transmitterActor: foregroundTransmitterActor,
+                receiverActor: foregroundReceiverActor,
+            };
+        }
+
+        function computeAndDisableIfOutOfRange(btn, module) {
+            if (
+                !btn ||
+                btn.classList.contains("pointer-events-none") ||
+                !module ||
+                typeof window.computeModuleRange !== "function"
+            ) {
+                return;
+            }
+
+            const { transmitterActor, receiverActor } = getForegroundRangeActors();
+            if (!transmitterActor || !receiverActor) return;
+
+            window.computeModuleRange({
+                module,
+                transmitterActor,
+                receiverActor
+            }).then(rangeResult => {
+                if (!rangeResult?.allowed) {
+                    btn.classList.add("opacity-40", "pointer-events-none");
+
+                    if (typeof rangeResult.distance === "number") {
+                        btn.title =
+                            `Hors de portee (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                    }
+                }
+            }).catch(() => {});
+        }
 
         const errorZone = document.createElement("div");
         errorZone.id = modalId + "-action-error-zone";
@@ -892,30 +929,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // -------------------------
                 // Désactivation : portée
                 // -------------------------
-                if (
-                    !btn.classList.contains("pointer-events-none") &&
-                    typeof window.computeModuleRange === "function"
-                ) {
-                    const transmitterActor = foregroundTransmitterActor;
-                    const receiverActor = foregroundReceiverActor;
-
-                    if (transmitterActor && receiverActor && drillProbeModule) {
-                        window.computeModuleRange({
-                            module: gatheringModule,
-                            transmitterActor,
-                            receiverActor
-                        }).then(rangeResult => {
-                            if (!rangeResult.allowed) {
-                                btn.classList.add("opacity-40", "pointer-events-none");
-
-                                if (typeof rangeResult.distance === "number") {
-                                    btn.title =
-                                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                                }
-                            }
-                        });
-                    }
-                }
+                computeAndDisableIfOutOfRange(btn, drillProbeModule);
             }
 
             if (action.key === "gather") {
@@ -957,31 +971,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // -------------------------
                 // Désactivation : portée
                 // -------------------------
-                if (
-                    !btn.classList.contains("pointer-events-none") &&
-                    gatheringModule &&
-                    typeof window.computeModuleRange === "function"
-                ) {
-                    const transmitterActor = foregroundTransmitterActor;
-                    const receiverActor = foregroundReceiverActor;
-
-                    if (transmitterActor && receiverActor) {
-                        window.computeModuleRange({
-                            module: drillProbeModule,
-                            transmitterActor,
-                            receiverActor
-                        }).then(rangeResult => {
-                            if (!rangeResult.allowed) {
-                                btn.classList.add("opacity-40", "pointer-events-none");
-
-                                if (typeof rangeResult.distance === "number") {
-                                    btn.title =
-                                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                                }
-                            }
-                        });
-                    }
-                }
+                computeAndDisableIfOutOfRange(btn, gatheringModule);
             }
 
             
@@ -1007,7 +997,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 if (action.requires) {
                     const ok = action.requires.every(req =>
-                        currentPlayer.ship.modules.some(m =>
+                        currentPlayerModules.some(m =>
                             m.type === req.type &&
                             (!req.name || m.name === req.name)
                         )
@@ -1023,7 +1013,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 if (action.key === "scan") {
-                    const info = define_modal_type(modalId);
+                    const info = foregroundParsed ?? define_modal_type(modalId);
                     const targetKey = `${info.type}_${info.id}`;
 
                     window.scannedTargets = window.scannedTargets || new Set();
