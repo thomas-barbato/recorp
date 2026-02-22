@@ -270,18 +270,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     if (!transmitterActor) return;
 
     let receiverActor = actionCtx.receiverActor;
-
-    if (parsed && map) {
-        // pc / npc → clé standard
-        if (parsed.type === "pc" || parsed.type === "npc") {
-            receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
-        }
-        // foreground
-        else if (parsed.isForegroundElement) {
-            receiverActor = map.findActorByKey(parsed.elementName);
-        }
-    }
-
     if (!receiverActor) {
         // la cible n'existe réellement plus (destroy, warp, autre secteur)
         return;
@@ -354,7 +342,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             */
 
         },
-        { ap_cost:1 }
+        {}
     );
     wrapper.append(grid);
     
@@ -729,6 +717,12 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 }
 
     function buildForegroundActionsSection(modalId, data) {
+        const actionCtx = getActionRuntimeContext(modalId);
+        const currentPlayerData = actionCtx.currentPlayerData;
+        const currentPlayerModules = actionCtx.modules || [];
+        const foregroundReceiverActor = actionCtx.receiverActor;
+        const foregroundTransmitterActor = actionCtx.transmitterActor;
+
         const wrapper = document.createElement("div");
         wrapper.classList.add(
             "flex",
@@ -861,7 +855,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             if (action.key === "scan") {
 
-                const drillProbeModule = (getCurrentPlayerData()?.ship?.modules || []).find(
+                const drillProbeModule = currentPlayerModules.find(
                     m => m.type === "PROBE" && m.name === "drilling probe"
                 )
 
@@ -885,7 +879,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // Désactivation : règles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
-                const currentAp = getCurrentPlayerData()?.user?.current_ap ?? 0;
+                const currentAp = currentPlayerData?.user?.current_ap ?? 0;
 
                 if (
                     alreadyScanned ||
@@ -902,11 +896,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     !btn.classList.contains("pointer-events-none") &&
                     typeof window.computeModuleRange === "function"
                 ) {
-                    const map = getEngine()?.map;
-                    const transmitterActor = map?.getCurrentPlayer?.() || null;
-
-                    const parsed = define_modal_type(modalId);
-                    const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
+                    const transmitterActor = foregroundTransmitterActor;
+                    const receiverActor = foregroundReceiverActor;
 
                     if (transmitterActor && receiverActor && drillProbeModule) {
                         window.computeModuleRange({
@@ -933,7 +924,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn.dataset.modalId = modalId;
 
                 // --- récupération du module GATHERING (peut être absent) ---
-                const gatheringModule = (getCurrentPlayerData()?.ship?.modules || []).find(
+                const gatheringModule = currentPlayerModules.find(
                     m => m.type === "GATHERING"
                 );
 
@@ -954,7 +945,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // Désactivation : règles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
-                const currentAp = getCurrentPlayerData()?.user?.current_ap ?? 0;
+                const currentAp = currentPlayerData?.user?.current_ap ?? 0;
 
                 if (
                     !gatheringModule ||           // module absent
@@ -971,11 +962,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     gatheringModule &&
                     typeof window.computeModuleRange === "function"
                 ) {
-                    const map = getEngine()?.map;
-                    const transmitterActor = map?.getCurrentPlayer?.() || null;
-
-                    const parsed = define_modal_type(modalId);
-                    const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
+                    const transmitterActor = foregroundTransmitterActor;
+                    const receiverActor = foregroundReceiverActor;
 
                     if (transmitterActor && receiverActor) {
                         window.computeModuleRange({
@@ -1179,4 +1167,5 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
 
 })();
+
 
