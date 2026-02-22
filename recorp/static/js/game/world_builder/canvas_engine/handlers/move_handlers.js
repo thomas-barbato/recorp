@@ -7,9 +7,14 @@
 import { updatePlayerCoords } from "../engine/update_coordinate_display.js";
 import { currentPlayer } from "../globals.js";
 
+function getGameState() {
+    return window.GameState || null;
+}
+
 export function updateHudMovement(playerId, remainingMovement, maxMove, new_coordinates) {
     // On ne met à jour le HUD complet que pour le joueur courant
-    if (String(playerId) !== String(window.current_player_id)) {
+    const currentPlayerId = getGameState()?.currentPlayerId ?? window.current_player_id;
+    if (String(playerId) !== String(currentPlayerId)) {
         return;
     }
 
@@ -75,6 +80,12 @@ export function updateHudMovement(playerId, remainingMovement, maxMove, new_coor
  * puis on met à jour ship.current_movement / ship.max_movement.
  */
 export function syncMapInformationsMovement(playerId, remainingMovement, maxMove) {
+    const gs = getGameState();
+    if (gs?.updatePlayerMovement) {
+        gs.updatePlayerMovement(playerId, { current: remainingMovement, max: maxMove });
+        return;
+    }
+
     if (!window.map_informations) return;
 
     const pcList = Array.isArray(window.map_informations.pc)
@@ -105,8 +116,14 @@ export function syncMapInformationsMovement(playerId, remainingMovement, maxMove
  * pour que toutes les logiques qui lisent me.data.ship.* soient cohérentes.
  */
 export function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
+    const gs = getGameState();
+    if (gs?.updatePlayerMovement) {
+        gs.updatePlayerMovement(playerId, { current: remainingMovement, max: maxMove });
+        return;
+    }
+
     console.log(playerId)
-    const engine = window.canvasEngine;
+    const engine = gs?.canvasEngine ?? window.canvasEngine;
     if (!engine || !engine.map) return;
 
     const actor = engine.map.findPlayerById(playerId);
@@ -126,7 +143,7 @@ export function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
 export function handleUpdateMovementGeneric(msg) {
     if (!msg) return;
     console.log(msg)
-    const playerId = msg.player_id ?? msg.player ?? window.current_player_id;
+    const playerId = msg.player_id ?? msg.player ?? getGameState()?.currentPlayerId ?? window.current_player_id;
     console.log(playerId)
     const remaining = msg.move;
     const maxMove = msg.max_move ?? msg.max_movement;
@@ -135,8 +152,12 @@ export function handleUpdateMovementGeneric(msg) {
         return;
     }
 
-    syncMapInformationsMovement(playerId, remaining, maxMove);
-    syncCanvasPlayerMovement(playerId, remaining, maxMove);
+    if (getGameState()?.updatePlayerMovement) {
+        getGameState().updatePlayerMovement(playerId, { current: remaining, max: maxMove });
+    } else {
+        syncMapInformationsMovement(playerId, remaining, maxMove);
+        syncCanvasPlayerMovement(playerId, remaining, maxMove);
+    }
     updateHudMovement(playerId, remaining, maxMove);
 
     const targetKey = `pc_${playerId}`;
@@ -155,8 +176,10 @@ export function handleUpdateMovementGeneric(msg) {
 export function handlePlayerMove(msg) {
     if (!msg) return;
 
-    const engine = window.canvasEngine;
+    const gs = getGameState();
+    const engine = gs?.canvasEngine ?? window.canvasEngine;
     const playerId = msg.player_id;
+    const localPlayerId = gs?.currentPlayerId ?? window.current_player_id;
     if (!engine || !engine.map || playerId == null) return;
 
     const actor = engine.map.findPlayerById(playerId);
@@ -198,15 +221,19 @@ export function handlePlayerMove(msg) {
                             const centerX = endX + (sizeX - 1) / 2;
                             const centerY = endY + (sizeY - 1) / 2;
 
-                            if(playerId == window.current_player_id){
+                            if(playerId == localPlayerId){
                                 engine.camera.centerOn(centerX, centerY);
                             }
                             
                             window.renderTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
                             // mise à jour de la position du joueur.
-                            if (playerId === window.current_player_id) {
-                                currentPlayer.user.coordinates.x = endX;
-                                currentPlayer.user.coordinates.y = endY;
+                            if (playerId === localPlayerId) {
+                                if (gs?.updateCurrentPlayerCoords) {
+                                    gs.updateCurrentPlayerCoords({ x: endX, y: endY });
+                                } else if (currentPlayer?.user?.coordinates) {
+                                    currentPlayer.user.coordinates.x = endX;
+                                    currentPlayer.user.coordinates.y = endY;
+                                }
                                 actor.x = endX;
                                 actor.y = endY;
                                 updatePlayerCoords(actor);
@@ -216,11 +243,10 @@ export function handlePlayerMove(msg) {
 
                             // on redessine.
                             engine.renderer.requestRedraw();
-                            window.canvasEngine.renderer.requestRedraw();
 
                             // remettre à zéro pour réinitialiser la rotation
-                            if (window.canvasEngine?.renderer?.ui?.sonar) {
-                                window.canvasEngine.renderer.ui.sonar._sonarPulseTime = 0;
+                            if (engine?.renderer?.ui?.sonar) {
+                                engine.renderer.ui.sonar._sonarPulseTime = 0;
                             }
                         }
                     } catch (e) {
@@ -237,7 +263,7 @@ export function handlePlayerMove(msg) {
         } else {
             actor.x = endX;
             actor.y = endY;
-            if (playerId === window.current_player_id) {
+            if (playerId === localPlayerId) {
                 updatePlayerCoords(actor);
             }
         }
@@ -251,10 +277,14 @@ export function handlePlayerMove(msg) {
     // 2) MISE À JOUR PM
     // ----------------------------------------------------------
     if (remaining != null) {
-        syncMapInformationsMovement(playerId, remaining, maxMove);
-        syncCanvasPlayerMovement(playerId, remaining, maxMove);
+        if (gs?.updatePlayerMovement) {
+            gs.updatePlayerMovement(playerId, { current: remaining, max: maxMove });
+        } else {
+            syncMapInformationsMovement(playerId, remaining, maxMove);
+            syncCanvasPlayerMovement(playerId, remaining, maxMove);
+        }
         updateHudMovement(playerId, remaining, maxMove, {y : actor.y, x: actor.x});
-        if (playerId === window.current_player_id && window.currentPlayer?.ship) {
+        if (!gs?.updatePlayerMovement && playerId === localPlayerId && window.currentPlayer?.ship) {
             window.currentPlayer.ship.current_movement = remaining;
             if (typeof maxMove === "number") {
                 window.currentPlayer.ship.max_movement = maxMove;

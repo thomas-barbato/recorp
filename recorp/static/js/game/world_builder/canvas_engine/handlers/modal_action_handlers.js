@@ -152,14 +152,19 @@ export function handleScanVisibilityUpdate(msg) {
 }
 
 function syncCanvasPlayerAp(playerId, remainingAp) {
-    const engine = window.canvasEngine;
+    const gs = window.GameState || null;
+    const engine = gs?.canvasEngine ?? window.canvasEngine;
     if (!engine || !engine.map) return;
 
     const actor = engine.map.findPlayerById(playerId);
     if (!actor || !actor.data || !actor.data.ship) return;
 
     if (typeof remainingAp === "number") {
-        window.currentPlayer.user.current_ap = remainingAp;
+        if (gs?.updatePlayerAp) {
+            gs.updatePlayerAp(playerId, remainingAp);
+        } else if (window.currentPlayer?.user) {
+            window.currentPlayer.user.current_ap = remainingAp;
+        }
     }
 
     let progressBarApRemaining = document.getElementById("actionPoint-container-value-min");

@@ -72,6 +72,44 @@ function createGameStateContainer() {
 
             this.entities.set(entity_key, next);
         },
+        findPlayerMapEntry(playerId) {
+            const pcList = Array.isArray(this.mapInformations?.pc) ? this.mapInformations.pc : [];
+            const idx = pcList.findIndex(p => String(p.user?.player) === String(playerId));
+            if (idx === -1) return null;
+            return { pcList, idx, entry: pcList[idx] };
+        },
+        updatePlayerMovement(playerId, { current = null, max = null } = {}) {
+            const found = this.findPlayerMapEntry(playerId);
+            if (found) {
+                const ship = found.entry.ship || {};
+                if (typeof current === "number") ship.current_movement = current;
+                if (typeof max === "number") ship.max_movement = max;
+                found.pcList[found.idx].ship = ship;
+            }
+
+            const actor = this.canvasEngine?.map?.findPlayerById?.(playerId);
+            if (actor?.data?.ship) {
+                if (typeof current === "number") actor.data.ship.current_movement = current;
+                if (typeof max === "number") actor.data.ship.max_movement = max;
+            }
+
+            if (String(playerId) === String(this.currentPlayerId) && this.currentPlayer?.ship) {
+                if (typeof current === "number") this.currentPlayer.ship.current_movement = current;
+                if (typeof max === "number") this.currentPlayer.ship.max_movement = max;
+            }
+        },
+        updatePlayerAp(playerId, currentAp) {
+            if (typeof currentAp !== "number") return;
+            if (String(playerId) !== String(this.currentPlayerId)) return;
+            if (this.currentPlayer?.user) {
+                this.currentPlayer.user.current_ap = currentAp;
+            }
+        },
+        updateCurrentPlayerCoords({ x = null, y = null } = {}) {
+            if (!this.currentPlayer?.user?.coordinates) return;
+            if (typeof x === "number") this.currentPlayer.user.coordinates.x = x;
+            if (typeof y === "number") this.currentPlayer.user.coordinates.y = y;
+        },
         get canvasEngine() {
             return this.refs.canvasEngine ?? window.canvasEngine ?? null;
         },
