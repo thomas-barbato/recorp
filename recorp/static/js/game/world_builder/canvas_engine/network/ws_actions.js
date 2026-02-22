@@ -7,7 +7,7 @@ import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handl
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
 import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
 import { getEventsLog } from "../handlers/events_handlers.js";
-import { handleCombatEvents, handleCombatStateUpdate } from "../handlers/combat_handlers.js";
+import { handleCombatEvents } from "../handlers/combat_handlers.js";
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -16,22 +16,18 @@ import {
     handlerShipAdded, 
     handlerWarpComplete 
 } from "../handlers/warp_handlers.js";
-import { 
-    getScanResult, 
-    sendScanResultToGroup, 
+import {
+    getScanResult,
+    sendScanResultToGroup,
     handleScanVisibilityUpdate,
     handleScanStateSync,
-    entity_state_update
 } from "../handlers/modal_action_handlers.js";
+import { applyEntityStatePatch } from "../handlers/entity_state_patcher.js";
 
 
 
 function entity_state_update_router(msg) {
-    // HUD
-    handleCombatStateUpdate(msg);
-
-    // Modal live
-    entity_state_update(msg);
+    applyEntityStatePatch(msg);
 
     if (window.ActionSceneManager?.isActive?.("combat")) {
         window.ActionSceneManager._handleEntityUpdate?.(msg);

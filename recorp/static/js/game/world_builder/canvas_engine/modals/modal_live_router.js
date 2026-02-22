@@ -82,7 +82,7 @@
         mpBar.style.width = `${pct}%`;
     }
 
-    function updateModalHp(modalEl, { hp, shield, damage_type }) {
+    function updateModalHp(modalEl, { hp, shield, damage_type, shields }) {
         console.log("===========")
         console.log(hp, shield, damage_type)
         console.log("===========")
@@ -110,7 +110,18 @@
             }
         }
 
-        // 🔹 SHIELD
+        // 🔹 SHIELDS (nouveau format complet)
+        if (shields && typeof shields === "object") {
+            Object.entries(shields).forEach(([dtype, value]) => {
+                if (value == null) return;
+                updateModalHp(modalEl, {
+                    shield: value,
+                    damage_type: dtype
+                });
+            });
+        }
+
+        // 🔹 SHIELD (format partiel legacy)
         if (shield != null && damage_type) {
 
             const shieldTextEl = modalEl.querySelector(
