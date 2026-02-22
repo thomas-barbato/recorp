@@ -1,4 +1,17 @@
 (function () {
+    function getActionSceneManager() {
+        return window.ActionSceneManager || null;
+    }
+
+    function openModalById(modalId) {
+        if (typeof window.open_close_modal === "function") {
+            window.open_close_modal(modalId);
+        }
+    }
+
+    function isTargetScanned(targetKey) {
+        return window.isScanned?.(targetKey) === true;
+    }
 
     function getBody(modalId) {
         return document.getElementById(`${modalId}-body`);
@@ -37,8 +50,8 @@
 
             body.append(combatContainer);
 
-            if (window.ActionSceneManager?.open) {
-                window.ActionSceneManager.open("combat", {
+            if (getActionSceneManager()?.open) {
+                getActionSceneManager().open("combat", {
                     attackerKey: context.attackerKey,
                     targetKey: context.targetKey,
                     originalModalId: modalId,
@@ -54,8 +67,8 @@
         if (!modal) return;
 
         // Fermer proprement la scène combat
-        if (window.ActionSceneManager?.close) {
-            window.ActionSceneManager.close({ silent: true });
+        if (getActionSceneManager()?.close) {
+            getActionSceneManager().close({ silent: true });
         }
 
         // Déduire la targetKey depuis modalId :
@@ -69,7 +82,7 @@
         const isPcOrNpc = targetKey.startsWith("pc_") || targetKey.startsWith("npc_");
         if (isPcOrNpc) {
             const inSonar = window.isTargetInSonarRange?.(targetKey) === true;
-            const scanned = window.isScanned?.(targetKey) === true;
+            const scanned = isTargetScanned(targetKey);
 
             if (!inSonar && !scanned) {
                 reopenId = `modal-unknown-${targetKey}`;
@@ -80,9 +93,7 @@
         modal.remove();
 
         // Réouvrir le bon modal
-        if (typeof window.open_close_modal === "function") {
-            window.open_close_modal(reopenId);
-        }
+        openModalById(reopenId);
     }
     
     // ---- Bridge global ----

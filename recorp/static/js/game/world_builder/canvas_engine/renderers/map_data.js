@@ -509,10 +509,6 @@ export default class MapData {
         const nidNum = Number(nidStr);
         if (!Number.isNaN(nidNum)) delete this.npcs?.[nidNum];
 
-        const after = this.worldObjects.length;
-        if (before !== after) {
-            console.log(`[MAP] removeNpcById(${nidStr}) → ${before} -> ${after}`);
-        }
     }
 
     // ======================================================================

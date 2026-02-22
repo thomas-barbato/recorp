@@ -1,11 +1,13 @@
 import ActionRegistry from "../network/action_registry.js";
 
+const WS_TYPE_ALIASES = Object.freeze({
+    async_recieve_mp: "async_receive_mp",
+});
+
 export default class WebSocketManager {
     constructor(url) {
         this.url = url;
         this.socket = null;
-
-        // callbacks locaux optionnels
         this.handlers = new Map();
     }
 
@@ -33,11 +35,7 @@ export default class WebSocketManager {
         this.socket.onmessage = (event) => this._onMessage(event.data);
     }
 
-    /**
-     * ---- Envoi d’un message standardisé ----
-     */
     send(obj) {
-        
         try {
             const payload = JSON.stringify(obj);
             this.socket.send(payload);
@@ -46,10 +44,6 @@ export default class WebSocketManager {
         }
     }
 
-    /**
-     * ---- Abonnement local ----
-     * ws.on("player_move", fn)
-     */
     on(type, callback) {
         if (!this.handlers.has(type)) {
             this.handlers.set(type, []);
@@ -57,9 +51,6 @@ export default class WebSocketManager {
         this.handlers.get(type).push(callback);
     }
 
-    /**
-     * ---- Dispatcher ----
-     */
     _onMessage(raw) {
         let msg;
         try {
@@ -69,25 +60,35 @@ export default class WebSocketManager {
             return;
         }
 
-        const type = msg.type;
-        const message = msg.message ?? msg.payload; // compatibilité
+        const normalized = this._normalizeInboundMessage(msg);
+        const { type, payload } = normalized;
 
         if (!type) {
             console.warn("[WS] Message sans type:", msg);
             return;
         }
 
-        // --- 1) Dispatch LOCAL (via ws.on)
         const localHandlers = this.handlers.get(type);
         if (localHandlers) {
-            for (const cb of localHandlers) cb(message, msg);
+            for (const cb of localHandlers) cb(payload, normalized);
         }
 
-        // --- 2) Dispatch GLOBAL (via ActionRegistry)
         if (ActionRegistry.has(type)) {
-            ActionRegistry.run(type, message);
+            ActionRegistry.run(type, payload);
         } else if (!localHandlers) {
             console.warn(`[WS] No handler for type "${type}"`);
         }
+    }
+
+    _normalizeInboundMessage(msg) {
+        const rawType = msg?.type;
+        const type = WS_TYPE_ALIASES[rawType] ?? rawType;
+        const hasPayload = Object.prototype.hasOwnProperty.call(msg, "payload");
+
+        return {
+            ...msg,
+            type,
+            payload: hasPayload ? msg.payload : msg.message,
+        };
     }
 }

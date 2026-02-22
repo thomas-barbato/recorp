@@ -3,6 +3,10 @@
 
     let lastTargetContext = null;
 
+    function getModalLive() {
+        return window.ModalLive || null;
+    }
+
     /**
      * Entrée principale
      */
@@ -24,7 +28,7 @@
         
         const targetEl = document.getElementById(targetModalId);
         if (targetEl) {
-            window.ModalLive?.unregister?.(targetModalId);
+            getModalLive()?.unregister?.(targetModalId);
             targetEl.remove();
         }
         

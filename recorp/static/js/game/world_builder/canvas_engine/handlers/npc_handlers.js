@@ -1,17 +1,29 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+}
+
+function requestWorldRedraw() {
+    getEngine()?.renderer?.requestRedraw?.();
+}
+
 export function addNpc(data){
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     engine.map.addNpcActor(data.npc);
 
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 }
 
 export function removeNpc(data){
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     engine.map.removeNpcById(data.npc_id);
 
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 }

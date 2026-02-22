@@ -82,10 +82,7 @@
         mpBar.style.width = `${pct}%`;
     }
 
-    function updateModalHp(modalEl, { hp, shield, damage_type }) {
-        console.log("===========")
-        console.log(hp, shield, damage_type)
-        console.log("===========")
+    function updateModalHp(modalEl, { hp, shield, damage_type, shields }) {
         // 🔹 HULL
         if (hp != null) {
 
@@ -110,7 +107,18 @@
             }
         }
 
-        // 🔹 SHIELD
+        // 🔹 SHIELDS (nouveau format complet)
+        if (shields && typeof shields === "object") {
+            Object.entries(shields).forEach(([dtype, value]) => {
+                if (value == null) return;
+                updateModalHp(modalEl, {
+                    shield: value,
+                    damage_type: dtype
+                });
+            });
+        }
+
+        // 🔹 SHIELD (format partiel legacy)
         if (shield != null && damage_type) {
 
             const shieldTextEl = modalEl.querySelector(
@@ -142,7 +150,6 @@
 
 
     function updateModalAp(modalEl, { ap, max_ap }) {
-        console.log("Updating AP in modal:",modalEl.id, { ap, max_ap });
         if (ap == null || max_ap == null) return;
 
         const text = modalEl.querySelector("[data-stat='ap-text']");

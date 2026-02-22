@@ -1,6 +1,65 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 
 (function () {
+    function getGameState() {
+        return window.GameState || null;
+    }
+
+    function getEngine() {
+        return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+    }
+
+    function getCurrentPlayerData() {
+        return getGameState()?.currentPlayer ?? window.currentPlayer ?? null;
+    }
+
+    function getCurrentPlayerId() {
+        return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
+    }
+
+    function getActionSceneManager() {
+        return window.ActionSceneManager || null;
+    }
+
+    function computeModuleRangeAsync(args) {
+        const p = window.computeModuleRange?.(args);
+        if (!p || typeof p.then !== "function") return null;
+        return p;
+    }
+
+    function getActionRuntimeContext(modalId) {
+        const engine = getEngine();
+        const map = engine?.map ?? null;
+        const ws = engine?.ws ?? null;
+        const currentPlayerData = getCurrentPlayerData();
+        const currentPlayerId = getCurrentPlayerId();
+        const modules = currentPlayerData?.ship?.modules || [];
+        const parsed = modalId ? define_modal_type(modalId) : null;
+
+        const transmitterActor = map?.getCurrentPlayer?.() ?? null;
+        let receiverActor = null;
+
+        if (parsed && map) {
+            if (parsed.type === "pc" || parsed.type === "npc") {
+                receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
+            } else if (parsed.isForegroundElement) {
+                receiverActor = map.findActorByKey(parsed.elementName);
+            }
+        }
+
+        return {
+            engine,
+            map,
+            ws,
+            currentPlayerData,
+            currentPlayerId,
+            modules,
+            parsed,
+            transmitterActor,
+            receiverActor,
+        };
+    }
+
 
     function createActionCostBadge(cost = {}) {
         const apCost = cost?.ap_cost ?? null;
@@ -149,7 +208,7 @@
         const type = a;
         const requiredName = b;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        const modules = getCurrentPlayerData()?.ship?.modules || [];
         const req = (requiredName ?? "").toString().toLowerCase();
 
         return modules.some(m =>
@@ -205,11 +264,10 @@
     
 function buildActionsSection(modalId, data, is_npc, contextZone) {
     
-    const ws = window.canvasEngine?.ws;
-    const map = window.canvasEngine?.map;
-    const modules = currentPlayer.ship.modules;
+    const actionCtx = getActionRuntimeContext(modalId);
+    const { ws, map, currentPlayerData, modules, parsed } = actionCtx;
     const isUnknown = modalId.startsWith("modal-unknown");
-    const currentAP = currentPlayer?.player?.current_ap ?? null;
+    const currentAP = currentPlayer?.player?.current_ap ?? currentPlayerData?.user?.current_ap ?? null;
 
     const formatRangeTooltip = r => {
         if (typeof r?.distance === "number" && typeof r?.maxRange === "number") {
@@ -218,23 +276,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         return "Action indisponible (portée non définie)";
     };
 
-    const transmitterActor = map.getCurrentPlayer();
+    const transmitterActor = actionCtx.transmitterActor;
     if (!transmitterActor) return;
 
-    let receiverActor = null;
-    const parsed = define_modal_type(modalId);
-
-    if (parsed && map) {
-        // pc / npc → clé standard
-        if (parsed.type === "pc" || parsed.type === "npc") {
-            receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
-        }
-        // foreground
-        else if (parsed.isForegroundElement) {
-            receiverActor = map.findActorByKey(parsed.elementName);
-        }
-    }
-
+    let receiverActor = actionCtx.receiverActor;
     if (!receiverActor) {
         // la cible n'existe réellement plus (destroy, warp, autre secteur)
         return;
@@ -283,8 +328,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             }*/
 
             // 🔵 Construire les clés attacker / target
-            const attackerKey = `pc_${window.current_player_id}`;
-            const parsed = define_modal_type(modalId);
+            const attackerKey = `pc_${getCurrentPlayerId()}`;
+            const parsed = actionCtx.parsed ?? define_modal_type(modalId);
 
             let targetKey = null;
 
@@ -306,9 +351,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             });
             */
 
-            console.log("Combat ActionScene opened:", attackerKey, targetKey);
         },
-        { ap_cost:1 }
+        {}
     );
     wrapper.append(grid);
     
@@ -331,7 +375,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         "Scan",
         () => {
             if (scanButton.classList.contains("pointer-events-none")) return;
-            const info = define_modal_type(modalId);
+            const info = actionCtx.parsed ?? define_modal_type(modalId);
             
             ws.send({
                 type: "action_scan_pc_npc",
@@ -366,18 +410,18 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     
     grid.innerHTML = "";
     // Limiter l'utilisation du scan.
-    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe") || ap_cost > window.currentPlayer.user.current_ap) {
+    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe") || ap_cost > (getCurrentPlayerData()?.user?.current_ap ?? 0)) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
     }
 
     // ============================
     // RANGE CHECK — SCAN (PC / NPC)
     // ============================
-    window.computeModuleRange({
+    computeModuleRangeAsync({
         module: probeModule,
         transmitterActor,
         receiverActor
-    }).then(rangeResult => {
+    })?.then(rangeResult => {
         if (rangeResult.reason === "ok" && !rangeResult.allowed) {
             scanButton.classList.add("opacity-40", "pointer-events-none");
 
@@ -421,10 +465,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     return;
                 }
 
-                const ws = window.canvasEngine?.ws;
+                const ws = getEngine()?.ws;
                 if (!ws?.send) return;
 
-                const info = define_modal_type(modalId);
+                const info = actionCtx.parsed ?? define_modal_type(modalId);
                 // ACTION : SEND REPORT
                 if (extra.key === "send_report") {
                     openSendReportModal({
@@ -444,7 +488,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                         return;
                     }
 
-                    const ws = window.canvasEngine?.ws;
+                    const ws = getEngine()?.ws;
                     if (!ws?.send) return;
 
                     ws.send({
@@ -536,11 +580,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 list.append(wrapper);
 
                 // portée ASYNCHRONE (UNIQUEMENT du visuel)
-                window.computeModuleRange({
+                computeModuleRangeAsync({
                     module: m,
                     transmitterActor,
                     receiverActor
-                }).then(rangeResult => {
+                })?.then(rangeResult => {
                     if (rangeResult.reason === "ok" && !rangeResult.allowed) {
                         wrapper.classList.add("opacity-40", "pointer-events-none");
                         btn.classList.add("cursor-not-allowed");
@@ -617,11 +661,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 list.append(wrapper);
 
                 // portée ASYNCHRONE (visuel seulement)
-                window.computeModuleRange({
+                computeModuleRangeAsync({
                     module: m,
                     transmitterActor,
                     receiverActor
-                }).then(rangeResult => {
+                })?.then(rangeResult => {
                     
                     if (rangeResult.reason === "ok" && !rangeResult.allowed) {
                         wrapper.classList.add("opacity-40", "pointer-events-none");
@@ -683,6 +727,13 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 }
 
     function buildForegroundActionsSection(modalId, data) {
+        const actionCtx = getActionRuntimeContext(modalId);
+        const currentPlayerData = actionCtx.currentPlayerData;
+        const currentPlayerModules = actionCtx.modules || [];
+        const foregroundReceiverActor = actionCtx.receiverActor;
+        const foregroundTransmitterActor = actionCtx.transmitterActor;
+        const foregroundParsed = actionCtx.parsed;
+
         const wrapper = document.createElement("div");
         wrapper.classList.add(
             "flex",
@@ -699,6 +750,78 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
         const type = data.type;
         const alreadyScanned = data._ui?.scanned === true;
+
+        function computeAndDisableIfOutOfRange(btn, module) {
+            if (
+                !btn ||
+                btn.classList.contains("pointer-events-none") ||
+                !module
+            ) {
+                return;
+            }
+
+            const transmitterActor = foregroundTransmitterActor;
+            const receiverActor = foregroundReceiverActor;
+            if (!transmitterActor || !receiverActor) return;
+
+            computeModuleRangeAsync({
+                module,
+                transmitterActor,
+                receiverActor
+            })?.then(rangeResult => {
+                if (!rangeResult?.allowed) {
+                    btn.classList.add("opacity-40", "pointer-events-none");
+
+                    if (typeof rangeResult.distance === "number") {
+                        btn.title =
+                            `Hors de portee (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                    }
+                }
+            }).catch(() => {});
+        }
+
+        function getForegroundTargetInfo() {
+            const info = foregroundParsed ?? define_modal_type(modalId);
+            if (!info?.type || info?.id == null) return null;
+            return {
+                targetType: info.type,
+                targetId: info.id,
+                targetKey: `${info.type}_${info.id}`
+            };
+        }
+
+        function executeForegroundAction(actionKey) {
+            const target = getForegroundTargetInfo();
+            if (!target) return false;
+            const handlers = {
+                scan() {
+                    if (!actionCtx.ws) return false;
+                    actionCtx.ws.send({
+                        type: "action_scan_pc_npc",
+                        payload: {
+                            target_type: target.targetType,
+                            target_id: target.targetId
+                        }
+                    });
+                    return true;
+                },
+                send_report() {
+                    openSendReportModal({
+                        targetKey: target.targetKey,
+                        targetType: target.targetType,
+                        targetId: target.targetId,
+                        modalData: data
+                    });
+                    return true;
+                },
+                gather() {
+                    // Placeholder routeur foreground: l'action WS/HTTP reste à brancher.
+                    return false;
+                }
+            };
+
+            return handlers[actionKey]?.() === true;
+        }
 
         const errorZone = document.createElement("div");
         errorZone.id = modalId + "-action-error-zone";
@@ -815,7 +938,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             if (action.key === "scan") {
 
-                const drillProbeModule = (window.currentPlayer?.ship?.modules || []).find(
+                const drillProbeModule = currentPlayerModules.find(
                     m => m.type === "PROBE" && m.name === "drilling probe"
                 )
 
@@ -839,7 +962,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // Désactivation : règles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
-                const currentAp = window.currentPlayer?.user?.current_ap ?? 0;
+                const currentAp = currentPlayerData?.user?.current_ap ?? 0;
 
                 if (
                     alreadyScanned ||
@@ -852,33 +975,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // -------------------------
                 // Désactivation : portée
                 // -------------------------
-                if (
-                    !btn.classList.contains("pointer-events-none") &&
-                    typeof window.computeModuleRange === "function"
-                ) {
-                    const map = window.canvasEngine?.map;
-                    const transmitterActor = map?.getCurrentPlayer?.() || null;
-
-                    const parsed = define_modal_type(modalId);
-                    const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
-
-                    if (transmitterActor && receiverActor && drillProbeModule) {
-                        window.computeModuleRange({
-                            module: gatheringModule,
-                            transmitterActor,
-                            receiverActor
-                        }).then(rangeResult => {
-                            if (!rangeResult.allowed) {
-                                btn.classList.add("opacity-40", "pointer-events-none");
-
-                                if (typeof rangeResult.distance === "number") {
-                                    btn.title =
-                                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                                }
-                            }
-                        });
-                    }
-                }
+                computeAndDisableIfOutOfRange(btn, drillProbeModule);
             }
 
             if (action.key === "gather") {
@@ -887,7 +984,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn.dataset.modalId = modalId;
 
                 // --- récupération du module GATHERING (peut être absent) ---
-                const gatheringModule = (window.currentPlayer?.ship?.modules || []).find(
+                const gatheringModule = currentPlayerModules.find(
                     m => m.type === "GATHERING"
                 );
 
@@ -908,7 +1005,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // Désactivation : règles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
-                const currentAp = window.currentPlayer?.user?.current_ap ?? 0;
+                const currentAp = currentPlayerData?.user?.current_ap ?? 0;
 
                 if (
                     !gatheringModule ||           // module absent
@@ -920,34 +1017,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // -------------------------
                 // Désactivation : portée
                 // -------------------------
-                if (
-                    !btn.classList.contains("pointer-events-none") &&
-                    gatheringModule &&
-                    typeof window.computeModuleRange === "function"
-                ) {
-                    const map = window.canvasEngine?.map;
-                    const transmitterActor = map?.getCurrentPlayer?.() || null;
-
-                    const parsed = define_modal_type(modalId);
-                    const receiverActor = map?.findActorByKey?.(parsed?.elementName) || null;
-
-                    if (transmitterActor && receiverActor) {
-                        window.computeModuleRange({
-                            module: drillProbeModule,
-                            transmitterActor,
-                            receiverActor
-                        }).then(rangeResult => {
-                            if (!rangeResult.allowed) {
-                                btn.classList.add("opacity-40", "pointer-events-none");
-
-                                if (typeof rangeResult.distance === "number") {
-                                    btn.title =
-                                        `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
-                                }
-                            }
-                        });
-                    }
-                }
+                computeAndDisableIfOutOfRange(btn, gatheringModule);
             }
 
             
@@ -973,7 +1043,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 if (action.requires) {
                     const ok = action.requires.every(req =>
-                        currentPlayer.ship.modules.some(m =>
+                        currentPlayerModules.some(m =>
                             m.type === req.type &&
                             (!req.name || m.name === req.name)
                         )
@@ -989,25 +1059,17 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 if (action.key === "scan") {
-                    const info = define_modal_type(modalId);
-                    const targetKey = `${info.type}_${info.id}`;
+                    executeForegroundAction("scan");
+                    return;
+                }
 
-                    window.scannedTargets = window.scannedTargets || new Set();
-                    window.scannedTargets.add(targetKey);
-
-                    window.scannedMeta = window.scannedMeta || {};
-                    window.scannedMeta[targetKey] = { expires_at: null };
-
-                    refreshModalAfterScan(targetKey);
+                if (action.key === "gather") {
+                    executeForegroundAction("gather");
+                    return;
                 }
 
                 if (action.key === "send_report") {
-                    openSendReportModal({
-                        targetKey,
-                        targetType,
-                        targetId,
-                        modalData: data
-                    });
+                    executeForegroundAction("send_report");
                     return;
                 }
             };
@@ -1070,17 +1132,17 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         // 🔥 COMBAT SCENE SUPPORT
         // =====================================================
         if (modalId === "modal-combat") {
-            const context = window.ActionSceneManager?.getContext?.();
+            const context = getActionSceneManager()?.getContext?.();
             if (!context) return;
 
-            const engine = window.canvasEngine;
+            const engine = getEngine();
             if (!engine?.map) return;
 
             const transmitterActor = engine.map.findActorByKey(context.attackerKey);
             const receiverActor = engine.map.findActorByKey(context.targetKey);
             if (!transmitterActor || !receiverActor) return;
 
-            const modules = window.currentPlayer?.ship?.modules || [];
+            const modules = getCurrentPlayerData()?.ship?.modules || [];
             const modalEl = document.getElementById("modal-combat");
             if (!modalEl) return;
 
@@ -1090,8 +1152,8 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 if (!module) return;
 
                 // computeModuleRange est async dans ton projet
-                const p = window.computeModuleRange?.({ module, transmitterActor, receiverActor });
-                if (!p || typeof p.then !== "function") return;
+                const p = computeModuleRangeAsync({ module, transmitterActor, receiverActor });
+                if (!p) return;
 
                 p.then(rr => applyState(btn, rr)).catch(() => {});
             });
@@ -1109,22 +1171,23 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         const isUnknown = raw.startsWith("unknown-");
         const clean = isUnknown ? raw.replace("unknown-", "") : raw;
 
-        const engine = window.canvasEngine;
+        const runtimeCtx = getActionRuntimeContext(modalId);
+        const engine = runtimeCtx.engine;
         if (!engine?.map) return;
 
-        const transmitterActor = engine.map.getCurrentPlayer?.();
-        const receiverActor = engine.map.findActorByKey(clean);
+        const transmitterActor = runtimeCtx.transmitterActor;
+        const receiverActor = runtimeCtx.receiverActor || engine.map.findActorByKey(clean);
         if (!transmitterActor || !receiverActor) return;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        const modules = runtimeCtx.modules || [];
 
         modalEl.querySelectorAll("[data-module-id]").forEach(btn => {
             const moduleId = parseInt(btn.dataset.moduleId, 10);
             const module = modules.find(m => m.id === moduleId);
             if (!module) return;
 
-            const p = window.computeModuleRange?.({ module, transmitterActor, receiverActor });
-            if (!p || typeof p.then !== "function") return;
+            const p = computeModuleRangeAsync({ module, transmitterActor, receiverActor });
+            if (!p) return;
 
             p.then(rr => applyState(btn, rr)).catch(() => {});
         });
@@ -1132,4 +1195,5 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
 
 })();
+
 

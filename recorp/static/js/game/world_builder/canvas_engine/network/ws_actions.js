@@ -7,7 +7,7 @@ import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handl
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
 import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
 import { getEventsLog } from "../handlers/events_handlers.js";
-import { handleCombatEvents, handleCombatStateUpdate } from "../handlers/combat_handlers.js";
+import { handleCombatEvents } from "../handlers/combat_handlers.js";
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -16,26 +16,25 @@ import {
     handlerShipAdded, 
     handlerWarpComplete 
 } from "../handlers/warp_handlers.js";
-import { 
-    getScanResult, 
-    sendScanResultToGroup, 
+import {
+    getScanResult,
+    sendScanResultToGroup,
     handleScanVisibilityUpdate,
     handleScanStateSync,
-    entity_state_update
 } from "../handlers/modal_action_handlers.js";
+import { applyEntityStatePatch } from "../handlers/entity_state_patcher.js";
 
 
+
+function notifyCombatSceneEntityUpdate(msg) {
+    const asm = window.ActionSceneManager;
+    if (!asm?.isActive?.("combat")) return;
+    asm._handleEntityUpdate?.(msg);
+}
 
 function entity_state_update_router(msg) {
-    // HUD
-    handleCombatStateUpdate(msg);
-
-    // Modal live
-    entity_state_update(msg);
-
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        window.ActionSceneManager._handleEntityUpdate?.(msg);
-    }
+    applyEntityStatePatch(msg);
+    notifyCombatSceneEntityUpdate(msg);
 }
 
 // ===============================
@@ -56,7 +55,8 @@ ActionRegistry.register("async_receive_chat_message", handleIncomingChatMessage)
 // Le joueur AUTEUR reçoit une confirmation d’envoi
 ActionRegistry.register("async_sent_mp", handlePrivateMessageSent);
 // Le destinataire reçoit une notification + note
-ActionRegistry.register("async_recieve_mp", handleIncomingPrivateMessage);
+ActionRegistry.register("async_receive_mp", handleIncomingPrivateMessage);
+ActionRegistry.register("async_recieve_mp", handleIncomingPrivateMessage); // alias legacy typo
 
 // ===============================
 // WARP

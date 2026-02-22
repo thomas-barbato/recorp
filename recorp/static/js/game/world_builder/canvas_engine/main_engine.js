@@ -351,6 +351,9 @@ if (!ok) {
             pathfinding: canvasPathfinding,
             gameWorker
         };
+        if (window.GameState?.refs) {
+            window.GameState.refs.canvasEngine = window.canvasEngine;
+        }
 
         try {
             initMobilePathfinding(window.canvasEngine);

@@ -1,3 +1,88 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+}
+
+function getCurrentPlayerId() {
+    return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
+}
+
+function getCurrentPlayerData() {
+    return getGameState()?.currentPlayer ?? window.currentPlayer ?? null;
+}
+
+function requestWorldRedraw() {
+    getEngine()?.renderer?.requestRedraw?.();
+}
+
+function getCurrentSectorId() {
+    return getGameState()?.mapInformations?.sector?.id ?? window.map_informations?.sector?.id ?? null;
+}
+
+function getActionSceneManager() {
+    return window.ActionSceneManager || null;
+}
+
+function isTargetScanned(targetKey) {
+    return window.isScanned?.(targetKey) === true;
+}
+
+function refreshScannedTargetUi(targetKey) {
+    if (typeof refreshModalAfterScan === "function") {
+        refreshModalAfterScan(targetKey);
+    }
+}
+
+function purgeScanData(targetKey) {
+    window.clearScan?.(targetKey);
+    delete window.scannedMeta?.[targetKey];
+    delete window.scannedModalData?.[targetKey];
+}
+
+function closeCombatSceneIfActorAffected(removedKey, reason = "actor_removed") {
+    const asm = getActionSceneManager();
+    if (!asm?.isActive?.("combat")) return;
+    const context = asm.getContext?.();
+    if (!context) return;
+
+    if (context.attackerKey === removedKey || context.targetKey === removedKey) {
+        asm.close?.({ reason });
+    }
+}
+
+function resolveRemovedActorKey(data) {
+    if (!data) return null;
+    if (data.actor_key) return String(data.actor_key);
+    if (data.target_key) return String(data.target_key);
+    if (data.player_id != null) return `pc_${data.player_id}`;
+    if (data.player != null) return `pc_${data.player}`;
+    if (data.id != null) return `pc_${data.id}`;
+    if (data.ship_id != null) return `pc_${data.ship_id}`;
+    if (data.npc_id != null) return `npc_${data.npc_id}`;
+    return null;
+}
+
+function removeActorFromMap(map, actorKey, data) {
+    if (!map) return;
+    if (actorKey?.startsWith("npc_")) {
+        const npcId = actorKey.replace("npc_", "");
+        map.removeNpcById?.(npcId);
+        return;
+    }
+
+    const playerId =
+        data?.player_id ??
+        data?.player ??
+        data?.id ??
+        (actorKey?.startsWith("pc_") ? actorKey.replace("pc_", "") : null);
+    if (playerId != null) {
+        map.removeActorByPlayerId(playerId);
+    }
+}
+
 export function handlerWarpFailed(data) {
     console.warn("[warp] Warp impossible :", data);
 
@@ -11,11 +96,15 @@ export function handlerWarpFailed(data) {
     window._syncInProgress = false;
 
     // message UI
-    if (window.canvasEngine?.floatingMessages) {
-        window.canvasEngine.floatingMessages.addMessage(
+    const engine = getEngine();
+    const currentPlayer = getCurrentPlayerData();
+    if (engine?.floatingMessages) {
+        engine.floatingMessages.addMessage(
             "⚠ Warp impossible : zone saturée",
-            { x: currentPlayer.user.coordinates.x,
-            y: currentPlayer.user.coordinates.y }
+            {
+                x: currentPlayer?.user?.coordinates?.x,
+                y: currentPlayer?.user?.coordinates?.y
+            }
         );
     } else {
         alert("Warp impossible : aucune place disponible autour de la warpzone.");
@@ -34,7 +123,7 @@ function buildStartIdArray(startX, startY, sizeX, sizeY) {
 
 export function handleWarpTravel(sectorWarpZoneId) {
     try {
-        const engine = window.canvasEngine;
+        const engine = getEngine();
         if (!engine) {
             console.error("[warp] canvasEngine indisponible");
             return;
@@ -52,7 +141,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
             return;
         }
 
-        const playerId = window.current_player_id;
+        const playerId = getCurrentPlayerId();
         if (!playerId) {
             console.error("[warp] Aucun current_player_id");
             return;
@@ -69,7 +158,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
         const startX = me.x;
         const startY = me.y;
 
-        const currentSectorId = window.map_informations?.sector?.id;
+        const currentSectorId = getCurrentSectorId();
         if (!currentSectorId) {
             console.error("[warp] map_informations.sector.id introuvable");
             return;
@@ -111,74 +200,49 @@ export function handleWarpTravel(sectorWarpZoneId) {
 
 export function handlerRemovePlayer(data){
     
-    const shipId = data.player_id;
-    const actorId = `pc_${shipId}`;
+    const actorId = resolveRemovedActorKey(data) || (data?.player_id != null ? `pc_${data.player_id}` : null);
 
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     const map = engine.map;
     if (!map) return;
 
     // 1️⃣ Supprimer l’acteur de la map
-    map.removeActorByPlayerId(shipId);
+    removeActorFromMap(map, actorId, data);
 
     // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
-    if (window.isScanned(actorId)) {
-
-        window.clearScan(actorId);
-        delete window.scannedMeta?.[actorId];
-        delete window.scannedModalData?.[actorId];
-
-        // Si un modal est ouvert → rebuild propre
-        if (typeof refreshModalAfterScan === "function") {
-            refreshModalAfterScan(actorId);
-        }
+    if (actorId && isTargetScanned(actorId)) {
+        purgeScanData(actorId);
+        refreshScannedTargetUi(actorId);
     }
 
     // 3️⃣ Redraw
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        const context = window.ActionSceneManager.getContext?.();
-        const removedKey = `pc_${data.player_id}`;
-
-        if (context &&
-            (context.attackerKey === removedKey ||
-            context.targetKey === removedKey)) {
-
-            window.ActionSceneManager.close({ reason: "actor_removed" });
-        }
-    }
+    if (actorId) closeCombatSceneIfActorAffected(actorId, "actor_removed");
 
 }
 
 export function handlerShipRemoved(data){
-    const actorId = `pc_${data.ship_id}`;
-    const engine = window.canvasEngine;
+    const actorId = resolveRemovedActorKey(data) || (data?.ship_id != null ? `pc_${data.ship_id}` : null);
+    const engine = getEngine();
     if (!engine) return;
 
-    map.removeActorByPlayerId(data.player_id);
-    engine.renderer.requestRedraw();
+    const map = engine.map;
+    if (!map) return;
+
+    removeActorFromMap(map, actorId, data);
+    requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        const context = window.ActionSceneManager.getContext?.();
-        const removedKey = `pc_${data.ship_id}`;
-
-        if (context &&
-            (context.attackerKey === removedKey ||
-            context.targetKey === removedKey)) {
-
-            window.ActionSceneManager.close({ reason: "actor_removed" });
-        }
-    }
+    if (actorId) closeCombatSceneIfActorAffected(actorId, "actor_removed");
 }
 
 export function handlerUserJoin(data){
     const actors = data;  // backend envoie directement la liste des PC
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     const map = engine.map;
@@ -187,22 +251,20 @@ export function handlerUserJoin(data){
         map.addPlayerActor(actor);
     });
 
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 }
 
 export function handlerShipAdded(data){
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     engine.map.addPlayerActor(data.actor);
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 }
 
 export function handlerWarpComplete(){
     // Fermer CombatScene si cible ou joueur concerné
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        window.ActionSceneManager.close({ reason: "warp_complete" });
-    }
+    getActionSceneManager()?.close?.({ reason: "warp_complete" });
     window.location.reload()
 
 }

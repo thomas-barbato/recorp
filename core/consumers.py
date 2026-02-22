@@ -13,7 +13,11 @@ from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
 from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule
-from core.backend.modal_builder import build_npc_modal_data, build_pc_modal_data
+from core.backend.modal_builder import (
+    build_npc_modal_data,
+    build_pc_modal_data,
+    build_sector_element_modal_data,
+)
 from core.backend.player_logs import create_event_log
 
 from core.backend.combat_engine import (
@@ -118,124 +122,6 @@ class GameConsumer(WebsocketConsumer):
             self.scope['session'].modified = True
             self.scope['session'].save()
 
-    def receive(self, text_data=None, bytes_data=None):
-        """
-        Réception sécurisée des messages WebSocket
-        """
-        # 0) Vérifie tous les timers
-        try:
-            expired_targets = ActionRules.invalidate_expired_scans(int(self.room))
-
-            if expired_targets:
-                
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        "type": "effects_invalidated",
-                        "payload": [
-                            {
-                                "effect": "scan",
-                                "target_type": t["target_type"],
-                                "target_id": t["target_id"],
-                            }
-                            for t in expired_targets
-                        ],
-                    }
-                )
-        except Exception as e:
-            logger.error(f"Scan invalidation failed: {e}")
-                
-            # 1) Rien à traiter
-            if not text_data:
-                return
-
-        # 2) L'utilisateur doit être authentifié
-        if not self.user.is_authenticated:
-            return
-
-        # 3) Essayer de parser le JSON
-        try:
-            data = json.loads(text_data)
-        except Exception:
-            # Ce n'est pas un JSON → ignorer (ex: ping navigateur)
-            return
-
-        # 4) S'assurer que c'est un dict JSON
-        if not isinstance(data, dict):
-            return
-        msg_type = data.get("type")
-        if not msg_type:
-            return
-        
-
-        # 5) Rafraîchir la session
-        self._refresh_session()
-
-        # ------------------------------
-        # TRAITEMENT DES TYPES
-        # ------------------------------
-        # PING (client)
-        if msg_type == "ping":
-            response = self._handle_ping_with_validation(data)
-            self._send_response(response)
-            return
-
-        # SYNC
-        if msg_type == "request_data_sync":
-            self._handle_data_sync_request(data)
-            return
-        
-        if msg_type == "request_scan_state_sync":
-            self.send_scan_state_sync()
-            return
-
-        # MOVE
-        if msg_type == "async_move":
-            payload = data.get("payload")
-            if not isinstance(payload, dict):
-                logger.error(f"Payload async_move invalide: {data}")
-                return
-            self._handle_move_request(payload)
-            return
-
-        # CHAT
-        if msg_type == "async_chat_message":
-            self.async_send_chat_msg(data)
-            return
-        
-        # PRIVATE MESSAGE
-        if msg_type == "async_send_mp":
-            self.async_send_mp(data)
-            return
-        
-        # SCAN (PC / NPC)
-        if msg_type == "action_scan_pc_npc":
-            self._handle_scan_action_pc_npc(data.get("payload"))
-            return
-        
-        # SHARE SCAN WITH GROUP (PC / NPC) (if scan success)
-        if msg_type == "share_scan":
-            self._handle_share_scan(data.get("payload"))
-            return
-        
-        # COMBAT ACTION
-        if msg_type == "action_attack":
-            self._handle_combat_action(data.get("payload"))
-            return
-
-        # MESSAGE GÉNÉRIQUE
-        try:
-            message_data = self._extract_message_data(data)
-            self._broadcast_message(message_data)
-        except Exception as e:
-            logger.error(f"Erreur traitement message générique: {e}")
-
-
-
-    def _is_valid_request(self, text_data: Optional[str]) -> bool:
-        """Vérifie si la requête est valide."""
-        return text_data is not None and self.user.is_authenticated
-    
     def _handle_ping_with_validation(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Gère le ping et vérifie si une synchronisation est nécessaire."""
         client_hash = data.get("client_data_hash")
@@ -294,14 +180,6 @@ class GameConsumer(WebsocketConsumer):
             num, remainder = divmod(num, 36)
             result = chars[remainder] + result
         return result
-
-    def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Extrait les données du message."""
-        return {
-            "type": data["type"],
-            "user": self.user.username,
-            "message": data["message"],
-        }
 
     def _broadcast_message(self, message_data: Dict[str, Any]) -> None:
         """Diffuse le message à tous les membres du groupe."""
@@ -662,7 +540,7 @@ class GameConsumer(WebsocketConsumer):
             logger.exception(f"async_send_mp unexpected error: {e}")
             
             
-    def async_recieve_mp(self, event: Dict[str, Any]) -> None:
+    def async_receive_mp(self, event: Dict[str, Any]) -> None:
         """
         Handler exécuté par les consumers des rooms cibles.
         Il ne doit délivrer la notif que si ce consumer correspond au destinataire.
@@ -680,7 +558,7 @@ class GameConsumer(WebsocketConsumer):
 
             # Envoi au client final (websocket) : type et message à adapter côté front
             self._send_response({
-                "type": "async_recieve_mp",
+                "type": "async_receive_mp",
                 "message": {
                     "recipient_id": recipient_id,
                     "note": "Vous avez reçu un message privé"
@@ -688,12 +566,19 @@ class GameConsumer(WebsocketConsumer):
             })
 
         except Exception as e:
-            logger.exception(f"async_recieve_mp error: {e}")
+            logger.exception(f"async_receive_mp error: {e}")
+
+    def async_recieve_mp(self, event: Dict[str, Any]) -> None:
+        """
+        Alias rétro-compatible (typo historique).
+        Channels mappe `type` -> nom de méthode; on délègue vers le nom canonique.
+        """
+        self.async_receive_mp(event)
             
             
     def _notify_msg(self, recipient_data, sender_id) -> None:
         """
-        Envoie une notification de type 'async_recieve_mp' dans la room de
+        Envoie une notification de type 'async_receive_mp' dans la room de
         chaque destinataire. Exclut l'auteur.
         recipient_data: list of dicts [{ 'id': ..., 'sector_id': ... }, ...]
         """
@@ -719,7 +604,7 @@ class GameConsumer(WebsocketConsumer):
                 async_to_sync(self.channel_layer.group_send)(
                     destination_room_key,
                     {
-                        "type": "async_recieve_mp",   # garder la même orthographe si front attend ça
+                        "type": "async_receive_mp",
                         "message": {
                             "recipient_id": recipient_player_id,
                             "from_id": sender_id,
@@ -1311,11 +1196,23 @@ class GameConsumer(WebsocketConsumer):
                 (transmitter_instance, "TRANSMITTER"), 
                 (receiver_instance, "RECEIVER")
             ]
-            
-        else:
+
+        elif target_type == "npc":
             data = build_npc_modal_data(target_id)
-            target_name = data['npc']['displayed_name']
+            target_name = (data or {}).get('npc', {}).get('displayed_name', f"npc_{target_id}")
             players_roles = [(transmitter_instance, "TRANSMITTER")]
+
+        else:
+            data = build_sector_element_modal_data(target_type, int(target_id))
+            target_name = (data or {}).get('data', {}).get('name', f"{target_type}_{target_id}")
+            players_roles = [(transmitter_instance, "TRANSMITTER")]
+
+        if not data:
+            self._send_response({
+                "type": "action_failed",
+                "reason": "INVALID_TARGET"
+            })
+            return
         
         payload = {
             "event": "SCAN",
@@ -1471,8 +1368,10 @@ class GameConsumer(WebsocketConsumer):
         for scan in scans:
             if scan.target_type == "pc":
                 data = build_pc_modal_data(scan.target_id)
-            else:
+            elif scan.target_type == "npc":
                 data = build_npc_modal_data(scan.target_id)
+            else:
+                data = build_sector_element_modal_data(scan.target_type, scan.target_id)
 
             targets.append({
                 "target_key": f"{scan.target_type}_{scan.target_id}",
@@ -1826,12 +1725,152 @@ class GameConsumer(WebsocketConsumer):
             }
         })
 
+    # Sprint 1 override block: split receive dispatch + WS envelope normalization.
+    def receive(self, text_data=None, bytes_data=None):
+        self._invalidate_expired_scans_safe()
+
+        if not self._is_valid_request(text_data):
+            return
+
+        data = self._parse_client_json_message(text_data)
+        if not data:
+            return
+
+        self._refresh_session()
+
+        if self._dispatch_client_message(data):
+            return
+
+        try:
+            message_data = self._extract_message_data(data)
+            self._broadcast_message(message_data)
+        except Exception as e:
+            logger.error(f"Erreur traitement message generique: {e}")
+
+    def _is_valid_request(self, text_data: Optional[str]) -> bool:
+        return text_data is not None and self.user.is_authenticated
+
+    def _invalidate_expired_scans_safe(self) -> None:
+        try:
+            expired_targets = ActionRules.invalidate_expired_scans(int(self.room))
+            if not expired_targets:
+                return
+
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "effects_invalidated",
+                    "payload": [
+                        {
+                            "effect": "scan",
+                            "target_type": t["target_type"],
+                            "target_id": t["target_id"],
+                        }
+                        for t in expired_targets
+                    ],
+                }
+            )
+        except Exception as e:
+            logger.error(f"Scan invalidation failed: {e}")
+
+    def _parse_client_json_message(self, text_data: str) -> Optional[Dict[str, Any]]:
+        try:
+            data = json.loads(text_data)
+        except Exception:
+            return None
+
+        if not isinstance(data, dict):
+            return None
+
+        if not data.get("type"):
+            return None
+
+        return data
+
+    def _dispatch_client_message(self, data: Dict[str, Any]) -> bool:
+        msg_type = data["type"]
+        handlers = {
+            "ping": self._dispatch_ping_message,
+            "request_data_sync": self._dispatch_data_sync_message,
+            "request_scan_state_sync": self._dispatch_scan_state_sync_message,
+            "async_move": self._dispatch_move_message,
+            "async_chat_message": self._dispatch_chat_message,
+            "async_send_mp": self._dispatch_private_message,
+            "action_scan_pc_npc": self._dispatch_scan_action_message,
+            "share_scan": self._dispatch_share_scan_message,
+            "action_attack": self._dispatch_combat_action_message,
+        }
+        handler = handlers.get(msg_type)
+        if not handler:
+            return False
+        handler(data)
+        return True
+
+    def _get_client_payload(self, data: Dict[str, Any]) -> Any:
+        if "payload" in data:
+            return data.get("payload")
+        return data.get("message")
+
+    def _dispatch_ping_message(self, data: Dict[str, Any]) -> None:
+        self._send_response(self._handle_ping_with_validation(data))
+
+    def _dispatch_data_sync_message(self, data: Dict[str, Any]) -> None:
+        self._handle_data_sync_request(data)
+
+    def _dispatch_scan_state_sync_message(self, data: Dict[str, Any]) -> None:
+        self.send_scan_state_sync()
+
+    def _dispatch_move_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            logger.error(f"Payload async_move invalide: {data}")
+            return
+        self._handle_move_request(payload)
+
+    def _dispatch_chat_message(self, data: Dict[str, Any]) -> None:
+        self.async_send_chat_msg(data)
+
+    def _dispatch_private_message(self, data: Dict[str, Any]) -> None:
+        self.async_send_mp(data)
+
+    def _dispatch_scan_action_message(self, data: Dict[str, Any]) -> None:
+        self._handle_scan_action_pc_npc(self._get_client_payload(data))
+
+    def _dispatch_share_scan_message(self, data: Dict[str, Any]) -> None:
+        self._handle_share_scan(self._get_client_payload(data))
+
+    def _dispatch_combat_action_message(self, data: Dict[str, Any]) -> None:
+        self._handle_combat_action(self._get_client_payload(data))
+
+    def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "type": data["type"],
+            "user": self.user.username,
+            "message": data.get("message", data.get("payload")),
+        }
+
+    def _normalize_ws_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
+        if not isinstance(response, dict):
+            return response
+
+        normalized = dict(response)
+        has_message = "message" in normalized
+        has_payload = "payload" in normalized
+
+        if has_message and not has_payload:
+            normalized["payload"] = normalized["message"]
+        elif has_payload and not has_message:
+            normalized["message"] = normalized["payload"]
+
+        return normalized
+
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
         
         if response:
             try:
-                self.send(text_data=json.dumps(response))
+                self.send(text_data=json.dumps(self._normalize_ws_response(response)))
             except Exception as e:
                 logger.error(f"Erreur lors de l'envoi de la réponse: {e}")
     
+

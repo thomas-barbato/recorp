@@ -1,5 +1,9 @@
 // ActionSceneManager (foundation) — UI-only, no gameplay.
 
+function getGameState() {
+    return window.GameState || null;
+}
+
 class ActionSceneManager {
     constructor() {
         this._active = null; // { type, context, openedAt }
@@ -7,7 +11,69 @@ class ActionSceneManager {
         // combat animation runtime
         this._combatAnim = null; // { engine, queue }
         this._combatCanvasPositions = null; // { left, right }
+        this._combatDistanceNode = null;
         this._mountNode = null; // si défini, la scène est rendue dans ce node (body du modal)
+    }
+
+    _getEngine() {
+        return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+    }
+
+    _getWs() {
+        return this._getEngine()?.ws ?? null;
+    }
+
+    _getCurrentPlayerData() {
+        return getGameState()?.currentPlayer ?? window.currentPlayer ?? null;
+    }
+
+    _getCurrentPlayerModules() {
+        return this._getCurrentPlayerData()?.ship?.modules || [];
+    }
+
+    _getTargetDisplayNameFromCache(ctx) {
+        if (!ctx) return null;
+        const modalId = ctx.originalModalId;
+        const cached = window.modalDataCache?.[modalId];
+        const d = cached?.data;
+        return (
+            d?.user?.name ||
+            d?.npc?.displayed_name ||
+            d?.name ||
+            d?.ship?.name ||
+            null
+        );
+    }
+
+    _showCombatEscapeMessage(ctx, reason) {
+        if (!ctx) return;
+        if (reason !== "actor_removed" && reason !== "warp_complete") return;
+
+        const targetName =
+            this._getTargetDisplayNameFromCache(ctx) ||
+            ctx.targetKey ||
+            "La cible";
+
+        const mountNode =
+            this._mountNode ||
+            (ctx.originalModalId ? document.getElementById(`${ctx.originalModalId}-body`) : null);
+
+        if (!mountNode) return;
+
+        mountNode.innerHTML = "";
+
+        const msg = document.createElement("div");
+        msg.classList.add(
+            "text-red-500",
+            "font-bold",
+            "text-center",
+            "animate-pulse",
+            "font-shadow",
+            "mt-4"
+        );
+        msg.textContent = `${targetName} s'est echappe`;
+
+        mountNode.append(msg);
     }
 
     isActive(type = null) {
@@ -73,6 +139,8 @@ class ActionSceneManager {
     }
 
     _bindScanListener() {
+        if (this._scanExpiredHandler) return;
+
         this._scanExpiredHandler = (e) => {
             if (!this.isActive("combat")) return;
 
@@ -119,24 +187,10 @@ class ActionSceneManager {
 
         if (type === "combat") {
             this._mountCombatScene(context);
-
-            this._onScanExpired = (ev) => {
-
-                const k = ev?.detail?.targetKey;
-                if (!k) return;
-
-                // si le scan expiré concerne la cible courante
-                // alors on change les stats adverse en "???"
-                if (k === this._context?.targetKey) {
-                    this._setTargetHiddenUI();
-                }
-            };
-
-            window.addEventListener("scan:expired", this._onScanExpired);
+            this._bindScanListener();
 
         }
 
-        this._bindMovementListener();
         this._bindMovementListener();
 
         window.dispatchEvent(new CustomEvent("actionscene:open", { detail: this._active }));
@@ -150,6 +204,8 @@ class ActionSceneManager {
     close(meta = {}) {
         if (!this._active) return false;
 
+        const ctx = this._context || this._active?.context || null;
+
         if (this._rootEl) {
             this._rootEl.remove();
             this._rootEl = null;
@@ -161,12 +217,9 @@ class ActionSceneManager {
         this._unbindMovementListener();
         this._unbindScanListener();
 
-        window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
+        this._showCombatEscapeMessage(ctx, meta?.reason);
 
-        if (this._onScanExpired) {
-            window.removeEventListener("scan:expired", this._onScanExpired);
-            this._onScanExpired = null;
-        }
+        window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
 
         // cleanup combat anim si présent
         if (this._combatAnim) {
@@ -174,6 +227,7 @@ class ActionSceneManager {
             this._combatAnim = null;
         }
         this._combatCanvasPositions = null;
+        this._combatDistanceNode = null;
         this._context = null;
 
         return true;
@@ -181,7 +235,7 @@ class ActionSceneManager {
 
     _mountCombatScene(context) {
 
-        const engine = window.canvasEngine;
+        const engine = this._getEngine();
         if (!engine || !engine.map || !engine.renderer) return;
 
         const attacker = engine.map.findActorByKey(context.attackerKey);
@@ -196,7 +250,7 @@ class ActionSceneManager {
         const mountNode = context.mountNode || this._mountNode || null;
 
         // Utilisation du worker existant
-        const worker = window.canvasEngine?.gameWorker;
+        const worker = engine?.gameWorker;
 
         if (!worker || typeof worker.call !== "function") {
             console.warn("CombatScene: worker unavailable");
@@ -274,6 +328,7 @@ class ActionSceneManager {
         // Distance placeholder
         const distance = document.createElement("div");
         distance.classList.add("text-center", "text-sm", "text-sky-300");
+        this._combatDistanceNode = distance;
 
         worker.call("compute_distance", {
             from: {
@@ -434,61 +489,7 @@ class ActionSceneManager {
 
         container.innerHTML = "";
 
-        const me = window.currentPlayer;
-        if (!me?.ship?.modules) return;
-
-        const weaponModules = me.ship.modules.filter(m => m.type === "WEAPONRY");
-
-        if (!weaponModules.length) {
-            container.textContent = "Aucun module d'attaque";
-            return;
-        }
-
-        weaponModules.forEach(module => {
-
-            const btn = document.createElement("button");
-            btn.classList.add(
-                "px-4",
-                "py-2",
-                "bg-emerald-600",
-                "hover:bg-emerald-700",
-                "rounded",
-                "text-white",
-                "text-sm"
-            );
-            const apCost = 1;
-            btn.textContent = `${module.name} (AP:${apCost})`;
-
-            btn.addEventListener("click", () => {
-
-                window.ws?.send(JSON.stringify({
-                    type: "action_attack",
-                    payload: {
-                        target_id: context.targetKey.split("_")[1],
-                        module_id: module.id
-                    }
-                }));
-
-            });
-
-            container.append(btn);
-        });
-        window.refreshModalActionRanges?.("modal-combat");
-    }
-
-    _buildCombatModules() {
-
-        if (!this.isActive("combat")) return;
-
-        const context = this.getContext();
-        if (!context) return;
-
-        const container = document.getElementById("combat-modules");
-        if (!container) return;
-
-        container.innerHTML = "";
-
-        const engine = window.canvasEngine;
+        const engine = this._getEngine();
         if (!engine?.map) return;
 
         const transmitterActor = engine.map.findActorByKey(context.attackerKey);
@@ -496,7 +497,7 @@ class ActionSceneManager {
 
         if (!transmitterActor || !receiverActor) return;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        const modules = this._getCurrentPlayerModules();
 
         const list = document.createElement("div");
         list.classList.add("flex", "flex-col", "gap-2");
@@ -554,10 +555,10 @@ class ActionSceneManager {
 
                 if (btn.classList.contains("pointer-events-none")) return;
 
-                window.canvasEngine?.ws?.send({
+                this._getWs()?.send({
                     type: "action_attack",
                     payload: {
-                        player: window.currentPlayer.user.player,
+                        player: this._getCurrentPlayerData()?.user?.player,
                         subtype: `attack-${m.id}`,
                         module_id: m.id,
                         target_key: context.targetKey
@@ -590,8 +591,10 @@ class ActionSceneManager {
         const targetContainer   = document.getElementById("combat-target-stats");
         if (!attackerContainer || !targetContainer) return;
 
-        const engine = window.canvasEngine;
+        const engine = this._getEngine();
         if (!engine?.map) return;
+
+        const currentPlayer = this._getCurrentPlayerData();
 
         const attackerActor = engine.map.findActorByKey(context.attackerKey);
         const targetActor   = engine.map.findActorByKey(context.targetKey);
@@ -607,20 +610,20 @@ class ActionSceneManager {
 
         attackerContainer.querySelector(".hp").textContent =
             attackerRt?.current_hp ??
-            window.currentPlayer?.ship?.current_hp ?? "0";
+            currentPlayer?.ship?.current_hp ?? "0";
 
         attackerContainer.querySelector(".ap").textContent =
             attackerRt?.current_ap ??
-            window.currentPlayer?.user?.current_ap ?? "0";
+            currentPlayer?.user?.current_ap ?? "0";
 
         attackerContainer.querySelector(".shield-missile").textContent =
-            window.currentPlayer?.ship?.current_missile_defense ?? "0";
+            currentPlayer?.ship?.current_missile_defense ?? "0";
 
         attackerContainer.querySelector(".shield-thermal").textContent =
-            window.currentPlayer?.ship?.current_thermal_defense ?? "0";
+            currentPlayer?.ship?.current_thermal_defense ?? "0";
 
         attackerContainer.querySelector(".shield-ballistic").textContent =
-            window.currentPlayer?.ship?.current_ballistic_defense ?? "0";
+            currentPlayer?.ship?.current_ballistic_defense ?? "0";
 
         // ======================================================
         // 🔴 CIBLE (visible uniquement si scannée)
@@ -673,6 +676,10 @@ class ActionSceneManager {
 
             case "ap_update":
                 this._updateCombatAp(entity_key, changes);
+                break;
+
+            case "mp_update":
+                this._recomputeDistance(entity_key);
                 break;
         }
     }
@@ -762,6 +769,8 @@ class ActionSceneManager {
     }
 
     _bindMovementListener() {
+        if (this._movementHandler) return;
+
         this._movementHandler = (e) => {
             if (!this.isActive("combat")) return;
 
@@ -878,7 +887,7 @@ class ActionSceneManager {
             return;
         }
 
-        const engine = window.canvasEngine;
+        const engine = this._getEngine();
         if (!engine || !engine.map) return;
 
         const attacker = engine.map.findActorByKey(context.attackerKey);
@@ -886,26 +895,19 @@ class ActionSceneManager {
 
         if (!attacker || !target) return;
 
-        const worker = window.canvasEngine?.gameWorker;
-        if (!worker) return;
+        const distancePromise = window.computeActorsDistance?.({
+            transmitterActor: attacker,
+            receiverActor: target
+        });
+        if (!distancePromise || typeof distancePromise.then !== "function") return;
 
-        worker.call("compute_distance", {
-            from: {
-                x: attacker.x,
-                y: attacker.y,
-                sizeX: attacker.sizeX,
-                sizeY: attacker.sizeY
-            },
-            to: {
-                x: target.x,
-                y: target.y,
-                sizeX: target.sizeX,
-                sizeY: target.sizeY
-            }
-        }).then(dist => {
+        distancePromise.then(dist => {
+            if (dist == null) return;
 
             const distanceNode =
-                document.querySelector("#modal-combat .text-sky-300");
+                (this._combatDistanceNode && this._combatDistanceNode.isConnected)
+                    ? this._combatDistanceNode
+                    : document.querySelector("#modal-combat .text-sky-300");
 
             if (distanceNode) {
                 distanceNode.textContent = `Distance: ${dist}`;
@@ -914,6 +916,8 @@ class ActionSceneManager {
             // recalcul range après mouvement
             window.refreshModalActionRanges?.("modal-combat");
 
+        }).catch(err => {
+            console.warn("CombatScene distance error:", err);
         });
     }
 }
@@ -1281,3 +1285,4 @@ window.playCombatAnimation = function (payload) {
         damageToShield: payload?.damage_to_shield || 0
     });
 };
+

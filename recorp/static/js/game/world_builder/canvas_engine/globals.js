@@ -15,6 +15,116 @@ export let observable_zone_id = [];
 export let mobile_radar_sweep_bool = true;
 export let pendingAction = null;
 
+function createGameStateContainer() {
+    return {
+        refs: {
+            canvasEngine: null,
+        },
+        player: {
+            currentPlayerId: null,
+            currentPlayer: null,
+        },
+        world: {
+            mapInformations: null,
+        },
+        effects: {
+            active: {
+                scan: new Map(),
+                share_scan: new Map(),
+                buff: new Map(),
+                debuff: new Map(),
+                craft: new Map(),
+                gather: new Map(),
+                research: new Map(),
+            },
+        },
+        patchEntityState(msg) {
+            if (!msg?.entity_key || !msg?.change_type || !msg?.changes) return;
+            const { entity_key, change_type, changes } = msg;
+            this.entities ??= new Map();
+            const prev = this.entities.get(entity_key) || { runtime: { shields: {} } };
+            const next = {
+                ...prev,
+                runtime: {
+                    ...(prev.runtime || {}),
+                    shields: { ...(prev.runtime?.shields || {}) },
+                },
+            };
+
+            if (change_type === "ap_update") {
+                if (changes.ap?.current != null) next.runtime.current_ap = changes.ap.current;
+                if (changes.ap?.max != null) next.runtime.max_ap = changes.ap.max;
+            } else if (change_type === "mp_update") {
+                if (changes.movement?.current != null) next.runtime.current_movement = changes.movement.current;
+                if (changes.movement?.max != null) next.runtime.max_movement = changes.movement.max;
+                if (changes.position?.x != null) next.runtime.x = changes.position.x;
+                if (changes.position?.y != null) next.runtime.y = changes.position.y;
+            } else if (change_type === "hp_update") {
+                if (changes.hp?.current != null) next.runtime.current_hp = changes.hp.current;
+                if (changes.hp?.max != null) next.runtime.max_hp = changes.hp.max;
+                if (changes.shields) {
+                    next.runtime.shields = { ...next.runtime.shields, ...changes.shields };
+                }
+                if (changes.shield?.damage_type && changes.shield?.current != null) {
+                    next.runtime.shields[changes.shield.damage_type] = changes.shield.current;
+                }
+            }
+
+            this.entities.set(entity_key, next);
+        },
+        findPlayerMapEntry(playerId) {
+            const pcList = Array.isArray(this.mapInformations?.pc) ? this.mapInformations.pc : [];
+            const idx = pcList.findIndex(p => String(p.user?.player) === String(playerId));
+            if (idx === -1) return null;
+            return { pcList, idx, entry: pcList[idx] };
+        },
+        updatePlayerMovement(playerId, { current = null, max = null } = {}) {
+            const found = this.findPlayerMapEntry(playerId);
+            if (found) {
+                const ship = found.entry.ship || {};
+                if (typeof current === "number") ship.current_movement = current;
+                if (typeof max === "number") ship.max_movement = max;
+                found.pcList[found.idx].ship = ship;
+            }
+
+            const actor = this.canvasEngine?.map?.findPlayerById?.(playerId);
+            if (actor?.data?.ship) {
+                if (typeof current === "number") actor.data.ship.current_movement = current;
+                if (typeof max === "number") actor.data.ship.max_movement = max;
+            }
+
+            if (String(playerId) === String(this.currentPlayerId) && this.currentPlayer?.ship) {
+                if (typeof current === "number") this.currentPlayer.ship.current_movement = current;
+                if (typeof max === "number") this.currentPlayer.ship.max_movement = max;
+            }
+        },
+        updatePlayerAp(playerId, currentAp) {
+            if (typeof currentAp !== "number") return;
+            if (String(playerId) !== String(this.currentPlayerId)) return;
+            if (this.currentPlayer?.user) {
+                this.currentPlayer.user.current_ap = currentAp;
+            }
+        },
+        updateCurrentPlayerCoords({ x = null, y = null } = {}) {
+            if (!this.currentPlayer?.user?.coordinates) return;
+            if (typeof x === "number") this.currentPlayer.user.coordinates.x = x;
+            if (typeof y === "number") this.currentPlayer.user.coordinates.y = y;
+        },
+        get canvasEngine() {
+            return this.refs.canvasEngine ?? window.canvasEngine ?? null;
+        },
+        get currentPlayer() {
+            return this.player.currentPlayer ?? window.currentPlayer ?? null;
+        },
+        get currentPlayerId() {
+            return this.player.currentPlayerId ?? window.current_player_id ?? null;
+        },
+        get mapInformations() {
+            return this.world.mapInformations ?? window.map_informations ?? null;
+        },
+    };
+}
+
 // Atlas : taille de la map et tilesize
 export const atlas = {
     col: 40,
@@ -39,6 +149,11 @@ export function initGlobals() {
         foregroundElement = map_informations?.sector_element || [];
         npcs = map_informations?.npc || [];
 
+        window.GameState ??= createGameStateContainer();
+        window.GameState.world.mapInformations = map_informations;
+        window.GameState.player.currentPlayerId = current_player_id;
+        window.GameState.player.currentPlayer = currentPlayer;
+
         // Expose legacy globals on window for older scripts (chat, modals...)
         window.map_informations = map_informations;
         window.current_player_id = current_player_id;
@@ -61,15 +176,7 @@ export function initGlobals() {
         // Timed effects (foundation)
         // ===============================
         window.startCountdownTimer = startCountdownTimer;
-        window.activeEffects = {
-            scan: new Map(),
-            share_scan: new Map(),
-            buff: new Map(),
-            debuff: new Map(),
-            craft: new Map(),
-            gather: new Map(),
-            research: new Map(),
-        };
+        window.activeEffects = window.GameState.effects.active;
 
         window.registerEffect = function (effectType, key, payload) {
             if (!window.activeEffects?.[effectType]) return;
