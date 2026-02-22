@@ -17,6 +17,39 @@
         return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
     }
 
+    function getActionRuntimeContext(modalId) {
+        const engine = getEngine();
+        const map = engine?.map ?? null;
+        const ws = engine?.ws ?? null;
+        const currentPlayerData = getCurrentPlayerData();
+        const currentPlayerId = getCurrentPlayerId();
+        const modules = currentPlayerData?.ship?.modules || [];
+        const parsed = modalId ? define_modal_type(modalId) : null;
+
+        const transmitterActor = map?.getCurrentPlayer?.() ?? null;
+        let receiverActor = null;
+
+        if (parsed && map) {
+            if (parsed.type === "pc" || parsed.type === "npc") {
+                receiverActor = map.findActorByKey(`${parsed.type}_${parsed.id}`);
+            } else if (parsed.isForegroundElement) {
+                receiverActor = map.findActorByKey(parsed.elementName);
+            }
+        }
+
+        return {
+            engine,
+            map,
+            ws,
+            currentPlayerData,
+            currentPlayerId,
+            modules,
+            parsed,
+            transmitterActor,
+            receiverActor,
+        };
+    }
+
 
     function createActionCostBadge(cost = {}) {
         const apCost = cost?.ap_cost ?? null;
@@ -221,11 +254,8 @@
     
 function buildActionsSection(modalId, data, is_npc, contextZone) {
     
-    const engine = getEngine();
-    const ws = engine?.ws;
-    const map = engine?.map;
-    const currentPlayerData = getCurrentPlayerData();
-    const modules = currentPlayerData?.ship?.modules || [];
+    const actionCtx = getActionRuntimeContext(modalId);
+    const { ws, map, currentPlayerData, modules, parsed } = actionCtx;
     const isUnknown = modalId.startsWith("modal-unknown");
     const currentAP = currentPlayer?.player?.current_ap ?? currentPlayerData?.user?.current_ap ?? null;
 
@@ -236,11 +266,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         return "Action indisponible (portée non définie)";
     };
 
-    const transmitterActor = map.getCurrentPlayer();
+    const transmitterActor = actionCtx.transmitterActor;
     if (!transmitterActor) return;
 
-    let receiverActor = null;
-    const parsed = define_modal_type(modalId);
+    let receiverActor = actionCtx.receiverActor;
 
     if (parsed && map) {
         // pc / npc → clé standard
@@ -302,7 +331,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             // 🔵 Construire les clés attacker / target
             const attackerKey = `pc_${getCurrentPlayerId()}`;
-            const parsed = define_modal_type(modalId);
+            const parsed = actionCtx.parsed ?? define_modal_type(modalId);
 
             let targetKey = null;
 
@@ -348,7 +377,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         "Scan",
         () => {
             if (scanButton.classList.contains("pointer-events-none")) return;
-            const info = define_modal_type(modalId);
+            const info = actionCtx.parsed ?? define_modal_type(modalId);
             
             ws.send({
                 type: "action_scan_pc_npc",
@@ -438,10 +467,10 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     return;
                 }
 
-                const ws = window.canvasEngine?.ws;
+                const ws = getEngine()?.ws;
                 if (!ws?.send) return;
 
-                const info = define_modal_type(modalId);
+                const info = actionCtx.parsed ?? define_modal_type(modalId);
                 // ACTION : SEND REPORT
                 if (extra.key === "send_report") {
                     openSendReportModal({
@@ -461,7 +490,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                         return;
                     }
 
-                    const ws = window.canvasEngine?.ws;
+                    const ws = getEngine()?.ws;
                     if (!ws?.send) return;
 
                     ws.send({
@@ -832,7 +861,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             if (action.key === "scan") {
 
-                const drillProbeModule = (window.currentPlayer?.ship?.modules || []).find(
+                const drillProbeModule = (getCurrentPlayerData()?.ship?.modules || []).find(
                     m => m.type === "PROBE" && m.name === "drilling probe"
                 )
 
@@ -856,7 +885,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // Désactivation : règles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
-                const currentAp = window.currentPlayer?.user?.current_ap ?? 0;
+                const currentAp = getCurrentPlayerData()?.user?.current_ap ?? 0;
 
                 if (
                     alreadyScanned ||
@@ -873,7 +902,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     !btn.classList.contains("pointer-events-none") &&
                     typeof window.computeModuleRange === "function"
                 ) {
-                    const map = window.canvasEngine?.map;
+                    const map = getEngine()?.map;
                     const transmitterActor = map?.getCurrentPlayer?.() || null;
 
                     const parsed = define_modal_type(modalId);
@@ -904,7 +933,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn.dataset.modalId = modalId;
 
                 // --- récupération du module GATHERING (peut être absent) ---
-                const gatheringModule = (window.currentPlayer?.ship?.modules || []).find(
+                const gatheringModule = (getCurrentPlayerData()?.ship?.modules || []).find(
                     m => m.type === "GATHERING"
                 );
 
@@ -925,7 +954,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 // Désactivation : règles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
-                const currentAp = window.currentPlayer?.user?.current_ap ?? 0;
+                const currentAp = getCurrentPlayerData()?.user?.current_ap ?? 0;
 
                 if (
                     !gatheringModule ||           // module absent
@@ -942,7 +971,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     gatheringModule &&
                     typeof window.computeModuleRange === "function"
                 ) {
-                    const map = window.canvasEngine?.map;
+                    const map = getEngine()?.map;
                     const transmitterActor = map?.getCurrentPlayer?.() || null;
 
                     const parsed = define_modal_type(modalId);
@@ -1126,14 +1155,15 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         const isUnknown = raw.startsWith("unknown-");
         const clean = isUnknown ? raw.replace("unknown-", "") : raw;
 
-        const engine = getEngine();
+        const runtimeCtx = getActionRuntimeContext(modalId);
+        const engine = runtimeCtx.engine;
         if (!engine?.map) return;
 
-        const transmitterActor = engine.map.getCurrentPlayer?.();
-        const receiverActor = engine.map.findActorByKey(clean);
+        const transmitterActor = runtimeCtx.transmitterActor;
+        const receiverActor = runtimeCtx.receiverActor || engine.map.findActorByKey(clean);
         if (!transmitterActor || !receiverActor) return;
 
-        const modules = getCurrentPlayerData()?.ship?.modules || [];
+        const modules = runtimeCtx.modules || [];
 
         modalEl.querySelectorAll("[data-module-id]").forEach(btn => {
             const moduleId = parseInt(btn.dataset.moduleId, 10);
