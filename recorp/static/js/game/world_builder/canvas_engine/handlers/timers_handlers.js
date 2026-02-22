@@ -1,3 +1,15 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine;
+}
+
+function requestWorldRedraw() {
+    getEngine()?.renderer?.requestRedraw?.();
+}
+
 export function invalidateTimerEffect(event) {
 
     if (!event) return;
@@ -9,22 +21,21 @@ export function invalidateTimerEffect(event) {
         const key = `${e.target_type}_${e.target_id}`;
         
         if (e.effect === "scan") {
-            window.clearScan(key);
+            window.clearScan?.(key);
             window.scanExpiredLocal?.delete(key);
-            window.scanExpiredLocal.delete(targetKey);
             // (optionnel) cleanup du timer visuel  
-            const effect_key = `scan:${targetKey}`;
+            const effect_key = `scan:${key}`;
             if (window.effectVisualTimers?.has(effect_key)) {
                 clearTimeout(window.effectVisualTimers.get(effect_key));
                 window.effectVisualTimers.delete(effect_key);
             }
         } else {
 
-            window.unregisterEffect(e.effect, key);
+            window.unregisterEffect?.(e.effect, key);
         }
 
         refreshModalAfterScan?.(key);
-        window.canvasEngine?.renderer?.requestRedraw();
+        requestWorldRedraw();
     });
 
 }

@@ -784,30 +784,34 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         function executeForegroundAction(actionKey) {
             const target = getForegroundTargetInfo();
             if (!target) return false;
+            const handlers = {
+                scan() {
+                    if (!actionCtx.ws) return false;
+                    actionCtx.ws.send({
+                        type: "action_scan_pc_npc",
+                        payload: {
+                            target_type: target.targetType,
+                            target_id: target.targetId
+                        }
+                    });
+                    return true;
+                },
+                send_report() {
+                    openSendReportModal({
+                        targetKey: target.targetKey,
+                        targetType: target.targetType,
+                        targetId: target.targetId,
+                        modalData: data
+                    });
+                    return true;
+                },
+                gather() {
+                    // Placeholder routeur foreground: l'action WS/HTTP reste à brancher.
+                    return false;
+                }
+            };
 
-            if (actionKey === "scan") {
-                if (!actionCtx.ws) return false;
-                actionCtx.ws.send({
-                    type: "action_scan_pc_npc",
-                    payload: {
-                        target_type: target.targetType,
-                        target_id: target.targetId
-                    }
-                });
-                return true;
-            }
-
-            if (actionKey === "send_report") {
-                openSendReportModal({
-                    targetKey: target.targetKey,
-                    targetType: target.targetType,
-                    targetId: target.targetId,
-                    modalData: data
-                });
-                return true;
-            }
-
-            return false;
+            return handlers[actionKey]?.() === true;
         }
 
         const errorZone = document.createElement("div");
@@ -1047,6 +1051,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 if (action.key === "scan") {
                     executeForegroundAction("scan");
+                    return;
+                }
+
+                if (action.key === "gather") {
+                    executeForegroundAction("gather");
                     return;
                 }
 

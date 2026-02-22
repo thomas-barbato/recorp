@@ -26,12 +26,15 @@ import { applyEntityStatePatch } from "../handlers/entity_state_patcher.js";
 
 
 
+function notifyCombatSceneEntityUpdate(msg) {
+    const asm = window.ActionSceneManager;
+    if (!asm?.isActive?.("combat")) return;
+    asm._handleEntityUpdate?.(msg);
+}
+
 function entity_state_update_router(msg) {
     applyEntityStatePatch(msg);
-
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        window.ActionSceneManager._handleEntityUpdate?.(msg);
-    }
+    notifyCombatSceneEntityUpdate(msg);
 }
 
 // ===============================

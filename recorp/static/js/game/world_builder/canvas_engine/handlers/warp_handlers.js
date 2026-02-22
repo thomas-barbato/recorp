@@ -1,3 +1,27 @@
+function getGameState() {
+    return window.GameState || null;
+}
+
+function getEngine() {
+    return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+}
+
+function getCurrentPlayerId() {
+    return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
+}
+
+function getCurrentPlayerData() {
+    return getGameState()?.currentPlayer ?? window.currentPlayer ?? null;
+}
+
+function requestWorldRedraw() {
+    getEngine()?.renderer?.requestRedraw?.();
+}
+
+function getCurrentSectorId() {
+    return getGameState()?.mapInformations?.sector?.id ?? window.map_informations?.sector?.id ?? null;
+}
+
 export function handlerWarpFailed(data) {
     console.warn("[warp] Warp impossible :", data);
 
@@ -11,11 +35,15 @@ export function handlerWarpFailed(data) {
     window._syncInProgress = false;
 
     // message UI
-    if (window.canvasEngine?.floatingMessages) {
-        window.canvasEngine.floatingMessages.addMessage(
+    const engine = getEngine();
+    const currentPlayer = getCurrentPlayerData();
+    if (engine?.floatingMessages) {
+        engine.floatingMessages.addMessage(
             "⚠ Warp impossible : zone saturée",
-            { x: currentPlayer.user.coordinates.x,
-            y: currentPlayer.user.coordinates.y }
+            {
+                x: currentPlayer?.user?.coordinates?.x,
+                y: currentPlayer?.user?.coordinates?.y
+            }
         );
     } else {
         alert("Warp impossible : aucune place disponible autour de la warpzone.");
@@ -34,7 +62,7 @@ function buildStartIdArray(startX, startY, sizeX, sizeY) {
 
 export function handleWarpTravel(sectorWarpZoneId) {
     try {
-        const engine = window.canvasEngine;
+        const engine = getEngine();
         if (!engine) {
             console.error("[warp] canvasEngine indisponible");
             return;
@@ -52,7 +80,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
             return;
         }
 
-        const playerId = window.current_player_id;
+        const playerId = getCurrentPlayerId();
         if (!playerId) {
             console.error("[warp] Aucun current_player_id");
             return;
@@ -69,7 +97,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
         const startX = me.x;
         const startY = me.y;
 
-        const currentSectorId = window.map_informations?.sector?.id;
+        const currentSectorId = getCurrentSectorId();
         if (!currentSectorId) {
             console.error("[warp] map_informations.sector.id introuvable");
             return;
@@ -114,7 +142,7 @@ export function handlerRemovePlayer(data){
     const shipId = data.player_id;
     const actorId = `pc_${shipId}`;
 
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     const map = engine.map;
@@ -137,7 +165,7 @@ export function handlerRemovePlayer(data){
     }
 
     // 3️⃣ Redraw
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
     if (window.ActionSceneManager?.isActive?.("combat")) {
@@ -156,11 +184,14 @@ export function handlerRemovePlayer(data){
 
 export function handlerShipRemoved(data){
     const actorId = `pc_${data.ship_id}`;
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
+    const map = engine.map;
+    if (!map) return;
+
     map.removeActorByPlayerId(data.player_id);
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
     if (window.ActionSceneManager?.isActive?.("combat")) {
@@ -178,7 +209,7 @@ export function handlerShipRemoved(data){
 
 export function handlerUserJoin(data){
     const actors = data;  // backend envoie directement la liste des PC
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     const map = engine.map;
@@ -187,15 +218,15 @@ export function handlerUserJoin(data){
         map.addPlayerActor(actor);
     });
 
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 }
 
 export function handlerShipAdded(data){
-    const engine = window.canvasEngine;
+    const engine = getEngine();
     if (!engine) return;
 
     engine.map.addPlayerActor(data.actor);
-    engine.renderer.requestRedraw();
+    requestWorldRedraw();
 }
 
 export function handlerWarpComplete(){
