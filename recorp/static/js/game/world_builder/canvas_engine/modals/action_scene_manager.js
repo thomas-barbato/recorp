@@ -122,19 +122,6 @@ class ActionSceneManager {
 
         if (type === "combat") {
             this._mountCombatScene(context);
-
-            this._onScanExpired = (ev) => {
-
-                const k = ev?.detail?.targetKey;
-                if (!k) return;
-
-                // si le scan expiré concerne la cible courante
-                // alors on change les stats adverse en "???"
-                if (k === this._context?.targetKey) {
-                    this._setTargetHiddenUI();
-                }
-            };
-
             this._bindScanListener();
 
         }
@@ -164,8 +151,6 @@ class ActionSceneManager {
         this._unbindScanListener();
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
-
-        this._onScanExpired = null;
 
         // cleanup combat anim si présent
         if (this._combatAnim) {
@@ -1283,3 +1268,4 @@ window.playCombatAnimation = function (payload) {
         damageToShield: payload?.damage_to_shield || 0
     });
 };
+

@@ -118,124 +118,6 @@ class GameConsumer(WebsocketConsumer):
             self.scope['session'].modified = True
             self.scope['session'].save()
 
-    def receive(self, text_data=None, bytes_data=None):
-        """
-        Réception sécurisée des messages WebSocket
-        """
-        # 0) Vérifie tous les timers
-        try:
-            expired_targets = ActionRules.invalidate_expired_scans(int(self.room))
-
-            if expired_targets:
-                
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        "type": "effects_invalidated",
-                        "payload": [
-                            {
-                                "effect": "scan",
-                                "target_type": t["target_type"],
-                                "target_id": t["target_id"],
-                            }
-                            for t in expired_targets
-                        ],
-                    }
-                )
-        except Exception as e:
-            logger.error(f"Scan invalidation failed: {e}")
-                
-            # 1) Rien à traiter
-            if not text_data:
-                return
-
-        # 2) L'utilisateur doit être authentifié
-        if not self.user.is_authenticated:
-            return
-
-        # 3) Essayer de parser le JSON
-        try:
-            data = json.loads(text_data)
-        except Exception:
-            # Ce n'est pas un JSON → ignorer (ex: ping navigateur)
-            return
-
-        # 4) S'assurer que c'est un dict JSON
-        if not isinstance(data, dict):
-            return
-        msg_type = data.get("type")
-        if not msg_type:
-            return
-        
-
-        # 5) Rafraîchir la session
-        self._refresh_session()
-
-        # ------------------------------
-        # TRAITEMENT DES TYPES
-        # ------------------------------
-        # PING (client)
-        if msg_type == "ping":
-            response = self._handle_ping_with_validation(data)
-            self._send_response(response)
-            return
-
-        # SYNC
-        if msg_type == "request_data_sync":
-            self._handle_data_sync_request(data)
-            return
-        
-        if msg_type == "request_scan_state_sync":
-            self.send_scan_state_sync()
-            return
-
-        # MOVE
-        if msg_type == "async_move":
-            payload = data.get("payload")
-            if not isinstance(payload, dict):
-                logger.error(f"Payload async_move invalide: {data}")
-                return
-            self._handle_move_request(payload)
-            return
-
-        # CHAT
-        if msg_type == "async_chat_message":
-            self.async_send_chat_msg(data)
-            return
-        
-        # PRIVATE MESSAGE
-        if msg_type == "async_send_mp":
-            self.async_send_mp(data)
-            return
-        
-        # SCAN (PC / NPC)
-        if msg_type == "action_scan_pc_npc":
-            self._handle_scan_action_pc_npc(data.get("payload"))
-            return
-        
-        # SHARE SCAN WITH GROUP (PC / NPC) (if scan success)
-        if msg_type == "share_scan":
-            self._handle_share_scan(data.get("payload"))
-            return
-        
-        # COMBAT ACTION
-        if msg_type == "action_attack":
-            self._handle_combat_action(data.get("payload"))
-            return
-
-        # MESSAGE GÉNÉRIQUE
-        try:
-            message_data = self._extract_message_data(data)
-            self._broadcast_message(message_data)
-        except Exception as e:
-            logger.error(f"Erreur traitement message générique: {e}")
-
-
-
-    def _is_valid_request(self, text_data: Optional[str]) -> bool:
-        """Vérifie si la requête est valide."""
-        return text_data is not None and self.user.is_authenticated
-    
     def _handle_ping_with_validation(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Gère le ping et vérifie si une synchronisation est nécessaire."""
         client_hash = data.get("client_data_hash")
@@ -294,14 +176,6 @@ class GameConsumer(WebsocketConsumer):
             num, remainder = divmod(num, 36)
             result = chars[remainder] + result
         return result
-
-    def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Extrait les données du message."""
-        return {
-            "type": data["type"],
-            "user": self.user.username,
-            "message": data["message"],
-        }
 
     def _broadcast_message(self, message_data: Dict[str, Any]) -> None:
         """Diffuse le message à tous les membres du groupe."""
@@ -1981,3 +1855,4 @@ class GameConsumer(WebsocketConsumer):
             except Exception as e:
                 logger.error(f"Erreur lors de l'envoi de la réponse: {e}")
     
+
