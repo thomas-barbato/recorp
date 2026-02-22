@@ -1,5 +1,8 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 (function () {
+    function getGameState() {
+        return window.GameState || null;
+    }
 
     // ===================================================
     // PARSE MODAL ID
@@ -143,9 +146,6 @@
     function createNpcModalData(npcData) {
         const entityKey = `npc_${npcData.npc.id}`;
         const rt = getRuntimeForEntityKey(entityKey);
-
-        console.log("DANS RT")
-        console.log(rt)
         return {
             _ui: { scanned: false },
 
@@ -354,7 +354,8 @@
     }
 
     function getRuntimeForEntityKey(entityKey) {
-        const actor = window.canvasEngine?.map?.findActorByKey?.(entityKey);
+        const engine = getGameState()?.canvasEngine ?? window.canvasEngine;
+        const actor = engine?.map?.findActorByKey?.(entityKey);
         return actor?.runtime || null;
     }
 

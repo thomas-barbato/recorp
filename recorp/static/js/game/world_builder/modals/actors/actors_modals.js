@@ -1,3 +1,18 @@
+function applyScannedUiState(modalData, extractDataFromId, extractedDataForModal) {
+    if (!modalData || !extractDataFromId?.type || extractDataFromId?.id == null) return modalData;
+
+    const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
+    const isScanned = window.isScanned?.(targetKey) === true;
+
+    modalData._ui = modalData._ui || {};
+    modalData._ui.scanned = isScanned;
+
+    if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
+        modalData._ui.scanned = true;
+    }
+
+    return modalData;
+}
 
 function create_modal(modalId, extractDataFromId, extractedDataForModal){
     let element_type = extractDataFromId.type;
@@ -11,12 +26,7 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modal = createUnknownPcModal(modalId, modalData);   
             }else{
                 modalData = createPlayerModalData(extractedDataForModal.data);
-                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
-                const isScanned = window.isScanned(targetKey);
-                modalData._ui = modalData._ui || {};
-                modalData._ui.scanned = isScanned;
-                console.log("isScanned?", targetKey, window.isScanned(targetKey));
-                console.log("expired?", window.scanExpiredLocal?.has?.(targetKey));
+                applyScannedUiState(modalData, extractDataFromId, extractedDataForModal);
                 modal = create_pc_npc_modal(modalId, modalData, false);
             }
             break;
@@ -26,16 +36,7 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
                 modal = createUnknownNpcModal(modalId, modalData);
             }else{
                 modalData = createNpcModalData(extractedDataForModal.data)
-                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
-                const isScanned = window.isScanned(targetKey);
-                modalData._ui = modalData._ui || {};
-                modalData._ui.scanned = isScanned;
-                console.log("isScanned?", targetKey, window.isScanned(targetKey));
-                console.log("expired?", window.scanExpiredLocal?.has?.(targetKey));
-                // RESTAURER L'ÉTAT SCANNÉ SI BESOIN
-                if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
-                    modalData._ui.scanned = true;
-                } 
+                applyScannedUiState(modalData, extractDataFromId, extractedDataForModal);
                 modal = create_pc_npc_modal(modalId, modalData, true);
             }
             break;
@@ -46,16 +47,7 @@ function create_modal(modalId, extractDataFromId, extractedDataForModal){
             }
             let foregroundData = extractForegroundModalData(extractedDataForModal)
             modalData = createForegroundModalData(foregroundData, extractedDataForModal.data)
-            if (modalData) {
-                const targetKey = `${extractDataFromId.type}_${extractDataFromId.id}`;
-                const isScanned = window.isScanned?.(targetKey) === true;
-                modalData._ui = modalData._ui || {};
-                modalData._ui.scanned = isScanned;
-
-                if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
-                    modalData._ui.scanned = true;
-                }
-            }
+            applyScannedUiState(modalData, extractDataFromId, extractedDataForModal);
             modal = create_foreground_modal(modalId, modalData)
             break;
     }

@@ -1,5 +1,24 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 (function () {
+    function getGameState() {
+        return window.GameState || null;
+    }
+
+    function getCurrentPlayerStateSnapshot() {
+        return getGameState()?.currentPlayer ?? window.currentPlayerState ?? null;
+    }
+
+    function getScannedModalData(targetKey) {
+        return window.scannedModalData?.[targetKey] || null;
+    }
+
+    function isTargetScanned(targetKey) {
+        return window.isScanned?.(targetKey) === true;
+    }
+
+    function getModalLive() {
+        return window.ModalLive || null;
+    }
 
     function checkIfModalExists(modalId) {
         return document.getElementById(modalId) !== null;
@@ -26,7 +45,7 @@
         if (existing) {
 
             // unregister du modal vivant
-            window.ModalLive?.unregister?.(modalId);
+            getModalLive()?.unregister?.(modalId);
 
             existing.remove();
             return;
@@ -36,7 +55,7 @@
         modalContainer.innerHTML = "";
 
         // sécurité : un seul modal à la fois → on purge le registry
-        window.ModalLive?._registry?.clear?.();
+        getModalLive()?._registry?.clear?.();
 
         // Création du conteneur modal (VIDE)
         const modal = document.createElement("div");
@@ -46,7 +65,7 @@
         modalContainer.appendChild(modal);
 
         // register du modal vivant
-        window.ModalLive?.register?.(modalId);
+        getModalLive()?.register?.(modalId);
 
         // Loader GLOBAL (dans modal-container)
         const loader = document.createElement("div");
@@ -79,10 +98,11 @@
         const targetKey = `${elementType}_${elementId}`;
 
         try {
-            if (window.scannedModalData?.[targetKey]) {
+            const scannedTargetData = getScannedModalData(targetKey);
+            if (scannedTargetData) {
                 responseData = {
-                    target: window.scannedModalData[targetKey],
-                    current_player: window.currentPlayerState,
+                    target: scannedTargetData,
+                    current_player: getCurrentPlayerStateSnapshot(),
                     __fromScan: true
                 };
             } else {
@@ -102,7 +122,7 @@
         // Contexte UI (UNKNOWN = front only)
         responseData.__ui = {
             isUnknown,
-            scanned: Boolean(window.isScanned(targetKey))
+            scanned: isTargetScanned(targetKey)
         };
 
         // Construction réelle du modal
