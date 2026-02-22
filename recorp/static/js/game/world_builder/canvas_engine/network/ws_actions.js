@@ -56,7 +56,8 @@ ActionRegistry.register("async_receive_chat_message", handleIncomingChatMessage)
 // Le joueur AUTEUR reçoit une confirmation d’envoi
 ActionRegistry.register("async_sent_mp", handlePrivateMessageSent);
 // Le destinataire reçoit une notification + note
-ActionRegistry.register("async_recieve_mp", handleIncomingPrivateMessage);
+ActionRegistry.register("async_receive_mp", handleIncomingPrivateMessage);
+ActionRegistry.register("async_recieve_mp", handleIncomingPrivateMessage); // alias legacy typo
 
 // ===============================
 // WARP

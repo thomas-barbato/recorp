@@ -662,7 +662,7 @@ class GameConsumer(WebsocketConsumer):
             logger.exception(f"async_send_mp unexpected error: {e}")
             
             
-    def async_recieve_mp(self, event: Dict[str, Any]) -> None:
+    def async_receive_mp(self, event: Dict[str, Any]) -> None:
         """
         Handler exécuté par les consumers des rooms cibles.
         Il ne doit délivrer la notif que si ce consumer correspond au destinataire.
@@ -680,7 +680,7 @@ class GameConsumer(WebsocketConsumer):
 
             # Envoi au client final (websocket) : type et message à adapter côté front
             self._send_response({
-                "type": "async_recieve_mp",
+                "type": "async_receive_mp",
                 "message": {
                     "recipient_id": recipient_id,
                     "note": "Vous avez reçu un message privé"
@@ -688,12 +688,19 @@ class GameConsumer(WebsocketConsumer):
             })
 
         except Exception as e:
-            logger.exception(f"async_recieve_mp error: {e}")
+            logger.exception(f"async_receive_mp error: {e}")
+
+    def async_recieve_mp(self, event: Dict[str, Any]) -> None:
+        """
+        Alias rétro-compatible (typo historique).
+        Channels mappe `type` -> nom de méthode; on délègue vers le nom canonique.
+        """
+        self.async_receive_mp(event)
             
             
     def _notify_msg(self, recipient_data, sender_id) -> None:
         """
-        Envoie une notification de type 'async_recieve_mp' dans la room de
+        Envoie une notification de type 'async_receive_mp' dans la room de
         chaque destinataire. Exclut l'auteur.
         recipient_data: list of dicts [{ 'id': ..., 'sector_id': ... }, ...]
         """
@@ -719,7 +726,7 @@ class GameConsumer(WebsocketConsumer):
                 async_to_sync(self.channel_layer.group_send)(
                     destination_room_key,
                     {
-                        "type": "async_recieve_mp",   # garder la même orthographe si front attend ça
+                        "type": "async_receive_mp",
                         "message": {
                             "recipient_id": recipient_player_id,
                             "from_id": sender_id,

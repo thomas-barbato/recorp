@@ -1,5 +1,9 @@
 import ActionRegistry from "../network/action_registry.js";
 
+const WS_TYPE_ALIASES = Object.freeze({
+    async_recieve_mp: "async_receive_mp",
+});
+
 export default class WebSocketManager {
     constructor(url) {
         this.url = url;
@@ -69,7 +73,8 @@ export default class WebSocketManager {
             return;
         }
 
-        const type = msg.type;
+        const rawType = msg.type;
+        const type = WS_TYPE_ALIASES[rawType] ?? rawType;
         const message = msg.message ?? msg.payload; // compatibilité
 
         if (!type) {

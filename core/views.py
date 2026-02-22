@@ -753,10 +753,52 @@ def delete_private_mail(request):
 
 @login_required
 def search_private_mail(request):
-    query = request.GET.get("q", "")
-    results = PrivateMessage.objects.filter(
-        recipients=request.user, subject__icontains=query
-    )[:20]
+    query = request.GET.get("q", "").strip()
+
+    try:
+        player = Player.objects.get(user=request.user)
+    except Player.DoesNotExist:
+        return render(request, "mail-list.html", {"received_messages": []})
+
+    if not query:
+        return render(request, "mail-list.html", {"received_messages": []})
+
+    messages_qs = (
+        PrivateMessageRecipients.objects.filter(
+            recipient=player,
+            is_author=False,
+            deleted_at__isnull=True,
+            message__deleted_at__isnull=True,
+            message__subject__icontains=query,
+        )
+        .values(
+            "message_id__sender_id__name",
+            "message_id__sender_id",
+            "message_id__subject",
+            "message_id__body",
+            "message_id__timestamp",
+            "message_id__sender_id__faction_id__name",
+            "message_id",
+            "is_read",
+        )
+        .order_by("-message_id__timestamp")[:20]
+    )
+
+    results = [{
+            "id": e["message_id"],
+            "user": e["message_id__sender_id"],
+            "name": e["message_id__sender_id__name"],
+            "subject": e["message_id__subject"],
+            "body": e["message_id__body"],
+            "timestamp": e["message_id__timestamp"],
+            "avatar_url": f"img/users/{e['message_id__sender_id']}/0.gif",
+            "faction": e["message_id__sender_id__faction_id__name"],
+            "faction_color": GetDataFromDB().get_faction_badge_color_class(
+                e["message_id__sender_id__faction_id__name"]
+            ),
+            "is_read": e["is_read"],
+        } for e in messages_qs]
+
     return render(request, "mail-list.html", {"received_messages": results})
 
 
