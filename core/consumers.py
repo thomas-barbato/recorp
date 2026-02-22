@@ -1833,12 +1833,151 @@ class GameConsumer(WebsocketConsumer):
             }
         })
 
+    # Sprint 1 override block: split receive dispatch + WS envelope normalization.
+    def receive(self, text_data=None, bytes_data=None):
+        self._invalidate_expired_scans_safe()
+
+        if not self._is_valid_request(text_data):
+            return
+
+        data = self._parse_client_json_message(text_data)
+        if not data:
+            return
+
+        self._refresh_session()
+
+        if self._dispatch_client_message(data):
+            return
+
+        try:
+            message_data = self._extract_message_data(data)
+            self._broadcast_message(message_data)
+        except Exception as e:
+            logger.error(f"Erreur traitement message generique: {e}")
+
+    def _is_valid_request(self, text_data: Optional[str]) -> bool:
+        return text_data is not None and self.user.is_authenticated
+
+    def _invalidate_expired_scans_safe(self) -> None:
+        try:
+            expired_targets = ActionRules.invalidate_expired_scans(int(self.room))
+            if not expired_targets:
+                return
+
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "effects_invalidated",
+                    "payload": [
+                        {
+                            "effect": "scan",
+                            "target_type": t["target_type"],
+                            "target_id": t["target_id"],
+                        }
+                        for t in expired_targets
+                    ],
+                }
+            )
+        except Exception as e:
+            logger.error(f"Scan invalidation failed: {e}")
+
+    def _parse_client_json_message(self, text_data: str) -> Optional[Dict[str, Any]]:
+        try:
+            data = json.loads(text_data)
+        except Exception:
+            return None
+
+        if not isinstance(data, dict):
+            return None
+
+        if not data.get("type"):
+            return None
+
+        return data
+
+    def _dispatch_client_message(self, data: Dict[str, Any]) -> bool:
+        msg_type = data["type"]
+        handlers = {
+            "ping": self._dispatch_ping_message,
+            "request_data_sync": self._dispatch_data_sync_message,
+            "request_scan_state_sync": self._dispatch_scan_state_sync_message,
+            "async_move": self._dispatch_move_message,
+            "async_chat_message": self._dispatch_chat_message,
+            "async_send_mp": self._dispatch_private_message,
+            "action_scan_pc_npc": self._dispatch_scan_action_message,
+            "share_scan": self._dispatch_share_scan_message,
+            "action_attack": self._dispatch_combat_action_message,
+        }
+        handler = handlers.get(msg_type)
+        if not handler:
+            return False
+        handler(data)
+        return True
+
+    def _get_client_payload(self, data: Dict[str, Any]) -> Any:
+        if "payload" in data:
+            return data.get("payload")
+        return data.get("message")
+
+    def _dispatch_ping_message(self, data: Dict[str, Any]) -> None:
+        self._send_response(self._handle_ping_with_validation(data))
+
+    def _dispatch_data_sync_message(self, data: Dict[str, Any]) -> None:
+        self._handle_data_sync_request(data)
+
+    def _dispatch_scan_state_sync_message(self, data: Dict[str, Any]) -> None:
+        self.send_scan_state_sync()
+
+    def _dispatch_move_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            logger.error(f"Payload async_move invalide: {data}")
+            return
+        self._handle_move_request(payload)
+
+    def _dispatch_chat_message(self, data: Dict[str, Any]) -> None:
+        self.async_send_chat_msg(data)
+
+    def _dispatch_private_message(self, data: Dict[str, Any]) -> None:
+        self.async_send_mp(data)
+
+    def _dispatch_scan_action_message(self, data: Dict[str, Any]) -> None:
+        self._handle_scan_action_pc_npc(self._get_client_payload(data))
+
+    def _dispatch_share_scan_message(self, data: Dict[str, Any]) -> None:
+        self._handle_share_scan(self._get_client_payload(data))
+
+    def _dispatch_combat_action_message(self, data: Dict[str, Any]) -> None:
+        self._handle_combat_action(self._get_client_payload(data))
+
+    def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "type": data["type"],
+            "user": self.user.username,
+            "message": data.get("message", data.get("payload")),
+        }
+
+    def _normalize_ws_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
+        if not isinstance(response, dict):
+            return response
+
+        normalized = dict(response)
+        has_message = "message" in normalized
+        has_payload = "payload" in normalized
+
+        if has_message and not has_payload:
+            normalized["payload"] = normalized["message"]
+        elif has_payload and not has_message:
+            normalized["message"] = normalized["payload"]
+
+        return normalized
+
     def _send_response(self, response: Dict[str, Any]) -> None:
         """Envoie une réponse via WebSocket."""
         
         if response:
             try:
-                self.send(text_data=json.dumps(response))
+                self.send(text_data=json.dumps(self._normalize_ws_response(response)))
             except Exception as e:
                 logger.error(f"Erreur lors de l'envoi de la réponse: {e}")
     

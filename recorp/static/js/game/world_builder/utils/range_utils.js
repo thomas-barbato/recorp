@@ -1,3 +1,29 @@
+window.computeActorsDistance = function ({ transmitterActor, receiverActor }) {
+    if (!transmitterActor || !receiverActor) {
+        return Promise.resolve(null);
+    }
+
+    const worker = window.canvasEngine?.gameWorker;
+    if (!worker || typeof worker.call !== "function") {
+        return Promise.resolve(null);
+    }
+
+    return worker.call("compute_distance", {
+        from: {
+            x: transmitterActor.x,
+            y: transmitterActor.y,
+            sizeX: transmitterActor.sizeX,
+            sizeY: transmitterActor.sizeY
+        },
+        to: {
+            x: receiverActor.x,
+            y: receiverActor.y,
+            sizeX: receiverActor.sizeX,
+            sizeY: receiverActor.sizeY
+        }
+    });
+};
+
 window.computeModuleRange = function ({ module, transmitterActor, receiverActor }) {
 
     if (!module || !transmitterActor || !receiverActor) {
@@ -23,21 +49,7 @@ window.computeModuleRange = function ({ module, transmitterActor, receiverActor 
 
     const maxRange = module.effect.range;
 
-    return window.canvasEngine.gameWorker
-        .call("compute_distance", {
-            from: {
-                x: transmitterActor.x,
-                y: transmitterActor.y,
-                sizeX: transmitterActor.sizeX,
-                sizeY: transmitterActor.sizeY
-            },
-            to: {
-                x: receiverActor.x,
-                y: receiverActor.y,
-                sizeX: receiverActor.sizeX,
-                sizeY: receiverActor.sizeY
-            }
-        })
+    return window.computeActorsDistance({ transmitterActor, receiverActor })
         .then(distance => ({
             allowed: distance <= maxRange,
             distance,

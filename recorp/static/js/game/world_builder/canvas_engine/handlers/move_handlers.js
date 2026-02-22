@@ -213,10 +213,6 @@ export function handlePlayerMove(msg) {
                             }
 
                             window.ModalLive?.notify?.(`pc_${playerId}`, "range_maybe_changed", {});
-                            // CombatScene distance update
-                            if (window.ActionSceneManager?.isActive?.("combat")) {
-                                window.ActionSceneManager._recomputeDistance?.(`pc_${playerId}`);
-                            }
 
                             // on redessine.
                             engine.renderer.requestRedraw();
@@ -229,6 +225,11 @@ export function handlePlayerMove(msg) {
                         }
                     } catch (e) {
                         console.warn("[WS player_move] camera recenter error (animation):", e);
+                    }
+
+                    // CombatScene distance update (must not depend on autoCenter)
+                    if (window.ActionSceneManager?.isActive?.("combat")) {
+                        window.ActionSceneManager._recomputeDistance?.(`pc_${playerId}`);
                     }
                 }
             });
@@ -276,6 +277,10 @@ export function handlePlayerMove(msg) {
     // 3) RECENTRAGE DIRECT (si pas d'animation)
     // ----------------------------------------------------------
     if (!animationUsed) {
+        if (window.ActionSceneManager?.isActive?.("combat")) {
+            window.ActionSceneManager._recomputeDistance?.(`pc_${playerId}`);
+        }
+
         try {
             if (engine.camera && engine.camera.autoCenter) {
 

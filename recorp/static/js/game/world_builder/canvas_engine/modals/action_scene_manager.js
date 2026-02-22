@@ -7,6 +7,7 @@ class ActionSceneManager {
         // combat animation runtime
         this._combatAnim = null; // { engine, queue }
         this._combatCanvasPositions = null; // { left, right }
+        this._combatDistanceNode = null;
         this._mountNode = null; // si défini, la scène est rendue dans ce node (body du modal)
     }
 
@@ -73,6 +74,8 @@ class ActionSceneManager {
     }
 
     _bindScanListener() {
+        if (this._scanExpiredHandler) return;
+
         this._scanExpiredHandler = (e) => {
             if (!this.isActive("combat")) return;
 
@@ -132,11 +135,10 @@ class ActionSceneManager {
                 }
             };
 
-            window.addEventListener("scan:expired", this._onScanExpired);
+            this._bindScanListener();
 
         }
 
-        this._bindMovementListener();
         this._bindMovementListener();
 
         window.dispatchEvent(new CustomEvent("actionscene:open", { detail: this._active }));
@@ -163,10 +165,7 @@ class ActionSceneManager {
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
 
-        if (this._onScanExpired) {
-            window.removeEventListener("scan:expired", this._onScanExpired);
-            this._onScanExpired = null;
-        }
+        this._onScanExpired = null;
 
         // cleanup combat anim si présent
         if (this._combatAnim) {
@@ -174,6 +173,7 @@ class ActionSceneManager {
             this._combatAnim = null;
         }
         this._combatCanvasPositions = null;
+        this._combatDistanceNode = null;
         this._context = null;
 
         return true;
@@ -274,6 +274,7 @@ class ActionSceneManager {
         // Distance placeholder
         const distance = document.createElement("div");
         distance.classList.add("text-center", "text-sm", "text-sky-300");
+        this._combatDistanceNode = distance;
 
         worker.call("compute_distance", {
             from: {
@@ -674,6 +675,10 @@ class ActionSceneManager {
             case "ap_update":
                 this._updateCombatAp(entity_key, changes);
                 break;
+
+            case "mp_update":
+                this._recomputeDistance(entity_key);
+                break;
         }
     }
 
@@ -762,6 +767,8 @@ class ActionSceneManager {
     }
 
     _bindMovementListener() {
+        if (this._movementHandler) return;
+
         this._movementHandler = (e) => {
             if (!this.isActive("combat")) return;
 
@@ -886,26 +893,19 @@ class ActionSceneManager {
 
         if (!attacker || !target) return;
 
-        const worker = window.canvasEngine?.gameWorker;
-        if (!worker) return;
+        const distancePromise = window.computeActorsDistance?.({
+            transmitterActor: attacker,
+            receiverActor: target
+        });
+        if (!distancePromise || typeof distancePromise.then !== "function") return;
 
-        worker.call("compute_distance", {
-            from: {
-                x: attacker.x,
-                y: attacker.y,
-                sizeX: attacker.sizeX,
-                sizeY: attacker.sizeY
-            },
-            to: {
-                x: target.x,
-                y: target.y,
-                sizeX: target.sizeX,
-                sizeY: target.sizeY
-            }
-        }).then(dist => {
+        distancePromise.then(dist => {
+            if (dist == null) return;
 
             const distanceNode =
-                document.querySelector("#modal-combat .text-sky-300");
+                (this._combatDistanceNode && this._combatDistanceNode.isConnected)
+                    ? this._combatDistanceNode
+                    : document.querySelector("#modal-combat .text-sky-300");
 
             if (distanceNode) {
                 distanceNode.textContent = `Distance: ${dist}`;
@@ -914,6 +914,8 @@ class ActionSceneManager {
             // recalcul range après mouvement
             window.refreshModalActionRanges?.("modal-combat");
 
+        }).catch(err => {
+            console.warn("CombatScene distance error:", err);
         });
     }
 }
