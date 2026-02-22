@@ -1,6 +1,22 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 
 (function () {
+    function getGameState() {
+        return window.GameState || null;
+    }
+
+    function getEngine() {
+        return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
+    }
+
+    function getCurrentPlayerData() {
+        return getGameState()?.currentPlayer ?? window.currentPlayer ?? null;
+    }
+
+    function getCurrentPlayerId() {
+        return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
+    }
+
 
     function createActionCostBadge(cost = {}) {
         const apCost = cost?.ap_cost ?? null;
@@ -149,7 +165,7 @@
         const type = a;
         const requiredName = b;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        const modules = getCurrentPlayerData()?.ship?.modules || [];
         const req = (requiredName ?? "").toString().toLowerCase();
 
         return modules.some(m =>
@@ -205,11 +221,13 @@
     
 function buildActionsSection(modalId, data, is_npc, contextZone) {
     
-    const ws = window.canvasEngine?.ws;
-    const map = window.canvasEngine?.map;
-    const modules = currentPlayer.ship.modules;
+    const engine = getEngine();
+    const ws = engine?.ws;
+    const map = engine?.map;
+    const currentPlayerData = getCurrentPlayerData();
+    const modules = currentPlayerData?.ship?.modules || [];
     const isUnknown = modalId.startsWith("modal-unknown");
-    const currentAP = currentPlayer?.player?.current_ap ?? null;
+    const currentAP = currentPlayer?.player?.current_ap ?? currentPlayerData?.user?.current_ap ?? null;
 
     const formatRangeTooltip = r => {
         if (typeof r?.distance === "number" && typeof r?.maxRange === "number") {
@@ -283,7 +301,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             }*/
 
             // 🔵 Construire les clés attacker / target
-            const attackerKey = `pc_${window.current_player_id}`;
+            const attackerKey = `pc_${getCurrentPlayerId()}`;
             const parsed = define_modal_type(modalId);
 
             let targetKey = null;
@@ -306,7 +324,6 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             });
             */
 
-            console.log("Combat ActionScene opened:", attackerKey, targetKey);
         },
         { ap_cost:1 }
     );
@@ -366,7 +383,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     
     grid.innerHTML = "";
     // Limiter l'utilisation du scan.
-    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe") || ap_cost > window.currentPlayer.user.current_ap) {
+    if (data._ui?.scanned === true || !playerHasModule("PROBE", "spaceship probe") || ap_cost > (getCurrentPlayerData()?.user?.current_ap ?? 0)) {
         scanButton.classList.add("opacity-40", "pointer-events-none");
     }
 
@@ -1073,14 +1090,14 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             const context = window.ActionSceneManager?.getContext?.();
             if (!context) return;
 
-            const engine = window.canvasEngine;
+            const engine = getEngine();
             if (!engine?.map) return;
 
             const transmitterActor = engine.map.findActorByKey(context.attackerKey);
             const receiverActor = engine.map.findActorByKey(context.targetKey);
             if (!transmitterActor || !receiverActor) return;
 
-            const modules = window.currentPlayer?.ship?.modules || [];
+            const modules = getCurrentPlayerData()?.ship?.modules || [];
             const modalEl = document.getElementById("modal-combat");
             if (!modalEl) return;
 
@@ -1109,14 +1126,14 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         const isUnknown = raw.startsWith("unknown-");
         const clean = isUnknown ? raw.replace("unknown-", "") : raw;
 
-        const engine = window.canvasEngine;
+        const engine = getEngine();
         if (!engine?.map) return;
 
         const transmitterActor = engine.map.getCurrentPlayer?.();
         const receiverActor = engine.map.findActorByKey(clean);
         if (!transmitterActor || !receiverActor) return;
 
-        const modules = window.currentPlayer?.ship?.modules || [];
+        const modules = getCurrentPlayerData()?.ship?.modules || [];
 
         modalEl.querySelectorAll("[data-module-id]").forEach(btn => {
             const moduleId = parseInt(btn.dataset.moduleId, 10);
