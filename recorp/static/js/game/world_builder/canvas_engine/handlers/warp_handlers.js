@@ -22,6 +22,37 @@ function getCurrentSectorId() {
     return getGameState()?.mapInformations?.sector?.id ?? window.map_informations?.sector?.id ?? null;
 }
 
+function getActionSceneManager() {
+    return window.ActionSceneManager || null;
+}
+
+function isTargetScanned(targetKey) {
+    return window.isScanned?.(targetKey) === true;
+}
+
+function refreshScannedTargetUi(targetKey) {
+    if (typeof refreshModalAfterScan === "function") {
+        refreshModalAfterScan(targetKey);
+    }
+}
+
+function purgeScanData(targetKey) {
+    window.clearScan?.(targetKey);
+    delete window.scannedMeta?.[targetKey];
+    delete window.scannedModalData?.[targetKey];
+}
+
+function closeCombatSceneIfActorAffected(removedKey, reason = "actor_removed") {
+    const asm = getActionSceneManager();
+    if (!asm?.isActive?.("combat")) return;
+    const context = asm.getContext?.();
+    if (!context) return;
+
+    if (context.attackerKey === removedKey || context.targetKey === removedKey) {
+        asm.close?.({ reason });
+    }
+}
+
 export function handlerWarpFailed(data) {
     console.warn("[warp] Warp impossible :", data);
 
@@ -152,33 +183,16 @@ export function handlerRemovePlayer(data){
     map.removeActorByPlayerId(shipId);
 
     // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
-    if (window.isScanned(actorId)) {
-
-        window.clearScan(actorId);
-        delete window.scannedMeta?.[actorId];
-        delete window.scannedModalData?.[actorId];
-
-        // Si un modal est ouvert → rebuild propre
-        if (typeof refreshModalAfterScan === "function") {
-            refreshModalAfterScan(actorId);
-        }
+    if (isTargetScanned(actorId)) {
+        purgeScanData(actorId);
+        refreshScannedTargetUi(actorId);
     }
 
     // 3️⃣ Redraw
     requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        const context = window.ActionSceneManager.getContext?.();
-        const removedKey = `pc_${data.player_id}`;
-
-        if (context &&
-            (context.attackerKey === removedKey ||
-            context.targetKey === removedKey)) {
-
-            window.ActionSceneManager.close({ reason: "actor_removed" });
-        }
-    }
+    closeCombatSceneIfActorAffected(`pc_${data.player_id}`, "actor_removed");
 
 }
 
@@ -194,17 +208,7 @@ export function handlerShipRemoved(data){
     requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        const context = window.ActionSceneManager.getContext?.();
-        const removedKey = `pc_${data.ship_id}`;
-
-        if (context &&
-            (context.attackerKey === removedKey ||
-            context.targetKey === removedKey)) {
-
-            window.ActionSceneManager.close({ reason: "actor_removed" });
-        }
-    }
+    closeCombatSceneIfActorAffected(`pc_${data.ship_id}`, "actor_removed");
 }
 
 export function handlerUserJoin(data){
@@ -231,9 +235,7 @@ export function handlerShipAdded(data){
 
 export function handlerWarpComplete(){
     // Fermer CombatScene si cible ou joueur concerné
-    if (window.ActionSceneManager?.isActive?.("combat")) {
-        window.ActionSceneManager.close({ reason: "warp_complete" });
-    }
+    getActionSceneManager()?.close?.({ reason: "warp_complete" });
     window.location.reload()
 
 }

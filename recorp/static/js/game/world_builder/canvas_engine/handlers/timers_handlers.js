@@ -10,6 +10,11 @@ function requestWorldRedraw() {
     getEngine()?.renderer?.requestRedraw?.();
 }
 
+function refreshScannedTargetUi(targetKey) {
+    refreshModalAfterScan?.(targetKey);
+    window.refreshModalActionRanges?.(`modal-${targetKey}`);
+}
+
 export function invalidateTimerEffect(event) {
 
     if (!event) return;
@@ -34,7 +39,7 @@ export function invalidateTimerEffect(event) {
             window.unregisterEffect?.(e.effect, key);
         }
 
-        refreshModalAfterScan?.(key);
+        refreshScannedTargetUi(key);
         requestWorldRedraw();
     });
 
