@@ -265,11 +265,14 @@
             };
         }
 
+        const nestedData = element.data?.data || {};
+        const nestedMeta = nestedData?.data || {};
+
         return {
             type: element.type,
             name: element.data.item_name,
-            description: element.data.data.description,
-            coordinates: element.data.data.coordinates,
+            description: nestedData.description || nestedMeta.description || "",
+            coordinates: nestedData.coordinates || nestedMeta.coordinates || { x: 0, y: 0 },
             size: {
                 x: element.size?.x || 1,
                 y: element.size?.y || 1
@@ -346,6 +349,12 @@
                         ...baseModalData.actions,
                         player_in_same_faction: map_informations.actions.player_is_same_faction
                     }
+                };
+
+            case "wreck":
+                return {
+                    ...baseModalData,
+                    wreck: sectorData?.wreck || null,
                 };
 
             default:

@@ -33,8 +33,8 @@
 ## Proposition de roadmap courte
 
 1. Sprint 1: normalisation WS + split consumer + bugfix listeners. (termine + cleanup 1.1)
-2. Sprint 2: state container front + patching modal/hud unifie. (a finaliser: checklist)
-3. Sprint 3: optimisation combat DB + test suite WS scenario.
+2. Sprint 2: state container front + patching modal/hud unifie. (termine, `gather` foreground placeholder assume)
+3. Sprint 3: combat v2 (mort/effets/progression) + optimisation combat DB + test suite WS scenario.
 
 ## Avancement courant (mise a jour)
 
@@ -42,7 +42,10 @@
 
 - Termine (incluant mini cleanup 1.1).
 
-### Sprint 2 - Reste a finaliser (mineur)
+### Sprint 2
 
-- Finaliser la checklist manuelle de non-regression (scan, combat modal, warp/remove actor, resync scans).
-- `gather` foreground reste en placeholder (a brancher ou a documenter).
+- Termine (`gather` foreground laisse en placeholder documente).
+
+### Sprint 3
+
+- Cadrage/specification en cours (docs 11 a 14).

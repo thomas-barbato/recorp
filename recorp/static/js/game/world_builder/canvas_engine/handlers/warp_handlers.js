@@ -53,14 +53,19 @@ function closeCombatSceneIfActorAffected(removedKey, reason = "actor_removed") {
     }
 }
 
+function normalizeWarpEventData(data) {
+    if (!data || typeof data !== "object") return data;
+    if (data.message && typeof data.message === "object") return data.message;
+    if (data.payload && typeof data.payload === "object") return data.payload;
+    return data;
+}
+
 function resolveRemovedActorKey(data) {
     if (!data) return null;
     if (data.actor_key) return String(data.actor_key);
     if (data.target_key) return String(data.target_key);
     if (data.player_id != null) return `pc_${data.player_id}`;
     if (data.player != null) return `pc_${data.player}`;
-    if (data.id != null) return `pc_${data.id}`;
-    if (data.ship_id != null) return `pc_${data.ship_id}`;
     if (data.npc_id != null) return `npc_${data.npc_id}`;
     return null;
 }
@@ -199,8 +204,8 @@ export function handleWarpTravel(sectorWarpZoneId) {
 }
 
 export function handlerRemovePlayer(data){
-    
-    const actorId = resolveRemovedActorKey(data) || (data?.player_id != null ? `pc_${data.player_id}` : null);
+    const evt = normalizeWarpEventData(data);
+    const actorId = resolveRemovedActorKey(evt) || (evt?.player_id != null ? `pc_${evt.player_id}` : null);
 
     const engine = getEngine();
     if (!engine) return;
@@ -209,7 +214,7 @@ export function handlerRemovePlayer(data){
     if (!map) return;
 
     // 1️⃣ Supprimer l’acteur de la map
-    removeActorFromMap(map, actorId, data);
+    removeActorFromMap(map, actorId, evt);
 
     // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
     if (actorId && isTargetScanned(actorId)) {
@@ -226,14 +231,15 @@ export function handlerRemovePlayer(data){
 }
 
 export function handlerShipRemoved(data){
-    const actorId = resolveRemovedActorKey(data) || (data?.ship_id != null ? `pc_${data.ship_id}` : null);
+    const evt = normalizeWarpEventData(data);
+    const actorId = resolveRemovedActorKey(evt) || (evt?.player_id != null ? `pc_${evt.player_id}` : null);
     const engine = getEngine();
     if (!engine) return;
 
     const map = engine.map;
     if (!map) return;
 
-    removeActorFromMap(map, actorId, data);
+    removeActorFromMap(map, actorId, evt);
     requestWorldRedraw();
 
     // Fermer CombatScene si cible ou joueur concerné

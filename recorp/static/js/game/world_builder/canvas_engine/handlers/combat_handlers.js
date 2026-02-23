@@ -38,6 +38,78 @@ export function handleCombatEvents(message) {
     });
 }
 
+export function handleCombatDeath(payload) {
+    if (!payload) return;
+
+    const asm = window.ActionSceneManager;
+    const ctx = asm?.getContext?.();
+    if (!ctx) return;
+
+    const deadKey = normalizeActorKey(payload.dead_key);
+    if (!deadKey) return;
+
+    applyDeadUiState(deadKey);
+    purgeDeadTargetTransientEffects(deadKey);
+    showDeathOverlayIfLocal(deadKey, payload);
+
+    const attackerKey = normalizeActorKey(ctx.attackerKey);
+    const targetKey = normalizeActorKey(ctx.targetKey);
+    if (deadKey !== attackerKey && deadKey !== targetKey) {
+        return;
+    }
+
+    safeAddCombatLog(`Destruction: ${deadKey}`);
+
+    // Close the combat scene and let ActionSceneManager render a terminal message in the parent modal.
+    asm?.close?.({
+        reason: "combat_death",
+        payload,
+    });
+}
+
+export function handleWreckCreated(payload) {
+    if (!payload) return;
+
+    const engine = window.GameState?.canvasEngine ?? window.canvasEngine;
+    const map = engine?.map;
+    if (!map) return;
+
+    const deadKey = normalizeActorKey(payload.dead_key);
+    if (deadKey) {
+        applyDeadUiState(deadKey);
+        purgeDeadTargetTransientEffects(deadKey);
+        showDeathOverlayIfLocal(deadKey, payload);
+    }
+
+    if (deadKey?.startsWith("pc_")) {
+        map.removeActorByPlayerId?.(deadKey.replace("pc_", ""));
+    } else if (deadKey?.startsWith("npc_")) {
+        map.removeNpcById?.(deadKey.replace("npc_", ""));
+    }
+
+    map.addWreckActor?.(payload);
+    engine?.renderer?.requestRedraw?.();
+}
+
+export function handleWreckExpired(payload) {
+    if (!payload) return;
+
+    const wreckId = payload.wreck_id ?? String(payload.wreck_key || "").replace("wreck_", "");
+    if (wreckId == null || wreckId === "") return;
+
+    const wreckKey = payload.wreck_key || `wreck_${wreckId}`;
+    const engine = window.GameState?.canvasEngine ?? window.canvasEngine;
+    engine?.map?.removeWreckById?.(wreckId);
+    engine?.renderer?.requestRedraw?.();
+
+    const modalId = `modal-${wreckKey}`;
+    const modalEl = document.getElementById(modalId);
+    if (modalEl) {
+        window.ModalLive?.unregister?.(modalId);
+        modalEl.remove();
+    }
+}
+
 // =======================================================
 // Helpers
 // =======================================================
@@ -108,6 +180,98 @@ function safeAddCombatLog(text) {
         window.addCombatLog(text);
     }
 }
+
+function applyDeadUiState(deadKey) {
+    if (!deadKey) return;
+
+    const engine = window.GameState?.canvasEngine ?? window.canvasEngine;
+    const actor = engine?.map?.findActorByKey?.(deadKey);
+    if (actor) {
+        actor.runtime ??= {};
+        actor.runtime.current_hp = 0;
+        actor.runtime.shields = {
+            MISSILE: 0,
+            THERMAL: 0,
+            BALLISTIC: 0,
+        };
+        if (actor.data?.ship) {
+            actor.data.ship.current_hp = 0;
+            actor.data.ship.current_missile_defense = 0;
+            actor.data.ship.current_thermal_defense = 0;
+            actor.data.ship.current_ballistic_defense = 0;
+        }
+    }
+
+    // Patch modal live (normal/unknown) and combat scene stats before close.
+    window.ModalLive?.notify?.(deadKey, "hp_update", {
+        hp: 0,
+        shields: { MISSILE: 0, THERMAL: 0, BALLISTIC: 0 },
+    });
+
+    const asm = window.ActionSceneManager;
+    const ctx = asm?.getContext?.();
+    if (ctx && (String(ctx.attackerKey) === deadKey || String(ctx.targetKey) === deadKey)) {
+        asm?._handleEntityUpdate?.({
+            entity_key: deadKey,
+            change_type: "hp_update",
+            changes: {
+                hp: { current: 0 },
+                shields: { MISSILE: 0, THERMAL: 0, BALLISTIC: 0 },
+            }
+        });
+    }
+
+    // Local HUD (if local player is the dead actor)
+    const localKey = `pc_${window.current_player_id}`;
+    if (deadKey === localKey) {
+        window.current_player_status = "DEAD";
+        if (window.GameState?.player) {
+            window.GameState.player.currentPlayerStatus = "DEAD";
+        }
+        if (window.currentPlayer?.ship) {
+            window.currentPlayer.ship.current_hp = 0;
+            window.currentPlayer.ship.current_missile_defense = 0;
+            window.currentPlayer.ship.current_thermal_defense = 0;
+            window.currentPlayer.ship.current_ballistic_defense = 0;
+        }
+
+        const hpEl = document.getElementById("hp-container-value-min");
+        if (hpEl) hpEl.textContent = "0";
+        const hpBar = document.getElementById("hp-percent");
+        if (hpBar) hpBar.style.width = "0%";
+    }
+}
+
+function purgeDeadTargetTransientEffects(deadKey) {
+    if (!deadKey) return;
+
+    window.clearScan?.(deadKey);
+    delete window.scannedMeta?.[deadKey];
+    delete window.scannedModalData?.[deadKey];
+    window.scannedTargets?.delete?.(deadKey);
+
+    const timers = window.effectVisualTimers;
+    if (timers?.has?.(`scan:${deadKey}`)) {
+        clearTimeout(timers.get(`scan:${deadKey}`));
+        timers.delete(`scan:${deadKey}`);
+    }
+    if (timers?.has?.(`share_scan:${deadKey}`)) {
+        clearTimeout(timers.get(`share_scan:${deadKey}`));
+        timers.delete(`share_scan:${deadKey}`);
+    }
+}
+
+function showDeathOverlayIfLocal(deadKey, payload) {
+    const localKey = `pc_${window.current_player_id}`;
+    if (deadKey !== localKey) return;
+    window.showDeathRespawnOverlay?.(payload);
+}
+
+window.addEventListener?.("wreck:expired_local", (e) => {
+    const payload = e?.detail;
+    if (!payload) return;
+    handleWreckExpired(payload);
+});
 
 // =======================================================
 // Render events (modal)

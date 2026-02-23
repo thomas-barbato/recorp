@@ -23,12 +23,13 @@ export default class UIRenderer {
 
         this._sonarPulseTime = 0;
 
-        if (currentPlayer.ship.view_range === undefined || currentPlayer.ship.view_range === null) {
-            currentPlayer.ship.view_range = currentPlayer.ship.view_range;
+        const currentShip = currentPlayer?.ship || null;
+        if (currentShip && (currentShip.view_range === undefined || currentShip.view_range === null)) {
+            currentShip.view_range = currentShip.view_range;
         }
 
         this.pathTiles = [];
-        this.maxMovement = currentPlayer.ship.current_movement;
+        this.maxMovement = Number(currentShip?.current_movement ?? 0);
 
         this.pathfinder = options.pathfinder || null;
     }

@@ -26,6 +26,86 @@ import {
 } from "./engine/update_coordinate_display.js";
 import GameWorkerClient from "../workers/game_worker_client.js";
 
+function getCurrentPlayerLifeStatus() {
+    return window.GameState?.player?.currentPlayerStatus ?? window.current_player_status ?? "ALIVE";
+}
+
+function removeDeathRespawnOverlay() {
+    document.getElementById("death-respawn-overlay")?.remove();
+}
+
+function mountDeathRespawnOverlay(ws) {
+    if (getCurrentPlayerLifeStatus() !== "DEAD") {
+        removeDeathRespawnOverlay();
+        return;
+    }
+    if (document.getElementById("death-respawn-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "death-respawn-overlay";
+    overlay.className = [
+        "fixed", "inset-0", "z-[10000]",
+        "bg-red-950/70", "backdrop-blur-sm",
+        "flex", "items-center", "justify-center",
+        "p-4"
+    ].join(" ");
+
+    const panel = document.createElement("div");
+    panel.className = [
+        "w-full", "max-w-md",
+        "rounded-xl", "border", "border-red-500/60",
+        "bg-zinc-950/95", "shadow-2xl",
+        "p-5", "text-center", "space-y-3"
+    ].join(" ");
+
+    const title = document.createElement("div");
+    title.textContent = "Vous etes mort";
+    title.className = "text-red-400 font-bold text-xl animate-pulse font-shadow";
+
+    const body = document.createElement("div");
+    body.className = "text-zinc-100 text-sm font-shadow";
+    body.textContent = "Votre vaisseau a ete detruit. Cliquez pour reapparaitre.";
+
+    const sub = document.createElement("div");
+    sub.className = "text-zinc-400 text-xs";
+    sub.textContent = "Respawn temporaire: secteur 7";
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = [
+        "px-4", "py-2", "rounded-md",
+        "bg-red-700", "hover:bg-red-600",
+        "text-white", "font-bold", "border", "border-red-400/50"
+    ].join(" ");
+    btn.textContent = "Revivre";
+    btn.onclick = () => {
+        const engineWs = ws || window.canvasEngine?.ws;
+        if (!engineWs?.send) {
+            btn.disabled = true;
+            btn.textContent = "Connexion indisponible";
+            return;
+        }
+        btn.disabled = true;
+        btn.textContent = "Respawn en cours...";
+        engineWs.send({
+            type: "action_respawn",
+            payload: {}
+        });
+    };
+
+    panel.append(title, body, sub, btn);
+    overlay.append(panel);
+    document.body.append(overlay);
+}
+
+window.showDeathRespawnOverlay = function () {
+    mountDeathRespawnOverlay(window.canvasEngine?.ws);
+};
+
+window.hideDeathRespawnOverlay = function () {
+    removeDeathRespawnOverlay();
+};
+
 const ok = initGlobals();
 if (!ok) {
     console.error('main_engine: initGlobals failed — aborting bootstrap');
@@ -168,16 +248,16 @@ if (!ok) {
                 } else if (obj.type === 'npc') {
                     // NPC
                     modalId = `modal-${inRange ? '' : 'unknown-'}npc_${obj.data.npc.id}`;
-                } else if (obj.type === 'foreground') {
-                    // foreground : nom = {type}_{id}
+                } else if (obj.type === 'foreground' || obj.type === 'wreck') {
+                    // foreground / wreck : nom = {type}_{id}
                     modalId = `modal-${obj.id}`;
                 } else {
                     console.warn('Unknown object type for modal:', obj.type);
                     return;
                 }
 
-                // foreground hors portée sonar -> pas cliquable
-                if (obj.type === 'foreground' && !inRange) {
+                // foreground / wreck hors portée sonar -> pas cliquable
+                if ((obj.type === 'foreground' || obj.type === 'wreck') && !inRange) {
                     return;
                 }
 
@@ -354,6 +434,8 @@ if (!ok) {
         if (window.GameState?.refs) {
             window.GameState.refs.canvasEngine = window.canvasEngine;
         }
+
+        mountDeathRespawnOverlay(ws);
 
         try {
             initMobilePathfinding(window.canvasEngine);

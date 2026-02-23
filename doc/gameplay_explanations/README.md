@@ -15,6 +15,10 @@ Cette documentation decrit les pans gameplay observes dans le code actuel.
 9. [08_modele_donnees_gameplay.md](08_modele_donnees_gameplay.md)
 10. [09_flux_ws_par_pan.md](09_flux_ws_par_pan.md)
 11. [10_chantiers_refactor_priorises.md](10_chantiers_refactor_priorises.md)
+12. [11_sprint3_combat_v2_spec.md](11_sprint3_combat_v2_spec.md)
+13. [12_sprint3_mort_carcasses_respawn.md](12_sprint3_mort_carcasses_respawn.md)
+14. [13_sprint3_progression_effets_logs.md](13_sprint3_progression_effets_logs.md)
+15. [14_sprint3_plan_implementation.md](14_sprint3_plan_implementation.md)
 
 ## Portee
 

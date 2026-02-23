@@ -59,6 +59,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "module__description",
             "module__effect",
             "module__type",
+            "module__tier",
             "module_id"
         )
     )
@@ -69,6 +70,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "effect": m["module__effect"],
             "description": m["module__description"],
             "type": m["module__type"],
+            "tier": m["module__tier"],
             "id": m["module_id"],
         }
         for m in modules_qs
@@ -172,7 +174,7 @@ def build_npc_modal_data(npc_id: int) -> Optional[Dict[str, Any]]:
         modules = list(
             Module.objects
             .filter(id__in=module_ids)
-            .values("name", "description", "effect", "type", "id")
+            .values("name", "description", "effect", "type", "tier", "id")
         )
 
     # -----------------------------

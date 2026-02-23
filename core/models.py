@@ -240,6 +240,10 @@ class Archetype(models.Model):
 
 
 class Player(models.Model):
+    STATUS_CHOICES = (
+        ("ALIVE", "alive"),
+        ("DEAD", "dead"),
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     faction = models.ForeignKey(
         Faction,
@@ -267,6 +271,9 @@ class Player(models.Model):
     )
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+    )
     coordinates = models.JSONField(null=True)
     last_time_warpzone = models.DateTimeField(default=timezone.now, auto_now=False)
     created_at = models.DateTimeField("creation date", default=timezone.now)
@@ -644,6 +651,69 @@ class PlayerShipModule(models.Model):
 
     def __str__(self):
         return f"{self.player_ship.player.name} - {self.player_ship.ship.name} - module : {self.module.name}"
+
+
+class ShipWreck(models.Model):
+    ORIGIN_TYPE_CHOICES = (
+        ("PC", "player"),
+        ("NPC", "npc"),
+    )
+
+    STATUS_CHOICES = (
+        ("ACTIVE", "active"),
+        ("LOOTED", "looted"),
+        ("SALVAGED", "salvaged"),
+        ("EXPIRED", "expired"),
+    )
+
+    origin_type = models.CharField(
+        max_length=10, choices=ORIGIN_TYPE_CHOICES, default=ORIGIN_TYPE_CHOICES[0]
+    )
+    origin_player = models.ForeignKey(
+        Player,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="ship_wrecks_origin",
+    )
+    origin_npc = models.ForeignKey(
+        Npc,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="ship_wrecks_origin",
+    )
+    killer_player = models.ForeignKey(
+        Player,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="ship_wrecks_kills",
+    )
+    sector = models.ForeignKey(
+        Sector,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="ship_wrecks",
+    )
+    ship = models.ForeignKey(
+        Ship,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="ship_wrecks",
+    )
+    coordinates = models.JSONField(null=True)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+    )
+    expires_at = models.DateTimeField(null=True, blank=True)
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        ship_name = self.ship.name if self.ship else "Unknown ship"
+        return f"Wreck<{self.id}> {ship_name} [{self.origin_type}]"
 
 
 class FactionLeader(models.Model):

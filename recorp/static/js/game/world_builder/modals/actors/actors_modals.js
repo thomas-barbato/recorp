@@ -106,6 +106,55 @@ function buildAsteroidResourcesSection(modalId, data) {
     return container;
 }
 
+function formatWreckRemainingMs(ms) {
+    const totalSec = Math.max(0, Math.floor(ms / 1000));
+    const hours = Math.floor(totalSec / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+
+    if (hours > 0) {
+        return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function attachWreckExpiryCountdown(modalEl, badgeEl, expiresAtIso) {
+    if (!modalEl || !badgeEl || !expiresAtIso) return;
+
+    const expiresAt = new Date(expiresAtIso).getTime();
+    if (!Number.isFinite(expiresAt)) return;
+    const hostNode =
+        (typeof Node !== "undefined" && modalEl instanceof Node) ? modalEl :
+        ((typeof Node !== "undefined" && modalEl?.el instanceof Node) ? modalEl.el : null);
+
+    const update = () => {
+        if (!badgeEl.isConnected || (hostNode && !hostNode.isConnected)) {
+            if (badgeEl._wreckCountdownTimer) {
+                clearInterval(badgeEl._wreckCountdownTimer);
+                badgeEl._wreckCountdownTimer = null;
+            }
+            return;
+        }
+
+        const remaining = expiresAt - Date.now();
+        if (remaining <= 0) {
+            badgeEl.textContent = "EXPIRE";
+            badgeEl.classList.remove("text-white");
+            badgeEl.classList.add("text-zinc-300");
+            if (badgeEl._wreckCountdownTimer) {
+                clearInterval(badgeEl._wreckCountdownTimer);
+                badgeEl._wreckCountdownTimer = null;
+            }
+            return;
+        }
+
+        badgeEl.textContent = `LOOT ${formatWreckRemainingMs(remaining)}`;
+    };
+
+    update();
+    badgeEl._wreckCountdownTimer = setInterval(update, 1000);
+}
+
 
 function create_foreground_modal(modalId, data) {
     const modal = createStandardModalShell(modalId);
@@ -166,6 +215,18 @@ function create_foreground_modal(modalId, data) {
         "font-orbitron"
     );
 
+    let wreckTimerBadge = null;
+    if (data.type === "wreck" && data?.wreck?.expires_at) {
+        wreckTimerBadge = document.createElement("span");
+        wreckTimerBadge.classList.add(
+            "text-xl",
+            "font-bold",
+            "text-white",
+            "font-shadow",
+            "font-orbitron"
+        );
+    }
+
     const coordEl = document.createElement("span");
     coordEl.dataset.role = "coordinates";
     coordEl.textContent = coords;
@@ -179,7 +240,24 @@ function create_foreground_modal(modalId, data) {
 
     // Assemblage
     headerWrapper.append(topRow);
+    if (wreckTimerBadge) {
+        const timerRow = document.createElement("div");
+        timerRow.classList.add(
+            "flex",
+            "justify-center",
+            "items-center",
+            "w-full",
+            "mt-1"
+        );
+        timerRow.append(wreckTimerBadge);
+        headerWrapper.append(timerRow);
+    }
     modal.header.el.append(headerWrapper);
+
+    // Démarre le timer dès que le header est monté (meilleur ressenti visuel).
+    if (wreckTimerBadge && data?.wreck?.expires_at) {
+        attachWreckExpiryCountdown(modal, wreckTimerBadge, data.wreck.expires_at);
+    }
 
     // Close button (inchangé)
     modal.header.setCloseButton(modalId);

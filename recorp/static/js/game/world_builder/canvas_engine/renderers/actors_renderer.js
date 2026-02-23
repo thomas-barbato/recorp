@@ -33,6 +33,13 @@ export default class ActorsRenderer {
             .forEach(npc => {
                 this._drawObject(npc, tilePx);
             });
+
+        // Wrecks (always rendered as "unknown ship" red silhouette)
+        (this.map.worldObjects || [])
+            .filter(o => o.type === "wreck")
+            .forEach(wreck => {
+                this._drawObject(wreck, tilePx);
+            });
     }
 
     /**
@@ -179,6 +186,23 @@ export default class ActorsRenderer {
         const srcPath = obj.spritePath;
         const srcUrl = this.spriteManager.makeUrl ? this.spriteManager.makeUrl(srcPath) : srcPath;
         const img = this.spriteManager.get ? this.spriteManager.get(srcUrl) : null;
+
+        if (obj.type === "wreck") {
+            if (img) {
+                this._drawSolidSilhouetteFromSprite(
+                    img,
+                    scr.x,
+                    scr.y,
+                    pxW,
+                    pxH,
+                    obj,
+                    "rgba(239, 68, 68, 1)"
+                );
+            } else {
+                this._drawDottedFallback(scr.x, scr.y, pxW, pxH, "rgba(239, 68, 68, 0.9)");
+            }
+            return;
+        }
 
         // Sonar / visibilité
         const sonar =
@@ -341,10 +365,10 @@ export default class ActorsRenderer {
     ctx.restore();
 }
 
-    _drawDottedFallback(x, y, w, h) {
+    _drawDottedFallback(x, y, w, h, fillStyle = "rgba(150,200,170,0.9)") {
         const ctx = this.ctx;
         ctx.save();
-        ctx.fillStyle = "rgba(150,200,170,0.9)";
+        ctx.fillStyle = fillStyle;
         const step = Math.max(4, Math.floor(Math.min(w, h) / 6));
         const r = Math.max(1, Math.round(step * 0.35));
         for (let yy = y; yy < y + h; yy += step) {
@@ -361,7 +385,7 @@ export default class ActorsRenderer {
      * Silhouette "points radar" dérivée du sprite original.
      * On échantillonne l'alpha dans un canvas offscreen et on dessine des points.
      */
-    _drawSolidSilhouetteFromSprite(img, x, y, w, h, obj) {
+    _drawSolidSilhouetteFromSprite(img, x, y, w, h, obj, fillColor = "rgba(255, 230, 60, 1)") {
         const ctx = this.ctx;
 
         // --- cache key identique à la version dotted, mais "solid" ---
@@ -413,7 +437,7 @@ export default class ActorsRenderer {
 
         // recoloriage en jaune (toujours contenu dans la silhouette)
         ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = "rgba(255, 230, 60, 1)";
+        ctx.fillStyle = fillColor;
         ctx.fillRect(x, y, w, h);
 
         ctx.restore();

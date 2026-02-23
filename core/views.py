@@ -66,7 +66,8 @@ from core.backend.modal_builder import (
     build_pc_modal_data, 
     build_npc_modal_data, 
     build_sector_element_modal_data
-    )
+)
+from core.models import ShipWreck
 
 
 logger = logging.getLogger("django")
@@ -536,11 +537,42 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
             result_dict["npc"] = data["npc"]
+            # Source de vérité pour les carcasses au chargement HTTP (évite un cache stale après warp/F5)
+            now = timezone.now()
+            wreck_qs = (
+                ShipWreck.objects
+                .select_related("ship", "ship__ship_category")
+                .filter(sector_id=player.get_player_sector(), status="ACTIVE")
+                .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now))
+            )
+            wrecks_payload = []
+            for w in wreck_qs:
+                size = getattr(getattr(getattr(w.ship, "ship_category", None), "size", None), "copy", lambda: {"x": 1, "y": 1})()
+                if not isinstance(size, dict):
+                    size = {"x": 1, "y": 1}
+                coords = w.coordinates or {"x": 0, "y": 0}
+                wrecks_payload.append({
+                    "wreck_id": w.id,
+                    "wreck_key": f"wreck_{w.id}",
+                    "origin_type": w.origin_type,
+                    "coordinates": coords,
+                    "size": {"x": int(size.get("x", 1) or 1), "y": int(size.get("y", 1) or 1)},
+                    "ship": {
+                        "id": w.ship_id,
+                        "name": w.ship.name if w.ship else None,
+                        "image": w.ship.image if w.ship else None,
+                    },
+                    "expires_at": w.expires_at.isoformat() if w.expires_at else None,
+                })
+            result_dict["wrecks"] = wrecks_payload
             result_dict["room"] = player.get_player_sector()
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             context["current_player_state"] = build_pc_modal_data(player_id)
             context["current_player_id"] = player_id
+            context["current_player_status"] = (
+                Player.objects.filter(id=player_id).values_list("status", flat=True).first() or "ALIVE"
+            )
             context["module_categories"] = modules_category
             context["player_event_logs"] = player_event_logs
             return context
@@ -1022,7 +1054,7 @@ def modal_data_view(request, element_type: str, element_id: int):
     """
 
     # --------------------------------------------------
-    # 1) Joueur courant (sécurité)
+    # 1) Joueur courant (securite)
     # --------------------------------------------------
     player_action = PlayerAction(request.user.id)
     current_player_id = player_action.get_player_id()
@@ -1031,7 +1063,40 @@ def modal_data_view(request, element_type: str, element_id: int):
         return HttpResponseBadRequest("No current player")
 
     # --------------------------------------------------
-    # 2) PC (DB-only, sans cache)
+    # 2) Utils difficulty (PC/NPC only)
+    # --------------------------------------------------
+    def _avg_module_tier(modules):
+        tiers = []
+        for m in modules or []:
+            try:
+                tier = m.get("tier")
+            except Exception:
+                tier = None
+            if isinstance(tier, (int, float)):
+                tiers.append(float(tier))
+        if not tiers:
+            return None
+        return sum(tiers) / len(tiers)
+
+    def _difficulty_label(attacker_modules, target_modules):
+        avg_att = _avg_module_tier(attacker_modules)
+        avg_tgt = _avg_module_tier(target_modules)
+        if avg_att is None or avg_tgt is None:
+            return None
+
+        delta = avg_tgt - avg_att
+        if delta >= 3.0:
+            return "Rouge"
+        if delta >= 1.5:
+            return "Orange"
+        if delta > -1.0:
+            return "Jaune"
+        if delta >= -3.0:
+            return "Vert"
+        return "Gris"
+
+    # --------------------------------------------------
+    # 3) PC (DB-only, sans cache)
     # --------------------------------------------------
     if element_type == "pc":
 
@@ -1044,6 +1109,13 @@ def modal_data_view(request, element_type: str, element_id: int):
         current_player = build_pc_modal_data(current_player_id)
         if not current_player:
             return HttpResponseBadRequest("Current player not found")
+
+        difficulty = _difficulty_label(
+            current_player.get("ship", {}).get("modules"),
+            target_pc.get("ship", {}).get("modules")
+        )
+        if difficulty:
+            target_pc["difficulty"] = difficulty
 
         return JsonResponse({
             "type": "pc",
@@ -1059,6 +1131,13 @@ def modal_data_view(request, element_type: str, element_id: int):
         current_player = build_pc_modal_data(current_player_id)
         if not current_player:
             return HttpResponseBadRequest("Current player not found")
+
+        difficulty = _difficulty_label(
+            current_player.get("ship", {}).get("modules"),
+            target_npc.get("ship", {}).get("modules")
+        )
+        if difficulty:
+            target_npc["difficulty"] = difficulty
 
         return JsonResponse({
             "type": "npc",
@@ -1080,6 +1159,54 @@ def modal_data_view(request, element_type: str, element_id: int):
             "subtype": element_type,
             "current_player": current_player,
             "target": target_element
+        })
+
+    if element_type == "wreck":
+        wreck = (
+            ShipWreck.objects
+            .select_related("ship", "ship__ship_category")
+            .filter(id=element_id, status="ACTIVE")
+            .first()
+        )
+        if not wreck:
+            return HttpResponseBadRequest("Wreck not found")
+
+        current_player = build_pc_modal_data(current_player_id)
+        if not current_player:
+            return HttpResponseBadRequest("Current player not found")
+
+        coords = wreck.coordinates or {"x": 0, "y": 0}
+        size = getattr(getattr(getattr(wreck.ship, "ship_category", None), "size", None), "copy", lambda: {"x": 1, "y": 1})()
+        if not isinstance(size, dict):
+            size = {"x": 1, "y": 1}
+
+        target_wreck = {
+            "type": "wreck",
+            "item_id": wreck.id,
+            "size": {"x": int(size.get("x", 1) or 1), "y": int(size.get("y", 1) or 1)},
+            "animations": None,
+            "item_name": "Epave",
+            "data": {
+                "type": "wreck",
+                "coordinates": coords,
+                "data": {
+                    "name": "Epave",
+                    "description": f"Carcasse de {wreck.ship.name if wreck.ship else 'vaisseau'}",
+                    "coordinates": coords,
+                },
+            },
+            "wreck": {
+                "id": wreck.id,
+                "expires_at": wreck.expires_at.isoformat() if wreck.expires_at else None,
+                "ship_id": wreck.ship_id,
+            }
+        }
+
+        return JsonResponse({
+            "type": "sector_element",
+            "subtype": "wreck",
+            "current_player": current_player,
+            "target": target_wreck,
         })
         
         

@@ -7,7 +7,7 @@ import { handleIncomingPrivateMessage, handlePrivateMessageSent } from "../handl
 import { addNpc, removeNpc } from "../handlers/npc_handlers.js";
 import { invalidateTimerEffect } from "../handlers/timers_handlers.js"
 import { getEventsLog } from "../handlers/events_handlers.js";
-import { handleCombatEvents } from "../handlers/combat_handlers.js";
+import { handleCombatEvents, handleCombatDeath, handleWreckCreated, handleWreckExpired } from "../handlers/combat_handlers.js";
 import { 
     handlerWarpFailed, 
     handlerRemovePlayer, 
@@ -102,4 +102,7 @@ ActionRegistry.register("event_log", getEventsLog);
 // COMBAT
 // ===============================
 ActionRegistry.register("combat_events", handleCombatEvents);
+ActionRegistry.register("combat_death", handleCombatDeath);
+ActionRegistry.register("wreck_created", handleWreckCreated);
+ActionRegistry.register("wreck_expired", handleWreckExpired);
 

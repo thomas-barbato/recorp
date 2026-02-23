@@ -7,6 +7,7 @@ from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import Prefetch, Q
+from django.utils import timezone
 
 from core.backend.get_data import GetDataFromDB
 from core.backend.player_actions import PlayerAction
@@ -14,7 +15,7 @@ from core.backend.player_actions import PlayerAction
 from core.models import (
     Sector, Player, Module, PlayerShipModule, PlayerShip,
     Npc, NpcTemplate, PlanetResource, AsteroidResource, 
-    StationResource, WarpZone, SectorWarpZone
+    StationResource, WarpZone, SectorWarpZone, ShipWreck
 )
 
 logger = logging.getLogger(__name__)
@@ -62,6 +63,10 @@ class StoreInCache:
             if not need_to_be_recreated:
                 cached_data = cache.get(cache_key)
                 if cached_data and self._is_cache_valid(cached_data):
+                    # Les carcasses sont très dynamiques (créées/expirées côté WS).
+                    # On les rafraîchit depuis la DB pour éviter un cache stale au reload HTTP.
+                    self._refresh_wrecks_in_cached_data(cached_data)
+                    cache.set(cache_key, cached_data, self._cache_timeout)
                     return cached_data
             
             # Création/recréation du cache avec transaction
@@ -76,6 +81,13 @@ class StoreInCache:
             logger.error(f"Erreur lors de la gestion du cache pour {cache_key}: {e}")
             # En cas d'erreur, tenter de retourner un cache existant
             return cache.get(cache_key)
+
+    def _refresh_wrecks_in_cached_data(self, cached_data: Dict[str, Any]) -> None:
+        """Rafraîchit la clé `wrecks` depuis la DB dans une structure de cache secteur existante."""
+        if not isinstance(cached_data, dict):
+            return
+        cached_data["wrecks"] = []
+        self._build_wrecks_bulk(cached_data, self.sector_pk)
 
     def _is_cache_valid(self, cached_data: Dict[str, Any]) -> bool:
         """Vérifie la validité du cache."""
@@ -116,7 +128,8 @@ class StoreInCache:
             # Construction optimisée des éléments avec requêtes bulk
             self._build_sector_elements_bulk(sector_data, pk)
             self._build_characters_bulk(sector_data, pk)
-            
+            self._build_wrecks_bulk(sector_data, pk)
+             
             return sector_data
             
         except Exception as e:
@@ -129,6 +142,7 @@ class StoreInCache:
             "sector_element": [],
             "pc": [],
             "npc": [],
+            "wrecks": [],
             "messages": [],
             "sector": {
                 "id": sector_info["id"],
@@ -323,6 +337,49 @@ class StoreInCache:
                 
         except Exception as e:
             logger.error(f"Erreur lors de la construction des personnages: {e}")
+
+    def _build_wrecks_bulk(self, sector_data: Dict[str, Any], sector_id: str) -> None:
+        """Ajoute les carcasses actives au cache de secteur (reload HTTP / F5)."""
+        try:
+            now = timezone.now()
+            wrecks = (
+                ShipWreck.objects
+                .select_related("ship", "ship__ship_category")
+                .filter(
+                    sector_id=sector_id,
+                    status="ACTIVE",
+                )
+                .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now))
+            )
+
+            for w in wrecks:
+                coords = w.coordinates or {"x": 0, "y": 0}
+                size = getattr(
+                    getattr(getattr(w.ship, "ship_category", None), "size", None),
+                    "copy",
+                    lambda: {"x": 1, "y": 1},
+                )()
+                if not isinstance(size, dict):
+                    size = {"x": 1, "y": 1}
+
+                sector_data["wrecks"].append({
+                    "wreck_id": w.id,
+                    "wreck_key": f"wreck_{w.id}",
+                    "origin_type": w.origin_type,
+                    "coordinates": coords,
+                    "size": {
+                        "x": int(size.get("x", 1) or 1),
+                        "y": int(size.get("y", 1) or 1),
+                    },
+                    "ship": {
+                        "id": w.ship_id,
+                        "name": w.ship.name if w.ship else None,
+                        "image": w.ship.image if w.ship else None,
+                    },
+                    "expires_at": w.expires_at.isoformat() if w.expires_at else None,
+                })
+        except Exception as e:
+            logger.error(f"Erreur lors de la construction des carcasses: {e}")
 
     def _fetch_npcs_bulk(self, sector_id: str) -> List[Dict]:
         """Récupère tous les NPCs du secteur avec leurs données."""
