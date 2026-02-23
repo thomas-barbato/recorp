@@ -123,6 +123,7 @@ function attachWreckExpiryCountdown(modalEl, badgeEl, expiresAtIso) {
 
     const expiresAt = new Date(expiresAtIso).getTime();
     if (!Number.isFinite(expiresAt)) return;
+    // `modalEl` peut être un Node DOM ou un objet shell ({ el, ... }).
     const hostNode =
         (typeof Node !== "undefined" && modalEl instanceof Node) ? modalEl :
         ((typeof Node !== "undefined" && modalEl?.el instanceof Node) ? modalEl.el : null);
@@ -151,6 +152,7 @@ function attachWreckExpiryCountdown(modalEl, badgeEl, expiresAtIso) {
         badgeEl.textContent = `LOOT ${formatWreckRemainingMs(remaining)}`;
     };
 
+    // Affichage immédiat du compteur (avant le premier tick de l'intervalle).
     update();
     badgeEl._wreckCountdownTimer = setInterval(update, 1000);
 }
@@ -218,6 +220,7 @@ function create_foreground_modal(modalId, data) {
     let wreckTimerBadge = null;
     if (data.type === "wreck" && data?.wreck?.expires_at) {
         wreckTimerBadge = document.createElement("span");
+        // Aligné visuellement avec le timer de scan (même taille), version plus discrète.
         wreckTimerBadge.classList.add(
             "text-xl",
             "font-bold",
@@ -255,6 +258,7 @@ function create_foreground_modal(modalId, data) {
     modal.header.el.append(headerWrapper);
 
     // Démarre le timer dès que le header est monté (meilleur ressenti visuel).
+    // Timer lancé au montage du header pour un feedback instantané à l'ouverture.
     if (wreckTimerBadge && data?.wreck?.expires_at) {
         attachWreckExpiryCountdown(modal, wreckTimerBadge, data.wreck.expires_at);
     }
