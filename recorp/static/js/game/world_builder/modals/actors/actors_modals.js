@@ -18,53 +18,12 @@ function applyScannedUiState(modalData, extractDataFromId, extractedDataForModal
 
     modalData._ui = modalData._ui || {};
     modalData._ui.scanned = isScanned;
-    if (extractedDataForModal?.__ui?.difficulty) {
-        modalData._ui.difficulty = extractedDataForModal.__ui.difficulty;
-    }
 
     if (extractedDataForModal?.__fromScan === true || extractedDataForModal?.__ui?.scanned === true) {
         modalData._ui.scanned = true;
     }
 
     return modalData;
-}
-
-function buildDifficultyBadge(difficulty) {
-    if (!difficulty) return null;
-
-    let label = "";
-    if (typeof difficulty === "string") {
-        label = difficulty;
-    } else if (typeof difficulty === "object") {
-        label = difficulty.label || difficulty.color || difficulty.name || "";
-    }
-
-    if (!label) return null;
-
-    const key = label.toLowerCase();
-    const colorClass = {
-        rouge: "text-red-400 border-red-500",
-        orange: "text-orange-300 border-orange-400",
-        jaune: "text-yellow-300 border-yellow-400",
-        vert: "text-emerald-300 border-emerald-400",
-        gris: "text-gray-400 border-gray-500"
-    }[key] || "text-slate-200 border-slate-400";
-
-    const badge = document.createElement("span");
-    badge.textContent = label.toUpperCase();
-    badge.classList.add(
-        "ml-2",
-        "px-2",
-        "py-0.5",
-        "text-xs",
-        "font-bold",
-        "border",
-        "rounded",
-        "font-orbitron"
-    );
-    colorClass.split(" ").forEach(cls => badge.classList.add(cls));
-
-    return badge;
 }
 
 function create_modal(modalId, extractDataFromId, extractedDataForModal){

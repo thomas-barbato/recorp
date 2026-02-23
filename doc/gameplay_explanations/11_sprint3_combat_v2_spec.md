@@ -136,6 +136,100 @@ Le tracker se reset quand:
 - `combat_participation_update` (optionnel debug/admin, pas necessaire client gameplay)
 - `effect_applied` / `effect_removed` (buff/debuff)
 
+### Contrat WS (serveur -> client)
+
+#### 1) `combat_events`
+
+Enveloppe:
+
+```
+{
+  "type": "combat_events",
+  "events": [
+    { "type": "ATTACK_HIT", "payload": { ... } },
+    { "type": "ATTACK_MISS", "payload": { ... } },
+    { "type": "ATTACK_EVADED", "payload": { ... } }
+  ]
+}
+```
+
+Payload commun attendu:
+
+- `source_kind`: `PC` / `NPC`
+- `target_kind`: `PC` / `NPC`
+- `source_id`: id actor (npc_id ou player_id selon kind)
+- `target_id`: id actor
+- `source_player_id`: id player (pour PC)
+- `target_player_id`: id player (pour PC)
+- `damage_type`: `THERMAL` / `MISSILE` / `BALLISTIC`
+- `is_counter`: bool (si riposte)
+
+Champs additionnels (debug/telemetrie):
+
+- `hit_chance`, `hit_roll`
+- `evasion_chance`, `evasion_roll`
+- `rolled_damage`, `damage_bonus_pct`, `final_damage`
+- `is_critical`
+
+Champs `ATTACK_HIT`:
+
+- `damage_to_shield`
+- `damage_to_hull`
+- `hull_remaining`
+- `shields` (etat complet)
+
+#### 2) `entity_state_update`
+
+Utilise pour patch UI (HP/AP/MP/shields). Exemple:
+
+```
+{
+  "type": "entity_state_update",
+  "entity_key": "pc_12",
+  "change_type": "hp_update",
+  "changes": {
+    "hp": { "current": 42 },
+    "shields": { "THERMAL": 12, "MISSILE": 8, "BALLISTIC": 4 }
+  }
+}
+```
+
+#### 3) `combat_death` (a introduire)
+
+```
+{
+  "type": "combat_death",
+  "payload": {
+    "dead_key": "pc_12",
+    "killer_key": "npc_5",
+    "sector_id": 3,
+    "is_npc": false,
+    "timestamp": "...",
+    "participants": ["pc_2", "pc_7", "npc_5"]
+  }
+}
+```
+
+### Contrat WS (client -> serveur)
+
+#### `action_attack`
+
+```
+{
+  "type": "action_attack",
+  "payload": {
+    "player": 12,
+    "subtype": "attack-123",
+    "module_id": 123,
+    "target_key": "npc_5"
+  }
+}
+```
+
+Notes:
+- `subtype` conserve le format actuel `attack-{module_id}`.
+- `target_key` reste la cle d acteur (`pc_X` / `npc_Y`).
+
 ## Contrat de mort (hook)
 
 La mort ne doit pas etre traitee comme simple suppression immediate de la map.
