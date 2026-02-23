@@ -2245,6 +2245,8 @@ class GameConsumer(WebsocketConsumer):
                 expires_at=expires_at,
                 metadata={
                     "source_actor_key": dead_key,
+                    "source_player_ship_id": player_ship.id if dead_ad.kind == "PC" else None,
+                    "source_npc_id": npc_obj.id if dead_ad.kind == "NPC" else None,
                 },
             )
 
@@ -2525,20 +2527,21 @@ class GameConsumer(WebsocketConsumer):
 
         try:
             now = timezone.now()
-            due_ids = list(
+            due_rows = list(
                 ShipWreck.objects.filter(
                     sector_id=sector_id,
                     status="ACTIVE",
                     expires_at__isnull=False,
                     expires_at__lte=now,
-                ).values_list("id", flat=True)
+                ).values("id")
             )
-            if not due_ids:
+            if not due_rows:
                 return
 
-            for wreck_id in due_ids:
-                updated = ShipWreck.objects.filter(id=wreck_id, status="ACTIVE").update(status="EXPIRED")
-                if not updated:
+            for row in due_rows:
+                wreck_id = int(row.get("id"))
+                payload = self._expire_wreck_and_purge_source_ship(wreck_id, sector_id)
+                if not payload:
                     continue
 
                 self._update_room_cache_on_wreck_expired(wreck_id)
@@ -2546,15 +2549,71 @@ class GameConsumer(WebsocketConsumer):
                     self.room_group_name,
                     {
                         "type": "wreck_expired",
-                        "payload": {
-                            "wreck_id": wreck_id,
-                            "wreck_key": f"wreck_{wreck_id}",
-                            "sector_id": sector_id,
-                        }
+                        "payload": payload,
                     }
                 )
         except Exception as e:
             logger.error(f"Wreck invalidation failed: {e}")
+
+    def _expire_wreck_and_purge_source_ship(self, wreck_id: int, sector_id: int) -> Optional[Dict[str, Any]]:
+        """
+        Expire une carcasse et purge son vaisseau source (PC) si disponible.
+        La suppression de PlayerShip déclenche la cascade Django sur:
+        - PlayerShipModule
+        - PlayerShipResource
+        """
+        try:
+            with transaction.atomic():
+                wreck = (
+                    ShipWreck.objects.select_for_update()
+                    .select_related("origin_player")
+                    .filter(id=wreck_id, status="ACTIVE")
+                    .first()
+                )
+                if not wreck:
+                    return None
+
+                metadata = wreck.metadata if isinstance(wreck.metadata, dict) else {}
+                source_player_ship_id = metadata.get("source_player_ship_id")
+                source_actor_key = str(metadata.get("source_actor_key") or "")
+
+                # Fallback compat pour les vieilles carcasses créées avant l'ajout du metadata id.
+                if not source_player_ship_id and wreck.origin_type == "PC" and source_actor_key.startswith("pc_"):
+                    try:
+                        dead_player_id = int(source_actor_key.split("_", 1)[1])
+                    except Exception:
+                        dead_player_id = None
+                    if dead_player_id:
+                        source_player_ship_id = (
+                            PlayerShip.objects.filter(
+                                player_id=dead_player_id,
+                                status="DEAD",
+                                is_current_ship=False,
+                            )
+                            .order_by("-updated_at", "-id")
+                            .values_list("id", flat=True)
+                            .first()
+                        )
+
+                if source_player_ship_id:
+                    PlayerShip.objects.filter(
+                        id=source_player_ship_id,
+                        status="DEAD",
+                        is_current_ship=False,
+                    ).delete()
+
+                # La carcasse n'est plus utile après expiration: suppression DB.
+                wreck.delete()
+
+                return {
+                    "wreck_id": wreck_id,
+                    "wreck_key": f"wreck_{wreck_id}",
+                    "sector_id": sector_id,
+                    "purged_source_ship_id": source_player_ship_id,
+                }
+        except Exception:
+            logger.exception(f"Failed to expire/purge wreck {wreck_id}")
+            return None
 
     def _parse_client_json_message(self, text_data: str) -> Optional[Dict[str, Any]]:
         try:
