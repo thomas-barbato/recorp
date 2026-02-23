@@ -45,6 +45,57 @@ class ActionSceneManager {
         );
     }
 
+    _getTargetDifficultyFromCache(ctx) {
+        if (!ctx) return null;
+        const modalId = ctx.originalModalId;
+        const cached = window.modalDataCache?.[modalId];
+        const d = cached?.data;
+        return (
+            cached?.__ui?.difficulty ||
+            d?._ui?.difficulty ||
+            d?.difficulty ||
+            null
+        );
+    }
+
+    _buildDifficultyBadge(difficulty) {
+        if (!difficulty) return null;
+
+        let label = "";
+        if (typeof difficulty === "string") {
+            label = difficulty;
+        } else if (typeof difficulty === "object") {
+            label = difficulty.label || difficulty.color || difficulty.name || "";
+        }
+
+        if (!label) return null;
+
+        const key = label.toLowerCase();
+        const colorClass = {
+            rouge: "text-red-400 border-red-500",
+            orange: "text-orange-300 border-orange-400",
+            jaune: "text-yellow-300 border-yellow-400",
+            vert: "text-emerald-300 border-emerald-400",
+            gris: "text-gray-400 border-gray-500"
+        }[key] || "text-slate-200 border-slate-400";
+
+        const badge = document.createElement("span");
+        badge.textContent = label.toUpperCase();
+        badge.classList.add(
+            "ml-2",
+            "px-2",
+            "py-0.5",
+            "text-xs",
+            "font-bold",
+            "border",
+            "rounded",
+            "font-orbitron"
+        );
+        colorClass.split(" ").forEach(cls => badge.classList.add(cls));
+
+        return badge;
+    }
+
     _showCombatEscapeMessage(ctx, reason) {
         if (!ctx) return;
         if (reason !== "actor_removed" && reason !== "warp_complete") return;
@@ -322,8 +373,22 @@ class ActionSceneManager {
 
         // Header
         const header = document.createElement("div");
-        header.classList.add("text-center", "text-xl", "font-bold", "text-emerald-400");
-        header.textContent = "Combat en cours";
+        header.classList.add(
+            "text-center",
+            "text-xl",
+            "font-bold",
+            "text-emerald-400",
+            "flex",
+            "items-center",
+            "justify-center"
+        );
+        const headerTitle = document.createElement("span");
+        headerTitle.textContent = "Combat en cours";
+        header.append(headerTitle);
+
+        const difficulty = this._getTargetDifficultyFromCache(context);
+        const badge = this._buildDifficultyBadge(difficulty);
+        if (badge) header.append(badge);
 
         // Distance placeholder
         const distance = document.createElement("div");

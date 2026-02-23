@@ -1022,7 +1022,7 @@ def modal_data_view(request, element_type: str, element_id: int):
     """
 
     # --------------------------------------------------
-    # 1) Joueur courant (sécurité)
+    # 1) Joueur courant (securite)
     # --------------------------------------------------
     player_action = PlayerAction(request.user.id)
     current_player_id = player_action.get_player_id()
@@ -1031,7 +1031,40 @@ def modal_data_view(request, element_type: str, element_id: int):
         return HttpResponseBadRequest("No current player")
 
     # --------------------------------------------------
-    # 2) PC (DB-only, sans cache)
+    # 2) Utils difficulty (PC/NPC only)
+    # --------------------------------------------------
+    def _avg_module_tier(modules):
+        tiers = []
+        for m in modules or []:
+            try:
+                tier = m.get("tier")
+            except Exception:
+                tier = None
+            if isinstance(tier, (int, float)):
+                tiers.append(float(tier))
+        if not tiers:
+            return None
+        return sum(tiers) / len(tiers)
+
+    def _difficulty_label(attacker_modules, target_modules):
+        avg_att = _avg_module_tier(attacker_modules)
+        avg_tgt = _avg_module_tier(target_modules)
+        if avg_att is None or avg_tgt is None:
+            return None
+
+        delta = avg_tgt - avg_att
+        if delta >= 3.0:
+            return "Rouge"
+        if delta >= 1.5:
+            return "Orange"
+        if delta > -1.0:
+            return "Jaune"
+        if delta >= -3.0:
+            return "Vert"
+        return "Gris"
+
+    # --------------------------------------------------
+    # 3) PC (DB-only, sans cache)
     # --------------------------------------------------
     if element_type == "pc":
 
@@ -1044,6 +1077,13 @@ def modal_data_view(request, element_type: str, element_id: int):
         current_player = build_pc_modal_data(current_player_id)
         if not current_player:
             return HttpResponseBadRequest("Current player not found")
+
+        difficulty = _difficulty_label(
+            current_player.get("ship", {}).get("modules"),
+            target_pc.get("ship", {}).get("modules")
+        )
+        if difficulty:
+            target_pc["difficulty"] = difficulty
 
         return JsonResponse({
             "type": "pc",
@@ -1059,6 +1099,13 @@ def modal_data_view(request, element_type: str, element_id: int):
         current_player = build_pc_modal_data(current_player_id)
         if not current_player:
             return HttpResponseBadRequest("Current player not found")
+
+        difficulty = _difficulty_label(
+            current_player.get("ship", {}).get("modules"),
+            target_npc.get("ship", {}).get("modules")
+        )
+        if difficulty:
+            target_npc["difficulty"] = difficulty
 
         return JsonResponse({
             "type": "npc",

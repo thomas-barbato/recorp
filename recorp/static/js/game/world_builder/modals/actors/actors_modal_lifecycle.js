@@ -122,7 +122,12 @@
         // Contexte UI (UNKNOWN = front only)
         responseData.__ui = {
             isUnknown,
-            scanned: isTargetScanned(targetKey)
+            scanned: isTargetScanned(targetKey),
+            difficulty:
+                responseData?.target?._ui?.difficulty ||
+                responseData?.target?.difficulty ||
+                responseData?.difficulty ||
+                null
         };
 
         // Construction réelle du modal

@@ -1189,6 +1189,7 @@ class GameConsumer(WebsocketConsumer):
         # 3) Construire les vraies données
         if target_type == "pc":
             data = build_pc_modal_data(target_id)
+            current_player_data = build_pc_modal_data(player_id)
             receiver_playerObj = player.get_other_player_data(data['user']['player'])
             receiver_instance = receiver_playerObj.first()
             target_name = receiver_instance.name
@@ -1199,6 +1200,7 @@ class GameConsumer(WebsocketConsumer):
 
         elif target_type == "npc":
             data = build_npc_modal_data(target_id)
+            current_player_data = build_pc_modal_data(player_id)
             target_name = (data or {}).get('npc', {}).get('displayed_name', f"npc_{target_id}")
             players_roles = [(transmitter_instance, "TRANSMITTER")]
 
@@ -1206,6 +1208,41 @@ class GameConsumer(WebsocketConsumer):
             data = build_sector_element_modal_data(target_type, int(target_id))
             target_name = (data or {}).get('data', {}).get('name', f"{target_type}_{target_id}")
             players_roles = [(transmitter_instance, "TRANSMITTER")]
+
+        # Difficulty badge (PC/NPC only)
+        if target_type in ("pc", "npc") and data and current_player_data:
+            def _avg_tier(mods):
+                tiers = []
+                for m in mods or []:
+                    tier = m.get("tier") if isinstance(m, dict) else None
+                    if isinstance(tier, (int, float)):
+                        tiers.append(float(tier))
+                if not tiers:
+                    return None
+                return sum(tiers) / len(tiers)
+
+            def _difficulty_label(attacker_mods, target_mods):
+                avg_att = _avg_tier(attacker_mods)
+                avg_tgt = _avg_tier(target_mods)
+                if avg_att is None or avg_tgt is None:
+                    return None
+                delta = avg_tgt - avg_att
+                if delta >= 3.0:
+                    return "Rouge"
+                if delta >= 1.5:
+                    return "Orange"
+                if delta > -1.0:
+                    return "Jaune"
+                if delta >= -3.0:
+                    return "Vert"
+                return "Gris"
+
+            difficulty = _difficulty_label(
+                current_player_data.get("ship", {}).get("modules"),
+                data.get("ship", {}).get("modules")
+            )
+            if difficulty:
+                data["difficulty"] = difficulty
 
         if not data:
             self._send_response({
@@ -1364,6 +1401,33 @@ class GameConsumer(WebsocketConsumer):
             return
 
         targets = []
+        current_player_data = build_pc_modal_data(self.player_id)
+
+        def _avg_tier(mods):
+            tiers = []
+            for m in mods or []:
+                tier = m.get("tier") if isinstance(m, dict) else None
+                if isinstance(tier, (int, float)):
+                    tiers.append(float(tier))
+            if not tiers:
+                return None
+            return sum(tiers) / len(tiers)
+
+        def _difficulty_label(attacker_mods, target_mods):
+            avg_att = _avg_tier(attacker_mods)
+            avg_tgt = _avg_tier(target_mods)
+            if avg_att is None or avg_tgt is None:
+                return None
+            delta = avg_tgt - avg_att
+            if delta >= 3.0:
+                return "Rouge"
+            if delta >= 1.5:
+                return "Orange"
+            if delta > -1.0:
+                return "Jaune"
+            if delta >= -3.0:
+                return "Vert"
+            return "Gris"
 
         for scan in scans:
             if scan.target_type == "pc":
@@ -1372,6 +1436,14 @@ class GameConsumer(WebsocketConsumer):
                 data = build_npc_modal_data(scan.target_id)
             else:
                 data = build_sector_element_modal_data(scan.target_type, scan.target_id)
+
+            if scan.target_type in ("pc", "npc") and data and current_player_data:
+                difficulty = _difficulty_label(
+                    current_player_data.get("ship", {}).get("modules"),
+                    data.get("ship", {}).get("modules")
+                )
+                if difficulty:
+                    data["difficulty"] = difficulty
 
             targets.append({
                 "target_key": f"{scan.target_type}_{scan.target_id}",
