@@ -5,6 +5,7 @@
 export let map_informations = null;
 export let current_player_id = null;
 export let current_player_data = null
+export let current_player_status = null;
 
 export let currentPlayer = null;
 export let otherPlayers = [];
@@ -23,6 +24,7 @@ function createGameStateContainer() {
         player: {
             currentPlayerId: null,
             currentPlayer: null,
+            currentPlayerStatus: null,
         },
         world: {
             mapInformations: null,
@@ -141,10 +143,12 @@ export function initGlobals() {
         const mapScript = document.getElementById('script_map_informations');
         const playerScript = document.getElementById('script_current_player_id');
         const currentPlayerData = document.getElementById('script_current_player_state');
+        const currentPlayerStatusData = document.getElementById('script_current_player_status');
 
         map_informations = mapScript ? JSON.parse(mapScript.textContent) : null;
         current_player_id = playerScript ? JSON.parse(playerScript.textContent) : null;
         currentPlayer = currentPlayerData ? JSON.parse(currentPlayerData.textContent) : null;
+        current_player_status = currentPlayerStatusData ? JSON.parse(currentPlayerStatusData.textContent) : null;
         
         foregroundElement = map_informations?.sector_element || [];
         npcs = map_informations?.npc || [];
@@ -153,10 +157,12 @@ export function initGlobals() {
         window.GameState.world.mapInformations = map_informations;
         window.GameState.player.currentPlayerId = current_player_id;
         window.GameState.player.currentPlayer = currentPlayer;
+        window.GameState.player.currentPlayerStatus = current_player_status;
 
         // Expose legacy globals on window for older scripts (chat, modals...)
         window.map_informations = map_informations;
         window.current_player_id = current_player_id;
+        window.current_player_status = current_player_status;
         window.currentPlayer = currentPlayer;
         window.otherPlayers = otherPlayers;
         window.foregroundElement = foregroundElement;
@@ -345,6 +351,13 @@ export function initGlobals() {
             // modal normal
             const modal = document.getElementById(`modal-${targetKey}`);
             if (!modal) return;
+
+            // Si la cible a disparu de la map (ex: destruction -> wreck), on ne tente pas
+            // de refetch l'ancien modal pc_/npc_ (sinon HTTP 400).
+            if ((String(targetKey).startsWith("pc_") || String(targetKey).startsWith("npc_"))) {
+                const actorStillExists = window.canvasEngine?.map?.findActorByKey?.(targetKey);
+                if (!actorStillExists) return;
+            }
 
             // Empêche toute boucle
             if (modal.dataset._refreshing === "1") return;

@@ -10,6 +10,8 @@ export default class MapData {
 
         this.worldObjects = []; // includes foreground, players, npcs
         this.players = {};
+        this.wrecks = {};
+        this.wreckExpiryTimers = new Map();
         this.foregrounds = [];
         this.background = this.raw.sector?.background || null;
     }
@@ -19,6 +21,8 @@ export default class MapData {
 
         this.worldObjects = [];
         this.players = {};
+        this.wrecks = {};
+        this._clearWreckExpiryTimers();
         this.foregrounds = [];
 
         const tryEnsure = (url) => {
@@ -125,6 +129,12 @@ export default class MapData {
             if (obj.reversedSprite) tryEnsure(obj.reversedSprite);
         });
 
+        // ------------ Wrecks ------------
+        const wreckList = Array.isArray(this.raw.wrecks) ? this.raw.wrecks : [];
+        wreckList.forEach(w => {
+            this.addWreckActor(w);
+        });
+
         // ------------ MAP SIZE OVERRIDES ------------
         if (this.raw.map_width) this.mapWidth = Number(this.raw.map_width);
         if (this.raw.map_height) this.mapHeight = Number(this.raw.map_height);  
@@ -195,7 +205,7 @@ export default class MapData {
         tileX >= o.x && tileX < (o.x + o.sizeX) &&
         tileY >= o.y && tileY < (o.y + o.sizeY)
         ).sort((a, b) => {
-        const pri = { player: 3, npc: 3, foreground: 2, background: 1 };
+        const pri = { player: 3, npc: 3, wreck: 3, foreground: 2, background: 1 };
         return (pri[b.type] || 0) - (pri[a.type] || 0);
         });
     }
@@ -247,6 +257,7 @@ export default class MapData {
 
         // foreground (planètes, astéroïdes, stations...) = bloquant
         if (obj.type === "foreground") return true;
+        if (obj.type === "wreck") return true;
 
         // NPC ou Player (autre que moi) = bloquant
         if (obj.type === "player" || obj.type === "npc") {
@@ -584,5 +595,95 @@ export default class MapData {
                 // Ne jamais casser : silencieux
             }
         }
+    }
+
+    addWreckActor(wreckData) {
+        if (!wreckData) return;
+
+        const wreckId = wreckData.wreck_id ?? wreckData.id;
+        if (!wreckId) {
+            console.warn("[MAP] addWreckActor: missing wreck_id", wreckData);
+            return;
+        }
+
+        const idStr = String(wreckId);
+        this.removeWreckById(idStr);
+
+        const size = wreckData.size || {};
+        const x = Number.parseInt(wreckData.coordinates?.x ?? wreckData.x ?? 0, 10);
+        const y = Number.parseInt(wreckData.coordinates?.y ?? wreckData.y ?? 0, 10);
+        const sizeX = Number.isFinite(Number(size.x)) ? Number(size.x) : 1;
+        const sizeY = Number.isFinite(Number(size.y)) ? Number(size.y) : 1;
+
+        const shipImage = wreckData.ship?.image || wreckData.image || null;
+        const spritePath = shipImage ? `foreground/SHIPS/${shipImage}.png` : null;
+
+        const obj = {
+            id: `wreck_${idStr}`,
+            type: "wreck",
+            data: wreckData,
+            x,
+            y,
+            sizeX,
+            sizeY,
+            image: shipImage,
+            spritePath,
+            reversedSprite: spritePath,
+        };
+
+        this.wrecks[idStr] = obj;
+        this.worldObjects.push(obj);
+        this._scheduleWreckExpiry(idStr, wreckData?.expires_at);
+
+        if (this.spriteManager?.ensure && this.spriteManager?.makeUrl && spritePath) {
+            try {
+                this.spriteManager.ensure(this.spriteManager.makeUrl(spritePath)).catch(() => {});
+            } catch (e) {
+                // no-op
+            }
+        }
+    }
+
+    removeWreckById(wreckId) {
+        if (wreckId == null) return;
+        const wid = String(wreckId);
+        this.worldObjects = this.worldObjects.filter(o => String(o.id) !== `wreck_${wid}`);
+        delete this.wrecks?.[wid];
+        const t = this.wreckExpiryTimers?.get?.(wid);
+        if (t) {
+            clearTimeout(t);
+            this.wreckExpiryTimers.delete(wid);
+        }
+    }
+
+    _clearWreckExpiryTimers() {
+        for (const t of this.wreckExpiryTimers.values()) clearTimeout(t);
+        this.wreckExpiryTimers.clear();
+    }
+
+    _scheduleWreckExpiry(wreckId, expiresAtIso) {
+        if (!this.wreckExpiryTimers) this.wreckExpiryTimers = new Map();
+        const wid = String(wreckId);
+        const existing = this.wreckExpiryTimers.get(wid);
+        if (existing) {
+            clearTimeout(existing);
+            this.wreckExpiryTimers.delete(wid);
+        }
+        if (!expiresAtIso) return;
+
+        const expiresAtMs = new Date(expiresAtIso).getTime();
+        if (!Number.isFinite(expiresAtMs)) return;
+        const delay = Math.max(0, expiresAtMs - Date.now());
+
+        const timerId = setTimeout(() => {
+            this.removeWreckById(wid);
+            window.canvasEngine?.renderer?.requestRedraw?.();
+            window.dispatchEvent?.(new CustomEvent("wreck:expired_local", {
+                detail: { wreck_id: wid, wreck_key: `wreck_${wid}` }
+            }));
+            this.wreckExpiryTimers.delete(wid);
+        }, delay);
+
+        this.wreckExpiryTimers.set(wid, timerId);
     }
 }

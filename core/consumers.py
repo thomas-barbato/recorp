@@ -4,6 +4,7 @@ from typing import Dict, Any, Optional
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
+from django.db import transaction
 import datetime
 from django.utils import timezone
 
@@ -12,7 +13,7 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule, Player, ShipWreck, Ship, ArchetypeModule
 from core.backend.modal_builder import (
     build_npc_modal_data,
     build_pc_modal_data,
@@ -30,6 +31,8 @@ from core.backend.combat_engine import (
 logger = logging.getLogger("django")
 
 class GameConsumer(WebsocketConsumer):
+    DEFAULT_RESPAWN_SECTOR_ID = 7
+    WRECK_TTL_SECONDS = 60  # tests Sprint 3; cible future: 12h (scavenge => disparition immédiate)
     """
     WebSocket consumer pour gérer les interactions en temps réel du jeu.
     Gère les mouvements des joueurs, les actions de jeu et la synchronisation.
@@ -266,7 +269,11 @@ class GameConsumer(WebsocketConsumer):
     def _get_other_players_sync_data(self, player_id: int) -> list[Dict[str, Any]]:
         """Récupère les données des autres joueurs."""
         try:
-            return self._cache_store.get_other_player_data(player_id) or []
+            players = self._cache_store.get_other_player_data(player_id) or []
+            return [
+                p for p in players
+                if (p.get("ship", {}).get("status") != "DEAD")
+            ]
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des autres joueurs: {e}")
             return []
@@ -280,9 +287,16 @@ class GameConsumer(WebsocketConsumer):
             
             return {
                 "sector": cached_data.get("sector", {}),
-                "pc": cached_data.get("pc", []),
-                "npc": cached_data.get("npc", []),
+                "pc": [
+                    p for p in (cached_data.get("pc", []) or [])
+                    if p.get("ship", {}).get("status") != "DEAD"
+                ],
+                "npc": [
+                    n for n in (cached_data.get("npc", []) or [])
+                    if n.get("ship", {}).get("status") != "DEAD"
+                ],
                 "sector_element": cached_data.get("sector_element", []),
+                "wrecks": self._get_wrecks_sync_data(),
                 "messages": cached_data.get("messages", [])
             }
         except Exception as e:
@@ -293,7 +307,12 @@ class GameConsumer(WebsocketConsumer):
         """Récupère les données des NPCs."""
         try:
             cached_data = cache.get(self.room_group_name)
-            return cached_data.get("npc", []) if cached_data else []
+            if not cached_data:
+                return []
+            return [
+                n for n in (cached_data.get("npc", []) or [])
+                if n.get("ship", {}).get("status") != "DEAD"
+            ]
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des NPCs: {e}")
             return []
@@ -306,6 +325,83 @@ class GameConsumer(WebsocketConsumer):
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des éléments du secteur: {e}")
             return []
+
+    def _get_wrecks_sync_data(self) -> list[Dict[str, Any]]:
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return []
+
+        now = timezone.now()
+        wrecks = ShipWreck.objects.filter(
+            sector_id=sector_id,
+            status="ACTIVE",
+        ).filter(
+            expires_at__isnull=True
+        ) | ShipWreck.objects.filter(
+            sector_id=sector_id,
+            status="ACTIVE",
+            expires_at__gt=now,
+        )
+
+        result = []
+        for w in wrecks.distinct():
+            coords = w.coordinates or {"x": 0, "y": 0}
+            size = getattr(getattr(getattr(w.ship, "ship_category", None), "size", None), "copy", lambda: {"x": 1, "y": 1})()
+            if not isinstance(size, dict):
+                size = {"x": 1, "y": 1}
+            result.append({
+                "wreck_id": w.id,
+                "wreck_key": f"wreck_{w.id}",
+                "origin_type": w.origin_type,
+                "coordinates": coords,
+                "size": {"x": int(size.get("x", 1) or 1), "y": int(size.get("y", 1) or 1)},
+                "ship": {
+                    "id": w.ship_id,
+                    "name": w.ship.name if w.ship else None,
+                    "image": w.ship.image if w.ship else None,
+                },
+                "expires_at": w.expires_at.isoformat() if w.expires_at else None,
+            })
+        return result
+    def _update_room_cache_on_wreck_created(self, dead_key: str, wreck_payload: Dict[str, Any]) -> None:
+        cache_key = self.room_group_name
+        room_cache = cache.get(cache_key)
+        if not isinstance(room_cache, dict):
+            return
+
+        if isinstance(dead_key, str):
+            if dead_key.startswith("pc_"):
+                dead_id = str(dead_key.replace("pc_", ""))
+                room_cache["pc"] = [
+                    p for p in (room_cache.get("pc", []) or [])
+                    if str(p.get("user", {}).get("player")) != dead_id
+                ]
+            elif dead_key.startswith("npc_"):
+                dead_id = str(dead_key.replace("npc_", ""))
+                room_cache["npc"] = [
+                    n for n in (room_cache.get("npc", []) or [])
+                    if str(n.get("npc", {}).get("id")) != dead_id
+                ]
+
+        wrecks = list(room_cache.get("wrecks", []) or [])
+        wrecks = [w for w in wrecks if str(w.get("wreck_id")) != str(wreck_payload.get("wreck_id"))]
+        wrecks.append(wreck_payload)
+        room_cache["wrecks"] = wrecks
+
+        cache.set(cache_key, room_cache)
+
+    def _update_room_cache_on_wreck_expired(self, wreck_id: Any) -> None:
+        cache_key = self.room_group_name
+        room_cache = cache.get(cache_key)
+        if not isinstance(room_cache, dict):
+            return
+
+        room_cache["wrecks"] = [
+            w for w in (room_cache.get("wrecks", []) or [])
+            if str(w.get("wreck_id")) != str(wreck_id)
+        ]
+        cache.set(cache_key, room_cache)
 
     # 5. MÉTHODE UTILITAIRE pour valider les données avant envoi
     def _validate_sync_data(self, sync_data: Dict[str, Any]) -> bool:
@@ -941,7 +1037,7 @@ class GameConsumer(WebsocketConsumer):
         - Met à jour la DB
         - Met à jour les caches (ancien + nouveau secteur)
         - Notifie :
-            * les joueurs de l’ancien secteur -> async_remove_ship
+            * les joueurs de l'ancien secteur -> async_remove_ship
             * les joueurs du nouveau secteur -> async_user_join
             * le joueur lui-même        -> async_warp_complete
         """
@@ -1133,6 +1229,7 @@ class GameConsumer(WebsocketConsumer):
         self._send_response({"type": "async_warp_complete", ...})
         """
         msg = event.get("message")
+        self._purge_combat_participation_from_message(msg)
         self._send_response({
             "type": "async_warp_complete",
             "message": msg
@@ -1144,6 +1241,7 @@ class GameConsumer(WebsocketConsumer):
         On notifie SEULEMENT les autres joueurs.
         """
         msg = event.get("message", {})
+        self._purge_combat_participation_from_message(msg)
         
         # Ne rien envoyer au joueur qui part -> il recevra async_warp_complete
         if msg.get("player_id") == self.player_id:
@@ -1529,7 +1627,8 @@ class GameConsumer(WebsocketConsumer):
             # -----------------------
 
             source_ship = PlayerShip.objects.select_related("player").get(
-                player_id=source_player_id
+                player_id=source_player_id,
+                is_current_ship=True,
             )
 
             source_ad = ActorAdapter(source_ship, "PC")
@@ -1548,7 +1647,8 @@ class GameConsumer(WebsocketConsumer):
 
             if target_type == "pc":
                 target_ship = PlayerShip.objects.select_related("player").get(
-                    player_id=int(target_id)
+                    player_id=int(target_id),
+                    is_current_ship=True,
                 )
                 target_ad = ActorAdapter(target_ship, "PC")
             else:
@@ -1597,7 +1697,11 @@ class GameConsumer(WebsocketConsumer):
                 target_ad
             )
 
-            visibility = payload.get("visibility", "UNKNOWN")
+            visibility = self._compute_visibility_state(
+                source_ad,
+                target_ad,
+                distance
+            )
 
             action = CombatAction(
                 action_type="ATTACK",
@@ -1619,6 +1723,9 @@ class GameConsumer(WebsocketConsumer):
                 distance_tiles=distance,
                 target_weapons=target_weapons,
             )
+
+            # Sprint 3: track multi-attacker participation (assist/kill prep)
+            self._record_combat_participation(events)
 
             # -----------------------
             # Toujours envoyer AP attaquant
@@ -1666,6 +1773,75 @@ class GameConsumer(WebsocketConsumer):
                             },
                             "shields": ev.payload["shields"],
                         }
+                    }
+                )
+
+            # -----------------------
+            # Hook mort minimal (Sprint 3)
+            # -----------------------
+            death_payloads = []
+            seen_dead_keys = set()
+            for ev in events:
+                if ev.type != "ATTACK_HIT":
+                    continue
+
+                hull_remaining = int(ev.payload.get("hull_remaining", 0) or 0)
+                if hull_remaining > 0:
+                    continue
+
+                is_counter = ev.payload.get("is_counter", False)
+                dead_ad = source_ad if is_counter else target_ad
+                killer_ad = target_ad if is_counter else source_ad
+
+                dead_key = self.get_entity_key_from_adapter(dead_ad)
+                killer_key = self.get_entity_key_from_adapter(killer_ad)
+                if dead_key in seen_dead_keys:
+                    continue
+                seen_dead_keys.add(dead_key)
+
+                tracker = self._pop_combat_participation_tracker(dead_key, final_blow_key=killer_key)
+                participants = list((tracker or {}).get("participants", {}).keys())
+
+                self._set_actor_dead_status(dead_ad)
+                self._emit_sector_combat_death_log(
+                    dead_ad=dead_ad,
+                    killer_ad=killer_ad,
+                    participants=participants,
+                    dead_key=dead_key,
+                    killer_key=killer_key,
+                )
+                wreck_payload = self._create_wreck_for_dead_actor(
+                    dead_ad=dead_ad,
+                    killer_ad=killer_ad,
+                    dead_key=dead_key,
+                )
+
+                death_payloads.append({
+                    "dead_key": dead_key,
+                    "killer_key": killer_key,
+                    "sector_id": int(self.room) if str(self.room).isdigit() else self.room,
+                    "is_npc": (dead_ad.kind == "NPC"),
+                    "timestamp": timezone.now().isoformat(),
+                    "participants": participants,
+                    "wreck_key": (wreck_payload or {}).get("wreck_key"),
+                })
+
+                if wreck_payload:
+                    self._update_room_cache_on_wreck_created(dead_key, wreck_payload)
+                    async_to_sync(self.channel_layer.group_send)(
+                        self.room_group_name,
+                        {
+                            "type": "wreck_created",
+                            "payload": wreck_payload,
+                        }
+                    )
+
+            for death_payload in death_payloads:
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "combat_death",
+                        "payload": death_payload,
                     }
                 )
 
@@ -1728,7 +1904,7 @@ class GameConsumer(WebsocketConsumer):
 
             if not ship_id:
                 return []
-            
+
             module_ids = PlayerShipModule.objects.filter(player_ship_id=ship_id).values("module_id") or []
 
             if not module_ids:
@@ -1779,6 +1955,322 @@ class GameConsumer(WebsocketConsumer):
                 )
 
         return weapons
+
+    def _compute_visibility_state(self, source_ad, target_ad, distance_tiles: int) -> str:
+        """
+        Determine visibility for combat precision malus.
+        Priority: SCANNED > SONAR > UNKNOWN.
+        """
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            sector_id = None
+
+        if target_ad.kind == "NPC":
+            target_type = "npc"
+            target_id = target_ad.actor.id
+        else:
+            target_type = "pc"
+            target_id = target_ad.actor.player_id
+
+        if source_ad.kind == "PC":
+            scanner_id = source_ad.actor.player_id
+            view_range = getattr(source_ad.actor, "view_range", None)
+        else:
+            scanner_id = source_ad.actor.id
+            view_range = getattr(source_ad.actor, "view_range", None)
+
+        if sector_id is not None:
+            if ActionRules.has_active_scan(
+                scanner_id=scanner_id,
+                target_type=target_type,
+                target_id=target_id,
+                sector_id=sector_id,
+            ):
+                return "SCANNED"
+
+        if view_range is not None:
+            try:
+                if distance_tiles <= int(view_range):
+                    return "SONAR"
+            except Exception:
+                pass
+
+        return "UNKNOWN"
+
+    def _combat_participation_cache_key(self, target_key: str) -> str:
+        return f"combat_participants:{self.room}:{target_key}"
+
+    def _extract_actor_keys_from_combat_payload(self, payload: Dict[str, Any]) -> tuple[Optional[str], Optional[str]]:
+        if not isinstance(payload, dict):
+            return None, None
+
+        source_kind = payload.get("source_kind")
+        target_kind = payload.get("target_kind")
+
+        if source_kind == "NPC":
+            source_key = f"npc_{payload.get('source_id')}"
+        elif source_kind == "PC":
+            source_key = f"pc_{payload.get('source_player_id')}"
+        else:
+            source_key = None
+
+        if target_kind == "NPC":
+            target_key = f"npc_{payload.get('target_id')}"
+        elif target_kind == "PC":
+            target_key = f"pc_{payload.get('target_player_id')}"
+        else:
+            target_key = None
+
+        if source_key and source_key.endswith("_None"):
+            source_key = None
+        if target_key and target_key.endswith("_None"):
+            target_key = None
+
+        return source_key, target_key
+
+    def _record_combat_participation(self, events) -> None:
+        """
+        Track contributors per target (cache, sector-scoped).
+        Used later for assists / kill attribution / XP / reputation.
+        """
+        if not events:
+            return
+
+        now_iso = timezone.now().isoformat()
+
+        for ev in events:
+            if not ev or getattr(ev, "type", None) not in ("ATTACK_HIT", "ATTACK_MISS", "ATTACK_EVADED"):
+                continue
+
+            payload = getattr(ev, "payload", None) or {}
+            source_key, target_key = self._extract_actor_keys_from_combat_payload(payload)
+            if not source_key or not target_key:
+                continue
+
+            cache_key = self._combat_participation_cache_key(target_key)
+            tracker = cache.get(cache_key) or {
+                "target_key": target_key,
+                "sector_id": int(self.room) if str(self.room).isdigit() else self.room,
+                "participants": {},
+                "first_hit_at": None,
+                "last_hit_at": None,
+                "last_attack_at": None,
+                "damage_to_hull": 0,
+                "damage_to_shield": 0,
+            }
+
+            participants = tracker.setdefault("participants", {})
+            participant = participants.get(source_key) or {
+                "damage_total": 0,
+                "damage_to_hull": 0,
+                "damage_to_shield": 0,
+                "attack_count": 0,
+                "last_contribution_at": None,
+                "is_final_blow": False,
+                "is_counter_only": True,
+            }
+
+            participant["attack_count"] += 1
+            participant["last_contribution_at"] = now_iso
+
+            if payload.get("is_counter") is not True:
+                participant["is_counter_only"] = False
+
+            if ev.type == "ATTACK_HIT":
+                dmg_shield = int(payload.get("damage_to_shield", 0) or 0)
+                dmg_hull = int(payload.get("damage_to_hull", 0) or 0)
+                participant["damage_to_shield"] += dmg_shield
+                participant["damage_to_hull"] += dmg_hull
+                participant["damage_total"] += (dmg_shield + dmg_hull)
+
+                tracker["damage_to_shield"] = int(tracker.get("damage_to_shield", 0) or 0) + dmg_shield
+                tracker["damage_to_hull"] = int(tracker.get("damage_to_hull", 0) or 0) + dmg_hull
+
+                if tracker.get("first_hit_at") is None:
+                    tracker["first_hit_at"] = now_iso
+                tracker["last_hit_at"] = now_iso
+
+            participants[source_key] = participant
+            tracker["participants"] = participants
+            tracker["last_attack_at"] = now_iso
+
+            # TTL volontairement large: reset explicite viendra avec mort/warp hooks Sprint 3
+            cache.set(cache_key, tracker, timeout=3600)
+
+    def _resolve_actor_key_from_message(self, msg: Any) -> Optional[str]:
+        if not isinstance(msg, dict):
+            return None
+        if msg.get("actor_key"):
+            return str(msg.get("actor_key"))
+        if msg.get("target_key"):
+            return str(msg.get("target_key"))
+        if msg.get("player_id") is not None:
+            return f"pc_{msg.get('player_id')}"
+        if msg.get("player") is not None:
+            return f"pc_{msg.get('player')}"
+        if msg.get("npc_id") is not None:
+            return f"npc_{msg.get('npc_id')}"
+        return None
+
+    def _purge_combat_participation_from_message(self, msg: Any) -> None:
+        actor_key = self._resolve_actor_key_from_message(msg)
+        if actor_key:
+            cache.delete(self._combat_participation_cache_key(actor_key))
+
+    def _pop_combat_participation_tracker(self, target_key: str, final_blow_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        if not target_key:
+            return None
+        cache_key = self._combat_participation_cache_key(target_key)
+        tracker = cache.get(cache_key)
+        if isinstance(tracker, dict) and final_blow_key:
+            participant = (tracker.get("participants") or {}).get(final_blow_key)
+            if isinstance(participant, dict):
+                participant["is_final_blow"] = True
+        cache.delete(cache_key)
+        return tracker
+
+    def _get_actor_display_name(self, adapter) -> str:
+        try:
+            if adapter.kind == "PC":
+                return adapter.actor.player.name
+            return adapter.actor.npc_template.displayed_name or adapter.actor.npc_template.name
+        except Exception:
+            return self.get_entity_key_from_adapter(adapter)
+
+    def _set_actor_dead_status(self, adapter) -> None:
+        try:
+            if adapter.kind == "PC":
+                adapter.actor.player.status = "DEAD"
+                adapter.actor.player.save(update_fields=["status"])
+                adapter.actor.is_current_ship = False
+                adapter.actor.save(update_fields=["is_current_ship"])
+                adapter.actor.status = "DEAD"
+                adapter.actor.save(update_fields=["status"])
+            elif adapter.kind == "NPC":
+                adapter.actor.status = "DEAD"
+                adapter.actor.save(update_fields=["status"])
+        except Exception as e:
+            logger.warning(f"Could not set DEAD status on {self.get_entity_key_from_adapter(adapter)}: {e}")
+
+    def _emit_sector_combat_death_log(
+        self,
+        *,
+        dead_ad,
+        killer_ad,
+        participants: list[str],
+        dead_key: str,
+        killer_key: str,
+    ) -> None:
+        """
+        Sector-wide player log for a combat death.
+        Roles:
+        - killer PC => TRANSMITTER
+        - dead PC => RECEIVER
+        - all other players in sector => OBSERVER
+        """
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+
+        sector_players = list(Player.objects.filter(sector_id=sector_id))
+        if not sector_players:
+            return
+
+        dead_player_id = dead_ad.actor.player_id if getattr(dead_ad, "kind", None) == "PC" else None
+        killer_player_id = killer_ad.actor.player_id if getattr(killer_ad, "kind", None) == "PC" else None
+
+        players_roles = []
+        for p in sector_players:
+            role = "OBSERVER"
+            if killer_player_id is not None and p.id == killer_player_id:
+                role = "TRANSMITTER"
+            if dead_player_id is not None and p.id == dead_player_id:
+                role = "RECEIVER"
+            players_roles.append((p, role))
+
+        payload = {
+            "event": "COMBAT_DEATH",
+            "dead": self._get_actor_display_name(dead_ad),
+            "killer": self._get_actor_display_name(killer_ad),
+            "dead_key": dead_key,
+            "killer_key": killer_key,
+            "participants": participants or [],
+        }
+
+        log = create_event_log(
+            players_roles=players_roles,
+            log_type="COMBAT_DEATH",
+            payload=payload,
+        )
+        self.push_event_log(log.playerlog_set.select_related("player", "log").all())
+
+    def _create_wreck_for_dead_actor(self, *, dead_ad, killer_ad, dead_key: str) -> Optional[Dict[str, Any]]:
+        try:
+            now = timezone.now()
+            expires_at = now + datetime.timedelta(seconds=self.WRECK_TTL_SECONDS)
+
+            if dead_ad.kind == "PC":
+                player_ship = dead_ad.actor
+                player_obj = player_ship.player
+                ship_obj = player_ship.ship
+                sector = player_obj.sector
+                coords = player_obj.coordinates or {"x": 0, "y": 0}
+                size = getattr(getattr(ship_obj, "ship_category", None), "size", None) or {"x": 1, "y": 1}
+                origin_type = "PC"
+                origin_player = player_obj
+                origin_npc = None
+            else:
+                npc_obj = dead_ad.actor
+                ship_obj = npc_obj.npc_template.ship if npc_obj.npc_template else None
+                sector = npc_obj.sector
+                coords = npc_obj.coordinates or {"x": 0, "y": 0}
+                size = getattr(getattr(ship_obj, "ship_category", None), "size", None) or {"x": 1, "y": 1}
+                origin_type = "NPC"
+                origin_player = None
+                origin_npc = npc_obj
+
+            killer_player = killer_ad.actor.player if getattr(killer_ad, "kind", None) == "PC" else None
+
+            wreck = ShipWreck.objects.create(
+                origin_type=origin_type,
+                origin_player=origin_player,
+                origin_npc=origin_npc,
+                killer_player=killer_player,
+                sector=sector,
+                ship=ship_obj,
+                coordinates=coords,
+                status="ACTIVE",
+                expires_at=expires_at,
+                metadata={
+                    "source_actor_key": dead_key,
+                },
+            )
+
+            return {
+                "wreck_id": wreck.id,
+                "wreck_key": f"wreck_{wreck.id}",
+                "dead_key": dead_key,
+                "origin_type": origin_type,
+                "coordinates": {
+                    "x": int((coords or {}).get("x", 0) or 0),
+                    "y": int((coords or {}).get("y", 0) or 0),
+                },
+                "size": {
+                    "x": int((size or {}).get("x", 1) or 1),
+                    "y": int((size or {}).get("y", 1) or 1),
+                },
+                "ship": {
+                    "id": getattr(ship_obj, "id", None),
+                    "name": getattr(ship_obj, "name", None),
+                    "image": getattr(ship_obj, "image", None),
+                },
+                "expires_at": expires_at.isoformat(),
+            }
+        except Exception as e:
+            logger.exception(f"Failed to create wreck for {dead_key}: {e}")
+            return None
     
     def get_entity_key_from_adapter(self, adapter):
         if adapter.kind == "PC":
@@ -1797,9 +2289,189 @@ class GameConsumer(WebsocketConsumer):
             }
         })
 
+    def combat_death(self, event):
+        self._send_response({
+            "type": "combat_death",
+            "payload": event.get("payload", {}),
+        })
+
+    def wreck_created(self, event):
+        self._send_response({
+            "type": "wreck_created",
+            "payload": event.get("payload", {}),
+        })
+
+    def wreck_expired(self, event):
+        self._send_response({
+            "type": "wreck_expired",
+            "payload": event.get("payload", {}),
+        })
+
+    def _handle_respawn_action(self, payload):
+        """
+        Respawn PC minimal (Sprint 3)
+        - bind non implémenté -> fallback sector_id = DEFAULT_RESPAWN_SECTOR_ID
+        - vaisseau gratuit = Ship.id = 1
+        - placement via même algo que le warp (cases libres + tailles)
+        - async_warp_complete réutilisé côté front pour reload/reconnect
+        """
+        _ = payload
+
+        if not self.player_id:
+            self._send_response({"type": "action_failed", "reason": "PLAYER_NOT_FOUND"})
+            return
+
+        player = Player.objects.select_related("archetype", "sector").filter(id=self.player_id).first()
+        if not player:
+            self._send_response({"type": "action_failed", "reason": "PLAYER_NOT_FOUND"})
+            return
+
+        if player.status != "DEAD":
+            self._send_response({"type": "action_failed", "reason": "PLAYER_NOT_DEAD"})
+            return
+
+        free_ship = Ship.objects.select_related("ship_category").filter(id=1).first()
+        if not free_ship:
+            self._send_response({"type": "action_failed", "reason": "RESPAWN_SHIP_NOT_FOUND"})
+            return
+
+        respawn_sector_id = int(self.DEFAULT_RESPAWN_SECTOR_ID)
+        old_sector_id = player.sector_id
+
+        ship_size = getattr(getattr(free_ship, "ship_category", None), "size", None) or {"x": 1, "y": 1}
+        if not isinstance(ship_size, dict):
+            ship_size = {"x": 1, "y": 1}
+        ship_size_x = int(ship_size.get("x", 1) or 1)
+        ship_size_y = int(ship_size.get("y", 1) or 1)
+
+        pa = PlayerAction(self.user.id)
+        padding_w = ship_size_x + getattr(pa, "MIN_PADDING", 3)
+        padding_h = ship_size_y + getattr(pa, "MIN_PADDING", 3)
+        respawn_coord = pa._calculate_destination_coord(
+            respawn_sector_id,
+            ship_size_x,
+            ship_size_y,
+            padding_h,
+            padding_w,
+        ) or {"x": 0, "y": 0}
+
+        current_hp = int(free_ship.default_hp or 0)
+        current_movement = int(free_ship.default_movement or 0)
+        current_ballistic_defense = int(free_ship.default_ballistic_defense or 0)
+        current_thermal_defense = int(free_ship.default_thermal_defense or 0)
+        current_missile_defense = int(free_ship.default_missile_defense or 0)
+        current_cargo_size = 2
+
+        archetype_modules = []
+        try:
+            if player.archetype_id:
+                archetype_modules = list(
+                    ArchetypeModule.objects.select_related("module").filter(archetype_id=player.archetype_id)
+                )
+        except Exception:
+            logger.exception("respawn: failed to load archetype modules")
+            archetype_modules = []
+
+        # Pour que le joueur réapparaisse aussi dans le cache secteur actuel (qui se base encore sur PlayerShipModule),
+        # on réattache les modules d'archétype au vaisseau gratuit (solution transitoire cohérente avec le système actuel).
+        for am in archetype_modules:
+            mod = am.module
+            if not mod:
+                continue
+            effect = mod.effect or {}
+            mtype = str(mod.type or "")
+            if "DEFENSE" in mtype:
+                if "BALLISTIC" in mtype:
+                    current_ballistic_defense += int(effect.get("defense", 0) or 0)
+                elif "THERMAL" in mtype:
+                    current_thermal_defense += int(effect.get("defense", 0) or 0)
+                elif "MISSILE" in mtype:
+                    current_missile_defense += int(effect.get("defense", 0) or 0)
+            elif "MOVEMENT" in mtype:
+                current_movement += int(effect.get("movement", 0) or 0)
+            elif "HULL" in mtype:
+                current_hp += int(effect.get("hp", 0) or 0)
+            elif "HOLD" in mtype:
+                current_cargo_size += int(effect.get("capacity", 0) or 0)
+
+        try:
+            with transaction.atomic():
+                PlayerShip.objects.filter(player_id=player.id, is_current_ship=True).update(is_current_ship=False)
+
+                new_ship = PlayerShip.objects.create(
+                    player=player,
+                    ship=free_ship,
+                    is_current_ship=True,
+                    is_reversed=False,
+                    status="FULL",
+                    current_hp=current_hp,
+                    max_hp=current_hp,
+                    current_movement=current_movement,
+                    max_movement=current_movement,
+                    current_ballistic_defense=current_ballistic_defense,
+                    max_ballistic_defense=current_ballistic_defense,
+                    current_thermal_defense=current_thermal_defense,
+                    max_thermal_defense=current_thermal_defense,
+                    current_missile_defense=current_missile_defense,
+                    max_missile_defense=current_missile_defense,
+                    current_cargo_size=current_cargo_size,
+                )
+
+                for am in archetype_modules:
+                    if am.module_id:
+                        PlayerShipModule.objects.create(player_ship=new_ship, module_id=am.module_id)
+
+                # AP volontairement inchangé (règle validée)
+                Player.objects.filter(id=player.id).update(
+                    status="ALIVE",
+                    sector_id=respawn_sector_id,
+                    coordinates=respawn_coord,
+                )
+        except Exception:
+            logger.exception("respawn action failed")
+            self._send_response({"type": "action_failed", "reason": "RESPAWN_FAILED"})
+            return
+
+        new_room_key = f"play_{respawn_sector_id}"
+        new_sector_data = {}
+        try:
+            dest_cache = StoreInCache(new_room_key, self.user)
+            dest_cache.get_or_set_cache(need_to_be_recreated=True)
+            dest_cache.update_player_range_finding()
+            dest_cache.update_sector_player_visibility_zone(self.player_id)
+            new_sector_data = dest_cache.get_or_set_cache(need_to_be_recreated=False) or {}
+        except Exception:
+            logger.exception("respawn cache rebuild failed")
+
+        # Tous les joueurs du secteur d'arrivée doivent voir apparaître le joueur.
+        try:
+            async_to_sync(self.channel_layer.group_send)(
+                new_room_key,
+                {
+                    "type": "async_user_join",
+                    "message": (new_sector_data.get("pc", []) if isinstance(new_sector_data, dict) else []),
+                },
+            )
+        except Exception:
+            logger.exception("respawn broadcast failed")
+
+        # Recycle le flux warp_complete côté front pour recharger proprement la page.
+        self._send_response({
+            "type": "async_warp_complete",
+            "message": {
+                "new_sector_id": respawn_sector_id,
+                "new_room_key": new_room_key,
+                "new_sector_data": new_sector_data,
+                "player_id": self.player_id,
+                "respawn": True,
+                "old_sector_id": old_sector_id,
+            }
+        })
+
     # Sprint 1 override block: split receive dispatch + WS envelope normalization.
     def receive(self, text_data=None, bytes_data=None):
         self._invalidate_expired_scans_safe()
+        self._invalidate_expired_wrecks_safe()
 
         if not self._is_valid_request(text_data):
             return
@@ -1845,6 +2517,45 @@ class GameConsumer(WebsocketConsumer):
         except Exception as e:
             logger.error(f"Scan invalidation failed: {e}")
 
+    def _invalidate_expired_wrecks_safe(self) -> None:
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+
+        try:
+            now = timezone.now()
+            due_ids = list(
+                ShipWreck.objects.filter(
+                    sector_id=sector_id,
+                    status="ACTIVE",
+                    expires_at__isnull=False,
+                    expires_at__lte=now,
+                ).values_list("id", flat=True)
+            )
+            if not due_ids:
+                return
+
+            for wreck_id in due_ids:
+                updated = ShipWreck.objects.filter(id=wreck_id, status="ACTIVE").update(status="EXPIRED")
+                if not updated:
+                    continue
+
+                self._update_room_cache_on_wreck_expired(wreck_id)
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "wreck_expired",
+                        "payload": {
+                            "wreck_id": wreck_id,
+                            "wreck_key": f"wreck_{wreck_id}",
+                            "sector_id": sector_id,
+                        }
+                    }
+                )
+        except Exception as e:
+            logger.error(f"Wreck invalidation failed: {e}")
+
     def _parse_client_json_message(self, text_data: str) -> Optional[Dict[str, Any]]:
         try:
             data = json.loads(text_data)
@@ -1871,6 +2582,7 @@ class GameConsumer(WebsocketConsumer):
             "action_scan_pc_npc": self._dispatch_scan_action_message,
             "share_scan": self._dispatch_share_scan_message,
             "action_attack": self._dispatch_combat_action_message,
+            "action_respawn": self._dispatch_respawn_action_message,
         }
         handler = handlers.get(msg_type)
         if not handler:
@@ -1913,6 +2625,15 @@ class GameConsumer(WebsocketConsumer):
 
     def _dispatch_combat_action_message(self, data: Dict[str, Any]) -> None:
         self._handle_combat_action(self._get_client_payload(data))
+
+    def _dispatch_respawn_action_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if payload is None:
+            payload = {}
+        if not isinstance(payload, dict):
+            logger.error(f"Payload action_respawn invalide: {data}")
+            return
+        self._handle_respawn_action(payload)
 
     def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         return {

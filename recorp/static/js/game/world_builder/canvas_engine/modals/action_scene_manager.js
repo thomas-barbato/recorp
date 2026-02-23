@@ -96,14 +96,28 @@ class ActionSceneManager {
         return badge;
     }
 
-    _showCombatEscapeMessage(ctx, reason) {
+    _showCombatEscapeMessage(ctx, meta = {}) {
         if (!ctx) return;
-        if (reason !== "actor_removed" && reason !== "warp_complete") return;
+        const reason = meta?.reason;
 
-        const targetName =
+        const isEscape = (reason === "actor_removed" || reason === "warp_complete");
+        const isCombatDeath = (reason === "combat_death");
+        if (!isEscape && !isCombatDeath) return;
+
+        let displayName =
             this._getTargetDisplayNameFromCache(ctx) ||
             ctx.targetKey ||
             "La cible";
+
+        if (isCombatDeath) {
+            const deadKey = meta?.payload?.dead_key;
+            if (deadKey && String(deadKey) === String(ctx.attackerKey)) {
+                displayName =
+                    this._getCurrentPlayerData()?.user?.name ||
+                    ctx.attackerKey ||
+                    displayName;
+            }
+        }
 
         const mountNode =
             this._mountNode ||
@@ -122,7 +136,11 @@ class ActionSceneManager {
             "font-shadow",
             "mt-4"
         );
-        msg.textContent = `${targetName} s'est echappe`;
+        if (isCombatDeath) {
+            msg.textContent = `${displayName} a ete detruit`;
+        } else {
+            msg.textContent = `${displayName} s'est echappe`;
+        }
 
         mountNode.append(msg);
     }
@@ -268,7 +286,7 @@ class ActionSceneManager {
         this._unbindMovementListener();
         this._unbindScanListener();
 
-        this._showCombatEscapeMessage(ctx, meta?.reason);
+        this._showCombatEscapeMessage(ctx, meta);
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
 

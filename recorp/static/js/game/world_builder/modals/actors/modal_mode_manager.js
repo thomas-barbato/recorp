@@ -1,4 +1,6 @@
 (function () {
+    const actionSceneCloseMetaByModalId = new Map();
+
     function getActionSceneManager() {
         return window.ActionSceneManager || null;
     }
@@ -15,6 +17,16 @@
 
     function getBody(modalId) {
         return document.getElementById(`${modalId}-body`);
+    }
+
+    function getLastActionSceneCloseMeta(modalId) {
+        return actionSceneCloseMetaByModalId.get(modalId) || null;
+    }
+
+    function consumeLastActionSceneCloseMeta(modalId) {
+        const meta = getLastActionSceneCloseMeta(modalId);
+        actionSceneCloseMetaByModalId.delete(modalId);
+        return meta;
     }
 
     function enter(modalId, mode, context = {}) {
@@ -71,6 +83,8 @@
             getActionSceneManager().close({ silent: true });
         }
 
+        const lastSceneClose = consumeLastActionSceneCloseMeta(modalId);
+
         // Déduire la targetKey depuis modalId :
         // modal-npc_1223 / modal-unknown-npc_1223 => npc_1223
         const raw = modalId.replace("modal-", "");
@@ -89,6 +103,21 @@
             }
         }
 
+        // Combat death: the original target modal (pc_/npc_) can no longer be fetched.
+        // If a wreck was spawned for the dead target, reopen the wreck modal instead.
+        if (lastSceneClose?.reason === "combat_death") {
+            const payload = lastSceneClose?.payload || {};
+            const deadKey = payload.dead_key ? String(payload.dead_key) : null;
+            const wreckKey = payload.wreck_key ? String(payload.wreck_key) : null;
+            if (wreckKey && deadKey && deadKey === targetKey) {
+                reopenId = `modal-${wreckKey}`;
+            } else if (deadKey && deadKey === targetKey) {
+                // No wreck payload available: just close, don't refetch a dead target modal (HTTP 400).
+                modal.remove();
+                return;
+            }
+        }
+
         // Fermer l'actuel modal (on le retire du DOM)
         modal.remove();
 
@@ -101,5 +130,13 @@
         enter,
         exit
     };
+
+    window.addEventListener("actionscene:close", (e) => {
+        const detail = e?.detail;
+        const modalId = detail?.context?.originalModalId;
+        const meta = detail?.meta || null;
+        if (!modalId || !meta) return;
+        actionSceneCloseMetaByModalId.set(modalId, meta);
+    });
 
 })();

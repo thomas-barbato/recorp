@@ -7,7 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
     
-    currentPlayer.ship.modules.forEach(module => {
+    const playerData = window.GameState?.player?.currentPlayer ?? window.currentPlayer ?? null;
+    const modules = Array.isArray(playerData?.ship?.modules) ? playerData.ship.modules : [];
+    if (modules.length === 0) return;
+
+    modules.forEach(module => {
 
         let module_type = module.type;
         let translated_module_type = gettext(module_type.replace('_', ' '));

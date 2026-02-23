@@ -66,7 +66,8 @@ from core.backend.modal_builder import (
     build_pc_modal_data, 
     build_npc_modal_data, 
     build_sector_element_modal_data
-    )
+)
+from core.models import ShipWreck
 
 
 logger = logging.getLogger("django")
@@ -536,11 +537,42 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
             result_dict["npc"] = data["npc"]
+            # Source de vérité pour les carcasses au chargement HTTP (évite un cache stale après warp/F5)
+            now = timezone.now()
+            wreck_qs = (
+                ShipWreck.objects
+                .select_related("ship", "ship__ship_category")
+                .filter(sector_id=player.get_player_sector(), status="ACTIVE")
+                .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now))
+            )
+            wrecks_payload = []
+            for w in wreck_qs:
+                size = getattr(getattr(getattr(w.ship, "ship_category", None), "size", None), "copy", lambda: {"x": 1, "y": 1})()
+                if not isinstance(size, dict):
+                    size = {"x": 1, "y": 1}
+                coords = w.coordinates or {"x": 0, "y": 0}
+                wrecks_payload.append({
+                    "wreck_id": w.id,
+                    "wreck_key": f"wreck_{w.id}",
+                    "origin_type": w.origin_type,
+                    "coordinates": coords,
+                    "size": {"x": int(size.get("x", 1) or 1), "y": int(size.get("y", 1) or 1)},
+                    "ship": {
+                        "id": w.ship_id,
+                        "name": w.ship.name if w.ship else None,
+                        "image": w.ship.image if w.ship else None,
+                    },
+                    "expires_at": w.expires_at.isoformat() if w.expires_at else None,
+                })
+            result_dict["wrecks"] = wrecks_payload
             result_dict["room"] = player.get_player_sector()
             result_dict["screen_sized_map"] = map_range
             context["map_informations"] = result_dict
             context["current_player_state"] = build_pc_modal_data(player_id)
             context["current_player_id"] = player_id
+            context["current_player_status"] = (
+                Player.objects.filter(id=player_id).values_list("status", flat=True).first() or "ALIVE"
+            )
             context["module_categories"] = modules_category
             context["player_event_logs"] = player_event_logs
             return context
@@ -1127,6 +1159,54 @@ def modal_data_view(request, element_type: str, element_id: int):
             "subtype": element_type,
             "current_player": current_player,
             "target": target_element
+        })
+
+    if element_type == "wreck":
+        wreck = (
+            ShipWreck.objects
+            .select_related("ship", "ship__ship_category")
+            .filter(id=element_id, status="ACTIVE")
+            .first()
+        )
+        if not wreck:
+            return HttpResponseBadRequest("Wreck not found")
+
+        current_player = build_pc_modal_data(current_player_id)
+        if not current_player:
+            return HttpResponseBadRequest("Current player not found")
+
+        coords = wreck.coordinates or {"x": 0, "y": 0}
+        size = getattr(getattr(getattr(wreck.ship, "ship_category", None), "size", None), "copy", lambda: {"x": 1, "y": 1})()
+        if not isinstance(size, dict):
+            size = {"x": 1, "y": 1}
+
+        target_wreck = {
+            "type": "wreck",
+            "item_id": wreck.id,
+            "size": {"x": int(size.get("x", 1) or 1), "y": int(size.get("y", 1) or 1)},
+            "animations": None,
+            "item_name": "Epave",
+            "data": {
+                "type": "wreck",
+                "coordinates": coords,
+                "data": {
+                    "name": "Epave",
+                    "description": f"Carcasse de {wreck.ship.name if wreck.ship else 'vaisseau'}",
+                    "coordinates": coords,
+                },
+            },
+            "wreck": {
+                "id": wreck.id,
+                "expires_at": wreck.expires_at.isoformat() if wreck.expires_at else None,
+                "ship_id": wreck.ship_id,
+            }
+        }
+
+        return JsonResponse({
+            "type": "sector_element",
+            "subtype": "wreck",
+            "current_player": current_player,
+            "target": target_wreck,
         })
         
         

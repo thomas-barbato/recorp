@@ -51,6 +51,7 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
             }
         }
         else if (obj.type === "foreground") name = obj.data.data.name;
+        else if (obj.type === "wreck") name = "Epave";
     }
 
     nameEl.textContent = name;
@@ -121,6 +122,7 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
         }
         
         if (obj.type === "foreground") name = obj.data.data.name;
+        if (obj.type === "wreck") name = "Epave";
     }else{
         hideHoverTooltip();
         return;

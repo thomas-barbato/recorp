@@ -27,6 +27,11 @@ CAPS = {
     "DAMAGE": 25.0,         # %
 }
 
+# Size-based evasion tuning (v1)
+SIZE_BASE_AREA = 4        # baseline footprint (2x2)
+SIZE_EVASION_PER_TILE = 1.5
+SIZE_EVASION_CAP = 10.0
+
 # Simple linear-with-cap mapping for now (safe with 100 levels)
 # You can later swap to a soft-cap curve without changing DB / fixtures.
 def bonus_linear_cap(level: int, per_level: float, cap: float) -> float:
@@ -225,6 +230,31 @@ def compute_defense_bonuses(
     return clamp(evasion_bonus, 0.0, CAPS["EVASION"])
 
 
+def _get_actor_size(ad: ActorAdapter) -> Dict[str, int]:
+    size = None
+    if ad.kind == "PC":
+        ship = getattr(ad.actor, "ship", None)
+        size = getattr(getattr(ship, "ship_category", None), "size", None)
+    else:
+        npc_template = getattr(ad.actor, "npc_template", None)
+        ship = getattr(npc_template, "ship", None)
+        size = getattr(getattr(ship, "ship_category", None), "size", None)
+    if not size:
+        return {"x": 1, "y": 1}
+    return {
+        "x": int(size.get("x", 1) or 1),
+        "y": int(size.get("y", 1) or 1),
+    }
+
+
+def compute_size_evasion_bonus(defender_ad: ActorAdapter) -> float:
+    size = _get_actor_size(defender_ad)
+    area = max(1, int(size.get("x", 1)) * int(size.get("y", 1)))
+    delta = SIZE_BASE_AREA - area
+    bonus = delta * SIZE_EVASION_PER_TILE
+    return clamp(bonus, -SIZE_EVASION_CAP, SIZE_EVASION_CAP)
+
+
 def apply_damage(
     defender_ad: ActorAdapter,
     dmg_type: DamageType,
@@ -278,6 +308,11 @@ def resolve_attack(
         attacker_ad.actor, attacker_ad.kind, weapon.damage_type
     )
     evasion_bonus = compute_defense_bonuses(defender_ad.actor, defender_ad.kind)
+    evasion_bonus = clamp(
+        evasion_bonus + compute_size_evasion_bonus(defender_ad),
+        0.0,
+        CAPS["EVASION"]
+    )
 
     vis_mod = visibility_modifier(visibility)
     invis_bonus = 10.0 if attacker_invisible else 0.0  # simple v1, cap applies via clamp below
@@ -522,52 +557,6 @@ def resolve_combat_action(
 
     return events + counter_events
 
-def compute_distance_tiles(
-    ax: int,
-    ay: int,
-    aw: int,
-    ah: int,
-    bx: int,
-    by: int,
-    bw: int,
-    bh: int,
-) -> int:
-    """
-    Calcule la distance en tiles entre deux entités rectangulaires.
-    Distance bord-à-bord (comme le worker JS).
-    """
-
-    # bornes attaquant
-    a_left = int(ax)
-    a_right = int(ax) + int(aw) - 1
-    a_top = int(ay)
-    a_bottom = int(ay) + int(ah) - 1
-
-    # bornes cible
-    b_left = int(bx)
-    b_right = int(bx) + int(bw) - 1
-    b_top = int(by)
-    b_bottom = int(by) + int(bh) - 1
-
-    # distance horizontale
-    if a_right < b_left:
-        dx = b_left - a_right
-    elif b_right < a_left:
-        dx = a_left - b_right
-    else:
-        dx = 0
-
-    # distance verticale
-    if a_bottom < b_top:
-        dy = b_top - a_bottom
-    elif b_bottom < a_top:
-        dy = a_top - b_bottom
-    else:
-        dy = 0
-
-    # distance euclidienne
-    return int((dx ** 2 + dy ** 2) ** 0.5)
-
 def compute_distance_between_actors(source_ad, target_ad):
     """
     Calcule la distance réelle en tiles entre deux ActorAdapter.
@@ -609,4 +598,12 @@ def compute_distance_between_actors(source_ad, target_ad):
     bw = size.get("x", 1)
     bh = size.get("y", 1)
 
-    return compute_distance_tiles(ax, ay, aw, ah, bx, by, bw, bh)
+    # Align with worker compute_distance (center-based Chebyshev).
+    acx = ax + (aw - 1) / 2
+    acy = ay + (ah - 1) / 2
+    bcx = bx + (bw - 1) / 2
+    bcy = by + (bh - 1) / 2
+
+    dx = abs(acx - bcx)
+    dy = abs(acy - bcy)
+    return int(max(dx, dy))

@@ -42,6 +42,18 @@ Spec fonctionnelle/technique pour la gestion de la mort et de l apres-combat:
 
 ## Proposition de modele de donnees
 
+### Decision de modelisation (retenue)
+
+- `Player.status` porte l etat de vie du joueur (`ALIVE` / `DEAD`)
+- `PlayerShip` reste un objet possede (le joueur peut en avoir plusieurs, `is_current_ship` indique lequel est actif)
+- La carcasse est un objet monde distinct -> table `ShipWreck` (ownerless)
+
+Pourquoi:
+
+- le joueur peut etre mort (en attente de `revive`) alors que son ancien vaisseau est deja devenu une carcasse
+- `PlayerShip` ne doit pas etre detourne en objet monde sans proprietaire
+- le systeme d assurance futur sera plus simple a brancher (source = vaisseau detruit, restitution separee)
+
 ### 1. Bind joueur (valide)
 
 Choix retenu: table dediee `PlayerBind` (plus extensible qu une simple colonne `Player`).
@@ -62,7 +74,7 @@ Avantages:
 - extensible (historique/cooldowns/types de bind plus tard)
 - evite de surcharger `Player`
 
-### 2. Carcasses (nouvelle table conseillee)
+### 2. Carcasses (nouvelle table retenue)
 
 Proposition `ShipWreck`:
 
@@ -78,6 +90,18 @@ Proposition `ShipWreck`:
 - `status` (`ACTIVE`, `LOOTED`, `SALVAGED`, `EXPIRED`)
 - `killer_player_id` (nullable)
 - `metadata` JSON (optionnel)
+
+Version minimale implementee (Sprint 3 en cours):
+
+- `origin_type`
+- `origin_player_id` / `origin_npc_id`
+- `killer_player_id`
+- `sector_id`
+- `ship_id`
+- `coordinates` (JSON)
+- `status`
+- `expires_at`
+- `metadata`
 
 ### 3. Modules lootables de carcasse
 
