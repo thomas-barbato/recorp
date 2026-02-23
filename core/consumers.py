@@ -2549,12 +2549,29 @@ class GameConsumer(WebsocketConsumer):
                     expires_at__lte=now,
                 ).values("id")
             )
-            if not due_rows:
-                return
-
             for row in due_rows:
                 wreck_id = int(row.get("id"))
                 payload = self._expire_wreck_and_purge_source_ship(wreck_id, sector_id)
+                if not payload:
+                    continue
+
+                self._update_room_cache_on_wreck_expired(wreck_id)
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "wreck_expired",
+                        "payload": payload,
+                    }
+                )
+
+            stale_expired_ids = list(
+                ShipWreck.objects.filter(
+                    sector_id=sector_id,
+                    status="EXPIRED",
+                ).values_list("id", flat=True)
+            )
+            for wreck_id in stale_expired_ids:
+                payload = self._expire_wreck_and_purge_source_ship(int(wreck_id), sector_id)
                 if not payload:
                     continue
 
@@ -2582,7 +2599,7 @@ class GameConsumer(WebsocketConsumer):
                 wreck = (
                     ShipWreck.objects.select_for_update()
                     .select_related("origin_player")
-                    .filter(id=wreck_id, status="ACTIVE")
+                    .filter(id=wreck_id, status__in=["ACTIVE", "EXPIRED"])
                     .first()
                 )
                 if not wreck:
