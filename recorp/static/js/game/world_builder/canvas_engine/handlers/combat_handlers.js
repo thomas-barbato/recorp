@@ -48,6 +48,8 @@ export function handleCombatDeath(payload) {
     const deadKey = normalizeActorKey(payload.dead_key);
     if (!deadKey) return;
 
+    // On force l'état UI local avant même les prochains patchs WS pour éviter
+    // les HP/shields "stale" visibles pendant la transition vers la carcasse.
     applyDeadUiState(deadKey);
     purgeDeadTargetTransientEffects(deadKey);
     showDeathOverlayIfLocal(deadKey, payload);
@@ -60,7 +62,8 @@ export function handleCombatDeath(payload) {
 
     safeAddCombatLog(`Destruction: ${deadKey}`);
 
-    // Close the combat scene and let ActionSceneManager render a terminal message in the parent modal.
+    // La scène combat se ferme, puis ActionSceneManager affiche le message terminal
+    // dans le modal parent (ex: "X a ete detruit").
     asm?.close?.({
         reason: "combat_death",
         payload,
@@ -81,6 +84,7 @@ export function handleWreckCreated(payload) {
         showDeathOverlayIfLocal(deadKey, payload);
     }
 
+    // On remplace explicitement l'acteur vivant par la carcasse sur la map.
     if (deadKey?.startsWith("pc_")) {
         map.removeActorByPlayerId?.(deadKey.replace("pc_", ""));
     } else if (deadKey?.startsWith("npc_")) {
@@ -102,6 +106,8 @@ export function handleWreckExpired(payload) {
     engine?.map?.removeWreckById?.(wreckId);
     engine?.renderer?.requestRedraw?.();
 
+    // Si le joueur a encore le modal carcasse ouvert au moment de l'expiration,
+    // on le ferme localement pour éviter un écran "fantôme".
     const modalId = `modal-${wreckKey}`;
     const modalEl = document.getElementById(modalId);
     if (modalEl) {
@@ -202,7 +208,7 @@ function applyDeadUiState(deadKey) {
         }
     }
 
-    // Patch modal live (normal/unknown) and combat scene stats before close.
+    // Synchronise les modals (normal + combat) sans attendre l'ordre exact des frames WS.
     window.ModalLive?.notify?.(deadKey, "hp_update", {
         hp: 0,
         shields: { MISSILE: 0, THERMAL: 0, BALLISTIC: 0 },
@@ -221,7 +227,7 @@ function applyDeadUiState(deadKey) {
         });
     }
 
-    // Local HUD (if local player is the dead actor)
+    // HUD local: un joueur mort n'a plus de vaisseau actif, donc on force un état lisible.
     const localKey = `pc_${window.current_player_id}`;
     if (deadKey === localKey) {
         window.current_player_status = "DEAD";
@@ -245,6 +251,7 @@ function applyDeadUiState(deadKey) {
 function purgeDeadTargetTransientEffects(deadKey) {
     if (!deadKey) return;
 
+    // Evite les refreshs différés (scan timers / modal refresh) sur une cible qui n'existe plus.
     window.clearScan?.(deadKey);
     delete window.scannedMeta?.[deadKey];
     delete window.scannedModalData?.[deadKey];
@@ -270,6 +277,7 @@ function showDeathOverlayIfLocal(deadKey, payload) {
 window.addEventListener?.("wreck:expired_local", (e) => {
     const payload = e?.detail;
     if (!payload) return;
+    // Réutilise le même handler que le WS pour avoir un seul chemin de cleanup UI.
     handleWreckExpired(payload);
 });
 

@@ -607,6 +607,8 @@ export default class MapData {
         }
 
         const idStr = String(wreckId);
+        // Idempotent: si on reçoit une mise à jour/recréation de la même carcasse,
+        // on remplace proprement l'ancienne entrée + son timer local.
         this.removeWreckById(idStr);
 
         const size = wreckData.size || {};
@@ -633,6 +635,7 @@ export default class MapData {
 
         this.wrecks[idStr] = obj;
         this.worldObjects.push(obj);
+        // Timer local = disparition visuelle à l'heure exacte, même sans trafic WS.
         this._scheduleWreckExpiry(idStr, wreckData?.expires_at);
 
         if (this.spriteManager?.ensure && this.spriteManager?.makeUrl && spritePath) {
@@ -649,6 +652,7 @@ export default class MapData {
         const wid = String(wreckId);
         this.worldObjects = this.worldObjects.filter(o => String(o.id) !== `wreck_${wid}`);
         delete this.wrecks?.[wid];
+        // Nettoie aussi le timer local associé (sinon timeout zombie).
         const t = this.wreckExpiryTimers?.get?.(wid);
         if (t) {
             clearTimeout(t);
@@ -678,6 +682,8 @@ export default class MapData {
         const timerId = setTimeout(() => {
             this.removeWreckById(wid);
             window.canvasEngine?.renderer?.requestRedraw?.();
+            // On notifie le reste du front via un event local pour réutiliser le même
+            // chemin de cleanup que le WS `wreck_expired` (modal, etc.).
             window.dispatchEvent?.(new CustomEvent("wreck:expired_local", {
                 detail: { wreck_id: wid, wreck_key: `wreck_${wid}` }
             }));

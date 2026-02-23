@@ -1605,7 +1605,11 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Erreur entity_state_update: {e}")
 
     def _handle_combat_action(self, payload: dict) -> None:
-        
+        """
+        Point d'entrée WS pour une attaque.
+        Cette méthode orchestre le pipeline combat + les side-effects temps réel
+        (patchs d'état, mort, carcasse, logs, événements d'animation).
+        """
         try:
             if not payload:
                 return
@@ -1724,7 +1728,8 @@ class GameConsumer(WebsocketConsumer):
                 target_weapons=target_weapons,
             )
 
-            # Sprint 3: track multi-attacker participation (assist/kill prep)
+            # Prépare les futures mécaniques (assist / XP / réputation) en mémorisant
+            # qui a contribué sur cette cible avant même qu'elle ne meure.
             self._record_combat_participation(events)
 
             # -----------------------
@@ -1779,6 +1784,8 @@ class GameConsumer(WebsocketConsumer):
             # -----------------------
             # Hook mort minimal (Sprint 3)
             # -----------------------
+            # On accumule d'abord les morts détectées puis on broadcast après la boucle,
+            # pour éviter de mélanger la détection de kills avec l'itération sur les hits.
             death_payloads = []
             seen_dead_keys = set()
             for ev in events:
@@ -1799,6 +1806,8 @@ class GameConsumer(WebsocketConsumer):
                     continue
                 seen_dead_keys.add(dead_key)
 
+                # "Pop" = on fige les participants pour ce kill, puis on retire le tracker cache
+                # afin d'éviter qu'un second event (ou double traitement) réutilise ces contributions.
                 tracker = self._pop_combat_participation_tracker(dead_key, final_blow_key=killer_key)
                 participants = list((tracker or {}).get("participants", {}).keys())
 
@@ -2245,6 +2254,7 @@ class GameConsumer(WebsocketConsumer):
                 expires_at=expires_at,
                 metadata={
                     "source_actor_key": dead_key,
+                    # Référence stable pour purger le vieux PlayerShip quand la carcasse expire.
                     "source_player_ship_id": player_ship.id if dead_ad.kind == "PC" else None,
                     "source_npc_id": npc_obj.id if dead_ad.kind == "NPC" else None,
                 },
@@ -2376,6 +2386,8 @@ class GameConsumer(WebsocketConsumer):
 
         # Pour que le joueur réapparaisse aussi dans le cache secteur actuel (qui se base encore sur PlayerShipModule),
         # on réattache les modules d'archétype au vaisseau gratuit (solution transitoire cohérente avec le système actuel).
+        # Compatibilité transitoire avec le cache de secteur actuel:
+        # un PC sans PlayerShipModule risque de "disparaître" du cache/reload.
         for am in archetype_modules:
             mod = am.module
             if not mod:
@@ -2520,6 +2532,8 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Scan invalidation failed: {e}")
 
     def _invalidate_expired_wrecks_safe(self) -> None:
+        # Expiration lazy côté backend (pas de scheduler dédié pour l'instant).
+        # Le front gère la disparition visuelle exacte via timer local.
         try:
             sector_id = int(self.room)
         except Exception:
@@ -2564,6 +2578,7 @@ class GameConsumer(WebsocketConsumer):
         """
         try:
             with transaction.atomic():
+                # Verrouille la carcasse pour éviter un double cleanup concurrent.
                 wreck = (
                     ShipWreck.objects.select_for_update()
                     .select_related("origin_player")
@@ -2578,6 +2593,7 @@ class GameConsumer(WebsocketConsumer):
                 source_actor_key = str(metadata.get("source_actor_key") or "")
 
                 # Fallback compat pour les vieilles carcasses créées avant l'ajout du metadata id.
+                # Fallback compat pour les vieilles carcasses (sans metadata.source_player_ship_id).
                 if not source_player_ship_id and wreck.origin_type == "PC" and source_actor_key.startswith("pc_"):
                     try:
                         dead_player_id = int(source_actor_key.split("_", 1)[1])
@@ -2603,6 +2619,7 @@ class GameConsumer(WebsocketConsumer):
                     ).delete()
 
                 # La carcasse n'est plus utile après expiration: suppression DB.
+                # Suppression backend réelle (la disparition visuelle front arrive via ws/local timer).
                 wreck.delete()
 
                 return {
