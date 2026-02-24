@@ -7,6 +7,7 @@ import ForegroundRenderer from "../renderers/foreground_renderer.js";
 import ActorsRenderer from "../renderers/actors_renderer.js";
 import UIRenderer from "../renderers/ui_renderer.js";
 import FloatingMessageManager from "./floating_message_manager.js"
+import WorldCombatEffectsManager from "./world_combat_effects_manager.js";
 import SonarSystem from "../renderers/sonar_system.js";
 
 
@@ -43,6 +44,8 @@ export default class Renderer {
         this.floatingText = null;
         // Gestionnaire de messages flottants (texte + icônes)
         this.floatingMessages = new FloatingMessageManager();
+        // Projectiles / effets de combat observateurs sur le plateau
+        this.worldCombatEffects = new WorldCombatEffectsManager();
     }
 
     requestRedraw() { this.needsRedraw = true; }
@@ -58,6 +61,12 @@ export default class Renderer {
     addFloatingMessage(opts) {
         if (!this.floatingMessages) return;
         this.floatingMessages.addMessage(opts);
+        this.requestRedraw();
+    }
+
+    addWorldCombatProjectile(opts) {
+        if (!this.worldCombatEffects) return;
+        this.worldCombatEffects.addProjectile(opts);
         this.requestRedraw();
     }
 
@@ -80,6 +89,9 @@ export default class Renderer {
         if (this.floatingMessages) {
             this.floatingCtx.clearRect(0, 0, this.floatingCtx.canvas.width, this.floatingCtx.canvas.height);
             this.floatingMessages.updateAndRender(this.floatingCtx, this.camera);
+        }
+        if (this.worldCombatEffects) {
+            this.worldCombatEffects.updateAndRender(this.floatingCtx, this.camera, this.map, this.spriteManager);
         }
         this.needsRedraw = false;
     }

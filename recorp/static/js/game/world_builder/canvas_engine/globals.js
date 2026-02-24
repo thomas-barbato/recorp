@@ -337,6 +337,8 @@ export function initGlobals() {
                 icon: icon,
                 worldX,
                 worldY,
+                sizeX,
+                sizeY,
                 duration: 2000,
                 color: color
             });

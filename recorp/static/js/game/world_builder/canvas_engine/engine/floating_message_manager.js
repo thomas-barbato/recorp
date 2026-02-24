@@ -64,7 +64,7 @@ class FloatingMessageManager {
         });
     }
 
-    addMessage({ text, icon = "ship", worldX, worldY, color = "rgb(255,255,255)", duration = 2000 }) {
+    addMessage({ text, icon = "ship", worldX, worldY, color = "rgb(255,255,255)", duration = 2000, sizeX = 1, sizeY = 1 }) {
         this._ensureIconsLoaded();
 
         const msg = {
@@ -75,6 +75,8 @@ class FloatingMessageManager {
             worldY,
             color,
             duration,
+            sizeX: Number(sizeX || 1),
+            sizeY: Number(sizeY || 1),
             startTime: performance.now(),
         };
 
@@ -121,10 +123,11 @@ class FloatingMessageManager {
 
             // coordonnées écran du centre du vaisseau
             const screen = camera.worldToScreen(worldX, worldY);
-            const player_size = currentPlayer.ship.size
+            const msgSizeX = Number(msg.sizeX || 1);
+            const msgSizeY = Number(msg.sizeY || 1);
 
-            let centerX = screen.x + (player_size.x * tile) / 2;
-            let centerY = screen.y + (player_size.y * tile) / 2;
+            let centerX = screen.x + (msgSizeX * tile) / 2;
+            let centerY = screen.y + (msgSizeY * tile) / 2;
 
             ctx.save();
             ctx.globalAlpha = alpha;
