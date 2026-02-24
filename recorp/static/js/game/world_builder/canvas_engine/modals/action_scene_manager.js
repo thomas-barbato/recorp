@@ -12,6 +12,10 @@ class ActionSceneManager {
         this._combatAnim = null; // { engine, queue }
         this._combatCanvasPositions = null; // { left, right }
         this._combatDistanceNode = null;
+        this._combatLogNode = null;
+        this._combatLogPlaceholderNode = null;
+        this._combatLogHistoryKey = null;
+        this._combatResizeHandler = null;
         this._mountNode = null; // si défini, la scène est rendue dans ce node (body du modal)
     }
 
@@ -145,6 +149,103 @@ class ActionSceneManager {
         mountNode.append(msg);
     }
 
+    _setCombatLogBridge(enabled) {
+        if (enabled) {
+            window.addCombatLog = (entry) => this._appendCombatLog(entry);
+            return;
+        }
+        if (window.addCombatLog) {
+            delete window.addCombatLog;
+        }
+    }
+
+    _getCombatLogHistoryStore() {
+        if (!window.__combatLogHistoryStore) {
+            window.__combatLogHistoryStore = new Map();
+        }
+        return window.__combatLogHistoryStore;
+    }
+
+    _buildCombatLogHistoryKey(ctx) {
+        if (!ctx?.attackerKey || !ctx?.targetKey) return null;
+        return `combat:${ctx.attackerKey}|${ctx.targetKey}`;
+    }
+
+    _rehydrateCombatLogHistory(ctx) {
+        const key = this._buildCombatLogHistoryKey(ctx);
+        this._combatLogHistoryKey = key;
+        if (!key || !this._combatLogNode) return;
+
+        const entries = this._getCombatLogHistoryStore().get(key);
+        if (!Array.isArray(entries) || entries.length === 0) return;
+
+        if (this._combatLogPlaceholderNode) {
+            this._combatLogPlaceholderNode.remove();
+            this._combatLogPlaceholderNode = null;
+        }
+
+        // Newest-first rendering in the UI, while the store keeps append order.
+        for (let i = entries.length - 1; i >= 0; i -= 1) {
+            this._appendCombatLog(entries[i], { persist: false });
+        }
+    }
+
+    _appendCombatLog(entry, options = {}) {
+        if (!this.isActive("combat")) return;
+        if (!this._combatLogNode) return;
+        const { persist = true } = options;
+
+        if (this._combatLogPlaceholderNode) {
+            this._combatLogPlaceholderNode.remove();
+            this._combatLogPlaceholderNode = null;
+        }
+
+        const row = document.createElement("div");
+        row.classList.add(
+            "rounded-md",
+            "px-2",
+            "py-1",
+            "bg-black/25",
+            "text-[12px]",
+            "leading-snug",
+            "font-medium"
+        );
+
+        if (entry && typeof entry === "object") {
+            if (entry.className) {
+                String(entry.className).split(/\s+/).filter(Boolean).forEach(c => row.classList.add(c));
+            }
+            if (entry.html) {
+                row.innerHTML = entry.html;
+            } else if (entry.text) {
+                row.textContent = entry.text;
+            } else {
+                row.textContent = String(entry);
+            }
+        } else {
+            row.textContent = String(entry ?? "");
+        }
+
+        // Fallback lisible si aucun code couleur n'a été fourni par le formatter combat.
+        const hasTextColorClass = /\btext-(white|red|emerald|slate|orange|cyan|yellow)-/.test(row.className);
+        if (!hasTextColorClass) {
+            row.classList.add("text-white");
+        }
+
+        this._combatLogNode.prepend(row);
+
+        if (!persist) return;
+        if (!this._combatLogHistoryKey) return;
+
+        const store = this._getCombatLogHistoryStore();
+        const previous = store.get(this._combatLogHistoryKey) || [];
+        previous.push(entry);
+        if (previous.length > 30) {
+            previous.splice(0, previous.length - 30);
+        }
+        store.set(this._combatLogHistoryKey, previous);
+    }
+
     isActive(type = null) {
         if (!this._active) return false;
         if (!type) return true;
@@ -234,6 +335,21 @@ class ActionSceneManager {
         this._scanExpiredHandler = null;
     }
 
+    _bindCombatResizeListener() {
+        if (this._combatResizeHandler) return;
+        this._combatResizeHandler = () => {
+            if (!this.isActive("combat")) return;
+            this._refreshCombatAnimationLayout();
+        };
+        window.addEventListener("resize", this._combatResizeHandler);
+    }
+
+    _unbindCombatResizeListener() {
+        if (!this._combatResizeHandler) return;
+        window.removeEventListener("resize", this._combatResizeHandler);
+        this._combatResizeHandler = null;
+    }
+
     /**
      * Ouvre une ActionScene exclusive.
      * Pour l'instant: ne fait rien de visuel (on branchera le DOM à l'étape 4).
@@ -257,6 +373,9 @@ class ActionSceneManager {
         if (type === "combat") {
             this._mountCombatScene(context);
             this._bindScanListener();
+            this._setCombatLogBridge(true);
+            this._rehydrateCombatLogHistory(context);
+            this._bindCombatResizeListener();
 
         }
 
@@ -285,6 +404,7 @@ class ActionSceneManager {
 
         this._unbindMovementListener();
         this._unbindScanListener();
+        this._unbindCombatResizeListener();
 
         this._showCombatEscapeMessage(ctx, meta);
 
@@ -297,6 +417,11 @@ class ActionSceneManager {
         }
         this._combatCanvasPositions = null;
         this._combatDistanceNode = null;
+        this._combatLogNode = null;
+        this._combatLogPlaceholderNode = null;
+        this._combatLogHistoryKey = null;
+        this._combatResizeHandler = null;
+        this._setCombatLogBridge(false);
         this._context = null;
 
         return true;
@@ -503,16 +628,32 @@ class ActionSceneManager {
 
         // Log placeholder
         const log = document.createElement("div");
+        log.id = "combat-log-container";
         log.classList.add(
-            "h-[60px]",
+            // ~4 lignes visibles max (le reste en scroll)
+            "h-[92px]",
             "border",
             "border-emerald-500/20",
             "rounded-lg",
             "p-2",
             "text-xs",
-            "text-emerald-300"
+            "text-emerald-300",
+            "bg-black/15",
+            "overflow-y-scroll",
+            "thin-semi-transparent-scrollbar",
+            "overscroll-contain",
+            "space-y-1"
         );
-        log.textContent = "Combat log...";
+        // Inline styles pour garantir la hauteur fixe même si la classe arbitraire Tailwind
+        // n'est pas générée dans le build CSS.
+        log.style.height = "92px";
+        log.style.maxHeight = "92px";
+        const placeholder = document.createElement("div");
+        placeholder.classList.add("opacity-70", "italic");
+        placeholder.textContent = "Combat log...";
+        log.appendChild(placeholder);
+        this._combatLogNode = log;
+        this._combatLogPlaceholderNode = placeholder;
 
         // Modules container
         const modulesContainer = document.createElement("div");
@@ -879,31 +1020,12 @@ class ActionSceneManager {
     }
 
     _initCombatCanvases(attacker, target) {
-
-        const DEFAULT_PIVOT_X = 0.5;
-        const DEFAULT_PIVOT_Y = 0.3;
-
         const shipsLayer = document.getElementById("combat-ships-layer");
         const overlayCanvas = document.getElementById("combat-overlay");
         if (!shipsLayer || !overlayCanvas) return;
 
         const wrapper = shipsLayer.parentElement;
-        const rect = wrapper.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-
-        overlayCanvas.width = rect.width;
-        overlayCanvas.height = rect.height;
-
-        const dpr = window.devicePixelRatio || 1;
-
-        overlayCanvas.width = rect.width * dpr;
-        overlayCanvas.height = rect.height * dpr;
-
-        overlayCanvas.style.width = rect.width + "px";
-        overlayCanvas.style.height = rect.height + "px";
-
-        const ctx = overlayCanvas.getContext("2d");
-        ctx.scale(dpr, dpr);
+        if (!wrapper) return;
 
         const leftEl = document.getElementById("combat-ship-left");
         const rightEl = document.getElementById("combat-ship-right");
@@ -931,22 +1053,6 @@ class ActionSceneManager {
         leftEl.style.setProperty('--flip', '1');
         rightEl.style.setProperty('--flip', '-1');
 
-        // calcul centres pour projectiles
-        const wrapperRect = wrapper.getBoundingClientRect();
-        const leftRect = leftEl.getBoundingClientRect();
-        const rightRect = rightEl.getBoundingClientRect();  
-
-        this._combatCanvasPositions = {
-            left: {
-                x: leftRect.left - wrapperRect.left + leftRect.width * DEFAULT_PIVOT_X,
-                y: leftRect.top - wrapperRect.top + leftRect.height * DEFAULT_PIVOT_Y
-            },
-            right: {
-                x: rightRect.left - wrapperRect.left + rightRect.width * DEFAULT_PIVOT_X,
-                y: rightRect.top - wrapperRect.top + rightRect.height * DEFAULT_PIVOT_Y
-            }
-        };
-
         // tailles pour shield impact
         this._combatSpriteSizes = {
             left:  { w: attackerW, h: attackerH },
@@ -954,6 +1060,72 @@ class ActionSceneManager {
         };
 
         this._combatActors = { attacker, target };
+        this._refreshCombatAnimationLayout();
+    }
+
+    _refreshCombatAnimationLayout() {
+        const shipsLayer = document.getElementById("combat-ships-layer");
+        const overlayCanvas = document.getElementById("combat-overlay");
+        if (!shipsLayer || !overlayCanvas) return;
+
+        const wrapper = shipsLayer.parentElement;
+        const leftEl = document.getElementById("combat-ship-left");
+        const rightEl = document.getElementById("combat-ship-right");
+        if (!wrapper || !leftEl || !rightEl) return;
+
+        const rect = wrapper.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const dpr = window.devicePixelRatio || 1;
+        overlayCanvas.width = rect.width * dpr;
+        overlayCanvas.height = rect.height * dpr;
+        overlayCanvas.style.width = rect.width + "px";
+        overlayCanvas.style.height = rect.height + "px";
+
+        const ctx = overlayCanvas.getContext("2d");
+        if (ctx?.setTransform) {
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        } else if (ctx) {
+            ctx.scale(dpr, dpr);
+        }
+
+        const wrapperRect = wrapper.getBoundingClientRect();
+        const leftRect = leftEl.getBoundingClientRect();
+        const rightRect = rightEl.getBoundingClientRect();
+
+        const centerPivotY = 0.30;
+        const impactPivotY = 0.36;
+
+        const leftCenter = {
+            x: leftRect.left - wrapperRect.left + leftRect.width * 0.50,
+            y: leftRect.top - wrapperRect.top + leftRect.height * centerPivotY,
+        };
+        const rightCenter = {
+            x: rightRect.left - wrapperRect.left + rightRect.width * 0.50,
+            y: rightRect.top - wrapperRect.top + rightRect.height * centerPivotY,
+        };
+
+        // Front anchors (ships face each other): used by projectiles so impacts remain
+        // visually "in front of the target" across responsive widths.
+        const leftFront = {
+            x: leftRect.left - wrapperRect.left + leftRect.width * 0.88,
+            y: leftRect.top - wrapperRect.top + leftRect.height * impactPivotY,
+        };
+        const rightFront = {
+            x: rightRect.left - wrapperRect.left + rightRect.width * 0.12,
+            y: rightRect.top - wrapperRect.top + rightRect.height * impactPivotY,
+        };
+
+        this._combatCanvasPositions = {
+            left: { ...leftCenter, projectile: leftFront },
+            right: { ...rightCenter, projectile: rightFront },
+        };
+
+        if (this._combatAnim?.engine) {
+            this._combatAnim.engine.canvas = overlayCanvas;
+            this._combatAnim.engine.ctx = ctx || null;
+            this._combatAnim.engine.positions = this._combatCanvasPositions;
+        }
     }
 
 
@@ -1157,8 +1329,10 @@ class CombatAnimationEngine {
         if (!this.ctx || !this.canvas || !this.positions) return;
 
         const { weaponType, fromSide, toSide, damageToShield } = data || {};
-        const from = this.positions?.[fromSide];
-        const to = this.positions?.[toSide];
+        const fromBase = this.positions?.[fromSide];
+        const toBase = this.positions?.[toSide];
+        const from = fromBase?.projectile || fromBase;
+        const to = toBase?.projectile || toBase;
 
         if (!from || !to) return;
 
@@ -1317,8 +1491,12 @@ window.playCombatAnimation = function (payload) {
     if (!ctx) return;
 
     const q = mgr._combatAnim?.queue;
+    if (!q) return;
+
+    // Responsive safety: recalc DOM anchors right before firing.
+    mgr._refreshCombatAnimationLayout?.();
     const pos = mgr._combatCanvasPositions;
-    if (!q || !pos) return;
+    if (!pos) return;
 
     // payload vient de combat_handlers.js :contentReference[oaicite:5]{index=5}
     // payload.type: "HIT" | "MISS" | "EVADE"

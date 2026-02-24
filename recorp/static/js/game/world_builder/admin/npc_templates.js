@@ -64,6 +64,8 @@ npc_submit_button.addEventListener('click', function() {
     let ship_image_name = ship_image[ship_image.length - 1];
     let difficulty_input = document.querySelector('#difficulty-select');
     let difficulty = difficulty_input.value;
+    let respawn_delay_input = document.querySelector('#respawn-delay-select');
+    let respawn_delay_seconds = respawn_delay_input ? parseInt(respawn_delay_input.value || "120") : 120;
     let skill_select = document.querySelectorAll('.skill-input');
     let skill_info_array = [];
     let module_select = document.querySelectorAll('.module-select')
@@ -394,6 +396,7 @@ function save_or_update_npc_template() {
             "displayed_name": template_displayed_name.value,
             "template_id": template_selectedElement.value,
             "difficulty": difficulty,
+            "respawn_delay_seconds": Math.max(0, isNaN(respawn_delay_seconds) ? 120 : respawn_delay_seconds),
             "behavior": behavior,
             "ship": ship_selectedElement.value,
             "skills": skill_array,
@@ -437,6 +440,9 @@ function load_data_from_selected_template(response_data) {
     spaceship_img.classList.remove('hidden');
     document.querySelector(`#description-spaceship-${response_data.template[0].ship_id}`).classList.remove('hidden');
     document.querySelector('#difficulty-select').value = response_data.template[0].difficulty;
+    if (document.querySelector('#respawn-delay-select')) {
+        document.querySelector('#respawn-delay-select').value = response_data.template[0].respawn_delay_seconds ?? 120;
+    }
     document.querySelector('#behavior-select').value = response_data.template[0].behavior;
 
     for (let i = 0; i < response_data.skills.length; i++) {
@@ -478,6 +484,10 @@ function unload_template_data() {
     spaceship_img.classList.add('hidden');
 
     document.querySelector('#difficulty-select').value = 1;
+    const respawnDelayEl = document.querySelector('#respawn-delay-select');
+    if (respawnDelayEl) {
+        respawnDelayEl.value = 120;
+    }
 
     let skill_checkbox = document.querySelectorAll('.skill-input');
     for (let i = 0; i < skill_checkbox.length; i++) {

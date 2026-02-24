@@ -95,6 +95,16 @@
         </section>
 
         <section class="mt-1 mb-2">
+            <div class="flex flex-row">
+                <div class="flex w-full flex-col">
+                    <label for="respawn-delay-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>NPC respawn delay (seconds)</b></label>
+                    <span class="text-red-500 mb-1">Delay before a dead NPC using this template respawns. Default = 120 seconds.</span>
+                    <input id="respawn-delay-select" type="number" min=0 step=1 value=120 class="text-center font-bold">
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-1 mb-2">
             <div class="flex flex-col w-full">
                 <label for="skill-select" class="block mt-2 text-md font-bold text-gray-900 dark:text-white"><b>Set used skills in template </b></label>
                 <span class="text-red-500 mb-1">Chose here which skill will be used for difficulty settings, the others will stay at 0.</span>

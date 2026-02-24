@@ -255,12 +255,21 @@ def game_world_tick() -> Dict[str, int]:
 
     # --- Respawn NPC ---
     try:
-        threshold = now - datetime.timedelta(seconds=NPC_RESPAWN_DELAY_SECONDS)
-        due_npc_ids = list(
-            Npc.objects.filter(status="DEAD", updated_at__lte=threshold)
+        due_npc_ids = []
+        dead_npcs = list(
+            Npc.objects.filter(status="DEAD")
             .exclude(sector_id__isnull=True)
-            .values_list("id", flat=True)
+            .select_related("npc_template")
+            .only("id", "updated_at", "npc_template__respawn_delay_seconds", "sector_id")
         )
+        for npc in dead_npcs:
+            template_delay = getattr(getattr(npc, "npc_template", None), "respawn_delay_seconds", None)
+            try:
+                respawn_delay = int(template_delay if template_delay is not None else NPC_RESPAWN_DELAY_SECONDS)
+            except Exception:
+                respawn_delay = int(NPC_RESPAWN_DELAY_SECONDS)
+            if npc.updated_at and npc.updated_at <= (now - datetime.timedelta(seconds=max(respawn_delay, 0))):
+                due_npc_ids.append(int(npc.id))
         for npc_id in due_npc_ids:
             payload = _respawn_npc_and_build_payload(int(npc_id))
             if not payload:

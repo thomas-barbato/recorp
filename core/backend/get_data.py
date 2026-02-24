@@ -330,7 +330,7 @@ class GetDataFromDB:
             "id", "name", "difficulty", "module_id_list", "max_hp",
             "displayed_name","max_movement", "max_missile_defense", 
             "max_thermal_defense", "max_ballistic_defense", "hold_capacity", 
-            "behavior", "ship_id", "ship_id__image"
+            "behavior", "respawn_delay_seconds", "ship_id", "ship_id__image"
         ))
 
         skills = list(NpcTemplateSkill.objects.filter(npc_template_id=pk).values(
@@ -349,7 +349,8 @@ class GetDataFromDB:
         return list(NpcTemplate.objects.values(
             "id", "name", "ship_id__image", "max_hp", "max_movement",
             "displayed_name", "difficulty", "max_missile_defense", 
-            "max_thermal_defense", "max_ballistic_defense", "behavior"
+            "max_thermal_defense", "max_ballistic_defense", "behavior",
+            "respawn_delay_seconds",
         ))
 
     @staticmethod

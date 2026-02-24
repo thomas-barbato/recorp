@@ -19,6 +19,7 @@ Cette documentation decrit les pans gameplay observes dans le code actuel.
 13. [12_sprint3_mort_carcasses_respawn.md](12_sprint3_mort_carcasses_respawn.md)
 14. [13_sprint3_progression_effets_logs.md](13_sprint3_progression_effets_logs.md)
 15. [14_sprint3_plan_implementation.md](14_sprint3_plan_implementation.md)
+16. [15_ia_npc_cadrage_architecture.md](15_ia_npc_cadrage_architecture.md)
 
 ## Portee
 

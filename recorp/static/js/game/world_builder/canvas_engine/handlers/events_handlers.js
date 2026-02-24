@@ -4,8 +4,8 @@ export function getEventsLog(payload) {
     const log = payload;
 
     // =========================
-    // HUD DESKTOP (flex-col-reverse)
-    // => pour afficher le nouveau en haut visuellement : append => prepend:false
+    // HUD DESKTOP
+    // Convention: nouveau message en haut, plus ancien en bas
     // =========================
     const desktop = document.getElementById("player-event-container");
     if (desktop) {
@@ -23,7 +23,7 @@ export function getEventsLog(payload) {
     }
 
     // =========================
-    // HUD MOBILE (flex-col-reverse + horodatage)
+    // HUD MOBILE (horodatage)
     // =========================
     const mobile = document.getElementById("player-event-mobile-container");
     if (mobile) {
@@ -41,7 +41,7 @@ export function getEventsLog(payload) {
 
     // =========================
     // MODAL EVENT (si ouvert)
-    // => temps réel: on veut en haut => prepend:true
+    // => temps réel: nouveau en haut
     // =========================
     const modal = document.getElementById("event-modal");
     const modalContainer = document.getElementById("event-modal-log-container");
