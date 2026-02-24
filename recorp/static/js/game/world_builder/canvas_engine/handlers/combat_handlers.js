@@ -259,12 +259,20 @@ function renderWorldCombatEvent(payload, kind) {
         targetKey: targetKey,
         weaponType: payload.damage_type || "THERMAL",
         duration: 520,
+        damageToShield: payload.damage_to_shield || 0,
+        damageToHull: payload.damage_to_hull || 0,
     });
 
     // Message flottant sur la cible de l'événement (source/target déjà corrects même en riposte).
     const msg = getWorldCombatFloatingTextConfig(payload, kind);
     if (msg) {
-        window.renderTextAboveTarget?.(targetKey, msg.text, msg.color, msg.icon);
+        window.renderTextAboveTarget?.(
+            targetKey,
+            msg.text,
+            msg.color,
+            msg.icon,
+            { placement: "above_target", offsetYPx: -4 }
+        );
     }
 }
 
