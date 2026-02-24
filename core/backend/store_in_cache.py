@@ -385,6 +385,8 @@ class StoreInCache:
         """Récupère tous les NPCs du secteur avec leurs données."""
         return list(Npc.objects.filter(
             sector_id=sector_id
+        ).exclude(
+            status="DEAD"
         ).select_related(
             'npc_template', 'npc_template_id__ship', 
             'npc_template_id__ship_id__ship_category', 'faction'

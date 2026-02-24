@@ -469,6 +469,7 @@ class Npc(models.Model):
     thermal_defense = models.SmallIntegerField(default=0)
     ballistic_defense = models.SmallIntegerField(default=0)
     coordinates = models.JSONField(null=True)
+    spawn_coordinates = models.JSONField(null=True, blank=True)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )

@@ -529,7 +529,8 @@ export default class MapData {
     addNpcActor(npcData) {
         if (!npcData) return;
 
-        const npcId = npcData.npc_id || npcData.id || npcData.pk;
+        const nestedNpc = npcData.npc || null;
+        const npcId = npcData.npc_id || npcData.id || npcData.pk || nestedNpc?.id;
         if (!npcId) {
             console.warn("[MAP] addNpcActor: npcData sans npc_id", npcData);
             return;
@@ -547,11 +548,11 @@ export default class MapData {
 
         // Coordonnées du NPC
         const x = Number.parseInt(
-            npcData.coordinates?.x ?? npcData.x ?? 0,
+            npcData.coordinates?.x ?? npcData.x ?? nestedNpc?.coordinates?.x ?? nestedNpc?.x ?? 0,
             10
         );
         const y = Number.parseInt(
-            npcData.coordinates?.y ?? npcData.y ?? 0,
+            npcData.coordinates?.y ?? npcData.y ?? nestedNpc?.coordinates?.y ?? nestedNpc?.y ?? 0,
             10
         );
 
@@ -565,7 +566,7 @@ export default class MapData {
             id: `npc_${idStr}`,
             type: "npc",
             data: npcData,
-            subtype: npcData.ship?.name || npcData.name || null,
+            subtype: npcData.ship?.name || npcData.name || nestedNpc?.displayed_name || nestedNpc?.name || null,
             x,
             y,
             sizeX,
