@@ -507,6 +507,9 @@ export default class MapData {
             // --- 2. unknown avec data.npc_id ---
             if (o?.data?.npc_id && String(o.data.npc_id) === nidStr) return false;
 
+            // --- 2bis. structure cache standard: data.npc.id ---
+            if (o?.data?.npc?.id && String(o.data.npc.id) === nidStr) return false;
+
             // --- 3. unknown avec data.user.npc ---
             if (o?.data?.user?.npc && String(o.data.user.npc) === nidStr) return false;
 
@@ -611,6 +614,13 @@ export default class MapData {
         // Idempotent: si on reçoit une mise à jour/recréation de la même carcasse,
         // on remplace proprement l'ancienne entrée + son timer local.
         this.removeWreckById(idStr);
+
+        const deadKey = String(wreckData?.dead_key || "").trim();
+        if (deadKey.startsWith("pc_")) {
+            this.removeActorByPlayerId(deadKey.replace("pc_", ""));
+        } else if (deadKey.startsWith("npc_")) {
+            this.removeNpcById(deadKey.replace("npc_", ""));
+        }
 
         const size = wreckData.size || {};
         const x = Number.parseInt(wreckData.coordinates?.x ?? wreckData.x ?? 0, 10);

@@ -41,6 +41,36 @@ to install redis on docker :
 open docker terminal and type : 
 - ```docker run -d --name redis -p 6379:6379 redis:latest```
 
-to start celery on windows env:
+## Celery (Windows / dev)
 
-celery -A recorp worker -l info --pool=solo
+Prerequisites:
+- Redis running locally on `127.0.0.1:6379`
+- Python venv activated
+
+Useful commands:
+
+- Start worker (Windows safe mode):
+```powershell
+celery -A recorp worker -l info -P solo
+```
+
+- Start scheduler (Beat) for periodic gameplay tasks (`wreck_expired`, NPC respawn, future timers):
+```powershell
+celery -A recorp beat -l info
+```
+
+- Purge queued tasks (useful after task name/config changes):
+```powershell
+celery -A recorp purge
+```
+
+- Optional quick test from Django shell:
+```python
+from core.tasks import game_world_tick
+game_world_tick.delay()
+```
+
+Notes:
+- `worker` executes tasks.
+- `beat` schedules periodic tasks.
+- In dev, both must be running if you want non-lazy timed gameplay events.

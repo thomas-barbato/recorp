@@ -309,7 +309,7 @@ if (!ok) {
                     } else if (obj.type === 'foreground') {
                         const inSonar = sonar && sonar.isVisible(obj);
                         cursorClass = inSonar ? 'cursor-pointer' : 'cursor-not-allowed';
-                    } else if (obj.type === 'player' || obj.type === 'npc') {
+                    } else if (obj.type === 'player' || obj.type === 'npc' || obj.type === 'wreck') {
                         // tous les vaisseaux = pointer, même hors sonar
                         cursorClass = 'cursor-pointer';
                     }
