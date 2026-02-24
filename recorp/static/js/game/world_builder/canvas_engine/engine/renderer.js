@@ -91,7 +91,7 @@ export default class Renderer {
             this.floatingMessages.updateAndRender(this.floatingCtx, this.camera);
         }
         if (this.worldCombatEffects) {
-            this.worldCombatEffects.updateAndRender(this.floatingCtx, this.camera, this.map, this.spriteManager);
+            this.worldCombatEffects.updateAndRender(this.floatingCtx, this.camera, this.map);
         }
         this.needsRedraw = false;
     }
