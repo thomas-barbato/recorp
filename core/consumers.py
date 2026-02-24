@@ -2885,6 +2885,10 @@ class GameConsumer(WebsocketConsumer):
                         "npc": npcs or [],
                         "pc": pcs or [],
                     })
+                    occupied_coords = self._append_active_wreck_occupied_coords(
+                        occupied_coords=occupied_coords,
+                        sector_id=sector_id,
+                    )
 
                     if pa._can_place_ship_at_position(preferred, occupied_coords, ship_size_x, ship_size_y):
                         return preferred
@@ -2900,16 +2904,67 @@ class GameConsumer(WebsocketConsumer):
                         return nearest
 
             # Fallback (comportement actuel): placement générique basé sur warpzone.
-            return pa._calculate_destination_coord(
+            generic = pa._calculate_destination_coord(
                 sector_id,
                 ship_size_x,
                 ship_size_y,
                 padding_h,
                 padding_w,
             )
+            if not generic:
+                return None
+
+            # Le fallback historique ne connaît pas les carcasses. On vérifie donc
+            # explicitement que la case proposée n'est pas occupée par un wreck actif.
+            wreck_occupied = self._append_active_wreck_occupied_coords(
+                occupied_coords=[],
+                sector_id=sector_id,
+            )
+            if pa._can_place_ship_at_position(generic, wreck_occupied, ship_size_x, ship_size_y):
+                return generic
+
+            nearest_from_generic = self._find_nearest_free_respawn_cell(
+                pa=pa,
+                preferred={"x": int(generic.get("x", 0) or 0), "y": int(generic.get("y", 0) or 0)},
+                occupied_coords=wreck_occupied,
+                ship_size_x=ship_size_x,
+                ship_size_y=ship_size_y,
+            )
+            return nearest_from_generic or generic
         except Exception:
             logger.exception(f"NPC respawn coord resolve failed for npc_id={getattr(npc, 'id', None)}")
             return None
+
+    def _append_active_wreck_occupied_coords(self, *, occupied_coords, sector_id: int):
+        """
+        Ajoute les cases occupées par les carcasses actives à une liste de coordonnées occupées.
+        Empêche notamment un NPC de respawn directement dans sa propre épave.
+        """
+        try:
+            coords = list(occupied_coords or [])
+            wrecks = (
+                ShipWreck.objects
+                .filter(sector_id=sector_id, status="ACTIVE")
+                .values("coordinates", "size")
+            )
+            for w in wrecks:
+                wc = w.get("coordinates") or {}
+                ws = w.get("size") or {"x": 1, "y": 1}
+                try:
+                    x0 = int((wc or {}).get("x", 0) or 0)
+                    y0 = int((wc or {}).get("y", 0) or 0)
+                    sx = max(1, int((ws or {}).get("x", 1) or 1))
+                    sy = max(1, int((ws or {}).get("y", 1) or 1))
+                except Exception:
+                    continue
+
+                for yy in range(y0, y0 + sy):
+                    for xx in range(x0, x0 + sx):
+                        coords.append({"y": yy, "x": xx})
+            return coords
+        except Exception:
+            logger.exception("Failed to append wreck occupied coords for NPC respawn")
+            return list(occupied_coords or [])
 
     def _find_nearest_free_respawn_cell(
         self,
