@@ -45,17 +45,17 @@ function mountDeathRespawnOverlay(ws) {
     overlay.id = "death-respawn-overlay";
     overlay.className = [
         "fixed", "inset-0", "z-[10000]",
-        "bg-red-950/70", "backdrop-blur-sm",
+        "bg-back/60", "backdrop-blur-sm",
         "flex", "items-center", "justify-center",
         "p-4"
     ].join(" ");
 
     const panel = document.createElement("div");
     panel.className = [
-        "w-full", "max-w-md",
+        "w-full", "max-w-md", "flex", "flex-col", "items-center",
         "rounded-xl", "border", "border-red-500/60",
         "bg-zinc-950/95", "shadow-2xl",
-        "p-5", "text-center", "space-y-3"
+        "p-5", "text-center", "space-y-3", "gap-2"
     ].join(" ");
 
     const title = document.createElement("div");
@@ -309,7 +309,7 @@ if (!ok) {
                     } else if (obj.type === 'foreground') {
                         const inSonar = sonar && sonar.isVisible(obj);
                         cursorClass = inSonar ? 'cursor-pointer' : 'cursor-not-allowed';
-                    } else if (obj.type === 'player' || obj.type === 'npc') {
+                    } else if (obj.type === 'player' || obj.type === 'npc' || obj.type === 'wreck') {
                         // tous les vaisseaux = pointer, même hors sonar
                         cursorClass = 'cursor-pointer';
                     }

@@ -170,6 +170,14 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'socket_keepalive': True,
 }
 
+# Tick global gameplay (remplace progressivement les traitements "lazy" côté WS).
+CELERY_BEAT_SCHEDULE = {
+    "game-world-tick-2s": {
+        "task": "core.tasks.game_world_tick",
+        "schedule": 2.0,
+    },
+}
+
 USER_AGENTS_CACHE = "default"
 
 CACHE_MIDDLEWARE_ALIAS = "default"

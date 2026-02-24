@@ -13,7 +13,7 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule, Player, ShipWreck, Ship, ArchetypeModule
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule, Player, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource
 from core.backend.modal_builder import (
     build_npc_modal_data,
     build_pc_modal_data,
@@ -32,6 +32,7 @@ logger = logging.getLogger("django")
 
 class GameConsumer(WebsocketConsumer):
     DEFAULT_RESPAWN_SECTOR_ID = 7
+    NPC_RESPAWN_DELAY_SECONDS = 120
     WRECK_TTL_SECONDS = 60  # tests Sprint 3; cible future: 12h (scavenge => disparition immédiate)
     """
     WebSocket consumer pour gérer les interactions en temps réel du jeu.
@@ -2319,6 +2320,12 @@ class GameConsumer(WebsocketConsumer):
             "payload": event.get("payload", {}),
         })
 
+    def npc_added(self, event):
+        self._send_response({
+            "type": "npc_added",
+            "payload": event.get("payload", {}),
+        })
+
     def _handle_respawn_action(self, payload):
         """
         Respawn PC minimal (Sprint 3)
@@ -2486,6 +2493,7 @@ class GameConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         self._invalidate_expired_scans_safe()
         self._invalidate_expired_wrecks_safe()
+        self._respawn_dead_npcs_safe()
 
         if not self._is_valid_request(text_data):
             return
@@ -2585,6 +2593,226 @@ class GameConsumer(WebsocketConsumer):
                 )
         except Exception as e:
             logger.error(f"Wreck invalidation failed: {e}")
+
+    def _respawn_dead_npcs_safe(self) -> None:
+        """
+        Respawn NPC minimal (lazy, scope secteur courant).
+        Le front consomme déjà `npc_added`.
+        """
+        if not getattr(self, "user", None) or not getattr(self.user, "is_authenticated", False):
+            return
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+
+        try:
+            threshold = timezone.now() - datetime.timedelta(seconds=int(self.NPC_RESPAWN_DELAY_SECONDS))
+            due_ids = list(
+                Npc.objects.filter(
+                    sector_id=sector_id,
+                    status="DEAD",
+                    updated_at__lte=threshold,
+                ).values_list("id", flat=True)
+            )
+            if not due_ids:
+                return
+
+            for npc_id in due_ids:
+                payload = self._respawn_npc_and_build_payload(int(npc_id), sector_id)
+                if not payload:
+                    continue
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "npc_added",
+                        "payload": payload,
+                    }
+                )
+        except Exception:
+            logger.exception("NPC respawn sweep failed")
+
+    def _respawn_npc_and_build_payload(self, npc_id: int, sector_id: int) -> Optional[Dict[str, Any]]:
+        try:
+            with transaction.atomic():
+                npc = (
+                    Npc.objects.select_for_update()
+                    .select_related("npc_template", "npc_template__ship", "npc_template__ship__ship_category")
+                    .filter(id=npc_id, sector_id=sector_id, status="DEAD")
+                    .first()
+                )
+                if not npc or not npc.npc_template or not npc.npc_template.ship:
+                    return None
+
+                tpl = npc.npc_template
+                ship = tpl.ship
+
+                ship_size = getattr(getattr(ship, "ship_category", None), "size", None) or {"x": 1, "y": 1}
+                if not isinstance(ship_size, dict):
+                    ship_size = {"x": 1, "y": 1}
+                ship_size_x = int(ship_size.get("x", 1) or 1)
+                ship_size_y = int(ship_size.get("y", 1) or 1)
+
+                respawn_coord = self._choose_npc_respawn_coord(
+                    npc=npc,
+                    sector_id=sector_id,
+                    ship_size_x=ship_size_x,
+                    ship_size_y=ship_size_y,
+                ) or (npc.spawn_coordinates or npc.coordinates or {"x": 0, "y": 0})
+
+                npc.current_ap = int(npc.max_ap or 0)
+                npc.hp = int(tpl.max_hp or 0)
+                npc.movement = int(tpl.max_movement or 0)
+                npc.missile_defense = int(tpl.max_missile_defense or 0)
+                npc.thermal_defense = int(tpl.max_thermal_defense or 0)
+                npc.ballistic_defense = int(tpl.max_ballistic_defense or 0)
+                npc.coordinates = respawn_coord
+                npc.status = "FULL"
+                npc.save()
+
+                NpcResource.objects.filter(npc_id=npc.id).delete()
+                for tr in NpcTemplateResource.objects.filter(npc_template_id=tpl.id).values("resource_id", "quantity"):
+                    resource_id = tr.get("resource_id")
+                    if resource_id is None:
+                        continue
+                    NpcResource.objects.create(
+                        npc_id=npc.id,
+                        resource_id=resource_id,
+                        quantity=int(tr.get("quantity", 0) or 0),
+                    )
+
+            room_key = f"play_{sector_id}"
+            npc_entry = None
+            try:
+                room_cache = StoreInCache(room_key, self.user)
+                room_cache.get_or_set_cache(need_to_be_recreated=True)
+                cached = room_cache.get_or_set_cache(need_to_be_recreated=False) or {}
+                npc_entry = next(
+                    (
+                        n for n in (cached.get("npc", []) or [])
+                        if str((n.get("npc", {}) or {}).get("id")) == str(npc_id)
+                    ),
+                    None
+                )
+            except Exception:
+                logger.exception("npc respawn cache rebuild failed")
+
+            if not npc_entry:
+                return None
+            return {"npc": npc_entry}
+        except Exception:
+            logger.exception(f"NPC respawn failed for npc_id={npc_id}")
+            return None
+
+    def _choose_npc_respawn_coord(
+        self,
+        *,
+        npc,
+        sector_id: int,
+        ship_size_x: int,
+        ship_size_y: int,
+    ) -> Optional[Dict[str, int]]:
+        """
+        Respawn NPC:
+        1) tente `spawn_coordinates` (point de spawn fixe)
+        2) sinon cherche la case libre la plus proche
+        3) fallback sur l'algo générique actuel (zone warp + padding)
+        """
+        try:
+            pa = PlayerAction(self.user.id)
+            padding_w = int(ship_size_x) + int(getattr(pa, "MIN_PADDING", 3) or 3)
+            padding_h = int(ship_size_y) + int(getattr(pa, "MIN_PADDING", 3) or 3)
+
+            preferred = npc.spawn_coordinates or None
+            if isinstance(preferred, dict) and preferred.get("x") is not None and preferred.get("y") is not None:
+                preferred = {
+                    "x": int(preferred.get("x", 0) or 0),
+                    "y": int(preferred.get("y", 0) or 0),
+                }
+            else:
+                preferred = None
+
+            if preferred:
+                sector_data = GetDataFromDB.get_items_from_sector(sector_id, with_npc=True)
+                if sector_data and len(sector_data) >= 6:
+                    planets, asteroids, stations, warpzones, npcs, pcs = sector_data
+
+                    # On retire le NPC en cours de respawn des cases occupées pour ne pas se bloquer lui-même.
+                    npcs = [
+                        n for n in (npcs or [])
+                        if str(n.get("id")) != str(getattr(npc, "id", ""))
+                    ]
+
+                    occupied_coords = pa._get_all_occupied_coordinates({
+                        "planet": planets or [],
+                        "asteroid": asteroids or [],
+                        "station": stations or [],
+                        "warpzone": warpzones or [],
+                        "npc": npcs or [],
+                        "pc": pcs or [],
+                    })
+
+                    if pa._can_place_ship_at_position(preferred, occupied_coords, ship_size_x, ship_size_y):
+                        return preferred
+
+                    nearest = self._find_nearest_free_respawn_cell(
+                        pa=pa,
+                        preferred=preferred,
+                        occupied_coords=occupied_coords,
+                        ship_size_x=ship_size_x,
+                        ship_size_y=ship_size_y,
+                    )
+                    if nearest:
+                        return nearest
+
+            # Fallback (comportement actuel): placement générique basé sur warpzone.
+            return pa._calculate_destination_coord(
+                sector_id,
+                ship_size_x,
+                ship_size_y,
+                padding_h,
+                padding_w,
+            )
+        except Exception:
+            logger.exception(f"NPC respawn coord resolve failed for npc_id={getattr(npc, 'id', None)}")
+            return None
+
+    def _find_nearest_free_respawn_cell(
+        self,
+        *,
+        pa,
+        preferred: Dict[str, int],
+        occupied_coords,
+        ship_size_x: int,
+        ship_size_y: int,
+    ) -> Optional[Dict[str, int]]:
+        """
+        Recherche simple "au plus proche" autour du spawn préféré (Manhattan puis ordre stable).
+        """
+        try:
+            px = int(preferred.get("x", 0) or 0)
+            py = int(preferred.get("y", 0) or 0)
+            sector_size = int(getattr(pa, "SECTOR_SIZE", 40) or 40)
+
+            candidates = []
+            for y in range(0, sector_size):
+                for x in range(0, sector_size):
+                    candidates.append({
+                        "x": x,
+                        "y": y,
+                        "d": abs(x - px) + abs(y - py),
+                    })
+
+            candidates.sort(key=lambda c: (c["d"], abs(c["y"] - py), abs(c["x"] - px), c["y"], c["x"]))
+
+            for c in candidates:
+                pos = {"x": c["x"], "y": c["y"]}
+                if pa._can_place_ship_at_position(pos, occupied_coords, ship_size_x, ship_size_y):
+                    return pos
+            return None
+        except Exception:
+            logger.exception("NPC nearest respawn search failed")
+            return None
 
     def _expire_wreck_and_purge_source_ship(self, wreck_id: int, sector_id: int) -> Optional[Dict[str, Any]]:
         """

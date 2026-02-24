@@ -575,10 +575,10 @@ def compute_distance_between_actors(source_ad, target_ad):
         ship = npc.npc_template.ship
         size = ship.ship_category.size or {"x": 1, "y": 1}
 
-    ax = coords.get("x", 0)
-    ay = coords.get("y", 0)
-    aw = size.get("x", 1)
-    ah = size.get("y", 1)
+    ax = int(coords.get("x", 0) or 0)
+    ay = int(coords.get("y", 0) or 0)
+    aw = int(size.get("x", 1) or 1)
+    ah = int(size.get("y", 1) or 1)
 
     # --- TARGET ---
     if target_ad.kind == "PC":
@@ -593,10 +593,10 @@ def compute_distance_between_actors(source_ad, target_ad):
         ship = npc.npc_template.ship
         size = ship.ship_category.size or {"x": 1, "y": 1}
 
-    bx = coords.get("x", 0)
-    by = coords.get("y", 0)
-    bw = size.get("x", 1)
-    bh = size.get("y", 1)
+    bx = int(coords.get("x", 0) or 0)
+    by = int(coords.get("y", 0) or 0)
+    bw = int(size.get("x", 1) or 1)
+    bh = int(size.get("y", 1) or 1)
 
     # Align with worker compute_distance (center-based Chebyshev).
     acx = ax + (aw - 1) / 2
