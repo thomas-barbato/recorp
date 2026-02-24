@@ -64,7 +64,18 @@ class FloatingMessageManager {
         });
     }
 
-    addMessage({ text, icon = "ship", worldX, worldY, color = "rgb(255,255,255)", duration = 2000 }) {
+    addMessage({
+        text,
+        icon = "ship",
+        worldX,
+        worldY,
+        color = "rgb(255,255,255)",
+        duration = 2000,
+        sizeX = 1,
+        sizeY = 1,
+        placement = "side",
+        offsetYPx = 0
+    }) {
         this._ensureIconsLoaded();
 
         const msg = {
@@ -75,6 +86,10 @@ class FloatingMessageManager {
             worldY,
             color,
             duration,
+            sizeX: Number(sizeX || 1),
+            sizeY: Number(sizeY || 1),
+            placement: String(placement || "side"),
+            offsetYPx: Number(offsetYPx || 0),
             startTime: performance.now(),
         };
 
@@ -121,33 +136,54 @@ class FloatingMessageManager {
 
             // coordonnées écran du centre du vaisseau
             const screen = camera.worldToScreen(worldX, worldY);
-            const player_size = currentPlayer.ship.size
+            const msgSizeX = Number(msg.sizeX || 1);
+            const msgSizeY = Number(msg.sizeY || 1);
 
-            let centerX = screen.x + (player_size.x * tile) / 2;
-            let centerY = screen.y + (player_size.y * tile) / 2;
+            let centerX = screen.x + (msgSizeX * tile) / 2;
+            let centerY = screen.y + (msgSizeY * tile) / 2;
 
             ctx.save();
             ctx.globalAlpha = alpha;
 
-            // --- Icône réelle ---
+            // --- Texte numérique / icône ---
             const iconSize = 20;
-            const iconX = ( centerX + tile ); // à gauche du texte
-            const iconY = centerY;
-            this._drawIcon(ctx, icon, iconX, iconY, iconSize);
-
-            // --- Texte numérique ---
             ctx.font = "18px Orbitron, sans-serif";
-            ctx.textAlign = "left";
             ctx.textBaseline = "middle";
             ctx.lineWidth = 3;
             ctx.strokeStyle = "black";
             ctx.fillStyle = color;
+            const placement = msg.placement || "side";
+            const yOffset = Number(msg.offsetYPx || 0);
 
-            const textX = ( centerX + tile ) + iconSize;
-            const textY =  centerY;
+            if (placement === "above_target") {
+                const iconImg = this.icons[icon];
+                const hasIcon = Boolean(icon && iconImg);
+                const gap = hasIcon ? 6 : 0;
+                const textW = ctx.measureText(text).width;
+                const totalW = textW + (hasIcon ? (iconSize + gap) : 0);
+                const baseY = screen.y - 10 + yOffset;
+                let startX = centerX - (totalW / 2);
 
-            ctx.strokeText(text, textX, textY);
-            ctx.fillText(text, textX,  centerY);
+                if (hasIcon) {
+                    const iconCenterX = startX + (iconSize / 2);
+                    this._drawIcon(ctx, icon, iconCenterX, baseY, iconSize);
+                    startX += iconSize + gap;
+                }
+
+                ctx.textAlign = "left";
+                ctx.strokeText(text, startX, baseY);
+                ctx.fillText(text, startX, baseY);
+            } else {
+                const iconX = (centerX + tile); // à gauche du texte
+                const iconY = centerY + yOffset;
+                this._drawIcon(ctx, icon, iconX, iconY, iconSize);
+
+                ctx.textAlign = "left";
+                const textX = (centerX + tile) + iconSize;
+                const textY = centerY + yOffset;
+                ctx.strokeText(text, textX, textY);
+                ctx.fillText(text, textX, textY);
+            }
 
             ctx.restore();
         });

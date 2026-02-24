@@ -319,7 +319,7 @@ export function initGlobals() {
             window.effectVisualTimers.set(key, timeoutId);
         };
 
-        window.renderTextAboveTarget = function(targetKey, text, color = "rgba(0,255,180,0.95)", icon = null) {
+        window.renderTextAboveTarget = function(targetKey, text, color = "rgba(0,255,180,0.95)", icon = null, options = {}) {
             const engine = window.canvasEngine;
             if (!engine || !engine.map || !engine.renderer) return;
 
@@ -337,8 +337,12 @@ export function initGlobals() {
                 icon: icon,
                 worldX,
                 worldY,
+                sizeX,
+                sizeY,
                 duration: 2000,
-                color: color
+                color: color,
+                placement: options?.placement || "side",
+                offsetYPx: options?.offsetYPx || 0
             });
         }
 

@@ -15,19 +15,29 @@ export function handleCombatEvents(message) {
         return;
     }
 
+    // Les effets "plateau" (observateurs/cible) doivent respecter l'ordre visuel
+    // attaque -> impact -> (éventuelle) riposte, et non partir tous en même temps.
+    let worldSequenceDelay = 0;
+
     events.forEach(ev => {
         if (!ev || !ev.type) return;
 
             switch (ev.type) {
             case "ATTACK_HIT":
+                queueWorldCombatEvent(ev.payload, "HIT", worldSequenceDelay);
+                worldSequenceDelay += 720; // projectile + fenêtre d'impact bouclier/coque
                 renderModalAttackHit(ev.payload);
                 break;
 
             case "ATTACK_MISS":
+                queueWorldCombatEvent(ev.payload, "MISS", worldSequenceDelay);
+                worldSequenceDelay += 560;
                 renderModalAttackMiss(ev.payload);
                 break;
 
             case "ATTACK_EVADED":
+                queueWorldCombatEvent(ev.payload, "EVADE", worldSequenceDelay);
+                worldSequenceDelay += 560;
                 renderModalAttackEvaded(ev.payload);
                 break;
 
@@ -185,6 +195,97 @@ function safeAddCombatLog(text) {
     if (typeof window.addCombatLog === "function") {
         window.addCombatLog(text);
     }
+}
+
+function shouldRenderWorldCombatForLocal(payload) {
+    if (!payload) return false;
+
+    // L'initiateur a déjà le focus sur le modal de combat (backdrop flouté).
+    // Si un modal combat est ouvert localement, on n'affiche pas la version "plateau".
+    if (window.ActionSceneManager?.isActive?.("combat")) {
+        return false;
+    }
+
+    const localKey = getLocalPlayerKey();
+    const initiatorKey = normalizeActorKey(payload.initiator_key);
+    const initialTargetKey = normalizeActorKey(payload.initial_target_key);
+
+    // Règle voulue:
+    // - initiateur: non
+    // - cible initiale: oui
+    // - observateurs: oui
+    if (initiatorKey && localKey === initiatorKey) return false;
+    if (initialTargetKey && localKey === initialTargetKey) return true;
+    return true; // observateur (ou fallback best effort)
+}
+
+function getWorldCombatFloatingTextConfig(payload, kind) {
+    const damageType = String(payload?.damage_type || "").toUpperCase();
+    const dmg = Number(payload?.damage_total_applied ?? ((payload?.damage_to_hull || 0) + (payload?.damage_to_shield || 0)) ?? 0);
+
+    if (kind === "HIT") {
+        const text = `-${dmg} ${damageType}`.trim();
+        const icon = String(damageType || "").toLowerCase() || null;
+        return {
+            text,
+            icon,
+            color: "rgba(0,255,180,0.95)",
+        };
+    }
+
+    if (kind === "MISS") {
+        return { text: "MISS", icon: null, color: "rgba(255,255,255,0.95)" };
+    }
+    if (kind === "EVADE") {
+        return { text: "EVADE", icon: null, color: "rgba(255,255,255,0.95)" };
+    }
+    return null;
+}
+
+function renderWorldCombatEvent(payload, kind) {
+    if (!payload || !shouldRenderWorldCombatForLocal(payload)) return;
+
+    const engine = window.GameState?.canvasEngine ?? window.canvasEngine;
+    const renderer = engine?.renderer;
+    const map = engine?.map;
+    if (!renderer || !map) return;
+
+    const { attackerKey, targetKey } = extractCombatKeysFromPayload(payload);
+    if (!attackerKey || !targetKey) return;
+
+    // Projectile visible pour hit/miss/eva (attaque + riposte), au-dessus du plateau.
+    renderer.addWorldCombatProjectile?.({
+        sourceKey: attackerKey,
+        targetKey: targetKey,
+        weaponType: payload.damage_type || "THERMAL",
+        duration: 520,
+        damageToShield: payload.damage_to_shield || 0,
+        damageToHull: payload.damage_to_hull || 0,
+    });
+
+    // Message flottant sur la cible de l'événement (source/target déjà corrects même en riposte).
+    const msg = getWorldCombatFloatingTextConfig(payload, kind);
+    if (msg) {
+        window.renderTextAboveTarget?.(
+            targetKey,
+            msg.text,
+            msg.color,
+            msg.icon,
+            { placement: "above_target", offsetYPx: -4 }
+        );
+    }
+}
+
+function queueWorldCombatEvent(payload, kind, delayMs = 0) {
+    const delay = Math.max(0, Number(delayMs) || 0);
+    if (delay <= 0) {
+        renderWorldCombatEvent(payload, kind);
+        return;
+    }
+
+    window.setTimeout(() => {
+        renderWorldCombatEvent(payload, kind);
+    }, delay);
 }
 
 function escapeHtml(value) {

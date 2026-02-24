@@ -5,9 +5,19 @@
 const CanvasManager = (function () {
     let canvasMap = {};
     let width = 0, height = 0, dpr = window.devicePixelRatio || 1;
+    
+    function getCanvasHost() {
+        // Les canvases de jeu (actors/floating/etc.) vivent dans #canvas-zone
+        // (décalé de 32px pour laisser la place aux coordonnées).
+        // Si on mesure #canvas-wrapper à la place, on introduit un repère faux
+        // d'environ 1 case.
+        return document.getElementById('canvas-zone')
+            || document.getElementById('canvas-wrapper')
+            || document.body;
+    }
 
     function init(ids = ['canvas-bg', 'canvas-fg', 'canvas-actors', 'canvas-ui', 'canvas-floating']) {
-        const wrapper = document.getElementById('canvas-wrapper') || document.body;
+        const host = getCanvasHost();
 
         ids.forEach(id => {
             let el = document.getElementById(id);
@@ -17,12 +27,12 @@ const CanvasManager = (function () {
                 el.style.position = 'absolute';
                 el.style.top = 0;
                 el.style.left = 0;
-                wrapper.appendChild(el);
+                host.appendChild(el);
             }
 
             // S'assurer que canvas-floating est bien au-dessus de tout
             if (id === 'canvas-floating') {
-                wrapper.appendChild(el); // le remet en dernier dans le DOM
+                host.appendChild(el); // le remet en dernier dans le DOM
             }
 
             const ctx = el.getContext('2d');
@@ -52,8 +62,8 @@ const CanvasManager = (function () {
     }
 
     function resizeAll() {
-        const wrapper = document.getElementById('canvas-wrapper') || document.body;
-        const rect = wrapper.getBoundingClientRect();
+        const host = getCanvasHost();
+        const rect = host.getBoundingClientRect();
         width = Math.max(320, Math.floor(rect.width));
         height = Math.max(240, Math.floor(rect.height));
         dpr = window.devicePixelRatio || 1;

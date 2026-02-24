@@ -2127,6 +2127,8 @@ class GameConsumer(WebsocketConsumer):
 
         initiator_name = self._get_actor_display_name(source_ad)
         initial_target_name = self._get_actor_display_name(target_ad)
+        initiator_key = self.get_entity_key_from_adapter(source_ad)
+        initial_target_key = self.get_entity_key_from_adapter(target_ad)
 
         for ev in events:
             if not ev or getattr(ev, "type", None) not in ("ATTACK_HIT", "ATTACK_MISS", "ATTACK_EVADED"):
@@ -2142,6 +2144,8 @@ class GameConsumer(WebsocketConsumer):
             payload["target_name"] = target_name
             payload["initiator_name"] = initiator_name
             payload["initial_target_name"] = initial_target_name
+            payload["initiator_key"] = initiator_key
+            payload["initial_target_key"] = initial_target_key
 
             if ev.type == "ATTACK_HIT":
                 dmg_shield = int(payload.get("damage_to_shield", 0) or 0)
