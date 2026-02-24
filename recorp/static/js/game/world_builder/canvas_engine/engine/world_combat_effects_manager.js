@@ -5,7 +5,6 @@ export default class WorldCombatEffectsManager {
     constructor() {
         this.effects = [];
         this.maxEffects = 24;
-        this._opaqueSpriteMetricsCache = new Map();
     }
 
     addProjectile({
@@ -71,134 +70,6 @@ export default class WorldCombatEffectsManager {
             glow: "rgba(59,130,246,1)",
             beam: "rgba(147,197,253,0.95)",
             accent: "rgba(255,255,255,1)",
-        };
-    }
-
-    _computeOpaqueSpriteMetricsNormalized(img) {
-        if (!img) return null;
-        const cacheKey = img.src || `${img.width}x${img.height}`;
-        if (this._opaqueSpriteMetricsCache.has(cacheKey)) {
-            return this._opaqueSpriteMetricsCache.get(cacheKey);
-        }
-
-        try {
-            const w = img.naturalWidth || img.width || 0;
-            const h = img.naturalHeight || img.height || 0;
-            if (!w || !h) {
-                const fallback = { cx: 0.5, cy: 0.5, minX: 0, minY: 0, maxX: 1, maxY: 1, w: 0, h: 0, alpha: null };
-                this._opaqueSpriteMetricsCache.set(cacheKey, fallback);
-                return fallback;
-            }
-
-            const c = document.createElement("canvas");
-            c.width = w;
-            c.height = h;
-            const cctx = c.getContext("2d", { willReadFrequently: true });
-            cctx.drawImage(img, 0, 0, w, h);
-            const data = cctx.getImageData(0, 0, w, h).data;
-
-            let minX = w, minY = h, maxX = -1, maxY = -1;
-            // Step 1 is acceptable here because this is cached once per sprite.
-            for (let y = 0; y < h; y++) {
-                for (let x = 0; x < w; x++) {
-                    const a = data[(y * w + x) * 4 + 3];
-                    if (a > 8) {
-                        if (x < minX) minX = x;
-                        if (y < minY) minY = y;
-                        if (x > maxX) maxX = x;
-                        if (y > maxY) maxY = y;
-                    }
-                }
-            }
-
-            if (maxX < 0 || maxY < 0) {
-                const fallback = { cx: 0.5, cy: 0.5, minX: 0, minY: 0, maxX: 1, maxY: 1, w, h, alpha: null };
-                this._opaqueSpriteMetricsCache.set(cacheKey, fallback);
-                return fallback;
-            }
-
-            const metrics = {
-                cx: ((minX + maxX) / 2) / w,
-                cy: ((minY + maxY) / 2) / h,
-                minX: minX / w,
-                minY: minY / h,
-                maxX: maxX / w,
-                maxY: maxY / h,
-                w,
-                h,
-                alpha: data, // cache raw pixel data for raycast anchors (alpha channel only is enough, raw is simpler)
-            };
-            this._opaqueSpriteMetricsCache.set(cacheKey, metrics);
-            return metrics;
-        } catch (_e) {
-            const fallback = { cx: 0.5, cy: 0.5, minX: 0, minY: 0, maxX: 1, maxY: 1, w: 0, h: 0, alpha: null };
-            this._opaqueSpriteMetricsCache.set(cacheKey, fallback);
-            return fallback;
-        }
-    }
-
-    _alphaAt(metrics, px, py, reversed = false) {
-        const w = Number(metrics?.w || 0);
-        const h = Number(metrics?.h || 0);
-        const data = metrics?.alpha;
-        if (!w || !h || !data) return 255;
-
-        let x = Math.max(0, Math.min(w - 1, Math.round(px)));
-        let y = Math.max(0, Math.min(h - 1, Math.round(py)));
-        if (reversed) x = (w - 1) - x;
-
-        const idx = (y * w + x) * 4 + 3;
-        return Number(data[idx] || 0);
-    }
-
-    _raycastSpriteEdgeNormalized(metrics, towardDxPx, towardDyPx, rectW, rectH, reversed = false) {
-        if (!metrics) return null;
-        const w = Number(metrics.w || 0);
-        const h = Number(metrics.h || 0);
-        if (!w || !h) return null;
-
-        const cxPx = Number(metrics.cx ?? 0.5) * w;
-        const cyPx = Number(metrics.cy ?? 0.5) * h;
-
-        // Convert world-screen direction to sprite-pixel direction
-        let dirX = Number(towardDxPx || 0) * (w / Math.max(1, rectW || 1));
-        let dirY = Number(towardDyPx || 0) * (h / Math.max(1, rectH || 1));
-        const len = Math.hypot(dirX, dirY);
-        if (!len) return { x: metrics.cx, y: metrics.cy };
-        dirX /= len;
-        dirY /= len;
-
-        // If sprite is visually flipped, the pixel sampling mirrors X.
-        // The direction in sprite local space must be mirrored too.
-        if (reversed) dirX *= -1;
-
-        let lastOpaqueX = cxPx;
-        let lastOpaqueY = cyPx;
-
-        // Start a bit away from center to avoid getting stuck if center is transparent.
-        const maxSteps = Math.max(w, h) * 2;
-        const step = 0.6; // subpixel, supports arbitrary angles better than bbox
-        let foundOpaque = false;
-
-        for (let i = 0; i < maxSteps; i++) {
-            const x = cxPx + dirX * i * step;
-            const y = cyPx + dirY * i * step;
-            if (x < 0 || y < 0 || x >= w || y >= h) break;
-
-            const a = this._alphaAt(metrics, x, y, reversed);
-            if (a > 8) {
-                foundOpaque = true;
-                lastOpaqueX = x;
-                lastOpaqueY = y;
-            } else if (foundOpaque) {
-                // We just exited the visible hull silhouette.
-                break;
-            }
-        }
-
-        return {
-            x: Math.max(0, Math.min(1, lastOpaqueX / w)),
-            y: Math.max(0, Math.min(1, lastOpaqueY / h)),
         };
     }
 
@@ -436,104 +307,6 @@ export default class WorldCombatEffectsManager {
         };
     }
 
-    _resolveActorVisibleAnchor(rect, actor, spriteManager, towardPoint = null) {
-        if (!rect) return null;
-        let metrics = { cx: 0.5, cy: 0.5, minX: 0, minY: 0, maxX: 1, maxY: 1 };
-
-        const spritePath = actor?.spritePath || null;
-        if (spritePath && spriteManager) {
-            const srcUrl = spriteManager.makeUrl ? spriteManager.makeUrl(spritePath) : spritePath;
-            const img = spriteManager.get ? spriteManager.get(srcUrl) : null;
-            if (img && img.complete && (img.naturalWidth || img.width)) {
-                const opaqueMetrics = this._computeOpaqueSpriteMetricsNormalized(img);
-                if (opaqueMetrics) {
-                    metrics = {
-                        cx: Number(opaqueMetrics.cx ?? 0.5),
-                        cy: Number(opaqueMetrics.cy ?? 0.5),
-                        minX: Number(opaqueMetrics.minX ?? 0),
-                        minY: Number(opaqueMetrics.minY ?? 0),
-                        maxX: Number(opaqueMetrics.maxX ?? 1),
-                        maxY: Number(opaqueMetrics.maxY ?? 1),
-                    };
-
-                    // Mirror bbox/center metadata if the ship sprite is drawn flipped.
-                    const reversed = Boolean(
-                        (actor?.type === "player" || actor?.type === "npc") &&
-                        actor?.data?.ship?.is_reversed
-                    );
-                    if (reversed) {
-                        metrics = {
-                            ...metrics,
-                            cx: 1 - metrics.cx,
-                            minX: 1 - metrics.maxX,
-                            maxX: 1 - metrics.minX,
-                        };
-                    }
-                }
-            }
-        }
-
-        let ax = metrics.cx;
-        let ay = metrics.cy;
-        if (towardPoint && Number.isFinite(towardPoint.x) && Number.isFinite(towardPoint.y)) {
-            const centerPx = {
-                x: rect.x + rect.w * metrics.cx,
-                y: rect.y + rect.h * metrics.cy,
-            };
-            const dxPx = towardPoint.x - centerPx.x;
-            const dyPx = towardPoint.y - centerPx.y;
-            const eps = 1e-6;
-
-            if (Math.abs(dxPx) > eps || Math.abs(dyPx) > eps) {
-                const reversed = Boolean(
-                    (actor?.type === "player" || actor?.type === "npc") &&
-                    actor?.data?.ship?.is_reversed
-                );
-
-                const rayAnchor = this._raycastSpriteEdgeNormalized(
-                    metrics,
-                    dxPx,
-                    dyPx,
-                    rect.w,
-                    rect.h,
-                    reversed
-                );
-                if (rayAnchor) {
-                    ax = rayAnchor.x;
-                    ay = rayAnchor.y;
-                    return {
-                        x: rect.x + rect.w * ax,
-                        y: rect.y + rect.h * ay,
-                    };
-                }
-
-                // Intersection d'un rayon (depuis le centre visible) avec la bbox opaque du sprite
-                // dans l'espace normalisé du rectangle acteur.
-                const ndx = dxPx / Math.max(rect.w, eps);
-                const ndy = dyPx / Math.max(rect.h, eps);
-
-                const halfW = Math.max(eps, (metrics.maxX - metrics.minX) / 2);
-                const halfH = Math.max(eps, (metrics.maxY - metrics.minY) / 2);
-                const boxCx = (metrics.minX + metrics.maxX) / 2;
-                const boxCy = (metrics.minY + metrics.maxY) / 2;
-
-                const tx = Math.abs(ndx) > eps ? halfW / Math.abs(ndx) : Infinity;
-                const ty = Math.abs(ndy) > eps ? halfH / Math.abs(ndy) : Infinity;
-                const t = Math.min(tx, ty);
-
-                ax = boxCx + ndx * t;
-                ay = boxCy + ndy * t;
-                ax = Math.max(metrics.minX, Math.min(metrics.maxX, ax));
-                ay = Math.max(metrics.minY, Math.min(metrics.maxY, ay));
-            }
-        }
-
-        return {
-            x: rect.x + rect.w * ax,
-            y: rect.y + rect.h * ay,
-        };
-    }
-
     _drawTracer(ctx, from, to, alpha, weaponType) {
         const COLORS = {
             MISSILE: "rgba(34,197,94,1)",
@@ -554,7 +327,7 @@ export default class WorldCombatEffectsManager {
         ctx.restore();
     }
 
-    updateAndRender(ctx, camera, map, spriteManager = null) {
+    updateAndRender(ctx, camera, map) {
         if (!ctx || !camera || !map || !this.effects.length) return;
 
         const now = performance.now();
@@ -601,7 +374,6 @@ export default class WorldCombatEffectsManager {
             const t = Math.min(elapsed / e.duration, 1);
             const dx = (to.x - from.x);
             const dy = (to.y - from.y);
-            const angle = Math.atan2(dy, dx);
             const alpha = 1 - (t * 0.08);
             const pulse = 0.9 + 0.25 * (0.5 + 0.5 * Math.sin((now * 0.02) + (e.id.length * 0.3)));
             const headSize = Math.max(10, Math.min(16, (camera.tileSize || 32) * 0.40));

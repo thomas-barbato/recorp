@@ -247,8 +247,7 @@ function renderWorldCombatEvent(payload, kind) {
 
     const engine = window.GameState?.canvasEngine ?? window.canvasEngine;
     const renderer = engine?.renderer;
-    const map = engine?.map;
-    if (!renderer || !map) return;
+    if (!renderer || !engine?.map) return;
 
     const { attackerKey, targetKey } = extractCombatKeysFromPayload(payload);
     if (!attackerKey || !targetKey) return;
@@ -315,13 +314,6 @@ function getLocalPlayerKey() {
     return `pc_${window.current_player_id}`;
 }
 
-function getCombatEventSourceTargetKeys(payload) {
-    const { attackerKey, targetKey } = extractCombatKeysFromPayload(payload || {});
-    // `extractCombatKeysFromPayload` renvoie déjà la source/cible réelles de l'événement,
-    // y compris pour les ripostes. Ne pas ré-inverser ici.
-    return { sourceKey: attackerKey, targetKey };
-}
-
 function getCombatModalRowClass(payload, kind) {
     if (kind === "MISS" || kind === "EVADE") {
         return "text-white";
@@ -330,16 +322,6 @@ function getCombatModalRowClass(payload, kind) {
     // Simplification visuelle demandée: plus de rouge sur les logs combat.
     // Tous les HITS restent verts, miss/eva restent blancs.
     if (kind === "HIT") {
-        return "text-emerald-300";
-    }
-
-    const localKey = getLocalPlayerKey();
-    const { sourceKey, targetKey } = getCombatEventSourceTargetKeys(payload);
-
-    if (targetKey === localKey) {
-        return "text-red-300";
-    }
-    if (sourceKey === localKey) {
         return "text-emerald-300";
     }
     return "text-white";

@@ -50,7 +50,6 @@ function getCombatActionRowColorClass(log) {
     const p = log.content || {};
     const role = log.role;
     const eventType = p.combat_event_type;
-    const isCounter = p.is_counter === true;
 
     if (eventType !== "ATTACK_HIT") {
         return "text-white";
@@ -60,11 +59,7 @@ function getCombatActionRowColorClass(log) {
         return "text-white";
     }
 
-    if (role === "TRANSMITTER") {
-        return "text-emerald-300";
-    }
-
-    if (role === "RECEIVER") {
+    if (role === "TRANSMITTER" || role === "RECEIVER") {
         return "text-emerald-300";
     }
 
