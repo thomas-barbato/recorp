@@ -3,6 +3,14 @@ export const LOG_TYPE_STYLE = {
         color: "text-red-400",
         glow: "drop-shadow-[0_0_6px_rgba(248,113,113,0.6)]"
     },
+    COMBAT_ACTION: {
+        color: "text-emerald-200",
+        glow: "drop-shadow-[0_0_6px_rgba(16,185,129,0.35)]"
+    },
+    COMBAT_DEATH: {
+        color: "text-emerald-300",
+        glow: "drop-shadow-[0_0_8px_rgba(16,185,129,0.35)]"
+    },
     DEFENSE: {
         color: "text-orange-300",
         glow: "drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]"

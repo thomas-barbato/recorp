@@ -407,6 +407,9 @@ class NpcTemplate(models.Model):
     max_thermal_defense = models.SmallIntegerField(default=0)
     max_ballistic_defense = models.SmallIntegerField(default=0)
     hold_capacity = models.SmallIntegerField(default=2)
+    # Respawn delay in seconds for NPC instances using this template.
+    # Default stays short for tests/dev; gameplay values can be raised per template.
+    respawn_delay_seconds = models.PositiveIntegerField(default=120)
     behavior = models.CharField(
         max_length=20, choices=BEHAVIOR_CHOICES, default=BEHAVIOR_CHOICES[0]
     )

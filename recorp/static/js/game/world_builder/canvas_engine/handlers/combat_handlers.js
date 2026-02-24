@@ -187,6 +187,95 @@ function safeAddCombatLog(text) {
     }
 }
 
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function getDamageIconPath(damageType) {
+    const t = String(damageType || "").toUpperCase();
+    if (t === "THERMAL") return "/static/img/ux/laser-icon.svg";
+    if (t === "BALLISTIC") return "/static/img/ux/ballistic-icon.svg";
+    if (t === "MISSILE") return "/static/img/ux/missile-icon.svg";
+    return null;
+}
+
+function damageIconHtml(damageType) {
+    const src = getDamageIconPath(damageType);
+    if (!src) return "";
+    return `<img src="${src}" alt="${escapeHtml(damageType)}" class="inline-block w-4 h-4 align-text-bottom mx-1 opacity-90" />`;
+}
+
+function getLocalPlayerKey() {
+    return `pc_${window.current_player_id}`;
+}
+
+function getCombatEventSourceTargetKeys(payload) {
+    const { attackerKey, targetKey } = extractCombatKeysFromPayload(payload || {});
+    // `extractCombatKeysFromPayload` renvoie déjà la source/cible réelles de l'événement,
+    // y compris pour les ripostes. Ne pas ré-inverser ici.
+    return { sourceKey: attackerKey, targetKey };
+}
+
+function getCombatModalRowClass(payload, kind) {
+    if (kind === "MISS" || kind === "EVADE") {
+        return "text-white";
+    }
+
+    // Simplification visuelle demandée: plus de rouge sur les logs combat.
+    // Tous les HITS restent verts, miss/eva restent blancs.
+    if (kind === "HIT") {
+        return "text-emerald-300";
+    }
+
+    const localKey = getLocalPlayerKey();
+    const { sourceKey, targetKey } = getCombatEventSourceTargetKeys(payload);
+
+    if (targetKey === localKey) {
+        return "text-red-300";
+    }
+    if (sourceKey === localKey) {
+        return "text-emerald-300";
+    }
+    return "text-white";
+}
+
+function buildCombatModalLogHtml(payload, kind) {
+    const targetName = `<b>${escapeHtml(payload?.target_name || payload?.initial_target_name || "la cible")}</b>`;
+    const sourceName = `<b>${escapeHtml(payload?.source_name || "La cible")}</b>`;
+    const damageType = String(payload?.damage_type || "").toUpperCase();
+    const icon = damageIconHtml(damageType);
+    const dmg = Number(payload?.damage_total_applied ?? ((payload?.damage_to_hull || 0) + (payload?.damage_to_shield || 0)) ?? 0);
+    const critSuffix = payload?.is_critical ? ` <span class="text-yellow-300">C'est un coup critique !</span>` : "";
+
+    if (kind === "HIT") {
+        if (payload?.is_counter) {
+            return `${sourceName} riposte et vous touche, il vous inflige <span class="font-bold">${dmg} dégâts</span> ${icon}${critSuffix}`;
+        }
+        return `Vous attaquez ${targetName} pour <span class="font-bold">${dmg} dégâts</span> ${icon}${critSuffix}`;
+    }
+
+    if (kind === "MISS") {
+        if (payload?.is_counter) {
+            return `${sourceName} riposte mais il vous rate.`;
+        }
+        return `Vous attaquez ${targetName} mais vous ratez.`;
+    }
+
+    if (kind === "EVADE") {
+        if (payload?.is_counter) {
+            return `${sourceName} riposte mais vous esquivez.`;
+        }
+        return `Vous attaquez ${targetName} mais il esquive.`;
+    }
+
+    return "";
+}
+
 function applyDeadUiState(deadKey) {
     if (!deadKey) return;
 
@@ -300,11 +389,10 @@ function renderModalAttackHit(payload) {
         is_critical
     } = payload;
 
-    const label = is_counter ? "Riposte" : "Attaque";
-    const crit = is_critical ? " (critique)" : "";
-    const msg = `${label}${crit} ${damage_type} : ${damage_to_shield} shield / ${damage_to_hull} hull`;
-
-    safeAddCombatLog(msg);
+    safeAddCombatLog({
+        html: buildCombatModalLogHtml(payload, "HIT"),
+        className: getCombatModalRowClass(payload, "HIT"),
+    });
 
     // Animations uniquement pour l'attaquant local
     if (!shouldAnimateForMe(payload)) return;
@@ -333,8 +421,10 @@ function renderModalAttackMiss(payload) {
     if (!payload) return;
     if (!isRelevantForMyCombatModal(payload)) return;
 
-    const label = payload.is_counter ? "Riposte" : "Attaque";
-    safeAddCombatLog(`${label} ratée`);
+    safeAddCombatLog({
+        html: buildCombatModalLogHtml(payload, "MISS"),
+        className: getCombatModalRowClass(payload, "MISS"),
+    });
     
     if (!shouldAnimateForMe(payload)) return;
 
@@ -358,8 +448,10 @@ function renderModalAttackEvaded(payload) {
 
     if (!isRelevantForMyCombatModal(payload)) return;
 
-    const label = payload.is_counter ? "Riposte" : "Attaque";
-    safeAddCombatLog(`${label} esquivée`);
+    safeAddCombatLog({
+        html: buildCombatModalLogHtml(payload, "EVADE"),
+        className: getCombatModalRowClass(payload, "EVADE"),
+    });
     
     if (!shouldAnimateForMe(payload)) return;
 

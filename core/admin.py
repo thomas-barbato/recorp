@@ -1037,6 +1037,7 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             name=data_from_post["data"]["name"],
             displayed_name=data_from_post["data"]["displayed_name"],
             difficulty=data_from_post["data"]["difficulty"],
+            respawn_delay_seconds=int(data_from_post["data"].get("respawn_delay_seconds", 120) or 120),
             ship_id=spaceship["id"],
             description="",
             module_id_list=module_id_list,
@@ -1162,6 +1163,7 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
                 name=data_from_post["data"]["name"],
                 displayed_name=data_from_post["data"]["displayed_name"],
                 difficulty=data_from_post["data"]["difficulty"],
+                respawn_delay_seconds=int(data_from_post["data"].get("respawn_delay_seconds", 120) or 120),
                 ship_id=spaceship["id"],
                 description="",
                 module_id_list=module_id_list,
@@ -1484,6 +1486,7 @@ class NpcTemplateResourceAdmin(admin.ModelAdmin):
 @admin.register(NpcTemplate, site=admin_site)
 class NpcTemplateAdmin(admin.ModelAdmin):
     model = NpcTemplate
+    list_display = ("id", "name", "displayed_name", "respawn_delay_seconds", "difficulty", "behavior")
 
 
 @admin.register(NpcTemplateSkill, site=admin_site)

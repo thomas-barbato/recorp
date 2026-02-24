@@ -33,7 +33,7 @@ logger = logging.getLogger("django")
 class GameConsumer(WebsocketConsumer):
     DEFAULT_RESPAWN_SECTOR_ID = 7
     NPC_RESPAWN_DELAY_SECONDS = 120
-    WRECK_TTL_SECONDS = 60  # tests Sprint 3; cible future: 12h (scavenge => disparition immédiate)
+    WRECK_TTL_SECONDS = 12 * 60 * 60  # 12h (scavenge => disparition immédiate)
     """
     WebSocket consumer pour gérer les interactions en temps réel du jeu.
     Gère les mouvements des joueurs, les actions de jeu et la synchronisation.
@@ -1729,9 +1729,18 @@ class GameConsumer(WebsocketConsumer):
                 target_weapons=target_weapons,
             )
 
+            # Enrichit les events de combat (noms + dégâts appliqués) pour simplifier
+            # le rendu front (modal combat / logs) sans recalcul local.
+            self._annotate_combat_events(events, source_ad=source_ad, target_ad=target_ad)
+
             # Prépare les futures mécaniques (assist / XP / réputation) en mémorisant
             # qui a contribué sur cette cible avant même qu'elle ne meure.
             self._record_combat_participation(events)
+            self._emit_combat_action_logs(
+                initiator_ad=source_ad,
+                initial_target_ad=target_ad,
+                events=events,
+            )
 
             # -----------------------
             # Toujours envoyer AP attaquant
@@ -2107,6 +2116,117 @@ class GameConsumer(WebsocketConsumer):
 
             # TTL volontairement large: reset explicite viendra avec mort/warp hooks Sprint 3
             cache.set(cache_key, tracker, timeout=3600)
+
+    def _annotate_combat_events(self, events, *, source_ad, target_ad) -> None:
+        """
+        Ajoute des champs de confort pour le front (noms, dégâts appliqués).
+        Le backend garde l'autorité; on évite juste de faire deviner le texte au client.
+        """
+        if not events:
+            return
+
+        initiator_name = self._get_actor_display_name(source_ad)
+        initial_target_name = self._get_actor_display_name(target_ad)
+
+        for ev in events:
+            if not ev or getattr(ev, "type", None) not in ("ATTACK_HIT", "ATTACK_MISS", "ATTACK_EVADED"):
+                continue
+
+            payload = getattr(ev, "payload", None) or {}
+            is_counter = payload.get("is_counter") is True
+
+            source_name = initial_target_name if is_counter else initiator_name
+            target_name = initiator_name if is_counter else initial_target_name
+
+            payload["source_name"] = source_name
+            payload["target_name"] = target_name
+            payload["initiator_name"] = initiator_name
+            payload["initial_target_name"] = initial_target_name
+
+            if ev.type == "ATTACK_HIT":
+                dmg_shield = int(payload.get("damage_to_shield", 0) or 0)
+                dmg_hull = int(payload.get("damage_to_hull", 0) or 0)
+                payload["damage_total_applied"] = dmg_shield + dmg_hull
+
+            ev.payload = payload
+
+    def _build_sector_combat_players_roles(self, *, initiator_ad, initial_target_ad):
+        """
+        Rôles de logs de combat:
+        - TRANSMITTER = initiateur (s'il est PC)
+        - RECEIVER = cible initiale (si elle est PC)
+        - OBSERVER = tous les autres joueurs présents dans le secteur
+        """
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return []
+
+        sector_players = list(Player.objects.filter(sector_id=sector_id))
+        if not sector_players:
+            return []
+
+        initiator_player_id = initiator_ad.actor.player_id if getattr(initiator_ad, "kind", None) == "PC" else None
+        target_player_id = initial_target_ad.actor.player_id if getattr(initial_target_ad, "kind", None) == "PC" else None
+
+        players_roles = []
+        for p in sector_players:
+            role = "OBSERVER"
+            if initiator_player_id is not None and p.id == initiator_player_id:
+                role = "TRANSMITTER"
+            if target_player_id is not None and p.id == target_player_id:
+                role = "RECEIVER"
+            players_roles.append((p, role))
+        return players_roles
+
+    def _emit_combat_action_logs(self, *, initiator_ad, initial_target_ad, events) -> None:
+        """
+        Log temps réel détaillé pour chaque ATTACK_* (attaque + riposte), avec rôles:
+        initiateur / cible initiale / observateurs secteur.
+        """
+        if not events:
+            return
+
+        players_roles = self._build_sector_combat_players_roles(
+            initiator_ad=initiator_ad,
+            initial_target_ad=initial_target_ad,
+        )
+        if not players_roles:
+            return
+
+        initiator_name = self._get_actor_display_name(initiator_ad)
+        initial_target_name = self._get_actor_display_name(initial_target_ad)
+
+        for ev in events:
+            if not ev or getattr(ev, "type", None) not in ("ATTACK_HIT", "ATTACK_MISS", "ATTACK_EVADED"):
+                continue
+
+            p = getattr(ev, "payload", None) or {}
+            is_counter = p.get("is_counter") is True
+            source_name = p.get("source_name") or (initial_target_name if is_counter else initiator_name)
+            target_name = p.get("target_name") or (initiator_name if is_counter else initial_target_name)
+
+            payload = {
+                "event": "COMBAT_ACTION",
+                "combat_event_type": ev.type,
+                "is_counter": is_counter,
+                "is_critical": bool(p.get("is_critical", False)),
+                "damage_type": (p.get("damage_type") or "").upper(),
+                "damage_total": int(p.get("damage_total_applied", p.get("final_damage", 0)) or 0),
+                "damage_to_hull": int(p.get("damage_to_hull", 0) or 0),
+                "damage_to_shield": int(p.get("damage_to_shield", 0) or 0),
+                "initiator_name": initiator_name,
+                "initial_target_name": initial_target_name,
+                "source_name": source_name,
+                "target_name": target_name,
+            }
+
+            log = create_event_log(
+                players_roles=players_roles,
+                log_type="COMBAT_ACTION",
+                payload=payload,
+            )
+            self.push_event_log(log.playerlog_set.select_related("player", "log").all())
 
     def _resolve_actor_key_from_message(self, msg: Any) -> Optional[str]:
         if not isinstance(msg, dict):
@@ -2607,14 +2727,24 @@ class GameConsumer(WebsocketConsumer):
             return
 
         try:
-            threshold = timezone.now() - datetime.timedelta(seconds=int(self.NPC_RESPAWN_DELAY_SECONDS))
-            due_ids = list(
+            now = timezone.now()
+            dead_npcs = list(
                 Npc.objects.filter(
                     sector_id=sector_id,
                     status="DEAD",
-                    updated_at__lte=threshold,
-                ).values_list("id", flat=True)
+                )
+                .select_related("npc_template")
+                .only("id", "updated_at", "npc_template__respawn_delay_seconds")
             )
+            due_ids = []
+            for npc in dead_npcs:
+                template_delay = getattr(getattr(npc, "npc_template", None), "respawn_delay_seconds", None)
+                try:
+                    respawn_delay = int(template_delay if template_delay is not None else self.NPC_RESPAWN_DELAY_SECONDS)
+                except Exception:
+                    respawn_delay = int(self.NPC_RESPAWN_DELAY_SECONDS)
+                if npc.updated_at and npc.updated_at <= (now - datetime.timedelta(seconds=max(respawn_delay, 0))):
+                    due_ids.append(int(npc.id))
             if not due_ids:
                 return
 
