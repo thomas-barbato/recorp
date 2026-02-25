@@ -7,8 +7,8 @@
     <!-- HOLOGRAPHIC HALO -->
     <div id="holo-ring" class="absolute inset-0 rounded-2xl pointer-events-none glow-ring"></div>
 
-    <div class="relative md:w-[95%] md:max-w-6xl md:max-h-[90vh] h-full w-full  bg-zinc-950/95 border border-emerald-400/30 md:rounded-2xl shadow-lg flex flex-col overflow-hidden animate-modal-rise energy-border">
-    
+    <div class="relative md:w-[95%] md:max-w-6xl md:max-h-[90vh] h-full w-full bg-zinc-950/95 border border-emerald-400/30 md:rounded-2xl shadow-lg flex flex-col overflow-hidden animate-modal-rise energy-border">
+
     <!-- HEADER -->
     <div class="flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
         <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
@@ -34,83 +34,36 @@
             </p>
 
             <div id="inventory-list" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1">
-                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-blue-300 p-2">
-                    <div>
-                        <span class="text-blue-300 font-bold text-xs">Lingots de titane</span>
-                        <span class="ml-2 text-[10px] text-gray-400">(Resource)</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-emerald-200 text-xs font-semibold">x42</span>
-                        <button class="text-red-500 hover:text-red-400 text-sm" title="{% translate 'Delete item' %}" onclick="deleteItem(event, 'Lingots de titane')">
-                            <i class="fa-solid fa-trash-can cursor-pointer"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-emerald-300 p-2">
-                    <div>
-                        <span class="text-emerald-300 font-bold text-xs">Moteur à fusion Mk II</span>
-                        <span class="ml-2 text-[10px] text-gray-400">(module)</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-emerald-200 text-xs font-semibold">x1</span>
-                        <button class="text-red-500 hover:text-red-400 text-sm" title="{% translate 'Delete item' %}" onclick="deleteItem(event, 'Moteur à fusion Mk II')">
-                            <i class="fa-solid fa-trash-can cursor-pointer"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 text-blue-300 border border border-emerald-800/30 rounded p-2">
-                    <div>
-                        <span class="text-blue-300 font-bold text-xs">Lingots de titane</span>
-                        <span class="ml-2 text-[10px] text-gray-400">(Resource)</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-emerald-200 text-xs font-semibold">x22</span>
-                        <button class="text-red-500 hover:text-red-400 text-sm" title="{% translate 'Delete item' %}" onclick="deleteItem(event, 'Lingots de titane')">
-                            <i class="fa-solid fa-trash-can cursor-pointer"></i>
-                        </button>
-                    </div>
+                <div class="col-span-2 sm:col-span-2 lg:col-span-1 text-xs text-gray-400 italic border border-emerald-900/20 rounded-md p-2 bg-black/20">
+                    {% translate "Loading inventory..." %}
                 </div>
             </div>
         </div>
 
-            <div class="order-2 lg:order-1 lg:w-1/2 w-full p-3 flex flex-col overflow-y-auto custom-scroll gap-2 equipped-modules-panel">
-                <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron flex items-center gap-2 flex-wrap">
-                    <span>{% translate "Equipped Modules" %}</span>
-                    <span id="equipped-modules-total-count" class="equipped-module-count is-unknown">0 / -</span>
-                </h3>
+        <div class="order-2 lg:order-1 lg:w-1/2 w-full p-3 flex flex-col overflow-y-auto custom-scroll gap-2 equipped-modules-panel">
+            <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron flex items-center gap-2 flex-wrap">
+                <span>{% translate "Equipped Modules" %}</span>
+                <span id="equipped-modules-total-count" class="equipped-module-count is-unknown">0 / -</span>
+            </h3>
 
-                {% for category in module_categories %}
-                <fieldset class="equipped-module-group flex flex-col border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all" data-module-category="{{ category }}">
-                    <legend class="equipped-module-legend text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase font-orbitron">
-                        <span class="equipped-module-legend__label">{% translate category|from_underscore_to_space %}</span>
-                        <span class="equipped-module-count is-unknown" data-module-count-for="{{ category }}">0 / -</span>
-                    </legend>
-                    <div class="equipped-module-list w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
-                        <div class="text-gray-500 text-[10px] italic pl-1 empty-slot equipped-empty-slot">{% translate "Empty slot" %}</div>
-                    </div>
-                </fieldset>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="w-full flex justify-center items-center py-3 border-t border-emerald-400/20 bg-black/50 relative z-10">
-            <button data-modal-hide="inventory-modal" class="text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all">
-                {% translate "Close" %}
-            </button>
+            {% for category in module_categories %}
+            <fieldset class="equipped-module-group flex flex-col border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all" data-module-category="{{ category }}">
+                <legend class="equipped-module-legend text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase font-orbitron">
+                    <span class="equipped-module-legend__label">{% translate category|from_underscore_to_space %}</span>
+                    <span class="equipped-module-count is-unknown" data-module-count-for="{{ category }}">0 / -</span>
+                </legend>
+                <div class="equipped-module-list w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
+                    <div class="text-gray-500 text-[10px] italic pl-1 empty-slot equipped-empty-slot">{% translate "Empty slot" %}</div>
+                </div>
+            </fieldset>
+            {% endfor %}
         </div>
     </div>
+
+    <div class="w-full flex justify-center items-center py-3 border-t border-emerald-400/20 bg-black/50 relative z-10">
+        <button data-modal-hide="inventory-modal" class="text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all">
+            {% translate "Close" %}
+        </button>
+    </div>
+    </div>
 </div>
-
-<script>
-    function translate_this(arg){
-        return "{% translate 'inventory' %}";
-    }
-    const i18n = {
-        inventory: "{% translate 'Inventory' %}",
-        effects: "{% translate 'Effects' %}",
-        power: "{% translate 'Power' %}",
-        unequip_confirm: "{% translate 'Are you sure you want to unequip' %}",
-        unequipped: "{% translate 'unequipped' %}",
-    };
-</script>
-
