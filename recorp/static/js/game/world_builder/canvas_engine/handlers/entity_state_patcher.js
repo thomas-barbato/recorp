@@ -6,6 +6,11 @@ function ensureActorRuntime(actor) {
         THERMAL: 0,
         BALLISTIC: 0,
     };
+    actor.runtime.shield_max ??= {
+        MISSILE: 0,
+        THERMAL: 0,
+        BALLISTIC: 0,
+    };
     return actor.runtime;
 }
 
@@ -28,6 +33,9 @@ function patchActorRuntime(msg) {
         if (changes.hp?.max != null) runtime.max_hp = changes.hp.max;
         if (changes.shields) {
             runtime.shields = { ...runtime.shields, ...changes.shields };
+        }
+        if (changes.shield_max) {
+            runtime.shield_max = { ...runtime.shield_max, ...changes.shield_max };
         }
         if (changes.shield?.current != null && changes.shield?.damage_type) {
             runtime.shields[changes.shield.damage_type] = changes.shield.current;
@@ -68,58 +76,87 @@ function patchLocalHud(msg) {
 
     if (change_type === "hp_update") {
         const hpCurrent = changes?.hp?.current;
+        const hpMaxIncoming = changes?.hp?.max;
+
+        if (hpMaxIncoming != null) {
+            const hpMaxEl = document.getElementById("hp-container-value-max");
+            if (hpMaxEl) hpMaxEl.textContent = String(hpMaxIncoming);
+            if (window.currentPlayer?.ship) window.currentPlayer.ship.max_hp = hpMaxIncoming;
+        }
+
         if (hpCurrent != null) {
             const hpEl = document.getElementById("hp-container-value-min");
             if (hpEl) hpEl.textContent = String(hpCurrent);
             if (window.currentPlayer?.ship) window.currentPlayer.ship.current_hp = hpCurrent;
         }
 
-        const hpMax = parseInt(document.getElementById("hp-container-value-max")?.textContent, 10);
-        if (hpCurrent != null && hpMax) {
+        const hpMax = hpMaxIncoming != null
+            ? Number(hpMaxIncoming)
+            : parseInt(document.getElementById("hp-container-value-max")?.textContent, 10);
+        if (hpCurrent != null && Number.isFinite(hpMax) && hpMax > 0) {
             const hpBar = document.getElementById("hp-percent");
             if (hpBar) hpBar.style.width = `${(hpCurrent / hpMax) * 100}%`;
         }
 
-        // Supporte format complet { shields: {MISSILE,THERMAL,BALLISTIC} }
-        if (changes.shields && typeof changes.shields === "object") {
-            const shieldFieldMap = {
-                MISSILE: {
-                    min: "missile-container-value-min",
-                    max: "missile-container-value-max",
-                    pct: "missile-percent",
-                    currentPlayerField: "current_missile_defense",
-                },
-                THERMAL: {
-                    min: "thermal-container-value-min",
-                    max: "thermal-container-value-max",
-                    pct: "thermal-percent",
-                    currentPlayerField: "current_thermal_defense",
-                },
-                BALLISTIC: {
-                    min: "ballistic-container-value-min",
-                    max: "ballistic-container-value-max",
-                    pct: "ballistic-percent",
-                    currentPlayerField: "current_ballistic_defense",
-                },
-            };
+        const shieldFieldMap = {
+            MISSILE: {
+                min: "missile-container-value-min",
+                max: "missile-container-value-max",
+                pct: "missile-percent",
+                currentPlayerField: "current_missile_defense",
+                maxPlayerField: "max_missile_defense",
+            },
+            THERMAL: {
+                min: "thermal-container-value-min",
+                max: "thermal-container-value-max",
+                pct: "thermal-percent",
+                currentPlayerField: "current_thermal_defense",
+                maxPlayerField: "max_thermal_defense",
+            },
+            BALLISTIC: {
+                min: "ballistic-container-value-min",
+                max: "ballistic-container-value-max",
+                pct: "ballistic-percent",
+                currentPlayerField: "current_ballistic_defense",
+                maxPlayerField: "max_ballistic_defense",
+            },
+        };
 
+        // Supporte format complet { shields, shield_max }
+        if (
+            (changes.shields && typeof changes.shields === "object") ||
+            (changes.shield_max && typeof changes.shield_max === "object")
+        ) {
             Object.entries(shieldFieldMap).forEach(([shieldType, ids]) => {
                 const current = changes.shields?.[shieldType];
-                if (current == null) return;
+                const maxIncoming = changes.shield_max?.[shieldType];
 
                 const minEl = document.getElementById(ids.min);
-                if (minEl) minEl.textContent = String(current);
-
                 const maxEl = document.getElementById(ids.max);
                 const pctEl = document.getElementById(ids.pct);
-                const maxVal = maxEl ? parseInt(maxEl.textContent, 10) : null;
-                if (pctEl && maxVal) {
-                    const pct = Math.max(0, Math.min(100, (current / maxVal) * 100));
+
+                if (current != null && minEl) {
+                    minEl.textContent = String(current);
+                }
+                if (maxIncoming != null && maxEl) {
+                    maxEl.textContent = String(maxIncoming);
+                }
+
+                const currentVal = current != null
+                    ? Number(current)
+                    : parseInt(minEl?.textContent, 10);
+                const maxVal = maxIncoming != null
+                    ? Number(maxIncoming)
+                    : parseInt(maxEl?.textContent, 10);
+
+                if (pctEl && Number.isFinite(currentVal) && Number.isFinite(maxVal) && maxVal > 0) {
+                    const pct = Math.max(0, Math.min(100, (currentVal / maxVal) * 100));
                     pctEl.style.width = `${pct}%`;
                 }
 
                 if (window.currentPlayer?.ship) {
-                    window.currentPlayer.ship[ids.currentPlayerField] = current;
+                    if (current != null) window.currentPlayer.ship[ids.currentPlayerField] = current;
+                    if (maxIncoming != null) window.currentPlayer.ship[ids.maxPlayerField] = maxIncoming;
                 }
             });
         }
@@ -140,6 +177,21 @@ function patchLocalHud(msg) {
     if (change_type === "mp_update") {
         const mpCurrent = changes?.movement?.current;
         const mpMax = changes?.movement?.max;
+
+        const minEl = document.getElementById("movement-container-value-min");
+        const maxEl = document.getElementById("movement-container-value-max");
+        const barEl = document.getElementById("mp-percent");
+
+        if (mpCurrent != null && minEl) minEl.textContent = String(mpCurrent);
+        if (mpMax != null && maxEl) maxEl.textContent = String(mpMax);
+
+        const currentVal = mpCurrent != null ? Number(mpCurrent) : parseInt(minEl?.textContent, 10);
+        const maxVal = mpMax != null ? Number(mpMax) : parseInt(maxEl?.textContent, 10);
+        if (barEl && Number.isFinite(currentVal) && Number.isFinite(maxVal) && maxVal > 0) {
+            const pct = Math.max(0, Math.min(100, (currentVal / maxVal) * 100));
+            barEl.style.width = `${pct}%`;
+        }
+
         if (window.currentPlayer?.ship) {
             if (mpCurrent != null) window.currentPlayer.ship.current_movement = mpCurrent;
             if (mpMax != null) window.currentPlayer.ship.max_movement = mpMax;
@@ -162,7 +214,9 @@ function patchModalLive(msg) {
     if (change_type === "hp_update") {
         window.ModalLive?.notify?.(entity_key, "hp_update", {
             hp: changes.hp?.current,
+            max_hp: changes.hp?.max,
             shields: changes.shields,
+            shield_max: changes.shield_max,
             shield: changes.shield,
         });
         return;

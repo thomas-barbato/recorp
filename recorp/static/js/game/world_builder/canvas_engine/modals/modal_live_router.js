@@ -82,28 +82,32 @@
         mpBar.style.width = `${pct}%`;
     }
 
-    function updateModalHp(modalEl, { hp, shield, damage_type, shields }) {
-        // 🔹 HULL
-        if (hp != null) {
+    function updateModalHp(modalEl, { hp, max_hp, shield, damage_type, shields, shield_max }) {
+        // 🔹 HULL (current + max)
+        const hullTextEl = modalEl.querySelector("[data-hull-current]");
+        const hullBarEl = modalEl.querySelector('[data-stat="hp-bar"]');
+        if (hullTextEl && hullBarEl && (hp != null || max_hp != null)) {
+            const currentText = hullTextEl.textContent || "";
+            const parts = currentText.split("/");
 
-            const hullTextEl = modalEl.querySelector("[data-hull-current]");
-            const hullBarEl = modalEl.querySelector('[data-stat="hp-bar"]');
+            let current = hp;
+            let max = max_hp;
 
-            if (hullTextEl && hullBarEl) {
-
-                const currentText = hullTextEl.textContent; // "34 / 50"
-                const parts = currentText.split("/");
-
-                if (parts.length === 2) {
-                    const max = parseInt(parts[1].trim(), 10);
-
-                    // Update texte
-                    hullTextEl.textContent = `${hp} / ${max}`;
-
-                    // Update largeur
-                    const percent = max > 0 ? (hp / max) * 100 : 0;
-                    hullBarEl.style.width = `${percent}%`;
+            if (parts.length === 2) {
+                if (current == null) {
+                    const parsedCurrent = parseInt(parts[0].trim(), 10);
+                    if (!Number.isNaN(parsedCurrent)) current = parsedCurrent;
                 }
+                if (max == null) {
+                    const parsedMax = parseInt(parts[1].trim(), 10);
+                    if (!Number.isNaN(parsedMax)) max = parsedMax;
+                }
+            }
+
+            if (current != null && max != null) {
+                hullTextEl.textContent = `${current} / ${max}`;
+                const percent = Number(max) > 0 ? (Number(current) / Number(max)) * 100 : 0;
+                hullBarEl.style.width = `${percent}%`;
             }
         }
 
@@ -113,39 +117,67 @@
                 if (value == null) return;
                 updateModalHp(modalEl, {
                     shield: value,
-                    damage_type: dtype
+                    damage_type: dtype,
+                    shield_max: (shield_max && typeof shield_max === "object")
+                        ? { [dtype]: shield_max[dtype] }
+                        : undefined
                 });
             });
         }
 
-        // 🔹 SHIELD (format partiel legacy)
-        if (shield != null && damage_type) {
-
-            const shieldTextEl = modalEl.querySelector(
-                `[data-shield-type="${damage_type}"]`
-            );
-
-            const shieldBarEl = modalEl.querySelector(
-                `[data-stat="DEFENSE_${damage_type}-bar"]`
-            );
-
-            if (shieldTextEl && shieldBarEl) {
-
-                const currentText = shieldTextEl.textContent;
-                const parts = currentText.split("/");
-
-                if (parts.length === 2) {
-                    const max = parseInt(parts[1].trim(), 10);
-
-                    // Update texte
-                    shieldTextEl.textContent = `${shield} / ${max}`;
-
-                    // Update largeur
-                    const percent = max > 0 ? (shield / max) * 100 : 0;
-                    shieldBarEl.style.width = `${percent}%`;
-                }
-            }
+        // 🔹 SHIELD MAX only (si current ne change pas)
+        if (shield_max && typeof shield_max === "object" && (!shields || typeof shields !== "object")) {
+            Object.entries(shield_max).forEach(([dtype, value]) => {
+                if (value == null) return;
+                updateShieldLine(modalEl, {
+                    damage_type: dtype,
+                    shield: null,
+                    max_shield: value,
+                });
+            });
         }
+
+        // 🔹 SHIELD (format partiel legacy ou issu du format complet)
+        if (shield != null && damage_type) {
+            updateShieldLine(modalEl, {
+                damage_type,
+                shield,
+                max_shield: shield_max?.[damage_type],
+            });
+        } else if (damage_type && shield_max?.[damage_type] != null) {
+            updateShieldLine(modalEl, {
+                damage_type,
+                shield: null,
+                max_shield: shield_max[damage_type],
+            });
+        }
+    }
+
+    function updateShieldLine(modalEl, { damage_type, shield, max_shield }) {
+        if (!damage_type) return;
+
+        const shieldTextEl = modalEl.querySelector(
+            `[data-shield-type="${damage_type}"]`
+        );
+
+        const shieldBarEl = modalEl.querySelector(
+            `[data-stat="DEFENSE_${damage_type}-bar"]`
+        );
+
+        if (!shieldTextEl || !shieldBarEl) return;
+
+        const currentText = shieldTextEl.textContent || "";
+        const parts = currentText.split("/");
+        if (parts.length !== 2) return;
+
+        let current = shield != null ? Number(shield) : parseInt(parts[0].trim(), 10);
+        let max = max_shield != null ? Number(max_shield) : parseInt(parts[1].trim(), 10);
+
+        if (!Number.isFinite(current) || !Number.isFinite(max)) return;
+
+        shieldTextEl.textContent = `${current} / ${max}`;
+        const percent = max > 0 ? (current / max) * 100 : 0;
+        shieldBarEl.style.width = `${percent}%`;
     }
 
 

@@ -691,6 +691,41 @@ input:focus {
     border-radius: 4px;
 }
 
+#character-modal .character-meta-list {
+    display: table;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0 0.2rem;
+    max-width: 100%;
+}
+
+#character-modal .character-meta-row {
+    display: table-row;
+}
+
+#character-modal .character-meta-label,
+#character-modal .character-meta-sep,
+#character-modal .character-meta-value {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#character-modal .character-meta-label {
+    text-align: left;
+    white-space: nowrap;
+}
+
+#character-modal .character-meta-sep {
+    text-align: center;
+    padding: 0 0.35rem;
+    white-space: nowrap;
+}
+
+#character-modal .character-meta-value {
+    text-align: left;
+    word-break: break-word;
+}
+
 /* === Mise en page PC === */
 @media (min-width: 1024px) {
   #character-modal .skills-container {
@@ -727,6 +762,30 @@ input:focus {
   }
 }
 
+
+/* Grille responsive des compétences (1 / 2 / 3 colonnes max) */
+#character-modal .skills-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    align-items: start;
+}
+
+#character-modal .skills-grid .skill-item {
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+    #character-modal .skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1280px) {
+    #character-modal .skills-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
 
 /* Tooltip custom — thème émeraude */
 .skill-tooltip {
@@ -815,6 +874,271 @@ input:focus {
 }
 
 /* ✅ Tooltips */
+#inventory-modal .equipped-modules-panel {
+    background:
+        linear-gradient(180deg, rgba(16,185,129,0.04), rgba(16,185,129,0) 30%),
+        radial-gradient(circle at 15% 10%, rgba(16,185,129,0.08), transparent 45%);
+    border-right: 1px solid rgba(16,185,129,0.12);
+}
+
+#inventory-modal #inventory-reconfig-status.is-pending {
+    border-color: rgba(245, 158, 11, 0.35);
+    background: rgba(120, 74, 6, 0.18);
+    color: #fde68a;
+    box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.08);
+}
+
+#inventory-modal #inventory-reconfig-status.is-lock {
+    border-color: rgba(248, 113, 113, 0.28);
+    background: rgba(127, 29, 29, 0.16);
+    color: #fecaca;
+    box-shadow: inset 0 0 0 1px rgba(248, 113, 113, 0.06);
+}
+
+#inventory-modal #inventory-action-feedback.is-error {
+    border-color: rgba(248, 113, 113, 0.28);
+    background: rgba(127, 29, 29, 0.18);
+    color: #fecaca;
+}
+
+#inventory-modal #inventory-action-feedback.is-success {
+    border-color: rgba(52, 211, 153, 0.28);
+    background: rgba(6, 78, 59, 0.18);
+    color: #bbf7d0;
+}
+
+#inventory-modal #inventory-action-feedback.is-info {
+    border-color: rgba(45, 212, 191, 0.22);
+    background: rgba(17, 94, 89, 0.15);
+    color: #ccfbf1;
+}
+
+#inventory-modal #inventory-capacity-text.is-over {
+    color: #fca5a5;
+    text-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
+}
+
+#inventory-modal .equipped-module-group {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    overflow: visible;
+    border-color: rgba(16,185,129,0.18);
+    background: linear-gradient(180deg, rgba(7,16,15,0.85), rgba(7,11,12,0.78));
+    box-shadow: inset 0 0 0 1px rgba(16,185,129,0.04), 0 8px 18px rgba(0,0,0,0.18);
+    border-radius: 0.5rem;
+}
+
+#inventory-modal .equipped-module-group.equip-target-highlight {
+    border-color: rgba(52, 211, 153, 0.55);
+    box-shadow:
+        inset 0 0 0 1px rgba(52, 211, 153, 0.08),
+        0 0 0 1px rgba(52, 211, 153, 0.12),
+        0 0 22px rgba(16, 185, 129, 0.16);
+}
+
+#inventory-modal .equipped-module-group::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(16,185,129,0.06), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 28%);
+    opacity: 0.9;
+    z-index: 0;
+    border-radius: inherit;
+}
+
+#inventory-modal .equipped-module-group.equip-target-highlight::before {
+    background:
+        linear-gradient(90deg, rgba(16,185,129,0.14), transparent 32%),
+        radial-gradient(circle at 90% 50%, rgba(52,211,153,0.08), transparent 52%);
+}
+
+#inventory-modal .equipped-module-group > legend,
+#inventory-modal .equipped-module-group > .equipped-module-list {
+    position: relative;
+    z-index: 1;
+}
+
+#inventory-modal .equipped-module-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    max-width: 100%;
+}
+
+#inventory-modal .equipped-module-legend__label {
+    color: #b7f7d3;
+    letter-spacing: 0.06em;
+}
+
+#inventory-modal .equipped-module-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.8rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    line-height: 1;
+    border: 1px solid rgba(16,185,129,0.2);
+    background: rgba(2,6,7,0.65);
+    color: #bfeeda;
+    box-shadow: inset 0 0 8px rgba(16,185,129,0.07);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+#inventory-modal .equipped-module-count.is-ok {
+    border-color: rgba(16,185,129,0.35);
+    color: #9bf4c8;
+}
+
+#inventory-modal .equipped-module-count.is-full {
+    border-color: rgba(245,158,11,0.45);
+    color: #fcd34d;
+    background: rgba(120, 74, 6, 0.22);
+}
+
+#inventory-modal .equipped-module-count.is-over {
+    border-color: rgba(248,113,113,0.5);
+    color: #fca5a5;
+    background: rgba(127, 29, 29, 0.22);
+    box-shadow: 0 0 12px rgba(248,113,113,0.12);
+}
+
+#inventory-modal .equipped-module-count.is-unknown {
+    border-color: rgba(148,163,184,0.25);
+    color: #cbd5e1;
+}
+
+#inventory-modal .equipped-module-list {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-width: 0;
+    align-content: start;
+}
+
+#inventory-modal .equipped-empty-slot {
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+    border: 1px dashed rgba(16,185,129,0.15);
+    border-radius: 0.45rem;
+    background: rgba(2,6,7,0.35);
+    color: rgba(148,163,184,0.9);
+    padding: 0.2rem 0.45rem;
+    letter-spacing: 0.03em;
+}
+
+#inventory-modal .module-item {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(16,185,129,0.2);
+    background:
+        linear-gradient(90deg, rgba(6, 22, 19, 0.85), rgba(8, 15, 14, 0.74)),
+        linear-gradient(180deg, rgba(16,185,129,0.03), transparent);
+}
+
+#inventory-modal .module-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(16,185,129,0.25), rgba(110,231,183,0.95), rgba(16,185,129,0.2));
+    box-shadow: 0 0 10px rgba(16,185,129,0.35);
+}
+
+#inventory-modal .module-item:hover {
+    border-color: rgba(52,211,153,0.45);
+    box-shadow: inset 0 0 0 1px rgba(52,211,153,0.05), 0 0 18px rgba(16,185,129,0.08);
+}
+
+#inventory-modal .inventory-module-row {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(16,185,129,0.18);
+    background:
+        linear-gradient(90deg, rgba(6, 18, 17, 0.78), rgba(8, 13, 13, 0.72)),
+        linear-gradient(180deg, rgba(16,185,129,0.02), transparent);
+}
+
+#inventory-modal .inventory-module-row::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(16,185,129,0.18), rgba(110,231,183,0.7), rgba(16,185,129,0.16));
+    box-shadow: 0 0 10px rgba(16,185,129,0.18);
+}
+
+#inventory-modal .inventory-module-row:hover {
+    border-color: rgba(52,211,153,0.36);
+    box-shadow: inset 0 0 0 1px rgba(52,211,153,0.05), 0 0 14px rgba(16,185,129,0.06);
+}
+
+#inventory-modal .inventory-module-type-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.08rem 0.38rem;
+    border-radius: 999px;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #c7f9e5;
+    border: 1px solid rgba(16,185,129,0.2);
+    background: rgba(2, 6, 7, 0.55);
+    white-space: nowrap;
+}
+
+#inventory-modal .inventory-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.35rem;
+    border: 1px solid rgba(16,185,129,0.2);
+    background: rgba(2, 6, 7, 0.5);
+    transition: all 120ms ease;
+    cursor: pointer;
+}
+
+#inventory-modal .inventory-action-btn i {
+    pointer-events: none;
+}
+
+#inventory-modal .inventory-action-btn.success {
+    color: #86efac;
+    border-color: rgba(34, 197, 94, 0.25);
+}
+
+#inventory-modal .inventory-action-btn.danger {
+    color: #fca5a5;
+    border-color: rgba(248, 113, 113, 0.25);
+}
+
+#inventory-modal .inventory-action-btn:hover:not(:disabled) {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 0 10px rgba(16,185,129,0.14);
+}
+
+#inventory-modal .inventory-action-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(0.2);
+    transform: none;
+    box-shadow: none;
+}
+
 .module-tooltip {
     position: fixed;
     z-index: 9999;
@@ -886,6 +1210,15 @@ input:focus {
   .module-item, .inventory-item { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
     fieldset legend { font-size: 0.7rem !important; }
     h2 { font-size: 1.2rem !important; }
+    #inventory-modal .equipped-modules-panel { border-right: 0; }
+    #inventory-modal .equipped-module-legend {
+        gap: 0.3rem;
+        flex-wrap: wrap;
+    }
+    #inventory-modal .equipped-module-count {
+        font-size: 0.6rem;
+        min-width: 3.3rem;
+    }
 }
 
 /************************************/

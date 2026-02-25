@@ -74,7 +74,7 @@ export default class WebSocketManager {
         }
 
         if (ActionRegistry.has(type)) {
-            ActionRegistry.run(type, payload);
+            ActionRegistry.run(type, payload, normalized);
         } else if (!localHandlers) {
             console.warn(`[WS] No handler for type "${type}"`);
         }

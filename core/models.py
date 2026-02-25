@@ -214,6 +214,7 @@ class ShipModuleLimitation(models.Model):
     ship = models.ForeignKey(Ship, on_delete=models.CASCADE, related_name="ship_module_limitation", null=True)
     defense_module_limitation = models.PositiveSmallIntegerField(default=3) 
     weaponry_module_limitation = models.PositiveSmallIntegerField(default=1)
+    probe_module_limitation = models.PositiveSmallIntegerField(default=1)
     hold_module_limitation = models.PositiveSmallIntegerField(default=1)
     movement_module_limitation = models.PositiveSmallIntegerField(default=1)
     hull_module_limitation = models.PositiveSmallIntegerField(default=1)
@@ -626,6 +627,7 @@ class PlayerShip(models.Model):
     max_ballistic_defense = models.SmallIntegerField(default=0)
     current_cargo_size = models.SmallIntegerField(default=2)
     view_range = models.SmallIntegerField(default=6)
+    equipment_blocked_until = models.DateTimeField(null=True, blank=True)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
     )
@@ -646,6 +648,21 @@ class PlayerShipResource(models.Model):
     def __str__(self):
         return f"{self.source.name} - {self.resource.name} - quantity : {self.quantity}"
     
+
+class PlayerShipInventoryModule(models.Model):
+    player_ship = models.ForeignKey(
+        PlayerShip,
+        related_name="inventory_modules",
+        on_delete=models.CASCADE,
+    )
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.player_ship.player.name} - cargo module : {self.module.name}"
+    
     
 class PlayerShipModule(models.Model):
     player_ship = models.ForeignKey(PlayerShip, related_name="player_ship_module", on_delete=models.CASCADE)
@@ -655,6 +672,61 @@ class PlayerShipModule(models.Model):
 
     def __str__(self):
         return f"{self.player_ship.player.name} - {self.player_ship.ship.name} - module : {self.module.name}"
+
+
+class PlayerShipModuleReconfiguration(models.Model):
+    ACTION_TYPE_CHOICES = (
+        ("EQUIP", "equip"),
+        ("UNEQUIP", "unequip"),
+    )
+    STATUS_CHOICES = (
+        ("PENDING", "pending"),
+        ("COMPLETED", "completed"),
+        ("FAILED", "failed"),
+    )
+
+    player_ship = models.ForeignKey(
+        PlayerShip,
+        related_name="module_reconfigurations",
+        on_delete=models.CASCADE,
+    )
+    requested_by_player = models.ForeignKey(
+        Player,
+        related_name="module_reconfigurations",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    action_type = models.CharField(max_length=10, choices=ACTION_TYPE_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING", db_index=True)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    equipped_module_entry = models.ForeignKey(
+        PlayerShipModule,
+        related_name="reconfiguration_events",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    inventory_module_entry = models.ForeignKey(
+        PlayerShipInventoryModule,
+        related_name="reconfiguration_events",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    execute_at = models.DateTimeField(db_index=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["player_ship", "status", "execute_at"]),
+        ]
+
+    def __str__(self):
+        return f"{self.player_ship_id} {self.action_type} {self.module_id} ({self.status})"
 
 
 class ShipWreck(models.Model):

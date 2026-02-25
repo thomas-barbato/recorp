@@ -90,6 +90,34 @@ def _expire_wreck_and_purge_source_ship(wreck_id: int) -> Optional[Dict[str, Any
         return None
 
 
+def _append_active_wreck_occupied_coords(occupied_coords: list, sector_id: int) -> None:
+    """Treat active wrecks as blockers for NPC respawn placement."""
+    try:
+        wrecks = ShipWreck.objects.filter(
+            sector_id=sector_id,
+            status="ACTIVE",
+        ).values("coordinates", "size")
+        for wreck in wrecks:
+            coords = wreck.get("coordinates") if isinstance(wreck, dict) else None
+            size = wreck.get("size") if isinstance(wreck, dict) else None
+            if not isinstance(coords, dict):
+                continue
+            if not isinstance(size, dict):
+                size = {"x": 1, "y": 1}
+            try:
+                wx = int(coords.get("x", 0) or 0)
+                wy = int(coords.get("y", 0) or 0)
+                sx = max(1, int(size.get("x", 1) or 1))
+                sy = max(1, int(size.get("y", 1) or 1))
+            except Exception:
+                continue
+            for y in range(wy, wy + sy):
+                for x in range(wx, wx + sx):
+                    occupied_coords.append({"y": y, "x": x})
+    except Exception:
+        logger.exception(f"[CeleryTick] Failed to include wreck occupancy for sector_id={sector_id}")
+
+
 def _choose_npc_respawn_coord(npc, sector_id: int, ship_size_x: int, ship_size_y: int) -> Optional[Dict[str, int]]:
     try:
         pa = PlayerAction(None)
@@ -115,6 +143,7 @@ def _choose_npc_respawn_coord(npc, sector_id: int, ship_size_x: int, ship_size_y
                     "npc": npcs or [],
                     "pc": pcs or [],
                 })
+                _append_active_wreck_occupied_coords(occupied, sector_id)
 
                 if pa._can_place_ship_at_position(preferred, occupied, ship_size_x, ship_size_y):
                     return preferred
@@ -131,13 +160,34 @@ def _choose_npc_respawn_coord(npc, sector_id: int, ship_size_x: int, ship_size_y
                     if pa._can_place_ship_at_position(pos, occupied, ship_size_x, ship_size_y):
                         return pos
 
-        return pa._calculate_destination_coord(
+        coord = pa._calculate_destination_coord(
             sector_id,
             ship_size_x,
             ship_size_y,
             padding_h,
             padding_w,
         )
+        if not coord:
+            return None
+
+        wreck_occupied = []
+        _append_active_wreck_occupied_coords(wreck_occupied, sector_id)
+        if not wreck_occupied or pa._can_place_ship_at_position(coord, wreck_occupied, ship_size_x, ship_size_y):
+            return coord
+
+        sector_size = int(getattr(pa, "SECTOR_SIZE", 40) or 40)
+        cx, cy = int(coord.get("x", 0) or 0), int(coord.get("y", 0) or 0)
+        candidates = []
+        for y in range(sector_size):
+            for x in range(sector_size):
+                candidates.append((abs(x - cx) + abs(y - cy), abs(y - cy), abs(x - cx), y, x))
+        candidates.sort()
+        for _, _, _, y, x in candidates:
+            pos = {"x": x, "y": y}
+            if pa._can_place_ship_at_position(pos, wreck_occupied, ship_size_x, ship_size_y):
+                return pos
+
+        return coord
     except Exception:
         logger.exception(f"[CeleryTick] NPC respawn coord resolve failed for npc_id={getattr(npc, 'id', None)}")
         return None

@@ -25,7 +25,13 @@
         <!-- INVENTAIRE -->
         <div class="order-1 lg:order-2 lg:w-1/2 w-full p-3 flex flex-col md:custom-scroll gap-2">
             <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron">{% translate "Inventory" %}</h3>
-            <p class="text-emerald-200 text-xs mb-2">{% translate "Max Capacity" %}: <span class="font-bold text-emerald-400">25 / 100</span></p>
+            <div id="inventory-reconfig-status" class="hidden text-[11px] md:text-xs rounded-md border border-amber-400/20 bg-amber-900/15 text-amber-200 px-2 py-1"></div>
+            <div id="inventory-action-feedback" class="hidden text-[11px] md:text-xs rounded-md border px-2 py-1"></div>
+            <div id="inventory-overcapacity-warning" class="hidden text-[11px] md:text-xs rounded-md border border-red-400/20 bg-red-950/30 text-red-200 px-2 py-1"></div>
+            <p class="text-emerald-200 text-xs mb-2">
+                {% translate "Max Capacity" %}:
+                <span id="inventory-capacity-text" class="font-bold text-emerald-400">25 / 100</span>
+            </p>
 
             <div id="inventory-list" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1">
                 <div class="inventory-item flex justify-between items-center bg-gray-800/60 hover:bg-gray-700/50 border border-emerald-800/30 rounded p-1 text-[11px] text-blue-300 p-2">
@@ -67,16 +73,20 @@
             </div>
         </div>
 
-            <div class="order-2 lg:order-1 lg:w-1/2 w-full p-3 flex flex-col overflow-y-auto custom-scroll gap-2">
-                <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron">{% translate "Equipped Modules" %}</h3>
+            <div class="order-2 lg:order-1 lg:w-1/2 w-full p-3 flex flex-col overflow-y-auto custom-scroll gap-2 equipped-modules-panel">
+                <h3 class="text-base font-bold text-emerald-300 uppercase mb-1 tracking-widest font-orbitron flex items-center gap-2 flex-wrap">
+                    <span>{% translate "Equipped Modules" %}</span>
+                    <span id="equipped-modules-total-count" class="equipped-module-count is-unknown">0 / -</span>
+                </h3>
 
                 {% for category in module_categories %}
-                <fieldset class="flex border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all">
-                    <legend class="text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase font-orbitron">
-                        {% translate category|from_underscore_to_space %}
+                <fieldset class="equipped-module-group flex flex-col border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all" data-module-category="{{ category }}">
+                    <legend class="equipped-module-legend text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase font-orbitron">
+                        <span class="equipped-module-legend__label">{% translate category|from_underscore_to_space %}</span>
+                        <span class="equipped-module-count is-unknown" data-module-count-for="{{ category }}">0 / -</span>
                     </legend>
-                    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
-                        <div class="text-gray-500 text-[10px] italic pl-1 empty-slot">{% translate "Empty slot" %}</div>
+                    <div class="equipped-module-list w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
+                        <div class="text-gray-500 text-[10px] italic pl-1 empty-slot equipped-empty-slot">{% translate "Empty slot" %}</div>
                     </div>
                 </fieldset>
                 {% endfor %}

@@ -5,6 +5,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 from django.db import transaction
+from django.db.models import Q
 import datetime
 from django.utils import timezone
 
@@ -12,8 +13,17 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
+from core.backend.ship_module_runtime import (
+    canonical_module_type,
+    module_limit_bucket,
+    count_equipped_modules_by_limit_bucket,
+    get_player_ship_module_limits,
+    recompute_player_ship_stats,
+    is_ship_over_capacity,
+    set_equipment_block,
+)
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, Npc, Module, PlayerShipModule, Player, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, PlayerShipInventoryModule, PlayerShipModuleReconfiguration, Npc, Module, PlayerShipModule, Player, PlayerGroup, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource
 from core.backend.modal_builder import (
     build_npc_modal_data,
     build_pc_modal_data,
@@ -34,6 +44,8 @@ class GameConsumer(WebsocketConsumer):
     DEFAULT_RESPAWN_SECTOR_ID = 7
     NPC_RESPAWN_DELAY_SECONDS = 120
     WRECK_TTL_SECONDS = 12 * 60 * 60  # 12h (scavenge => disparition immédiate)
+    MODULE_RECONFIG_SECONDS = 10
+    EQUIPMENT_COMBAT_LOCK_SECONDS = 30
     """
     WebSocket consumer pour gérer les interactions en temps réel du jeu.
     Gère les mouvements des joueurs, les actions de jeu et la synchronisation.
@@ -468,6 +480,23 @@ class GameConsumer(WebsocketConsumer):
                 return
 
             player_action = PlayerAction(self.user.id)
+
+            current_ship = (
+                PlayerShip.objects
+                .select_related("ship")
+                .filter(player_id=self.player_id, is_current_ship=True)
+                .first()
+            )
+            if current_ship:
+                is_overloaded, cargo_load, cargo_capacity = is_ship_over_capacity(current_ship)
+                if is_overloaded:
+                    self._send_action_failed_response(
+                        "CARGO_OVER_CAPACITY",
+                        "Impossible de se déplacer : votre vaisseau est en surcapacité.",
+                        cargo_load=cargo_load,
+                        cargo_capacity=cargo_capacity,
+                    )
+                    return False
 
             # === Création du message selon le canal ===
             msg, recipients = player_action.create_chat_message(content, channel)
@@ -1087,6 +1116,29 @@ class GameConsumer(WebsocketConsumer):
             # =======================
             pa = PlayerAction(self.user.id)
 
+            current_ship = (
+                PlayerShip.objects
+                .select_related("ship")
+                .filter(player_id=player_id, is_current_ship=True)
+                .first()
+            )
+            if current_ship:
+                is_overloaded, cargo_load, cargo_capacity = is_ship_over_capacity(current_ship)
+                if is_overloaded:
+                    self._send_response(
+                        {
+                            "type": "async_warp_failed",
+                            "message": {"reason": "cargo_over_capacity"},
+                        }
+                    )
+                    self._send_action_failed_response(
+                        "CARGO_OVER_CAPACITY",
+                        "Impossible de warp : votre vaisseau est en surcapacité.",
+                        cargo_load=cargo_load,
+                        cargo_capacity=cargo_capacity,
+                    )
+                    return
+
             links = SectorWarpZone.objects.filter(id=sectorwarpzone_id).first()
             if not links:
                 self._send_response(
@@ -1587,6 +1639,33 @@ class GameConsumer(WebsocketConsumer):
             "message": event['data']
         })
 
+    def action_failed(self, event):
+        target_player_id = event.get("target_player_id")
+        if target_player_id is not None and int(target_player_id) != int(self.player_id):
+            return
+
+        payload = event.get("message", {})
+        self._send_response({
+            "type": "action_failed",
+            "message": payload if isinstance(payload, dict) else {"reason": "UNKNOWN_ACTION_FAILURE"},
+        })
+
+    def ship_module_local_sync(self, event):
+        if int(event.get("target_player_id", -1)) != int(self.player_id):
+            return
+        self._send_response({
+            "type": "ship_module_local_sync",
+            "message": event.get("message", {}),
+        })
+
+    def scan_target_data_refresh(self, event):
+        if int(event.get("target_player_id", -1)) != int(self.player_id):
+            return
+        self._send_response({
+            "type": "scan_target_data_refresh",
+            "message": event.get("message", {}),
+        })
+
     def entity_state_update(self, event):
         """
         Reçoit une mise à jour d'état d'une entité (PC / NPC)
@@ -1650,6 +1729,7 @@ class GameConsumer(WebsocketConsumer):
             # -----------------------
             target_type, target_id = target_key.split("_")
 
+            target_ship = None
             if target_type == "pc":
                 target_ship = PlayerShip.objects.select_related("player").get(
                     player_id=int(target_id),
@@ -1728,6 +1808,13 @@ class GameConsumer(WebsocketConsumer):
                 distance_tiles=distance,
                 target_weapons=target_weapons,
             )
+
+            try:
+                set_equipment_block(source_ship, self.EQUIPMENT_COMBAT_LOCK_SECONDS)
+                if target_ship is not None:
+                    set_equipment_block(target_ship, self.EQUIPMENT_COMBAT_LOCK_SECONDS)
+            except Exception:
+                logger.exception("combat equipment lock update failed")
 
             # Enrichit les events de combat (noms + dégâts appliqués) pour simplifier
             # le rendu front (modal combat / logs) sans recalcul local.
@@ -2618,6 +2705,7 @@ class GameConsumer(WebsocketConsumer):
         self._invalidate_expired_scans_safe()
         self._invalidate_expired_wrecks_safe()
         self._respawn_dead_npcs_safe()
+        self._process_due_module_reconfigurations_safe()
 
         if not self._is_valid_request(text_data):
             return
@@ -2885,6 +2973,10 @@ class GameConsumer(WebsocketConsumer):
                         "npc": npcs or [],
                         "pc": pcs or [],
                     })
+                    occupied_coords = self._append_active_wreck_occupied_coords(
+                        occupied_coords=occupied_coords,
+                        sector_id=sector_id,
+                    )
 
                     if pa._can_place_ship_at_position(preferred, occupied_coords, ship_size_x, ship_size_y):
                         return preferred
@@ -2900,16 +2992,67 @@ class GameConsumer(WebsocketConsumer):
                         return nearest
 
             # Fallback (comportement actuel): placement générique basé sur warpzone.
-            return pa._calculate_destination_coord(
+            generic = pa._calculate_destination_coord(
                 sector_id,
                 ship_size_x,
                 ship_size_y,
                 padding_h,
                 padding_w,
             )
+            if not generic:
+                return None
+
+            # Le fallback historique ne connaît pas les carcasses. On vérifie donc
+            # explicitement que la case proposée n'est pas occupée par un wreck actif.
+            wreck_occupied = self._append_active_wreck_occupied_coords(
+                occupied_coords=[],
+                sector_id=sector_id,
+            )
+            if pa._can_place_ship_at_position(generic, wreck_occupied, ship_size_x, ship_size_y):
+                return generic
+
+            nearest_from_generic = self._find_nearest_free_respawn_cell(
+                pa=pa,
+                preferred={"x": int(generic.get("x", 0) or 0), "y": int(generic.get("y", 0) or 0)},
+                occupied_coords=wreck_occupied,
+                ship_size_x=ship_size_x,
+                ship_size_y=ship_size_y,
+            )
+            return nearest_from_generic or generic
         except Exception:
             logger.exception(f"NPC respawn coord resolve failed for npc_id={getattr(npc, 'id', None)}")
             return None
+
+    def _append_active_wreck_occupied_coords(self, *, occupied_coords, sector_id: int):
+        """
+        Ajoute les cases occupées par les carcasses actives à une liste de coordonnées occupées.
+        Empêche notamment un NPC de respawn directement dans sa propre épave.
+        """
+        try:
+            coords = list(occupied_coords or [])
+            wrecks = (
+                ShipWreck.objects
+                .filter(sector_id=sector_id, status="ACTIVE")
+                .values("coordinates", "size")
+            )
+            for w in wrecks:
+                wc = w.get("coordinates") or {}
+                ws = w.get("size") or {"x": 1, "y": 1}
+                try:
+                    x0 = int((wc or {}).get("x", 0) or 0)
+                    y0 = int((wc or {}).get("y", 0) or 0)
+                    sx = max(1, int((ws or {}).get("x", 1) or 1))
+                    sy = max(1, int((ws or {}).get("y", 1) or 1))
+                except Exception:
+                    continue
+
+                for yy in range(y0, y0 + sy):
+                    for xx in range(x0, x0 + sx):
+                        coords.append({"y": yy, "x": xx})
+            return coords
+        except Exception:
+            logger.exception("Failed to append wreck occupied coords for NPC respawn")
+            return list(occupied_coords or [])
 
     def _find_nearest_free_respawn_cell(
         self,
@@ -3011,6 +3154,514 @@ class GameConsumer(WebsocketConsumer):
             logger.exception(f"Failed to expire/purge wreck {wreck_id}")
             return None
 
+    def _send_action_failed_response(self, reason: str, message: Optional[str] = None, **extra) -> None:
+        payload = {"reason": reason}
+        if message:
+            payload["message"] = message
+        if extra:
+            payload.update(extra)
+        self._send_response({
+            "type": "action_failed",
+            "message": payload,
+        })
+
+    def _emit_targeted_action_failed(self, target_player_id: int, reason: str, message: Optional[str] = None, **extra) -> None:
+        payload = {"reason": reason}
+        if message:
+            payload["message"] = message
+        if extra:
+            payload.update(extra)
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "action_failed",
+                "target_player_id": int(target_player_id),
+                "message": payload,
+            }
+        )
+
+    def _emit_local_ship_module_sync(self, target_player_id: int, context: str, extra: Optional[Dict[str, Any]] = None) -> None:
+        data = build_pc_modal_data(int(target_player_id))
+        if not data:
+            return
+        message = {
+            "target_key": f"pc_{int(target_player_id)}",
+            "data": data,
+            "context": context,
+        }
+        if isinstance(extra, dict):
+            message.update(extra)
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "ship_module_local_sync",
+                "target_player_id": int(target_player_id),
+                "message": message,
+            }
+        )
+
+    def _get_active_scan_recipients_for_pc(self, target_player_id: int, sector_id: int) -> set[int]:
+        now = timezone.now()
+        scan_qs = ScanIntel.objects.filter(
+            target_type="pc",
+            target_id=int(target_player_id),
+            sector_id=int(sector_id),
+            invalidated_at__isnull=True,
+            expires_at__gt=now,
+        )
+        recipients = set(int(pid) for pid in scan_qs.values_list("scanner_player_id", flat=True))
+        scan_ids = list(scan_qs.values_list("id", flat=True))
+        if scan_ids:
+            group_ids = list(
+                ScanIntelGroup.objects.filter(scan_id__in=scan_ids).values_list("group_id", flat=True)
+            )
+            if group_ids:
+                recipients.update(
+                    int(pid)
+                    for pid in PlayerGroup.objects.filter(group_id__in=group_ids).values_list("player_id", flat=True)
+                )
+        return recipients
+
+    def _build_scan_safe_pc_modal_payload(self, data: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        if not isinstance(data, dict):
+            return data
+        ship_payload = data.get("ship")
+        if not isinstance(ship_payload, dict):
+            return data
+
+        sanitized = dict(data)
+        sanitized_ship = dict(ship_payload)
+        sanitized_ship.pop("inventory_modules", None)
+        sanitized_ship.pop("module_reconfiguration", None)
+        sanitized["ship"] = sanitized_ship
+        return sanitized
+
+    def _emit_scan_target_refresh_for_pc(self, target_player_id: int, data: Optional[Dict[str, Any]] = None) -> None:
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+
+        target_payload = data or build_pc_modal_data(int(target_player_id))
+        target_payload = self._build_scan_safe_pc_modal_payload(target_payload)
+        if not target_payload:
+            return
+
+        recipients = self._get_active_scan_recipients_for_pc(int(target_player_id), sector_id)
+        target_key = f"pc_{int(target_player_id)}"
+        for recipient_id in recipients:
+            if int(recipient_id) == int(target_player_id):
+                continue
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "scan_target_data_refresh",
+                    "target_player_id": int(recipient_id),
+                    "message": {
+                        "target_key": target_key,
+                        "data": target_payload,
+                    }
+                }
+            )
+
+    def _broadcast_ship_stats_entity_updates(self, player_ship: PlayerShip) -> None:
+        entity_key = f"pc_{int(player_ship.player_id)}"
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "entity_state_update",
+                "entity_key": entity_key,
+                "change_type": "hp_update",
+                "changes": {
+                    "hp": {
+                        "current": int(player_ship.current_hp or 0),
+                        "max": int(player_ship.max_hp or 0),
+                    },
+                    "shields": {
+                        "MISSILE": int(player_ship.current_missile_defense or 0),
+                        "THERMAL": int(player_ship.current_thermal_defense or 0),
+                        "BALLISTIC": int(player_ship.current_ballistic_defense or 0),
+                    },
+                    "shield_max": {
+                        "MISSILE": int(player_ship.max_missile_defense or 0),
+                        "THERMAL": int(player_ship.max_thermal_defense or 0),
+                        "BALLISTIC": int(player_ship.max_ballistic_defense or 0),
+                    },
+                }
+            }
+        )
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "entity_state_update",
+                "entity_key": entity_key,
+                "change_type": "mp_update",
+                "changes": {
+                    "movement": {
+                        "current": int(player_ship.current_movement or 0),
+                        "max": int(player_ship.max_movement or 0),
+                    }
+                }
+            }
+        )
+
+    def _refresh_room_cache_after_ship_module_change(self) -> None:
+        try:
+            StoreInCache(self.room_group_name, self.user).get_or_set_cache(need_to_be_recreated=True)
+        except Exception:
+            logger.exception("module reconfig: cache rebuild failed")
+
+    def _process_due_module_reconfigurations_safe(self) -> None:
+        # implémentation plus bas (méthodes _complete_pending_module_reconfiguration)
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+
+        try:
+            now = timezone.now()
+            due_ids = list(
+                PlayerShipModuleReconfiguration.objects.filter(
+                    status="PENDING",
+                    execute_at__lte=now,
+                    player_ship__is_current_ship=True,
+                    player_ship__player__sector_id=sector_id,
+                ).values_list("id", flat=True)[:25]
+            )
+            for action_id in due_ids:
+                self._complete_pending_module_reconfiguration(int(action_id))
+        except Exception:
+            logger.exception("module reconfig sweep failed")
+
+    def _validate_module_reconfig_request(self, player_ship: PlayerShip, operation: str) -> Optional[Dict[str, Any]]:
+        now = timezone.now()
+        if operation not in {"EQUIP", "UNEQUIP"}:
+            return {"reason": "INVALID_OPERATION", "message": "Opération invalide."}
+
+        if str(getattr(player_ship, "status", "")).upper() == "DEAD":
+            return {"reason": "SHIP_DEAD", "message": "Impossible de modifier l'équipement sur un vaisseau détruit."}
+
+        blocked_until = getattr(player_ship, "equipment_blocked_until", None)
+        if blocked_until and blocked_until > now:
+            remaining = max(1, int((blocked_until - now).total_seconds()))
+            return {
+                "reason": "IN_COMBAT_LOCK",
+                "message": f"Impossible de modifier l'équipement pendant {remaining}s après un combat.",
+                "remaining_seconds": remaining,
+            }
+
+        if PlayerShipModuleReconfiguration.objects.filter(player_ship_id=player_ship.id, status="PENDING").exists():
+            return {
+                "reason": "RECONFIG_ALREADY_PENDING",
+                "message": "Une reconfiguration est déjà en cours sur ce vaisseau.",
+            }
+
+        return None
+
+    def _validate_equip_capacity_constraints(self, player_ship: PlayerShip, module_obj: Module) -> Optional[Dict[str, Any]]:
+        equipped_count = PlayerShipModule.objects.filter(player_ship_id=player_ship.id).count()
+        global_max = int(getattr(getattr(player_ship, "ship", None), "module_slot_available", 0) or 0)
+        if equipped_count >= global_max:
+            return {
+                "reason": "MODULE_SLOTS_FULL",
+                "message": "Impossible d'équiper ce module : ce vaisseau est déjà à sa capacité maximale.",
+                "equipped": equipped_count,
+                "max": global_max,
+            }
+
+        limits = get_player_ship_module_limits(player_ship)
+        counts = count_equipped_modules_by_limit_bucket(player_ship)
+        bucket = module_limit_bucket(getattr(module_obj, "type", None))
+        limit = limits.get(bucket)
+        if isinstance(limit, int):
+            current = int(counts.get(bucket, 0))
+            if current >= int(limit):
+                return {
+                    "reason": "MODULE_TYPE_LIMIT_REACHED",
+                    "message": "Impossible d'équiper ce module car cette catégorie est déjà à sa capacité maximum pour ce vaisseau.",
+                    "module_type": bucket,
+                    "equipped": current,
+                    "max": int(limit),
+                }
+        return None
+
+    def _handle_ship_module_reconfiguration(self, payload: Dict[str, Any]) -> None:
+        try:
+            player_ship = (
+                PlayerShip.objects
+                .select_related("ship", "player")
+                .filter(player_id=self.player_id, is_current_ship=True)
+                .first()
+            )
+            if not player_ship:
+                self._send_action_failed_response("PLAYER_SHIP_NOT_FOUND", "Vaisseau courant introuvable.")
+                return
+
+            operation = str(payload.get("operation") or "").upper()
+            base_error = self._validate_module_reconfig_request(player_ship, operation)
+            if base_error:
+                self._send_action_failed_response(**base_error)
+                return
+
+            execute_at = timezone.now() + datetime.timedelta(seconds=self.MODULE_RECONFIG_SECONDS)
+
+            with transaction.atomic():
+                locked_ship = (
+                    PlayerShip.objects
+                    .select_related("ship", "player")
+                    .select_for_update()
+                    .get(id=player_ship.id)
+                )
+
+                base_error = self._validate_module_reconfig_request(locked_ship, operation)
+                if base_error:
+                    self._send_action_failed_response(**base_error)
+                    return
+
+                created_action = None
+
+                if operation == "UNEQUIP":
+                    equipped_entry_id = payload.get("equipped_entry_id")
+                    if not equipped_entry_id:
+                        self._send_action_failed_response("MISSING_EQUIPPED_ENTRY_ID", "Module équipé introuvable.")
+                        return
+
+                    equipped_entry = (
+                        PlayerShipModule.objects
+                        .select_related("module")
+                        .filter(id=int(equipped_entry_id), player_ship_id=locked_ship.id)
+                        .first()
+                    )
+                    if not equipped_entry or not equipped_entry.module:
+                        self._send_action_failed_response("EQUIPPED_MODULE_NOT_FOUND", "Le module à déséquiper est introuvable.")
+                        return
+
+                    created_action = PlayerShipModuleReconfiguration.objects.create(
+                        player_ship=locked_ship,
+                        requested_by_player_id=self.player_id,
+                        action_type="UNEQUIP",
+                        status="PENDING",
+                        module=equipped_entry.module,
+                        equipped_module_entry=equipped_entry,
+                        execute_at=execute_at,
+                        metadata={},
+                    )
+
+                elif operation == "EQUIP":
+                    inventory_module_id = payload.get("inventory_module_id")
+                    if not inventory_module_id:
+                        self._send_action_failed_response("MISSING_INVENTORY_MODULE_ID", "Module d'inventaire introuvable.")
+                        return
+
+                    inventory_entry = (
+                        PlayerShipInventoryModule.objects
+                        .select_related("module")
+                        .filter(id=int(inventory_module_id), player_ship_id=locked_ship.id)
+                        .first()
+                    )
+                    if not inventory_entry or not inventory_entry.module:
+                        self._send_action_failed_response("INVENTORY_MODULE_NOT_FOUND", "Le module à équiper est introuvable.")
+                        return
+
+                    capacity_error = self._validate_equip_capacity_constraints(locked_ship, inventory_entry.module)
+                    if capacity_error:
+                        self._send_action_failed_response(**capacity_error)
+                        return
+
+                    created_action = PlayerShipModuleReconfiguration.objects.create(
+                        player_ship=locked_ship,
+                        requested_by_player_id=self.player_id,
+                        action_type="EQUIP",
+                        status="PENDING",
+                        module=inventory_entry.module,
+                        inventory_module_entry=inventory_entry,
+                        execute_at=execute_at,
+                        metadata=inventory_entry.metadata or {},
+                    )
+
+                else:
+                    self._send_action_failed_response("INVALID_OPERATION", "Opération invalide.")
+                    return
+
+            self._emit_local_ship_module_sync(
+                self.player_id,
+                context="MODULE_RECONFIG_STARTED",
+                extra={
+                    "operation": operation,
+                    "reconfiguration_id": int(created_action.id),
+                }
+            )
+        except Exception:
+            logger.exception("module reconfig start failed")
+            self._send_action_failed_response("MODULE_RECONFIG_START_FAILED", "Impossible de lancer la reconfiguration.")
+
+    def _complete_pending_module_reconfiguration(self, action_id: int) -> None:
+        try:
+            post_commit: Optional[Dict[str, Any]] = None
+            now = timezone.now()
+
+            with transaction.atomic():
+                action = (
+                    PlayerShipModuleReconfiguration.objects
+                    .select_related(
+                        "player_ship__ship",
+                        "player_ship__player",
+                        "module",
+                        "equipped_module_entry__module",
+                        "inventory_module_entry__module",
+                    )
+                    .select_for_update()
+                    .filter(id=int(action_id))
+                    .first()
+                )
+                if not action or action.status != "PENDING":
+                    return
+                if action.execute_at and action.execute_at > now:
+                    return
+
+                player_ship = action.player_ship
+                if not player_ship or not player_ship.is_current_ship:
+                    action.status = "FAILED"
+                    action.completed_at = now
+                    action.metadata = {**(action.metadata or {}), "error": "SHIP_NOT_CURRENT"}
+                    action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                    post_commit = {
+                        "status": "FAILED",
+                        "player_id": int(action.requested_by_player_id or 0),
+                        "reason": "SHIP_NOT_CURRENT",
+                        "message": "Le vaisseau n'est plus disponible pour cette reconfiguration.",
+                    }
+                elif action.action_type == "UNEQUIP":
+                    equipped_entry = (
+                        PlayerShipModule.objects
+                        .select_related("module")
+                        .filter(id=action.equipped_module_entry_id, player_ship_id=player_ship.id)
+                        .first()
+                    )
+                    if not equipped_entry or not equipped_entry.module:
+                        action.status = "FAILED"
+                        action.completed_at = now
+                        action.metadata = {**(action.metadata or {}), "error": "EQUIPPED_ENTRY_MISSING"}
+                        action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                        post_commit = {
+                            "status": "FAILED",
+                            "player_id": int(player_ship.player_id),
+                            "reason": "UNEQUIP_TARGET_MISSING",
+                            "message": "Le module à déséquiper n'est plus disponible.",
+                        }
+                    else:
+                        inv_entry = PlayerShipInventoryModule.objects.create(
+                            player_ship=player_ship,
+                            module=equipped_entry.module,
+                            metadata=(action.metadata or {}),
+                        )
+                        equipped_entry.delete()
+                        recompute_player_ship_stats(player_ship, save=True)
+                        action.status = "COMPLETED"
+                        action.completed_at = now
+                        action.metadata = {**(action.metadata or {}), "result_inventory_module_id": int(inv_entry.id)}
+                        action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                        post_commit = {
+                            "status": "COMPLETED",
+                            "player_id": int(player_ship.player_id),
+                            "player_ship_id": int(player_ship.id),
+                            "operation": "UNEQUIP",
+                        }
+                elif action.action_type == "EQUIP":
+                    inventory_entry = (
+                        PlayerShipInventoryModule.objects
+                        .select_related("module")
+                        .filter(id=action.inventory_module_entry_id, player_ship_id=player_ship.id)
+                        .first()
+                    )
+                    if not inventory_entry or not inventory_entry.module:
+                        action.status = "FAILED"
+                        action.completed_at = now
+                        action.metadata = {**(action.metadata or {}), "error": "INVENTORY_ENTRY_MISSING"}
+                        action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                        post_commit = {
+                            "status": "FAILED",
+                            "player_id": int(player_ship.player_id),
+                            "reason": "EQUIP_TARGET_MISSING",
+                            "message": "Le module à équiper n'est plus disponible dans l'inventaire.",
+                        }
+                    else:
+                        capacity_error = self._validate_equip_capacity_constraints(player_ship, inventory_entry.module)
+                        if capacity_error:
+                            action.status = "FAILED"
+                            action.completed_at = now
+                            action.metadata = {**(action.metadata or {}), "error": capacity_error.get("reason")}
+                            action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                            post_commit = {
+                                "status": "FAILED",
+                                "player_id": int(player_ship.player_id),
+                                **capacity_error,
+                            }
+                        else:
+                            equipped_entry = PlayerShipModule.objects.create(
+                                player_ship=player_ship,
+                                module=inventory_entry.module,
+                            )
+                            inventory_entry.delete()
+                            recompute_player_ship_stats(player_ship, save=True)
+                            action.status = "COMPLETED"
+                            action.completed_at = now
+                            action.metadata = {**(action.metadata or {}), "result_equipped_entry_id": int(equipped_entry.id)}
+                            action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                            post_commit = {
+                                "status": "COMPLETED",
+                                "player_id": int(player_ship.player_id),
+                                "player_ship_id": int(player_ship.id),
+                                "operation": "EQUIP",
+                            }
+                else:
+                    action.status = "FAILED"
+                    action.completed_at = now
+                    action.metadata = {**(action.metadata or {}), "error": "INVALID_ACTION_TYPE"}
+                    action.save(update_fields=["status", "completed_at", "metadata", "updated_at"])
+                    post_commit = {
+                        "status": "FAILED",
+                        "player_id": int(player_ship.player_id) if player_ship else int(action.requested_by_player_id or 0),
+                        "reason": "INVALID_ACTION_TYPE",
+                        "message": "Action de reconfiguration invalide.",
+                    }
+
+            if not post_commit:
+                return
+
+            target_player_id = int(post_commit.get("player_id") or 0)
+            if target_player_id:
+                self._refresh_room_cache_after_ship_module_change()
+                self._emit_local_ship_module_sync(target_player_id, context=f"MODULE_RECONFIG_{post_commit['status']}")
+
+            if post_commit["status"] != "COMPLETED":
+                if target_player_id:
+                    self._emit_targeted_action_failed(
+                        target_player_id,
+                        reason=str(post_commit.get("reason") or "MODULE_RECONFIG_FAILED"),
+                        message=post_commit.get("message"),
+                        module_type=post_commit.get("module_type"),
+                        equipped=post_commit.get("equipped"),
+                        max=post_commit.get("max"),
+                    )
+                return
+
+            player_ship = (
+                PlayerShip.objects
+                .select_related("ship", "player")
+                .filter(id=int(post_commit["player_ship_id"]))
+                .first()
+            )
+            if not player_ship:
+                return
+
+            self._broadcast_ship_stats_entity_updates(player_ship)
+            fresh_data = build_pc_modal_data(target_player_id)
+            self._emit_scan_target_refresh_for_pc(target_player_id, data=fresh_data)
+
+        except Exception:
+            logger.exception("module reconfig completion failed")
+
     def _parse_client_json_message(self, text_data: str) -> Optional[Dict[str, Any]]:
         try:
             data = json.loads(text_data)
@@ -3037,6 +3688,7 @@ class GameConsumer(WebsocketConsumer):
             "action_scan_pc_npc": self._dispatch_scan_action_message,
             "share_scan": self._dispatch_share_scan_message,
             "action_attack": self._dispatch_combat_action_message,
+            "action_ship_module_reconfigure": self._dispatch_ship_module_reconfiguration_message,
             "action_respawn": self._dispatch_respawn_action_message,
         }
         handler = handlers.get(msg_type)
@@ -3080,6 +3732,17 @@ class GameConsumer(WebsocketConsumer):
 
     def _dispatch_combat_action_message(self, data: Dict[str, Any]) -> None:
         self._handle_combat_action(self._get_client_payload(data))
+
+    def _dispatch_ship_module_reconfiguration_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_response({
+                "type": "action_failed",
+                "reason": "INVALID_RECONFIG_PAYLOAD",
+                "message": {"reason": "INVALID_RECONFIG_PAYLOAD"},
+            })
+            return
+        self._handle_ship_module_reconfiguration(payload)
 
     def _dispatch_respawn_action_message(self, data: Dict[str, Any]) -> None:
         payload = self._get_client_payload(data)
