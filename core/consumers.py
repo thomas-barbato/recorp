@@ -5,7 +5,6 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 from django.db import transaction
-from django.db.models import Q
 import datetime
 from django.utils import timezone
 
@@ -14,7 +13,6 @@ from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
 from core.backend.ship_module_runtime import (
-    canonical_module_type,
     module_limit_bucket,
     count_equipped_modules_by_limit_bucket,
     get_player_ship_module_limits,
@@ -3312,7 +3310,6 @@ class GameConsumer(WebsocketConsumer):
             logger.exception("module reconfig: cache rebuild failed")
 
     def _process_due_module_reconfigurations_safe(self) -> None:
-        # implémentation plus bas (méthodes _complete_pending_module_reconfiguration)
         try:
             sector_id = int(self.room)
         except Exception:

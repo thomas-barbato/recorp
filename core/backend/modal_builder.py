@@ -24,7 +24,7 @@ from core.backend.get_data import GetDataFromDB
 def _build_ship_module_type_limits(ship_obj) -> Dict[str, Optional[int]]:
     """
     Mappe les limites de modules du vaisseau vers les types front (ex: DEFENSE_BALLISTIC).
-    Les catégories PROB/PROBE sont mappées sur la même limite de sonde.
+    La catégorie PROBE est mappée sur la limite de sonde.
     """
     if not ship_obj:
         return {}
@@ -66,7 +66,6 @@ def _build_ship_module_type_limits(ship_obj) -> Dict[str, Optional[int]]:
         "DEFENSE_MISSILE": defense_limit,
         "WEAPONRY": merged_limits["weaponry_module_limitation"],
         "PROBE": merged_limits["probe_module_limitation"],
-        "PROB": merged_limits["probe_module_limitation"],
         "HOLD": merged_limits["hold_module_limitation"],
         "MOVEMENT": merged_limits["movement_module_limitation"],
         "HULL": merged_limits["hull_module_limitation"],

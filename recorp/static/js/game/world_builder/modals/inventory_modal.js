@@ -13,15 +13,7 @@ function t(text) {
 }
 
 function normalizeModuleTypeKey(moduleType) {
-    const value = String(moduleType || "").toUpperCase();
-    if (value === "PROB") return "PROBE";
-    return value;
-}
-
-function getModuleTypeAliases(moduleType) {
-    const normalized = normalizeModuleTypeKey(moduleType);
-    if (normalized === "PROBE") return ["PROBE", "PROB"];
-    return normalized ? [normalized] : [];
+    return String(moduleType || "").toUpperCase();
 }
 
 function getModuleLimitBucket(moduleType) {
@@ -75,24 +67,19 @@ function findModuleTypeContainer(moduleType) {
     const root = getInventoryModalRoot();
     if (!root) return null;
 
-    for (const alias of getModuleTypeAliases(moduleType)) {
-        const node = root.querySelector(`#module-type-${alias}`);
-        if (node) return node;
-    }
-    return null;
+    const normalized = normalizeModuleTypeKey(moduleType);
+    if (!normalized) return null;
+    return root.querySelector(`#module-type-${normalized}`);
 }
 
 function findModuleCategoryFieldset(moduleType) {
     const root = getInventoryModalRoot();
     if (!root) return null;
 
-    for (const alias of getModuleTypeAliases(moduleType)) {
-        const fieldset = root.querySelector(`.equipped-module-group[data-module-category="${alias}"]`);
-        if (fieldset) return fieldset;
-    }
+    const normalized = normalizeModuleTypeKey(moduleType);
+    if (!normalized) return null;
 
-    const list = findModuleTypeContainer(moduleType);
-    return list?.closest(".equipped-module-group") || null;
+    return root.querySelector(`.equipped-module-group[data-module-category="${normalized}"]`);
 }
 
 function clearEquipTargetHighlights() {
@@ -767,18 +754,6 @@ function initInventoryModalController() {
     window.addEventListener("resize", () => {
         hideTooltip();
     });
-}
-
-function unequipModule(e, name) {
-    e?.stopPropagation?.();
-    showInventoryActionMessage(`${name} ${t("cannot be unequipped from this placeholder row.")}`, "error");
-}
-
-function deleteItem(e, name) {
-    e?.stopPropagation?.();
-    if (window.confirm(`${t("Are you sure you want to delete")} ${name}?`)) {
-        showInventoryActionMessage(`${name} ${t("deleted")}.`, "info");
-    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
