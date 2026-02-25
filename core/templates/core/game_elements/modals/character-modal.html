@@ -33,11 +33,27 @@
             </div>
             </div>
 
-            <ul class="text-sm text-emerald-200 font-shadow space-y-1 text-center select-none">
-            <li><span class="text-emerald-400 font-bold">{% translate "Name" %}</span>: {{  current_player_state.user.name }}</li>
-            <li><span class="text-emerald-400 font-bold">{% translate "Archetype" %}</span>: {% translate  current_player_state.user.archetype_name %}</li>
-            <li><span class="text-emerald-400 font-bold">{% translate "Faction" %}</span>: {{  current_player_state.faction.name }}</li>
-            <li><span class="text-emerald-400 font-bold">{% translate "Sector" %}</span>: {{  current_player_state.user.sector_name }}</li>
+            <ul class="character-meta-list text-sm text-emerald-200 font-shadow select-none list-none m-0 p-0">
+            <li class="character-meta-row">
+                <span class="character-meta-label text-emerald-400 font-bold">{% translate "Name" %}</span>
+                <span class="character-meta-sep">:</span>
+                <span class="character-meta-value">{{  current_player_state.user.name }}</span>
+            </li>
+            <li class="character-meta-row">
+                <span class="character-meta-label text-emerald-400 font-bold">{% translate "Archetype" %}</span>
+                <span class="character-meta-sep">:</span>
+                <span class="character-meta-value">{% translate  current_player_state.user.archetype_name %}</span>
+            </li>
+            <li class="character-meta-row">
+                <span class="character-meta-label text-emerald-400 font-bold">{% translate "Faction" %}</span>
+                <span class="character-meta-sep">:</span>
+                <span class="character-meta-value">{{  current_player_state.faction.name }}</span>
+            </li>
+            <li class="character-meta-row">
+                <span class="character-meta-label text-emerald-400 font-bold">{% translate "Sector" %}</span>
+                <span class="character-meta-sep">:</span>
+                <span class="character-meta-value">{{  current_player_state.user.sector_name }}</span>
+            </li>
             </ul>
 
             <div class="flex flex-col w-full mt-2">
@@ -71,7 +87,7 @@
                 {% translate category %}
             </legend>
 
-            <div class="flex flex-col gap-3 w-full select-none">
+            <div class="skills-grid w-full select-none">
                 {% for skill in skills.list %}
                 {% if category == skill.cat %}
                 <div id="skill-{{ skill.id }}"

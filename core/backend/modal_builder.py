@@ -1,10 +1,15 @@
 from typing import Optional, Dict, Any, List
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Sum
+from django.utils import timezone
 
 from core.models import (
     Player,
     PlayerShip,
     PlayerShipModule,
+    PlayerShipInventoryModule,
+    PlayerShipModuleReconfiguration,
+    PlayerShipResource,
+    ShipModuleLimitation,
     Npc,
     Module,
     PlanetResource, 
@@ -14,6 +19,64 @@ from core.models import (
     SectorWarpZone
 )
 from core.backend.get_data import GetDataFromDB
+
+
+def _build_ship_module_type_limits(ship_obj) -> Dict[str, Optional[int]]:
+    """
+    Mappe les limites de modules du vaisseau vers les types front (ex: DEFENSE_BALLISTIC).
+    Les catégories PROB/PROBE sont mappées sur la même limite de sonde.
+    """
+    if not ship_obj:
+        return {}
+
+    default_limits = {
+        "defense_module_limitation": 3,
+        "weaponry_module_limitation": 1,
+        "probe_module_limitation": 1,
+        "hold_module_limitation": 1,
+        "movement_module_limitation": 1,
+        "hull_module_limitation": 1,
+        "repair_module_limitation": 1,
+        "gathering_module_limitation": 1,
+        "craft_module_limitation": 1,
+        "research_module_limitation": 1,
+        "electronic_warfare_module_limitation": 1,
+        "colonization_module_limitation": 0,
+    }
+
+    limit_row = (
+        ShipModuleLimitation.objects
+        .filter(ship_id=ship_obj.id)
+        .values(*default_limits.keys())
+        .order_by("id")
+        .first()
+    )
+
+    merged_limits = default_limits.copy()
+    if limit_row:
+        for key, default_value in default_limits.items():
+            raw_value = limit_row.get(key, default_value)
+            merged_limits[key] = default_value if raw_value is None else int(raw_value)
+
+    defense_limit = merged_limits["defense_module_limitation"]
+
+    return {
+        "DEFENSE_BALLISTIC": defense_limit,
+        "DEFENSE_THERMAL": defense_limit,
+        "DEFENSE_MISSILE": defense_limit,
+        "WEAPONRY": merged_limits["weaponry_module_limitation"],
+        "PROBE": merged_limits["probe_module_limitation"],
+        "PROB": merged_limits["probe_module_limitation"],
+        "HOLD": merged_limits["hold_module_limitation"],
+        "MOVEMENT": merged_limits["movement_module_limitation"],
+        "HULL": merged_limits["hull_module_limitation"],
+        "REPAIRE": merged_limits["repair_module_limitation"],
+        "GATHERING": merged_limits["gathering_module_limitation"],
+        "CRAFT": merged_limits["craft_module_limitation"],
+        "RESEARCH": merged_limits["research_module_limitation"],
+        "ELECTRONIC_WARFARE": merged_limits["electronic_warfare_module_limitation"],
+        "COLONIZATION": merged_limits["colonization_module_limitation"],
+    }
 
 
 def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
@@ -55,6 +118,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
         .select_related("module")
         .filter(player_ship=ship)
         .values(
+            "id",
             "module__name",
             "module__description",
             "module__effect",
@@ -66,15 +130,83 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
 
     modules: List[Dict[str, Any]] = [
         {
+            "equipped_id": m["id"],
             "name": m["module__name"],
             "effect": m["module__effect"],
             "description": m["module__description"],
             "type": m["module__type"],
             "tier": m["module__tier"],
-            "id": m["module_id"],
+            "id": m["module_id"],  # backward compat (module FK id)
+            "module_id": m["module_id"],
         }
         for m in modules_qs
     ]
+    module_type_limits = _build_ship_module_type_limits(ship.ship)
+
+    inventory_modules_qs = (
+        PlayerShipInventoryModule.objects
+        .select_related("module")
+        .filter(player_ship=ship)
+        .values(
+            "id",
+            "module_id",
+            "module__name",
+            "module__description",
+            "module__effect",
+            "module__type",
+            "module__tier",
+            "metadata",
+        )
+        .order_by("-created_at", "-id")
+    )
+
+    inventory_modules: List[Dict[str, Any]] = [
+        {
+            "inventory_module_id": row["id"],
+            "module_id": row["module_id"],
+            "name": row["module__name"],
+            "description": row["module__description"],
+            "effect": row["module__effect"],
+            "type": row["module__type"],
+            "tier": row["module__tier"],
+            "metadata": row.get("metadata") or {},
+        }
+        for row in inventory_modules_qs
+    ]
+
+    resource_qty_total = (
+        PlayerShipResource.objects
+        .filter(source_id=ship.id)
+        .aggregate(total=Sum("quantity"))
+        .get("total")
+        or 0
+    )
+    cargo_load_current = int(resource_qty_total) + len(inventory_modules)
+    cargo_capacity = int(ship.current_cargo_size or 0)
+    cargo_over_capacity = cargo_load_current > cargo_capacity
+
+    pending_reconfig = (
+        PlayerShipModuleReconfiguration.objects
+        .select_related("module")
+        .filter(player_ship=ship, status="PENDING")
+        .order_by("execute_at", "id")
+        .first()
+    )
+    pending_reconfig_payload = None
+    if pending_reconfig:
+        now = timezone.now()
+        remaining = max(0, int((pending_reconfig.execute_at - now).total_seconds()))
+        pending_reconfig_payload = {
+            "id": pending_reconfig.id,
+            "action_type": pending_reconfig.action_type,
+            "status": pending_reconfig.status,
+            "module_id": pending_reconfig.module_id,
+            "module_name": pending_reconfig.module.name if pending_reconfig.module else None,
+            "module_type": pending_reconfig.module.type if pending_reconfig.module else None,
+            "created_at": pending_reconfig.created_at.isoformat() if pending_reconfig.created_at else None,
+            "execute_at": pending_reconfig.execute_at.isoformat() if pending_reconfig.execute_at else None,
+            "remaining_seconds": remaining,
+        }
 
     # -------------------------------------------------
     # 4) Portées (modules_range)
@@ -130,9 +262,20 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "module_slot_available": ship.ship.module_slot_available,
             "module_slot_already_in_use": len(modules),
             "modules": modules,
+            "inventory_modules": inventory_modules,
+            "module_type_limits": module_type_limits,
             "modules_range": modules_range,
             "ship_scanning_module_available": any(
                 m["name"] == "spaceship probe" for m in modules
+            ),
+            "cargo_capacity": cargo_capacity,
+            "cargo_load_current": cargo_load_current,
+            "cargo_over_capacity": cargo_over_capacity,
+            "module_reconfiguration": pending_reconfig_payload,
+            "equipment_blocked_until": (
+                ship.equipment_blocked_until.isoformat()
+                if getattr(ship, "equipment_blocked_until", None)
+                else None
             ),
             "category_name": ship.ship.ship_category.name,
             "category_description": ship.ship.ship_category.description,

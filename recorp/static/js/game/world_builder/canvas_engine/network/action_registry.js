@@ -17,13 +17,13 @@ class ActionRegistryClass {
         return this.table.has(action);
     }
 
-    run(action, payload) {
+    run(action, payload, meta) {
         const handler = this.table.get(action);
         if (!handler) {
             console.warn(`ActionRegistry: no handler for "${action}"`);
             return;
         }
-        handler(payload);
+        handler(payload, meta);
     }
 }
 

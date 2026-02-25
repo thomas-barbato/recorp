@@ -23,6 +23,11 @@ import {
     handleScanStateSync,
 } from "../handlers/modal_action_handlers.js";
 import { applyEntityStatePatch } from "../handlers/entity_state_patcher.js";
+import {
+    handleActionFailed,
+    handleShipModuleLocalSync,
+    handleScanTargetDataRefresh,
+} from "../handlers/inventory_reconfig_handlers.js";
 
 
 
@@ -82,6 +87,7 @@ ActionRegistry.register("scan_result", getScanResult);
 ActionRegistry.register("scan_share_to_group", sendScanResultToGroup);
 ActionRegistry.register("scan_visibility_update", handleScanVisibilityUpdate)
 ActionRegistry.register("scan_state_sync", handleScanStateSync);
+ActionRegistry.register("scan_target_data_refresh", handleScanTargetDataRefresh);
 
 // ===============================
 // MODAL UPDATE
@@ -105,4 +111,6 @@ ActionRegistry.register("combat_events", handleCombatEvents);
 ActionRegistry.register("combat_death", handleCombatDeath);
 ActionRegistry.register("wreck_created", handleWreckCreated);
 ActionRegistry.register("wreck_expired", handleWreckExpired);
+ActionRegistry.register("action_failed", handleActionFailed);
+ActionRegistry.register("ship_module_local_sync", handleShipModuleLocalSync);
 
