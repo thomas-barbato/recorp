@@ -124,6 +124,8 @@ export function handleWreckExpired(payload) {
         window.ModalLive?.unregister?.(modalId);
         modalEl.remove();
     }
+
+    window.dispatchEvent?.(new CustomEvent("wreck:expired", { detail: payload }));
 }
 
 // =======================================================

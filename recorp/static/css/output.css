@@ -3057,10 +3057,6 @@ video {
   background-color: rgb(31 41 55 / 0.5);
 }
 
-.bg-gray-800\/60 {
-  background-color: rgb(31 41 55 / 0.6);
-}
-
 .bg-gray-900\/40 {
   background-color: rgb(17 24 39 / 0.4);
 }
@@ -3863,6 +3859,11 @@ video {
   color: rgb(253 230 138 / var(--tw-text-opacity));
 }
 
+.text-amber-300 {
+  --tw-text-opacity: 1;
+  color: rgb(252 211 77 / var(--tw-text-opacity));
+}
+
 .text-amber-400 {
   --tw-text-opacity: 1;
   color: rgb(251 191 36 / var(--tw-text-opacity));
@@ -3876,11 +3877,6 @@ video {
 .text-blue-100 {
   --tw-text-opacity: 1;
   color: rgb(219 234 254 / var(--tw-text-opacity));
-}
-
-.text-blue-300 {
-  --tw-text-opacity: 1;
-  color: rgb(147 197 253 / var(--tw-text-opacity));
 }
 
 .text-blue-500 {
@@ -5940,6 +5936,10 @@ input:focus {
   background: rgba(2,6,7,0.65);
   color: #bfeeda;
   box-shadow: inset 0 0 8px rgba(16,185,129,0.07);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
 #inventory-modal .equipped-module-count.is-ok {
@@ -5979,10 +5979,13 @@ input:focus {
   min-height: 2rem;
   border: 1px dashed rgba(16,185,129,0.15);
   border-radius: 0.45rem;
-  background: rgba(2,6,7,0.35);
-  color: rgba(148,163,184,0.9);
-  padding: 0.2rem 0.45rem;
-  letter-spacing: 0.03em;
+  background: rgba(4,10,11,0.55);
+  color: rgba(226,232,240,0.92);
+  padding: 0.24rem 0.5rem;
+  letter-spacing: 0.02em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
 }
 
 #inventory-modal .module-item {
@@ -6029,6 +6032,99 @@ input:focus {
 #inventory-modal .inventory-module-row:hover {
   border-color: rgba(52,211,153,0.36);
   box-shadow: inset 0 0 0 1px rgba(52,211,153,0.05), 0 0 14px rgba(16,185,129,0.06);
+}
+
+#inventory-modal .inventory-section {
+  border: 1px solid rgba(16,185,129,0.14);
+  border-radius: 0.55rem;
+  background:
+        linear-gradient(180deg, rgba(6, 15, 14, 0.78), rgba(6, 10, 11, 0.72)),
+        linear-gradient(180deg, rgba(16,185,129,0.02), transparent);
+  box-shadow: inset 0 0 0 1px rgba(16,185,129,0.03);
+  padding: 0.45rem;
+}
+
+#inventory-modal .inventory-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  padding: 0.15rem 0.15rem 0.1rem;
+}
+
+#inventory-modal .inventory-section-title {
+  margin: 0;
+  color: #b7f7d3;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-family: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+}
+
+#inventory-modal .inventory-section-count {
+  min-width: 2.2rem;
+  padding-inline: 0.35rem;
+}
+
+#inventory-modal .inventory-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+#inventory-modal .inventory-empty-row {
+  border: 1px dashed rgba(16,185,129,0.12);
+  border-radius: 0.45rem;
+  background: rgba(4,10,11,0.5);
+  color: rgba(226,232,240,0.94);
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 0.5rem 0.6rem;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+}
+
+#inventory-modal .inventory-resource-row {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 0.45rem;
+  padding: 0.45rem 0.55rem;
+  background:
+        linear-gradient(90deg, rgba(7, 16, 20, 0.75), rgba(7, 10, 13, 0.72)),
+        linear-gradient(180deg, rgba(56,189,248,0.02), transparent);
+}
+
+#inventory-modal .inventory-resource-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: 0.45rem 0 0 0.45rem;
+  background: linear-gradient(180deg, rgba(56,189,248,0.18), rgba(125,211,252,0.65), rgba(56,189,248,0.14));
+}
+
+#inventory-modal .inventory-resource-row.is-quest {
+  border-color: rgba(245, 158, 11, 0.2);
+  background:
+        linear-gradient(90deg, rgba(24, 16, 7, 0.72), rgba(14, 10, 8, 0.72)),
+        linear-gradient(180deg, rgba(245,158,11,0.02), transparent);
+}
+
+#inventory-modal .inventory-resource-row.is-quest::before {
+  background: linear-gradient(180deg, rgba(245,158,11,0.2), rgba(252,211,77,0.72), rgba(245,158,11,0.14));
+}
+
+#inventory-modal .inventory-module-type-badge.is-quest {
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.22);
+  background: rgba(120, 74, 6, 0.18);
 }
 
 #inventory-modal .inventory-module-type-badge {
@@ -7501,12 +7597,70 @@ canvas {
 /* Error message */
 
 .action-error-msg {
-  margin-top: 0.5rem;
+  display: block;
+  width: 100%;
+  margin: 0.35rem auto 0.25rem auto;
+  padding: 0.55rem 0.75rem;
   text-align: center;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: rgb(239, 68, 68);
-  animation: pulse 1s infinite;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  background:
+        linear-gradient(180deg, rgba(127, 29, 29, 0.18), rgba(31, 41, 55, 0.14));
+  color: #fecaca !important;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+  box-shadow:
+        inset 0 0 0 1px rgba(248, 113, 113, 0.04),
+        0 0 14px rgba(248, 113, 113, 0.08);
+  animation: none;
+}
+
+.action-error-msg.hidden {
+  display: none !important;
+}
+
+/* Wreck lock wait notice (other player already looting/scavenging)
+   Reuse the existing action error zone, but style it as an in-universe warning banner. */
+
+.action-error-msg[data-wreck-lock-notice="1"] {
+  display: block;
+  width: 100%;
+  margin: 0.35rem auto 0.25rem auto;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  background:
+        linear-gradient(180deg, rgba(69, 26, 3, 0.26), rgba(31, 41, 55, 0.18));
+  color: #fde68a !important;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+  box-shadow:
+        inset 0 0 0 1px rgba(251, 191, 36, 0.04),
+        0 0 14px rgba(245, 158, 11, 0.08);
+  animation: none !important;
+}
+
+.action-error-msg[data-wreck-lock-notice="1"]::before {
+  content: "LOCK";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.45rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  background: rgba(120, 53, 15, 0.24);
+  color: #fef3c7;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
 }
 
 /* Wrapper centré qui s'adapte au contenu */
@@ -7586,12 +7740,25 @@ canvas {
 /* Error message */
 
 .action-error-msg {
-  margin-top: 0.5rem;
+  display: block;
+  width: 100%;
+  margin: 0.35rem auto 0.25rem auto;
+  padding: 0.55rem 0.75rem;
   text-align: center;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: rgb(239, 68, 68);
-  animation: pulse 1s infinite;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  background:
+        linear-gradient(180deg, rgba(127, 29, 29, 0.18), rgba(31, 41, 55, 0.14));
+  color: #fecaca !important;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+  box-shadow:
+        inset 0 0 0 1px rgba(248, 113, 113, 0.04),
+        0 0 14px rgba(248, 113, 113, 0.08);
+  animation: none;
 }
 
 /* Tablet */
@@ -7892,6 +8059,326 @@ canvas {
         inset 0 0 12px rgba(34, 196, 155, 0.25);
 }
 
+/* ------------------------------------------------------------------ */
+
+/* Wreck Loot Modal (Fouille / Salvage)                               */
+
+/* ------------------------------------------------------------------ */
+
+#wreck-loot-modal.wreck-loot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+#wreck-loot-modal.hidden {
+  display: none !important;
+}
+
+.wreck-loot-panel {
+  width: min(860px, 100%);
+  max-height: min(86vh, 760px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(52, 211, 153, 0.38);
+  background:
+        radial-gradient(circle at 12% 10%, rgba(16, 185, 129, 0.14), transparent 58%),
+        linear-gradient(180deg, rgba(6, 17, 14, 0.96), rgba(4, 8, 12, 0.96));
+  box-shadow:
+        0 16px 50px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(16, 185, 129, 0.08) inset,
+        0 0 40px rgba(16, 185, 129, 0.12);
+  color: #d1fae5;
+}
+
+.wreck-loot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem 0 1rem;
+}
+
+.wreck-loot-title-wrap {
+  min-width: 0;
+}
+
+.wreck-loot-title {
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  color: #a7f3d0;
+}
+
+.wreck-loot-subtitle {
+  margin-top: 0.2rem;
+  color: rgba(209, 250, 229, 0.78);
+  font-size: 0.85rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.wreck-loot-close {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  background: rgba(6, 78, 59, 0.35);
+  color: #d1fae5;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.wreck-loot-close:hover {
+  background: rgba(6, 78, 59, 0.6);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.22);
+}
+
+.wreck-loot-tabs {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.wreck-loot-tab {
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  background: rgba(2, 44, 34, 0.36);
+  color: rgba(209, 250, 229, 0.9);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wreck-loot-tab.is-active {
+  border-color: rgba(52, 211, 153, 0.45);
+  background: rgba(16, 185, 129, 0.14);
+  color: #ecfdf5;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.14);
+}
+
+.wreck-loot-timer {
+  margin: 0 1rem;
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  background: rgba(30, 58, 138, 0.16);
+  color: #dbeafe;
+  border-radius: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.wreck-loot-message {
+  margin: 0 1rem;
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.7rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.wreck-loot-message[data-tone="info"] {
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  background: rgba(6, 78, 59, 0.18);
+  color: #d1fae5;
+}
+
+.wreck-loot-message[data-tone="error"] {
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  background: rgba(127, 29, 29, 0.18);
+  color: #fecaca;
+}
+
+.wreck-loot-content {
+  padding: 0 1rem 1rem 1rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border-top: 1px solid rgba(16, 185, 129, 0.12);
+  padding-top: 0.75rem;
+}
+
+.wreck-loot-mode-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.wreck-loot-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.45);
+  color: #e2e8f0;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.wreck-loot-pill.is-ok {
+  border-color: rgba(52, 211, 153, 0.28);
+  background: rgba(6, 78, 59, 0.24);
+  color: #a7f3d0;
+}
+
+.wreck-loot-pill.is-bad {
+  border-color: rgba(248, 113, 113, 0.28);
+  background: rgba(127, 29, 29, 0.22);
+  color: #fecaca;
+}
+
+.wreck-loot-pill.is-chance {
+  border-color: rgba(251, 191, 36, 0.24);
+  background: rgba(120, 53, 15, 0.18);
+  color: #fde68a;
+}
+
+.wreck-loot-section {
+  border: 1px solid rgba(52, 211, 153, 0.16);
+  border-radius: 0.9rem;
+  background:
+        linear-gradient(180deg, rgba(2, 6, 23, 0.42), rgba(2, 6, 23, 0.26));
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.04);
+}
+
+.wreck-loot-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: #e2fdf2;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-family: "Orbitron", sans-serif;
+}
+
+.wreck-loot-count {
+  color: #a7f3d0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+}
+
+.wreck-loot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.wreck-loot-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.7rem;
+  background: rgba(15, 23, 42, 0.38);
+  padding: 0.55rem 0.6rem;
+  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.wreck-loot-item:hover {
+  border-color: rgba(52, 211, 153, 0.22);
+  background: rgba(15, 23, 42, 0.5);
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.06) inset;
+}
+
+.wreck-loot-item-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.wreck-loot-item-name {
+  color: #f0fdf4;
+  font-weight: 700;
+  line-height: 1.25;
+  word-break: break-word;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.wreck-loot-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.wreck-loot-btn {
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  background: rgba(6, 78, 59, 0.28);
+  color: #ecfdf5;
+  border-radius: 0.65rem;
+  padding: 0.42rem 0.65rem;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 62px;
+}
+
+.wreck-loot-btn:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.22);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.16);
+}
+
+.wreck-loot-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.wreck-loot-empty {
+  border: 1px dashed rgba(148, 163, 184, 0.2);
+  border-radius: 0.65rem;
+  background: rgba(15, 23, 42, 0.2);
+  color: rgba(226, 232, 240, 0.86);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.75rem 0.6rem;
+}
+
+@media (max-width: 640px) {
+  .wreck-loot-panel {
+    max-height: 92vh;
+    gap: 0.65rem;
+  }
+
+  .wreck-loot-header {
+    align-items: flex-start;
+    padding-top: 0.75rem;
+  }
+
+  .wreck-loot-item {
+    grid-template-columns: 1fr;
+  }
+
+  .wreck-loot-btn {
+    width: 100%;
+  }
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -8069,10 +8556,6 @@ canvas {
 
 .hover\:bg-gray-700\/40:hover {
   background-color: rgb(55 65 81 / 0.4);
-}
-
-.hover\:bg-gray-700\/50:hover {
-  background-color: rgb(55 65 81 / 0.5);
 }
 
 .hover\:bg-gray-800:hover {

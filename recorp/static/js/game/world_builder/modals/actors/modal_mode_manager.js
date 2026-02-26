@@ -38,7 +38,7 @@
         if (!body) return;
 
         const headerClose = modal?.querySelector(`#${modalId}-header img[src$="close.svg"]`);
-        const footerClose = modal?.querySelector("button"); // ton footer n'a qu’un bouton "close"
+        const footerClose = modal?.querySelector("button.text-emerald-400"); // bouton close du footer shell
 
         if (headerClose) {
             headerClose.onclick = () => window.ModalModeManager.exit(modalId);
@@ -70,6 +70,32 @@
                     mountNode: combatContainer
                 });
             }
+            return;
+        }
+
+        if (mode === "wreck_loot") {
+            body.innerHTML = "";
+            body.classList.add("overflow-y-auto", "md:max-h-[70vh]", "max-h-[80vh]");
+            body.classList.remove("overflow-hidden");
+
+            const lootContainer = document.createElement("div");
+            lootContainer.id = `${modalId}-wreck-loot-container`;
+            lootContainer.classList.add("w-full");
+            body.append(lootContainer);
+
+            if (headerClose) {
+                headerClose.onclick = () => window.WreckLootModalController?.requestCloseInline?.(modalId);
+            }
+            if (footerClose) {
+                footerClose.onclick = () => window.WreckLootModalController?.requestCloseInline?.(modalId);
+            }
+
+            window.WreckLootModalController?.openInline?.({
+                modalId,
+                mountNode: lootContainer,
+                wreckId: context.wreckId,
+                mode: context.lootMode || "FOUILLE",
+            });
         }
     }
 

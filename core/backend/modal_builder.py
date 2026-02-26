@@ -1,5 +1,4 @@
 from typing import Optional, Dict, Any, List
-from django.db.models import Prefetch, Sum
 from django.utils import timezone
 
 from core.models import (
@@ -76,6 +75,26 @@ def _build_ship_module_type_limits(ship_obj) -> Dict[str, Optional[int]]:
         "ELECTRONIC_WARFARE": merged_limits["electronic_warfare_module_limitation"],
         "COLONIZATION": merged_limits["colonization_module_limitation"],
     }
+
+
+def _resource_inventory_section(resource_data: Any) -> str:
+    if not isinstance(resource_data, dict):
+        return "RESOURCES"
+
+    if bool(resource_data.get("is_quest_item")) or bool(resource_data.get("quest_item")):
+        return "QUEST_ITEMS"
+
+    for key in ("inventory_section", "section", "category", "type"):
+        raw_value = resource_data.get(key)
+        if raw_value is None:
+            continue
+        value = str(raw_value).strip().upper()
+        if value in {"QUEST", "QUEST_ITEM", "QUEST_ITEMS"}:
+            return "QUEST_ITEMS"
+        if value in {"RESOURCE", "RESOURCES", "MATERIAL", "MATERIALS", "CRAFT", "CRAFTING"}:
+            return "RESOURCES"
+
+    return "RESOURCES"
 
 
 def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
@@ -173,13 +192,43 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
         for row in inventory_modules_qs
     ]
 
-    resource_qty_total = (
+    inventory_resources_qs = (
         PlayerShipResource.objects
-        .filter(source_id=ship.id)
-        .aggregate(total=Sum("quantity"))
-        .get("total")
-        or 0
+        .select_related("resource")
+        .filter(source_id=ship.id, quantity__gt=0)
+        .values(
+            "id",
+            "resource_id",
+            "quantity",
+            "resource__name",
+            "resource__data",
+        )
+        .order_by("-updated_at", "-id")
     )
+
+    inventory_resources: List[Dict[str, Any]] = []
+    inventory_quest_items: List[Dict[str, Any]] = []
+    resource_qty_total = 0
+
+    for row in inventory_resources_qs:
+        quantity = int(row.get("quantity") or 0)
+        resource_qty_total += quantity
+
+        resource_data = row.get("resource__data") or {}
+        item_payload = {
+            "inventory_resource_id": row["id"],
+            "resource_id": row["resource_id"],
+            "name": row.get("resource__name") or "Resource",
+            "quantity": quantity,
+            "data": resource_data if isinstance(resource_data, dict) else {},
+        }
+
+        section = _resource_inventory_section(resource_data)
+        if section == "QUEST_ITEMS":
+            inventory_quest_items.append(item_payload)
+        else:
+            inventory_resources.append(item_payload)
+
     cargo_load_current = int(resource_qty_total) + len(inventory_modules)
     cargo_capacity = int(ship.current_cargo_size or 0)
     cargo_over_capacity = cargo_load_current > cargo_capacity
@@ -262,6 +311,8 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "module_slot_already_in_use": len(modules),
             "modules": modules,
             "inventory_modules": inventory_modules,
+            "inventory_resources": inventory_resources,
+            "inventory_quest_items": inventory_quest_items,
             "module_type_limits": module_type_limits,
             "modules_range": modules_range,
             "ship_scanning_module_available": any(

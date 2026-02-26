@@ -46,7 +46,7 @@ class Resource(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.data}"
+        return f"{self.name} - {self.data}"
 
 
 class Planet(models.Model):

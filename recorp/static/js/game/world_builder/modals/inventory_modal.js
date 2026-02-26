@@ -659,26 +659,150 @@ function createInventoryModuleRow(module, actionsDisabled) {
     return row;
 }
 
-function renderInventoryModuleSection(ship) {
+function createInventorySection(title, count, options = {}) {
+    const {
+        iconClass = null,
+        countState = "is-ok",
+    } = options;
+
+    const section = document.createElement("section");
+    section.className = "inventory-section";
+
+    const header = document.createElement("div");
+    header.className = "inventory-section-header";
+
+    const titleWrap = document.createElement("div");
+    titleWrap.className = "flex items-center gap-2 min-w-0";
+
+    if (iconClass) {
+        const icon = document.createElement("i");
+        icon.className = iconClass;
+        titleWrap.appendChild(icon);
+    }
+
+    const titleEl = document.createElement("h4");
+    titleEl.className = "inventory-section-title";
+    titleEl.textContent = title;
+    titleWrap.appendChild(titleEl);
+
+    const countEl = document.createElement("span");
+    countEl.className = `equipped-module-count inventory-section-count ${countState}`;
+    countEl.textContent = String(count);
+
+    header.append(titleWrap, countEl);
+
+    const list = document.createElement("div");
+    list.className = "inventory-section-list";
+
+    section.append(header, list);
+    return { section, list };
+}
+
+function createInventorySectionEmptyRow(text) {
+    const empty = document.createElement("div");
+    empty.className = "inventory-empty-row";
+    empty.textContent = text;
+    return empty;
+}
+
+function createInventoryResourceRow(item, options = {}) {
+    const { isQuest = false } = options;
+
+    const row = document.createElement("div");
+    row.className = `inventory-item inventory-resource-row${isQuest ? " is-quest" : ""}`;
+
+    const left = document.createElement("div");
+    left.className = "min-w-0 flex-1";
+
+    const title = document.createElement("div");
+    title.className = "flex items-center gap-2 min-w-0";
+
+    const nameEl = document.createElement("span");
+    nameEl.className = isQuest
+        ? "text-amber-200 font-bold text-xs truncate"
+        : "text-sky-200 font-bold text-xs truncate";
+    nameEl.textContent = item?.name || t("Unknown item");
+
+    const typeBadge = document.createElement("span");
+    typeBadge.className = `inventory-module-type-badge${isQuest ? " is-quest" : ""}`;
+    typeBadge.textContent = isQuest ? t("Quest") : t("Resource");
+
+    title.append(nameEl, typeBadge);
+    left.appendChild(title);
+
+    const data = item?.data && typeof item.data === "object" ? item.data : null;
+    const subLabel = data?.label || data?.description || null;
+    if (subLabel) {
+        const meta = document.createElement("div");
+        meta.className = "text-[10px] text-emerald-100/65 mt-[2px] truncate";
+        meta.textContent = String(subLabel);
+        left.appendChild(meta);
+    }
+
+    const right = document.createElement("div");
+    right.className = "flex items-center gap-2 shrink-0";
+
+    const qty = document.createElement("span");
+    qty.className = "text-emerald-200 text-xs font-semibold";
+    qty.textContent = `x${Number(item?.quantity ?? 0)}`;
+
+    right.appendChild(qty);
+    row.append(left, right);
+
+    return row;
+}
+
+function renderInventorySections(ship) {
     const container = document.getElementById("inventory-list");
     if (!container) return;
 
     const inventoryModules = Array.isArray(ship?.inventory_modules) ? ship.inventory_modules : [];
+    const inventoryResources = Array.isArray(ship?.inventory_resources) ? ship.inventory_resources : [];
+    const inventoryQuestItems = Array.isArray(ship?.inventory_quest_items) ? ship.inventory_quest_items : [];
     const actionsDisabled = isUiEquipmentActionBlocked(ship);
 
     container.innerHTML = "";
+    container.classList.remove("grid", "grid-cols-2", "sm:grid-cols-2", "lg:grid-cols-1", "gap-1");
+    container.classList.add("flex", "flex-col", "gap-2");
 
-    if (inventoryModules.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "col-span-2 sm:col-span-2 lg:col-span-1 text-xs text-gray-400 italic border border-emerald-900/20 rounded-md p-2 bg-black/20";
-        empty.textContent = t("No modules stored in cargo.");
-        container.appendChild(empty);
-        return;
-    }
-
-    inventoryModules.forEach((module) => {
-        container.appendChild(createInventoryModuleRow(module, actionsDisabled));
+    const modulesSection = createInventorySection(t("Modules"), inventoryModules.length, {
+        iconClass: "fa-solid fa-microchip text-emerald-300 text-xs",
+        countState: inventoryModules.length > 0 ? "is-ok" : "is-unknown",
     });
+    if (inventoryModules.length === 0) {
+        modulesSection.list.appendChild(createInventorySectionEmptyRow(t("No modules stored in cargo.")));
+    } else {
+        inventoryModules.forEach((module) => {
+            modulesSection.list.appendChild(createInventoryModuleRow(module, actionsDisabled));
+        });
+    }
+    container.appendChild(modulesSection.section);
+
+    const resourcesSection = createInventorySection(t("Resources"), inventoryResources.length, {
+        iconClass: "fa-solid fa-cubes text-sky-300 text-xs",
+        countState: inventoryResources.length > 0 ? "is-ok" : "is-unknown",
+    });
+    if (inventoryResources.length === 0) {
+        resourcesSection.list.appendChild(createInventorySectionEmptyRow(t("No resources in cargo.")));
+    } else {
+        inventoryResources.forEach((item) => {
+            resourcesSection.list.appendChild(createInventoryResourceRow(item, { isQuest: false }));
+        });
+    }
+    container.appendChild(resourcesSection.section);
+
+    const questSection = createInventorySection(t("Quest Items"), inventoryQuestItems.length, {
+        iconClass: "fa-solid fa-scroll text-amber-300 text-xs",
+        countState: inventoryQuestItems.length > 0 ? "is-full" : "is-unknown",
+    });
+    if (inventoryQuestItems.length === 0) {
+        questSection.list.appendChild(createInventorySectionEmptyRow(t("No quest items in cargo.")));
+    } else {
+        inventoryQuestItems.forEach((item) => {
+            questSection.list.appendChild(createInventoryResourceRow(item, { isQuest: true }));
+        });
+    }
+    container.appendChild(questSection.section);
 }
 
 function renderInventoryModal(playerData = getCurrentPlayerData()) {
@@ -690,7 +814,11 @@ function renderInventoryModal(playerData = getCurrentPlayerData()) {
         resetEquippedModuleLists();
         updateEquippedModuleCountBadges([], {});
         updateEquippedModulesTotalBadge(null);
-        renderInventoryModuleSection({ inventory_modules: [] });
+        renderInventorySections({
+            inventory_modules: [],
+            inventory_resources: [],
+            inventory_quest_items: [],
+        });
         updateInventoryCapacityUi(null);
         clearEquipTargetHighlights();
         startInventoryStatusTickerIfNeeded();
@@ -698,7 +826,7 @@ function renderInventoryModal(playerData = getCurrentPlayerData()) {
     }
 
     renderEquippedModules(ship);
-    renderInventoryModuleSection(ship);
+    renderInventorySections(ship);
     updateInventoryCapacityUi(ship);
     clearEquipTargetHighlights();
     startInventoryStatusTickerIfNeeded();

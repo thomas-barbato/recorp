@@ -21,6 +21,87 @@
         return window.ActionSceneManager || null;
     }
 
+    function getWreckLootLockUiCache() {
+        if (!window.__wreckLootLockUiCache) {
+            window.__wreckLootLockUiCache = new Map();
+        }
+        return window.__wreckLootLockUiCache;
+    }
+
+    function setWreckLootLockUiStateFromPayload(payload) {
+        const wreckId = Number(payload?.wreck_id || 0);
+        if (!wreckId) return;
+        const cache = getWreckLootLockUiCache();
+        const lock = (payload && typeof payload.lock === "object") ? payload.lock : null;
+        cache.set(String(wreckId), {
+            lock,
+            active_mode: String(payload?.active_mode || "FOUILLE").toUpperCase(),
+            updated_at: Date.now(),
+        });
+    }
+
+    function getWreckLootLockUiState(wreckId) {
+        const id = Number(wreckId || 0);
+        if (!id) return null;
+        return getWreckLootLockUiCache().get(String(id)) || null;
+    }
+
+    function applyWreckLockUiOnModal(modalId, wreckId) {
+        if (!modalId || !wreckId) return;
+        const modalEl = document.getElementById(modalId);
+        if (!modalEl) return;
+
+        const lockState = getWreckLootLockUiState(wreckId);
+        const lock = lockState?.lock && typeof lockState.lock === "object" ? lockState.lock : null;
+        const lockedByOther = Boolean(lock && lock.owned_by_current_player === false);
+
+        const actionButtons = modalEl.querySelectorAll(
+            `[data-modal-id="${modalId}"][data-action-key="fouille"], [data-modal-id="${modalId}"][data-action-key="salvage"]`
+        );
+        let hadLockDisabled = false;
+        actionButtons.forEach((btn) => {
+            if (lockedByOther) {
+                btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
+                btn.setAttribute("aria-disabled", "true");
+            } else {
+                if (btn.dataset.wreckLockDisabled === "1") {
+                    hadLockDisabled = true;
+                }
+                btn.classList.remove("cursor-not-allowed");
+                btn.removeAttribute("aria-disabled");
+            }
+            btn.dataset.wreckLockDisabled = lockedByOther ? "1" : "0";
+        });
+
+        const errorZone = document.getElementById(`${modalId}-action-error-zone`);
+        if (errorZone) {
+            if (lockedByOther) {
+                errorZone.textContent = "Cette carcasse est déjà en cours de fouille/récupération. Veuillez attendre.";
+                errorZone.classList.remove("hidden");
+                errorZone.dataset.wreckLockNotice = "1";
+            } else if (errorZone.dataset.wreckLockNotice === "1") {
+                errorZone.dataset.wreckLockNotice = "0";
+                errorZone.textContent = "";
+                errorZone.classList.add("hidden");
+            }
+        }
+
+        // Réapplique les règles de portée/AP/modules quand le lock est relâché.
+        if (!lockedByOther && hadLockDisabled) {
+            const targetKey = `wreck_${Number(wreckId)}`;
+            if (typeof window.refreshModalIfOpen === "function") {
+                window.refreshModalIfOpen(targetKey);
+                return;
+            }
+            actionButtons.forEach((btn) => {
+                btn.classList.remove("opacity-40", "pointer-events-none");
+            });
+        }
+        if (!lockedByOther && typeof window.refreshModalActionRanges === "function") {
+            window.refreshModalActionRanges(modalId);
+        }
+    }
+
     function computeModuleRangeAsync(args) {
         const p = window.computeModuleRange?.(args);
         if (!p || typeof p.then !== "function") return null;
@@ -817,6 +898,22 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 gather() {
                     // Placeholder routeur foreground: l'action WS/HTTP reste à brancher.
                     return false;
+                },
+                fouille() {
+                    window.ModalModeManager?.enter?.(modalId, "wreck_loot", {
+                        wreckId: target.targetId,
+                        lootMode: "FOUILLE",
+                        targetKey: target.targetKey,
+                    });
+                    return true;
+                },
+                salvage() {
+                    window.ModalModeManager?.enter?.(modalId, "wreck_loot", {
+                        wreckId: target.targetId,
+                        lootMode: "SALVAGE",
+                        targetKey: target.targetKey,
+                    });
+                    return true;
                 }
             };
 
@@ -1020,9 +1117,36 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 computeAndDisableIfOutOfRange(btn, gatheringModule);
             }
 
+            if (action.key === "fouille" || action.key === "salvage") {
+                btn.dataset.actionKey = action.key;
+                btn.dataset.modalId = modalId;
+
+                const fixedRangeModule = { effect: { range: 3 } };
+                decorateActionButtonWithRangeAndAp(
+                    btn,
+                    fixedRangeModule,
+                    action.ap_cost ?? 0
+                );
+
+                const apCost = action.ap_cost ?? 0;
+                const currentAp = currentPlayerData?.user?.current_ap ?? 0;
+                const scavengingModule = currentPlayerModules.find(
+                    m => m.type === "GATHERING" && String(m.name || "").toLowerCase() === "scavenging module"
+                );
+
+                if (
+                    (action.key === "salvage" && !scavengingModule) ||
+                    apCost > currentAp
+                ) {
+                    btn.classList.add("opacity-40", "pointer-events-none");
+                }
+
+                computeAndDisableIfOutOfRange(btn, fixedRangeModule);
+            }
+
             
 
-            if (action.key !== "scan" && action.key !== "gather") {
+            if (action.key !== "scan" && action.key !== "gather" && action.key !== "fouille" && action.key !== "salvage") {
                 const costBadge = createActionCostBadge({
                     ap_cost: action.ap_cost ?? null,
                     cost: action.cost ?? null
@@ -1045,7 +1169,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     const ok = action.requires.every(req =>
                         currentPlayerModules.some(m =>
                             m.type === req.type &&
-                            (!req.name || m.name === req.name)
+                            (!req.name || String(m.name || "").toLowerCase() === String(req.name).toLowerCase())
                         )
                     );
 
@@ -1068,6 +1192,16 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     return;
                 }
 
+                if (action.key === "fouille") {
+                    executeForegroundAction("fouille");
+                    return;
+                }
+
+                if (action.key === "salvage") {
+                    executeForegroundAction("salvage");
+                    return;
+                }
+
                 if (action.key === "send_report") {
                     executeForegroundAction("send_report");
                     return;
@@ -1079,6 +1213,13 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
         const count = grid.children.length;
         grid.style.setProperty("--cols", Math.min(count, 5));
+
+        if (type === "wreck") {
+            const wreckId = Number(foregroundParsed?.id ?? define_modal_type(modalId)?.id ?? 0);
+            if (wreckId) {
+                setTimeout(() => applyWreckLockUiOnModal(modalId, wreckId), 0);
+            }
+        }
 
         return wrapper;
     }
@@ -1116,6 +1257,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     window.buildActionsSection = buildActionsSection;
     window.buildForegroundActionsSection = buildForegroundActionsSection;
     window.decorateActionButtonWithRangeAndAp = decorateActionButtonWithRangeAndAp;
+    window.applyWreckLockUiOnModal = applyWreckLockUiOnModal;
 
     window.refreshModalActionRanges = function (modalId) {
         if (!modalId) return;
@@ -1192,6 +1334,23 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             p.then(rr => applyState(btn, rr)).catch(() => {});
         });
     };
+
+    window.addEventListener?.("wreck:loot_state", (e) => {
+        const payload = e?.detail || {};
+        const wreckId = Number(payload?.wreck_id || 0);
+        if (!wreckId) return;
+        setWreckLootLockUiStateFromPayload(payload);
+        applyWreckLockUiOnModal(`modal-wreck_${wreckId}`, wreckId);
+    });
+
+    window.addEventListener?.("wreck:loot_closed", (e) => {
+        const payload = e?.detail || {};
+        const wreckId = Number(payload?.wreck_id || 0);
+        if (!wreckId) return;
+        // `wreck_loot_session_closed` est ciblé au joueur qui ferme; on ne clear pas globalement
+        // car les autres recevront un `wreck:loot_state` avec lock=null via broadcast backend.
+        applyWreckLockUiOnModal(`modal-wreck_${wreckId}`, wreckId);
+    });
 
 
 })();

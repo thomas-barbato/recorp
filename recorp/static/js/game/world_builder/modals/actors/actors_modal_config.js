@@ -78,6 +78,18 @@
             { key: "refuel", label: "Refuel", iconify: "game-icons--fuel-tank", cost: 1000, ap_cost: 1 }
         ],
 
+        wreck: [
+            { key: "fouille", label: "Fouille", icon: "/static/img/ux/gather_icon.svg", cost: 0, ap_cost: 0 },
+            {
+                key: "salvage",
+                label: "Salvage",
+                icon: "/static/img/ux/gather_icon.svg",
+                cost: 0,
+                ap_cost: 1,
+                requires: [{ type: "GATHERING", name: "scavenging module" }]
+            }
+        ],
+
         black_hole: []
     };
 

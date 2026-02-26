@@ -426,12 +426,7 @@ function createUnknownModal(modalId, data, is_npc) {
     const modulesWarning = document.createElement("p");
     modulesWarning.textContent = "Scan requis pour afficher les modules.";
     modulesWarning.classList.add(
-        "text-red-500",
-        "font-bold",
-        "text-xs",
-        "text-center",
-        "font-shadow",
-        "animate-pulse"
+        "action-error-msg"
     );
     modal.body.addSection(modulesWarning);
 
@@ -636,12 +631,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     } else {
         const warning = document.createElement("p");
         warning.classList.add(
-            "text-red-500",
-            "font-bold",
-            "text-xs",
-            "text-center",
-            "font-shadow",
-            "animate-pulse"
+            "action-error-msg"
         );
         warning.textContent = "Scan requis pour afficher les modules.";
         modal.body.addSection(warning);
@@ -860,13 +850,10 @@ function buildShipStatsSection(data) {
     // --- WARNING MSG ---
     let ship_statistics_warning_msg_container_p = document.createElement("p");
     ship_statistics_warning_msg_container_p.classList.add(
+        "action-error-msg",
         "text-justify",
         "font-shadow",
-        "text-xs",
         "lg:p-2",
-        "text-red-500",
-        "animate-pulse",
-        "font-bold",
         "font-shadow"
     );
     ship_statistics_warning_msg_container_p.id = "statistics-warning-msg";
