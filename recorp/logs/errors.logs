@@ -1,13 +1,7 @@
-[WARNING] 2026-02-26 15:57:20 | security | LOGOUT - user=test1 ip=127.0.0.1 path=/fr/logout
-[WARNING] 2026-02-26 15:57:20 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-26 15:57:21 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-26 15:57:21 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63602][0m
-[WARNING] 2026-02-26 15:57:24 | security | LOGIN SUCCESS - user=test1 ip=127.0.0.1 path=/fr/
-[WARNING] 2026-02-26 15:57:24 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-26 16:01:27 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-26 16:01:27 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61172][0m
-[WARNING] 2026-02-26 16:01:45 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-26 16:03:35 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-26 16:03:35 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:64777][0m
-[WARNING] 2026-02-26 16:06:04 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
-[WARNING] 2026-02-26 16:06:04 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:64777][0m
+[WARNING] 2026-02-27 00:22:24 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 00:22:24 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:57305][0m
+[WARNING] 2026-02-27 00:22:24 | security | [LOGOUT] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/logout
+[WARNING] 2026-02-27 00:22:54 | security | [LOGIN SUCCESS] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/
+[WARNING] 2026-02-27 00:23:38 | security | [LOGOUT] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/logout
+[WARNING] 2026-02-27 00:24:01 | security | [ACCOUNT CREATED] user_id=None username=test8 email=tt8@tt.com
+[WARNING] 2026-02-27 00:24:09 | security | [LOGIN SUCCESS] user_id=56 username=test8 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/

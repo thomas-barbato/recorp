@@ -33,6 +33,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.core.files.base import ContentFile
+from core.backend.security_logging import log_account_lockout
 from core.backend.user_avatar import UserAvatarWriter
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
@@ -109,12 +110,13 @@ class IndexView(TemplateView):
     redirect_authenticated_user = True
 
     def post(self, request, *args, **kwargs):
-        data_to_send = {}
         url = self.request.path
+        username = request.POST.get("username", "unknown")
+        
         try:
             user = authenticate(
                 self.request,
-                username=request.POST.get("username"),
+                username=username,
                 password=request.POST.get("password"),
             )
             if user is not None and user.is_active and user.is_staff is False:
@@ -125,80 +127,26 @@ class IndexView(TemplateView):
                     defaults={'session_key': self.request.session.session_key}
                 )
                 if player_id:
-                    url = "/"
-                    return redirect(url, data_to_send)
+                    return redirect("/")
                 else:
-                    url = "play/create_character"
-                    return redirect(url, data_to_send)
+                    return redirect("play/create_character")
             elif user is not None and user.is_active and user.is_staff:
                 pass
 
-            unknown_user_msg = _(
-                "Unable to login, username and or password are incorrects"
+            # Authentification échouée - soit mauvais credentials soit compte bloqué
+            # axes gère le rate limiting automatiquement via AxesStandaloneBackend
+            base_msg = (
+                "Impossible de se connecter, le nom d'utilisateur et/ou le mot de passe sont incorrects. "
+                "Après 5 tentatives échouées, votre compte sera bloqué pour 15 minutes."
             )
-            messages.error(self.request, unknown_user_msg)
-            data_to_send = {"form": self.form_class}
-            return redirect(url, data_to_send)
+            
+            messages.error(self.request, base_msg)
+            return redirect(url)
         except KeyError:
             warning_msg = _("Fill all fields to login")
             messages.warning(self.request, warning_msg)
-            data_to_send = {"form": self.form_class}
-            return redirect(url, data_to_send)
+            return redirect(url)
 
-
-class CreateAccountView(SuccessMessageMixin, TemplateView):
-
-    template_name: str = "create-account.html"
-    success_url = reverse_lazy("index_view")
-
-    def get(self, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return redirect("/")
-        return super(CreateAccountView, self).get(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-
-        context = super(CreateAccountView, self).get_context_data(*args, **kwargs)
-        context["form"] = SignupForm(self.request.POST or None)
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        json_data = json.load(request)
-        form = SignupForm(json_data)
-        data = {}
-        data["errors"] = []
-        if json_data["password"] == json_data["password2"]:
-            if form.is_valid():
-                form.save()
-                user = authenticate(
-                    self.request,
-                    username=json_data["username"],
-                    password=json_data["password"],
-                )
-                if user is not None and user.is_active:
-                    login(self.request, user)
-                    
-                    LoggedInUser.objects.get_or_create(
-                        user=user,
-                        defaults={'session_key': self.request.session.session_key}
-                    )
-                    url = "index_view"
-                    msg_part_one = _(
-                        "Your account has been successfully created with username"
-                    )
-                    msg_part_two = _("Click on <b>Enter</b> to create your character.")
-                    msg = (
-                        f"{msg_part_one} <b>{json_data['username']}</b> {msg_part_two}"
-                    )
-                    messages.success(self.request, msg)
-                    return JsonResponse({}, status=200)
-
-        for field, errors in form.errors.items():
-            data["errors"].append(f"{field.split(' ')[0]}")
-
-        response = data
-        return JsonResponse(response, status=200)
 
 class CreateAccountView(TemplateView):
     template_name = "create-account.html"
