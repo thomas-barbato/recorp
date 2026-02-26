@@ -28,6 +28,10 @@ import {
     handleShipModuleLocalSync,
     handleScanTargetDataRefresh,
 } from "../handlers/inventory_reconfig_handlers.js";
+import {
+    handleWreckLootSessionState,
+    handleWreckLootSessionClosed,
+} from "../handlers/wreck_loot_handlers.js";
 
 
 
@@ -113,4 +117,6 @@ ActionRegistry.register("wreck_created", handleWreckCreated);
 ActionRegistry.register("wreck_expired", handleWreckExpired);
 ActionRegistry.register("action_failed", handleActionFailed);
 ActionRegistry.register("ship_module_local_sync", handleShipModuleLocalSync);
+ActionRegistry.register("wreck_loot_session_state", handleWreckLootSessionState);
+ActionRegistry.register("wreck_loot_session_closed", handleWreckLootSessionClosed);
 

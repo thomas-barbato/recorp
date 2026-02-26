@@ -1,5 +1,6 @@
 import json
 import logging
+import random
 from typing import Dict, Any, Optional
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
@@ -21,7 +22,7 @@ from core.backend.ship_module_runtime import (
     set_equipment_block,
 )
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, PlayerShipInventoryModule, PlayerShipModuleReconfiguration, Npc, Module, PlayerShipModule, Player, PlayerGroup, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, PlayerShipInventoryModule, PlayerShipModuleReconfiguration, Npc, Module, PlayerShipModule, Player, PlayerGroup, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource, PlayerResource, PlayerShipResource, Resource
 from core.backend.modal_builder import (
     build_npc_modal_data,
     build_pc_modal_data,
@@ -44,6 +45,12 @@ class GameConsumer(WebsocketConsumer):
     WRECK_TTL_SECONDS = 12 * 60 * 60  # 12h (scavenge => disparition immédiate)
     MODULE_RECONFIG_SECONDS = 10
     EQUIPMENT_COMBAT_LOCK_SECONDS = 30
+    WRECK_LOOT_LOCK_TIMEOUT_SECONDS = 120
+    WRECK_LOOT_FOUILLE_SECONDS = 1
+    WRECK_LOOT_SALVAGE_SECONDS = 10
+    WRECK_LOOT_RANGE_MAX = 3
+    WRECK_SALVAGE_MODULE_RECOVERY_CHANCE = 0.25
+    WRECK_SALVAGE_RESOURCE_NAME = "Salvage Scrap"
     """
     WebSocket consumer pour gérer les interactions en temps réel du jeu.
     Gère les mouvements des joueurs, les actions de jeu et la synchronisation.
@@ -102,6 +109,7 @@ class GameConsumer(WebsocketConsumer):
     def disconnect(self, close_code: int) -> None:
         """Gère la déconnexion WebSocket de manière asynchrone."""
         try:
+            self._release_wreck_loot_locks_for_current_player_safe()
             # Nettoyer les ressources AVANT de quitter le groupe
             if hasattr(self, '_cache_store'):
                 # Optionnel : retirer le joueur du cache si nécessaire
@@ -1656,6 +1664,22 @@ class GameConsumer(WebsocketConsumer):
             "message": event.get("message", {}),
         })
 
+    def wreck_loot_session_state(self, event):
+        if int(event.get("target_player_id", -1)) != int(self.player_id):
+            return
+        self._send_response({
+            "type": "wreck_loot_session_state",
+            "message": event.get("message", {}),
+        })
+
+    def wreck_loot_session_closed(self, event):
+        if int(event.get("target_player_id", -1)) != int(self.player_id):
+            return
+        self._send_response({
+            "type": "wreck_loot_session_closed",
+            "message": event.get("message", {}),
+        })
+
     def scan_target_data_refresh(self, event):
         if int(event.get("target_player_id", -1)) != int(self.player_id):
             return
@@ -2470,6 +2494,13 @@ class GameConsumer(WebsocketConsumer):
                 },
             )
 
+            try:
+                metadata = self._ensure_wreck_loot_snapshot(wreck, metadata=self._wreck_metadata_dict(wreck))
+                wreck.metadata = metadata
+                wreck.save(update_fields=["metadata", "updated_at"])
+            except Exception:
+                logger.exception("wreck loot snapshot init failed")
+
             return {
                 "wreck_id": wreck.id,
                 "wreck_key": f"wreck_{wreck.id}",
@@ -2702,6 +2733,8 @@ class GameConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         self._invalidate_expired_scans_safe()
         self._invalidate_expired_wrecks_safe()
+        self._cleanup_stale_wreck_loot_locks_safe()
+        self._process_due_wreck_loot_actions_safe()
         self._respawn_dead_npcs_safe()
         self._process_due_module_reconfigurations_safe()
 
@@ -3152,6 +3185,1090 @@ class GameConsumer(WebsocketConsumer):
             logger.exception(f"Failed to expire/purge wreck {wreck_id}")
             return None
 
+    # ------------------------------------------------------------------
+    # Wreck loot (Fouille / Salvage) - server authoritative lock & timers
+    # ------------------------------------------------------------------
+    def _parse_iso_datetime_safe(self, value: Any) -> Optional[datetime.datetime]:
+        if not value:
+            return None
+        try:
+            raw = str(value).strip()
+            if not raw:
+                return None
+            if raw.endswith("Z"):
+                raw = raw[:-1] + "+00:00"
+            parsed = datetime.datetime.fromisoformat(raw)
+            if timezone.is_naive(parsed):
+                parsed = timezone.make_aware(parsed, timezone.get_current_timezone())
+            return parsed
+        except Exception:
+            return None
+
+    def _now_iso(self) -> str:
+        return timezone.now().isoformat()
+
+    def _safe_size_dict(self, value: Any) -> Dict[str, int]:
+        if not isinstance(value, dict):
+            return {"x": 1, "y": 1}
+        return {
+            "x": int(value.get("x", 1) or 1),
+            "y": int(value.get("y", 1) or 1),
+        }
+
+    def _compute_center_chebyshev_distance(
+        self,
+        from_coords: Dict[str, Any],
+        from_size: Dict[str, Any],
+        to_coords: Dict[str, Any],
+        to_size: Dict[str, Any],
+    ) -> int:
+        a_size = self._safe_size_dict(from_size)
+        b_size = self._safe_size_dict(to_size)
+        ax = int((from_coords or {}).get("x", 0) or 0)
+        ay = int((from_coords or {}).get("y", 0) or 0)
+        bx = int((to_coords or {}).get("x", 0) or 0)
+        by = int((to_coords or {}).get("y", 0) or 0)
+
+        acx = ax + (a_size["x"] - 1) / 2
+        acy = ay + (a_size["y"] - 1) / 2
+        bcx = bx + (b_size["x"] - 1) / 2
+        bcy = by + (b_size["y"] - 1) / 2
+        return int(max(abs(acx - bcx), abs(acy - bcy)))
+
+    def _compute_player_ship_to_wreck_distance(self, player_ship: PlayerShip, wreck: ShipWreck) -> int:
+        player_coords = getattr(getattr(player_ship, "player", None), "coordinates", None) or {"x": 0, "y": 0}
+        player_size = getattr(getattr(getattr(player_ship, "ship", None), "ship_category", None), "size", None) or {"x": 1, "y": 1}
+        wreck_coords = getattr(wreck, "coordinates", None) or {"x": 0, "y": 0}
+        wreck_size = getattr(getattr(getattr(wreck, "ship", None), "ship_category", None), "size", None) or {"x": 1, "y": 1}
+        return self._compute_center_chebyshev_distance(player_coords, player_size, wreck_coords, wreck_size)
+
+    def _wreck_metadata_dict(self, wreck: ShipWreck) -> Dict[str, Any]:
+        return wreck.metadata if isinstance(wreck.metadata, dict) else {}
+
+    def _ensure_wreck_loot_container(self, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        loot = metadata.get("loot")
+        if not isinstance(loot, dict):
+            loot = {}
+            metadata["loot"] = loot
+        return loot
+
+    def _build_resource_loot_entry(self, *, uid: str, resource_obj: Optional[Resource], quantity: int) -> Optional[Dict[str, Any]]:
+        if not resource_obj:
+            return None
+        if int(quantity or 0) <= 0:
+            return None
+        resource_data = resource_obj.data if isinstance(resource_obj.data, dict) else {}
+        return {
+            "uid": str(uid),
+            "resource_id": int(resource_obj.id),
+            "name": resource_obj.name or "Resource",
+            "quantity": int(quantity or 0),
+            "data": resource_data,
+            "description": str(resource_data.get("description") or ""),
+            "kind": "RESOURCE",
+        }
+
+    def _build_module_loot_entry(
+        self,
+        *,
+        uid: str,
+        module_obj: Optional[Module],
+        metadata: Optional[Dict[str, Any]] = None,
+        chance_percent: Optional[int] = None,
+    ) -> Optional[Dict[str, Any]]:
+        if not module_obj:
+            return None
+        payload = {
+            "uid": str(uid),
+            "module_id": int(module_obj.id),
+            "name": module_obj.name or "Module",
+            "description": module_obj.description or "",
+            "effect": module_obj.effect or {},
+            "type": module_obj.type,
+            "tier": int(module_obj.tier or 0),
+            "metadata": metadata or {},
+            "kind": "MODULE",
+        }
+        if chance_percent is not None:
+            payload["chance_percent"] = int(chance_percent)
+        return payload
+
+    def _get_or_create_salvage_scrap_resource(self) -> Optional[Resource]:
+        try:
+            resource, _ = Resource.objects.get_or_create(
+                name=self.WRECK_SALVAGE_RESOURCE_NAME,
+                defaults={
+                    "data": {
+                        "description": "Matériaux récupérés sur une carcasse. Utilisés pour le craft.",
+                        "inventory_section": "RESOURCES",
+                        "is_salvage_material": True,
+                    }
+                },
+            )
+            return resource
+        except Exception:
+            logger.exception("wreck loot: failed to get/create salvage scrap resource")
+            return None
+
+    def _ensure_wreck_loot_snapshot(self, wreck: ShipWreck, metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        md = metadata if isinstance(metadata, dict) else self._wreck_metadata_dict(wreck)
+        loot = self._ensure_wreck_loot_container(md)
+
+        # Déjà initialisé (schema versionné pour permettre les migrations de snapshot en runtime)
+        existing_schema = int(loot.get("schema") or 0) if isinstance(loot.get("schema"), (int, str)) else 0
+        if (
+            existing_schema >= 2 and
+            isinstance(loot.get("fouille"), dict) and
+            isinstance(loot.get("salvage"), dict)
+        ):
+            loot.setdefault("schema", 2)
+            loot.setdefault("lock", None)
+            loot.setdefault("pending_action", None)
+            return md
+
+        fouille_resources = []
+        fouille_modules = []
+        salvage_modules = []
+
+        if wreck.origin_type == "PC":
+            source_player_ship_id = (md.get("source_player_ship_id") if isinstance(md, dict) else None)
+            if source_player_ship_id:
+                dead_player_id = None
+                source_actor_key = str((md.get("source_actor_key") if isinstance(md, dict) else "") or "")
+                if source_actor_key.startswith("pc_"):
+                    try:
+                        dead_player_id = int(source_actor_key.split("_", 1)[1])
+                    except Exception:
+                        dead_player_id = None
+                if not dead_player_id:
+                    dead_player_id = (
+                        PlayerShip.objects
+                        .filter(id=int(source_player_ship_id))
+                        .values_list("player_id", flat=True)
+                        .first()
+                    )
+
+                # Les ressources PC sont stockées sur PlayerResource (pas PlayerShipResource).
+                # Fallback legacy conservé au cas où une carcasse ancienne a été snapshotée
+                # avec des données de soute déjà présentes sur PlayerShipResource.
+                if dead_player_id:
+                    res_rows = (
+                        PlayerResource.objects
+                        .select_related("resource")
+                        .filter(source_id=int(dead_player_id), quantity__gt=0)
+                        .order_by("-updated_at", "-id")
+                    )
+                else:
+                    res_rows = (
+                        PlayerShipResource.objects
+                        .select_related("resource")
+                        .filter(source_id=int(source_player_ship_id), quantity__gt=0)
+                        .order_by("-updated_at", "-id")
+                    )
+                for row in res_rows:
+                    entry = self._build_resource_loot_entry(
+                        uid=f"fr_{row.id}",
+                        resource_obj=getattr(row, "resource", None),
+                        quantity=int(row.quantity or 0),
+                    )
+                    if entry:
+                        fouille_resources.append(entry)
+
+                cargo_mod_rows = (
+                    PlayerShipInventoryModule.objects
+                    .select_related("module")
+                    .filter(player_ship_id=int(source_player_ship_id))
+                    .order_by("-created_at", "-id")
+                )
+                for row in cargo_mod_rows:
+                    entry = self._build_module_loot_entry(
+                        uid=f"fm_{row.id}",
+                        module_obj=getattr(row, "module", None),
+                        metadata=(row.metadata if isinstance(row.metadata, dict) else {}),
+                    )
+                    if entry:
+                        fouille_modules.append(entry)
+
+                equipped_rows = (
+                    PlayerShipModule.objects
+                    .select_related("module")
+                    .filter(player_ship_id=int(source_player_ship_id))
+                    .order_by("id")
+                )
+                for row in equipped_rows:
+                    entry = self._build_module_loot_entry(
+                        uid=f"sm_pc_{row.id}",
+                        module_obj=getattr(row, "module", None),
+                        metadata={},
+                        chance_percent=int(self.WRECK_SALVAGE_MODULE_RECOVERY_CHANCE * 100),
+                    )
+                    if entry:
+                        salvage_modules.append(entry)
+        else:
+            source_npc_id = (md.get("source_npc_id") if isinstance(md, dict) else None)
+            if source_npc_id:
+                npc_res_rows = (
+                    NpcResource.objects
+                    .select_related("resource")
+                    .filter(npc_id=int(source_npc_id), quantity__gt=0)
+                    .order_by("-updated_at", "-id")
+                )
+                for row in npc_res_rows:
+                    entry = self._build_resource_loot_entry(
+                        uid=f"fr_npc_{row.id}",
+                        resource_obj=getattr(row, "resource", None),
+                        quantity=int(row.quantity or 0),
+                    )
+                    if entry:
+                        fouille_resources.append(entry)
+
+                npc = Npc.objects.select_related("npc_template").filter(id=int(source_npc_id)).first()
+                module_ids = []
+                if npc and npc.npc_template and isinstance(npc.npc_template.module_id_list, list):
+                    module_ids = list(npc.npc_template.module_id_list)
+                if module_ids:
+                    try:
+                        normalized_ids = [int(mid) for mid in module_ids if mid is not None]
+                    except Exception:
+                        normalized_ids = []
+                    mods_by_id = {
+                        int(m.id): m
+                        for m in Module.objects.filter(id__in=normalized_ids)
+                    }
+                    for idx, mid in enumerate(normalized_ids):
+                        mod = mods_by_id.get(int(mid))
+                        entry = self._build_module_loot_entry(
+                            uid=f"sm_npc_{source_npc_id}_{idx}",
+                            module_obj=mod,
+                            metadata={},
+                            chance_percent=int(self.WRECK_SALVAGE_MODULE_RECOVERY_CHANCE * 100),
+                        )
+                        if entry:
+                            salvage_modules.append(entry)
+
+        salvage_resources = []
+        salvage_resource = self._get_or_create_salvage_scrap_resource()
+        if salvage_resource:
+            ship_size = self._safe_size_dict(getattr(getattr(getattr(wreck, "ship", None), "ship_category", None), "size", None))
+            base_qty = max(1, int(ship_size["x"] * ship_size["y"]))
+            module_bonus = max(0, int(len(salvage_modules) / 2))
+            random_bonus = random.randint(0, 2)
+            salvage_qty = max(1, base_qty + module_bonus + random_bonus)
+            salvage_entry = self._build_resource_loot_entry(
+                uid=f"sr_{wreck.id}_0",
+                resource_obj=salvage_resource,
+                quantity=salvage_qty,
+            )
+            if salvage_entry:
+                salvage_resources.append(salvage_entry)
+
+        loot["schema"] = 2
+        loot.setdefault("lock", None)
+        loot.setdefault("pending_action", None)
+        loot["fouille"] = {
+            "resources": fouille_resources,
+            "modules": fouille_modules,
+        }
+        loot["salvage"] = {
+            "resources": salvage_resources,
+            "modules": salvage_modules,
+        }
+        return md
+
+    def _cleanup_stale_wreck_loot_lock_in_metadata(self, loot: Dict[str, Any], *, now: Optional[datetime.datetime] = None) -> bool:
+        if not isinstance(loot, dict):
+            return False
+        changed = False
+        now_dt = now or timezone.now()
+        lock = loot.get("lock")
+        if isinstance(lock, dict):
+            expires_at = self._parse_iso_datetime_safe(lock.get("expires_at"))
+            if expires_at and expires_at <= now_dt:
+                loot["lock"] = None
+                changed = True
+        return changed
+
+    def _refresh_wreck_loot_lock(self, loot: Dict[str, Any], *, player_id: int, mode: str) -> None:
+        now = timezone.now()
+        loot["lock"] = {
+            "player_id": int(player_id),
+            "mode": str(mode or "FOUILLE").upper(),
+            "opened_at": now.isoformat(),
+            "expires_at": (now + datetime.timedelta(seconds=self.WRECK_LOOT_LOCK_TIMEOUT_SECONDS)).isoformat(),
+            "channel_name": str(getattr(self, "channel_name", "")),
+        }
+
+    def _is_wreck_lock_owned_by(self, lock: Any, player_id: int) -> bool:
+        if not isinstance(lock, dict):
+            return False
+        try:
+            return int(lock.get("player_id")) == int(player_id)
+        except Exception:
+            return False
+
+    def _get_wreck_loot_pending_action(self, loot: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        pending = loot.get("pending_action")
+        return pending if isinstance(pending, dict) else None
+
+    def _find_wreck_loot_item(
+        self,
+        loot: Dict[str, Any],
+        *,
+        mode: str,
+        item_kind: str,
+        item_uid: str,
+    ) -> tuple[Optional[list], Optional[int], Optional[Dict[str, Any]]]:
+        mode_key = "fouille" if str(mode).upper() == "FOUILLE" else "salvage"
+        container = loot.get(mode_key)
+        if not isinstance(container, dict):
+            return None, None, None
+        list_key = "resources" if str(item_kind).upper() == "RESOURCE" else "modules"
+        items = container.get(list_key)
+        if not isinstance(items, list):
+            return None, None, None
+        for idx, item in enumerate(items):
+            if isinstance(item, dict) and str(item.get("uid")) == str(item_uid):
+                return items, idx, item
+        return items, None, None
+
+    def _current_player_ship_for_wreck_loot(self, *, lock_for_update: bool = False):
+        qs = (
+            PlayerShip.objects
+            .select_related("ship__ship_category", "player")
+            .filter(player_id=self.player_id, is_current_ship=True)
+        )
+        if lock_for_update:
+            qs = qs.select_for_update()
+        return qs.first()
+
+    def _broadcast_player_ap_entity_update(self, player: Player) -> None:
+        if not player:
+            return
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "entity_state_update",
+                "entity_key": f"pc_{int(player.id)}",
+                "change_type": "ap_update",
+                "changes": {
+                    "ap": {
+                        "current": int(player.current_ap or 0),
+                        "max": int(player.max_ap or 0),
+                    }
+                }
+            }
+        )
+
+    def _build_wreck_loot_state_payload(self, wreck: ShipWreck, *, target_player_id: int, mode: Optional[str] = None) -> Dict[str, Any]:
+        metadata = self._ensure_wreck_loot_snapshot(wreck, metadata=self._wreck_metadata_dict(wreck))
+        loot = self._ensure_wreck_loot_container(metadata)
+        self._cleanup_stale_wreck_loot_lock_in_metadata(loot)
+
+        lock = loot.get("lock") if isinstance(loot.get("lock"), dict) else None
+        active_mode = str(mode or (lock or {}).get("mode") or "FOUILLE").upper()
+        if active_mode not in {"FOUILLE", "SALVAGE"}:
+            active_mode = "FOUILLE"
+
+        pending = self._get_wreck_loot_pending_action(loot)
+        pending_payload = None
+        if pending:
+            execute_at = self._parse_iso_datetime_safe(pending.get("execute_at"))
+            remaining = 0
+            if execute_at:
+                remaining = max(0, int((execute_at - timezone.now()).total_seconds()))
+            pending_payload = {
+                "mode": str(pending.get("mode") or "").upper(),
+                "item_uid": pending.get("item_uid"),
+                "item_kind": str(pending.get("item_kind") or "").upper(),
+                "execute_at": pending.get("execute_at"),
+                "remaining_seconds": remaining,
+                "duration_seconds": int(pending.get("duration_seconds") or 0),
+            }
+
+        fouille = loot.get("fouille") if isinstance(loot.get("fouille"), dict) else {}
+        salvage = loot.get("salvage") if isinstance(loot.get("salvage"), dict) else {}
+        fouille_resources = list(fouille.get("resources") or [])
+        fouille_modules = list(fouille.get("modules") or [])
+        salvage_resources = list(salvage.get("resources") or [])
+        salvage_modules = list(salvage.get("modules") or [])
+
+        player_ship = (
+            PlayerShip.objects
+            .select_related("player")
+            .filter(player_id=int(target_player_id), is_current_ship=True)
+            .first()
+        )
+        current_ap = int(getattr(getattr(player_ship, "player", None), "current_ap", 0) or 0) if player_ship else 0
+        has_scavenging_module = False
+        if player_ship:
+            has_scavenging_module = PlayerShipModule.objects.filter(
+                player_ship_id=player_ship.id,
+                module__type="GATHERING",
+                module__name__iexact="scavenging module",
+            ).exists()
+
+        return {
+            "wreck_id": int(wreck.id),
+            "wreck_key": f"wreck_{int(wreck.id)}",
+            "ship_name": (wreck.ship.name if wreck.ship else "Epave"),
+            "active_mode": active_mode,
+            "lock": {
+                "player_id": int(lock.get("player_id")),
+                "mode": str(lock.get("mode") or "").upper(),
+                "expires_at": lock.get("expires_at"),
+                "owned_by_current_player": self._is_wreck_lock_owned_by(lock, int(target_player_id)),
+            } if lock else None,
+            "pending_action": pending_payload,
+            "fouille": {
+                "resources": fouille_resources,
+                "modules": fouille_modules,
+                "resource_count": len(fouille_resources),
+                "module_count": len(fouille_modules),
+            },
+            "salvage": {
+                "resources": salvage_resources,
+                "modules": salvage_modules,
+                "resource_count": len(salvage_resources),
+                "module_count": len(salvage_modules),
+                "module_recovery_chance_percent": int(self.WRECK_SALVAGE_MODULE_RECOVERY_CHANCE * 100),
+                "ap_cost": 1,
+                "requires_module": {
+                    "type": "GATHERING",
+                    "name": "scavenging module",
+                    "satisfied": bool(has_scavenging_module),
+                },
+                "current_ap": current_ap,
+            },
+        }
+
+    def _emit_wreck_loot_session_state(self, target_player_id: int, wreck: ShipWreck, *, mode: Optional[str] = None) -> None:
+        payload = self._build_wreck_loot_state_payload(wreck, target_player_id=int(target_player_id), mode=mode)
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "wreck_loot_session_state",
+                "target_player_id": int(target_player_id),
+                "message": payload,
+            }
+        )
+
+    def _emit_wreck_loot_session_state_to_sector_players(
+        self,
+        wreck: ShipWreck,
+        *,
+        mode: Optional[str] = None,
+        exclude_player_id: Optional[int] = None,
+    ) -> None:
+        """Broadcast personalized wreck loot state to players currently in the sector.
+
+        Front-end side filters unsolicited updates unless a wreck-loot view is already open,
+        so broadcasting here lets other viewers see lock changes (taken/released) live.
+        """
+        if not wreck or not getattr(wreck, "sector_id", None):
+            return
+        try:
+            qs = Player.objects.filter(sector_id=int(wreck.sector_id)).values_list("id", flat=True)
+            for pid in qs:
+                try:
+                    target_pid = int(pid)
+                except Exception:
+                    continue
+                if exclude_player_id is not None and int(exclude_player_id) == target_pid:
+                    continue
+                self._emit_wreck_loot_session_state(target_pid, wreck, mode=mode)
+        except Exception:
+            logger.exception("wreck loot: sector state broadcast failed")
+
+    def _emit_wreck_loot_session_closed(self, target_player_id: int, wreck_id: int, *, mode: Optional[str] = None, reason: Optional[str] = None) -> None:
+        message = {
+            "wreck_id": int(wreck_id),
+            "wreck_key": f"wreck_{int(wreck_id)}",
+        }
+        if mode:
+            message["active_mode"] = str(mode).upper()
+        if reason:
+            message["reason"] = str(reason)
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "wreck_loot_session_closed",
+                "target_player_id": int(target_player_id),
+                "message": message,
+            }
+        )
+
+    def _award_resource_to_player_ship(self, player_ship: PlayerShip, *, resource_id: int, quantity: int) -> bool:
+        if not player_ship or int(quantity or 0) <= 0:
+            return False
+        resource = Resource.objects.filter(id=int(resource_id)).first()
+        if not resource:
+            return False
+        row = (
+            PlayerShipResource.objects
+            .select_for_update()
+            .filter(source_id=player_ship.id, resource_id=resource.id)
+            .first()
+        )
+        if row:
+            row.quantity = int(row.quantity or 0) + int(quantity or 0)
+            row.save(update_fields=["quantity", "updated_at"])
+        else:
+            PlayerShipResource.objects.create(
+                source=player_ship,
+                resource=resource,
+                quantity=int(quantity or 0),
+            )
+        return True
+
+    def _award_module_to_player_ship_inventory(self, player_ship: PlayerShip, *, module_id: int, metadata: Optional[Dict[str, Any]] = None) -> bool:
+        if not player_ship:
+            return False
+        mod = Module.objects.filter(id=int(module_id)).first()
+        if not mod:
+            return False
+        PlayerShipInventoryModule.objects.create(
+            player_ship=player_ship,
+            module=mod,
+            metadata=(metadata if isinstance(metadata, dict) else {}),
+        )
+        return True
+
+    def _cleanup_stale_wreck_loot_locks_safe(self) -> None:
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+        try:
+            now = timezone.now()
+            wrecks = ShipWreck.objects.filter(sector_id=sector_id, status="ACTIVE").only("id", "metadata")
+            for wreck in wrecks:
+                metadata = self._wreck_metadata_dict(wreck)
+                loot = metadata.get("loot")
+                if not isinstance(loot, dict):
+                    continue
+                if not self._cleanup_stale_wreck_loot_lock_in_metadata(loot, now=now):
+                    continue
+                wreck.metadata = metadata
+                wreck.save(update_fields=["metadata", "updated_at"])
+        except Exception:
+            logger.exception("wreck loot: stale lock cleanup failed")
+
+    def _release_wreck_loot_locks_for_current_player_safe(self) -> None:
+        if not getattr(self, "player_id", None):
+            return
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+        try:
+            wreck_ids = list(
+                ShipWreck.objects.filter(sector_id=sector_id, status="ACTIVE").values_list("id", flat=True)
+            )
+            for wreck_id in wreck_ids:
+                with transaction.atomic():
+                    wreck = ShipWreck.objects.select_for_update().filter(id=int(wreck_id), status="ACTIVE").first()
+                    if not wreck:
+                        continue
+                    metadata = self._wreck_metadata_dict(wreck)
+                    loot = metadata.get("loot")
+                    if not isinstance(loot, dict):
+                        continue
+                    lock = loot.get("lock")
+                    if not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
+                        continue
+                    pending = self._get_wreck_loot_pending_action(loot)
+                    if pending and int(pending.get("player_id") or 0) == int(self.player_id):
+                        # Ne pas interrompre une action en cours; le lock expirera ou sera relâché à la complétion.
+                        continue
+                    loot["lock"] = None
+                    wreck.metadata = metadata
+                    wreck.save(update_fields=["metadata", "updated_at"])
+        except Exception:
+            logger.exception("wreck loot: disconnect lock release failed")
+
+    def _handle_wreck_loot_open(self, payload: Dict[str, Any]) -> None:
+        try:
+            wreck_id = int(payload.get("wreck_id") or payload.get("target_id") or 0)
+        except Exception:
+            wreck_id = 0
+        mode = str(payload.get("mode") or "FOUILLE").upper()
+        if mode not in {"FOUILLE", "SALVAGE"}:
+            self._send_action_failed_response("INVALID_WRECK_LOOT_MODE", "Mode de loot invalide.")
+            return
+        if wreck_id <= 0:
+            self._send_action_failed_response("WRECK_NOT_FOUND", "Carcasse introuvable.")
+            return
+
+        try:
+            wreck_for_emit = None
+            lock_conflict = False
+            with transaction.atomic():
+                player_ship = self._current_player_ship_for_wreck_loot(lock_for_update=True)
+                if not player_ship:
+                    self._send_action_failed_response("PLAYER_SHIP_NOT_FOUND", "Vaisseau courant introuvable.")
+                    return
+
+                wreck = (
+                    ShipWreck.objects
+                    .select_related("ship", "ship__ship_category")
+                    .select_for_update()
+                    .filter(id=wreck_id, status="ACTIVE")
+                    .first()
+                )
+                if not wreck:
+                    self._send_action_failed_response("WRECK_NOT_FOUND", "Carcasse introuvable.")
+                    return
+
+                if wreck.expires_at and wreck.expires_at <= timezone.now():
+                    self._send_action_failed_response("WRECK_EXPIRED", "Cette carcasse n'est plus disponible.")
+                    return
+
+                distance = self._compute_player_ship_to_wreck_distance(player_ship, wreck)
+                if distance > int(self.WRECK_LOOT_RANGE_MAX):
+                    self._send_action_failed_response(
+                        "WRECK_OUT_OF_RANGE",
+                        f"Carcasse hors de portée ({distance} / {self.WRECK_LOOT_RANGE_MAX}).",
+                        distance=distance,
+                        max_range=int(self.WRECK_LOOT_RANGE_MAX),
+                    )
+                    return
+
+                metadata = self._ensure_wreck_loot_snapshot(wreck, metadata=self._wreck_metadata_dict(wreck))
+                loot = self._ensure_wreck_loot_container(metadata)
+                self._cleanup_stale_wreck_loot_lock_in_metadata(loot)
+
+                lock = loot.get("lock")
+                if isinstance(lock, dict) and not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
+                    lock_conflict = True
+                else:
+                    self._refresh_wreck_loot_lock(loot, player_id=int(self.player_id), mode=mode)
+                wreck.metadata = metadata
+                wreck.save(update_fields=["metadata", "updated_at"])
+                wreck_for_emit = wreck
+
+            if wreck_for_emit:
+                if lock_conflict:
+                    # Le second joueur doit voir le même écran (actions visibles mais lockées)
+                    # et un message explicite, sans prendre le lock.
+                    self._emit_wreck_loot_session_state(int(self.player_id), wreck_for_emit, mode=mode)
+                    self._send_action_failed_response(
+                        "WRECK_ALREADY_LOOTED",
+                        "Cette carcasse est déjà en cours de fouille/récupération. Veuillez attendre.",
+                        wreck_id=int(wreck_id),
+                    )
+                else:
+                    self._emit_wreck_loot_session_state(int(self.player_id), wreck_for_emit, mode=mode)
+                    self._emit_wreck_loot_session_state_to_sector_players(
+                        wreck_for_emit,
+                        mode=mode,
+                        exclude_player_id=int(self.player_id),
+                    )
+        except Exception:
+            logger.exception("wreck loot open failed")
+            self._send_action_failed_response("WRECK_LOOT_OPEN_FAILED", "Impossible d'ouvrir le loot de la carcasse.")
+
+    def _handle_wreck_loot_close(self, payload: Dict[str, Any]) -> None:
+        try:
+            wreck_id = int(payload.get("wreck_id") or payload.get("target_id") or 0)
+        except Exception:
+            wreck_id = 0
+        if wreck_id <= 0:
+            self._emit_wreck_loot_session_closed(int(self.player_id), 0, reason="INVALID_WRECK")
+            return
+
+        try:
+            keep_lock = False
+            active_mode = None
+            wreck_for_refresh = None
+            with transaction.atomic():
+                wreck = (
+                    ShipWreck.objects
+                    .select_for_update()
+                    .filter(id=wreck_id, status="ACTIVE")
+                    .first()
+                )
+                if not wreck:
+                    self._emit_wreck_loot_session_closed(int(self.player_id), int(wreck_id), reason="WRECK_NOT_FOUND")
+                    return
+
+                metadata = self._wreck_metadata_dict(wreck)
+                loot = metadata.get("loot")
+                if not isinstance(loot, dict):
+                    self._emit_wreck_loot_session_closed(int(self.player_id), int(wreck_id), reason="NO_SESSION")
+                    return
+
+                self._cleanup_stale_wreck_loot_lock_in_metadata(loot)
+                lock = loot.get("lock")
+                if not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
+                    self._emit_wreck_loot_session_closed(int(self.player_id), int(wreck_id), reason="NOT_LOCK_OWNER")
+                    return
+
+                active_mode = str((lock or {}).get("mode") or "FOUILLE").upper()
+                pending = self._get_wreck_loot_pending_action(loot)
+                if pending and int(pending.get("player_id") or 0) == int(self.player_id):
+                    keep_lock = True
+                    self._refresh_wreck_loot_lock(loot, player_id=int(self.player_id), mode=active_mode)
+                else:
+                    loot["lock"] = None
+
+                wreck.metadata = metadata
+                wreck.save(update_fields=["metadata", "updated_at"])
+                wreck_for_refresh = wreck
+
+                if keep_lock:
+                    self._emit_wreck_loot_session_state(int(self.player_id), wreck, mode=active_mode)
+                    return
+
+            if wreck_for_refresh:
+                self._emit_wreck_loot_session_state_to_sector_players(
+                    wreck_for_refresh,
+                    mode=active_mode,
+                    exclude_player_id=int(self.player_id),
+                )
+            self._emit_wreck_loot_session_closed(int(self.player_id), int(wreck_id), mode=active_mode, reason="CLOSED")
+        except Exception:
+            logger.exception("wreck loot close failed")
+            self._emit_wreck_loot_session_closed(int(self.player_id), int(wreck_id or 0), reason="ERROR")
+
+    def _handle_wreck_loot_take(self, payload: Dict[str, Any]) -> None:
+        try:
+            wreck_id = int(payload.get("wreck_id") or 0)
+        except Exception:
+            wreck_id = 0
+        mode = str(payload.get("mode") or "FOUILLE").upper()
+        item_uid = str(payload.get("item_uid") or "").strip()
+        item_kind = str(payload.get("item_kind") or "").upper()
+
+        if wreck_id <= 0:
+            self._send_action_failed_response("WRECK_NOT_FOUND", "Carcasse introuvable.")
+            return
+        if mode not in {"FOUILLE", "SALVAGE"}:
+            self._send_action_failed_response("INVALID_WRECK_LOOT_MODE", "Mode de loot invalide.")
+            return
+        if item_kind not in {"RESOURCE", "MODULE"} or not item_uid:
+            self._send_action_failed_response("INVALID_WRECK_LOOT_ITEM", "Élément de loot invalide.")
+            return
+
+        try:
+            ap_spent = False
+            player_for_ap = None
+            wreck_after = None
+            with transaction.atomic():
+                player_ship = self._current_player_ship_for_wreck_loot(lock_for_update=True)
+                if not player_ship:
+                    self._send_action_failed_response("PLAYER_SHIP_NOT_FOUND", "Vaisseau courant introuvable.")
+                    return
+
+                wreck = (
+                    ShipWreck.objects
+                    .select_related("ship", "ship__ship_category")
+                    .select_for_update()
+                    .filter(id=wreck_id, status="ACTIVE")
+                    .first()
+                )
+                if not wreck:
+                    self._send_action_failed_response("WRECK_NOT_FOUND", "Carcasse introuvable.")
+                    return
+
+                if wreck.expires_at and wreck.expires_at <= timezone.now():
+                    self._send_action_failed_response("WRECK_EXPIRED", "Cette carcasse n'est plus disponible.")
+                    return
+
+                distance = self._compute_player_ship_to_wreck_distance(player_ship, wreck)
+                if distance > int(self.WRECK_LOOT_RANGE_MAX):
+                    self._send_action_failed_response(
+                        "WRECK_OUT_OF_RANGE",
+                        f"Carcasse hors de portée ({distance} / {self.WRECK_LOOT_RANGE_MAX}).",
+                        distance=distance,
+                        max_range=int(self.WRECK_LOOT_RANGE_MAX),
+                    )
+                    return
+
+                metadata = self._ensure_wreck_loot_snapshot(wreck, metadata=self._wreck_metadata_dict(wreck))
+                loot = self._ensure_wreck_loot_container(metadata)
+                self._cleanup_stale_wreck_loot_lock_in_metadata(loot)
+
+                lock = loot.get("lock")
+                if isinstance(lock, dict) and not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
+                    self._send_action_failed_response(
+                        "WRECK_ALREADY_LOOTED",
+                        "Cette carcasse est déjà en cours de fouille/récupération par un autre joueur.",
+                        wreck_id=int(wreck_id),
+                    )
+                    return
+                if not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
+                    self._send_action_failed_response(
+                        "WRECK_LOCK_REQUIRED",
+                        "Vous devez ouvrir la fouille/récupération de cette carcasse avant de looter.",
+                        wreck_id=int(wreck_id),
+                    )
+                    return
+
+                pending = self._get_wreck_loot_pending_action(loot)
+                if pending:
+                    self._send_action_failed_response(
+                        "WRECK_LOOT_ALREADY_PENDING",
+                        "Une action de loot est déjà en cours sur cette carcasse.",
+                    )
+                    return
+
+                items, item_index, item_payload = self._find_wreck_loot_item(
+                    loot,
+                    mode=mode,
+                    item_kind=item_kind,
+                    item_uid=item_uid,
+                )
+                if item_index is None or not isinstance(item_payload, dict):
+                    self._send_action_failed_response("WRECK_LOOT_ITEM_NOT_FOUND", "L'élément à looter n'est plus disponible.")
+                    return
+
+                if mode == "SALVAGE":
+                    has_scavenging_module = PlayerShipModule.objects.filter(
+                        player_ship_id=player_ship.id,
+                        module__type="GATHERING",
+                        module__name__iexact="scavenging module",
+                    ).exists()
+                    if not has_scavenging_module:
+                        self._send_action_failed_response(
+                            "SCAVENGING_MODULE_REQUIRED",
+                            "Un module de récupération (scavenging module) est requis pour effectuer un salvage.",
+                        )
+                        return
+
+                    player_for_ap = Player.objects.select_for_update().filter(id=int(self.player_id)).first()
+                    if not player_for_ap:
+                        self._send_action_failed_response("PLAYER_NOT_FOUND", "Joueur introuvable.")
+                        return
+                    if int(player_for_ap.current_ap or 0) < 1:
+                        self._send_action_failed_response("NOT_ENOUGH_AP", "AP insuffisants pour effectuer un salvage.")
+                        return
+
+                    player_for_ap.current_ap = max(0, int(player_for_ap.current_ap or 0) - 1)
+                    player_for_ap.save(update_fields=["current_ap"])
+                    ap_spent = True
+
+                duration_seconds = (
+                    int(self.WRECK_LOOT_FOUILLE_SECONDS)
+                    if mode == "FOUILLE"
+                    else int(self.WRECK_LOOT_SALVAGE_SECONDS)
+                )
+                now = timezone.now()
+                execute_at = now + datetime.timedelta(seconds=duration_seconds)
+
+                loot["pending_action"] = {
+                    "player_id": int(self.player_id),
+                    "mode": mode,
+                    "item_kind": item_kind,
+                    "item_uid": item_uid,
+                    "duration_seconds": int(duration_seconds),
+                    "execute_at": execute_at.isoformat(),
+                    "started_at": now.isoformat(),
+                }
+                self._refresh_wreck_loot_lock(loot, player_id=int(self.player_id), mode=mode)
+
+                wreck.metadata = metadata
+                wreck.save(update_fields=["metadata", "updated_at"])
+                wreck_after = wreck
+
+            if ap_spent and player_for_ap:
+                self._broadcast_player_ap_entity_update(player_for_ap)
+                self._emit_local_ship_module_sync(int(self.player_id), context="WRECK_LOOT_AP_SPENT")
+
+            if wreck_after:
+                self._emit_wreck_loot_session_state(int(self.player_id), wreck_after, mode=mode)
+        except Exception:
+            logger.exception("wreck loot take start failed")
+            self._send_action_failed_response("WRECK_LOOT_TAKE_FAILED", "Impossible de lancer cette action de loot.")
+
+    def _process_due_wreck_loot_actions_safe(self) -> None:
+        try:
+            sector_id = int(self.room)
+        except Exception:
+            return
+        try:
+            now = timezone.now()
+            wreck_rows = list(
+                ShipWreck.objects
+                .filter(sector_id=sector_id, status="ACTIVE")
+                .values("id", "metadata")[:80]
+            )
+            due_ids = []
+            for row in wreck_rows:
+                metadata = row.get("metadata")
+                if not isinstance(metadata, dict):
+                    continue
+                loot = metadata.get("loot")
+                if not isinstance(loot, dict):
+                    continue
+                pending = loot.get("pending_action")
+                if not isinstance(pending, dict):
+                    continue
+                execute_at = self._parse_iso_datetime_safe(pending.get("execute_at"))
+                if execute_at and execute_at <= now:
+                    try:
+                        due_ids.append(int(row.get("id")))
+                    except Exception:
+                        continue
+
+            for wreck_id in due_ids:
+                self._complete_pending_wreck_loot_action(int(wreck_id))
+        except Exception:
+            logger.exception("wreck loot sweep failed")
+
+    def _complete_pending_wreck_loot_action(self, wreck_id: int) -> None:
+        try:
+            post_commit = None
+            with transaction.atomic():
+                wreck = (
+                    ShipWreck.objects
+                    .select_related("ship", "ship__ship_category")
+                    .select_for_update()
+                    .filter(id=int(wreck_id), status="ACTIVE")
+                    .first()
+                )
+                if not wreck:
+                    return
+
+                metadata = self._wreck_metadata_dict(wreck)
+                loot = metadata.get("loot")
+                if not isinstance(loot, dict):
+                    return
+
+                pending = self._get_wreck_loot_pending_action(loot)
+                if not pending:
+                    return
+
+                execute_at = self._parse_iso_datetime_safe(pending.get("execute_at"))
+                now = timezone.now()
+                if execute_at and execute_at > now:
+                    return
+
+                player_id = int(pending.get("player_id") or 0)
+                mode = str(pending.get("mode") or "FOUILLE").upper()
+                item_kind = str(pending.get("item_kind") or "").upper()
+                item_uid = str(pending.get("item_uid") or "")
+
+                items, item_index, item_payload = self._find_wreck_loot_item(
+                    loot, mode=mode, item_kind=item_kind, item_uid=item_uid
+                )
+                if item_index is None or not isinstance(item_payload, dict):
+                    loot["pending_action"] = None
+                    lock = loot.get("lock")
+                    if self._is_wreck_lock_owned_by(lock, player_id):
+                        self._refresh_wreck_loot_lock(loot, player_id=player_id, mode=mode)
+                    wreck.metadata = metadata
+                    wreck.save(update_fields=["metadata", "updated_at"])
+                    post_commit = {
+                        "player_id": player_id,
+                        "wreck_id": int(wreck.id),
+                        "mode": mode,
+                        "failed": {"reason": "WRECK_LOOT_ITEM_NOT_FOUND", "message": "L'élément à looter n'est plus disponible."},
+                    }
+                else:
+                    player_ship = (
+                        PlayerShip.objects
+                        .select_related("player", "ship")
+                        .select_for_update()
+                        .filter(player_id=player_id, is_current_ship=True)
+                        .first()
+                    )
+                    if not player_ship:
+                        loot["pending_action"] = None
+                        if self._is_wreck_lock_owned_by(loot.get("lock"), player_id):
+                            loot["lock"] = None
+                        wreck.metadata = metadata
+                        wreck.save(update_fields=["metadata", "updated_at"])
+                        post_commit = {
+                            "player_id": player_id,
+                            "wreck_id": int(wreck.id),
+                            "mode": mode,
+                            "failed": {"reason": "PLAYER_SHIP_NOT_FOUND", "message": "Vaisseau courant introuvable."},
+                        }
+                    else:
+                        awarded = False
+                        chance_failed = False
+                        if item_kind == "RESOURCE":
+                            awarded = self._award_resource_to_player_ship(
+                                player_ship,
+                                resource_id=int(item_payload.get("resource_id") or 0),
+                                quantity=int(item_payload.get("quantity") or 0),
+                            )
+                            if awarded:
+                                items.pop(int(item_index))
+                        elif item_kind == "MODULE":
+                            if mode == "SALVAGE":
+                                awarded = random.random() < float(self.WRECK_SALVAGE_MODULE_RECOVERY_CHANCE)
+                                if awarded:
+                                    self._award_module_to_player_ship_inventory(
+                                        player_ship,
+                                        module_id=int(item_payload.get("module_id") or 0),
+                                        metadata=item_payload.get("metadata") or {},
+                                    )
+                                else:
+                                    chance_failed = True
+                                items.pop(int(item_index))
+                            else:
+                                awarded = self._award_module_to_player_ship_inventory(
+                                    player_ship,
+                                    module_id=int(item_payload.get("module_id") or 0),
+                                    metadata=item_payload.get("metadata") or {},
+                                )
+                                if awarded:
+                                    items.pop(int(item_index))
+                        else:
+                            awarded = False
+
+                        loot["pending_action"] = None
+                        if self._is_wreck_lock_owned_by(loot.get("lock"), player_id):
+                            self._refresh_wreck_loot_lock(loot, player_id=player_id, mode=mode)
+
+                        wreck.metadata = metadata
+                        wreck.save(update_fields=["metadata", "updated_at"])
+                        post_commit = {
+                            "player_id": int(player_id),
+                            "wreck_id": int(wreck.id),
+                            "mode": mode,
+                            "awarded": bool(awarded),
+                            "chance_failed": bool(chance_failed),
+                        }
+
+            if not post_commit:
+                return
+
+            target_player_id = int(post_commit.get("player_id") or 0)
+            if target_player_id:
+                self._emit_local_ship_module_sync(target_player_id, context="WRECK_LOOT_COMPLETED")
+
+            if post_commit.get("failed") and target_player_id:
+                self._emit_targeted_action_failed(
+                    target_player_id,
+                    reason=str(post_commit["failed"].get("reason") or "WRECK_LOOT_FAILED"),
+                    message=post_commit["failed"].get("message"),
+                )
+
+            if post_commit.get("chance_failed") and target_player_id:
+                self._emit_targeted_action_failed(
+                    target_player_id,
+                    reason="SALVAGE_RECOVERY_FAILED",
+                    message="La récupération de ce module a échoué.",
+                )
+
+            wreck = (
+                ShipWreck.objects
+                .select_related("ship", "ship__ship_category")
+                .filter(id=int(post_commit["wreck_id"]), status="ACTIVE")
+                .first()
+            )
+            if wreck and target_player_id:
+                self._emit_wreck_loot_session_state(target_player_id, wreck, mode=post_commit.get("mode"))
+                self._emit_wreck_loot_session_state_to_sector_players(
+                    wreck,
+                    mode=post_commit.get("mode"),
+                    exclude_player_id=target_player_id,
+                )
+        except Exception:
+            logger.exception("wreck loot completion failed")
+
     def _send_action_failed_response(self, reason: str, message: Optional[str] = None, **extra) -> None:
         payload = {"reason": reason}
         if message:
@@ -3230,6 +4347,8 @@ class GameConsumer(WebsocketConsumer):
         sanitized = dict(data)
         sanitized_ship = dict(ship_payload)
         sanitized_ship.pop("inventory_modules", None)
+        sanitized_ship.pop("inventory_resources", None)
+        sanitized_ship.pop("inventory_quest_items", None)
         sanitized_ship.pop("module_reconfiguration", None)
         sanitized["ship"] = sanitized_ship
         return sanitized
@@ -3686,6 +4805,9 @@ class GameConsumer(WebsocketConsumer):
             "share_scan": self._dispatch_share_scan_message,
             "action_attack": self._dispatch_combat_action_message,
             "action_ship_module_reconfigure": self._dispatch_ship_module_reconfiguration_message,
+            "action_wreck_loot_open": self._dispatch_wreck_loot_open_message,
+            "action_wreck_loot_close": self._dispatch_wreck_loot_close_message,
+            "action_wreck_loot_take": self._dispatch_wreck_loot_take_message,
             "action_respawn": self._dispatch_respawn_action_message,
         }
         handler = handlers.get(msg_type)
@@ -3749,6 +4871,29 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Payload action_respawn invalide: {data}")
             return
         self._handle_respawn_action(payload)
+
+    def _dispatch_wreck_loot_open_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_WRECK_LOOT_PAYLOAD", "Payload de loot invalide.")
+            return
+        self._handle_wreck_loot_open(payload)
+
+    def _dispatch_wreck_loot_close_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if payload is None:
+            payload = {}
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_WRECK_LOOT_PAYLOAD", "Payload de loot invalide.")
+            return
+        self._handle_wreck_loot_close(payload)
+
+    def _dispatch_wreck_loot_take_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_WRECK_LOOT_PAYLOAD", "Payload de loot invalide.")
+            return
+        self._handle_wreck_loot_take(payload)
 
     def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         return {
