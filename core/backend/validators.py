@@ -69,8 +69,26 @@ class CheckPassword2Policy:
 
     def validate(self, password):
         """
-            Your passwords must match
+        Valide que le mot de passe de confirmation respecte les mêmes exigences que password1
         """
+        if re.match(self.password_pattern, password) is None:
+            raise ValidationError(
+                _(
+                    mark_safe(
+                        '<div class="alert alert-danger text-center" role="alert">'
+                        "<li><b>"
+                        + _("Your password must contain at least")
+                        + ":</b></li>"
+                        "<li><b>8</b> " + _("letters") + "</li>"
+                        "<li><b>1</b> " + _("uppercase") + "</li>"
+                        "<li><b>1</b> " + _("lowercase") + "</li>"
+                        "<li><b>1</b> " + _("symbol") + "</li>"
+                        "<li><b>1</b> " + _("number") + "</li>"
+                        "</div>"
+                    )
+                ),
+                code="password_too_weak",
+            )
 
     def get_help_text(self):
         """docstring"""

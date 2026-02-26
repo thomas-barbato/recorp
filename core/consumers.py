@@ -1662,7 +1662,7 @@ class GameConsumer(WebsocketConsumer):
         })
 
     def ship_module_local_sync(self, event):
-        if int(event.get("target_player_id", -1)) != int(self.player_id):
+        if not self.player_id or int(event.get("target_player_id", -1)) != int(self.player_id):
             return
         self._send_response({
             "type": "ship_module_local_sync",
@@ -1670,7 +1670,7 @@ class GameConsumer(WebsocketConsumer):
         })
 
     def wreck_loot_session_state(self, event):
-        if int(event.get("target_player_id", -1)) != int(self.player_id):
+        if not self.player_id or int(event.get("target_player_id", -1)) != int(self.player_id):
             return
         self._send_response({
             "type": "wreck_loot_session_state",
@@ -1678,7 +1678,7 @@ class GameConsumer(WebsocketConsumer):
         })
 
     def wreck_loot_session_closed(self, event):
-        if int(event.get("target_player_id", -1)) != int(self.player_id):
+        if not self.player_id or int(event.get("target_player_id", -1)) != int(self.player_id):
             return
         self._send_response({
             "type": "wreck_loot_session_closed",
@@ -1686,7 +1686,7 @@ class GameConsumer(WebsocketConsumer):
         })
 
     def scan_target_data_refresh(self, event):
-        if int(event.get("target_player_id", -1)) != int(self.player_id):
+        if not self.player_id or int(event.get("target_player_id", -1)) != int(self.player_id):
             return
         self._send_response({
             "type": "scan_target_data_refresh",

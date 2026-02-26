@@ -16,10 +16,10 @@ environ.Env.read_env()
 
 # os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
-SECRET_KEY = "django-insecure-%r)c^utworo7x81)a9=-4^@x$b$aizu1#^wa_^sf9u=u4jb^*@"
+SECRET_KEY = env("SECRET_KEY")
 
 LOGIN_REDIRECT_URL = "/"
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["127.0.0.1", "https://6b4e7f2ebb00.ngrok-free.app", "6b4e7f2ebb00.ngrok-free.app"]
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "recorp",
     "core.apps.CoreConfig",
     "django_user_agents",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "axes.middleware.AxesMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # "django.middleware.cache.FetchFromCacheMiddleware",
@@ -117,12 +119,21 @@ SESSION_CACHE_ALIAS = 'default'
 # Configuration session
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 semaine
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_SAVE_EVERY_REQUEST = False  # ⚠️ Désactiver pour WebSocket
+SESSION_SAVE_EVERY_REQUEST = True  # ✅ Forcé pour CSRF token valide
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Timeout session plus long pour WebSocket
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 jours
+
+# ========================================
+# Authentication Backends
+# ========================================
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 CHANNEL_LAYERS = {
     "default": {
@@ -388,9 +399,17 @@ LOGGING = {
             "propagate": False,
         },
         "security": {
-            "handlers": ["file_security", "file_errors"],
+            "handlers": ["file_security"],
             "level": "WARNING",
             "propagate": False,
         },
     },
 }
+
+# ========================================
+# Django-Axes Configuration (Rate Limiting)
+# ========================================
+AXES_FAILURE_LIMIT = 5  # 5 tentatives max
+AXES_COOLOFF_DURATION = 900  # 15 minutes en secondes
+AXES_LOCK_OUT_AT_FAILURE = True  # Bloquer après N tentatives
+AXES_USE_CACHE = 'default'  # Utiliser Redis pour plus de vitesse

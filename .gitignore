@@ -165,4 +165,5 @@ cython_debug/
 node_modules/
 
 # Local debug log (runtime/manual tests)
-recorp/logsdebug.logs
+recorp/logsdebug.logserrors.logs
+security.logs
