@@ -1,5 +1,66 @@
 // canvas_pathfinding.js — VERSION FINALE
 
+// Binary heap implementation used for the open set (module level)
+class BinaryHeap {
+    constructor(scoreFunction) {
+        this.content = [];
+        this.scoreFunction = scoreFunction;
+    }
+    push(element) {
+        this.content.push(element);
+        this.sinkDown(this.content.length - 1);
+    }
+    pop() {
+        const result = this.content[0];
+        const end = this.content.pop();
+        if (this.content.length > 0) {
+            this.content[0] = end;
+            this.bubbleUp(0);
+        }
+        return result;
+    }
+    size() {
+        return this.content.length;
+    }
+    sinkDown(n) {
+        const element = this.content[n];
+        const score = this.scoreFunction(element);
+        while (n > 0) {
+            const parentN = Math.floor((n + 1) / 2) - 1;
+            const parent = this.content[parentN];
+            if (score >= this.scoreFunction(parent)) break;
+            this.content[parentN] = element;
+            this.content[n] = parent;
+            n = parentN;
+        }
+    }
+    bubbleUp(n) {
+        const length = this.content.length;
+        const element = this.content[n];
+        const elemScore = this.scoreFunction(element);
+        while (true) {
+            const child2N = (n + 1) * 2;
+            const child1N = child2N - 1;
+            let swap = null;
+            let child1Score;
+            if (child1N < length) {
+                const child1 = this.content[child1N];
+                child1Score = this.scoreFunction(child1);
+                if (child1Score < elemScore) swap = child1N;
+            }
+            if (child2N < length) {
+                const child2 = this.content[child2N];
+                const child2Score = this.scoreFunction(child2);
+                if ((swap === null ? elemScore : child1Score) > child2Score) swap = child2N;
+            }
+            if (swap === null) break;
+            this.content[n] = this.content[swap];
+            this.content[swap] = element;
+            n = swap;
+        }
+    }
+}
+
 export default class CanvasPathfinding {
     /**
      * options = {
@@ -299,28 +360,29 @@ export default class CanvasPathfinding {
         const H = this.map.mapHeight;
         const isBlocked = (x, y) => this.map.isBlockedTile(x, y);
 
-        const open = [];
         const closed = new Set();
         const parent = new Map();
         const g = new Map();
+
+        // ensemble pour vérifier rapidement si un nœud est dans la liste ouverte
+        const openSet = new Set();
 
         const key = (x, y) => `${x},${y}`;
 
         const startKey = key(start.x, start.y);
         const destKey = key(dest.x, dest.y);
 
-        open.push(start);
-        g.set(startKey, 0);
-
         const h = (p) => Math.abs(p.x - dest.x) + Math.abs(p.y - dest.y);
 
-        while (open.length > 0) {
-            open.sort((a, b) =>
-                (g.get(key(a.x, a.y)) + h(a)) - (g.get(key(b.x, b.y)) + h(b))
-            );
+        const openHeap = new BinaryHeap(node => g.get(key(node.x, node.y)) + h(node));
+        openHeap.push(start);
+        openSet.add(startKey);
+        g.set(startKey, 0);
 
-            const cur = open.shift();
+        while (openHeap.size() > 0) {
+            const cur = openHeap.pop();
             const ck = key(cur.x, cur.y);
+            openSet.delete(ck);
 
             if (ck === destKey) {
                 const final = [];
@@ -361,8 +423,9 @@ export default class CanvasPathfinding {
                     parent.set(nk, ck);
                     g.set(nk, tentative);
 
-                    if (!open.find(o => o.x === nb.x && o.y === nb.y)) {
-                        open.push(nb);
+                    if (!openSet.has(nk)) {
+                        openHeap.push(nb);
+                        openSet.add(nk);
                     }
                 }
             }

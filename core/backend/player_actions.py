@@ -15,7 +15,8 @@ from core.backend.action_rules import ActionRules
 from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async, async_to_sync
 from channels.layers import get_channel_layer
-logger = logging.getLogger("django")
+
+logger = logging.getLogger(__name__)
 
 
 from core.models import (

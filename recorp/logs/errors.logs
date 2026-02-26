@@ -1,0 +1,6 @@
+[WARNING] 2026-02-26 15:57:20 | security | LOGOUT - user=test1 ip=127.0.0.1 path=/fr/logout
+[WARNING] 2026-02-26 15:57:20 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 15:57:21 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 15:57:21 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63602][0m
+[WARNING] 2026-02-26 15:57:24 | security | LOGIN SUCCESS - user=test1 ip=127.0.0.1 path=/fr/
+[WARNING] 2026-02-26 15:57:24 | django.request | Not Found: /favicon.ico

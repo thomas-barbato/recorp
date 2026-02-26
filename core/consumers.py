@@ -956,6 +956,9 @@ class GameConsumer(WebsocketConsumer):
         visible_zone = store.get_specific_player_data(
             player_id, "pc", "ship", "visible_zone"
         )
+        sonar_zone = store.get_specific_player_data(
+            player_id, "pc", "ship", "sonar_zone"
+        )
         view_range = store.get_specific_player_data(
             player_id, "pc", "ship", "view_range"
         )
@@ -978,6 +981,8 @@ class GameConsumer(WebsocketConsumer):
                 # chemin complet utilisé pour l’animation case par case
                 "path": message.get("path", []),
                 "max_move": max_movement,
+                "visible_zone": visible_zone,
+                "sonar_zone": sonar_zone,
                 "is_reversed": message["is_reversed"],
                 "size": {
                     "x": message["size_x"],

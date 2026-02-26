@@ -3,7 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple, Literal, List
 import random
+import logging
 from core.models import PlayerShip, ShipCategory
+
+logger = logging.getLogger(__name__)
 
 
 DamageType = Literal["MISSILE", "THERMAL", "BALLISTIC"]
@@ -150,28 +153,169 @@ class ActorAdapter:
         }
 
 
+# ---- Skill Caching System (Optimization for N+1 queries) ----
+class SkillCache:
+    """
+    Précharge tous les skills en 1 requête au lieu de 2 par calcul.
+    Gain estimé: 50-100x moins de requêtes DB pendant un combat.
+    """
+    
+    def __init__(self):
+        self._skill_name_to_id = {}
+        self._player_skills = {}  # {player_id: {skill_name: level}}
+        self._npc_skills = {}     # {npc_template_id: {skill_name: level}}
+        self._initialized = False
+    
+    def initialize(self):
+        """Précharge toutes les skills au démarrage d'un combat."""
+        if self._initialized:
+            return
+        
+        from core.models import Skill, PlayerSkill, NpcTemplateSkill
+        
+        try:
+            # 1 requête: charger la map skill_name -> skill_id
+            self._skill_name_to_id = dict(
+                Skill.objects.all().values_list('name', 'id')
+            )
+            logger.debug(f"[SKILL_CACHE] Loaded {len(self._skill_name_to_id)} skills")
+            
+            self._initialized = True
+        except Exception as e:
+            logger.exception(f"[SKILL_CACHE] Error initializing skill cache: {e}")
+    
+    def preload_player_skills(self, player_id: int):
+        """Précharge toutes les skills d'un joueur."""
+        if player_id in self._player_skills:
+            return  # Déjà préchargé
+        
+        from core.models import PlayerSkill
+        
+        try:
+            skills = dict(
+                PlayerSkill.objects
+                .filter(player_id=player_id)
+                .values_list('skill__name', 'level')
+            )
+            self._player_skills[player_id] = skills
+            logger.debug(f"[SKILL_CACHE] Preloaded {len(skills)} skills for player {player_id}")
+        except Exception as e:
+            logger.exception(f"[SKILL_CACHE] Error preloading player skills: {e}")
+            self._player_skills[player_id] = {}
+    
+    def preload_npc_template_skills(self, npc_template_id: int):
+        """Précharge toutes les skills d'une template NPC."""
+        if npc_template_id in self._npc_skills:
+            return  # Déjà préchargé
+        
+        from core.models import NpcTemplateSkill
+        
+        try:
+            skills = dict(
+                NpcTemplateSkill.objects
+                .filter(npc_template_id=npc_template_id)
+                .values_list('skill__name', 'level')
+            )
+            self._npc_skills[npc_template_id] = skills
+            logger.debug(f"[SKILL_CACHE] Preloaded {len(skills)} skills for NPC template {npc_template_id}")
+        except Exception as e:
+            logger.exception(f"[SKILL_CACHE] Error preloading NPC template skills: {e}")
+            self._npc_skills[npc_template_id] = {}
+    
+    def get_skill_level(self, actor: Any, actor_kind: Literal["PC", "NPC"], skill_name: str) -> int:
+        """
+        Retourne le niveau d'une skill avec cache.
+        O(1) lookup après préchargement (au lieu de O(1) avec 2 requêtes DB).
+        """
+        if actor_kind == "PC":
+            player_id = actor.player.id
+            self.preload_player_skills(player_id)
+            return int(self._player_skills.get(player_id, {}).get(skill_name, 0))
+        else:
+            npc_template_id = actor.npc_template.id
+            self.preload_npc_template_skills(npc_template_id)
+            return int(self._npc_skills.get(npc_template_id, {}).get(skill_name, 0))
+
+
+# Instance globale du cache (threadlocal si besoin pour async)
+_global_skill_cache = SkillCache()
+
+
 # ---- Skill levels: you will optimize later with prefetch/select_related ----
-def get_skill_level_for_actor(actor: Any, actor_kind: Literal["PC", "NPC"], skill_name: str) -> int:
+def get_skill_level_for_actor(
+    actor: Any, 
+    actor_kind: Literal["PC", "NPC"], 
+    skill_name: str,
+    use_cache: bool = True
+) -> int:
     """
-    Minimal DB access version (OK for v1).
-    Later: provide precomputed dict in ctx to avoid queries.
+    Retourne le niveau d'une skill pour un acteur.
+    
+    Si use_cache=True (défaut): Utilise le cache préchargé (O(1), aucune requête DB).
+    Si use_cache=False: Requête directe (fallback / pour appels isolés).
+    
+    ⚠️ PERFORMANCE WARNING (sans cache): Each call performs 2 DB queries!
+    With 10+ calls per combat turn and multiple combats, this creates 200-300+ queries/sec.
     """
+    if use_cache:
+        # Version optimisée: cherche dans le cache
+        return _global_skill_cache.get_skill_level(actor, actor_kind, skill_name)
+    
+    # Fallback: requête directe (pour tests ou appels isolés)
     if actor_kind == "PC":
         # PlayerShip -> player -> PlayerSkill(skill)
-        from core.models import PlayerSkill, Skill  # local import to avoid cycles
+        from core.models import PlayerSkill, Skill
         try:
             skill_id = Skill.objects.only("id").get(name=skill_name).id
-            return int(PlayerSkill.objects.only("level").get(player=actor.player, skill_id=skill_id).level)
-        except Exception:
+            ps = PlayerSkill.objects.only("level").get(player=actor.player, skill_id=skill_id)
+            level = int(ps.level)
+            logger.debug(f"[COMBAT] PC skill lookup (no cache): {skill_name}={level} (actor={actor.id})")
+            return level
+        except Skill.DoesNotExist:
+            logger.warning(f"[COMBAT] Skill '{skill_name}' not found in database (PC={actor.id})")
+            return 0
+        except PlayerSkill.DoesNotExist:
+            return 0
+        except Exception as e:
+            logger.exception(f"[COMBAT] Unexpected error getting skill '{skill_name}' for PC {actor.id}: {e}")
             return 0
 
     # NPC -> NpcTemplateSkill via npc_template
     from core.models import NpcTemplateSkill, Skill
     try:
         skill_id = Skill.objects.only("id").get(name=skill_name).id
-        return int(NpcTemplateSkill.objects.only("level").get(npc_template=actor.npc_template, skill_id=skill_id).level)
-    except Exception:
+        ts = NpcTemplateSkill.objects.only("level").get(npc_template=actor.npc_template, skill_id=skill_id)
+        level = int(ts.level)
+        logger.debug(f"[COMBAT] NPC skill lookup (no cache): {skill_name}={level} (npc_template={actor.npc_template.id})")
+        return level
+    except Skill.DoesNotExist:
+        logger.warning(f"[COMBAT] Skill '{skill_name}' not found in database (NPC template)")
         return 0
+    except NpcTemplateSkill.DoesNotExist:
+        return 0
+    except Exception as e:
+        logger.exception(f"[COMBAT] Unexpected error getting skill '{skill_name}' for NPC template: {e}")
+        return 0
+
+
+def initialize_skill_cache_for_combat(attacker_ad: ActorAdapter, defender_ad: ActorAdapter):
+    """
+    À appeler au début d'un combat pour initialiser le cache.
+    Réduit les requêtes DB de ~200 à ~4 par combat.
+    """
+    _global_skill_cache.initialize()
+    
+    if attacker_ad.kind == "PC":
+        _global_skill_cache.preload_player_skills(attacker_ad.actor.player.id)
+    else:
+        _global_skill_cache.preload_npc_template_skills(attacker_ad.actor.npc_template.id)
+    
+    if defender_ad.kind == "PC":
+        _global_skill_cache.preload_player_skills(defender_ad.actor.player.id)
+    else:
+        _global_skill_cache.preload_npc_template_skills(defender_ad.actor.npc_template.id)
+    
+    logger.info(f"[COMBAT] Skill cache initialized for combat")
 
 
 def visibility_modifier(vis: VisibilityState) -> float:

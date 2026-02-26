@@ -3,6 +3,7 @@ from pathlib import Path
 import environ
 from django.utils.translation import gettext_lazy as _
 import mimetypes
+import logging
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -300,21 +301,96 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# Filtre personnalisé pour exclure les requêtes statiques 200 OK
+class SkipStaticFilesFilter(logging.Filter):
+    """
+    Filtre qui exclut les logs des requêtes GET sur fichiers statiques 
+    avec réponse 200 (succès). Garde les erreurs (4xx, 5xx).
+    """
+    def filter(self, record):
+        # Exclure les requêtes GET sur fichiers statiques qui reviennent 200
+        if hasattr(record, 'status_code'):
+            # Si c'est une requête qui revient 200
+            if record.status_code == 200:
+                # Vérifie si c'est une requête statique (JS, CSS, images, fonts)
+                message = record.getMessage()
+                static_extensions = (
+                    '/static/', '/media/',
+                    '.js', '.css', '.png', '.gif', '.jpg', '.jpeg', '.webp',
+                    '.woff2', '.woff', '.ttf', '.svg', '.json'
+                )
+                if any(ext in message for ext in static_extensions):
+                    return False  # Exclure ce log
+        
+        # Garder tout le reste (erreurs 4xx, 5xx, WebSocket, requêtes API, etc.)
+        return True
+
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{levelname}] {asctime} | {name} | {message}",
+            "style": "{",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+        "simple": {
+            "format": "{levelname}: {message}",
+            "style": "{",
+        },
+    },
+    "filters": {
+        "skip_static": {
+            "()": SkipStaticFilesFilter,
+        },
+    },
     "handlers": {
-        "file": {
-            "level": "DEBUG",
+        "file_errors": {
+            "level": "WARNING",
             "class": "logging.FileHandler",
-            "filename": f'{os.path.join(BASE_DIR, "recorp", "logs") + "debug.logs"}',
+            "filename": os.path.join(BASE_DIR, "recorp", "logs", "errors.logs"),
+            "formatter": "verbose",
+            "filters": ["skip_static"],
+        },
+        "file_security": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "recorp", "logs", "security.logs"),
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "WARNING",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["file"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-            "propagate": True,
+            "handlers": ["file_errors"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "WARNING"),
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["file_errors"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "core": {
+            "handlers": ["console", "file_errors"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "core.backend": {
+            "handlers": ["console", "file_errors"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "security": {
+            "handlers": ["file_security", "file_errors"],
+            "level": "WARNING",
+            "propagate": False,
         },
     },
 }

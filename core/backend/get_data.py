@@ -2,6 +2,7 @@ import json
 import os
 from typing import Dict, List, Tuple, Any, Optional, Union
 import math
+import logging
 
 from django.core import serializers
 from django.contrib.auth.models import User
@@ -14,6 +15,7 @@ from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async
 
 from recorp.settings import BASE_DIR
+from core.backend.geometry import compute_chebyshev_distance, get_tiles_in_range
 from core.models import (
     Planet, Asteroid, Station, Warp, WarpZone, SectorWarpZone,
     Resource, PlanetResource, AsteroidResource, StationResource,
@@ -22,6 +24,8 @@ from core.models import (
     Skill, Npc, NpcTemplateResource, NpcTemplate, NpcTemplateSkill, Module,
     PlayerGroup, ScanIntel, ScanIntelGroup
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GetDataFromDB:
@@ -275,51 +279,83 @@ class GetDataFromDB:
     
     @staticmethod
     def get_pc_from_sector(pk: int) -> Tuple[QuerySet, QuerySet]:
-        """Récupère les données des joueurs et NPCs d'un secteur"""
-        player_modules = PlayerShipModule.objects.filter(
-            player_ship_id__player_id__sector_id=pk
-        ).values(
-            "player_ship_id", "player_ship_id__player_id",
-            "player_ship_id__ship_id",
-            "player_ship_id__player_id__name", "player_ship_id__player_id__coordinates",
-            "player_ship_id__player_id__image", "player_ship_id__player_id__description",
-            "player_ship_id__player_id__is_npc", "player_ship_id__player_id__current_ap", 
-            "player_ship_id__player_id__max_ap", "player_ship_id__player_id__faction_id__name",
-            "player_ship_id__player_id__archetype_id__name",
-            "player_ship_id__player_id__archetype_id__data",
-            "player_ship_id__player_id__sector_id__name",
-            "player_ship_id__ship_id__name", "player_ship_id__ship_id__image",
-            "player_ship_id__ship_id__description", "player_ship_id__is_current_ship",
-            "player_ship_id__is_reversed", "player_ship_id__current_hp",
-            "player_ship_id__max_hp", "player_ship_id__current_movement",
-            "player_ship_id__max_movement", "player_ship_id__current_missile_defense",
-            "player_ship_id__current_ballistic_defense", "player_ship_id__current_thermal_defense",
-            "player_ship_id__max_missile_defense",
-            "player_ship_id__max_ballistic_defense", 
-            "player_ship_id__max_thermal_defense",
-            "player_ship_id__current_cargo_size", "player_ship_id__status",
-            "player_ship_id__ship_id__module_slot_available",
-            "player_ship_id__ship_id__ship_category__name",
-            "player_ship_id__ship_id__ship_category__description",
-            "player_ship_id__ship_id__ship_category__size",
-            "player_ship_id__view_range",
-        ).distinct()
+        """Récupère les données des joueurs et NPCs d'un secteur.
 
-        npcs = Npc.objects.filter(sector_id=pk).values(
-            "id", "coordinates", "status", "hp", "npc_template_id__max_hp",
-            "movement", "npc_template_id__max_movement", "ballistic_defense",
-            "npc_template_id__ship_id",
-            "npc_template_id__max_ballistic_defense", "thermal_defense",
-            "npc_template_id__max_thermal_defense", "missile_defense",
-            "npc_template_id__max_missile_defense", "npc_template_id__module_id_list",
-            "npc_template_id__difficulty", "npc_template_id__name", "npc_template_id__id",
-            "npc_template_id__displayed_name",
-            "faction_id__name", "npc_template_id__ship_id__image",
-            "npc_template_id__ship_id__ship_category_id__size",
-            "npc_template_id__ship_id__ship_category_id__name",
-            "npc_template_id__ship_id__ship_category_id__description",
-            "npc_template_id__ship_id__name"
+        La version originale utilisait uniquement ``values()`` ce qui générait
+        un SQL avec de nombreuses jointures. Dans la pratique l'appelant
+        récupère ensuite une liste de dictionnaires et parcourt chaque
+        résultat en accédant aux mêmes champs : cela pouvait entraîner des
+        requêtes supplémentaires si Django devait évaluer une relation. En
+        ajoutant des ``select_related`` on force le pré‑chargement des objets
+        liés : la lecture des champs suivants se fait en mémoire sans
+        retour en base.
+        """
+        player_modules = (
+            PlayerShipModule.objects
+            .select_related(
+                "player_ship",
+                "player_ship__player",
+                "player_ship__ship",
+                "player_ship__ship__ship_category",
+                "player_ship__player__faction",
+                "player_ship__player__archetype",
+                "player_ship__player__sector",
+            )
+            .filter(player_ship_id__player_id__sector_id=pk)
+            .values(
+                "player_ship_id", "player_ship_id__player_id",
+                "player_ship_id__ship_id",
+                "player_ship_id__player_id__name", "player_ship_id__player_id__coordinates",
+                "player_ship_id__player_id__image", "player_ship_id__player_id__description",
+                "player_ship_id__player_id__is_npc", "player_ship_id__player_id__current_ap", 
+                "player_ship_id__player_id__max_ap", "player_ship_id__player_id__faction_id__name",
+                "player_ship_id__player_id__archetype__name",
+                "player_ship_id__player_id__archetype__data",
+                "player_ship_id__player_id__sector__name",
+                "player_ship_id__ship_id__name", "player_ship_id__ship_id__image",
+                "player_ship_id__ship_id__description", "player_ship_id__is_current_ship",
+                "player_ship_id__is_reversed", "player_ship_id__current_hp",
+                "player_ship_id__max_hp", "player_ship_id__current_movement",
+                "player_ship_id__max_movement", "player_ship_id__current_missile_defense",
+                "player_ship_id__current_ballistic_defense", "player_ship_id__current_thermal_defense",
+                "player_ship_id__max_missile_defense",
+                "player_ship_id__max_ballistic_defense", 
+                "player_ship_id__max_thermal_defense",
+                "player_ship_id__current_cargo_size", "player_ship_id__status",
+                "player_ship_id__ship_id__module_slot_available",
+                "player_ship_id__ship_id__ship_category__name",
+                "player_ship_id__ship_id__ship_category__description",
+                "player_ship_id__ship_id__ship_category__size",
+                "player_ship_id__view_range",
+            )
+            .distinct()
         )
+
+        npcs = (
+            Npc.objects
+            .select_related(
+                "npc_template",
+                "npc_template__ship",
+                "npc_template__ship__ship_category",
+                "faction",
+            )
+            .filter(sector_id=pk)
+            .values(
+                "id", "coordinates", "status", "hp", "npc_template_id__max_hp",
+                "movement", "npc_template_id__max_movement", "ballistic_defense",
+                "npc_template_id__ship_id",
+                "npc_template_id__max_ballistic_defense", "thermal_defense",
+                "npc_template_id__max_thermal_defense", "missile_defense",
+                "npc_template_id__max_missile_defense", "npc_template_id__module_id_list",
+                "npc_template_id__difficulty", "npc_template_id__name", "npc_template_id__id",
+                "npc_template_id__displayed_name",
+                "faction_id__name", "npc_template_id__ship_id__image",
+                "npc_template_id__ship_id__ship_category_id__size",
+                "npc_template_id__ship_id__ship_category_id__name",
+                "npc_template_id__ship_id__ship_category_id__description",
+                "npc_template_id__ship_id__name"
+            )
+        )  # extra closing paren for the outer assignment
 
         return player_modules, npcs
 
@@ -449,8 +485,10 @@ class GetDataFromDB:
         
     def current_player_observable_zone(current_player_id: int) -> dict:
         """
-        Détermine la zone de visibilité du joueur,
-        La stock dans une variable de la classe.
+        Détermine la zone de visibilité du joueur (portée de vue standard).
+        - Utilise une distance Chebyshev (zone carrée) car c'est la métrique
+          utilisée pour le combat et le pathfinding.
+        - Renvoie un dictionnaire des tuiles "y_x" visibles.
         """
         try:
             current_user_data = GetDataFromDB._get_player_ship_view_range(current_player_id)
@@ -459,6 +497,37 @@ class GetDataFromDB:
         except Exception as e:
             # Log de l'erreur en production
             return {}
+
+    @staticmethod
+    def current_player_sonar_zone(current_player_id: int) -> dict:
+        """
+        Calcule la zone sonore du joueur (rayon circulaire).
+        Cette méthode est utilisée lorsque la mécanique de sonar est activée.
+        Elle utilise la distance Euclidienne et renvoie un ensemble de tuiles
+        dans un cercle, cohérent avec le front-end `sonar_system.js`.
+        """
+        try:
+            current_user_data = GetDataFromDB._get_player_ship_view_range(current_player_id)
+            return GetDataFromDB._calculate_circle_view_range(current_user_data)
+        except Exception:
+            return {}
+
+    @staticmethod
+    def _calculate_circle_view_range(data: dict) -> dict:
+        """
+        Implémentation interne pour générer la zone circulaire (euclidienne).
+        Se contente d'appeler la routine du module geometry.
+        """
+        coordinates = data['coordinates']
+        size = data['size']
+        view_range = data['range']
+        return get_tiles_in_circle(
+            center_pos=coordinates,
+            range_tiles=view_range,
+            center_size=size,
+            grid_width=GetDataFromDB.MAP_SIZE["cols"],
+            grid_height=GetDataFromDB.MAP_SIZE["rows"]
+        )
         
     @staticmethod
     def _get_target_coord_size(target_id : int, is_npc : bool = False) -> bool:
@@ -511,31 +580,29 @@ class GetDataFromDB:
         
     @staticmethod
     def _calculate_view_range(data : dict) -> dict:
+        """
+        Calcule les coordonnées visibles depuis la position du joueur.
+        
+        ✅ FIX APPLIQUÉ (27/02/2026): Utilise distance Chebyshev (correct!)
+        Cela crée des zones de visibilité CARRÉES (8-directions).
+        Cohérent avec combat_engine.py qui utilise aussi Chebyshev.
+        
+        Remplace l'ancien code Euclidienne qui causait des discordances client/serveur.
+        """
         coordinates = data['coordinates']
         size = data['size']
         view_range = data['range']
         
-        start_x = GetDataFromDB._calculate_range_start(coordinates['x'], size['x'], view_range)
-        end_x = GetDataFromDB._calculate_range_end(coordinates['x'], size['x'], view_range)
-        start_y = GetDataFromDB._calculate_range_start(coordinates['y'], size['y'], view_range)
-        end_y = GetDataFromDB._calculate_range_end(coordinates['y'], size['y'], view_range)
+        # Utilise le module geometry centralisé (Chebyshev)
+        result = get_tiles_in_range(
+            center_pos=coordinates,
+            range_tiles=view_range,
+            center_size=size,
+            grid_width=GetDataFromDB.MAP_SIZE["cols"],
+            grid_height=GetDataFromDB.MAP_SIZE["rows"]
+        )
         
-        # Limitation aux bordes de la carte
-        start_x = max(0, start_x)
-        end_x = min(GetDataFromDB.MAP_SIZE["cols"], end_x)
-        start_y = max(0, start_y)
-        end_y = min(GetDataFromDB.MAP_SIZE["rows"], end_y)
-        
-        result = []
-        for y in range(start_y, end_y):
-            for x in range(start_x, end_x):
-                # Calculer la distance entre le point (x,y) et le centre du joueur
-                distance = math.sqrt((x - coordinates['x']) ** 2 + (y - coordinates['y']) ** 2)
-                
-                # Si la distance est <= view_range, inclure cette coordonnée
-                if distance <= view_range:
-                    result.append(f"{y}_{x}")
-    
+        logger.info(f"[VISIBILITY] Chebyshev range calculation: pos={coordinates}, size={size}, range={view_range}, visible_tiles={len(result)}")
         return result
 
     @staticmethod
