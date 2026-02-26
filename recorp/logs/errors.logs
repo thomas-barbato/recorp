@@ -1,0 +1,13 @@
+[WARNING] 2026-02-26 15:57:20 | security | LOGOUT - user=test1 ip=127.0.0.1 path=/fr/logout
+[WARNING] 2026-02-26 15:57:20 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 15:57:21 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 15:57:21 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:63602][0m
+[WARNING] 2026-02-26 15:57:24 | security | LOGIN SUCCESS - user=test1 ip=127.0.0.1 path=/fr/
+[WARNING] 2026-02-26 15:57:24 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 16:01:27 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 16:01:27 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61172][0m
+[WARNING] 2026-02-26 16:01:45 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 16:03:35 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-26 16:03:35 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:64777][0m
+[WARNING] 2026-02-26 16:06:04 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-26 16:06:04 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:64777][0m

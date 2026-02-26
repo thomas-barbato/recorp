@@ -1,0 +1,6 @@
+[WARNING] 2026-02-26 15:38:37 | security | LOGIN SUCCESS - user=test3 ip=127.0.0.1 path=/fr/
+[WARNING] 2026-02-26 15:40:15 | security | LOGOUT - user=test3 ip=127.0.0.1 path=/fr/logout
+[WARNING] 2026-02-26 15:40:27 | security | LOGIN SUCCESS - user=test3 ip=127.0.0.1 path=/fr/
+[WARNING] 2026-02-26 15:46:31 | security | LOGIN SUCCESS - user=test1 ip=127.0.0.1 path=/fr/
+[WARNING] 2026-02-26 15:57:20 | security | LOGOUT - user=test1 ip=127.0.0.1 path=/fr/logout
+[WARNING] 2026-02-26 15:57:24 | security | LOGIN SUCCESS - user=test1 ip=127.0.0.1 path=/fr/

@@ -269,6 +269,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
     # 5) Zone visible
     # -------------------------------------------------
     visible_zone = GetDataFromDB.current_player_observable_zone(player.id)
+    sonar_zone = GetDataFromDB.current_player_sonar_zone(player.id)
 
     # -------------------------------------------------
     # 6) Construction STRUCTURE CACHE-LIKE
@@ -332,6 +333,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "size": ship.ship.ship_category.size,
             "is_reversed": ship.is_reversed,
             "visible_zone": visible_zone,
+            "sonar_zone": sonar_zone,
             "view_range": ship.view_range,
         },
     }

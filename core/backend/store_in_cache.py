@@ -487,6 +487,7 @@ class StoreInCache:
         try:
             module_list = self._get_player_module_list_cached(pc_data["player_ship_id"])
             visible_zone = self.from_DB.current_player_observable_zone(pc_data["player_ship_id__player_id"])
+            sonar_zone = self.from_DB.current_player_sonar_zone(pc_data["player_ship_id__player_id"])
             
             pc_entry = {
                 "user": {
@@ -518,6 +519,8 @@ class StoreInCache:
                     "current_thermal_defense": pc_data["player_ship_id__current_thermal_defense"],
                     "current_missile_defense": pc_data["player_ship_id__current_missile_defense"],
                     "max_ballistic_defense": pc_data["player_ship_id__max_ballistic_defense"],
+                    "visible_zone": visible_zone,
+                    "sonar_zone": sonar_zone,
                     "max_thermal_defense": pc_data["player_ship_id__max_thermal_defense"],
                     "max_missile_defense": pc_data["player_ship_id__max_missile_defense"],
                     "current_cargo_size": pc_data["player_ship_id__current_cargo_size"],
