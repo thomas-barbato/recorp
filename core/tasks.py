@@ -93,13 +93,26 @@ def _expire_wreck_and_purge_source_ship(wreck_id: int) -> Optional[Dict[str, Any
 def _append_active_wreck_occupied_coords(occupied_coords: list, sector_id: int) -> None:
     """Treat active wrecks as blockers for NPC respawn placement."""
     try:
-        wrecks = ShipWreck.objects.filter(
-            sector_id=sector_id,
-            status="ACTIVE",
-        ).values("coordinates", "size")
+        wrecks = (
+            ShipWreck.objects
+            .filter(
+                sector_id=sector_id,
+                status="ACTIVE",
+            )
+            .select_related("ship__ship_category")
+            .only("coordinates", "metadata", "ship__ship_category__size")
+        )
         for wreck in wrecks:
-            coords = wreck.get("coordinates") if isinstance(wreck, dict) else None
-            size = wreck.get("size") if isinstance(wreck, dict) else None
+            coords = wreck.coordinates if hasattr(wreck, "coordinates") else None
+            size = None
+            try:
+                ship_size = getattr(getattr(getattr(wreck, "ship", None), "ship_category", None), "size", None)
+                if isinstance(ship_size, dict):
+                    size = ship_size
+                elif isinstance(getattr(wreck, "metadata", None), dict):
+                    size = wreck.metadata.get("size")
+            except Exception:
+                size = None
             if not isinstance(coords, dict):
                 continue
             if not isinstance(size, dict):

@@ -906,12 +906,48 @@ class GetDataFromDB:
         
     
     @staticmethod
-    def get_faction_badge_color_class(faction_name):
-        return {
-            'culte technologie': 'text-orange-400',
-            'Faction Democratique': 'text-blue-600',
-            'Faction Indépendante': 'text-purple-700'
-        }[faction_name]
+    def get_faction_badge_color_class(faction_id=None, faction_name=None):
+        """
+        Retourne la classe CSS de badge faction.
+        La résolution est prioritairement basée sur l'ID de faction (stable),
+        avec fallback nom uniquement pour compatibilité des anciens appels.
+        """
+        default_color = "text-emerald-400"
+        palette = (
+            "text-orange-400",
+            "text-blue-600",
+            "text-purple-700",
+            "text-cyan-400",
+            "text-rose-400",
+            "text-yellow-300",
+        )
+
+        resolved_faction_id = None
+        try:
+            if faction_id not in (None, "", 0, "0"):
+                resolved_faction_id = int(faction_id)
+        except Exception:
+            resolved_faction_id = None
+
+        # Compatibilité legacy: certains appels passent encore le nom.
+        if resolved_faction_id is None and faction_name:
+            try:
+                resolved_faction_id = (
+                    Faction.objects
+                    .filter(name=str(faction_name))
+                    .values_list("id", flat=True)
+                    .first()
+                )
+                if resolved_faction_id is not None:
+                    resolved_faction_id = int(resolved_faction_id)
+            except Exception:
+                resolved_faction_id = None
+
+        if resolved_faction_id is None:
+            return default_color
+
+        # Mapping déterministe par ID pour éviter toute logique gameplay liée au nom.
+        return palette[(max(1, resolved_faction_id) - 1) % len(palette)]
         
     @staticmethod
     def get_player_group(player_id: int):

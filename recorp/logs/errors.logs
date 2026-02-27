@@ -1,0 +1,73 @@
+[WARNING] 2026-02-27 00:22:24 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 00:22:24 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:57305][0m
+[WARNING] 2026-02-27 00:22:24 | security | [LOGOUT] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/logout
+[WARNING] 2026-02-27 00:22:54 | security | [LOGIN SUCCESS] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/
+[WARNING] 2026-02-27 00:23:38 | security | [LOGOUT] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/logout
+[WARNING] 2026-02-27 00:24:01 | security | [ACCOUNT CREATED] user_id=None username=test8 email=tt8@tt.com
+[WARNING] 2026-02-27 00:24:09 | security | [LOGIN SUCCESS] user_id=56 username=test8 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/
+[WARNING] 2026-02-27 08:16:04 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:16:04 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:55607][0m
+[WARNING] 2026-02-27 08:29:53 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:29:53 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:51005][0m
+[ERROR] 2026-02-27 08:30:07 | django | [CeleryTick] Failed to include wreck occupancy for sector_id=3
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2163, in add_fields
+    join_info = self.setup_joins(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1825, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1726, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'size' into field. Choices are: coordinates, created_at, expires_at, id, killer_player, killer_player_id, metadata, origin_npc, origin_npc_id, origin_player, origin_player_id, origin_type, sector, sector_id, ship, ship_id, status, updated_at
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\tasks.py", line 99, in _append_active_wreck_occupied_coords
+    ).values("coordinates", "size")
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1315, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1310, in _values
+    clone.query.set_values(fields)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2464, in set_values
+    self.add_fields(field_names, True)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2196, in add_fields
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'size' into field. Choices are: coordinates, created_at, expires_at, id, killer_player, killer_player_id, metadata, origin_npc, origin_npc_id, origin_player, origin_player_id, origin_type, sector, sector_id, ship, ship_id, status, updated_at
+[WARNING] 2026-02-27 08:32:35 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:32:35 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:51005][0m
+[WARNING] 2026-02-27 08:54:59 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:54:59 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:61911][0m
+[WARNING] 2026-02-27 08:55:09 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:55:09 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61911][0m
+[WARNING] 2026-02-27 08:55:16 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-02-27 08:55:16 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/chat/unread-counts/ 404 [0.01, 127.0.0.1:65522][0m
+[WARNING] 2026-02-27 08:55:16 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-02-27 08:55:16 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/messages/unread-count/ 404 [0.02, 127.0.0.1:61911][0m
+[WARNING] 2026-02-27 08:55:16 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:55:16 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:61841][0m
+[WARNING] 2026-02-27 08:55:25 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:55:25 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:57986][0m
+[WARNING] 2026-02-27 08:55:44 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:55:44 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:65522][0m
+[WARNING] 2026-02-27 08:56:53 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:56:53 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65522][0m
+[WARNING] 2026-02-27 08:56:54 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-02-27 08:56:54 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/messages/unread-count/ 404 [0.01, 127.0.0.1:50701][0m
+[WARNING] 2026-02-27 08:56:54 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-02-27 08:56:54 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/chat/unread-counts/ 404 [0.01, 127.0.0.1:65522][0m
+[WARNING] 2026-02-27 08:56:55 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 08:56:55 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65522][0m
+[WARNING] 2026-02-27 09:15:57 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:15:57 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60498][0m
+[WARNING] 2026-02-27 09:16:11 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:16:11 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55824][0m
+[WARNING] 2026-02-27 09:16:16 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:16:16 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55824][0m
+[WARNING] 2026-02-27 09:16:40 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:16:40 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62571][0m
+[WARNING] 2026-02-27 09:16:45 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:16:45 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55824][0m
+[WARNING] 2026-02-27 09:33:09 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:33:09 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:55886][0m
+[WARNING] 2026-02-27 09:58:10 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 09:58:10 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:63136][0m

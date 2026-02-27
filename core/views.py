@@ -589,6 +589,7 @@ def private_mail_modal(request):
             'message_id__subject',
             'message_id__body',
             'message_id__timestamp',
+            'message_id__sender_id__faction_id',
             'message_id__sender_id__faction_id__name',
             'message_id',
         ).order_by('-message_id__timestamp')
@@ -601,7 +602,10 @@ def private_mail_modal(request):
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
-                'faction_color': GetDataFromDB.get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
+                'faction_color': GetDataFromDB.get_faction_badge_color_class(
+                    faction_id=e.get('message_id__sender_id__faction_id'),
+                    faction_name=e.get('message_id__sender_id__faction_id__name'),
+                ),
         } for e in messages_qs]
     else:
         messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id, is_author=False, deleted_at__isnull=True).values(
@@ -610,6 +614,7 @@ def private_mail_modal(request):
             'message_id__subject',
             'message_id__body',
             'message_id__timestamp',
+            'message_id__sender_id__faction_id',
             'message_id__sender_id__faction_id__name',
             'message_id',
             'is_read'
@@ -623,7 +628,10 @@ def private_mail_modal(request):
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
-                'faction_color': GetDataFromDB().get_faction_badge_color_class(e['message_id__sender_id__faction_id__name']),
+                'faction_color': GetDataFromDB().get_faction_badge_color_class(
+                    faction_id=e.get('message_id__sender_id__faction_id'),
+                    faction_name=e.get('message_id__sender_id__faction_id__name'),
+                ),
                 'is_read': e['is_read']
         } for e in messages_qs]
     
@@ -757,6 +765,7 @@ def search_private_mail(request):
             "message_id__subject",
             "message_id__body",
             "message_id__timestamp",
+            "message_id__sender_id__faction_id",
             "message_id__sender_id__faction_id__name",
             "message_id",
             "is_read",
@@ -774,7 +783,8 @@ def search_private_mail(request):
             "avatar_url": f"img/users/{e['message_id__sender_id']}/0.gif",
             "faction": e["message_id__sender_id__faction_id__name"],
             "faction_color": GetDataFromDB().get_faction_badge_color_class(
-                e["message_id__sender_id__faction_id__name"]
+                faction_id=e.get("message_id__sender_id__faction_id"),
+                faction_name=e.get("message_id__sender_id__faction_id__name"),
             ),
             "is_read": e["is_read"],
         } for e in messages_qs]
@@ -896,7 +906,14 @@ def get_chat_messages(request, channel_type):
             "id": msg.id,
             "author": msg.author.name,
             "faction": msg.author.faction.name if msg.author.faction else "",
-            "faction_color": GetDataFromDB().get_faction_badge_color_class(msg.author.faction.name) if msg.author.faction else "",
+            "faction_color": (
+                GetDataFromDB().get_faction_badge_color_class(
+                    faction_id=msg.author.faction_id,
+                    faction_name=msg.author.faction.name if msg.author.faction else None,
+                )
+                if msg.author.faction
+                else ""
+            ),
             "content": msg.content,
             "timestamp": msg.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             "is_read": msg.id in read_message_ids
