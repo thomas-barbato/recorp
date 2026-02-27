@@ -518,9 +518,17 @@ class GameConsumer(WebsocketConsumer):
             # Données auteur
             author_data = player_action.get_player_data()
             
-            author_name = author_data.values_list("name", flat=True)[0]
-            author_faction = author_data.values_list("faction_id__name", flat=True)[0]
-            author_faction_color = GetDataFromDB().get_faction_badge_color_class(author_faction)
+            author_info = (
+                author_data
+                .values("name", "faction_id", "faction_id__name")
+                .first()
+            ) or {}
+            author_name = author_info.get("name") or "Unknown"
+            author_faction = author_info.get("faction_id__name") or ""
+            author_faction_color = GetDataFromDB().get_faction_badge_color_class(
+                faction_id=author_info.get("faction_id"),
+                faction_name=author_faction,
+            )
             content = msg.content
             timestamp = msg.created_at.strftime("%Y-%m-%d %H:%M:%S")
             
@@ -2397,7 +2405,10 @@ class GameConsumer(WebsocketConsumer):
                 adapter.actor.save(update_fields=["status"])
             elif adapter.kind == "NPC":
                 adapter.actor.status = "DEAD"
-                adapter.actor.save(update_fields=["status"])
+                # Respawn delay is computed from npc.updated_at.
+                # With update_fields, auto_now is not persisted unless the field is included.
+                adapter.actor.updated_at = timezone.now()
+                adapter.actor.save(update_fields=["status", "updated_at"])
         except Exception as e:
             logger.warning(f"Could not set DEAD status on {self.get_entity_key_from_adapter(adapter)}: {e}")
 
@@ -3069,11 +3080,22 @@ class GameConsumer(WebsocketConsumer):
             wrecks = (
                 ShipWreck.objects
                 .filter(sector_id=sector_id, status="ACTIVE")
-                .values("coordinates", "size")
+                .select_related("ship__ship_category")
+                .only("coordinates", "metadata", "ship__ship_category__size")
             )
             for w in wrecks:
-                wc = w.get("coordinates") or {}
-                ws = w.get("size") or {"x": 1, "y": 1}
+                wc = w.coordinates if hasattr(w, "coordinates") else {}
+                ws = None
+                try:
+                    ship_size = getattr(getattr(getattr(w, "ship", None), "ship_category", None), "size", None)
+                    if isinstance(ship_size, dict):
+                        ws = ship_size
+                    elif isinstance(getattr(w, "metadata", None), dict):
+                        ws = w.metadata.get("size")
+                except Exception:
+                    ws = None
+                if not isinstance(ws, dict):
+                    ws = {"x": 1, "y": 1}
                 try:
                     x0 = int((wc or {}).get("x", 0) or 0)
                     y0 = int((wc or {}).get("y", 0) or 0)

@@ -45,6 +45,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "core.middleware.WebSocketSessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "core.middleware.Redirect404ToIndexMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "axes.middleware.AxesMiddleware",
