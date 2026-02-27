@@ -716,6 +716,26 @@ class GameConsumer(WebsocketConsumer):
         self.async_receive_mp(event)
             
             
+    def bank_balance_update(self, event: Dict[str, Any]) -> None:
+        payload = event.get("payload") or event.get("message") or {}
+        if not isinstance(payload, dict):
+            return
+
+        target_player_id = payload.get("player_id")
+        if target_player_id is not None:
+            try:
+                if int(target_player_id) != int(self.player_id):
+                    return
+            except (TypeError, ValueError):
+                return
+
+        self._send_response(
+            {
+                "type": "bank_balance_update",
+                "payload": payload,
+            }
+        )
+
     def _notify_msg(self, recipient_data, sender_id) -> None:
         """
         Envoie une notification de type 'async_receive_mp' dans la room de

@@ -28,6 +28,7 @@ import {
     handleShipModuleLocalSync,
     handleScanTargetDataRefresh,
 } from "../handlers/inventory_reconfig_handlers.js";
+import { handleBankBalanceUpdate } from "../handlers/bank_handlers.js";
 import {
     handleWreckLootSessionState,
     handleWreckLootSessionClosed,
@@ -119,4 +120,5 @@ ActionRegistry.register("action_failed", handleActionFailed);
 ActionRegistry.register("ship_module_local_sync", handleShipModuleLocalSync);
 ActionRegistry.register("wreck_loot_session_state", handleWreckLootSessionState);
 ActionRegistry.register("wreck_loot_session_closed", handleWreckLootSessionClosed);
+ActionRegistry.register("bank_balance_update", handleBankBalanceUpdate);
 

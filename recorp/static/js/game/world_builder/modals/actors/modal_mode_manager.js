@@ -96,6 +96,28 @@
                 wreckId: context.wreckId,
                 mode: context.lootMode || "FOUILLE",
             });
+            return;
+        }
+
+        if (mode === "bank") {
+            body.innerHTML = "";
+            body.classList.add("overflow-y-auto", "md:max-h-[70vh]", "max-h-[80vh]");
+            body.classList.remove("overflow-hidden");
+
+            const bankContainer = document.createElement("div");
+            bankContainer.id = `${modalId}-bank-container`;
+            bankContainer.classList.add("w-full");
+            body.append(bankContainer);
+
+            window.BankModalController?.openInline?.({
+                modalId,
+                mountNode: bankContainer,
+                currentPlayer: context.currentPlayer || null,
+                targetName: context.targetName || null,
+                targetCoordinates: context.targetCoordinates || null,
+                targetType: context.targetType || null,
+                targetId: context.targetId || null,
+            });
         }
     }
 

@@ -1,73 +1,108 @@
-[WARNING] 2026-02-27 00:22:24 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 00:22:24 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:57305][0m
-[WARNING] 2026-02-27 00:22:24 | security | [LOGOUT] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/logout
-[WARNING] 2026-02-27 00:22:54 | security | [LOGIN SUCCESS] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/
-[WARNING] 2026-02-27 00:23:38 | security | [LOGOUT] user_id=3 username=test3 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/logout
-[WARNING] 2026-02-27 00:24:01 | security | [ACCOUNT CREATED] user_id=None username=test8 email=tt8@tt.com
-[WARNING] 2026-02-27 00:24:09 | security | [LOGIN SUCCESS] user_id=56 username=test8 ip=127.0.0.1 user_agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 path=/fr/
-[WARNING] 2026-02-27 08:16:04 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:16:04 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:55607][0m
-[WARNING] 2026-02-27 08:29:53 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:29:53 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:51005][0m
-[ERROR] 2026-02-27 08:30:07 | django | [CeleryTick] Failed to include wreck occupancy for sector_id=3
+[WARNING] 2026-02-27 10:00:20 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 10:00:20 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:59181][0m
+[ERROR] 2026-02-27 10:56:16 | django | Erreur get_unread_messages_count: (1054, "1054 (42S22): Unknown column 'core_player.credit_amount' in 'field list'", '42S22')
 Traceback (most recent call last):
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2163, in add_fields
-    join_info = self.setup_joins(
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1825, in setup_joins
-    path, final_field, targets, rest = self.names_to_path(
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 1726, in names_to_path
-    raise FieldError(
-django.core.exceptions.FieldError: Cannot resolve keyword 'size' into field. Choices are: coordinates, created_at, expires_at, id, killer_player, killer_player_id, metadata, origin_npc, origin_npc_id, origin_player, origin_player_id, origin_type, sector, sector_id, ship, ship_id, status, updated_at
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Unknown column 'core_player.credit_amount' in 'field list'
 
-During handling of the above exception, another exception occurred:
+The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "D:\wamp64\www\recorp\core\tasks.py", line 99, in _append_active_wreck_occupied_coords
-    ).values("coordinates", "size")
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1315, in values
-    clone = self._values(*fields, **expressions)
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1310, in _values
-    clone.query.set_values(fields)
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2464, in set_values
-    self.add_fields(field_names, True)
-  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\query.py", line 2196, in add_fields
-    raise FieldError(
-django.core.exceptions.FieldError: Cannot resolve keyword 'size' into field. Choices are: coordinates, created_at, expires_at, id, killer_player, killer_player_id, metadata, origin_npc, origin_npc_id, origin_player, origin_player_id, origin_type, sector, sector_id, ship, ship_id, status, updated_at
-[WARNING] 2026-02-27 08:32:35 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:32:35 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:51005][0m
-[WARNING] 2026-02-27 08:54:59 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:54:59 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:61911][0m
-[WARNING] 2026-02-27 08:55:09 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:55:09 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61911][0m
-[WARNING] 2026-02-27 08:55:16 | django.request | Not Found: /accounts/login/
-[WARNING] 2026-02-27 08:55:16 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/chat/unread-counts/ 404 [0.01, 127.0.0.1:65522][0m
-[WARNING] 2026-02-27 08:55:16 | django.request | Not Found: /accounts/login/
-[WARNING] 2026-02-27 08:55:16 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/messages/unread-count/ 404 [0.02, 127.0.0.1:61911][0m
-[WARNING] 2026-02-27 08:55:16 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:55:16 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:61841][0m
-[WARNING] 2026-02-27 08:55:25 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:55:25 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:57986][0m
-[WARNING] 2026-02-27 08:55:44 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:55:44 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:65522][0m
-[WARNING] 2026-02-27 08:56:53 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:56:53 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65522][0m
-[WARNING] 2026-02-27 08:56:54 | django.request | Not Found: /accounts/login/
-[WARNING] 2026-02-27 08:56:54 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/messages/unread-count/ 404 [0.01, 127.0.0.1:50701][0m
-[WARNING] 2026-02-27 08:56:54 | django.request | Not Found: /accounts/login/
-[WARNING] 2026-02-27 08:56:54 | django.channels.server | [33mHTTP GET /accounts/login/?next=/fr/chat/unread-counts/ 404 [0.01, 127.0.0.1:65522][0m
-[WARNING] 2026-02-27 08:56:55 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 08:56:55 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:65522][0m
-[WARNING] 2026-02-27 09:15:57 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:15:57 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60498][0m
-[WARNING] 2026-02-27 09:16:11 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:16:11 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55824][0m
-[WARNING] 2026-02-27 09:16:16 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:16:16 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55824][0m
-[WARNING] 2026-02-27 09:16:40 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:16:40 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62571][0m
-[WARNING] 2026-02-27 09:16:45 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:16:45 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55824][0m
-[WARNING] 2026-02-27 09:33:09 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:33:09 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:55886][0m
-[WARNING] 2026-02-27 09:58:10 | django.request | Not Found: /favicon.ico
-[WARNING] 2026-02-27 09:58:10 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:63136][0m
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 187, in execute
+    return self.cursor.execute(query, new_args)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'core_player.credit_amount' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\core\views.py", line 820, in get_unread_private_mail_count
+    player = Player.objects.get(user=request.user)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 635, in get
+    num = len(clone)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 382, in __len__
+    self._fetch_all()
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 1886, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\query.py", line 93, in __iter__
+    results = compiler.execute_sql(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\django\base.py", line 187, in execute
+    return self.cursor.execute(query, new_args)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\mysql\connector\connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+django.db.utils.ProgrammingError: (1054, "1054 (42S22): Unknown column 'core_player.credit_amount' in 'field list'", '42S22')
+[ERROR] 2026-02-27 10:56:16 | django.request | Internal Server Error: /fr/chat/unread-counts/
+[ERROR] 2026-02-27 10:56:16 | django.channels.server | [35;1mHTTP GET /fr/chat/unread-counts/ 500 [0.14, 127.0.0.1:62395][0m
+[ERROR] 2026-02-27 10:56:16 | django.request | Internal Server Error: /fr/messages/unread-count/
+[ERROR] 2026-02-27 10:56:16 | django.channels.server | [35;1mHTTP GET /fr/messages/unread-count/ 500 [0.16, 127.0.0.1:62892][0m
+[WARNING] 2026-02-27 11:05:30 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:05:30 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:58833][0m
+[WARNING] 2026-02-27 11:12:42 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:12:42 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60779][0m
+[WARNING] 2026-02-27 11:13:13 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:13:13 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60779][0m
+[WARNING] 2026-02-27 11:14:10 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:14:10 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:59600][0m
+[WARNING] 2026-02-27 11:25:56 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:25:56 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:56954][0m
+[WARNING] 2026-02-27 11:46:36 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:46:36 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:46:51 | django.request | Method Not Allowed (GET): /fr/bank/deposit-to-account/
+[WARNING] 2026-02-27 11:46:51 | django.channels.server | [31;1mHTTP GET /fr/bank/deposit-to-account/ 405 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:46:59 | django.request | Method Not Allowed (GET): /fr/bank/deposit-to-account/
+[WARNING] 2026-02-27 11:46:59 | django.channels.server | [31;1mHTTP GET /fr/bank/deposit-to-account/ 405 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:47:01 | django.request | Method Not Allowed (GET): /fr/bank/deposit-to-account/
+[WARNING] 2026-02-27 11:47:01 | django.channels.server | [31;1mHTTP GET /fr/bank/deposit-to-account/ 405 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:47:05 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-27 11:47:05 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:47:17 | django.request | Method Not Allowed (GET): /fr/bank/transfer-to-player/
+[WARNING] 2026-02-27 11:47:17 | django.channels.server | [31;1mHTTP GET /fr/bank/transfer-to-player/ 405 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:47:19 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-27 11:47:19 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:48:13 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-27 11:48:13 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:53153][0m
+[WARNING] 2026-02-27 11:50:44 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-27 11:50:44 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:54802][0m
+[WARNING] 2026-02-27 11:50:44 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:50:44 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:52127][0m
+[WARNING] 2026-02-27 11:50:56 | django.request | Bad Request: /fr/bank/withdraw-to-ship/
+[WARNING] 2026-02-27 11:50:56 | django.channels.server | [31;1mHTTP POST /fr/bank/withdraw-to-ship/ 400 [0.02, 127.0.0.1:52127][0m
+[WARNING] 2026-02-27 11:51:25 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 11:51:30 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 12:19:26 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-27 12:19:26 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.05, 127.0.0.1:62701][0m
+[WARNING] 2026-02-27 12:19:26 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 12:19:26 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:51770][0m
+[WARNING] 2026-02-27 12:42:51 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 12:52:32 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-02-27 12:52:32 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:55001][0m
+[WARNING] 2026-02-27 12:52:33 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-02-27 12:52:33 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:62943][0m

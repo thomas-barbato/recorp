@@ -312,8 +312,13 @@
     }
 
     function applyActionCostState(action, btn) {
-        const currentAP = currentPlayer?.player?.current_ap ?? null;
-        const currentCR = currentPlayer?.player?.credits ?? null;
+        const currentPlayerData = getCurrentPlayerData();
+        const currentAP = currentPlayer?.player?.current_ap ?? currentPlayerData?.user?.current_ap ?? null;
+        const currentCR =
+            currentPlayer?.player?.credits ??
+            currentPlayer?.user?.credit_amount ??
+            currentPlayerData?.user?.credit_amount ??
+            null;
 
         const apCost = action?.ap_cost ?? null;
         const crCost = action?.cost ?? null;
@@ -895,6 +900,32 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     });
                     return true;
                 },
+                bank() {
+                    const modalSnapshot = window.modalDataCache?.[modalId] || null;
+                    const currentPlayerSnapshot =
+                        modalSnapshot?.current_player ||
+                        currentPlayerData ||
+                        getCurrentPlayerData() ||
+                        null;
+                    const targetName =
+                        data?.name ||
+                        data?.displayed_name ||
+                        data?.target?.name ||
+                        null;
+                    const targetCoordinates =
+                        data?.coordinates ||
+                        data?.target?.coordinates ||
+                        null;
+
+                    window.ModalModeManager?.enter?.(modalId, "bank", {
+                        targetType: target.targetType,
+                        targetId: target.targetId,
+                        currentPlayer: currentPlayerSnapshot,
+                        targetName,
+                        targetCoordinates,
+                    });
+                    return true;
+                },
                 gather() {
                     // Placeholder routeur foreground: l'action WS/HTTP reste à brancher.
                     return false;
@@ -1006,6 +1037,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 iconEl = document.createElement("img");
                 iconEl.src = action.icon;
                 iconEl.classList.add("action-button-sf-icon");
+                if (action.key === "bank") {
+                    iconEl.style.filter = "brightness(0) invert(1)";
+                }
             } else if (action.iconify) {
                 iconEl = document.createElement("span");
                 iconEl.classList.add("iconify", action.iconify, "action-button-sf-icon");
@@ -1199,6 +1233,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 if (action.key === "salvage") {
                     executeForegroundAction("salvage");
+                    return;
+                }
+
+                if (action.key === "bank") {
+                    executeForegroundAction("bank");
                     return;
                 }
 

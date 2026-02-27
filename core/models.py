@@ -42,6 +42,7 @@ class Resource(models.Model):
         max_length=30, null=False, blank=False, default="Resource-default"
     )
     data = models.JSONField(null=True)
+    takes_inventory_space = models.BooleanField(default=True)
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -272,8 +273,9 @@ class Player(models.Model):
     )
     current_ap = models.PositiveIntegerField(default=10)
     max_ap = models.PositiveBigIntegerField(default=10)
+    credit_amount = models.FloatField(default=0.0)
     status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0]
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0]
     )
     coordinates = models.JSONField(null=True)
     last_time_warpzone = models.DateTimeField(default=timezone.now, auto_now=False)
@@ -626,6 +628,7 @@ class PlayerShip(models.Model):
     max_thermal_defense = models.SmallIntegerField(default=0)
     max_ballistic_defense = models.SmallIntegerField(default=0)
     current_cargo_size = models.SmallIntegerField(default=2)
+    credit_amount = models.FloatField(default=0.0)
     view_range = models.SmallIntegerField(default=6)
     equipment_blocked_until = models.DateTimeField(null=True, blank=True)
     status = models.CharField(

@@ -8172,13 +8172,14 @@ canvas {
 
 .wreck-loot-timer {
   margin: 0 1rem;
-  border: 1px solid rgba(96, 165, 250, 0.25);
-  background: rgba(30, 58, 138, 0.16);
-  color: #dbeafe;
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  background: linear-gradient(135deg, rgba(6, 78, 59, 0.28), rgba(2, 44, 34, 0.22));
+  color: #d1fae5;
   border-radius: 0.75rem;
   padding: 0.55rem 0.7rem;
   text-align: center;
   font-weight: 700;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.14);
 }
 
 .wreck-loot-message {
@@ -8187,18 +8188,42 @@ canvas {
   padding: 0.6rem 0.7rem;
   font-weight: 700;
   line-height: 1.35;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 18px rgba(0, 255, 180, 0.22);
+}
+
+.wreck-loot-message::before {
+  content: "01 A7 D3 9C 4B 88 F2 3E";
+  position: absolute;
+  inset: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  opacity: 0.11;
+  color: #45ffc7;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: transmission-stream 4s linear infinite;
+  pointer-events: none;
 }
 
 .wreck-loot-message[data-tone="info"] {
-  border: 1px solid rgba(52, 211, 153, 0.22);
-  background: rgba(6, 78, 59, 0.18);
-  color: #d1fae5;
+  border: 1px solid rgba(0, 255, 180, 0.25);
+  background: rgba(20, 255, 180, 0.12);
+  color: #afffdd;
 }
 
 .wreck-loot-message[data-tone="error"] {
-  border: 1px solid rgba(248, 113, 113, 0.28);
-  background: rgba(127, 29, 29, 0.18);
-  color: #fecaca;
+  border: 1px solid rgba(255, 60, 60, 0.35);
+  background: rgba(255, 60, 60, 0.18);
+  color: #ffcaca;
+  box-shadow: 0 0 15px rgba(255, 50, 50, 0.35);
+}
+
+.wreck-loot-message[data-tone="error"]::before {
+  color: #ff6e6e;
+  opacity: 0.15;
 }
 
 .wreck-loot-content {
@@ -8222,9 +8247,9 @@ canvas {
   align-items: center;
   gap: 0.25rem;
   border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  background: rgba(15, 23, 42, 0.45);
-  color: #e2e8f0;
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  background: rgba(6, 78, 59, 0.18);
+  color: #dcfce7;
   padding: 0.2rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 700;
@@ -8254,7 +8279,7 @@ canvas {
   border: 1px solid rgba(52, 211, 153, 0.16);
   border-radius: 0.9rem;
   background:
-        linear-gradient(180deg, rgba(2, 6, 23, 0.42), rgba(2, 6, 23, 0.26));
+        linear-gradient(180deg, rgba(3, 20, 14, 0.56), rgba(2, 12, 9, 0.34));
   padding: 0.6rem;
   display: flex;
   flex-direction: column;
@@ -8293,16 +8318,16 @@ canvas {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.55rem;
   align-items: center;
-  border: 1px solid rgba(148, 163, 184, 0.16);
+  border: 1px solid rgba(52, 211, 153, 0.16);
   border-radius: 0.7rem;
-  background: rgba(15, 23, 42, 0.38);
+  background: rgba(4, 32, 24, 0.34);
   padding: 0.55rem 0.6rem;
   transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
 }
 
 .wreck-loot-item:hover {
-  border-color: rgba(52, 211, 153, 0.22);
-  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(52, 211, 153, 0.3);
+  background: rgba(6, 46, 34, 0.44);
   box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.06) inset;
 }
 
@@ -8349,10 +8374,10 @@ canvas {
 }
 
 .wreck-loot-empty {
-  border: 1px dashed rgba(148, 163, 184, 0.2);
+  border: 1px dashed rgba(52, 211, 153, 0.26);
   border-radius: 0.65rem;
-  background: rgba(15, 23, 42, 0.2);
-  color: rgba(226, 232, 240, 0.86);
+  background: rgba(5, 28, 20, 0.3);
+  color: rgba(209, 250, 229, 0.9);
   font-size: 0.86rem;
   font-weight: 700;
   text-align: center;
@@ -8375,6 +8400,247 @@ canvas {
   }
 
   .wreck-loot-btn {
+    width: 100%;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Bank Inline Modal (Planet mode)                                    */
+
+/* ------------------------------------------------------------------ */
+
+.bank-inline-root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.35rem;
+  color: #d1fae5;
+}
+
+.bank-inline-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.bank-inline-stat-card {
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: 0.8rem;
+  background:
+        linear-gradient(145deg, rgba(6, 30, 20, 0.78), rgba(3, 18, 12, 0.82));
+  padding: 0.65rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bank-inline-stat-card.is-accent {
+  border-color: rgba(250, 204, 21, 0.35);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.16);
+}
+
+.bank-inline-label {
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #86efac;
+}
+
+.bank-inline-value {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #f0fdf4;
+  font-variant-numeric: tabular-nums;
+}
+
+.bank-inline-section {
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: 0.8rem;
+  background: rgba(4, 28, 20, 0.42);
+  padding: 0.65rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bank-inline-hint {
+  margin: 0;
+  color: rgba(209, 250, 229, 0.78);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.bank-inline-row {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.bank-inline-row.bank-inline-row-split {
+  align-items: stretch;
+}
+
+.bank-inline-recipient-wrap {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.bank-inline-input {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 0.62rem;
+  border: 1px solid rgba(52, 211, 153, 0.26);
+  background: rgba(4, 24, 18, 0.72);
+  color: #e2e8f0;
+  padding: 0.46rem 0.56rem;
+  font-size: 0.85rem;
+}
+
+.bank-inline-input::-moz-placeholder {
+  color: rgba(148, 163, 184, 0.86);
+}
+
+.bank-inline-input::placeholder {
+  color: rgba(148, 163, 184, 0.86);
+}
+
+.bank-inline-input:focus {
+  outline: none;
+  border-color: rgba(52, 211, 153, 0.55);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.bank-inline-input.is-invalid {
+  border-color: rgba(248, 113, 113, 0.65);
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.22);
+}
+
+.bank-inline-btn {
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  border-radius: 0.65rem;
+  background: rgba(6, 78, 59, 0.32);
+  color: #ecfdf5;
+  font-size: 0.83rem;
+  font-weight: 700;
+  padding: 0.45rem 0.72rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bank-inline-btn:hover {
+  background: rgba(16, 185, 129, 0.22);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+
+.bank-inline-btn:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.bank-inline-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(167, 243, 208, 0.82);
+}
+
+.bank-inline-message {
+  border-radius: 0.65rem;
+  border: 1px solid rgba(0, 255, 180, 0.25);
+  background: rgba(20, 255, 180, 0.12);
+  color: #afffdd;
+  font-size: 0.83rem;
+  font-weight: 700;
+  padding: 0.52rem 0.62rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 18px rgba(0, 255, 180, 0.22);
+}
+
+.bank-inline-message::before {
+  content: "01 A7 D3 9C 4B 88 F2 3E";
+  position: absolute;
+  inset: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  opacity: 0.11;
+  color: #45ffc7;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: transmission-stream 4s linear infinite;
+  pointer-events: none;
+}
+
+.bank-inline-message.is-error {
+  border-color: rgba(255, 60, 60, 0.35);
+  background: rgba(255, 60, 60, 0.18);
+  color: #ffcaca;
+  box-shadow: 0 0 15px rgba(255, 50, 50, 0.35);
+}
+
+.bank-inline-message.is-error::before {
+  color: #ff6e6e;
+  opacity: 0.15;
+}
+
+.bank-inline-autocomplete {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.22rem);
+  z-index: 9;
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  border-radius: 0.62rem;
+  background: rgba(3, 20, 14, 0.96);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(2, 20, 14, 0.42);
+}
+
+.bank-inline-autocomplete.is-hidden {
+  display: none;
+}
+
+.bank-inline-autocomplete-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #dcfce7;
+  text-align: left;
+  font-size: 0.76rem;
+  padding: 0.45rem 0.58rem;
+  cursor: pointer;
+}
+
+.bank-inline-autocomplete-item:hover {
+  background: rgba(16, 185, 129, 0.18);
+}
+
+@media (max-width: 640px) {
+  .bank-inline-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .bank-inline-recipient-wrap {
+    width: 100%;
+  }
+
+  .bank-inline-recipient-wrap .bank-inline-input {
+    width: 100%;
+  }
+
+  .bank-inline-row,
+    .bank-inline-row.bank-inline-row-split {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bank-inline-btn {
     width: 100%;
   }
 }

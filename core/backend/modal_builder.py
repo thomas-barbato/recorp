@@ -1,4 +1,5 @@
 from typing import Optional, Dict, Any, List
+from decimal import Decimal, InvalidOperation
 from django.utils import timezone
 
 from core.models import (
@@ -18,6 +19,14 @@ from core.models import (
     SectorWarpZone
 )
 from core.backend.get_data import GetDataFromDB
+
+
+def _to_money_float(value: Any) -> float:
+    try:
+        amount = Decimal(str(value or 0))
+    except (InvalidOperation, TypeError, ValueError):
+        amount = Decimal("0.00")
+    return float(amount.quantize(Decimal("0.01")))
 
 
 def _build_ship_module_type_limits(ship_obj) -> Dict[str, Optional[int]]:
@@ -95,6 +104,24 @@ def _resource_inventory_section(resource_data: Any) -> str:
             return "RESOURCES"
 
     return "RESOURCES"
+
+
+def _is_credit_resource(resource_name: Any, resource_data: Any) -> bool:
+    name = str(resource_name or "").strip().lower()
+    data = resource_data if isinstance(resource_data, dict) else {}
+
+    if bool(data.get("is_credit")) or bool(data.get("credit")):
+        return True
+
+    for key in ("resource_type", "type", "category", "inventory_section"):
+        raw_value = data.get(key)
+        if raw_value is None:
+            continue
+        value = str(raw_value).strip().upper()
+        if value in {"CREDIT", "CREDITS", "CURRENCY"}:
+            return True
+
+    return name in {"credit", "credits"}
 
 
 def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
@@ -202,25 +229,35 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "quantity",
             "resource__name",
             "resource__data",
+            "resource__takes_inventory_space",
         )
         .order_by("-updated_at", "-id")
     )
 
     inventory_resources: List[Dict[str, Any]] = []
     inventory_quest_items: List[Dict[str, Any]] = []
+    ship_credits = Decimal(str(getattr(ship, "credit_amount", 0) or 0))
     resource_qty_total = 0
 
     for row in inventory_resources_qs:
         quantity = int(row.get("quantity") or 0)
-        resource_qty_total += quantity
 
         resource_data = row.get("resource__data") or {}
+        takes_inventory_space = bool(row.get("resource__takes_inventory_space", True))
+
+        if _is_credit_resource(row.get("resource__name"), resource_data):
+            continue
+
+        if takes_inventory_space:
+            resource_qty_total += quantity
+
         item_payload = {
             "inventory_resource_id": row["id"],
             "resource_id": row["resource_id"],
             "name": row.get("resource__name") or "Resource",
             "quantity": quantity,
             "data": resource_data if isinstance(resource_data, dict) else {},
+            "takes_inventory_space": takes_inventory_space,
         }
 
         section = _resource_inventory_section(resource_data)
@@ -284,6 +321,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "is_npc": player.is_npc,
             "current_ap": player.current_ap,
             "max_ap": player.max_ap,
+            "credit_amount": _to_money_float(player.credit_amount),
             "archetype_name": player.archetype.name if player.archetype else None,
             "archetype_data": player.archetype.data if player.archetype else {},
             "sector_name": player.sector.name if player.sector else None,
@@ -314,6 +352,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "inventory_modules": inventory_modules,
             "inventory_resources": inventory_resources,
             "inventory_quest_items": inventory_quest_items,
+            "ship_credits": _to_money_float(ship_credits),
             "module_type_limits": module_type_limits,
             "modules_range": modules_range,
             "ship_scanning_module_available": any(

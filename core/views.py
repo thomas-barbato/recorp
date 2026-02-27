@@ -4,7 +4,9 @@ import urllib.request
 from urllib import request
 import json
 import os
+import re
 from io import BytesIO
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from django.core.files import File
 from django.conf import settings
 from PIL import Image
@@ -33,6 +35,8 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.core.files.base import ContentFile
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from core.backend.security_logging import log_account_lockout
 from core.backend.user_avatar import UserAvatarWriter
 from core.backend.get_data import GetDataFromDB
@@ -812,6 +816,357 @@ def search_players_for_private_mail(request):
                 "faction": p.faction.name if p.faction else "",
             })
     return JsonResponse({"results": results})
+
+
+_MONEY_INPUT_PATTERN = re.compile(r"^\d+(?:[.,]\d{1,2})?$")
+
+
+def _to_money_decimal(value) -> Decimal:
+    try:
+        amount = Decimal(str(value or 0))
+    except (InvalidOperation, TypeError, ValueError):
+        amount = Decimal("0.00")
+    return amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def _to_money_float(value) -> float:
+    return float(_to_money_decimal(value))
+
+
+def _parse_positive_amount(value):
+    raw = str(value or "").strip()
+    if not raw:
+        return None
+
+    if not _MONEY_INPUT_PATTERN.fullmatch(raw):
+        return None
+
+    normalized = raw.replace(",", ".")
+    try:
+        amount = Decimal(normalized)
+    except (InvalidOperation, TypeError, ValueError):
+        return None
+
+    amount = amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    return amount if amount > Decimal("0.00") else None
+
+
+def _parse_json_payload(request):
+    try:
+        payload = json.loads(request.body.decode("utf-8") or "{}")
+    except json.JSONDecodeError:
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def _get_current_player_and_ship_for_update(user):
+    player = (
+        Player.objects
+        .select_for_update()
+        .filter(user=user, is_npc=False)
+        .first()
+    )
+    if not player:
+        return None, None
+
+    ship = (
+        PlayerShip.objects
+        .select_for_update()
+        .filter(player_id=player.id, is_current_ship=True)
+        .first()
+    )
+    return player, ship
+
+
+def _emit_bank_balance_update(player, account_balance, ship_credits, reason=None, message=None):
+    try:
+        if not player or not getattr(player, "sector_id", None):
+            return
+
+        channel_layer = get_channel_layer()
+        if channel_layer is None:
+            return
+
+        payload = {
+            "player_id": int(player.id),
+            "balances": {
+                "account_balance": _to_money_float(account_balance),
+                "ship_credits": _to_money_float(ship_credits),
+            },
+        }
+        if reason:
+            payload["reason"] = str(reason)
+        if message:
+            payload["message"] = str(message)
+
+        async_to_sync(channel_layer.group_send)(
+            f"play_{player.sector_id}",
+            {
+                "type": "bank_balance_update",
+                "payload": payload,
+            },
+        )
+    except Exception:
+        logger.exception("bank balance ws push failed")
+
+
+def _bank_error(message, code, status=400, **extra):
+    payload = {
+        "ok": False,
+        "error": code,
+        "message": message,
+    }
+    payload.update(extra)
+    if "account_balance" in payload:
+        payload["account_balance"] = _to_money_float(payload["account_balance"])
+    if "ship_credits" in payload:
+        payload["ship_credits"] = _to_money_float(payload["ship_credits"])
+    return JsonResponse(payload, status=status)
+
+
+@login_required
+@require_http_methods(["POST"])
+def bank_withdraw_to_ship(request):
+    payload = _parse_json_payload(request)
+    if payload is None:
+        return _bank_error(_("Invalid payload."), "INVALID_PAYLOAD")
+
+    amount = _parse_positive_amount(payload.get("amount"))
+    if not amount:
+        return _bank_error(
+            _("Invalid amount. Use digits and optional decimal separator ('.' or ',')."),
+            "INVALID_AMOUNT",
+        )
+
+    with transaction.atomic():
+        player, ship = _get_current_player_and_ship_for_update(request.user)
+        if not player:
+            return _bank_error(_("Player not found."), "PLAYER_NOT_FOUND", status=404)
+        if not ship:
+            return _bank_error(_("Current ship not found."), "SHIP_NOT_FOUND", status=404)
+
+        account_credits = _to_money_decimal(player.credit_amount)
+        ship_credits = _to_money_decimal(getattr(ship, "credit_amount", 0))
+        if amount > account_credits:
+            return _bank_error(
+                _("Insufficient account balance."),
+                "INSUFFICIENT_ACCOUNT_BALANCE",
+                account_balance=account_credits,
+                ship_credits=ship_credits,
+            )
+
+        player.credit_amount = _to_money_decimal(account_credits - amount)
+        player.save(update_fields=["credit_amount", "updated_at"])
+
+        ship.credit_amount = _to_money_decimal(ship_credits + amount)
+        ship.save(update_fields=["credit_amount", "updated_at"])
+
+        account_balance = _to_money_decimal(player.credit_amount)
+        ship_balance = _to_money_decimal(ship.credit_amount)
+        transaction.on_commit(
+            lambda: _emit_bank_balance_update(
+                player,
+                account_balance,
+                ship_balance,
+                reason="WITHDRAW_TO_SHIP",
+                message=_("Withdrawal completed."),
+            )
+        )
+
+        return JsonResponse({
+            "ok": True,
+            "message": _("Withdrawal completed."),
+            "balances": {
+                "account_balance": _to_money_float(account_balance),
+                "ship_credits": _to_money_float(ship_balance),
+            },
+        })
+
+
+@login_required
+@require_http_methods(["POST"])
+def bank_deposit_to_account(request):
+    payload = _parse_json_payload(request)
+    if payload is None:
+        return _bank_error(_("Invalid payload."), "INVALID_PAYLOAD")
+
+    amount = _parse_positive_amount(payload.get("amount"))
+    if not amount:
+        return _bank_error(
+            _("Invalid amount. Use digits and optional decimal separator ('.' or ',')."),
+            "INVALID_AMOUNT",
+        )
+
+    with transaction.atomic():
+        player, ship = _get_current_player_and_ship_for_update(request.user)
+        if not player:
+            return _bank_error(_("Player not found."), "PLAYER_NOT_FOUND", status=404)
+        if not ship:
+            return _bank_error(_("Current ship not found."), "SHIP_NOT_FOUND", status=404)
+
+        ship_credits = _to_money_decimal(getattr(ship, "credit_amount", 0))
+        if amount > ship_credits:
+            return _bank_error(
+                _("Insufficient ship credits."),
+                "INSUFFICIENT_SHIP_CREDITS",
+                account_balance=player.credit_amount,
+                ship_credits=ship_credits,
+            )
+
+        ship.credit_amount = _to_money_decimal(ship_credits - amount)
+        ship.save(update_fields=["credit_amount", "updated_at"])
+
+        player.credit_amount = _to_money_decimal(_to_money_decimal(player.credit_amount) + amount)
+        player.save(update_fields=["credit_amount", "updated_at"])
+
+        account_balance = _to_money_decimal(player.credit_amount)
+        ship_balance = _to_money_decimal(ship.credit_amount)
+        transaction.on_commit(
+            lambda: _emit_bank_balance_update(
+                player,
+                account_balance,
+                ship_balance,
+                reason="DEPOSIT_TO_ACCOUNT",
+                message=_("Deposit completed."),
+            )
+        )
+
+        return JsonResponse({
+            "ok": True,
+            "message": _("Deposit completed."),
+            "balances": {
+                "account_balance": _to_money_float(account_balance),
+                "ship_credits": _to_money_float(ship_balance),
+            },
+        })
+
+
+@login_required
+@require_http_methods(["POST"])
+def bank_transfer_to_player(request):
+    payload = _parse_json_payload(request)
+    if payload is None:
+        return _bank_error(_("Invalid payload."), "INVALID_PAYLOAD")
+
+    amount = _parse_positive_amount(payload.get("amount"))
+    if not amount:
+        return _bank_error(
+            _("Invalid amount. Use digits and optional decimal separator ('.' or ',')."),
+            "INVALID_AMOUNT",
+        )
+
+    raw_recipient_id = payload.get("recipient_id")
+    raw_recipient_name = str(payload.get("recipient") or "").strip()
+
+    try:
+        recipient_id = int(raw_recipient_id) if raw_recipient_id not in (None, "") else None
+    except (TypeError, ValueError):
+        recipient_id = None
+
+    if recipient_id is None and not raw_recipient_name:
+        return _bank_error(_("Recipient is required."), "RECIPIENT_REQUIRED")
+
+    sender = Player.objects.filter(user=request.user, is_npc=False).first()
+    if not sender:
+        return _bank_error(_("Player not found."), "PLAYER_NOT_FOUND", status=404)
+
+    if recipient_id is not None:
+        recipient = Player.objects.filter(id=recipient_id, is_npc=False).first()
+        if not recipient:
+            return _bank_error(_("Recipient not found."), "RECIPIENT_NOT_FOUND", status=404)
+    else:
+        candidates = list(
+            Player.objects
+            .filter(name__iexact=raw_recipient_name, is_npc=False)
+            .order_by("id")[:2]
+        )
+        if not candidates:
+            return _bank_error(_("Recipient not found."), "RECIPIENT_NOT_FOUND", status=404)
+        if len(candidates) > 1:
+            return _bank_error(
+                _("Multiple players share this name. Use autocomplete to select one."),
+                "RECIPIENT_AMBIGUOUS",
+            )
+        recipient = candidates[0]
+
+    if recipient.id == sender.id:
+        return _bank_error(_("You cannot transfer credits to yourself."), "SELF_TRANSFER")
+
+    lock_ids = sorted([sender.id, recipient.id])
+    with transaction.atomic():
+        locked_players = {
+            p.id: p
+            for p in Player.objects.select_for_update().filter(id__in=lock_ids)
+        }
+
+        sender_locked = locked_players.get(sender.id)
+        recipient_locked = locked_players.get(recipient.id)
+        if not sender_locked or not recipient_locked:
+            return _bank_error(_("Recipient not found."), "RECIPIENT_NOT_FOUND", status=404)
+
+        sender_balance = _to_money_decimal(sender_locked.credit_amount)
+        if amount > sender_balance:
+            return _bank_error(
+                _("Insufficient account balance."),
+                "INSUFFICIENT_ACCOUNT_BALANCE",
+                account_balance=sender_balance,
+            )
+
+        sender_locked.credit_amount = _to_money_decimal(sender_balance - amount)
+        sender_locked.save(update_fields=["credit_amount", "updated_at"])
+
+        recipient_locked.credit_amount = _to_money_decimal(_to_money_decimal(recipient_locked.credit_amount) + amount)
+        recipient_locked.save(update_fields=["credit_amount", "updated_at"])
+
+        sender_ship = (
+            PlayerShip.objects
+            .select_for_update()
+            .filter(player_id=sender_locked.id, is_current_ship=True)
+            .first()
+        )
+        recipient_ship = (
+            PlayerShip.objects
+            .select_for_update()
+            .filter(player_id=recipient_locked.id, is_current_ship=True)
+            .first()
+        )
+        sender_ship_credits = _to_money_decimal(getattr(sender_ship, "credit_amount", 0))
+        recipient_ship_credits = _to_money_decimal(getattr(recipient_ship, "credit_amount", 0))
+
+        sender_account_balance = _to_money_decimal(sender_locked.credit_amount)
+        recipient_account_balance = _to_money_decimal(recipient_locked.credit_amount)
+
+        transaction.on_commit(
+            lambda: _emit_bank_balance_update(
+                sender_locked,
+                sender_account_balance,
+                sender_ship_credits,
+                reason="TRANSFER_OUT",
+                message=_("Transfer completed."),
+            )
+        )
+        transaction.on_commit(
+            lambda: _emit_bank_balance_update(
+                recipient_locked,
+                recipient_account_balance,
+                recipient_ship_credits,
+                reason="TRANSFER_IN",
+                message=_("Incoming transfer received."),
+            )
+        )
+
+        return JsonResponse({
+            "ok": True,
+            "message": _("Transfer completed."),
+            "recipient": {
+                "id": recipient_locked.id,
+                "name": recipient_locked.name,
+            },
+            "balances": {
+                "account_balance": _to_money_float(sender_account_balance),
+                "ship_credits": _to_money_float(sender_ship_credits),
+            },
+        })
 
 @login_required
 def get_unread_private_mail_count(request):
