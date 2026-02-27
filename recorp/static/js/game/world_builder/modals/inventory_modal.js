@@ -359,6 +359,27 @@ function updateInventoryCapacityUi(ship) {
     }
 }
 
+function updateShipCreditsUi(ship) {
+    const creditsEl = document.getElementById("inventory-ship-credits-text");
+    if (!creditsEl) return;
+
+    const credits = Number(ship?.ship_credits ?? 0);
+    if (!Number.isFinite(credits)) {
+        creditsEl.textContent = "0.00";
+        return;
+    }
+
+    const normalized = Math.max(0, Math.round(credits * 100) / 100);
+    try {
+        creditsEl.textContent = new Intl.NumberFormat("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(normalized);
+    } catch (_) {
+        creditsEl.textContent = normalized.toFixed(2);
+    }
+}
+
 function showInventoryActionMessage(text, kind = "info") {
     const feedbackEl = document.getElementById("inventory-action-feedback");
     if (!feedbackEl) return;
@@ -818,8 +839,10 @@ function renderInventoryModal(playerData = getCurrentPlayerData()) {
             inventory_modules: [],
             inventory_resources: [],
             inventory_quest_items: [],
+            ship_credits: 0,
         });
         updateInventoryCapacityUi(null);
+        updateShipCreditsUi(null);
         clearEquipTargetHighlights();
         startInventoryStatusTickerIfNeeded();
         return;
@@ -828,6 +851,7 @@ function renderInventoryModal(playerData = getCurrentPlayerData()) {
     renderEquippedModules(ship);
     renderInventorySections(ship);
     updateInventoryCapacityUi(ship);
+    updateShipCreditsUi(ship);
     clearEquipTargetHighlights();
     startInventoryStatusTickerIfNeeded();
 }

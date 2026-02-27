@@ -159,7 +159,7 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
 
 def compute_ship_cargo_load(player_ship: PlayerShip) -> int:
     resource_qty = (
-        player_ship.playershipresource_set.aggregate(total=Sum("quantity")).get("total")
+        player_ship.playershipresource_set.filter(resource__takes_inventory_space=True).aggregate(total=Sum("quantity")).get("total")
         or 0
     )
     modules_qty = PlayerShipInventoryModule.objects.filter(player_ship_id=player_ship.id).count()

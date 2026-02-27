@@ -51,6 +51,7 @@
             { key: "join_faction", label: "Join Faction", icon: "/static/img/ux/join_faction.svg", ap_cost: 0, cost: 1000 },
             { key: "dock", label: "Dock", icon: "/static/img/ux/dock.svg", ap_cost: 0, cost: 0 },
             { key: "market", label: "Market", icon: "/static/img/ux/market.svg", ap_cost: 0, cost: 0 },
+            { key: "bank", label: "Bank", icon: "/static/img/ux/bank.svg", ap_cost: 0, cost: 0 },
             { key: "task", label: "Task", icon: "/static/img/ux/task.svg", ap_cost: 0, cost: 0 },
             {
                 key: "invade",
