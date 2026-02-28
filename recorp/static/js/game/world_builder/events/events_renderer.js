@@ -71,6 +71,11 @@ function getDynamicEventRowColorClass(log, fallbackColorClass) {
     if (eventType === "COMBAT_ACTION") {
         return getCombatActionRowColorClass(log);
     }
+    if (eventType === "BANK_TRANSFER") {
+        if (log.role === "TRANSMITTER") return "text-amber-200";
+        if (log.role === "RECEIVER") return "text-emerald-200";
+        return "text-cyan-200";
+    }
     if (eventType === "COMBAT_DEATH") {
         const deadKey = String((log.content || {}).dead_key || "");
         const localPlayerId = getCurrentPlayerIdSafe();
@@ -193,14 +198,9 @@ function normalizeLogShape(inputLog) {
     return log;
 }
 
-function formatTimestamp(isoDate) {
+function formatTimestamp(isoDate, { includeDate = true } = {}) {
     const d = new Date(isoDate);
-
-    const date = d.toLocaleDateString("fr-FR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-    });
+    if (Number.isNaN(d.getTime())) return "--:--:--";
 
     const time = d.toLocaleTimeString("fr-FR", {
         hour: "2-digit",
@@ -208,7 +208,70 @@ function formatTimestamp(isoDate) {
         second: "2-digit"
     });
 
+    if (!includeDate) return time;
+
+    const date = d.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    });
+
     return `${date} ${time}`;
+}
+
+function formatCredits(value) {
+    const amount = Number(value);
+    if (!Number.isFinite(amount)) return "0,00";
+    return new Intl.NumberFormat("fr-FR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(amount);
+}
+
+function getEventIconHtml(eventType) {
+    switch (String(eventType || "").toUpperCase()) {
+        case "BANK_TRANSFER":
+        case "BANK_DEPOSIT_TO_ACCOUNT":
+        case "BANK_WITHDRAW_TO_SHIP":
+            return '<i class="fa-solid fa-building-columns" aria-hidden="true"></i>';
+        case "COMBAT_ACTION":
+        case "COMBAT_DEATH":
+        case "ATTACK":
+            return '<i class="fa-solid fa-crosshairs" aria-hidden="true"></i>';
+        case "SCAN":
+            return '<i class="fa-solid fa-satellite-dish" aria-hidden="true"></i>';
+        case "ZONE_CHANGE":
+            return '<i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>';
+        case "CRAFT":
+            return '<i class="fa-solid fa-gears" aria-hidden="true"></i>';
+        case "RESEARCH":
+            return '<i class="fa-solid fa-flask-vial" aria-hidden="true"></i>';
+        default:
+            return '<i class="fa-solid fa-signal" aria-hidden="true"></i>';
+    }
+}
+
+function getEventLabel(eventType) {
+    switch (String(eventType || "").toUpperCase()) {
+        case "BANK_TRANSFER":
+        case "BANK_DEPOSIT_TO_ACCOUNT":
+        case "BANK_WITHDRAW_TO_SHIP":
+            return "BANK";
+        case "COMBAT_ACTION":
+        case "COMBAT_DEATH":
+        case "ATTACK":
+            return "COMBAT";
+        case "SCAN":
+            return "SCAN";
+        case "ZONE_CHANGE":
+            return "SECTOR";
+        case "CRAFT":
+            return "CRAFT";
+        case "RESEARCH":
+            return "RESEARCH";
+        default:
+            return "LOG";
+    }
 }
 
 export function renderEventLog(
@@ -229,27 +292,36 @@ export function renderEventLog(
     const colorClass = getDynamicEventRowColorClass(log, style.color);
 
     const li = document.createElement("li");
+    const isHud = mode === "hud";
 
-    li.className = `
-        flex items-start gap-2
-        text-xs leading-snug
-        font-medium
-        ${colorClass}
-        ${style.glow || ""}
-        ${mode === "modal" ? "p-2 rounded-md" : ""}
-    `;
+    li.className = [
+        "event-log-item",
+        isHud ? "event-log-item-hud" : "event-log-item-modal",
+        colorClass,
+        style.glow || "",
+    ].filter(Boolean).join(" ");
 
-    const showTimestamp = (mode === "modal") || isMobile;
+    const showTimestamp = mode === "modal" || isMobile || isHud;
+    const timestampValue = showTimestamp
+        ? formatTimestamp(log.created_at, { includeDate: mode === "modal" })
+        : "";
     const timestampHtml = showTimestamp
-        ? `<span class="opacity-50 font-mono whitespace-nowrap text-white">
-                ${formatTimestamp(log.created_at)}
-            </span>`
+        ? `<span class="event-log-timestamp">${escapeHtml(timestampValue)}</span>`
+        : "";
+    const labelHtml = isHud
+        ? `<span class="event-log-chip">${escapeHtml(getEventLabel(eventType))}</span>`
         : "";
 
     li.innerHTML = `
-        ${timestampHtml}
-        <span class="block break-words leading-snug">
-            ${buildEventText(log)}
+        <span class="event-log-icon">${getEventIconHtml(eventType)}</span>
+        <span class="event-log-body">
+            <span class="event-log-meta">
+                ${labelHtml}
+                ${timestampHtml}
+            </span>
+            <span class="event-log-text">
+                ${buildEventText(log)}
+            </span>
         </span>
     `;
 
@@ -327,6 +399,32 @@ function buildEventText(log) {
                 return `<span class="text-red-300">Vous avez été tué par ${killer}</span>`;
             }
             return `${dead} a été tué par ${killer}`;
+        }
+
+        /* =======================
+            BANK TRANSFERS
+        ======================= */
+        case "BANK_TRANSFER": {
+            const amount = `<b>${escapeHtml(formatCredits(p.amount))}</b>`;
+            const sender = `<b>${escapeHtml(p.sender_name || p.author || "Inconnu")}</b>`;
+            const recipient = `<b>${escapeHtml(p.recipient_name || p.target || "Inconnu")}</b>`;
+            if (role === "TRANSMITTER") {
+                return `Vous avez transfere ${amount} credits a ${recipient}`;
+            }
+            if (role === "RECEIVER") {
+                return `Vous avez recu ${sender} la somme de ${amount} credits`;
+            }
+            return `${sender} a transfere ${amount} credits a ${recipient}`;
+        }
+
+        case "BANK_DEPOSIT_TO_ACCOUNT": {
+            const amount = `<b>${escapeHtml(formatCredits(p.amount))}</b>`;
+            return `Vous transferez la somme de ${amount} credits sur votre compte`;
+        }
+
+        case "BANK_WITHDRAW_TO_SHIP": {
+            const amount = `<b>${escapeHtml(formatCredits(p.amount))}</b>`;
+            return `Vous transferez ${amount} credits sur votre vaisseau`;
         }
 
         /* =======================

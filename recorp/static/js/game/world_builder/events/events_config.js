@@ -11,6 +11,18 @@ export const LOG_TYPE_STYLE = {
         color: "text-emerald-300",
         glow: "drop-shadow-[0_0_8px_rgba(16,185,129,0.35)]"
     },
+    BANK_TRANSFER: {
+        color: "text-emerald-200",
+        glow: "drop-shadow-[0_0_8px_rgba(110,231,183,0.35)]"
+    },
+    BANK_DEPOSIT_TO_ACCOUNT: {
+        color: "text-cyan-200",
+        glow: "drop-shadow-[0_0_8px_rgba(103,232,249,0.30)]"
+    },
+    BANK_WITHDRAW_TO_SHIP: {
+        color: "text-amber-200",
+        glow: "drop-shadow-[0_0_8px_rgba(252,211,77,0.30)]"
+    },
     DEFENSE: {
         color: "text-orange-300",
         glow: "drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]"

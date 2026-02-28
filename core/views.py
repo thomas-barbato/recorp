@@ -42,6 +42,7 @@ from core.backend.user_avatar import UserAvatarWriter
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
+from core.backend.player_logs import create_event_log
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
 from core.models import (
     LoggedInUser,
@@ -910,6 +911,59 @@ def _emit_bank_balance_update(player, account_balance, ship_credits, reason=None
         logger.exception("bank balance ws push failed")
 
 
+def _emit_event_logs_update(dispatch_payloads):
+    try:
+        channel_layer = get_channel_layer()
+        if channel_layer is None:
+            return
+
+        for item in dispatch_payloads:
+            group_name = item.get("group")
+            target_player_id = item.get("target_player_id")
+            data = item.get("data")
+            if not group_name or target_player_id is None or not isinstance(data, dict):
+                continue
+
+            async_to_sync(channel_layer.group_send)(
+                str(group_name),
+                {
+                    "type": "event_log",
+                    "target_player_id": int(target_player_id),
+                    "data": data,
+                },
+            )
+    except Exception:
+        logger.exception("event log ws push failed")
+
+
+def _build_player_log_dispatch_payloads(log_id):
+    rows = (
+        PlayerLog.objects
+        .select_related("player", "log")
+        .filter(log_id=log_id)
+    )
+    payloads = []
+    for pl in rows:
+        player = pl.player
+        if not player or not getattr(player, "sector_id", None):
+            continue
+
+        payloads.append(
+            {
+                "group": f"play_{player.sector_id}",
+                "target_player_id": int(pl.player_id),
+                "data": {
+                    "id": pl.id,
+                    "log_type": pl.log.log_type,
+                    "role": pl.role,
+                    "content": pl.log.content,
+                    "created_at": pl.created_at.isoformat(),
+                },
+            }
+        )
+    return payloads
+
+
 def _bank_error(message, code, status=400, **extra):
     payload = {
         "ok": False,
@@ -963,6 +1017,15 @@ def bank_withdraw_to_ship(request):
 
         account_balance = _to_money_decimal(player.credit_amount)
         ship_balance = _to_money_decimal(ship.credit_amount)
+        transfer_log = create_event_log(
+            players_roles=[(player, "TRANSMITTER")],
+            log_type="OTHER",
+            payload={
+                "event": "BANK_WITHDRAW_TO_SHIP",
+                "amount": _to_money_float(amount),
+            },
+        )
+        transfer_log_dispatch_payloads = _build_player_log_dispatch_payloads(transfer_log.id)
         transaction.on_commit(
             lambda: _emit_bank_balance_update(
                 player,
@@ -971,6 +1034,9 @@ def bank_withdraw_to_ship(request):
                 reason="WITHDRAW_TO_SHIP",
                 message=_("Withdrawal completed."),
             )
+        )
+        transaction.on_commit(
+            lambda: _emit_event_logs_update(transfer_log_dispatch_payloads)
         )
 
         return JsonResponse({
@@ -1021,6 +1087,15 @@ def bank_deposit_to_account(request):
 
         account_balance = _to_money_decimal(player.credit_amount)
         ship_balance = _to_money_decimal(ship.credit_amount)
+        transfer_log = create_event_log(
+            players_roles=[(player, "TRANSMITTER")],
+            log_type="OTHER",
+            payload={
+                "event": "BANK_DEPOSIT_TO_ACCOUNT",
+                "amount": _to_money_float(amount),
+            },
+        )
+        transfer_log_dispatch_payloads = _build_player_log_dispatch_payloads(transfer_log.id)
         transaction.on_commit(
             lambda: _emit_bank_balance_update(
                 player,
@@ -1029,6 +1104,9 @@ def bank_deposit_to_account(request):
                 reason="DEPOSIT_TO_ACCOUNT",
                 message=_("Deposit completed."),
             )
+        )
+        transaction.on_commit(
+            lambda: _emit_event_logs_update(transfer_log_dispatch_payloads)
         )
 
         return JsonResponse({
@@ -1135,6 +1213,24 @@ def bank_transfer_to_player(request):
 
         sender_account_balance = _to_money_decimal(sender_locked.credit_amount)
         recipient_account_balance = _to_money_decimal(recipient_locked.credit_amount)
+        amount_float = _to_money_float(amount)
+
+        transfer_log = create_event_log(
+            players_roles=[
+                (sender_locked, "TRANSMITTER"),
+                (recipient_locked, "RECEIVER"),
+            ],
+            log_type="OTHER",
+            payload={
+                "event": "BANK_TRANSFER",
+                "amount": amount_float,
+                "sender_name": sender_locked.name,
+                "recipient_name": recipient_locked.name,
+                "author": sender_locked.name,
+                "target": recipient_locked.name,
+            },
+        )
+        transfer_log_dispatch_payloads = _build_player_log_dispatch_payloads(transfer_log.id)
 
         transaction.on_commit(
             lambda: _emit_bank_balance_update(
@@ -1153,6 +1249,9 @@ def bank_transfer_to_player(request):
                 reason="TRANSFER_IN",
                 message=_("Incoming transfer received."),
             )
+        )
+        transaction.on_commit(
+            lambda: _emit_event_logs_update(transfer_log_dispatch_payloads)
         )
 
         return JsonResponse({
