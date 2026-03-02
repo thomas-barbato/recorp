@@ -164,6 +164,10 @@ cython_debug/
 
 node_modules/
 
-# Local debug log (runtime/manual tests)
-recorp/logsdebug.logserrors.logs
+# Local debug/runtime logs (do not commit)
+*.logs
+recorp/logs/
 security.logs
+celerybeat-schedule.dat
+celerybeat-schedule.bak
+celerybeat-schedule.dir
