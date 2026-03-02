@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
 localtime = timezone.now
+User = get_user_model()
 
 
 def get_default_planet_size():
@@ -21,7 +23,7 @@ def get_default_warzone_size():
 
 # Model to store the list of logged in users
 class LoggedInUser(models.Model):
-    user = models.OneToOneField(User, related_name='logged_in_user', on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='logged_in_user', on_delete=models.CASCADE)
     # Session keys are 32 characters long
     session_key = models.CharField(max_length=32, null=True, blank=True)
 
@@ -163,7 +165,8 @@ class WarpZone(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"name: {self.name}, sector_src = {self.sector.name }, warp_img_name = {self.source.name}"
+        warp_name = (self.data or {}).get("name") or self.source.name
+        return f"name: {warp_name}, sector_src = {self.sector.name}, warp_img_name = {self.source.name}"
     
 class SectorWarpZone(models.Model):
     warp_home = models.ForeignKey(WarpZone, on_delete=models.CASCADE, related_name="warp_home")
@@ -172,7 +175,9 @@ class SectorWarpZone(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"from {self.warp_home.name } ({ self.warp_home.sector.name }) to {self.warp_destination.name} ({self.warp_destination.sector.name})"
+        home_name = (self.warp_home.data or {}).get("name") or str(self.warp_home_id)
+        destination_name = (self.warp_destination.data or {}).get("name") or str(self.warp_destination_id)
+        return f"from {home_name} ({self.warp_home.sector.name}) to {destination_name} ({self.warp_destination.sector.name})"
     
 
 class ShipCategory(models.Model):
@@ -246,7 +251,7 @@ class Player(models.Model):
         ("ALIVE", "alive"),
         ("DEAD", "dead"),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     faction = models.ForeignKey(
         Faction,
         on_delete=models.SET_DEFAULT,
@@ -493,6 +498,9 @@ class NpcResource(models.Model):
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.npc.id} - {self.npc.npc_template.name} : {self.resource.name} ({self.quantity})"
+
 
 class Module(models.Model):
     MODULE_TYPE_CHOICES = (
@@ -523,7 +531,8 @@ class Module(models.Model):
         choices=MODULE_TYPE_CHOICES,
         default=MODULE_TYPE_CHOICES[0][0],
     )
-    effect = models.JSONField(null=True)
+    subtype = models.CharField(max_length=50, blank=True, default="GENERIC", db_index=True)
+    effects = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -538,7 +547,7 @@ class ArchetypeModule(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.archetype.name} - {self.module.name} [{self.module.effect}]"
+        return f"{self.archetype.name} - {self.module.name} [{self.module.effects}]"
 
 
 class PlayerLog(models.Model):
@@ -649,7 +658,7 @@ class PlayerShipResource(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.source.name} - {self.resource.name} - quantity : {self.quantity}"
+        return f"{self.source.ship.name} - {self.resource.name} - quantity : {self.quantity}"
     
 
 class PlayerShipInventoryModule(models.Model):

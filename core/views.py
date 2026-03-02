@@ -17,9 +17,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView as DjangoLogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseRedirect
@@ -43,6 +42,7 @@ from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.player_logs import create_event_log
+from core.backend.module_effects import get_effect_numeric
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
 from core.models import (
     LoggedInUser,
@@ -124,7 +124,8 @@ class IndexView(TemplateView):
                 username=username,
                 password=request.POST.get("password"),
             )
-            if user is not None and user.is_active and user.is_staff is False:
+            # Autorise aussi les comptes staff/admin a se connecter au jeu.
+            if user is not None and user.is_active:
                 login(self.request, user)
                 player_id = PlayerAction(self.request.user).get_player_id()
                 LoggedInUser.objects.get_or_create(
@@ -135,8 +136,6 @@ class IndexView(TemplateView):
                     return redirect("/")
                 else:
                     return redirect("play/create_character")
-            elif user is not None and user.is_active and user.is_staff:
-                pass
 
             # Authentification échouée - soit mauvais credentials soit compte bloqué
             # axes gère le rate limiting automatiquement via AxesStandaloneBackend
@@ -226,7 +225,7 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
             "archetype_id",
             "module_id__name",
             "module_id__type",
-            "module_id__effect",
+            "module_id__effects",
         )
 
         return context
@@ -292,25 +291,33 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
             modules = ArchetypeModule.objects.filter(archetype_id=archetype_id)
 
             for m in modules:
-                effect = m.module.effect
                 mtype = m.module.type
 
                 if "DEFENSE" in mtype:
+                    defense_bonus = int(
+                        get_effect_numeric(m.module, "defense", default=0, strategy="sum") or 0
+                    )
                     if "BALLISTIC" in mtype:
-                        current_ballistic_defense += effect.get("defense", 0)
+                        current_ballistic_defense += defense_bonus
                     elif "THERMAL" in mtype:
-                        current_thermal_defense += effect.get("defense", 0)
+                        current_thermal_defense += defense_bonus
                     elif "MISSILE" in mtype:
-                        current_missile_defense += effect.get("defense", 0)
+                        current_missile_defense += defense_bonus
 
                 elif "MOVEMENT" in mtype:
-                    current_movement += effect.get("movement", 0)
+                    current_movement += int(
+                        get_effect_numeric(m.module, "movement", default=0, strategy="sum") or 0
+                    )
 
                 elif "HULL" in mtype:
-                    current_hp += effect.get("hp", 0)
+                    current_hp += int(
+                        get_effect_numeric(m.module, "hp", default=0, strategy="sum") or 0
+                    )
 
                 elif "HOLD" in mtype:
-                    current_cargo_size += effect.get("capacity", 0)
+                    current_cargo_size += int(
+                        get_effect_numeric(m.module, "capacity", default=0, strategy="sum") or 0
+                    )
 
             player_ship = PlayerShip.objects.create(
                 player=player,
@@ -556,7 +563,7 @@ class ChangeSectorGameView(LoginRequiredMixin, RedirectView):
         store.get_or_set_cache(need_to_be_recreated=True)
 
 
-class LogoutView(LogoutView):
+class LogoutView(DjangoLogoutView):
     http_method_names = ["post"]
     template_name = "index.html"
 

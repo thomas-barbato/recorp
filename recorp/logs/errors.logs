@@ -114,3 +114,387 @@ django.db.utils.ProgrammingError: (1054, "1054 (42S22): Unknown column 'core_pla
 [WARNING] 2026-02-28 15:05:05 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:54048][0m
 [WARNING] 2026-02-28 15:06:34 | django.request | Not Found: /favicon.ico
 [WARNING] 2026-02-28 15:06:34 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:50980][0m
+[WARNING] 2026-03-01 07:56:01 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-01 07:56:01 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.07, 127.0.0.1:58932][0m
+[WARNING] 2026-03-02 07:22:44 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 07:22:44 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.17, 127.0.0.1:59533][0m
+[WARNING] 2026-03-02 11:24:59 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 11:24:59 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:54290][0m
+[WARNING] 2026-03-02 11:25:06 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 11:25:06 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54713][0m
+[WARNING] 2026-03-02 11:53:06 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:53:06 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:51915][0m
+[WARNING] 2026-03-02 11:53:07 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:53:07 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:51915][0m
+[WARNING] 2026-03-02 11:53:12 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:53:12 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:51915][0m
+[WARNING] 2026-03-02 11:53:18 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:53:18 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:51915][0m
+[WARNING] 2026-03-02 11:53:23 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:53:23 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:51915][0m
+[WARNING] 2026-03-02 11:54:12 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:54:12 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:55470][0m
+[WARNING] 2026-03-02 11:54:14 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:54:14 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:55470][0m
+[WARNING] 2026-03-02 11:54:20 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 11:54:20 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:55470][0m
+[ERROR] 2026-03-02 11:58:12 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 11:58:12 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 11:58:12 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 11:58:34 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 11:58:34 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 11:58:34 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:03:57 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:04:06 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:04:06 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:04:06 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:04:16 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2026-03-02 12:04:40 | django.request | Not Found: /en/admin/
+[WARNING] 2026-03-02 12:04:40 | django.request | Not Found: /fr/admin/
+[WARNING] 2026-03-02 12:05:16 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:16 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:59349][0m
+[WARNING] 2026-03-02 12:05:17 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:05:17 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:20 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:20 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:40 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:40 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:51 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:51 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:53 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:53 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:54 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:54 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:55 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:55 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:55 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:55 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:55 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:55 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:56 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:56 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:05:57 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:05:57 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:59349][0m
+[WARNING] 2026-03-02 12:05:57 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:05:57 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:06:00 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:06:00 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:06:54 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:06:54 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:07:00 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:07:00 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:59349][0m
+[WARNING] 2026-03-02 12:07:25 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:07:25 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:07:28 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:07:28 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:07:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:07:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:07:45 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:07:45 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:56721][0m
+[WARNING] 2026-03-02 12:07:46 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:07:46 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56721][0m
+[ERROR] 2026-03-02 12:08:45 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:08:45 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:08:45 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+[ERROR] 2026-03-02 12:08:45 | django.security.DisallowedHost | Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "d:\wamp64\www\recorp\venv\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+[WARNING] 2026-03-02 12:09:48 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:09:48 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:50774][0m
+[WARNING] 2026-03-02 12:09:48 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:09:48 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:50774][0m
+[WARNING] 2026-03-02 12:09:49 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:09:49 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:50774][0m
+[WARNING] 2026-03-02 12:09:50 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:09:50 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:50774][0m
+[WARNING] 2026-03-02 12:11:30 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:30 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:30 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:11:30 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:31 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:31 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:31 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:31 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:32 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:32 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:32 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:32 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:32 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:11:32 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:33 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:33 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:33 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:11:33 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:33 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:33 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:33 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:33 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:33 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:33 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:57675][0m
+[WARNING] 2026-03-02 12:11:33 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:33 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:57675][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:57675][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.07, 127.0.0.1:52192][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:57998][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:64317][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:64317][0m
+[WARNING] 2026-03-02 12:11:34 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:11:34 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:64317][0m
+[WARNING] 2026-03-02 12:11:35 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:11:35 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:64317][0m
+[WARNING] 2026-03-02 12:12:03 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:12:03 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:64317][0m
+[WARNING] 2026-03-02 12:12:56 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:12:56 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:64317][0m
+[WARNING] 2026-03-02 12:12:56 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:12:56 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:12:59 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:12:59 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:13:00 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:13:00 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:15:07 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:15:07 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:15:11 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:15:11 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:15:54 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:15:54 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:15:58 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:15:58 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:16:04 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:16:04 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:16:18 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:16:18 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:62964][0m
+[WARNING] 2026-03-02 12:16:27 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:16:27 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:58551][0m
+[WARNING] 2026-03-02 12:17:15 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:17:15 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.06, 127.0.0.1:61187][0m
+[WARNING] 2026-03-02 12:17:15 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:17:15 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:53387][0m
+[WARNING] 2026-03-02 12:17:24 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:17:24 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:53387][0m
+[WARNING] 2026-03-02 12:18:08 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:18:08 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:61187][0m
+[WARNING] 2026-03-02 12:18:18 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 12:18:18 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.01, 127.0.0.1:61187][0m
+[WARNING] 2026-03-02 12:29:15 | django.request | Too Many Requests: /
+[WARNING] 2026-03-02 12:29:15 | django.channels.server | [31;1mHTTP POST / 429 [0.03, 127.0.0.1:61187][0m
+[WARNING] 2026-03-02 12:29:29 | django.request | Too Many Requests: /
+[WARNING] 2026-03-02 12:29:29 | django.channels.server | [31;1mHTTP POST / 429 [0.03, 127.0.0.1:61187][0m
+[WARNING] 2026-03-02 12:29:55 | django.request | Too Many Requests: /
+[WARNING] 2026-03-02 12:29:55 | django.channels.server | [31;1mHTTP POST / 429 [0.03, 127.0.0.1:61187][0m
+[WARNING] 2026-03-02 12:37:17 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:37:17 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:60495][0m
+[WARNING] 2026-03-02 12:37:22 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:37:22 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:58501][0m
+[WARNING] 2026-03-02 12:37:22 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:37:22 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:49315][0m
+[WARNING] 2026-03-02 12:37:27 | django.request | Too Many Requests: /
+[WARNING] 2026-03-02 12:37:27 | django.channels.server | [31;1mHTTP POST / 429 [0.03, 127.0.0.1:49315][0m
+[WARNING] 2026-03-02 12:38:19 | django.request | Too Many Requests: /
+[WARNING] 2026-03-02 12:38:19 | django.channels.server | [31;1mHTTP POST / 429 [0.03, 127.0.0.1:49315][0m
+[WARNING] 2026-03-02 12:48:47 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:48:47 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:50478][0m
+[WARNING] 2026-03-02 12:48:53 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:48:53 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55084][0m
+[WARNING] 2026-03-02 12:48:54 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:48:54 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:55084][0m
+[WARNING] 2026-03-02 12:49:01 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 12:49:01 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:59044][0m
+[WARNING] 2026-03-02 13:11:55 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 13:11:55 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:57463][0m
+[WARNING] 2026-03-02 13:24:29 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 13:24:29 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:51836][0m
+[WARNING] 2026-03-02 13:24:30 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 13:24:30 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:62709][0m
+[WARNING] 2026-03-02 13:26:29 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 13:26:29 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:58259][0m
+[WARNING] 2026-03-02 13:26:42 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 13:26:42 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:55524][0m
+[WARNING] 2026-03-02 13:41:16 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 13:41:16 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:60525][0m
+[ERROR] 2026-03-02 14:10:17 | django.request | Internal Server Error: /chat/unread-counts/
+Traceback (most recent call last):
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\wamp64\www\recorp\core\middleware.py", line 33, in __call__
+    response = self.get_response(request)
+  File "D:\wamp64\www\recorp\venv\lib\site-packages\asgiref\sync.py", line 250, in __call__
+    loop_future = loop_executor.submit(
+  File "C:\Users\User\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+[WARNING] 2026-03-02 14:30:08 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 14:30:08 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.05, 127.0.0.1:59188][0m
+[WARNING] 2026-03-02 14:45:47 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 14:45:47 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:54215][0m
+[WARNING] 2026-03-02 14:45:47 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:45:47 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:45:47 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.02, 127.0.0.1:51065][0m
+[WARNING] 2026-03-02 14:45:47 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:51064][0m
+[WARNING] 2026-03-02 14:46:17 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:46:17 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:46:17 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:51064][0m
+[WARNING] 2026-03-02 14:46:17 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:51065][0m
+[WARNING] 2026-03-02 14:46:47 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:46:47 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:46:47 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:51064][0m
+[WARNING] 2026-03-02 14:46:47 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:51065][0m
+[WARNING] 2026-03-02 14:47:17 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:47:17 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:51064][0m
+[WARNING] 2026-03-02 14:47:17 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:47:17 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:51065][0m

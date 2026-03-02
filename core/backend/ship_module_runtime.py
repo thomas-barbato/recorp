@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from core.models import PlayerShip, PlayerShipInventoryModule, PlayerShipModule
 from core.backend.modal_builder import _build_ship_module_type_limits
+from core.backend.module_effects import get_effect_numeric
 
 
 BASE_SHIP_CARGO_CAPACITY = 100
@@ -77,11 +78,10 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
         mod = getattr(psm, "module", None)
         if not mod:
             continue
-        effect = mod.effect or {}
         mtype = canonical_module_type(getattr(mod, "type", None))
 
         if mtype.startswith("DEFENSE_"):
-            defense_value = int(effect.get("defense", 0) or 0)
+            defense_value = int(get_effect_numeric(mod, "defense", default=0, strategy="sum") or 0)
             if mtype == "DEFENSE_BALLISTIC":
                 new_max_ballistic += defense_value
             elif mtype == "DEFENSE_THERMAL":
@@ -91,15 +91,15 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
             continue
 
         if mtype == "MOVEMENT":
-            new_max_movement += int(effect.get("movement", 0) or 0)
+            new_max_movement += int(get_effect_numeric(mod, "movement", default=0, strategy="sum") or 0)
             continue
 
         if mtype == "HULL":
-            new_max_hp += int(effect.get("hp", 0) or 0)
+            new_max_hp += int(get_effect_numeric(mod, "hp", default=0, strategy="sum") or 0)
             continue
 
         if mtype == "HOLD":
-            new_cargo_capacity += int(effect.get("capacity", 0) or 0)
+            new_cargo_capacity += int(get_effect_numeric(mod, "capacity", default=0, strategy="sum") or 0)
             continue
 
     player_ship.max_hp = int(new_max_hp)

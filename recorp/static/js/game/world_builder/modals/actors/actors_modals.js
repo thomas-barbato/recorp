@@ -26,6 +26,25 @@ function applyScannedUiState(modalData, extractDataFromId, extractedDataForModal
     return modalData;
 }
 
+function getModuleEffectsArray(module) {
+    if (Array.isArray(module?.effects)) {
+        return module.effects.filter((entry) => entry && typeof entry === "object");
+    }
+    return [];
+}
+
+function getModuleNumericEffect(module, key) {
+    const values = [];
+    for (const effect of getModuleEffectsArray(module)) {
+        const raw = effect?.[key];
+        if (typeof raw === "number" && Number.isFinite(raw)) {
+            values.push(raw);
+        }
+    }
+    if (!values.length) return null;
+    return values.reduce((sum, val) => sum + val, 0);
+}
+
 function create_modal(modalId, extractDataFromId, extractedDataForModal){
     let element_type = extractDataFromId.type;
     let modal = "";
@@ -829,7 +848,9 @@ function buildShipStatsSection(data) {
 
     if (Array.isArray(data.ship.modules)) {
         DEF_CONFIG.forEach(defConf => {
-            const mod = data.ship.modules.find(m => m.type === defConf.type && m.effect && typeof m.effect.defense !== "undefined");
+            const mod = data.ship.modules.find(
+                (m) => m.type === defConf.type && getModuleNumericEffect(m, "defense") != null
+            );
             let currentVal;
             let maxVal;
             if (!mod){
@@ -838,7 +859,7 @@ function buildShipStatsSection(data) {
 
             }else{
                 currentVal = data.ship[defConf.currentKey] ?? 0;
-                maxVal = mod.effect.defense ?? 0;
+                maxVal = getModuleNumericEffect(mod, "defense") ?? 0;
             }
 
             ship_detailed_statistics_container_div.append(

@@ -19,6 +19,7 @@ from core.models import (
     Npc,
     Player,
 )
+from core.backend.module_effects import get_effect_numeric
 
 
 class ActionRules:
@@ -43,7 +44,8 @@ class ActionRules:
         ).select_related("module_id").values(
             "module_id__id",
             "module_id__type",
-            "module_id__effect",
+            "module_id__effects",
+            "module_id__subtype",
         )
         return list(modules)
 
@@ -58,9 +60,9 @@ class ActionRules:
         best = None
         for m in modules:
             if m["module_id__type"] in allowed_types:
-                rng = m["module_id__effect"].get("range")
+                rng = get_effect_numeric(m, "range", default=None, strategy="max")
                 if rng is not None:
-                    best = max(best or 0, rng)
+                    best = max(best or 0, int(rng))
         return best
 
     @staticmethod
@@ -91,10 +93,11 @@ class ActionRules:
 
     @classmethod
     def can_use_module_on_receiver(cls, transmitter, receiver, module):
-        if not module.effect or module.effect.get("range") is None:
+        max_range_raw = get_effect_numeric(module, "range", default=None, strategy="max")
+        if max_range_raw is None:
             return True, None
 
-        max_range = module.effect["range"]
+        max_range = float(max_range_raw)
         distance = cls.compute_entity_distance(transmitter, receiver)
 
         if distance <= max_range:

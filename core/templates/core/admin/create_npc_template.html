@@ -170,7 +170,7 @@
                     {% endif %}
                     {% for module in module_list %}
                         {% if module_type == module.type %}
-                        <option class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" data-moduletype="{{ module_type }}" data-moduleeffect="{{ module.effect }}" value="module-li-{{ module.id }}" id="module-li-{{ module.id }}">{{ module.name }} - {{ module.effect }}</option>
+                        <option class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 list-none" data-moduletype="{{ module_type }}" data-modulename="{{ module.name }}" data-moduleeffects="{{ module.effects_json|escapejs }}" value="module-li-{{ module.id }}" id="module-li-{{ module.id }}">{{ module.name }}</option>
                         {% endif %}
                     {% endfor %}
                     </select>

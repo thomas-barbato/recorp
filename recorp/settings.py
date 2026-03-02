@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 import environ
 from django.utils.translation import gettext_lazy as _
 import mimetypes
@@ -21,7 +22,16 @@ SECRET_KEY = env("SECRET_KEY")
 LOGIN_REDIRECT_URL = "/"
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["127.0.0.1", "https://6b4e7f2ebb00.ngrok-free.app", "6b4e7f2ebb00.ngrok-free.app"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",          # accept the common local name
+    "localhost:8000",     # include port when present
+    "[::1]",              # IPv6 loopback
+    "https://6b4e7f2ebb00.ngrok-free.app",
+    "6b4e7f2ebb00.ngrok-free.app",
+    "testserver",  # added for Django test client
+    # for development you can also use a wildcard: "*"
+]
 
 INSTALLED_APPS = [
     "daphne",
@@ -52,10 +62,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # "django.middleware.cache.FetchFromCacheMiddleware",
+    # locale middleware should appear once after MessageMiddleware
     "django.middleware.locale.LocaleMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
     "core.middleware.OneSessionPerUserMiddleware",
-    "django.middleware.locale.LocaleMiddleware"
 ]
 
 ROOT_URLCONF = "recorp.urls"
@@ -120,7 +130,7 @@ SESSION_CACHE_ALIAS = 'default'
 # Configuration session
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 semaine
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_SAVE_EVERY_REQUEST = True  # ✅ Forcé pour CSRF token valide
+SESSION_SAVE_EVERY_REQUEST = True  # âœ… ForcÃ© pour CSRF token valide
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'
@@ -172,7 +182,7 @@ CACHES = {
 WEBSOCKET_ACCEPT_ALL = True
 WEBSOCKET_TIMEOUT = 30
 
-# Configuration Celery pour éviter les timeouts
+# Configuration Celery pour Ã©viter les timeouts
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
@@ -183,7 +193,7 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'socket_keepalive': True,
 }
 
-# Tick global gameplay (remplace progressivement les traitements "lazy" côté WS).
+# Tick global gameplay (remplace progressivement les traitements "lazy" cÃ´tÃ© WS).
 CELERY_BEAT_SCHEDULE = {
     "game-world-tick-2s": {
         "task": "core.tasks.game_world_tick",
@@ -240,11 +250,11 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 # private
 # Static files are usually either part of your code,
-# or part of your dependencies’ code.
+# or part of your dependenciesâ€™ code.
 # They can come from various places, each app may provide its own files.
 # They are typically kept in source control.
 # The Django admin ships with some javascript and CSS,
-# for example, that are stored in Django’s Github repository.
+# for example, that are stored in Djangoâ€™s Github repository.
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "recorp", "static")
 
@@ -314,18 +324,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# Filtre personnalisé pour exclure les requêtes statiques 200 OK
+# Filtre personnalisÃ© pour exclure les requÃªtes statiques 200 OK
 class SkipStaticFilesFilter(logging.Filter):
     """
-    Filtre qui exclut les logs des requêtes GET sur fichiers statiques 
-    avec réponse 200 (succès). Garde les erreurs (4xx, 5xx).
+    Filtre qui exclut les logs des requÃªtes GET sur fichiers statiques 
+    avec rÃ©ponse 200 (succÃ¨s). Garde les erreurs (4xx, 5xx).
     """
     def filter(self, record):
-        # Exclure les requêtes GET sur fichiers statiques qui reviennent 200
+        # Exclure les requÃªtes GET sur fichiers statiques qui reviennent 200
         if hasattr(record, 'status_code'):
-            # Si c'est une requête qui revient 200
+            # Si c'est une requÃªte qui revient 200
             if record.status_code == 200:
-                # Vérifie si c'est une requête statique (JS, CSS, images, fonts)
+                # VÃ©rifie si c'est une requÃªte statique (JS, CSS, images, fonts)
                 message = record.getMessage()
                 static_extensions = (
                     '/static/', '/media/',
@@ -335,7 +345,7 @@ class SkipStaticFilesFilter(logging.Filter):
                 if any(ext in message for ext in static_extensions):
                     return False  # Exclure ce log
         
-        # Garder tout le reste (erreurs 4xx, 5xx, WebSocket, requêtes API, etc.)
+        # Garder tout le reste (erreurs 4xx, 5xx, WebSocket, requÃªtes API, etc.)
         return True
 
 
@@ -411,6 +421,9 @@ LOGGING = {
 # Django-Axes Configuration (Rate Limiting)
 # ========================================
 AXES_FAILURE_LIMIT = 5  # 5 tentatives max
-AXES_COOLOFF_DURATION = 900  # 15 minutes en secondes
-AXES_LOCK_OUT_AT_FAILURE = True  # Bloquer après N tentatives
+AXES_COOLOFF_TIME = timedelta(minutes=15)  # Deblocage auto apres 15 minutes
+AXES_LOCK_OUT_AT_FAILURE = True  # Bloquer aprÃ¨s N tentatives
 AXES_USE_CACHE = 'default'  # Utiliser Redis pour plus de vitesse
+AXES_RESET_ON_SUCCESS = True
+AXES_LOCKOUT_CALLABLE = "core.backend.auth_lockout.axes_lockout_response"
+

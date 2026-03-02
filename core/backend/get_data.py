@@ -16,6 +16,7 @@ from asgiref.sync import sync_to_async
 
 from recorp.settings import BASE_DIR
 from core.backend.geometry import compute_chebyshev_distance, get_tiles_in_range
+from core.backend.module_effects import get_effect_numeric, module_effect_fields
 from core.models import (
     Planet, Asteroid, Station, Warp, WarpZone, SectorWarpZone,
     Resource, PlanetResource, AsteroidResource, StationResource,
@@ -629,16 +630,22 @@ class GetDataFromDB:
         if not player_data:
             return {}
 
-        modules = PlayerShipModule.objects.filter(
-            player_ship_id__player_id=player_data["player_ship_id__player_id"],
-            module_id__effect__has_key="range",
-            module_id__type__in=GetDataFromDB.WEAPONRY_MODULE_TYPES
-        ).values("module_id", "module_id__effect", "module_id__type")
+        modules = list(
+            PlayerShipModule.objects.filter(
+                player_ship_id__player_id=player_data["player_ship_id__player_id"],
+                module_id__type__in=GetDataFromDB.WEAPONRY_MODULE_TYPES
+            ).values("module_id", "module_id__effects", "module_id__subtype", "module_id__type")
+        )
+        modules = [
+            module
+            for module in modules
+            if get_effect_numeric(module, "range", default=None, strategy="max") is not None
+        ]
 
         return {
             "coordinates": player_data["player_ship_id__player_id__coordinates"],
             "size": player_data["player_ship_id__ship_id__ship_category_id__size"],
-            "modules": list(modules)
+            "modules": modules
         }
 
     @staticmethod
@@ -653,16 +660,23 @@ class GetDataFromDB:
         if not npc_data:
             return {}
 
-        modules = Module.objects.filter(
-            Q(id__in=npc_data["npc_template_id__module_id_list"]) &
-            Q(effect__has_key="range") &
-            Q(type__in=GetDataFromDB.WEAPONRY_MODULE_TYPES)
-        ).values("id", "effect", "type")
+        modules = list(
+            Module.objects.filter(
+                Q(id__in=npc_data["npc_template_id__module_id_list"]) &
+                Q(type__in=GetDataFromDB.WEAPONRY_MODULE_TYPES)
+            ).values("id", "effects", "subtype", "type")
+        )
+        modules = [
+            module
+            for module in modules
+            if get_effect_numeric(module, "range", default=None, strategy="max") is not None
+        ]
+        modules = [{**module, **module_effect_fields(module)} for module in modules]
 
         return {
             "coordinates": npc_data["coordinates"],
             "size": npc_data["npc_template_id__ship_id__ship_category_id__size"],
-            "modules": list(modules)
+            "modules": modules
         }
 
     @staticmethod
@@ -758,14 +772,14 @@ class GetDataFromDB:
     def _calculate_single_element_range(player_data: Dict, element: Dict, module: Dict, element_type: str) -> Dict:
         """Calcule si un élément spécifique est à portée"""
         # Extraction des données du module
-        if 'module_id__type' in module:  # Joueur humain
+        if "module_id__type" in module:  # Joueur humain
             module_id = module["module_id"]
-            module_range = int(module["module_id__effect"]["range"])
             module_type = module["module_id__type"]
         else:  # NPC
             module_id = module["id"]
-            module_range = int(module["effect"]["range"])
             module_type = module["type"]
+
+        module_range = int(get_effect_numeric(module, "range", default=0, strategy="max") or 0)
 
         # Calcul des coordonnées et tailles
         player_coords = GetDataFromDB._extract_coordinates(player_data["coordinates"])

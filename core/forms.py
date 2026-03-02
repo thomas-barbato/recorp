@@ -111,7 +111,7 @@ class SignupForm(forms.ModelForm):
         self.instance.is_staff = False
         self.instance.is_active = True
         self.instance.date_joined = datetime.datetime.now()
-        super().save()
+        return super().save(*args, **kwargs)
     
     first_name= forms.CharField(
         widget=TextInput(

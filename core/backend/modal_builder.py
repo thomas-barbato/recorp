@@ -19,6 +19,7 @@ from core.models import (
     SectorWarpZone
 )
 from core.backend.get_data import GetDataFromDB
+from core.backend.module_effects import module_effect_fields
 
 
 def _to_money_float(value: Any) -> float:
@@ -166,7 +167,8 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "id",
             "module__name",
             "module__description",
-            "module__effect",
+            "module__effects",
+            "module__subtype",
             "module__type",
             "module__tier",
             "module_id"
@@ -177,12 +179,12 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
         {
             "equipped_id": m["id"],
             "name": m["module__name"],
-            "effect": m["module__effect"],
             "description": m["module__description"],
             "type": m["module__type"],
             "tier": m["module__tier"],
             "id": m["module_id"],  # backward compat (module FK id)
             "module_id": m["module_id"],
+            **module_effect_fields(m),
         }
         for m in modules_qs
     ]
@@ -197,7 +199,8 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "module_id",
             "module__name",
             "module__description",
-            "module__effect",
+            "module__effects",
+            "module__subtype",
             "module__type",
             "module__tier",
             "metadata",
@@ -211,10 +214,10 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "module_id": row["module_id"],
             "name": row["module__name"],
             "description": row["module__description"],
-            "effect": row["module__effect"],
             "type": row["module__type"],
             "tier": row["module__tier"],
             "metadata": row.get("metadata") or {},
+            **module_effect_fields(row),
         }
         for row in inventory_modules_qs
     ]
@@ -288,6 +291,7 @@ def build_pc_modal_data(player_id: int) -> Optional[Dict[str, Any]]:
             "module_id": pending_reconfig.module_id,
             "module_name": pending_reconfig.module.name if pending_reconfig.module else None,
             "module_type": pending_reconfig.module.type if pending_reconfig.module else None,
+            "module_subtype": pending_reconfig.module.subtype if pending_reconfig.module else None,
             "created_at": pending_reconfig.created_at.isoformat() if pending_reconfig.created_at else None,
             "execute_at": pending_reconfig.execute_at.isoformat() if pending_reconfig.execute_at else None,
             "remaining_seconds": remaining,
@@ -408,8 +412,9 @@ def build_npc_modal_data(npc_id: int) -> Optional[Dict[str, Any]]:
         modules = list(
             Module.objects
             .filter(id__in=module_ids)
-            .values("name", "description", "effect", "type", "tier", "id")
+            .values("name", "description", "effects", "subtype", "type", "tier", "id")
         )
+        modules = [{**m, **module_effect_fields(m)} for m in modules]
 
     # -----------------------------
     # Portées (modules_range)

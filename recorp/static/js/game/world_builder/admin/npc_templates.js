@@ -12,6 +12,39 @@ let submit_button = document.querySelector('#npc-create-btn');
 let cancel_button = document.querySelector('#npc-cancel-btn');
 let delete_button = document.querySelector('#modal-delete-confirmation-btn');
 
+function parseModuleEffects(rawValue) {
+    if (!rawValue) return [];
+    let parsed = [];
+    try {
+        parsed = JSON.parse(rawValue);
+    } catch (e1) {
+        try {
+            parsed = JSON.parse(String(rawValue).replace(/'/g, '"'));
+        } catch (e2) {
+            parsed = [];
+        }
+    }
+    if (Array.isArray(parsed)) return parsed.filter((entry) => entry && typeof entry === "object");
+    if (parsed && typeof parsed === "object") return [parsed];
+    return [];
+}
+
+function mergeModuleEffects(effects) {
+    if (!Array.isArray(effects)) return {};
+    return effects.reduce((acc, effect) => {
+        if (!effect || typeof effect !== "object") return acc;
+        Object.entries(effect).forEach(([key, value]) => {
+            if (value == null || key === "label") return;
+            if (typeof value === "number") {
+                acc[key] = (typeof acc[key] === "number" ? acc[key] : 0) + value;
+            } else if (!(key in acc)) {
+                acc[key] = value;
+            }
+        });
+        return acc;
+    }, {});
+}
+
 // CHANGE CHARACTER IMG ZONE
 ship_select.addEventListener('change', function() {
     let selected_element = ship_select.options[ship_select.selectedIndex];
@@ -90,18 +123,11 @@ npc_submit_button.addEventListener('click', function() {
 
         for (let y = 0; y < selected.length; y++) {
             if (selected[y].id != "module-li-none") {
-                // from dataset string to obj.
-                let splitted_module_effect = selected[y].dataset.moduleeffect.split(',');
-                let json_parsed_module_effects = "";
-                if (splitted_module_effect.length > 1) {
-                    json_parsed_module_effects = JSON.parse(JSON.stringify(selected[y].dataset.moduleeffect.replace(/'/g, '"')));
-                } else {
-                    json_parsed_module_effects = JSON.parse(selected[y].dataset.moduleeffect.replace(/'/g, '"'));
-                }
+                const parsedEffects = parseModuleEffects(selected[y].dataset.moduleeffects);
                 module_info_array.push({
                     "id": selected[y].id.split("-")[2],
-                    "name": selected[y].textContent,
-                    "effects": json_parsed_module_effects,
+                    "name": selected[y].dataset.modulename || selected[y].textContent,
+                    "effects": parsedEffects,
                     "type": selected[y].dataset.moduletype
                 })
             }
@@ -204,17 +230,18 @@ npc_submit_button.addEventListener('click', function() {
             module_element_li_span_id.classList.add('text-center', 'font-bold', 'text-shadow');
             module_element_li_span_id.textContent = `id: ${module_info_array[module].id}`;
             module_element_li_span_name.classList.add('text-center', 'text-shadow');
-            module_element_li_span_name.textContent = `${module_info_array[module].name.split(' -')[0]}`;
+            module_element_li_span_name.textContent = `${module_info_array[module].name}`;
             module_element_li_span_effects.classList.add('text-center', 'text-shadow');
-            module_element_li_span_effects.textContent = `${module_info_array[module].name.split(' -')[1]}`;
+            module_element_li_span_effects.textContent = `${JSON.stringify(module_info_array[module].effects)}`;
+            const mergedEffects = mergeModuleEffects(module_info_array[module].effects);
             
             if (module_info_array[module].type == "HULL" || module_info_array[module].type == "MOVEMENT" || module_info_array[module].type == "HOLD") {
                 if (module_info_array[module].type == "HULL") {
-                    template_hp_module_bonus = module_info_array[module].effects.hp;
+                    template_hp_module_bonus = mergedEffects.hp || 0;
                 } else if (module_info_array[module].type == "MOVEMENT") {
-                    template_move_module_bonus = module_info_array[module].effects.movement;
+                    template_move_module_bonus = mergedEffects.movement || 0;
                 } else if (module_info_array[module].type == "HOLD") {
-                    template_hold_statistics = module_info_array[module].effects.capacity;
+                    template_hold_statistics = mergedEffects.capacity || 0;
                 }
             }
 
@@ -381,7 +408,7 @@ function save_or_update_npc_template() {
         module_array.push({
             'id': parseInt(module_info_array[i]['id']),
             'type': module_info_array[i]['type'],
-            'name': module_info_array[i]['name'].split(' - ')[0],
+            'name': module_info_array[i]['name'],
             'effects': module_info_array[i]['effects']
         })
     }

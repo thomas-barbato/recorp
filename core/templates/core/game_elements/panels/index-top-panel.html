@@ -19,7 +19,7 @@
                 </h1>
             </div>
             <div id="nav-logged-in" class="hidden md:flex items-center gap-6">
-                <a href="/play" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-lg transition-all glow-strong font-orbitron">
+                <a href="/play/" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-lg transition-all glow-strong font-orbitron">
                     <i class="fas fa-play mr-2"></i>{% translate "Enter" %} 
                 </a>
                 <form method="post" action="{% url 'core:logout_view' %}" class="inline">
@@ -59,7 +59,7 @@
     <!-- Mobile Menu - Connecté -->
     <div id="mobile-menu-logged-in" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20 overflow-hidden transition-all duration-300 max-h-0">
         <div class="px-4 py-4 space-y-3">
-            <a href="/play" class="block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-center transition-all glow-strong font-orbitron">
+            <a href="/play/" class="block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-center transition-all glow-strong font-orbitron">
                 <i class="fas fa-play mr-2"></i>ENTRER
             </a>
             <form method="post" action="{% url 'core:logout_view' %}">
