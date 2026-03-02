@@ -38,6 +38,7 @@ class BinaryHeap {
         const length = this.content.length;
         const element = this.content[n];
         const elemScore = this.scoreFunction(element);
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const child2N = (n + 1) * 2;
             const child1N = child2N - 1;
@@ -102,6 +103,29 @@ export default class CanvasPathfinding {
         if (this.invalidPreview &&
             this.invalidPreview.x === tx &&
             this.invalidPreview.y === ty) {
+
+            // Si la raison de la preview rouge est la surcharge, afficher
+            // un message flottant rouge indiquant l'impossibilité.
+            if (this.invalidPreview.reason === "overloaded") {
+                try {
+                    const engine = window.canvasEngine;
+                    const me = this.map.findPlayerById(window.current_player_id);
+                    const sizeX = me?.sizeX || 1;
+                    const sizeY = me?.sizeY || 1;
+                    const worldX = tx + (sizeX - 1) / 2;
+                    const worldY = ty + (sizeY - 1) / 2;
+                    const text = "Vous êtes surchargé";
+
+                    if (engine?.renderer?.drawFloatingText) {
+                        engine.renderer.drawFloatingText(text, worldX, worldY, "rgba(255,80,80,0.95)", 1500);
+                    } else if (engine?.renderer?.addFloatingMessage) {
+                        engine.renderer.addFloatingMessage({ text, worldX, worldY, color: "rgba(255,80,80,0.95)", duration: 1500 });
+                    }
+                } catch (e) {
+                    console.warn("Erreur affichage message surcharge:", e);
+                }
+                return;
+            }
 
             this.clear();
             return;
@@ -230,6 +254,31 @@ export default class CanvasPathfinding {
 
         const me = this.map.findPlayerById(window.current_player_id);
         if (!me) return;
+
+        // Bloquer le pathfinding si le vaisseau est en surcapacité
+        try {
+            const shipData = window.currentPlayer?.ship || {};
+            const load = Number(shipData?.cargo_load_current ?? 0);
+            const capacity = Number(shipData?.cargo_capacity ?? shipData?.current_cargo_size ?? 0);
+            const isOverloaded = Boolean(shipData?.cargo_over_capacity) || (Number.isFinite(load) && Number.isFinite(capacity) && load > capacity);
+
+            if (isOverloaded) {
+                this.current = null;
+                this.path = [];
+                this.invalidPreview = {
+                    x: destX,
+                    y: destY,
+                    sizeX: me.sizeX,
+                    sizeY: me.sizeY,
+                    reason: "overloaded"
+                };
+                this.renderer.requestRedraw();
+                return;
+            }
+        } catch (e) {
+            // si erreur, on ne bloque pas (sécurité)
+            console.warn('Erreur vérification surcharge:', e);
+        }
 
         this.shipSizeX = me.sizeX;
         this.shipSizeY = me.sizeY;

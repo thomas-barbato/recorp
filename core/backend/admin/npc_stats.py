@@ -1,4 +1,5 @@
 from core.models import Ship, Module
+from core.backend.module_effects import get_effect_numeric
 
 def compute_npc_final_stats(npc_template):
     ship: Ship = npc_template.ship
@@ -22,21 +23,19 @@ def compute_npc_final_stats(npc_template):
     modules = Module.objects.filter(id__in=module_ids)
 
     for module in modules:
-        effect = module.effect or {}
-
         if module.type == "HULL":
-            stats["hp"] += effect.get("hp", 0)
+            stats["hp"] += int(get_effect_numeric(module, "hp", default=0, strategy="sum") or 0)
 
         elif module.type == "MOVEMENT":
-            stats["movement"] += effect.get("movement", 0)
+            stats["movement"] += int(get_effect_numeric(module, "movement", default=0, strategy="sum") or 0)
 
         elif module.type == "DEFENSE_BALLISTIC":
-            stats["ballistic_defense"] += effect.get("defense", 0)
+            stats["ballistic_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
 
         elif module.type == "DEFENSE_THERMAL":
-            stats["thermal_defense"] += effect.get("defense", 0)
+            stats["thermal_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
 
         elif module.type == "DEFENSE_MISSILE":
-            stats["missile_defense"] += effect.get("defense", 0)
+            stats["missile_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
 
     return stats

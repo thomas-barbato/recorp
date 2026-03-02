@@ -534,13 +534,7 @@ function bindComposeEvents() {
 }
 
 // === NOTIFICATION DEPUIS WEBSOCKET ===
-function showPrivateMessageNotification(note) {
-    // Recharger le compteur quand un nouveau message arrive
-    loadUnreadCount();
-    
-    // Optionnel : afficher un toast
-    showToast(note || gettext("You have received a private message"));
-}
+// (implémentation plus complète plus bas — évite double déclaration)
 
 /**
  * Ajoute une notification à la file.

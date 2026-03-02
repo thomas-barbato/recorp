@@ -11,6 +11,7 @@ from django.utils import timezone
 
 from core.backend.get_data import GetDataFromDB
 from core.backend.player_actions import PlayerAction
+from core.backend.module_effects import module_effect_fields
 
 from core.models import (
     Sector, Player, Module, PlayerShipModule, PlayerShip,
@@ -556,9 +557,12 @@ class StoreInCache:
         if not module_id_list:
             return []
         
-        return list(Module.objects.filter(
-            id__in=module_id_list
-        ).values("name", "description", "effect", "type", "id"))
+        modules = list(
+            Module.objects.filter(
+                id__in=module_id_list
+            ).values("name", "description", "effects", "subtype", "type", "id")
+        )
+        return [{**module, **module_effect_fields(module)} for module in modules]
 
     def _get_player_module_list_cached(self, player_ship_id: int) -> List[Dict[str, Any]]:
         """Version optimisée pour les modules des joueurs."""
@@ -570,17 +574,17 @@ class StoreInCache:
                 player_ship_id=player_ship_id
             ).select_related('module').values(
                 "module__name", "module__description",
-                "module__effect", "module__type", "module_id"
+                "module__effects", "module__subtype", "module__type", "module_id"
             ))
             self._local_cache[cache_key] = cached_modules
             
         return [
             {
                 "name": module["module__name"],
-                "effect": module["module__effect"],
                 "description": module["module__description"],
                 "type": module["module__type"],
                 "id": module["module_id"],
+                **module_effect_fields(module),
             }
             for module in cached_modules
         ]

@@ -1,7 +1,6 @@
 from random import random
 import re
 import json
-import ast
 import random
 from django.contrib import admin
 from django.shortcuts import render, redirect
@@ -18,6 +17,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from core.backend.admin.tiles import UploadThisImage
 from core.backend.get_data import GetDataFromDB
+from core.backend.module_effects import module_effect_fields, get_module_effect_map
 from django.views.generic import TemplateView, DeleteView, UpdateView, ListView
 from core.forms import UploadImageForm, SetXpForm
 from core.views import admin_index
@@ -923,7 +923,13 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             "name", "id", "category"
         )
         resources = GetDataFromDB.get_table("resource").objects.all()
-        modules = GetDataFromDB.get_table("module").objects.all()
+        modules = []
+        for row in GetDataFromDB.get_table("module").objects.values(
+            "id", "name", "type", "effects", "subtype"
+        ):
+            payload = {**row, **module_effect_fields(row)}
+            payload["effects_json"] = json.dumps(payload.get("effects") or [])
+            modules.append(payload)
 
         context["npc_template"] = npc_template.objects.all()
         context["npc_resources"] = npc_resources.objects.values("id", "quantity")
@@ -963,10 +969,13 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
 
         for module in data_from_post["data"]["modules"]:
             module_id_list.append(int(module["id"]))
-            if isinstance(module["effects"], str):
-                module_dict[module["type"]] = ast.literal_eval(module["effects"])
-            else:
-                module_dict[module["type"]] = module["effects"]
+            raw_effects = module.get("effects", [])
+            if isinstance(raw_effects, str):
+                try:
+                    raw_effects = json.loads(raw_effects)
+                except Exception:
+                    raw_effects = []
+            module_dict[module["type"]] = get_module_effect_map({"effects": raw_effects})
 
         for skill in data_from_post["data"]["skills"]:
             level = (
@@ -1104,10 +1113,13 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
 
             for module in data_from_post["data"]["modules"]:
                 module_id_list.append(int(module["id"]))
-                if isinstance(module["effects"], str):
-                    module_dict[module["type"]] = ast.literal_eval(module["effects"])
-                else:
-                    module_dict[module["type"]] = module["effects"]
+                raw_effects = module.get("effects", [])
+                if isinstance(raw_effects, str):
+                    try:
+                        raw_effects = json.loads(raw_effects)
+                    except Exception:
+                        raw_effects = []
+                module_dict[module["type"]] = get_module_effect_map({"effects": raw_effects})
 
             for skill in data_from_post["data"]["skills"]:
                 level = (

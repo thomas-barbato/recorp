@@ -108,6 +108,25 @@
         return p;
     }
 
+    function getModuleEffectsArray(module) {
+        if (Array.isArray(module?.effects)) {
+            return module.effects.filter((entry) => entry && typeof entry === "object");
+        }
+        return [];
+    }
+
+    function getModuleRangeValue(module) {
+        const ranges = [];
+        for (const effect of getModuleEffectsArray(module)) {
+            const raw = effect?.range;
+            if (typeof raw === "number" && Number.isFinite(raw)) {
+                ranges.push(raw);
+            }
+        }
+        if (!ranges.length) return null;
+        return Math.max(...ranges);
+    }
+
     function getActionRuntimeContext(modalId) {
         const engine = getEngine();
         const map = engine?.map ?? null;
@@ -453,7 +472,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     let ap_cost = 1;
 
     const spaceShipProb = modules.find(
-        m => m.type === "PROBE" && m.name === "spaceship probe" &&  m.effect?.range 
+        m => m.type === "PROBE" && m.name === "spaceship probe" && typeof getModuleRangeValue(m) === "number"
     );
         
     const scanButton = createActionButton(
@@ -1155,7 +1174,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn.dataset.actionKey = action.key;
                 btn.dataset.modalId = modalId;
 
-                const fixedRangeModule = { effect: { range: 3 } };
+                const fixedRangeModule = { effects: [{ range: 3 }] };
                 decorateActionButtonWithRangeAndAp(
                     btn,
                     fixedRangeModule,
@@ -1267,8 +1286,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         if (!btn) return;
 
         // --- RANGE (uniquement si module présent) ---
-        if (module && typeof module.effect?.range === "number") {
-            const rangeBadge = createActionRangeBadge(module.effect.range);
+        const moduleRange = getModuleRangeValue(module);
+        if (typeof moduleRange === "number") {
+            const rangeBadge = createActionRangeBadge(moduleRange);
             if (rangeBadge) {
                 rangeBadge.classList.add("mt-1");
                 btn.append(rangeBadge);

@@ -2,6 +2,25 @@ function getEngine() {
     return window.GameState?.canvasEngine ?? window.canvasEngine ?? null;
 }
 
+function getModuleEffectsArray(module) {
+    if (Array.isArray(module?.effects)) {
+        return module.effects.filter((entry) => entry && typeof entry === "object");
+    }
+    return [];
+}
+
+function getModuleRangeValue(module) {
+    const ranges = [];
+    for (const effect of getModuleEffectsArray(module)) {
+        const raw = effect?.range;
+        if (typeof raw === "number" && Number.isFinite(raw)) {
+            ranges.push(raw);
+        }
+    }
+    if (!ranges.length) return null;
+    return Math.max(...ranges);
+}
+
 window.computeActorsDistance = function ({ transmitterActor, receiverActor }) {
     if (!transmitterActor || !receiverActor) {
         return Promise.resolve(null);
@@ -39,10 +58,8 @@ window.computeModuleRange = function ({ module, transmitterActor, receiverActor 
         });
     }
 
-    if (
-        !module.effect ||
-        typeof module.effect.range !== "number"
-    ) {
+    const maxRange = getModuleRangeValue(module);
+    if (typeof maxRange !== "number") {
         return Promise.resolve({
             allowed: false,
             distance: null,
@@ -50,8 +67,6 @@ window.computeModuleRange = function ({ module, transmitterActor, receiverActor 
             reason: "no_range"
         });
     }
-
-    const maxRange = module.effect.range;
 
     return window.computeActorsDistance({ transmitterActor, receiverActor })
         .then(distance => ({

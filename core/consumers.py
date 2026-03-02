@@ -21,6 +21,11 @@ from core.backend.ship_module_runtime import (
     is_ship_over_capacity,
     set_equipment_block,
 )
+from core.backend.module_effects import (
+    get_effect_numeric,
+    get_module_effect_map,
+    module_effect_fields,
+)
 
 from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, PlayerShipInventoryModule, PlayerShipModuleReconfiguration, Npc, Module, PlayerShipModule, Player, PlayerGroup, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource, PlayerResource, PlayerShipResource, Resource
 from core.backend.modal_builder import (
@@ -1814,15 +1819,14 @@ class GameConsumer(WebsocketConsumer):
                 raise ValueError(f"Module {module_id} non équipé sur ce vaisseau")
 
             module = psm.module
-            effect = module.effect or {}
-
-            damage_type = effect.get("damage_type", "MISSILE").upper()
+            effect = get_module_effect_map(module)
+            damage_type = str(effect.get("damage_type", "MISSILE")).upper()
 
             weapon = WeaponProfile(
                 damage_type=damage_type,
-                min_damage=int(effect.get("min_damage", 1)),
-                max_damage=int(effect.get("max_damage", 1)),
-                range_tiles=int(effect.get("range", 1)),
+                min_damage=int(get_effect_numeric(module, "min_damage", default=1, strategy="min") or 1),
+                max_damage=int(get_effect_numeric(module, "max_damage", default=1, strategy="max") or 1),
+                range_tiles=int(get_effect_numeric(module, "range", default=1, strategy="max") or 1),
             )
 
             # -----------------------
@@ -2077,13 +2081,13 @@ class GameConsumer(WebsocketConsumer):
             )
 
             for psm in psm_qs:
-                effect = psm.effect or {}
+                effect = get_module_effect_map(psm)
                 weapons.append(
                     WeaponProfile(
-                        damage_type=effect.get("damage_type", "MISSILE").upper(),
-                        min_damage=int(effect.get("min_damage", 1)),
-                        max_damage=int(effect.get("max_damage", 1)),
-                        range_tiles=int(effect.get("range", 1)),
+                        damage_type=str(effect.get("damage_type", "MISSILE")).upper(),
+                        min_damage=int(get_effect_numeric(psm, "min_damage", default=1, strategy="min") or 1),
+                        max_damage=int(get_effect_numeric(psm, "max_damage", default=1, strategy="max") or 1),
+                        range_tiles=int(get_effect_numeric(psm, "range", default=1, strategy="max") or 1),
                     )
                 )
 
@@ -2105,13 +2109,13 @@ class GameConsumer(WebsocketConsumer):
             )
 
             for psm in psm_qs:
-                effect = psm.effect or {}
+                effect = get_module_effect_map(psm)
                 weapons.append(
                     WeaponProfile(
-                        damage_type=effect.get("damage_type", "MISSILE").upper(),
-                        min_damage=int(effect.get("min_damage", 1)),
-                        max_damage=int(effect.get("max_damage", 1)),
-                        range_tiles=int(effect.get("range", 1)),
+                        damage_type=str(effect.get("damage_type", "MISSILE")).upper(),
+                        min_damage=int(get_effect_numeric(psm, "min_damage", default=1, strategy="min") or 1),
+                        max_damage=int(get_effect_numeric(psm, "max_damage", default=1, strategy="max") or 1),
+                        range_tiles=int(get_effect_numeric(psm, "range", default=1, strategy="max") or 1),
                     )
                 )
 
@@ -2675,21 +2679,21 @@ class GameConsumer(WebsocketConsumer):
             mod = am.module
             if not mod:
                 continue
-            effect = mod.effect or {}
             mtype = str(mod.type or "")
             if "DEFENSE" in mtype:
+                defense_bonus = int(get_effect_numeric(mod, "defense", default=0, strategy="sum") or 0)
                 if "BALLISTIC" in mtype:
-                    current_ballistic_defense += int(effect.get("defense", 0) or 0)
+                    current_ballistic_defense += defense_bonus
                 elif "THERMAL" in mtype:
-                    current_thermal_defense += int(effect.get("defense", 0) or 0)
+                    current_thermal_defense += defense_bonus
                 elif "MISSILE" in mtype:
-                    current_missile_defense += int(effect.get("defense", 0) or 0)
+                    current_missile_defense += defense_bonus
             elif "MOVEMENT" in mtype:
-                current_movement += int(effect.get("movement", 0) or 0)
+                current_movement += int(get_effect_numeric(mod, "movement", default=0, strategy="sum") or 0)
             elif "HULL" in mtype:
-                current_hp += int(effect.get("hp", 0) or 0)
+                current_hp += int(get_effect_numeric(mod, "hp", default=0, strategy="sum") or 0)
             elif "HOLD" in mtype:
-                current_cargo_size += int(effect.get("capacity", 0) or 0)
+                current_cargo_size += int(get_effect_numeric(mod, "capacity", default=0, strategy="sum") or 0)
 
         try:
             with transaction.atomic():
@@ -3330,11 +3334,11 @@ class GameConsumer(WebsocketConsumer):
             "module_id": int(module_obj.id),
             "name": module_obj.name or "Module",
             "description": module_obj.description or "",
-            "effect": module_obj.effect or {},
             "type": module_obj.type,
             "tier": int(module_obj.tier or 0),
             "metadata": metadata or {},
             "kind": "MODULE",
+            **module_effect_fields(module_obj),
         }
         if chance_percent is not None:
             payload["chance_percent"] = int(chance_percent)

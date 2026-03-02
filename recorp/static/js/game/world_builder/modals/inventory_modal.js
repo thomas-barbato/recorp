@@ -16,6 +16,47 @@ function normalizeModuleTypeKey(moduleType) {
     return String(moduleType || "").toUpperCase();
 }
 
+function getModuleEffectsArray(module) {
+    if (Array.isArray(module?.effects)) {
+        return module.effects.filter((entry) => entry && typeof entry === "object");
+    }
+    return [];
+}
+
+function mergeModuleEffects(module) {
+    const merged = {};
+    const effects = getModuleEffectsArray(module);
+    effects.forEach((effect, index) => {
+        Object.entries(effect).forEach(([key, value]) => {
+            if (value == null) return;
+            if (key === "label") {
+                if (!merged.label && typeof value === "string") {
+                    merged.label = value;
+                }
+                return;
+            }
+            if (typeof value === "number") {
+                if (key === "range" || key === "max_damage" || key === "crafting_tier_allowed") {
+                    merged[key] = typeof merged[key] === "number" ? Math.max(merged[key], value) : value;
+                    return;
+                }
+                if (key === "min_damage") {
+                    merged[key] = typeof merged[key] === "number" ? Math.min(merged[key], value) : value;
+                    return;
+                }
+                merged[key] = (typeof merged[key] === "number" ? merged[key] : 0) + value;
+                return;
+            }
+            if (!(key in merged)) {
+                merged[key] = value;
+            } else if (index === 0) {
+                merged[key] = value;
+            }
+        });
+    });
+    return merged;
+}
+
 function getModuleLimitBucket(moduleType) {
     const normalized = normalizeModuleTypeKey(moduleType);
     if (normalized.startsWith("DEFENSE_")) return "DEFENSE";
@@ -507,7 +548,7 @@ function createBaseModuleItemElement(module) {
     ].join(" ");
     moduleItem.dataset.moduleName = module?.name || "";
     moduleItem.dataset.moduleType = formatModuleTypeLabel(module?.type);
-    moduleItem.dataset.moduleEffects = JSON.stringify(module?.effect || {});
+    moduleItem.dataset.moduleEffects = JSON.stringify(mergeModuleEffects(module));
     return moduleItem;
 }
 
@@ -912,10 +953,72 @@ document.addEventListener("DOMContentLoaded", () => {
     initInventoryModalController();
 });
 
+function createModuleTooltipLines(moduleType, effect) {
+    const lines = [];
+    const label = effect?.label;
+
+    switch (moduleType) {
+        case "PROBE":
+            if (effect?.range != null) lines.push(styledLine(`${label || "Range"}:`, `${effect.range}`));
+            break;
+        case "DEFENSE_BALLISTIC":
+        case "DEFENSE_THERMAL":
+        case "DEFENSE_MISSILE":
+            if (effect?.defense != null) lines.push(styledLine(`${label || "Defense"}:`, `+${effect.defense}`));
+            break;
+        case "HOLD":
+            if (effect?.capacity != null) lines.push(styledLine(`${label || "Cargo"}:`, `+${effect.capacity}`));
+            break;
+        case "MOVEMENT":
+            if (effect?.movement != null) lines.push(styledLine(`${label || "Movement"}:`, `+${effect.movement}`));
+            break;
+        case "HULL":
+            if (effect?.hp != null) lines.push(styledLine(`${label || "Hull"}:`, `+${effect.hp}`));
+            break;
+        case "REPAIRE":
+            if (effect?.repair_shield != null) lines.push(styledLine(`${label || "Repair"}:`, `${effect.repair_shield} hull points`));
+            break;
+        case "GATHERING":
+            if ("can_scavenge" in effect) lines.push(styledLine(`${label || "Scavenge"}`, "yes"));
+            if ("display_mineral_data" in effect) lines.push(styledLine(`${label || "Mineral data"}`));
+            if (effect?.gathering_amount != null) lines.push(styledLine(`${label || "Gathering"}:`, `+${effect.gathering_amount}`));
+            break;
+        case "RESEARCH":
+            if (effect?.research_time_discrease != null) {
+                lines.push(styledLine(`${label || "Research"}:`, `-${effect.research_time_discrease}%`));
+            }
+            break;
+        case "CRAFT":
+            if (effect?.crafting_tier_allowed != null) {
+                lines.push(styledLine(`${label || "Craft"}:`, `${effect.crafting_tier_allowed}`));
+            }
+            break;
+        case "ELECTRONIC_WARFARE":
+            if (effect?.aiming_discrease != null) lines.push(styledLine(`${label || "Electronic warfare"}:`, `-${effect.aiming_discrease}%`));
+            if (effect?.movement_discrease != null) lines.push(styledLine(`${label || "Electronic warfare"}:`, `-${effect.movement_discrease}%`));
+            if ("display_ship_data" in effect) lines.push(styledLine(`${label || "Ship data display"}`));
+            break;
+        case "WEAPONRY":
+            if (effect?.aiming_increase != null) {
+                lines.push(styledLine(`${label || "Aiming"}:`, `+${effect.aiming_increase}%`));
+            }
+            if (effect?.min_damage != null || effect?.max_damage != null) {
+                lines.push(styledLine(`${label || "Damage"}:`, `${effect.min_damage ?? 0} - ${effect.max_damage ?? 0}`));
+            }
+            break;
+        case "COLONIZATION":
+            lines.push(styledLine(`${label || "Colonization"}`));
+            break;
+        default:
+            break;
+    }
+
+    return lines;
+}
+
 function createFormatedLabel(moduleObject) {
     const moduleName = moduleObject?.name || t("Unknown module");
-    let moduleType = normalizeModuleTypeKey(moduleObject?.type);
-
+    const moduleType = normalizeModuleTypeKey(moduleObject?.type);
     const moduleTooltipUl = document.createElement("ul");
     const moduleTooltipName = document.createElement("span");
 
@@ -939,99 +1042,20 @@ function createFormatedLabel(moduleObject) {
     moduleTooltipName.textContent = moduleName;
     moduleTooltipUl.append(moduleTooltipName);
 
-    const effect = moduleObject?.effect || {};
-    let moduleLi;
+    const effects = getModuleEffectsArray(moduleObject);
+    const normalizedEffects = effects.length ? effects : [mergeModuleEffects(moduleObject)];
+    let added = false;
 
-    switch (moduleType) {
-        case "PROBE":
-            if (effect.range != null) {
-                moduleLi = styledLine(`${effect.label || "Range"}:`, `${effect.range}`);
-            } else {
-                moduleLi = styledLine(effect.label || "Probe module");
-            }
-            moduleTooltipUl.append(moduleLi);
-            break;
+    normalizedEffects.forEach((effect) => {
+        const lines = createModuleTooltipLines(moduleType, effect || {});
+        lines.forEach((line) => {
+            moduleTooltipUl.append(line);
+            added = true;
+        });
+    });
 
-        case "DEFENSE_BALLISTIC":
-        case "DEFENSE_THERMAL":
-        case "DEFENSE_MISSILE":
-            moduleLi = styledLine(`${effect.label || "Defense"}:`, `+${effect.defense ?? 0}`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "HOLD":
-            moduleLi = styledLine(`${effect.label || "Cargo"}:`, `+${effect.capacity ?? 0}`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "MOVEMENT":
-            moduleLi = styledLine(`${effect.label || "Movement"}:`, `+${effect.movement ?? 0}`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "HULL":
-            moduleLi = styledLine(`${effect.label || "Hull"}:`, `+${effect.hp ?? 0}`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "REPAIRE":
-            moduleLi = styledLine(`${effect.label || "Repair"}:`, `${effect.repair_shield ?? 0} hull points`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "GATHERING":
-            if ("can_scavenge" in effect) {
-                moduleLi = styledLine(`${effect.label || "Scavenge"}`, "yes");
-            } else if ("display_mineral_data" in effect) {
-                moduleLi = styledLine(`${effect.label || "Mineral data"}`);
-            } else {
-                moduleLi = styledLine(`${effect.label || "Gathering"}:`, `+${effect.gathering_amount ?? 0}`);
-            }
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "RESEARCH":
-            moduleLi = styledLine(`${effect.label || "Research"}:`, `-${effect.research_time_discrease ?? 0}%`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "CRAFT":
-            moduleLi = styledLine(`${effect.label || "Craft"}:`, `${effect.crafting_tier_allowed ?? "-"}`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "ELECTRONIC_WARFARE":
-            if ("aiming_discrease" in effect) {
-                moduleLi = styledLine(`${effect.label || "Electronic warfare"}:`, `-${effect.aiming_discrease}%`);
-            } else if ("movement_discrease" in effect) {
-                moduleLi = styledLine(`${effect.label || "Electronic warfare"}:`, `-${effect.movement_discrease}%`);
-            } else if ("display_ship_data" in effect) {
-                moduleLi = styledLine(`${effect.label || "Ship data display"}`);
-            }
-            if (moduleLi) moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "WEAPONRY":
-            if ("aiming_increase" in effect) {
-                moduleLi = styledLine(`${effect.label || "Aiming"}:`, `+${effect.aiming_increase}%`);
-            } else {
-                moduleLi = styledLine(
-                    `${effect.label || "Damage"}:`,
-                    `${effect.min_damage ?? 0} - ${effect.max_damage ?? 0}`
-                );
-            }
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        case "COLONIZATION":
-            moduleLi = styledLine(`${effect.label || "Colonization"}`);
-            moduleTooltipUl.append(moduleLi);
-            break;
-
-        default:
-            moduleLi = styledLine(formatModuleTypeLabel(moduleType || "UNKNOWN"));
-            moduleTooltipUl.append(moduleLi);
-            break;
+    if (!added) {
+        moduleTooltipUl.append(styledLine(formatModuleTypeLabel(moduleType || "UNKNOWN")));
     }
 
     return moduleTooltipUl.outerHTML;

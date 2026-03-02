@@ -1,0 +1,21 @@
+# Ignore vendor and generated/minified JS
+recorp/static/js/fontawesome/**
+recorp/static/js/**/*.min.js
+recorp/static/js/quill/**
+recorp/static/js/*/vendor/**
+
+# Ignore CKEditor and translation bundles (vendor noise)
+recorp/static/js/ckeditor5/**
+recorp/static/js/**/translations/**
+
+# Ignore admin and legacy modal system (complex, many external globals)
+recorp/static/js/game/world_builder/admin/**
+recorp/static/js/game/world_builder/modals/actors/**
+recorp/static/js/game/world_builder/modals/*_send_report.js
+recorp/static/js/game/world_builder/modals/chat_modal.js
+recorp/static/js/game/world_builder/external_var_and_fun.js
+recorp/static/js/game/world_builder/loading_screen/**
+
+# Optional: ignore node build outputs
+node_modules/
+dist/

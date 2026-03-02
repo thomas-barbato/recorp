@@ -25,6 +25,7 @@ export default class UIRenderer {
 
         const currentShip = currentPlayer?.ship || null;
         if (currentShip && (currentShip.view_range === undefined || currentShip.view_range === null)) {
+            // eslint-disable-next-line no-self-assign
             currentShip.view_range = currentShip.view_range;
         }
 
@@ -248,7 +249,8 @@ export default class UIRenderer {
             renderPathfinding(this.ctx, this.camera, {
                 path: this.pathfinder.current.path,
                 shipSizeX: currentPlayer.ship.size.x,
-                shipSizeY: currentPlayer.ship.size.y
+                shipSizeY: currentPlayer.ship.size.y,
+                invalidPreview: this.pathfinder.invalidPreview
             });
         }
 
