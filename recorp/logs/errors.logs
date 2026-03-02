@@ -498,3 +498,151 @@ RuntimeError: cannot schedule new futures after interpreter shutdown
 [WARNING] 2026-03-02 14:47:17 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:51064][0m
 [WARNING] 2026-03-02 14:47:17 | django.request | Not Found: /accounts/login/
 [WARNING] 2026-03-02 14:47:17 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:51065][0m
+[WARNING] 2026-03-02 14:49:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:49:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:49:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:49:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.02, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:50:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:50:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:50:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:50:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:50:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:50:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:50:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:50:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:51:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:51:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:51:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:51:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:51:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:51:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:51:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:51:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:52:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:52:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:52:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:52:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:52:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:52:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:52:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:52:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:53:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:53:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:53:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:53:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:53:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:53:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:53:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:53:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:54:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:54:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:54:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:54:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.00, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:54:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:54:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:54:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:54:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:55:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:55:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:55:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:55:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:55:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:55:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:55:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:55:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:56:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:56:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:56:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:56:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.02, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:56:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:56:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.07, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:56:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:56:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.07, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:57:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:57:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:57:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:57:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:57:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:57:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:57:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.02, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:57:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.02, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:58:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:58:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:58:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:58:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:58:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:58:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:58:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:58:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:59:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:59:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 14:59:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:59:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:59:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:59:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 14:59:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 14:59:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:00:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:00:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:00:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:00:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:00:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:00:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:00:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:00:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:01:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:01:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:01:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:01:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:01:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:01:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:01:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:01:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:02:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:02:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:02:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:02:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:02:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:02:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:02:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:02:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.02, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:03:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:03:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:03:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:03:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:03:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:03:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:03:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:03:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:04:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:04:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:04:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:04:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:04:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:04:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:04:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:04:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:05:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:05:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:05:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:05:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:05:36 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 15:05:36 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.03, 127.0.0.1:56560][0m
+[WARNING] 2026-03-02 15:05:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:05:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:05:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:05:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:06:14 | django.request | Not Found: /favicon.ico
+[WARNING] 2026-03-02 15:06:14 | django.channels.server | [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:56560][0m
+[WARNING] 2026-03-02 15:06:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:06:18 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:06:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:06:18 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53476][0m
+[WARNING] 2026-03-02 15:06:32 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 15:06:32 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:56560][0m
+[WARNING] 2026-03-02 15:06:35 | django.request | Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2026-03-02 15:06:35 | django.channels.server | [33mHTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.04, 127.0.0.1:56560][0m
+[WARNING] 2026-03-02 15:06:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:06:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/messages/unread-count/ 404 [0.01, 127.0.0.1:53477][0m
+[WARNING] 2026-03-02 15:06:48 | django.request | Not Found: /accounts/login/
+[WARNING] 2026-03-02 15:06:48 | django.channels.server | [33mHTTP GET /accounts/login/?next=/chat/unread-counts/ 404 [0.01, 127.0.0.1:53476][0m

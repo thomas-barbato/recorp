@@ -81,6 +81,7 @@ export default class CanvasPathfinding {
 
         this.hoverTx = null;
         this.hoverTy = null;
+        this._lastOverloadMessageAt = 0;
     }
 
     // ---------------------------------------------------------
@@ -103,6 +104,10 @@ export default class CanvasPathfinding {
         if (this.invalidPreview &&
             this.invalidPreview.x === tx &&
             this.invalidPreview.y === ty) {
+            if (this.invalidPreview.reason === "overloaded") {
+                this._showOverloadMessage();
+                return;
+            }
 
             // Si la raison de la preview rouge est la surcharge, afficher
             // un message flottant rouge indiquant l'impossibilité.
@@ -174,6 +179,38 @@ export default class CanvasPathfinding {
         this.invalidPreview = null;
         if (this.renderer?.requestRedraw) {
             this.renderer.requestRedraw();
+        }
+    }
+
+    _showOverloadMessage() {
+        const now = performance.now();
+        // Evite le spam si l'utilisateur appuie rapidement.
+        if (now - this._lastOverloadMessageAt < 500) return;
+        this._lastOverloadMessageAt = now;
+
+        try {
+            const engine = window.canvasEngine;
+            const me = this.map.findPlayerById(window.current_player_id);
+            if (!engine?.renderer?.addFloatingMessage || !me) return;
+
+            const sizeX = me.sizeX || 1;
+            const sizeY = me.sizeY || 1;
+            const worldX = me.x + (sizeX - 1) / 2;
+            const worldY = me.y + (sizeY - 1) / 2;
+
+            engine.renderer.addFloatingMessage({
+                text: "Vous etes en surcharge",
+                icon: "movement",
+                worldX,
+                worldY,
+                sizeX,
+                sizeY,
+                placement: "above_target",
+                color: "rgba(255,80,80,0.95)",
+                duration: 1500
+            });
+        } catch (e) {
+            console.warn("Erreur affichage message surcharge:", e);
         }
     }
 
@@ -273,6 +310,7 @@ export default class CanvasPathfinding {
                     reason: "overloaded"
                 };
                 this.renderer.requestRedraw();
+                this._showOverloadMessage();
                 return;
             }
         } catch (e) {
