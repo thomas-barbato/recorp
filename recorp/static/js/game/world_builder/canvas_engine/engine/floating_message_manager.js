@@ -106,7 +106,13 @@ class FloatingMessageManager {
         
         if (img) {
             const half = size / 2;
+            ctx.save();
+            if (iconKey === "movement") {
+                // Convert the movement icon to white for better readability.
+                ctx.filter = "brightness(0) invert(1)";
+            }
             ctx.drawImage(img, x - half, y - half, size, size);
+            ctx.restore();
         } 
     }
 

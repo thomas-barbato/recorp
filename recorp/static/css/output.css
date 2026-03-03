@@ -7974,11 +7974,16 @@ canvas {
   #player-infos {
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 
   #player-info-item-container {
     min-height: 0;
-    overflow-y: auto;
+    height: auto;
+    overflow-y: visible;
   }
 
   /* Keep side panels readable on very wide desktop screens */
@@ -8028,14 +8033,10 @@ canvas {
     flex-wrap: nowrap;
   }
 
-  #button-menu,
-    #player-infos {
+  #button-menu {
     align-self: center;
     margin-top: auto;
     margin-bottom: auto;
-  }
-
-  #button-menu {
     flex: 0 0 84px;
     width: 84px;
     min-width: 84px;
@@ -8048,6 +8049,7 @@ canvas {
   }
 
   #player-infos {
+    align-self: flex-start;
     display: flex;
     flex-direction: column;
     align-items: stretch;

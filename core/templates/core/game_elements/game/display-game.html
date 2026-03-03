@@ -300,37 +300,26 @@
 (() => {
     const eventsLog = document.getElementById("events-log");
     const sidebarContainer = document.getElementById("player-info-item-container");
-    const compactAnchor = document.getElementById("desktop-events-log-anchor");
     const playerInfos = document.getElementById("player-infos");
-    if (!eventsLog || !sidebarContainer || !compactAnchor) return;
+    if (!eventsLog || !sidebarContainer) return;
 
-    const onXlOrAbove = window.matchMedia("(min-width: 1280px)");
-
-    const moveEventsLog = () => {
-        const target = onXlOrAbove.matches ? sidebarContainer : compactAnchor;
-        if (eventsLog.parentElement !== target) {
-            target.appendChild(eventsLog);
+    const ensureSidebarEventsLog = () => {
+        if (eventsLog.parentElement !== sidebarContainer) {
+            sidebarContainer.appendChild(eventsLog);
         }
         if (playerInfos) {
-            const hasSidebarEvents = eventsLog.parentElement === sidebarContainer;
-            playerInfos.classList.toggle("has-sidebar-events-log", hasSidebarEvents);
-            playerInfos.classList.toggle("no-sidebar-events-log", !hasSidebarEvents);
+            playerInfos.classList.add("has-sidebar-events-log");
+            playerInfos.classList.remove("no-sidebar-events-log");
         }
     };
 
-    moveEventsLog();
+    ensureSidebarEventsLog();
 
     let rafId = null;
     window.addEventListener("resize", () => {
         if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(moveEventsLog);
+        rafId = requestAnimationFrame(ensureSidebarEventsLog);
     });
-
-    if (typeof onXlOrAbove.addEventListener === "function") {
-        onXlOrAbove.addEventListener("change", moveEventsLog);
-    } else if (typeof onXlOrAbove.addListener === "function") {
-        onXlOrAbove.addListener(moveEventsLog);
-    }
 })();
 </script>
 {% endif %}
