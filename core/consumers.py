@@ -4662,6 +4662,130 @@ class GameConsumer(WebsocketConsumer):
             logger.exception("module reconfig start failed")
             self._send_action_failed_response("MODULE_RECONFIG_START_FAILED", "Impossible de lancer la reconfiguration.")
 
+    def _handle_ship_inventory_discard(self, payload: Dict[str, Any]) -> None:
+        try:
+            player_ship = (
+                PlayerShip.objects
+                .select_related("ship", "player")
+                .filter(player_id=self.player_id, is_current_ship=True)
+                .first()
+            )
+            if not player_ship:
+                self._send_action_failed_response("PLAYER_SHIP_NOT_FOUND", "Vaisseau courant introuvable.")
+                return
+
+            item_kind = str(payload.get("item_kind") or "").upper()
+            if item_kind not in {"MODULE", "RESOURCE"}:
+                self._send_action_failed_response("INVALID_INVENTORY_ITEM_KIND", "Type d'objet d'inventaire invalide.")
+                return
+
+            removed_payload: Dict[str, Any] = {"item_kind": item_kind}
+
+            with transaction.atomic():
+                locked_ship = (
+                    PlayerShip.objects
+                    .select_for_update()
+                    .filter(id=player_ship.id, is_current_ship=True)
+                    .first()
+                )
+                if not locked_ship:
+                    self._send_action_failed_response("PLAYER_SHIP_NOT_FOUND", "Vaisseau courant introuvable.")
+                    return
+
+                if item_kind == "MODULE":
+                    inventory_module_id = payload.get("inventory_module_id")
+                    try:
+                        inventory_module_id_int = int(inventory_module_id)
+                    except Exception:
+                        self._send_action_failed_response("MISSING_INVENTORY_MODULE_ID", "Module d'inventaire introuvable.")
+                        return
+
+                    inventory_entry = (
+                        PlayerShipInventoryModule.objects
+                        .select_for_update()
+                        .filter(id=inventory_module_id_int, player_ship_id=locked_ship.id)
+                        .first()
+                    )
+                    if not inventory_entry:
+                        self._send_action_failed_response("INVENTORY_MODULE_NOT_FOUND", "Le module a supprimer est introuvable.")
+                        return
+
+                    inventory_entry.delete()
+                    removed_payload.update({
+                        "inventory_module_id": inventory_module_id_int,
+                        "removed_quantity": 1,
+                    })
+                else:
+                    inventory_resource_id = payload.get("inventory_resource_id")
+                    try:
+                        inventory_resource_id_int = int(inventory_resource_id)
+                    except Exception:
+                        self._send_action_failed_response("MISSING_INVENTORY_RESOURCE_ID", "Ressource d'inventaire introuvable.")
+                        return
+
+                    resource_row = (
+                        PlayerShipResource.objects
+                        .select_for_update()
+                        .filter(id=inventory_resource_id_int, source_id=locked_ship.id)
+                        .first()
+                    )
+                    if not resource_row:
+                        self._send_action_failed_response("INVENTORY_RESOURCE_NOT_FOUND", "La ressource a supprimer est introuvable.")
+                        return
+
+                    current_qty = int(resource_row.quantity or 0)
+                    if current_qty <= 0:
+                        resource_row.delete()
+                        self._send_action_failed_response("INVENTORY_RESOURCE_EMPTY", "La pile de ressource est deja vide.")
+                        return
+
+                    remove_all = bool(payload.get("remove_all"))
+                    quantity_raw = payload.get("quantity")
+                    if isinstance(quantity_raw, str) and quantity_raw.strip().upper() == "ALL":
+                        remove_all = True
+
+                    if remove_all:
+                        remove_qty = current_qty
+                    else:
+                        try:
+                            remove_qty = int(quantity_raw)
+                        except Exception:
+                            self._send_action_failed_response("INVALID_DISCARD_QUANTITY", "Quantite de suppression invalide.")
+                            return
+
+                        if remove_qty <= 0:
+                            self._send_action_failed_response("INVALID_DISCARD_QUANTITY", "Quantite de suppression invalide.")
+                            return
+                        if remove_qty > current_qty:
+                            self._send_action_failed_response(
+                                "DISCARD_QUANTITY_EXCEEDS_STACK",
+                                "Quantite demandee superieure a la pile disponible.",
+                                available_quantity=current_qty,
+                            )
+                            return
+
+                    remaining_qty = current_qty - int(remove_qty)
+                    if remaining_qty > 0:
+                        resource_row.quantity = remaining_qty
+                        resource_row.save(update_fields=["quantity", "updated_at"])
+                    else:
+                        resource_row.delete()
+
+                    removed_payload.update({
+                        "inventory_resource_id": inventory_resource_id_int,
+                        "removed_quantity": int(remove_qty),
+                        "remaining_quantity": max(0, remaining_qty),
+                    })
+
+            self._emit_local_ship_module_sync(
+                self.player_id,
+                context="INVENTORY_ITEM_DISCARDED",
+                extra=removed_payload,
+            )
+        except Exception:
+            logger.exception("inventory discard failed")
+            self._send_action_failed_response("INVENTORY_DISCARD_FAILED", "Impossible de supprimer cet objet de l'inventaire.")
+
     def _complete_pending_module_reconfiguration(self, action_id: int) -> None:
         try:
             post_commit: Optional[Dict[str, Any]] = None
@@ -4856,6 +4980,7 @@ class GameConsumer(WebsocketConsumer):
             "share_scan": self._dispatch_share_scan_message,
             "action_attack": self._dispatch_combat_action_message,
             "action_ship_module_reconfigure": self._dispatch_ship_module_reconfiguration_message,
+            "action_ship_inventory_discard": self._dispatch_ship_inventory_discard_message,
             "action_wreck_loot_open": self._dispatch_wreck_loot_open_message,
             "action_wreck_loot_close": self._dispatch_wreck_loot_close_message,
             "action_wreck_loot_take": self._dispatch_wreck_loot_take_message,
@@ -4913,6 +5038,13 @@ class GameConsumer(WebsocketConsumer):
             })
             return
         self._handle_ship_module_reconfiguration(payload)
+
+    def _dispatch_ship_inventory_discard_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_INVENTORY_DISCARD_PAYLOAD", "Payload d'inventaire invalide.")
+            return
+        self._handle_ship_inventory_discard(payload)
 
     def _dispatch_respawn_action_message(self, data: Dict[str, Any]) -> None:
         payload = self._get_client_payload(data)

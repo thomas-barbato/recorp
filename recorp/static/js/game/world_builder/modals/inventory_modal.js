@@ -263,6 +263,20 @@ function sendShipModuleReconfiguration(payload) {
     return true;
 }
 
+function sendShipInventoryDiscard(payload) {
+    const ws = getModuleActionWs();
+    if (!ws || typeof ws.send !== "function") {
+        window.InventoryModalController?.showActionMessage?.(t("WebSocket unavailable."), "error");
+        return false;
+    }
+
+    ws.send({
+        type: "action_ship_inventory_discard",
+        payload,
+    });
+    return true;
+}
+
 function getRemainingSecondsFromIso(isoDateString) {
     if (!isoDateString) return null;
     const targetMs = Date.parse(isoDateString);
@@ -611,6 +625,83 @@ function requestEquipModule(event, module) {
     }
 }
 
+function readDiscardQuantityFromInput(inputEl, maxQuantity) {
+    const max = Number.isFinite(Number(maxQuantity)) ? Math.max(1, Math.floor(Number(maxQuantity))) : 1;
+    if (!inputEl) return 1;
+
+    const parsed = Number.parseInt(inputEl.value, 10);
+    if (!Number.isFinite(parsed) || parsed <= 0) return null;
+    return Math.min(max, Math.floor(parsed));
+}
+
+function requestDiscardInventoryModule(event, module) {
+    event?.stopPropagation?.();
+
+    const inventoryModuleId = module?.inventory_module_id;
+    if (!inventoryModuleId) {
+        showInventoryActionMessage(t("This inventory module cannot be deleted right now."), "error");
+        return;
+    }
+
+    const moduleName = module?.name || t("Unknown module");
+    const confirmed = window.confirm(`${t("Are you sure you want to delete")} ${moduleName}?`);
+    if (!confirmed) return;
+
+    if (sendShipInventoryDiscard({ item_kind: "MODULE", inventory_module_id: inventoryModuleId })) {
+        showInventoryActionMessage(t("Inventory delete request sent."), "info");
+    }
+}
+
+function requestDiscardInventoryResource(event, item, options = {}) {
+    event?.stopPropagation?.();
+
+    const inventoryResourceId = item?.inventory_resource_id;
+    if (!inventoryResourceId) {
+        showInventoryActionMessage(t("This resource cannot be deleted right now."), "error");
+        return;
+    }
+
+    const stackQty = Math.max(0, Math.floor(Number(item?.quantity ?? 0)));
+    if (stackQty <= 0) {
+        showInventoryActionMessage(t("This resource stack is empty."), "error");
+        return;
+    }
+
+    const { quantityInput = null, removeAll = false } = options;
+    let quantityToRemove = stackQty;
+
+    if (!removeAll) {
+        quantityToRemove = readDiscardQuantityFromInput(quantityInput, stackQty);
+        if (!Number.isFinite(quantityToRemove) || quantityToRemove <= 0) {
+            showInventoryActionMessage(t("Please choose a valid quantity to delete."), "error");
+            return;
+        }
+    }
+
+    const removeEverything = Boolean(removeAll) || quantityToRemove >= stackQty;
+    const itemName = item?.name || t("Unknown item");
+    const confirmationText = removeEverything
+        ? `${t("Are you sure you want to delete all")} (${stackQty}) ${itemName}?`
+        : `${t("Are you sure you want to delete")} ${quantityToRemove} ${itemName}?`;
+
+    const confirmed = window.confirm(confirmationText);
+    if (!confirmed) return;
+
+    const payload = {
+        item_kind: "RESOURCE",
+        inventory_resource_id: inventoryResourceId,
+    };
+    if (removeEverything) {
+        payload.remove_all = true;
+    } else {
+        payload.quantity = quantityToRemove;
+    }
+
+    if (sendShipInventoryDiscard(payload)) {
+        showInventoryActionMessage(t("Inventory delete request sent."), "info");
+    }
+}
+
 function renderEquippedModules(ship) {
     const modules = Array.isArray(ship?.modules) ? ship.modules : [];
     const moduleTypeLimits = ship?.module_type_limits || {};
@@ -676,7 +767,7 @@ function createInventoryModuleRow(module, actionsDisabled) {
     title.className = "flex items-center gap-2 min-w-0";
 
     const nameEl = document.createElement("span");
-    nameEl.className = "text-emerald-300 font-bold text-xs truncate";
+    nameEl.className = "text-emerald-300 font-bold text-sm truncate";
     nameEl.textContent = module?.name || t("Unknown module");
 
     const typeBadge = document.createElement("span");
@@ -687,7 +778,7 @@ function createInventoryModuleRow(module, actionsDisabled) {
 
     if (module?.tier != null) {
         const meta = document.createElement("div");
-        meta.className = "text-[10px] text-emerald-100/70 mt-[2px] tracking-wide";
+        meta.className = "text-xs text-emerald-100/85 mt-[2px] tracking-wide";
         meta.textContent = `${t("Tier")} ${module.tier}`;
         left.append(title, meta);
     } else {
@@ -698,14 +789,17 @@ function createInventoryModuleRow(module, actionsDisabled) {
     right.className = "flex items-center gap-2 shrink-0";
 
     const qty = document.createElement("span");
-    qty.className = "text-emerald-200 text-xs font-semibold";
+    qty.className = "text-emerald-200 text-sm font-semibold";
     qty.textContent = "x1";
 
     const equipBtn = createActionButton("fa-solid fa-plus text-[12px]", t("Equip module"), "success");
     equipBtn.disabled = actionsDisabled;
     equipBtn.addEventListener("click", (event) => requestEquipModule(event, module));
 
-    right.append(qty, equipBtn);
+    const discardBtn = createActionButton("fa-solid fa-trash-can text-[11px]", t("Delete module from inventory"), "danger");
+    discardBtn.addEventListener("click", (event) => requestDiscardInventoryModule(event, module));
+
+    right.append(qty, equipBtn, discardBtn);
     row.append(left, right);
 
     attachModuleTooltipAndMobileExpand(row, module, {
@@ -781,8 +875,8 @@ function createInventoryResourceRow(item, options = {}) {
 
     const nameEl = document.createElement("span");
     nameEl.className = isQuest
-        ? "text-amber-200 font-bold text-xs truncate"
-        : "text-sky-200 font-bold text-xs truncate";
+        ? "text-amber-200 font-bold text-sm truncate"
+        : "text-sky-200 font-bold text-sm truncate";
     nameEl.textContent = item?.name || t("Unknown item");
 
     const typeBadge = document.createElement("span");
@@ -796,7 +890,7 @@ function createInventoryResourceRow(item, options = {}) {
     const subLabel = data?.label || data?.description || null;
     if (subLabel) {
         const meta = document.createElement("div");
-        meta.className = "text-[10px] text-emerald-100/65 mt-[2px] truncate";
+        meta.className = "text-xs text-emerald-100/85 mt-[2px] truncate";
         meta.textContent = String(subLabel);
         left.appendChild(meta);
     }
@@ -804,11 +898,51 @@ function createInventoryResourceRow(item, options = {}) {
     const right = document.createElement("div");
     right.className = "flex items-center gap-2 shrink-0";
 
-    const qty = document.createElement("span");
-    qty.className = "text-emerald-200 text-xs font-semibold";
-    qty.textContent = `x${Number(item?.quantity ?? 0)}`;
+    const stackQty = Math.max(0, Math.floor(Number(item?.quantity ?? 0)));
 
-    right.appendChild(qty);
+    const qty = document.createElement("span");
+    qty.className = "text-emerald-200 text-sm font-semibold";
+    qty.textContent = `x${stackQty}`;
+
+    const actions = document.createElement("div");
+    actions.className = "inventory-resource-actions";
+
+    let quantityInput = null;
+    if (stackQty > 1) {
+        quantityInput = document.createElement("input");
+        quantityInput.type = "number";
+        quantityInput.min = "1";
+        quantityInput.max = String(stackQty);
+        quantityInput.step = "1";
+        quantityInput.value = "1";
+        quantityInput.inputMode = "numeric";
+        quantityInput.className = "inventory-qty-input";
+        quantityInput.setAttribute("aria-label", t("Quantity to delete"));
+        quantityInput.addEventListener("click", (event) => event.stopPropagation());
+        quantityInput.addEventListener("change", () => {
+            const parsed = Number.parseInt(quantityInput.value, 10);
+            if (!Number.isFinite(parsed) || parsed <= 0) {
+                quantityInput.value = "1";
+                return;
+            }
+            quantityInput.value = String(Math.min(stackQty, Math.floor(parsed)));
+        });
+
+        const allBtn = document.createElement("button");
+        allBtn.type = "button";
+        allBtn.className = "inventory-qty-btn";
+        allBtn.textContent = t("All");
+        allBtn.title = t("Delete entire stack");
+        allBtn.addEventListener("click", (event) => requestDiscardInventoryResource(event, item, { removeAll: true }));
+        actions.append(quantityInput, allBtn);
+    }
+
+    const discardBtn = createActionButton("fa-solid fa-trash-can text-[11px]", t("Delete from inventory"), "danger");
+    discardBtn.disabled = !item?.inventory_resource_id || stackQty <= 0;
+    discardBtn.addEventListener("click", (event) => requestDiscardInventoryResource(event, item, { quantityInput }));
+    actions.appendChild(discardBtn);
+
+    right.append(qty, actions);
     row.append(left, right);
 
     return row;
@@ -828,7 +962,7 @@ function renderInventorySections(ship) {
     container.classList.add("flex", "flex-col", "gap-2");
 
     const modulesSection = createInventorySection(t("Modules"), inventoryModules.length, {
-        iconClass: "fa-solid fa-microchip text-emerald-300 text-xs",
+        iconClass: "fa-solid fa-microchip text-emerald-300 text-sm",
         countState: inventoryModules.length > 0 ? "is-ok" : "is-unknown",
     });
     if (inventoryModules.length === 0) {
@@ -841,7 +975,7 @@ function renderInventorySections(ship) {
     container.appendChild(modulesSection.section);
 
     const resourcesSection = createInventorySection(t("Resources"), inventoryResources.length, {
-        iconClass: "fa-solid fa-cubes text-sky-300 text-xs",
+        iconClass: "fa-solid fa-cubes text-sky-300 text-sm",
         countState: inventoryResources.length > 0 ? "is-ok" : "is-unknown",
     });
     if (inventoryResources.length === 0) {
@@ -854,7 +988,7 @@ function renderInventorySections(ship) {
     container.appendChild(resourcesSection.section);
 
     const questSection = createInventorySection(t("Quest Items"), inventoryQuestItems.length, {
-        iconClass: "fa-solid fa-scroll text-amber-300 text-xs",
+        iconClass: "fa-solid fa-scroll text-amber-300 text-sm",
         countState: inventoryQuestItems.length > 0 ? "is-full" : "is-unknown",
     });
     if (inventoryQuestItems.length === 0) {

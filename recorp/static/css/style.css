@@ -1071,6 +1071,7 @@ input:focus {
     background:
         linear-gradient(90deg, rgba(6, 18, 17, 0.78), rgba(8, 13, 13, 0.72)),
         linear-gradient(180deg, rgba(16,185,129,0.02), transparent);
+    line-height: 1.25;
 }
 
 #inventory-modal .inventory-module-row::before {
@@ -1109,9 +1110,10 @@ input:focus {
 #inventory-modal .inventory-section-title {
     margin: 0;
     color: #b7f7d3;
-    font-size: 0.72rem;
+    font-size: 0.875rem;
+    line-height: 1.2;
     font-weight: 700;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     font-family: "Orbitron", ui-sans-serif, system-ui, sans-serif;
 }
@@ -1132,7 +1134,7 @@ input:focus {
     border-radius: 0.45rem;
     background: rgba(4,10,11,0.5);
     color: rgba(226,232,240,0.94);
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     font-style: normal;
     font-weight: 600;
     line-height: 1.25;
@@ -1152,6 +1154,7 @@ input:focus {
     background:
         linear-gradient(90deg, rgba(7, 16, 20, 0.75), rgba(7, 10, 13, 0.72)),
         linear-gradient(180deg, rgba(56,189,248,0.02), transparent);
+    line-height: 1.25;
 }
 
 #inventory-modal .inventory-resource-row::before {
@@ -1186,7 +1189,7 @@ input:focus {
     justify-content: center;
     padding: 0.08rem 0.38rem;
     border-radius: 999px;
-    font-size: 0.58rem;
+    font-size: 0.64rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #c7f9e5;
@@ -1233,6 +1236,59 @@ input:focus {
     filter: grayscale(0.2);
     transform: none;
     box-shadow: none;
+}
+
+#inventory-modal .inventory-resource-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+#inventory-modal .inventory-qty-input {
+    width: 3.3rem;
+    height: 1.5rem;
+    border-radius: 0.35rem;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    background: rgba(2, 6, 7, 0.58);
+    color: #d6f7ff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 0.25rem;
+}
+
+#inventory-modal .inventory-qty-input:focus {
+    outline: none;
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.24);
+}
+
+#inventory-modal .inventory-qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.5rem;
+    min-width: 2.1rem;
+    border-radius: 0.35rem;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    background: rgba(7, 16, 20, 0.6);
+    color: #bae6fd;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0 0.35rem;
+    cursor: pointer;
+    transition: all 120ms ease;
+}
+
+#inventory-modal .inventory-qty-btn:hover {
+    border-color: rgba(125, 211, 252, 0.55);
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+}
+
+#inventory-modal .inventory-qty-btn:active {
+    transform: translateY(1px);
 }
 
 .module-tooltip {
