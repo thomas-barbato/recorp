@@ -2528,6 +2528,44 @@ canvas {
     .main-game-container {
         min-height: 0;
         overflow: hidden;
+        align-items: stretch;
+    }
+
+    #button-menu,
+    #map-background,
+    #player-infos {
+        min-height: 0;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    #player-infos {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #player-info-item-container {
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    /* Keep side panels readable on very wide desktop screens */
+    #button-menu {
+        flex: 0 0 84px;
+        width: 84px;
+        min-width: 84px;
+    }
+
+    #player-infos {
+        flex: 0 0 clamp(260px, 16vw, 320px);
+        width: clamp(260px, 16vw, 320px);
+        min-width: 260px;
+    }
+
+    #map-background {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
     }
 }
 
@@ -2676,6 +2714,29 @@ canvas {
     align-items: flex-start;
     gap: 0.5rem;
     min-width: 0;
+}
+
+/* Mobile controls: avoid rigid blocks on short screens */
+@media (max-width: 639px) {
+    #mobile-cross .mobile-cross-col {
+        width: clamp(78px, 24vw, 112px);
+        height: clamp(78px, 22vh, 112px);
+    }
+
+    #events-mobile-log {
+        min-height: clamp(132px, 22vh, 190px) !important;
+        max-height: clamp(132px, 26vh, 220px) !important;
+    }
+}
+
+/* Mobile menu safe-area compensation */
+@media (max-width: 1023px) {
+    #navbar-hamburger > nav {
+        top: calc(2.5rem + env(safe-area-inset-top));
+        padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+        padding-left: max(1.5rem, env(safe-area-inset-left));
+        padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
 }
 
 .event-log-item-hud {
