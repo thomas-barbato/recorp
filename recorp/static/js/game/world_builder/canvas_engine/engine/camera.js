@@ -1,16 +1,15 @@
-// engine/camera.js
-// Camera en tiles, centrée sur le joueur. Conserve tileSize fixe.
-// Expose worldX/worldY : coordonnées tile en haut-gauche du viewport
+import { getMapLayoutProfile, getVisibleTilesFromCanvas } from "./map_layout_profile.js";
 
+// Camera in world tiles. Tracks world top-left offset in pixels.
 export default class Camera {
-    constructor({canvasWidth=800, canvasHeight=600, tileSize=32, worldCols=40, worldRows=40}) {
+    constructor({ canvasWidth = 800, canvasHeight = 600, tileSize = 32, worldCols = 40, worldRows = 40 }) {
         this.tileSize = tileSize;
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.worldCols = worldCols;
         this.worldRows = worldRows;
-        this.zoom = 1; // pas de zoom actif, tileSize est constant
-        this.x = 0; // pixel offset world -> screen (top-left)
+        this.zoom = 1;
+        this.x = 0;
         this.y = 0;
         this.autoCenter = true;
         this.updateViewport();
@@ -23,75 +22,63 @@ export default class Camera {
     }
 
     updateViewport() {
+        const fromCanvas = getVisibleTilesFromCanvas({
+            canvasWidth: this.canvasWidth,
+            canvasHeight: this.canvasHeight,
+            tileSize: this.tileSize,
+        });
 
-        const TILE = this.tileSize;
-        const w = window.innerWidth;
+        let maxX = fromCanvas.visibleTilesX;
+        let maxY = fromCanvas.visibleTilesY;
 
-        let maxX, maxY;
-
-        // 🟩 EXACTEMENT les mêmes paliers que resizeCanvasWrapper()
-
-        if (w < 640) {                 
-            maxX = 11; maxY = 11;
-
-        } else if (w < 820) {         
-            maxX = 16; maxY = 16;
-
-        } else if (w < 1024) {        
-            maxX = 20; maxY = 20;
-
-        } else if (w < 1280) {        
-            maxX = 26; maxY = 18;
-
-        } else if (w < 1536) {        
-            maxX = 32; maxY = 20;
-
-        } else if (w < 1920) {        
-            maxX = 36; maxY = 22;
-
-        } else {                      
-            maxX = 39; maxY = 23;
+        if (!Number.isFinite(maxX) || maxX < 1 || !Number.isFinite(maxY) || maxY < 1) {
+            const fallback = getMapLayoutProfile({
+                viewportWidth: window.innerWidth,
+                tileSize: this.tileSize,
+            });
+            maxX = fallback.visibleTilesX;
+            maxY = fallback.visibleTilesY;
         }
 
-        // 🎯 La caméra adopte EXACTEMENT la taille fixée par le wrapper
-        this.visibleTilesX = maxX;
-        this.visibleTilesY = maxY;
+        this.visibleTilesX = Math.max(1, Math.min(this.worldCols, maxX));
+        this.visibleTilesY = Math.max(1, Math.min(this.worldRows, maxY));
 
-        // Position de départ en haut-gauche
-        this.worldX = 0;
-        this.worldY = 0;
+        const tilePx = this.tileSize * this.zoom;
+        this.worldX = Math.floor(this.x / tilePx);
+        this.worldY = Math.floor(this.y / tilePx);
     }
 
-    // centerOn: center camera on tile coordinates (float allowed for centering multi-tile objects)
     centerOn(worldTileX, worldTileY) {
         const halfX = this.visibleTilesX / 2;
         const halfY = this.visibleTilesY / 2;
 
         const minX = halfX;
         const minY = halfY;
-        const maxX = this.worldCols - halfX;
-        const maxY = this.worldRows - halfY;
+        const maxX = Math.max(minX, this.worldCols - halfX);
+        const maxY = Math.max(minY, this.worldRows - halfY);
 
         const clampedX = Math.max(minX, Math.min(maxX, worldTileX));
         const clampedY = Math.max(minY, Math.min(maxY, worldTileY));
 
-        // calculate pixel offset for top-left tile
-        this.x = (clampedX - halfX) * this.tileSize * this.zoom;
-        this.y = (clampedY - halfY) * this.tileSize * this.zoom;
+        const tilePx = this.tileSize * this.zoom;
+        this.x = (clampedX - halfX) * tilePx;
+        this.y = (clampedY - halfY) * tilePx;
 
-        // update worldX/Y (tile indices)
-        this.worldX = Math.floor(this.x / (this.tileSize * this.zoom));
-        this.worldY = Math.floor(this.y / (this.tileSize * this.zoom));
+        // Keep camera aligned to tile boundaries to avoid rendering an extra
+        // partial row/column when centering on 0.5 tile coordinates.
+        this.x = Math.round(this.x / tilePx) * tilePx;
+        this.y = Math.round(this.y / tilePx) * tilePx;
+
+        this.worldX = Math.floor(this.x / tilePx);
+        this.worldY = Math.floor(this.y / tilePx);
     }
 
-    // convert tile coords to screen pixels (for drawImage positions)
     worldToScreen(worldTileX, worldTileY) {
         const px = (worldTileX * this.tileSize * this.zoom) - this.x;
         const py = (worldTileY * this.tileSize * this.zoom) - this.y;
         return { x: px, y: py };
     }
 
-    // convert screen pixel to tile coords (integers)
     screenToWorld(screenPxX, screenPxY) {
         const worldX = (screenPxX + this.x) / (this.tileSize * this.zoom);
         const worldY = (screenPxY + this.y) / (this.tileSize * this.zoom);
@@ -99,7 +86,6 @@ export default class Camera {
     }
 
     worldToScreenCoords(worldX, worldY) {
-        // On réutilise la vraie fonction du moteur
-        return this.worldToScreen(worldTileX, worldTileY);
+        return this.worldToScreen(worldX, worldY);
     }
 }

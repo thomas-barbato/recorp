@@ -99,8 +99,8 @@ export default class UIRenderer {
 
         const startTileX = this.camera.worldX;
         const startTileY = this.camera.worldY;
-        const endTileX = startTileX + this.camera.visibleTilesX + 1;
-        const endTileY = startTileY + this.camera.visibleTilesY + 1;
+        const endTileX = startTileX + this.camera.visibleTilesX;
+        const endTileY = startTileY + this.camera.visibleTilesY;
 
         ctx.save();
         ctx.lineWidth = 0;

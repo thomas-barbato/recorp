@@ -329,8 +329,8 @@ export function initGlobals() {
             const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
             const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
 
-            const worldX = (actor.renderX ?? actor.x) + (sizeX - 1) / 2;
-            const worldY = (actor.renderY ?? actor.y) + (sizeY - 1) / 2;
+            const worldX = (actor.renderX ?? actor.x) + sizeX / 2;
+            const worldY = (actor.renderY ?? actor.y) + sizeY / 2;
 
             engine.renderer.addFloatingMessage({
                 text,

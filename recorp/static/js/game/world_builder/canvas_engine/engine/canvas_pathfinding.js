@@ -117,8 +117,8 @@ export default class CanvasPathfinding {
                     const me = this.map.findPlayerById(window.current_player_id);
                     const sizeX = me?.sizeX || 1;
                     const sizeY = me?.sizeY || 1;
-                    const worldX = tx + (sizeX - 1) / 2;
-                    const worldY = ty + (sizeY - 1) / 2;
+                    const worldX = tx + sizeX / 2;
+                    const worldY = ty + sizeY / 2;
                     const text = "Vous êtes surchargé";
 
                     if (engine?.renderer?.drawFloatingText) {
@@ -195,8 +195,8 @@ export default class CanvasPathfinding {
 
             const sizeX = me.sizeX || 1;
             const sizeY = me.sizeY || 1;
-            const worldX = me.x + (sizeX - 1) / 2;
-            const worldY = me.y + (sizeY - 1) / 2;
+            const worldX = me.x + sizeX / 2;
+            const worldY = me.y + sizeY / 2;
 
             engine.renderer.addFloatingMessage({
                 text: "Vous etes en surcharge",

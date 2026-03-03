@@ -1,25 +1,14 @@
 <!DOCTYPE html>
-<html class="h-full overflow-hidden" lang="en" SameSite=Lax Secure>
-    <!-- Conteneur global du fond spatial (invisible au DOM flow) -->
-    <div class="space-canvas" aria-hidden="true">
-        <div class="nebula n1"></div>
-        <div class="nebula n2"></div>
-        <div class="nebula n3"></div>
-
-        <!-- couches d'étoiles (les backgrounds seront remplis en JS pour varier densité) -->
-        <div class="stars-layer l1"></div>
-        <div class="stars-layer l2"></div>
-        <div class="stars-layer l3"></div>
-    </div>
+<html class="h-full" lang="en" SameSite=Lax Secure>
     {% load static %}
     {% load i18n %}
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" SameSite=Lax Secure >
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" SameSite=Lax Secure >
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token }}"/>
-        <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
         <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="shortcut icon" type="image/png" href="{% static 'ux/recorp.png' %}"/>
         <link href="{% static 'fontawesome/css/fontawesome.css' %}" rel="stylesheet"/>
         <link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
@@ -38,7 +27,16 @@
             .opacity-95 {opacity: .95;}
         </style>
     </head>
-    <body class="text-emerald-300 h-full" id="player-container">
+    <body class="text-emerald-300 h-full min-h-full" id="player-container">
+    <!-- Global space background container (not part of normal flow) -->
+    <div class="space-canvas" aria-hidden="true">
+        <div class="nebula n1"></div>
+        <div class="nebula n2"></div>
+        <div class="nebula n3"></div>
+        <div class="stars-layer l1"></div>
+        <div class="stars-layer l2"></div>
+        <div class="stars-layer l3"></div>
+    </div>
     {% block content %}
         <script src="{% static 'js/game/world_builder/onlyDom/main_background_color.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/game/world_builder/onlyDom/scrolling_invisible.js' %}" type="text/javascript"></script>

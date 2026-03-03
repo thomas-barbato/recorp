@@ -138,8 +138,10 @@ if (!ok) {
         // center camera on player if exists
         const currentPlayerObj = map.findPlayerById(window.current_player_id);
         if (currentPlayerObj) {
-            const centerX = currentPlayerObj.x + (currentPlayerObj.sizeX - 1) / 2;
-            const centerY = currentPlayerObj.y + (currentPlayerObj.sizeY - 1) / 2;
+            const playerSizeX = currentPlayerObj.sizeX || currentPlayerObj.data?.ship?.sizeX || 1;
+            const playerSizeY = currentPlayerObj.sizeY || currentPlayerObj.data?.ship?.sizeY || 1;
+            const centerX = currentPlayerObj.x + playerSizeX / 2;
+            const centerY = currentPlayerObj.y + playerSizeY / 2;
             camera.centerOn(centerX, centerY);
 
             // 🔥 coords joueur au chargement (PC uniquement, logique interne dans updatePlayerCoords)
@@ -382,8 +384,10 @@ if (!ok) {
             // ====== RECENTRAGE DE LA CAMERA SUR LE JOUEUR ======
             const cp = map.findPlayerById(window.current_player_id);
             if (cp) {
-                const cx = cp.x + (cp.sizeX - 1) / 2;
-                const cy = cp.y + (cp.sizeY - 1) / 2;
+                const playerSizeX = cp.sizeX || cp.data?.ship?.sizeX || 1;
+                const playerSizeY = cp.sizeY || cp.data?.ship?.sizeY || 1;
+                const cx = cp.x + playerSizeX / 2;
+                const cy = cp.y + playerSizeY / 2;
                 camera.centerOn(cx, cy);
 
                 // 🔥 mettre à jour coords joueur après resize
@@ -393,16 +397,6 @@ if (!ok) {
             renderer.requestRedraw();
             renderer.updateGridCoordinatesUI(camera, TILE_SIZE);
         
-            const sonarBtn = document.getElementById("sonar-toggle-btn");
-            if (sonarBtn) {
-                sonarBtn.addEventListener("click", () => {
-                    renderer.sonar.active = !renderer.sonar.active;
-                    renderer.requestRedraw();
-
-                    // Option : feedback visuel du bouton
-                    sonarBtn.classList.toggle("active", renderer.sonar.active);
-                });
-            }
         });
 
         renderer.updateGridCoordinatesUI(camera, TILE_SIZE);

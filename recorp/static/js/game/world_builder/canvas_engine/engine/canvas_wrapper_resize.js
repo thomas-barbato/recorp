@@ -1,56 +1,30 @@
+import { getMapLayoutProfile } from "./map_layout_profile.js";
+
 export function resizeCanvasWrapper() {
-    const TILE = 32;
-    const w = window.innerWidth;
+    const wrapper = document.getElementById("canvas-wrapper");
+    if (!wrapper) return;
 
-    let maxX, maxY;
+    const { wrapperWidthPx, wrapperHeightPx } = getMapLayoutProfile({
+        viewportWidth: window.innerWidth,
+        tileSize: 32,
+    });
 
-    if (w < 640) {                 
-    // 📱 MOBILE
-    maxX = 11; 
-    maxY = 11;
+    // #canvas-wrapper has right/bottom borders (Tailwind border-r/b).
+    // With border-box sizing, width/height must include borders so that
+    // the inner content area stays exactly aligned with tile counts.
+    const styles = window.getComputedStyle(wrapper);
+    const borderX = (parseFloat(styles.borderLeftWidth) || 0) + (parseFloat(styles.borderRightWidth) || 0);
+    const borderY = (parseFloat(styles.borderTopWidth) || 0) + (parseFloat(styles.borderBottomWidth) || 0);
 
-    } else if (w < 820) {         
-        // PETITE TABLETTE (ex: iPad mini / tablettes compactes)
-        maxX = 16; 
-        maxY = 16;
+    const targetWidth = wrapperWidthPx + borderX;
+    const targetHeight = wrapperHeightPx + borderY;
 
-    } else if (w < 1024) {        
-        // TABLETTE CLASSIQUE
-        maxX = 20; 
-        maxY = 20;
+    wrapper.style.width = `${targetWidth}px`;
+    wrapper.style.height = `${targetHeight}px`;
 
-    } else if (w < 1280) {        
-        // PETIT ÉCRAN PC / Laptop 13"
-        maxX = 26; 
-        maxY = 18;
+    wrapper.style.maxWidth = `${targetWidth}px`;
+    wrapper.style.maxHeight = `${targetHeight}px`;
 
-    } else if (w < 1536) {        
-        // ÉCRANS PC standards 1080p / 24"
-        maxX = 32; 
-        maxY = 20;
-
-    } else if (w < 1920) {        
-        // LARGE ÉCRAN 1080p / 1440p
-        maxX = 36; 
-        maxY = 22;
-
-    } else {                      
-        // MAXIMUM ABSOLU (GRANDS ÉCRANS)
-        maxX = 39; 
-        maxY = 23;
-    }
-
-    const wrapper = document.getElementById('canvas-wrapper');
-
-    const widthPx  = maxX * TILE;
-    const heightPx = maxY * TILE;
-
-    wrapper.style.width  = widthPx + "px";
-    wrapper.style.height = heightPx + "px";
-
-    wrapper.style.maxWidth  = widthPx + "px";
-    wrapper.style.maxHeight = heightPx + "px";
-
-    wrapper.style.marginLeft  = "auto";
+    wrapper.style.marginLeft = "auto";
     wrapper.style.marginRight = "auto";
 }

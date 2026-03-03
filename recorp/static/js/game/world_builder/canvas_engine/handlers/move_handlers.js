@@ -215,8 +215,8 @@ export function handlePlayerMove(msg) {
                             const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
                             const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
 
-                            const centerX = endX + (sizeX - 1) / 2;
-                            const centerY = endY + (sizeY - 1) / 2;
+                            const centerX = endX + sizeX / 2;
+                            const centerY = endY + sizeY / 2;
 
                             if(playerId == localPlayerId){
                                 engine.camera.centerOn(centerX, centerY);
@@ -314,8 +314,8 @@ export function handlePlayerMove(msg) {
                 const sizeX = actor.sizeX || actor.data?.ship?.sizeX || 1;
                 const sizeY = actor.sizeY || actor.data?.ship?.sizeY || 1;
 
-                const centerX = endX + (sizeX - 1) / 2;
-                const centerY = endY + (sizeY - 1) / 2;
+                const centerX = endX + sizeX / 2;
+                const centerY = endY + sizeY / 2;
 
                 engine.camera.centerOn(centerX, centerY);
 

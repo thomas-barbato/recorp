@@ -18,6 +18,7 @@ export default class Renderer {
         this.spriteManager = spriteManager;
         this.map = map;
         this.needsRedraw = true;
+        this._lastGridCoordSignature = null;
         
         this.bg = new BackgroundRenderer(canvases.bg.ctx, camera, spriteManager, map);
         this.fg = new ForegroundRenderer(canvases.fg.ctx, camera, spriteManager, map);
@@ -74,6 +75,17 @@ export default class Renderer {
     render(delta) {
         const { bg, fg, actors, ui } = this.canvases;
 
+        const coordSignature = [
+            this.camera.worldX,
+            this.camera.worldY,
+            this.camera.visibleTilesX,
+            this.camera.visibleTilesY,
+        ].join("|");
+        if (coordSignature !== this._lastGridCoordSignature) {
+            this.updateGridCoordinatesUI(this.camera, this.camera.tileSize);
+            this._lastGridCoordSignature = coordSignature;
+        }
+
         // 1) Effacer TOUTES les couches de rendu principales, y compris l'UI
         [bg, fg, actors, ui].forEach(c => {
             c.ctx.clearRect(0, 0, c.el.width, c.el.height);
@@ -102,8 +114,12 @@ export default class Renderer {
 
         if (!contX || !contY) return;
 
-        // ⚠️ tu as dit avoir déjà corrigé cette partie,
-        // je garde donc ta logique d'origine (sans clear) telle quelle.
+        // Full refresh to prevent duplicated labels after resize.
+        contX.textContent = "";
+        contY.textContent = "";
+
+        const xFragment = document.createDocumentFragment();
+        const yFragment = document.createDocumentFragment();
 
         // coordonnées X
         for (let i = 0; i < camera.visibleTilesX; i++) {
@@ -117,7 +133,7 @@ export default class Renderer {
                 "hover:bg-emerald-500/10 transition-all duration-200";
 
             div.innerText = worldX;
-            contX.appendChild(div);
+            xFragment.appendChild(div);
         }
         // coordonnées Y
         for (let i = 0; i < camera.visibleTilesY; i++) {
@@ -131,8 +147,11 @@ export default class Renderer {
                 "hover:bg-emerald-500/10 transition-all duration-200";
 
             div.innerText = worldY;
-            contY.appendChild(div);
+            yFragment.appendChild(div);
         }
+
+        contX.appendChild(xFragment);
+        contY.appendChild(yFragment);
     }
 
     clearUILayer() {
