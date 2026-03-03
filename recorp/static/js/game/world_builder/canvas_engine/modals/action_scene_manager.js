@@ -65,23 +65,59 @@ class ActionSceneManager {
     _buildDifficultyBadge(difficulty) {
         if (!difficulty) return null;
 
-        let label = "";
-        if (typeof difficulty === "string") {
-            label = difficulty;
-        } else if (typeof difficulty === "object") {
-            label = difficulty.label || difficulty.color || difficulty.name || "";
-        }
+        const rawLabel = (typeof difficulty === "string")
+            ? difficulty
+            : (difficulty.label || difficulty.color || difficulty.name || "");
+        const rawColor = (typeof difficulty === "object")
+            ? (difficulty.color || difficulty.key || difficulty.name || difficulty.label || "")
+            : rawLabel;
 
+        const normalize = (v) =>
+            String(v || "")
+                .trim()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+
+        const levels = {
+            rouge: { label: "Tres difficile", className: "text-red-400 border-red-500" },
+            orange: { label: "Difficile", className: "text-orange-300 border-orange-400" },
+            jaune: { label: "Equilibre", className: "text-yellow-300 border-yellow-400" },
+            vert: { label: "Facile", className: "text-emerald-300 border-emerald-400" },
+            gris: { label: "Tres facile", className: "text-gray-400 border-gray-500" }
+        };
+
+        const aliases = {
+            red: "rouge",
+            yellow: "jaune",
+            green: "vert",
+            gray: "gris",
+            grey: "gris",
+            easy: "vert",
+            medium: "jaune",
+            hard: "orange",
+            extreme: "rouge",
+            "tres facile": "gris",
+            "facile": "vert",
+            "equilibre": "jaune",
+            "moyen": "jaune",
+            "difficile": "orange",
+            "tres difficile": "rouge"
+        };
+
+        const resolveKey = (input) => {
+            const normalized = normalize(input);
+            if (!normalized) return "";
+            if (levels[normalized]) return normalized;
+            return aliases[normalized] || "";
+        };
+
+        const colorKey = resolveKey(rawColor) || resolveKey(rawLabel);
+        const resolved = levels[colorKey];
+        const label = resolved?.label || rawLabel;
         if (!label) return null;
 
-        const key = label.toLowerCase();
-        const colorClass = {
-            rouge: "text-red-400 border-red-500",
-            orange: "text-orange-300 border-orange-400",
-            jaune: "text-yellow-300 border-yellow-400",
-            vert: "text-emerald-300 border-emerald-400",
-            gris: "text-gray-400 border-gray-500"
-        }[key] || "text-slate-200 border-slate-400";
+        const colorClass = resolved?.className || "text-slate-200 border-slate-400";
 
         const badge = document.createElement("span");
         badge.textContent = label.toUpperCase();

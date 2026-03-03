@@ -116,13 +116,19 @@ class IndexView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         url = self.request.path
-        username = request.POST.get("username", "unknown")
+        username = (request.POST.get("username") or "").strip()
+        password = request.POST.get("password")
+
+        if not username or not password:
+            warning_msg = _("Fill all fields to login")
+            messages.warning(self.request, warning_msg)
+            return redirect(url)
         
         try:
             user = authenticate(
                 self.request,
                 username=username,
-                password=request.POST.get("password"),
+                password=password,
             )
             # Autorise aussi les comptes staff/admin a se connecter au jeu.
             if user is not None and user.is_active:
@@ -408,9 +414,18 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         player = PlayerAction(self.request.user.id)
         modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
         
-        if user_agent.is_pc:
-            map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
-        elif user_agent.is_mobile:
+        # Fallback safe: certains user-agents ne sont ni classés PC/mobile/tablet.
+        map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
+        if not (user_agent.is_pc or user_agent.is_mobile or user_agent.is_tablet):
+            logger.warning(
+                "Unclassified user-agent in DisplayGameView.get_context_data; fallback map range applied",
+                extra={
+                    "path": self.request.path,
+                    "user_id": getattr(self.request.user, "id", None),
+                    "user_agent": str(getattr(self.request, "META", {}).get("HTTP_USER_AGENT", "")),
+                },
+            )
+        if user_agent.is_mobile:
             map_range = GetDataFromDB.get_resolution_sized_map("is_mobile")
         elif user_agent.is_tablet:
             map_range = GetDataFromDB.get_resolution_sized_map("is_tablet")

@@ -14,6 +14,15 @@ body {
     overflow-x: hidden;
 }
 
+:root {
+    --fs-2xs: 0.6875rem; /* 11px */
+    --fs-xs: 0.75rem;    /* 12px */
+    --fs-sm: 0.875rem;   /* 14px */
+    --fs-base: 1rem;     /* 16px */
+    --fs-md: 1.1rem;     /* 17.6px */
+    --fs-lg: 1.25rem;    /* 20px */
+}
+
 /*
 #main-screen {
     background-image: url("/static/fonts/space_2.jpg");
@@ -983,7 +992,7 @@ input:focus {
     min-width: 3.8rem;
     padding: 0.1rem 0.4rem;
     border-radius: 999px;
-    font-size: 0.65rem;
+    font-size: var(--fs-2xs);
     line-height: 1;
     border: 1px solid rgba(16,185,129,0.2);
     background: rgba(2,6,7,0.65);
@@ -1189,7 +1198,7 @@ input:focus {
     justify-content: center;
     padding: 0.08rem 0.38rem;
     border-radius: 999px;
-    font-size: 0.64rem;
+    font-size: var(--fs-2xs);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #c7f9e5;
@@ -1251,7 +1260,7 @@ input:focus {
     border: 1px solid rgba(56, 189, 248, 0.24);
     background: rgba(2, 6, 7, 0.58);
     color: #d6f7ff;
-    font-size: 0.68rem;
+    font-size: var(--fs-2xs);
     font-weight: 600;
     text-align: center;
     padding: 0 0.25rem;
@@ -1273,7 +1282,7 @@ input:focus {
     border: 1px solid rgba(56, 189, 248, 0.24);
     background: rgba(7, 16, 20, 0.6);
     color: #bae6fd;
-    font-size: 0.62rem;
+    font-size: var(--fs-2xs);
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -1359,16 +1368,16 @@ input:focus {
 
 /* ✅ Layout mobile compact */
 @media (max-width: 768px) {
-  #inventory-modal .module-item, #inventory-modal .inventory-item { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
-    #inventory-modal fieldset legend { font-size: 0.7rem !important; }
-    #inventory-modal h2 { font-size: 1.2rem !important; }
+  #inventory-modal .module-item, #inventory-modal .inventory-item { padding: 0.4rem 0.5rem; font-size: var(--fs-xs); }
+    #inventory-modal fieldset legend { font-size: var(--fs-2xs); }
+    #inventory-modal h2 { font-size: 1.2rem; }
     #inventory-modal .equipped-modules-panel { border-right: 0; }
     #inventory-modal .equipped-module-legend {
         gap: 0.3rem;
         flex-wrap: wrap;
     }
     #inventory-modal .equipped-module-count {
-        font-size: 0.6rem;
+        font-size: var(--fs-2xs);
         min-width: 3.3rem;
     }
 }
@@ -1560,23 +1569,23 @@ animation: radarPulse 0.6s ease-out;
 
     /* Header */
     #mail-modal-content h2 {
-        font-size: 1.1rem !important;
+        font-size: var(--fs-md);
         gap: 0.5rem !important;
     }
 
     #close-mail-modal {
-        font-size: 1.5rem !important;
+        font-size: 1.5rem;
     }
 
     /* Tabs */
     .tab-btn {
-        font-size: 0.75rem !important;
+        font-size: var(--fs-xs);
         padding: 0.5rem !important;
     }
 
     /* Search */
     #search-message {
-        font-size: 0.875rem !important;
+        font-size: var(--fs-sm);
     }
 
     /* Mail list - plus d'espace */
@@ -1591,49 +1600,49 @@ animation: radarPulse 0.6s ease-out;
     .pm-message-item,
     .mail-item {
         padding: 0.5rem !important;
-        font-size: 0.875rem !important;
+        font-size: var(--fs-sm);
     }
 
     /* Pagination */
     #mail-pagination-info {
-        font-size: 0.7rem !important;
+        font-size: var(--fs-2xs);
     }
 
     #prev-page, #next-page {
-        font-size: 0.75rem !important;
+        font-size: var(--fs-xs);
         padding: 0.25rem 0.5rem !important;
     }
 
     /* Formulaire nouveau message */
     #mail-list input,
     #mail-list textarea {
-        font-size: 0.875rem !important;
+        font-size: var(--fs-sm);
         padding: 0.5rem !important;
     }
 
     #mail-list button {
-        font-size: 0.875rem !important;
+        font-size: var(--fs-sm);
         padding: 0.5rem 0.75rem !important;
     }
 
     /* Message détaillé */
     #mail-list h3 {
-        font-size: 1rem !important;
+        font-size: var(--fs-base);
     }
 
     #mail-list p {
-        font-size: 0.875rem !important;
+        font-size: var(--fs-sm);
     }
 }
 
 /* Pour les très petits écrans */
 @media (max-width: 480px) {
     #mail-modal-content h2 {
-            font-size: 0.9rem !important;
+            font-size: var(--fs-sm);
     }
 
     .tab-btn {
-            font-size: 0.65rem !important;
+            font-size: var(--fs-2xs);
             padding: 0.4rem !important;
     }
 
@@ -1681,7 +1690,7 @@ animation: radarPulse 0.6s ease-out;
     content: "ϟ 01 A7 D3 9C 4B 88 F2 3E 9B C1 77"; /* motif crypté */
     position: absolute;
     inset: 0;
-    font-size: 0.65rem;
+    font-size: var(--fs-2xs);
     font-weight: bold;
     opacity: 0.12;
     color: #45ffc7;
@@ -2014,7 +2023,7 @@ animation: radarPulse 0.6s ease-out;
     font-family: 'Orbitron', monospace;
     text-transform: uppercase;
     padding: 10px 20px;
-    font-size: 0.8125rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     text-align: center;
     border-radius: 8px;
@@ -2234,7 +2243,7 @@ canvas {
 
 .action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     font-weight: bold;
     color: rgb(110, 231, 183); /* emerald-300 */
     text-align: center;
@@ -2252,7 +2261,7 @@ canvas {
 
 .attack-action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     font-weight: bold;
     color: rgb(110, 231, 183); /* emerald-300 */
     text-align: center;
@@ -2320,7 +2329,7 @@ canvas {
     border: 1px solid rgba(251, 191, 36, 0.25);
     background: rgba(120, 53, 15, 0.24);
     color: #fef3c7;
-    font-size: 0.64rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.06em;
     vertical-align: middle;
@@ -2395,7 +2404,7 @@ canvas {
 
 .action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     font-weight: bold;
     color: rgb(110, 231, 183);
     text-align: center;
@@ -2432,7 +2441,7 @@ canvas {
         --btn: 56px;
         --cols: 4;
     }
-    .action-button-sf-label { font-size: 0.6875rem; }
+    .action-button-sf-label { font-size: var(--fs-2xs); }
 }
 
 /* Phone */
@@ -2441,7 +2450,7 @@ canvas {
         --btn: 52px;
         --cols: 3;
     }
-    .action-button-sf-label { font-size: 0.6875rem; }
+    .action-button-sf-label { font-size: var(--fs-2xs); }
 }
 
 /* Tiny phone */
@@ -2458,7 +2467,7 @@ canvas {
     
     .action-button-sf-label {
         margin-top: 0.25rem;
-        font-size: 0.6875rem;
+        font-size: var(--fs-2xs);
         font-weight: bold;
         color: rgb(110, 231, 183); /* emerald-300 */
         text-align: center;
@@ -2472,7 +2481,7 @@ canvas {
 
     .action-button-sf-label {
         margin-top: 0.25rem;
-        font-size: 0.6875rem;
+        font-size: var(--fs-2xs);
         font-weight: bold;
         color: rgb(110, 231, 183); /* emerald-300 */
         text-align:  center;
@@ -2573,7 +2582,7 @@ canvas {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.62rem;
+    font-size: var(--fs-2xs);
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0.06em;
@@ -2586,7 +2595,7 @@ canvas {
 }
 
 .event-log-timestamp {
-    font-size: 0.66rem;
+    font-size: var(--fs-2xs);
     font-family: "Roboto Mono", "Consolas", monospace;
     color: rgba(229, 231, 235, 0.76);
     white-space: nowrap;
@@ -2611,7 +2620,7 @@ canvas {
     }
 
     .event-log-chip {
-        font-size: 0.58rem;
+        font-size: var(--fs-2xs);
     }
 }
 
@@ -2931,7 +2940,7 @@ canvas {
     content: "01 A7 D3 9C 4B 88 F2 3E";
     position: absolute;
     inset: 0;
-    font-size: 0.62rem;
+    font-size: var(--fs-2xs);
     font-weight: 700;
     opacity: 0.11;
     color: #45ffc7;
@@ -3293,7 +3302,7 @@ canvas {
     content: "01 A7 D3 9C 4B 88 F2 3E";
     position: absolute;
     inset: 0;
-    font-size: 0.62rem;
+    font-size: var(--fs-2xs);
     font-weight: 700;
     opacity: 0.11;
     color: #45ffc7;

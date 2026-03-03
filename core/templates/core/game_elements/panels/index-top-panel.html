@@ -15,7 +15,9 @@
             <!-- Navigation Links - Connecté -->
             <div class="flex justify-center items-center text-center">
                 <h1 class="md:flex hidden font-orbitron text-3xl font-bold text-shadow gradient-text">
-                    Bon retour, {{ request.user }}
+                    {% with player=request.user.player_set.first %}
+                    Bon retour, {% if player and player.name %}{{ player.name }}{% else %}{{ request.user.username }}{% endif %}
+                    {% endwith %}
                 </h1>
             </div>
             <div id="nav-logged-in" class="hidden md:flex items-center gap-6">

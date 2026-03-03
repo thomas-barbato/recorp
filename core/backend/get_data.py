@@ -15,7 +15,11 @@ from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async
 
 from recorp.settings import BASE_DIR
-from core.backend.geometry import compute_chebyshev_distance, get_tiles_in_range
+from core.backend.geometry import (
+    compute_chebyshev_distance,
+    get_tiles_in_range,
+    get_tiles_in_circle,
+)
 from core.backend.module_effects import get_effect_numeric, module_effect_fields
 from core.models import (
     Planet, Asteroid, Station, Warp, WarpZone, SectorWarpZone,
