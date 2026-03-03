@@ -206,7 +206,7 @@ class ActionSceneManager {
             "px-2",
             "py-1",
             "bg-black/25",
-            "text-[12px]",
+            "text-xs",
             "leading-snug",
             "font-medium"
         );

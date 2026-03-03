@@ -1359,9 +1359,9 @@ input:focus {
 
 /* ✅ Layout mobile compact */
 @media (max-width: 768px) {
-  .module-item, .inventory-item { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
-    fieldset legend { font-size: 0.7rem !important; }
-    h2 { font-size: 1.2rem !important; }
+  #inventory-modal .module-item, #inventory-modal .inventory-item { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
+    #inventory-modal fieldset legend { font-size: 0.7rem !important; }
+    #inventory-modal h2 { font-size: 1.2rem !important; }
     #inventory-modal .equipped-modules-panel { border-right: 0; }
     #inventory-modal .equipped-module-legend {
         gap: 0.3rem;
@@ -2014,7 +2014,7 @@ animation: radarPulse 0.6s ease-out;
     font-family: 'Orbitron', monospace;
     text-transform: uppercase;
     padding: 10px 20px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-align: center;
     border-radius: 8px;
@@ -2234,7 +2234,7 @@ canvas {
 
 .action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 10px;
+    font-size: 0.75rem;
     font-weight: bold;
     color: rgb(110, 231, 183); /* emerald-300 */
     text-align: center;
@@ -2252,7 +2252,7 @@ canvas {
 
 .attack-action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 5px;
+    font-size: 0.75rem;
     font-weight: bold;
     color: rgb(110, 231, 183); /* emerald-300 */
     text-align: center;
@@ -2395,7 +2395,7 @@ canvas {
 
 .action-button-sf-label {
     margin-top: 0.25rem;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: bold;
     color: rgb(110, 231, 183);
     text-align: center;
@@ -2432,7 +2432,7 @@ canvas {
         --btn: 56px;
         --cols: 4;
     }
-    .action-button-sf-label { font-size: 10px; }
+    .action-button-sf-label { font-size: 0.6875rem; }
 }
 
 /* Phone */
@@ -2441,7 +2441,7 @@ canvas {
         --btn: 52px;
         --cols: 3;
     }
-    .action-button-sf-label { font-size: 10px; }
+    .action-button-sf-label { font-size: 0.6875rem; }
 }
 
 /* Tiny phone */
@@ -2458,7 +2458,7 @@ canvas {
     
     .action-button-sf-label {
         margin-top: 0.25rem;
-        font-size: 10px;
+        font-size: 0.6875rem;
         font-weight: bold;
         color: rgb(110, 231, 183); /* emerald-300 */
         text-align: center;
@@ -2472,7 +2472,7 @@ canvas {
 
     .action-button-sf-label {
         margin-top: 0.25rem;
-        font-size: 10px;
+        font-size: 0.6875rem;
         font-weight: bold;
         color: rgb(110, 231, 183); /* emerald-300 */
         text-align:  center;

@@ -226,7 +226,7 @@ function updateEquippedModulesTotalBadge(ship) {
 
 function createEmptySlotNode() {
     const empty = document.createElement("div");
-    empty.className = "text-gray-500 text-[10px] italic pl-1 empty-slot equipped-empty-slot";
+    empty.className = "text-gray-500 text-xs italic pl-1 empty-slot equipped-empty-slot";
     empty.textContent = t("Empty slot");
     return empty;
 }
@@ -722,7 +722,7 @@ function renderEquippedModules(ship) {
         moduleSpan.className = "text-emerald-300 font-semibold text-sm truncate tracking-wide";
         moduleSpan.textContent = module?.name || t("Unknown module");
 
-        const button = createActionButton("fa-solid fa-xmark text-[12px]", t("Unequip module"), "danger");
+        const button = createActionButton("fa-solid fa-xmark text-xs", t("Unequip module"), "danger");
         button.disabled = actionsDisabled;
         button.addEventListener("click", (event) => requestUnequipModule(event, module));
 
@@ -792,11 +792,11 @@ function createInventoryModuleRow(module, actionsDisabled) {
     qty.className = "text-emerald-200 text-sm font-semibold";
     qty.textContent = "x1";
 
-    const equipBtn = createActionButton("fa-solid fa-plus text-[12px]", t("Equip module"), "success");
+    const equipBtn = createActionButton("fa-solid fa-plus text-xs", t("Equip module"), "success");
     equipBtn.disabled = actionsDisabled;
     equipBtn.addEventListener("click", (event) => requestEquipModule(event, module));
 
-    const discardBtn = createActionButton("fa-solid fa-trash-can text-[11px]", t("Delete module from inventory"), "danger");
+    const discardBtn = createActionButton("fa-solid fa-trash-can text-xs", t("Delete module from inventory"), "danger");
     discardBtn.addEventListener("click", (event) => requestDiscardInventoryModule(event, module));
 
     right.append(qty, equipBtn, discardBtn);
@@ -937,7 +937,7 @@ function createInventoryResourceRow(item, options = {}) {
         actions.append(quantityInput, allBtn);
     }
 
-    const discardBtn = createActionButton("fa-solid fa-trash-can text-[11px]", t("Delete from inventory"), "danger");
+    const discardBtn = createActionButton("fa-solid fa-trash-can text-xs", t("Delete from inventory"), "danger");
     discardBtn.disabled = !item?.inventory_resource_id || stackQty <= 0;
     discardBtn.addEventListener("click", (event) => requestDiscardInventoryResource(event, item, { quantityInput }));
     actions.appendChild(discardBtn);

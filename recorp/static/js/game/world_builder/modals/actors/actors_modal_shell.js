@@ -161,7 +161,7 @@
                 if (!this.titleEl) {
                     this.titleEl = document.createElement("h3");
                     this.titleEl.classList.add(
-                        "lg:text-xl","text-md","text-center",
+                        "lg:text-xl","text-base","text-center",
                         "font-bold","flex","w-[95%]",
                         "text-white","p-1","justify-center"
                     );

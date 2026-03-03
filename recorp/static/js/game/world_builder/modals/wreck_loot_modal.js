@@ -37,7 +37,7 @@
             <div class="wreck-loot-panel" role="dialog" aria-modal="true" aria-labelledby="wreck-loot-title">
                 <div class="wreck-loot-header p-1 flex flex-row items-center">
                     <div class="wreck-loot-title-wrap flex flex-col w-[95%]">
-                        <div id="wreck-loot-title" class="wreck-loot-title lg:text-xl text-md text-center font-bold flex w-full text-white p-1 justify-center">Loot Wreck</div>
+                        <div id="wreck-loot-title" class="wreck-loot-title lg:text-xl text-base text-center font-bold flex w-full text-white p-1 justify-center">Loot Wreck</div>
                         <div id="wreck-loot-subtitle" class="wreck-loot-subtitle"></div>
                     </div>
                     <button type="button" id="wreck-loot-close-btn" class="wreck-loot-close" aria-label="Close">×</button>

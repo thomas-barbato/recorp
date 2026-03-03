@@ -230,7 +230,7 @@ function create_foreground_modal(modalId, data) {
     nameEl.textContent = data.name.toUpperCase();
     nameEl.classList.add(
         "lg:text-xl",
-        "text-md",
+        "text-base",
         "font-bold",
         "text-white",
         "font-orbitron"
@@ -253,7 +253,7 @@ function create_foreground_modal(modalId, data) {
     coordEl.dataset.role = "coordinates";
     coordEl.textContent = coords;
     coordEl.classList.add(
-        "text-md",
+        "text-base",
         "text-white"
     );
 
@@ -384,7 +384,7 @@ function createUnknownModal(modalId, data, is_npc) {
     nameEl.textContent = "UNKNOWN";
     nameEl.classList.add(
         "lg:text-xl",
-        "text-md",
+        "text-base",
         "font-bold",
         "text-white",
         "font-orbitron"
@@ -393,7 +393,7 @@ function createUnknownModal(modalId, data, is_npc) {
     const coordEl = document.createElement("span");
     coordEl.textContent = coordStr;
     coordEl.dataset.role = "coordinates";
-    coordEl.classList.add("text-md", "text-white");
+    coordEl.classList.add("text-base", "text-white");
 
     left.append(nameEl, coordEl);
     topRow.append(left);
@@ -521,14 +521,14 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
     const nameEl = document.createElement("span");
     nameEl.textContent = (data.player?.name || "UNKNOWN").toUpperCase();
-    nameEl.classList.add("lg:text-xl","text-md","text-center",
+    nameEl.classList.add("lg:text-xl","text-base","text-center",
                         "font-bold","flex",
                         "text-white","justify-center", "font-orbitron");
 
     const coordEl = document.createElement("span");
     coordEl.dataset.role = "coordinates";
     coordEl.textContent = coordStr;
-    coordEl.classList.add("text-md","text-center","flex",
+    coordEl.classList.add("text-base","text-center","flex",
                         "text-white","justify-center" );
 
     left.append(nameEl, coordEl);
