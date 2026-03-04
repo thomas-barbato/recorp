@@ -731,6 +731,38 @@ class StoreInCache:
             logger.error(f"Erreur lors de la mise à jour de la position: {e}")
             return False
 
+    def update_ship_is_reversed(self, player_id: int, is_reversed: bool) -> bool:
+        """Met a jour l'orientation d'un vaisseau joueur dans le cache secteur."""
+        try:
+            with cache.lock(f"{self.room}_flip_lock", timeout=5):
+                cached_data = cache.get(self.room)
+                if not isinstance(cached_data, dict):
+                    return False
+
+                player_list = cached_data.get("pc", [])
+                player_index = next(
+                    (
+                        i
+                        for i, p in enumerate(player_list)
+                        if str(p.get("user", {}).get("player")) == str(player_id)
+                    ),
+                    None,
+                )
+                if player_index is None:
+                    return False
+
+                player_list[player_index].setdefault("ship", {})
+                player_list[player_index]["ship"]["is_reversed"] = bool(is_reversed)
+
+                cached_data["pc"] = player_list
+                cache.set(self.room, cached_data, self._cache_timeout)
+                self._invalidate_local_cache()
+                return True
+
+        except Exception as e:
+            logger.error(f"Erreur lors de la mise a jour du flip du vaisseau: {e}")
+            return False
+
     def _remove_duplicate_players_optimized(self, player_list: List[Dict], 
                                             updated_index: int, pos: Dict[str, Any]) -> None:
         """Version optimisée du nettoyage des doublons."""

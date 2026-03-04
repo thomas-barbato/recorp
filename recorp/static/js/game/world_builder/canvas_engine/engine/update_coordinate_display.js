@@ -134,6 +134,12 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
     let dist = null;
     
     const player = window.canvasEngine?.map?.findPlayerById(window.current_player_id);
+    const targetKey = (obj?.type === "player" && obj?.data?.user?.player != null)
+        ? `pc_${obj.data.user.player}`
+        : null;
+    const groupRole = targetKey
+        ? (window.isGroupLeaderTarget?.(targetKey) ? "group leader" : (window.isGroupMemberTarget?.(targetKey) ? "group member" : null))
+        : null;
 
     if (worker && player && obj) {
 
@@ -146,6 +152,7 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
             tx,
             ty,
             isSelf: obj === player,
+            groupRole,
         };
 
         worker.call("compute_distance", {
@@ -196,7 +203,7 @@ export function hideHoverTooltip() {
     tooltip.classList.add("hidden");
 }
 
-function renderTooltip({ tooltip, name, tx, ty, dist, isSelf }) {
+function renderTooltip({ tooltip, name, tx, ty, dist, isSelf, groupRole = null }) {
     tooltip.innerHTML = `
         <div class="font-bold text-emerald-300">
             ${isSelf ? "You" : name}
@@ -206,6 +213,11 @@ function renderTooltip({ tooltip, name, tx, ty, dist, isSelf }) {
             /
             X:<span class="text-emerald-300">${tx.toString().padStart(2,"0")}</span>
         </div>
+        ${
+            !isSelf && groupRole
+                ? `<div class="text-slate-200 font-semibold">${groupRole}</div>`
+                : ""
+        }
         ${
             !isSelf
                 ? `<div class="text-emerald-500 font-bold">

@@ -5,9 +5,11 @@ const VIEWPORT_TILE_PROFILES = [
     { maxWidth: 639, tilesX: 11, tilesY: 11 },   // Mobile
     { maxWidth: 819, tilesX: 16, tilesY: 16 },   // Small tablets
     { maxWidth: 1023, tilesX: 20, tilesY: 20 },  // Tablets
-    { maxWidth: 1279, tilesX: 26, tilesY: 18 },  // Small desktops
-    { maxWidth: 1535, tilesX: 32, tilesY: 20 },  // Standard desktops
-    { maxWidth: 1919, tilesX: 36, tilesY: 22 },  // Large desktops
+    { maxWidth: 1119, tilesX: 20, tilesY: 14 },  // Compact desktops (1024-1119)
+    { maxWidth: 1279, tilesX: 24, tilesY: 16 },  // Small desktops
+    { maxWidth: 1439, tilesX: 28, tilesY: 18 },  // Standard desktops
+    { maxWidth: 1535, tilesX: 31, tilesY: 19 },  // Large desktops
+    { maxWidth: 1919, tilesX: 35, tilesY: 22 },  // Wide desktops
     { maxWidth: Infinity, tilesX: 39, tilesY: 23 }, // XL+
 ];
 

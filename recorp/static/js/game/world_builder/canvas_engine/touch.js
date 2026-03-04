@@ -1,13 +1,39 @@
 // touch.js
 // centralise la detection mobile/desktop et expose les variables legacy
-export function is_user_is_on_mobile_device() {
+function getDeviceProfile() {
     try {
-        if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) return true;
-        const ua = navigator.userAgent || navigator.vendor || window.opera || '';
-        return /android|iphone|ipad|ipod|windows phone/i.test(ua.toLowerCase());
+        if (typeof window.get_user_device_profile === "function") {
+            return window.get_user_device_profile();
+        }
     } catch (e) {
-        return false;
+        // fallback below
     }
+
+    try {
+        const ua = String(navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
+        const isTablet = /ipad|tablet|kindle|silk/.test(ua) || (/android/.test(ua) && !/mobile/.test(ua));
+        const isPhone = /iphone|ipod|windows phone/.test(ua) || (/android/.test(ua) && /mobile/.test(ua));
+        return {
+            is_phone: isPhone,
+            is_tablet: isTablet,
+            is_pc: !isPhone && !isTablet,
+        };
+    } catch (e) {
+        return { is_phone: false, is_tablet: false, is_pc: true };
+    }
+}
+
+export function is_user_is_on_mobile_device() {
+    const profile = getDeviceProfile();
+    return !!(profile.is_phone || profile.is_tablet);
+}
+
+export function is_user_is_on_tablet_device() {
+    return !!getDeviceProfile().is_tablet;
+}
+
+export function is_user_is_on_pc_device() {
+    return !!getDeviceProfile().is_pc;
 }
 
 export const user_is_on_mobile_bool = is_user_is_on_mobile_device();

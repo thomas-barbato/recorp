@@ -8,8 +8,8 @@ export default class BackgroundRenderer {
 
     render() {
         const canvas = this.ctx.canvas;
-        const w = canvas.width / (window.devicePixelRatio || 1);
-        const h = canvas.height / (window.devicePixelRatio || 1);
+        const w = canvas?.clientWidth || canvas.width / (window.devicePixelRatio || 1);
+        const h = canvas?.clientHeight || canvas.height / (window.devicePixelRatio || 1);
 
         // Fond couleur si pas d’image
         this.ctx.fillStyle = '#0b1220';

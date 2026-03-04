@@ -950,6 +950,33 @@ class PlayerGroup(models.Model):
     def __str__(self):
         return f"{self.player.name} in {self.group.name}"
     
+
+class GroupInvitation(models.Model):
+    STATUS_CHOICES = (
+        ("PENDING", "pending"),
+        ("ACCEPTED", "accepted"),
+        ("DECLINED", "declined"),
+        ("CANCELED", "canceled"),
+        ("EXPIRED", "expired"),
+    )
+
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="invitations")
+    inviter = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="group_invitations_sent")
+    invitee = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="group_invitations_received")
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="PENDING", db_index=True)
+    created_at = models.DateTimeField("creation date", default=timezone.now)
+    responded_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["invitee", "status", "-created_at"], name="grp_inv_invitee_idx"),
+            models.Index(fields=["group", "status"], name="grp_inv_group_idx"),
+        ]
+
+    def __str__(self):
+        return f"Invite {self.id} {self.inviter_id}->{self.invitee_id} ({self.status})"
+    
     
 class Message(models.Model):
     """Message unique avec canal intégré"""

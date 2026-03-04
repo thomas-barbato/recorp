@@ -1,9 +1,13 @@
 const submit_button = document.querySelector('#create-account-submit-button');
 
 function is_user_is_on_mobile_device() {
-    return (
-        /\b(BlackBerry|webOS|iPhone|IEMobile|Android|Windows Phone|iPad|iPod|KFAPWI|SAMSUNG|Samsung|SamsungBrowser)\b/i.test(window.navigator.userAgent)
-    );
+    if (
+        typeof window.is_user_is_on_mobile_device === "function" &&
+        window.is_user_is_on_mobile_device !== is_user_is_on_mobile_device
+    ) {
+        return window.is_user_is_on_mobile_device();
+    }
+    return /\b(BlackBerry|webOS|iPhone|IEMobile|Android|Windows Phone|iPad|iPod|KFAPWI|SAMSUNG|Samsung|SamsungBrowser)\b/i.test(window.navigator.userAgent);
 }
 
 const user_is_on_mobile_bool = is_user_is_on_mobile_device();

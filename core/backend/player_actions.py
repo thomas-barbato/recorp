@@ -851,7 +851,7 @@ class PlayerAction:
                 if not group:
                     return None, []  # joueur sans groupe
                 msg_data["group_id"] = group.group_id
-                recipients = GetDataFromDB.get_players_in_group(group.group_id, author_id)
+                recipients = GetDataFromDB.get_players_in_group(group.group_id)
                 
             
             else:

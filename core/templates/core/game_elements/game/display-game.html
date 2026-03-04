@@ -103,6 +103,27 @@
     </ul>
 </div>
 <div id="map-background" class="lg:w-9/12 w-full h-full order-2 flex flex-col mx-0 lg:overflow-y-hidden overflow-x-hidden no-scrollbar mt-2 select-none lg:flex lg:justify-center lg:items-center gap-2">
+    <div id="desktop-map-sector-bar" class="hidden lg:flex w-full justify-center items-center">
+        <div id="desktop-map-sector-inline" class="flex flex-nowrap justify-center items-center w-full">
+            <p class="sector-inline-item px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+                <b>{% translate "Sector" %}</b> <span id="sector-name">{{ map_informations.sector.name }}</span>
+            </p>
+            <p class="sector-inline-item px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+                <b>{% translate "Faction" %}</b> <span id="sector-faction-desktop">{{ map_informations.sector.faction.name }}</span>
+            </p>
+            <p class="sector-inline-item px-2 py-1 rounded-md bg-emerald-900/40 border border-emerald-400/40 text-emerald-300 shadow-inner font-orbitron">
+                <b>{% translate "Security" %}</b> <span id="sector-security-desktop">{{ map_informations.sector.security.translated_name }}</span>
+            </p>
+            <div class="sector-inline-item sector-inline-target flex items-center min-w-0">
+                <i class="fa-solid fa-satellite-dish px-1 text-emerald-200"></i>
+                <span id="target-coord-name" class="font-bold text-emerald-200 truncate text-center font-orbitron">
+                    {% translate 'Nothing selected' %}
+                </span>
+                <span id="target-coord-y" class="font-bold text-emerald-400 invisible">00</span>
+                <span id="target-coord-x" class="font-bold text-emerald-300 invisible">00</span>
+            </div>
+        </div>
+    </div>
     
     <!-- WRAPPER PRINCIPAL -->
     <div id="canvas-wrapper" class="relative flex border-b border-r border-emerald-400/50 lg:mb-0 mb-2">
@@ -138,6 +159,12 @@
     </div>
     <div class="context-menu" id="contextMenu"></div>
     <div id="desktop-events-log-anchor" class="hidden sm:block xl:hidden w-full p-2"></div>
+    <fieldset id="events-tablet-log" class="hidden sm:flex lg:hidden border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex-col gap-1 overflow-y-auto min-h-[170px] max-h-[220px] text-xs font-mono text-emerald-300 thin-semi-transparent-scrollbar">
+        <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
+            {% translate "Events Logs" %}
+        </legend>
+        <ul id="player-event-tablet-container" class="flex flex-col gap-1 break-all wrap-anywhere"></ul>
+    </fieldset>
     <div class="w-full flex justify-center items-center z-100 lg:order-99 order-3 sm:hidden mb-3" dir="ltr" id="mobile-cross">
         <div class="flex w-full justify-center gap-2 flex-col justify-center items-center">
             <div class="flex w-full justify-center items-center gap-2">
@@ -265,14 +292,6 @@
                 </div>
             </div>
         </fieldset>
-        <!-- ACTIONS CARD -->
-        <fieldset id="actions-fieldset" class="w-full flex border border-emerald-400/40 rounded-xl bg-emerald-950/40 p-3 shadow-inner shadow-emerald-900/30 max-h-[100px]  select-none overflow-x-hidden">
-            <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 
-                        bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
-                {% translate "ACTIONS" %}
-            </legend>
-        </fieldset>
-
         <!-- STATUS -->
         <fieldset id="status-fieldset"class="w-full border border-emerald-400/40 rounded-xl bg-emerald-900/30 p-3 shadow-inner shadow-emerald-900/30 flex flex-col gap-2 max-h-[100px] select-none">
             <legend class="text-sm uppercase tracking-wider font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/40 rounded-md px-2 py-1 shadow-sm font-orbitron">
@@ -324,6 +343,46 @@
 </script>
 {% endif %}
 
+<script>
+(() => {
+    const tabletLog = document.getElementById("events-tablet-log");
+    const canvasWrapper = document.getElementById("canvas-wrapper");
+    if (!tabletLog || !canvasWrapper) return;
+
+    const root = document.documentElement;
+    const body = document.body;
+    const hasDeviceClass = (className) =>
+        !!(root?.classList.contains(className) || body?.classList.contains(className));
+
+    const shouldAlignTabletLog = () => {
+        const narrowViewport = window.innerWidth < 1024;
+        const isTabletDevice = hasDeviceClass("device-tablet");
+        const isPcDevice = hasDeviceClass("device-pc");
+        return isTabletDevice || (isPcDevice && narrowViewport);
+    };
+
+    const syncTabletLogWidth = () => {
+        if (!shouldAlignTabletLog()) {
+            tabletLog.style.width = "";
+            return;
+        }
+        const width = Math.round(canvasWrapper.getBoundingClientRect().width || 0);
+        if (width > 0) {
+            tabletLog.style.width = `${width}px`;
+        }
+    };
+
+    const syncOnNextFrame = () => window.requestAnimationFrame(syncTabletLogWidth);
+    syncTabletLogWidth();
+    window.addEventListener("resize", syncOnNextFrame, { passive: true });
+    window.addEventListener("load", syncOnNextFrame, { once: true });
+    if (window.ResizeObserver) {
+        const ro = new ResizeObserver(syncOnNextFrame);
+        ro.observe(canvasWrapper);
+    }
+})();
+</script>
+
 <script src="{% url 'core:javascript-catalog' %}"></script>
 <script type="module" src="{% static 'world_builder/canvas_engine/main_engine.js' %}"></script>
 
@@ -357,5 +416,6 @@
 <script src="{% static 'world_builder/modals/character_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/message_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/inventory_modal.js'%}" type='application/javascript'></script>
+<script src="{% static 'world_builder/modals/group_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'world_builder/modals/wreck_loot_modal.js'%}" type='application/javascript'></script>
 <script src="{% static 'js/game/world_builder/account/logout.js' %}" type="application/javascript"></script>

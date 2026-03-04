@@ -219,6 +219,14 @@ export default class ActorsRenderer {
         const pf = engine?.pathfinding;
         const showBorder = pf && (pf.current || pf.invalidPreview);
         const hover = window.canvasEngine?.hoverTarget || null;
+        const isPcActor = (obj.type === "player") || (typeof obj.id === "string" && obj.id.startsWith("pc_"));
+        const isCurrentPlayerActor =
+            isPcActor &&
+            String(obj.data?.user?.player) === String(window.current_player_id);
+        const isGroupMemberActor =
+            isPcActor &&
+            !isCurrentPlayerActor &&
+            window.isGroupMemberTarget?.(obj.id) === true;
 
         if (visible) {
             const isAnimating = obj.renderX !== undefined;
@@ -236,7 +244,7 @@ export default class ActorsRenderer {
             this._drawFullSprite(img, scr.x, scr.y, pxW, pxH, obj);
 
             // Bordure du joueur courant
-            if (String(obj.data?.user?.player) === String(window.current_player_id)) {
+            if (isCurrentPlayerActor) {
                 this.ctx.save();
                 this.ctx.shadowColor = "rgba(52, 211, 153, 0.8)";   // emerald 400 glow
                 this.ctx.shadowBlur = 18;
@@ -245,6 +253,10 @@ export default class ActorsRenderer {
                 this.ctx.setLineDash([4, 4]);
                 this.ctx.strokeRect(scr.x + 1, scr.y + 1, pxW - 2, pxH - 2);
                 this.ctx.restore();
+            }
+
+            if (isGroupMemberActor) {
+                this._drawGroupMemberBorder(scr.x, scr.y, pxW, pxH, tilePx);
             }
 
             // si pas survolé → pas de bordure
@@ -256,10 +268,12 @@ export default class ActorsRenderer {
                 let isPc = false;
                 let isNpc = false;
                 let isCurrentPlayer = false;
+                let isGroupMember = false;
 
                 if (typeof obj.id === "string") {
                     if (obj.id.startsWith("pc_")) {
                         isPc = true;
+                        isGroupMember = window.isGroupMemberTarget?.(obj.id) === true;
                         const idNum = parseInt(obj.id.slice(3), 10);
                         const currentPlayer = window.currentPlayer;
                         const currentId = currentPlayer?.user?.player;
@@ -277,8 +291,10 @@ export default class ActorsRenderer {
                 if (isCurrentPlayer) {
                     // on laisse la bordure gérée plus haut (pathfinding)
                     // donc on n'ajoute rien ici
+                } else if (isGroupMember) {
+                    // Group members: keep persistent border only.
                 } else {
-
+                    ctx.save();
                     ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
                     ctx.setLineDash([4, 4]);
                     // 🟡 Vaisseau hors sonar → jaune
@@ -305,7 +321,8 @@ export default class ActorsRenderer {
             this.ctx.globalAlpha = 1;
             return;
         }else{
-            if (hover && hover === obj) {
+            const isGroupMemberHidden = window.isGroupMemberTarget?.(obj.id) === true;
+            if (hover && hover === obj && !isGroupMemberHidden) {
                 const ctx = this.ctx;
                 ctx.save();
                 ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
@@ -325,6 +342,18 @@ export default class ActorsRenderer {
                 this.spriteManager.ensure?.(srcUrl).catch(() => {});
             }
         }
+    }
+
+    _drawGroupMemberBorder(x, y, w, h, tilePx) {
+        const ctx = this.ctx;
+        ctx.save();
+        ctx.shadowColor = "rgba(248, 250, 252, 0.42)";
+        ctx.shadowBlur = 12;
+        ctx.strokeStyle = "rgba(241, 245, 249, 0.88)";
+        ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.055));
+        ctx.setLineDash([]);
+        ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+        ctx.restore();
     }
 
     _drawFullSprite(img, x, y, w, h, obj) {

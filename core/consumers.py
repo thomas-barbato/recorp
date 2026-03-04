@@ -13,6 +13,7 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.get_data import GetDataFromDB
 from core.backend.action_rules import ActionRules
+from core.backend.group_service import build_group_state_for_player
 from core.backend.ship_module_runtime import (
     module_limit_bucket,
     count_equipped_modules_by_limit_bucket,
@@ -27,7 +28,7 @@ from core.backend.module_effects import (
     module_effect_fields,
 )
 
-from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, PlayerShip, PlayerShipInventoryModule, PlayerShipModuleReconfiguration, Npc, Module, PlayerShipModule, Player, PlayerGroup, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource, PlayerResource, PlayerShipResource, Resource
+from core.models import SectorWarpZone, ScanIntelGroup, ScanIntel, Group, GroupInvitation, PlayerShip, PlayerShipInventoryModule, PlayerShipModuleReconfiguration, Npc, Module, PlayerShipModule, Player, PlayerGroup, ShipWreck, Ship, ArchetypeModule, NpcResource, NpcTemplateResource, PlayerResource, PlayerShipResource, Resource
 from core.backend.modal_builder import (
     build_npc_modal_data,
     build_pc_modal_data,
@@ -48,6 +49,7 @@ class GameConsumer(WebsocketConsumer):
     DEFAULT_RESPAWN_SECTOR_ID = 7
     NPC_RESPAWN_DELAY_SECONDS = 120
     WRECK_TTL_SECONDS = 12 * 60 * 60  # 12h (scavenge => disparition immédiate)
+    GROUP_MAX_MEMBERS = 6
     MODULE_RECONFIG_SECONDS = 10
     EQUIPMENT_COMBAT_LOCK_SECONDS = 30
     WRECK_LOOT_LOCK_TIMEOUT_SECONDS = 120
@@ -81,6 +83,7 @@ class GameConsumer(WebsocketConsumer):
         self._setup_room_connection()
         self._join_room_group()
         self._handle_authenticated_user()
+        self._emit_pending_group_invitations_on_connect()
     
         # Maintenir la session active
         if hasattr(self.scope, 'session'):
@@ -110,6 +113,47 @@ class GameConsumer(WebsocketConsumer):
             # store = StoreInCache(self.room_group_name, self.user)
             # store.get_or_set_cache(need_to_be_recreated=False)
             self._cache_store.get_or_set_cache(need_to_be_recreated=False)
+
+    def _emit_pending_group_invitations_on_connect(self) -> None:
+        if not self.user.is_authenticated or not self.player_id:
+            return
+        try:
+            player_id = int(self.player_id)
+
+            # Si le joueur est déjà en groupe, on expire les vieilles invitations.
+            if PlayerGroup.objects.filter(player_id=player_id).exists():
+                GroupInvitation.objects.filter(
+                    invitee_id=player_id,
+                    status="PENDING",
+                ).update(
+                    status="EXPIRED",
+                    responded_at=timezone.now(),
+                )
+                return
+
+            pending_invites = (
+                GroupInvitation.objects
+                .select_related("group", "inviter")
+                .filter(invitee_id=player_id, status="PENDING")
+                .order_by("-created_at")[:10]
+            )
+
+            for invite in pending_invites:
+                self._send_response(
+                    {
+                        "type": "group_invitation",
+                        "payload": {
+                            "id": int(invite.id),
+                            "group_id": int(invite.group_id),
+                            "group_name": invite.group.name if invite.group else "Unnamed Group",
+                            "inviter_id": int(invite.inviter_id),
+                            "inviter_name": invite.inviter.name if invite.inviter else "Unknown",
+                            "created_at": invite.created_at.isoformat() if invite.created_at else None,
+                        },
+                    }
+                )
+        except Exception:
+            logger.exception("emit pending group invitations on connect failed")
 
     def disconnect(self, close_code: int) -> None:
         """Gère la déconnexion WebSocket de manière asynchrone."""
@@ -815,6 +859,10 @@ class GameConsumer(WebsocketConsumer):
                     "message": message
                 }
             )
+            self._emit_group_state_sync_for_player_group(
+                int(message.get("player", self.player_id)),
+                reason="GROUP_MEMBER_MOVED",
+            )
 
         except Exception as e:
             logger.error(f"Erreur _handle_move_request: {e}")
@@ -1069,39 +1117,6 @@ class GameConsumer(WebsocketConsumer):
             },
         }
 
-    def async_reverse_ship(self, event: Dict[str, Any]) -> None:
-        """
-        Gère l'inversion asynchrone du vaisseau.
-        
-        Args:
-            event: Événement contenant les données d'inversion
-        """
-        try:
-            message = json.loads(event["message"])
-            response = self._process_ship_reversal(message)
-            self._send_response(response)
-            
-        except (json.JSONDecodeError, KeyError) as e:
-            logger.error(f"Erreur lors de l'inversion du vaisseau: {e}")
-
-    def _process_ship_reversal(self, message: Dict[str, Any]) -> Dict[str, Any]:
-        """Traite l'inversion du vaisseau."""
-        # store = StoreInCache(room_name=self.room_group_name, user_calling=self.user)
-        player_action = PlayerAction(self.user.id)
-        player_action.set_reverse_ship_status()
-        data = self._cache_store.update_ship_is_reversed(
-            message, message["player"], player_action.get_reverse_ship_status()
-        )
-
-        return {
-            "type": "async_reverse_ship",
-            "message": {
-                "id_array": message["id_array"],
-                "is_reversed": data[0],
-                "player_id": data[1],
-            },
-        }
-
     def async_warp_travel(self, event: Dict[str, Any]) -> None:
         """
         Gère le voyage par distorsion asynchrone.
@@ -1294,6 +1309,10 @@ class GameConsumer(WebsocketConsumer):
                         "player_id": player_id,
                     },
                 }
+            )
+            self._emit_group_state_sync_for_player_group(
+                int(player_id),
+                reason="GROUP_MEMBER_WARPED",
             )
             
             playerObj = pa.get_player_data()
@@ -1503,8 +1522,8 @@ class GameConsumer(WebsocketConsumer):
         player_action = PlayerAction(self.user.id)
         player_id = player_action.get_player_id()
         
-        group = GetDataFromDB.get_group_member(player_id)
-        if not group:
+        group_id = GetDataFromDB.get_group_member(player_id)
+        if not group_id:
             self._send_response({
                 "type": "action_failed",
                 "message": {
@@ -1525,14 +1544,27 @@ class GameConsumer(WebsocketConsumer):
             return
         
         sector_id_int = int(self.room)
-        scan = GetDataFromDB.get_scan_target(player_id, sector_id_int)
+        scan = (
+            GetDataFromDB.get_scan_target(player_id, sector_id_int)
+            .order_by("-expires_at")
+            .first()
+        )
+        if not scan:
+            self._send_response({
+                "type": "action_failed",
+                "message": {
+                    "reason": "SCAN_NOT_FOUND"
+                },
+            })
+            return
         
         ScanIntelGroup.objects.get_or_create(
-            scan=scan['id'],
-            group=group
+            scan_id=scan["id"],
+            group_id=group_id
         )
             
-        player_ids = GetDataFromDB.get_players_in_group(group)
+        recipients = GetDataFromDB.get_players_in_group(group_id)
+        player_ids = [int(e.get("id")) for e in recipients if e.get("id") is not None]
             
         for pid in player_ids:
             if pid == self.player_id:
@@ -1544,7 +1576,7 @@ class GameConsumer(WebsocketConsumer):
                     "type": "scan_share_to_group",
                     "message": {
                         "target_key": f"{target_type}_{target_id}",
-                        "expires_at": scan["expires_at"].isoformat() if isinstance(scan, dict) else None,
+                        "expires_at": scan["expires_at"].isoformat() if isinstance(scan, dict) and scan.get("expires_at") else None,
                         "recipients": player_ids,
                     }
                 }
@@ -1584,6 +1616,56 @@ class GameConsumer(WebsocketConsumer):
             "type": "effects_invalidated",
             "payload": event.get("payload", []),
         })
+
+    def group_state_sync(self, event: Dict[str, Any]) -> None:
+        target_player_id = event.get("target_player_id")
+        if target_player_id is not None:
+            try:
+                if int(target_player_id) != int(self.player_id):
+                    return
+            except (TypeError, ValueError):
+                return
+
+        self._send_response(
+            {
+                "type": "group_state_sync",
+                "payload": event.get("payload", {}),
+                "reason": event.get("reason"),
+                "notice": event.get("notice"),
+            }
+        )
+
+    def group_invitation(self, event: Dict[str, Any]) -> None:
+        target_player_id = event.get("target_player_id")
+        if target_player_id is not None:
+            try:
+                if int(target_player_id) != int(self.player_id):
+                    return
+            except (TypeError, ValueError):
+                return
+
+        self._send_response(
+            {
+                "type": "group_invitation",
+                "payload": event.get("payload", {}),
+            }
+        )
+
+    def group_action_feedback(self, event: Dict[str, Any]) -> None:
+        target_player_id = event.get("target_player_id")
+        if target_player_id is not None:
+            try:
+                if int(target_player_id) != int(self.player_id):
+                    return
+            except (TypeError, ValueError):
+                return
+
+        self._send_response(
+            {
+                "type": "group_action_feedback",
+                "payload": event.get("payload", {}),
+            }
+        )
         
     def send_scan_state_sync(self):
         sector_id = int(self.room)
@@ -2768,6 +2850,10 @@ class GameConsumer(WebsocketConsumer):
                 "old_sector_id": old_sector_id,
             }
         })
+        self._emit_group_state_sync_for_player_group(
+            int(self.player_id),
+            reason="GROUP_MEMBER_RESPAWNED",
+        )
 
     # Sprint 1 override block: split receive dispatch + WS envelope normalization.
     def receive(self, text_data=None, bytes_data=None):
@@ -4974,6 +5060,7 @@ class GameConsumer(WebsocketConsumer):
             "request_data_sync": self._dispatch_data_sync_message,
             "request_scan_state_sync": self._dispatch_scan_state_sync_message,
             "async_move": self._dispatch_move_message,
+            "canvas_flip_ship": self._dispatch_canvas_flip_ship_message,
             "async_chat_message": self._dispatch_chat_message,
             "async_send_mp": self._dispatch_private_message,
             "action_scan_pc_npc": self._dispatch_scan_action_message,
@@ -4981,6 +5068,12 @@ class GameConsumer(WebsocketConsumer):
             "action_attack": self._dispatch_combat_action_message,
             "action_ship_module_reconfigure": self._dispatch_ship_module_reconfiguration_message,
             "action_ship_inventory_discard": self._dispatch_ship_inventory_discard_message,
+            "action_group_invite": self._dispatch_group_invite_message,
+            "action_group_invitation_response": self._dispatch_group_invitation_response_message,
+            "action_group_kick": self._dispatch_group_kick_message,
+            "action_group_transfer_lead": self._dispatch_group_transfer_lead_message,
+            "action_group_leave": self._dispatch_group_leave_message,
+            "action_group_disband": self._dispatch_group_disband_message,
             "action_wreck_loot_open": self._dispatch_wreck_loot_open_message,
             "action_wreck_loot_close": self._dispatch_wreck_loot_close_message,
             "action_wreck_loot_take": self._dispatch_wreck_loot_take_message,
@@ -5012,6 +5105,24 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Payload async_move invalide: {data}")
             return
         self._handle_move_request(payload)
+
+    def _dispatch_canvas_flip_ship_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if isinstance(payload, str):
+            try:
+                payload = json.loads(payload)
+            except json.JSONDecodeError:
+                logger.error(f"Payload canvas_flip_ship invalide: {data}")
+                return
+        if payload is None:
+            payload = {}
+        if not isinstance(payload, dict):
+            logger.error(f"Payload canvas_flip_ship invalide: {data}")
+            return
+
+        response = self._process_ship_reversal(payload)
+        if response:
+            self._broadcast_message(response)
 
     def _dispatch_chat_message(self, data: Dict[str, Any]) -> None:
         self.async_send_chat_msg(data)
@@ -5046,6 +5157,722 @@ class GameConsumer(WebsocketConsumer):
             return
         self._handle_ship_inventory_discard(payload)
 
+    def _dispatch_group_invite_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_GROUP_PAYLOAD", "Payload groupe invalide.")
+            return
+        self._handle_group_invite_action(payload)
+
+    def _dispatch_group_invitation_response_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_GROUP_PAYLOAD", "Payload groupe invalide.")
+            return
+        self._handle_group_invitation_response_action(payload)
+
+    def _dispatch_group_kick_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_GROUP_PAYLOAD", "Payload groupe invalide.")
+            return
+        self._handle_group_kick_action(payload)
+
+    def _dispatch_group_transfer_lead_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_GROUP_PAYLOAD", "Payload groupe invalide.")
+            return
+        self._handle_group_transfer_lead_action(payload)
+
+    def _dispatch_group_leave_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if payload is None:
+            payload = {}
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_GROUP_PAYLOAD", "Payload groupe invalide.")
+            return
+        self._handle_group_leave_action(payload)
+
+    def _dispatch_group_disband_message(self, data: Dict[str, Any]) -> None:
+        payload = self._get_client_payload(data)
+        if payload is None:
+            payload = {}
+        if not isinstance(payload, dict):
+            self._send_action_failed_response("INVALID_GROUP_PAYLOAD", "Payload groupe invalide.")
+            return
+        self._handle_group_disband_action(payload)
+
+    def _resolve_group_target_player(self, payload: Dict[str, Any]) -> tuple[Optional[Player], Optional[str]]:
+        raw_target_id = payload.get("target_player_id")
+        raw_target_name = str(payload.get("target_name") or "").strip()
+
+        target_id = None
+        try:
+            if raw_target_id not in (None, ""):
+                target_id = int(raw_target_id)
+        except (TypeError, ValueError):
+            target_id = None
+
+        if target_id:
+            player = Player.objects.filter(id=target_id, is_npc=False).first()
+            if not player:
+                return None, "TARGET_NOT_FOUND"
+            return player, None
+
+        if not raw_target_name:
+            return None, "TARGET_REQUIRED"
+
+        candidates = list(
+            Player.objects.filter(name__iexact=raw_target_name, is_npc=False)
+            .order_by("id")[:2]
+        )
+        if not candidates:
+            return None, "TARGET_NOT_FOUND"
+        if len(candidates) > 1:
+            return None, "TARGET_AMBIGUOUS"
+        return candidates[0], None
+
+    def _send_group_action_feedback(self, reason: str, message: str, level: str = "info", **extra) -> None:
+        payload = {
+            "reason": reason,
+            "message": message,
+            "level": level,
+        }
+        payload.update(extra)
+        self._send_response({
+            "type": "group_action_feedback",
+            "payload": payload,
+        })
+
+    def _emit_group_action_feedback_to_player(
+        self,
+        target_player_id: int,
+        *,
+        reason: str,
+        message: str,
+        level: str = "info",
+        **extra,
+    ) -> None:
+        sector_id = (
+            Player.objects
+            .filter(id=target_player_id)
+            .values_list("sector_id", flat=True)
+            .first()
+        )
+        if not sector_id:
+            return
+
+        payload = {
+            "reason": reason,
+            "message": message,
+            "level": level,
+        }
+        payload.update(extra)
+
+        async_to_sync(self.channel_layer.group_send)(
+            f"play_{int(sector_id)}",
+            {
+                "type": "group_action_feedback",
+                "target_player_id": int(target_player_id),
+                "payload": payload,
+            },
+        )
+
+    def _group_member_player_ids(self, group_id: int) -> list[int]:
+        return [
+            int(pid)
+            for pid in PlayerGroup.objects.filter(group_id=group_id)
+            .order_by("created_at", "id")
+            .values_list("player_id", flat=True)
+        ]
+
+    def _group_member_player_ids_for_player(self, player_id: Optional[int] = None) -> list[int]:
+        target_player_id = player_id if player_id is not None else self.player_id
+        try:
+            target_player_id = int(target_player_id)
+        except (TypeError, ValueError):
+            return []
+
+        group_id = (
+            PlayerGroup.objects.filter(player_id=target_player_id)
+            .order_by("created_at", "id")
+            .values_list("group_id", flat=True)
+            .first()
+        )
+        if not group_id:
+            return []
+
+        return self._group_member_player_ids(int(group_id))
+
+    def _emit_group_state_sync_for_player_group(
+        self,
+        player_id: Optional[int] = None,
+        *,
+        reason: Optional[str] = None,
+    ) -> None:
+        member_ids = self._group_member_player_ids_for_player(player_id)
+        if not member_ids:
+            return
+        self._emit_group_state_sync_to_player_ids(member_ids, reason=reason)
+
+    def _emit_group_state_sync_to_player_ids(
+        self,
+        player_ids: list[int],
+        *,
+        reason: Optional[str] = None,
+        notice: Optional[str] = None,
+    ) -> None:
+        unique_ids = []
+        seen = set()
+        for pid in player_ids:
+            try:
+                casted = int(pid)
+            except (TypeError, ValueError):
+                continue
+            if casted in seen:
+                continue
+            seen.add(casted)
+            unique_ids.append(casted)
+
+        if not unique_ids:
+            return
+
+        sectors = {
+            int(row["id"]): int(row["sector_id"])
+            for row in Player.objects.filter(id__in=unique_ids, is_npc=False)
+            .exclude(sector_id__isnull=True)
+            .values("id", "sector_id")
+        }
+
+        for target_player_id in unique_ids:
+            sector_id = sectors.get(target_player_id)
+            if not sector_id:
+                continue
+
+            payload = build_group_state_for_player(target_player_id)
+            async_to_sync(self.channel_layer.group_send)(
+                f"play_{sector_id}",
+                {
+                    "type": "group_state_sync",
+                    "target_player_id": target_player_id,
+                    "payload": payload,
+                    "reason": reason,
+                    "notice": notice,
+                },
+            )
+
+    def _emit_group_invitation(
+        self,
+        *,
+        invitee_id: int,
+        invitation_id: int,
+        group_id: int,
+        group_name: str,
+        inviter_id: int,
+        inviter_name: str,
+    ) -> None:
+        sector_id = (
+            Player.objects
+            .filter(id=invitee_id)
+            .values_list("sector_id", flat=True)
+            .first()
+        )
+        if not sector_id:
+            return
+
+        async_to_sync(self.channel_layer.group_send)(
+            f"play_{int(sector_id)}",
+            {
+                "type": "group_invitation",
+                "target_player_id": int(invitee_id),
+                "payload": {
+                    "id": int(invitation_id),
+                    "group_id": int(group_id),
+                    "group_name": str(group_name or "Unnamed Group"),
+                    "inviter_id": int(inviter_id),
+                    "inviter_name": str(inviter_name or "Unknown"),
+                },
+            },
+        )
+
+    def _handle_group_invite_action(self, payload: Dict[str, Any]) -> None:
+        try:
+            with transaction.atomic():
+                sender = (
+                    Player.objects.select_for_update()
+                    .filter(id=self.player_id, is_npc=False)
+                    .first()
+                )
+                if not sender:
+                    self._send_group_action_feedback("PLAYER_NOT_FOUND", "Player not found.", "error")
+                    return
+
+                membership = (
+                    PlayerGroup.objects.select_related("group")
+                    .select_for_update()
+                    .filter(player_id=sender.id)
+                    .order_by("created_at", "id")
+                    .first()
+                )
+
+                target_player, resolve_error = self._resolve_group_target_player(payload)
+                if resolve_error:
+                    if resolve_error == "TARGET_AMBIGUOUS":
+                        self._send_group_action_feedback(
+                            "TARGET_AMBIGUOUS",
+                            "Multiple players share this name. Use autocomplete to select one.",
+                            "error",
+                        )
+                    elif resolve_error == "TARGET_REQUIRED":
+                        self._send_group_action_feedback("TARGET_REQUIRED", "Choose a target player.", "error")
+                    else:
+                        self._send_group_action_feedback("TARGET_NOT_FOUND", "Target player not found.", "error")
+                    return
+
+                if int(target_player.id) == int(sender.id):
+                    self._send_group_action_feedback("INVALID_TARGET", "You cannot invite yourself.", "error")
+                    return
+
+                if PlayerGroup.objects.filter(player_id=target_player.id).exists():
+                    self._send_group_action_feedback("TARGET_ALREADY_IN_GROUP", "This player is already in a group.", "error")
+                    return
+
+                if membership:
+                    group = membership.group
+                    if int(group.creator_id) != int(sender.id):
+                        self._send_group_action_feedback("NOT_GROUP_LEADER", "Only the group leader can invite players.", "error")
+                        return
+                else:
+                    raw_group_name = str(payload.get("group_name") or "").strip()
+                    group_name = raw_group_name[:50] if raw_group_name else f"{sender.name}'s Group"
+                    group = Group.objects.create(creator_id=sender.id, name=group_name)
+                    PlayerGroup.objects.create(player_id=sender.id, group_id=group.id)
+
+                current_member_count = (
+                    PlayerGroup.objects.select_for_update()
+                    .filter(group_id=group.id)
+                    .count()
+                )
+                if int(current_member_count) >= int(self.GROUP_MAX_MEMBERS):
+                    self._send_group_action_feedback(
+                        "GROUP_FULL",
+                        f"Group is full ({self.GROUP_MAX_MEMBERS} members max).",
+                        "error",
+                        max_members=int(self.GROUP_MAX_MEMBERS),
+                    )
+                    return
+
+                if GroupInvitation.objects.filter(
+                    group_id=group.id,
+                    invitee_id=target_player.id,
+                    status="PENDING",
+                ).exists():
+                    self._send_group_action_feedback("INVITATION_ALREADY_PENDING", "An invitation is already pending for this player.", "error")
+                    return
+
+                invite = GroupInvitation.objects.create(
+                    group_id=group.id,
+                    inviter_id=sender.id,
+                    invitee_id=target_player.id,
+                    status="PENDING",
+                )
+
+                member_ids = self._group_member_player_ids(group.id)
+                member_ids.append(int(target_player.id))
+
+                transaction.on_commit(
+                    lambda: self._emit_group_state_sync_to_player_ids(
+                        member_ids,
+                        reason="GROUP_INVITE_SENT",
+                    )
+                )
+                transaction.on_commit(
+                    lambda: self._emit_group_invitation(
+                        invitee_id=int(target_player.id),
+                        invitation_id=int(invite.id),
+                        group_id=int(group.id),
+                        group_name=group.name,
+                        inviter_id=int(sender.id),
+                        inviter_name=sender.name,
+                    )
+                )
+
+            self._send_group_action_feedback(
+                "GROUP_INVITE_SENT",
+                f"Invitation sent to {target_player.name}.",
+                "success",
+                invitation_id=int(invite.id),
+                target_player_id=int(target_player.id),
+            )
+        except Exception:
+            logger.exception("group invite failed")
+            self._send_group_action_feedback("GROUP_INVITE_FAILED", "Unable to send group invitation.", "error")
+
+    def _handle_group_invitation_response_action(self, payload: Dict[str, Any]) -> None:
+        invitation_id = payload.get("invitation_id")
+        accept = bool(payload.get("accept"))
+
+        try:
+            invitation_id = int(invitation_id)
+        except (TypeError, ValueError):
+            self._send_group_action_feedback("INVALID_INVITATION_ID", "Invalid invitation id.", "error")
+            return
+
+        try:
+            with transaction.atomic():
+                invite = (
+                    GroupInvitation.objects.select_for_update()
+                    .select_related("group", "inviter", "invitee")
+                    .filter(id=invitation_id, invitee_id=self.player_id)
+                    .first()
+                )
+                if not invite:
+                    self._send_group_action_feedback("INVITATION_NOT_FOUND", "Invitation not found.", "error")
+                    return
+
+                if str(invite.status or "").upper() != "PENDING":
+                    self._send_group_action_feedback("INVITATION_NOT_PENDING", "Invitation is no longer available.", "error")
+                    return
+
+                now = timezone.now()
+                affected_player_ids = [int(invite.inviter_id), int(invite.invitee_id)]
+                if accept:
+                    if PlayerGroup.objects.filter(player_id=self.player_id).exists():
+                        invite.status = "DECLINED"
+                        invite.responded_at = now
+                        invite.save(update_fields=["status", "responded_at", "updated_at"])
+                        self._send_group_action_feedback("ALREADY_IN_GROUP", "You are already in a group.", "error")
+                        return
+
+                    group = (
+                        Group.objects.select_for_update()
+                        .filter(id=invite.group_id)
+                        .first()
+                    )
+                    if not group:
+                        invite.status = "EXPIRED"
+                        invite.responded_at = now
+                        invite.save(update_fields=["status", "responded_at", "updated_at"])
+                        self._send_group_action_feedback("GROUP_NOT_FOUND", "The group no longer exists.", "error")
+                        return
+
+                    current_member_count = (
+                        PlayerGroup.objects.select_for_update()
+                        .filter(group_id=group.id)
+                        .count()
+                    )
+                    if int(current_member_count) >= int(self.GROUP_MAX_MEMBERS):
+                        invite.status = "EXPIRED"
+                        invite.responded_at = now
+                        invite.save(update_fields=["status", "responded_at", "updated_at"])
+                        transaction.on_commit(
+                            lambda: self._emit_group_action_feedback_to_player(
+                                int(invite.inviter_id),
+                                reason="GROUP_FULL",
+                                message=f"Invitation to {invite.invitee.name} expired because the group is full.",
+                                level="info",
+                                max_members=int(self.GROUP_MAX_MEMBERS),
+                            )
+                        )
+                        self._send_group_action_feedback(
+                            "GROUP_FULL",
+                            f"Group is full ({self.GROUP_MAX_MEMBERS} members max).",
+                            "error",
+                            max_members=int(self.GROUP_MAX_MEMBERS),
+                        )
+                        return
+
+                    PlayerGroup.objects.get_or_create(
+                        player_id=self.player_id,
+                        group_id=group.id,
+                    )
+                    invite.status = "ACCEPTED"
+                    invite.responded_at = now
+                    invite.save(update_fields=["status", "responded_at", "updated_at"])
+
+                    GroupInvitation.objects.filter(
+                        invitee_id=self.player_id,
+                        status="PENDING",
+                    ).exclude(id=invite.id).update(
+                        status="EXPIRED",
+                        responded_at=now,
+                    )
+
+                    affected_player_ids = self._group_member_player_ids(group.id)
+                    transaction.on_commit(
+                        lambda: self._emit_group_action_feedback_to_player(
+                            int(invite.inviter_id),
+                            reason="INVITATION_ACCEPTED",
+                            message=f"{invite.invitee.name} has joined the group.",
+                            level="success",
+                        )
+                    )
+                else:
+                    invite.status = "DECLINED"
+                    invite.responded_at = now
+                    invite.save(update_fields=["status", "responded_at", "updated_at"])
+                    transaction.on_commit(
+                        lambda: self._emit_group_action_feedback_to_player(
+                            int(invite.inviter_id),
+                            reason="INVITATION_DECLINED",
+                            message=f"{invite.invitee.name} declined the invitation.",
+                            level="info",
+                        )
+                    )
+
+                transaction.on_commit(
+                    lambda: self._emit_group_state_sync_to_player_ids(
+                        affected_player_ids,
+                        reason="GROUP_INVITATION_RESPONSE",
+                    )
+                )
+
+            if accept:
+                self._send_group_action_feedback("INVITATION_ACCEPTED", "You joined the group.", "success")
+            else:
+                self._send_group_action_feedback("INVITATION_DECLINED", "Invitation declined.", "info")
+        except Exception:
+            logger.exception("group invitation response failed")
+            self._send_group_action_feedback("GROUP_INVITATION_RESPONSE_FAILED", "Unable to process invitation response.", "error")
+
+    def _handle_group_kick_action(self, payload: Dict[str, Any]) -> None:
+        try:
+            target_id = int(payload.get("target_player_id"))
+        except (TypeError, ValueError):
+            self._send_group_action_feedback("INVALID_TARGET", "Invalid target player.", "error")
+            return
+
+        try:
+            with transaction.atomic():
+                membership = (
+                    PlayerGroup.objects.select_related("group")
+                    .select_for_update()
+                    .filter(player_id=self.player_id)
+                    .order_by("created_at", "id")
+                    .first()
+                )
+                if not membership:
+                    self._send_group_action_feedback("NOT_IN_GROUP", "You are not in a group.", "error")
+                    return
+
+                group = membership.group
+                if int(group.creator_id) != int(self.player_id):
+                    self._send_group_action_feedback("NOT_GROUP_LEADER", "Only the group leader can remove players.", "error")
+                    return
+
+                if target_id == int(self.player_id):
+                    self._send_group_action_feedback("INVALID_TARGET", "Use Leave Group to leave the group.", "error")
+                    return
+
+                target_link = (
+                    PlayerGroup.objects.select_related("player")
+                    .select_for_update()
+                    .filter(group_id=group.id, player_id=target_id)
+                    .first()
+                )
+                if not target_link:
+                    self._send_group_action_feedback("TARGET_NOT_IN_GROUP", "Target player is not in your group.", "error")
+                    return
+
+                kicked_name = target_link.player.name
+                target_link.delete()
+                GroupInvitation.objects.filter(group_id=group.id, invitee_id=target_id, status="PENDING").update(
+                    status="CANCELED",
+                    responded_at=timezone.now(),
+                )
+
+                remaining_ids = self._group_member_player_ids(group.id)
+                affected = list(remaining_ids) + [int(target_id)]
+                transaction.on_commit(
+                    lambda: self._emit_group_state_sync_to_player_ids(
+                        affected,
+                        reason="GROUP_MEMBER_REMOVED",
+                    )
+                )
+                transaction.on_commit(
+                    lambda: self._emit_group_action_feedback_to_player(
+                        int(target_id),
+                        reason="REMOVED_FROM_GROUP",
+                        message="You were removed from the group.",
+                        level="info",
+                    )
+                )
+
+            self._send_group_action_feedback("GROUP_MEMBER_REMOVED", f"{kicked_name} removed from the group.", "success")
+        except Exception:
+            logger.exception("group kick failed")
+            self._send_group_action_feedback("GROUP_KICK_FAILED", "Unable to remove player from group.", "error")
+
+    def _handle_group_transfer_lead_action(self, payload: Dict[str, Any]) -> None:
+        try:
+            target_id = int(payload.get("target_player_id"))
+        except (TypeError, ValueError):
+            self._send_group_action_feedback("INVALID_TARGET", "Invalid target player.", "error")
+            return
+
+        try:
+            with transaction.atomic():
+                membership = (
+                    PlayerGroup.objects.select_related("group")
+                    .select_for_update()
+                    .filter(player_id=self.player_id)
+                    .order_by("created_at", "id")
+                    .first()
+                )
+                if not membership:
+                    self._send_group_action_feedback("NOT_IN_GROUP", "You are not in a group.", "error")
+                    return
+
+                group = (
+                    Group.objects.select_for_update()
+                    .filter(id=membership.group_id)
+                    .first()
+                )
+                if not group:
+                    self._send_group_action_feedback("GROUP_NOT_FOUND", "Group not found.", "error")
+                    return
+                if int(group.creator_id) != int(self.player_id):
+                    self._send_group_action_feedback("NOT_GROUP_LEADER", "Only the group leader can transfer leadership.", "error")
+                    return
+                if target_id == int(self.player_id):
+                    self._send_group_action_feedback("INVALID_TARGET", "You are already the group leader.", "error")
+                    return
+
+                target_member = (
+                    PlayerGroup.objects.select_related("player")
+                    .filter(group_id=group.id, player_id=target_id)
+                    .first()
+                )
+                if not target_member:
+                    self._send_group_action_feedback("TARGET_NOT_IN_GROUP", "Target player is not in your group.", "error")
+                    return
+
+                group.creator_id = int(target_id)
+                group.save(update_fields=["creator", "updated_at"])
+
+                member_ids = self._group_member_player_ids(group.id)
+                transaction.on_commit(
+                    lambda: self._emit_group_state_sync_to_player_ids(
+                        member_ids,
+                        reason="GROUP_LEAD_TRANSFERRED",
+                    )
+                )
+
+            self._send_group_action_feedback(
+                "GROUP_LEAD_TRANSFERRED",
+                f"Group leadership transferred to {target_member.player.name}.",
+                "success",
+            )
+        except Exception:
+            logger.exception("group transfer lead failed")
+            self._send_group_action_feedback("GROUP_TRANSFER_LEAD_FAILED", "Unable to transfer group leadership.", "error")
+
+    def _handle_group_leave_action(self, payload: Dict[str, Any]) -> None:
+        try:
+            with transaction.atomic():
+                membership = (
+                    PlayerGroup.objects.select_related("group")
+                    .select_for_update()
+                    .filter(player_id=self.player_id)
+                    .order_by("created_at", "id")
+                    .first()
+                )
+                if not membership:
+                    self._send_group_action_feedback("NOT_IN_GROUP", "You are not in a group.", "error")
+                    return
+
+                group = (
+                    Group.objects.select_for_update()
+                    .filter(id=membership.group_id)
+                    .first()
+                )
+                if not group:
+                    membership.delete()
+                    self._send_group_action_feedback("GROUP_NOT_FOUND", "Group no longer exists.", "info")
+                    return
+
+                leaving_player_id = int(self.player_id)
+                membership.delete()
+
+                remaining_links = list(
+                    PlayerGroup.objects.select_for_update()
+                    .filter(group_id=group.id)
+                    .order_by("created_at", "id")
+                )
+
+                if not remaining_links:
+                    GroupInvitation.objects.filter(group_id=group.id, status="PENDING").update(
+                        status="CANCELED",
+                        responded_at=timezone.now(),
+                    )
+                    group.delete()
+                    affected = [leaving_player_id]
+                else:
+                    if int(group.creator_id) == leaving_player_id:
+                        new_leader_link = remaining_links[0]
+                        group.creator_id = int(new_leader_link.player_id)
+                        group.save(update_fields=["creator", "updated_at"])
+                    affected = [leaving_player_id] + [int(link.player_id) for link in remaining_links]
+
+                transaction.on_commit(
+                    lambda: self._emit_group_state_sync_to_player_ids(
+                        affected,
+                        reason="GROUP_MEMBER_LEFT",
+                    )
+                )
+
+            self._send_group_action_feedback("GROUP_LEFT", "You left the group.", "success")
+        except Exception:
+            logger.exception("group leave failed")
+            self._send_group_action_feedback("GROUP_LEAVE_FAILED", "Unable to leave the group.", "error")
+
+    def _handle_group_disband_action(self, payload: Dict[str, Any]) -> None:
+        try:
+            with transaction.atomic():
+                membership = (
+                    PlayerGroup.objects.select_related("group")
+                    .select_for_update()
+                    .filter(player_id=self.player_id)
+                    .order_by("created_at", "id")
+                    .first()
+                )
+                if not membership:
+                    self._send_group_action_feedback("NOT_IN_GROUP", "You are not in a group.", "error")
+                    return
+
+                group = (
+                    Group.objects.select_for_update()
+                    .filter(id=membership.group_id)
+                    .first()
+                )
+                if not group:
+                    self._send_group_action_feedback("GROUP_NOT_FOUND", "Group no longer exists.", "info")
+                    return
+                if int(group.creator_id) != int(self.player_id):
+                    self._send_group_action_feedback("NOT_GROUP_LEADER", "Only the group leader can disband the group.", "error")
+                    return
+
+                member_ids = self._group_member_player_ids(group.id)
+                GroupInvitation.objects.filter(group_id=group.id, status="PENDING").update(
+                    status="CANCELED",
+                    responded_at=timezone.now(),
+                )
+                PlayerGroup.objects.filter(group_id=group.id).delete()
+                group.delete()
+
+                transaction.on_commit(
+                    lambda: self._emit_group_state_sync_to_player_ids(
+                        member_ids,
+                        reason="GROUP_DISBANDED",
+                    )
+                )
+
+            self._send_group_action_feedback("GROUP_DISBANDED", "Group disbanded.", "success")
+        except Exception:
+            logger.exception("group disband failed")
+            self._send_group_action_feedback("GROUP_DISBAND_FAILED", "Unable to disband the group.", "error")
+
     def _dispatch_respawn_action_message(self, data: Dict[str, Any]) -> None:
         payload = self._get_client_payload(data)
         if payload is None:
@@ -5078,6 +5905,80 @@ class GameConsumer(WebsocketConsumer):
             return
         self._handle_wreck_loot_take(payload)
 
+    def async_reverse_ship(self, event: Dict[str, Any]) -> None:
+        """Relaye l'etat final d'orientation du vaisseau aux clients."""
+        try:
+            message = event.get("message", {})
+            if isinstance(message, str):
+                message = json.loads(message)
+            if not isinstance(message, dict):
+                return
+
+            player_id = message.get("player_id", message.get("player"))
+            try:
+                player_id = int(player_id)
+            except (TypeError, ValueError):
+                return
+
+            payload = {"player_id": player_id}
+            if "is_reversed" in message:
+                payload["is_reversed"] = bool(message.get("is_reversed"))
+
+            self._send_response({
+                "type": "async_reverse_ship",
+                "message": payload,
+            })
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.error(f"Erreur lors de l'inversion du vaisseau: {e}")
+
+    def _process_ship_reversal(self, message: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Traite une demande de flip envoyee par le joueur courant.
+        Retourne l'evenement de diffusion a envoyer a toute la room.
+        """
+        requested_player_id = message.get("player_id", message.get("player"))
+        if requested_player_id is not None:
+            try:
+                if int(requested_player_id) != int(self.player_id):
+                    logger.warning(
+                        "Flip refuse: demande d'un autre joueur (sender=%s target=%s)",
+                        self.player_id,
+                        requested_player_id,
+                    )
+                    return None
+            except (TypeError, ValueError):
+                logger.warning("Flip refuse: player_id invalide (%s)", requested_player_id)
+                return None
+
+        player_action = PlayerAction(self.user.id)
+        if not player_action.set_reverse_ship_status():
+            logger.warning(
+                "Flip impossible: vaisseau courant introuvable (player_id=%s)",
+                self.player_id,
+            )
+            return None
+
+        new_orientation = player_action.get_reverse_ship_status()
+        if new_orientation is None:
+            logger.warning(
+                "Flip impossible: orientation introuvable apres update (player_id=%s)",
+                self.player_id,
+            )
+            return None
+
+        self._cache_store.update_ship_is_reversed(
+            player_id=self.player_id,
+            is_reversed=bool(new_orientation),
+        )
+
+        return {
+            "type": "async_reverse_ship",
+            "message": {
+                "player_id": int(self.player_id),
+                "is_reversed": bool(new_orientation),
+            },
+        }
+
     def _extract_message_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         return {
             "type": data["type"],
@@ -5109,4 +6010,5 @@ class GameConsumer(WebsocketConsumer):
             except Exception as e:
                 logger.error(f"Erreur lors de l'envoi de la réponse: {e}")
     
+
 

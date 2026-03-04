@@ -178,6 +178,79 @@ export function initGlobals() {
         window.scannedMeta = {};
         window.scannedModalData = {};
         window.scanExpiredLocal = new Set();
+        window.groupStateSnapshot = { in_group: false, members: [] };
+        window.groupMembersByKey = {};
+        window.groupMemberActorKeys = new Set();
+        window.groupLeaderActorKeys = new Set();
+
+        window.applyGroupStateSnapshot = function (state) {
+            const snapshot = (state && typeof state === "object") ? state : {};
+            const inGroup = Boolean(snapshot.in_group);
+            const members = Array.isArray(snapshot.members) ? snapshot.members : [];
+            const currentPlayerId = String(window.current_player_id ?? "");
+
+            const membersByKey = {};
+            const memberKeys = new Set();
+            const leaderKeys = new Set();
+
+            if (inGroup) {
+                members.forEach((member) => {
+                    const playerId = Number(member?.player_id);
+                    if (!Number.isFinite(playerId)) return;
+
+                    const actorKey = `pc_${playerId}`;
+                    const isSelf = String(playerId) === currentPlayerId;
+                    const isLeader = Boolean(member?.is_leader);
+                    const sectorId = Number(member?.sector_id);
+
+                    membersByKey[actorKey] = {
+                        player_id: playerId,
+                        name: String(member?.name || ""),
+                        is_leader: isLeader,
+                        sector_id: Number.isFinite(sectorId) ? sectorId : null,
+                        sector_name: member?.sector_name || null,
+                    };
+
+                    if (!isSelf) {
+                        memberKeys.add(actorKey);
+                        if (isLeader) {
+                            leaderKeys.add(actorKey);
+                        }
+                    }
+                });
+            }
+
+            window.groupStateSnapshot = snapshot;
+            window.groupMembersByKey = membersByKey;
+            window.groupMemberActorKeys = memberKeys;
+            window.groupLeaderActorKeys = leaderKeys;
+
+            window.canvasEngine?.renderer?.requestRedraw?.();
+        };
+
+        window.isGroupMemberTarget = function (targetKey) {
+            if (!targetKey) return false;
+            return window.groupMemberActorKeys?.has?.(String(targetKey)) === true;
+        };
+
+        window.isGroupLeaderTarget = function (targetKey) {
+            if (!targetKey) return false;
+            return window.groupLeaderActorKeys?.has?.(String(targetKey)) === true;
+        };
+
+        window.getGroupMemberInfo = function (targetKey) {
+            if (!targetKey) return null;
+            return window.groupMembersByKey?.[String(targetKey)] || null;
+        };
+
+        window.isPermanentGroupScan = function (targetKey) {
+            return window.isGroupMemberTarget?.(targetKey) === true;
+        };
+
+        if (window.__pendingGroupStateSnapshot) {
+            window.applyGroupStateSnapshot(window.__pendingGroupStateSnapshot);
+            delete window.__pendingGroupStateSnapshot;
+        }
         // ===============================
         // Timed effects (foundation)
         // ===============================
@@ -209,6 +282,7 @@ export function initGlobals() {
         };
 
         window.isScanned = function (targetKey) {
+            if (window.isPermanentGroupScan?.(targetKey) === true) { return true; }
             if (window.scanExpiredLocal?.has(targetKey)) { return false; }
             return (
                 window.activeEffects?.scan?.has(targetKey) === true ||

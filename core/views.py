@@ -43,10 +43,12 @@ from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
 from core.backend.player_logs import create_event_log
 from core.backend.module_effects import get_effect_numeric
+from core.backend.group_service import build_group_state_for_player
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
 from core.models import (
     LoggedInUser,
     Player,
+    GroupInvitation,
     Sector,
     Archetype,
     Ship,
@@ -838,6 +840,72 @@ def search_players_for_private_mail(request):
                 "name": p.name,
                 "faction": p.faction.name if p.faction else "",
             })
+    return JsonResponse({"results": results})
+
+
+@login_required
+def group_modal_state(request):
+    try:
+        player = Player.objects.filter(user=request.user, is_npc=False).first()
+        if not player:
+            return JsonResponse({"ok": False, "error": "PLAYER_NOT_FOUND"}, status=404)
+
+        state = build_group_state_for_player(int(player.id))
+
+        pending_invites = (
+            GroupInvitation.objects
+            .select_related("group", "inviter")
+            .filter(invitee_id=player.id, status="PENDING")
+            .order_by("-created_at")[:10]
+        )
+        invites_payload = []
+        for invite in pending_invites:
+            invites_payload.append(
+                {
+                    "id": int(invite.id),
+                    "group_id": int(invite.group_id),
+                    "group_name": invite.group.name if invite.group else "Unnamed Group",
+                    "inviter_id": int(invite.inviter_id),
+                    "inviter_name": invite.inviter.name if invite.inviter else "Unknown",
+                    "created_at": invite.created_at.isoformat() if invite.created_at else None,
+                }
+            )
+
+        state["pending_invitations"] = invites_payload
+        return JsonResponse({"ok": True, "state": state})
+    except Exception:
+        logger.exception("group_modal_state failed")
+        return JsonResponse({"ok": False, "error": "GROUP_STATE_FAILED"}, status=500)
+
+
+@login_required
+def search_players_for_group_invite(request):
+    q = request.GET.get("q", "").strip()
+    if not q:
+        return JsonResponse({"results": []})
+
+    current_player = Player.objects.filter(user=request.user, is_npc=False).first()
+    current_player_id = int(current_player.id) if current_player else None
+
+    qs = (
+        Player.objects.filter(name__icontains=q, is_npc=False)
+        .exclude(id=current_player_id)
+        .select_related("faction")
+        .order_by("name", "id")[:10]
+    )
+
+    results = []
+    for p in qs:
+        in_group = PlayerGroup.objects.filter(player_id=p.id).exists()
+        results.append(
+            {
+                "id": int(p.id),
+                "name": p.name,
+                "faction": p.faction.name if p.faction else "",
+                "in_group": bool(in_group),
+            }
+        )
+
     return JsonResponse({"results": results})
 
 

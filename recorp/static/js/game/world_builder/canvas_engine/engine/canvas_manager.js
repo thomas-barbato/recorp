@@ -64,16 +64,25 @@ const CanvasManager = (function () {
     function resizeAll() {
         const host = getCanvasHost();
         const rect = host.getBoundingClientRect();
-        width = Math.max(320, Math.floor(rect.width));
-        height = Math.max(240, Math.floor(rect.height));
+        const cssWidth = Math.max(320, Number(rect.width) || 0);
+        const cssHeight = Math.max(240, Number(rect.height) || 0);
+
+        width = cssWidth;
+        height = cssHeight;
         dpr = window.devicePixelRatio || 1;
 
         Object.values(canvasMap).forEach(({ el, ctx }) => {
-            el.style.width = width + 'px';
-            el.style.height = height + 'px';
-            el.width = Math.round(width * dpr);
-            el.height = Math.round(height * dpr);
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const bufferWidth = Math.max(1, Math.ceil(cssWidth * dpr));
+            const bufferHeight = Math.max(1, Math.ceil(cssHeight * dpr));
+
+            el.style.width = cssWidth + 'px';
+            el.style.height = cssHeight + 'px';
+            el.width = bufferWidth;
+            el.height = bufferHeight;
+
+            const scaleX = bufferWidth / cssWidth;
+            const scaleY = bufferHeight / cssHeight;
+            ctx.setTransform(scaleX, 0, 0, scaleY, 0, 0);
         });
     }
 

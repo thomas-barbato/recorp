@@ -1,48 +1,32 @@
-import { renderEventLog } from "../../events/events_renderer.js"
+import { renderEventLog } from "../../events/events_renderer.js";
+
+const MAX_HUD_LOGS = 25;
 
 export function getEventsLog(payload) {
     const log = payload;
 
-    // =========================
-    // HUD DESKTOP
-    // Convention: nouveau message en haut, plus ancien en bas
-    // =========================
-    const desktop = document.getElementById("player-event-container");
-    if (desktop) {
+    const appendAndTrim = (container, isMobile) => {
+        if (!container) return;
         renderEventLog(log, {
-            container: desktop,
+            container,
             prepend: true,
             mode: "hud",
-            isMobile: false
+            isMobile,
         });
 
-        // limite hard à 25 (supprime le plus ancien visuellement)
-        while (desktop.children.length >= 25) {
-            desktop.removeChild(desktop.lastElementChild);
+        while (container.children.length > MAX_HUD_LOGS) {
+            container.removeChild(container.lastElementChild);
         }
-    }
+    };
 
-    // =========================
-    // HUD MOBILE (horodatage)
-    // =========================
-    const mobile = document.getElementById("player-event-mobile-container");
-    if (mobile) {
-        renderEventLog(log, {
-            container: mobile,
-            prepend: true,
-            mode: "hud",
-            isMobile: true
-        });
+    // Desktop + tablette
+    appendAndTrim(document.getElementById("player-event-container"), false);
+    appendAndTrim(document.getElementById("player-event-tablet-container"), false);
 
-        while (mobile.children.length >= 25) {
-            mobile.removeChild(mobile.lastElementChild);
-        }
-    }
+    // Mobile
+    appendAndTrim(document.getElementById("player-event-mobile-container"), true);
 
-    // =========================
-    // MODAL EVENT (si ouvert)
-    // => temps réel: nouveau en haut
-    // =========================
+    // Modal event (si ouvert)
     const modal = document.getElementById("event-modal");
     const modalContainer = document.getElementById("event-modal-log-container");
 
@@ -51,7 +35,7 @@ export function getEventsLog(payload) {
             container: modalContainer,
             prepend: true,
             mode: "modal",
-            isMobile: false
+            isMobile: false,
         });
     }
 }

@@ -506,7 +506,7 @@ class GetDataFromDB:
     @staticmethod
     def current_player_sonar_zone(current_player_id: int) -> dict:
         """
-        Calcule la zone sonore du joueur (rayon circulaire).
+        Calcule la zone sonar du joueur (rayon circulaire).
         Cette méthode est utilisée lorsque la mécanique de sonar est activée.
         Elle utilise la distance Euclidienne et renvoie un ensemble de tuiles
         dans un cercle, cohérent avec le front-end `sonar_system.js`.
@@ -563,7 +563,7 @@ class GetDataFromDB:
             
     @staticmethod
     def _get_player_ship_view_range(player_id: int) -> dict:
-        """Récupère les données de visibilité d'un joueur"""
+        """Récupère les données de visibilité d'un joueur"""    
         
         player_data = PlayerShipModule.objects.filter(
             player_ship_id__player_id=player_id,
@@ -588,8 +588,8 @@ class GetDataFromDB:
         """
         Calcule les coordonnées visibles depuis la position du joueur.
         
-        ✅ FIX APPLIQUÉ (27/02/2026): Utilise distance Chebyshev (correct!)
-        Cela crée des zones de visibilité CARRÉES (8-directions).
+        Utilise distance Chebyshev
+        Cela crée des zones de visibilité CARRÉES.
         Cohérent avec combat_engine.py qui utilise aussi Chebyshev.
         
         Remplace l'ancien code Euclidienne qui causait des discordances client/serveur.
@@ -969,15 +969,20 @@ class GetDataFromDB:
         
     @staticmethod
     def get_player_group(player_id: int):
-        return PlayerGroup.objects.filter(player_id=player_id).first()
+        return (
+            PlayerGroup.objects
+            .select_related("group", "group__creator")
+            .filter(player_id=player_id)
+            .order_by("created_at", "id")
+            .first()
+        )
     
     @staticmethod
     def get_group_member(player_id: int):
-        return list(
-            PlayerGroup.objects.filter(
-                player_id=player_id
-            ).values_list("player_id", flat=True)
-        )
+        membership = GetDataFromDB.get_player_group(player_id)
+        if not membership:
+            return None
+        return int(membership.group_id)
         
     @staticmethod
     def get_players_in_sector(sector_id: int) -> list[dict]:
@@ -1027,7 +1032,7 @@ class GetDataFromDB:
 
 
     @staticmethod
-    def get_players_in_group(group_id: int | None) -> list[dict]:
+    def get_players_in_group(group_id: int | None, excluded_player_id: int | None = None) -> list[dict]:
         """
         Retourne la liste des joueurs appartenant à un groupe donné.
         Si le joueur n'a pas de groupe (group_id=None), renvoie [].
@@ -1036,10 +1041,12 @@ class GetDataFromDB:
             if not group_id:
                 return []
 
-            players = (
-                Player.objects.filter(group_id=group_id)
-                .values("id", "sector_id")
-            )
+            member_links = PlayerGroup.objects.filter(group_id=group_id)
+            if excluded_player_id:
+                member_links = member_links.exclude(player_id=excluded_player_id)
+            member_player_ids = member_links.values_list("player_id", flat=True)
+
+            players = Player.objects.filter(id__in=member_player_ids).values("id", "sector_id")
 
             if not players.exists():
                 return []

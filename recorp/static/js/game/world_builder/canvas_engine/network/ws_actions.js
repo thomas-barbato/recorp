@@ -33,6 +33,12 @@ import {
     handleWreckLootSessionState,
     handleWreckLootSessionClosed,
 } from "../handlers/wreck_loot_handlers.js";
+import { handleCanvasFlipShip } from "../handlers/canvas_flip_handlers.js";
+import {
+    handleGroupActionFeedback,
+    handleGroupInvitation,
+    handleGroupStateSync,
+} from "../handlers/group_handlers.js";
 
 
 
@@ -52,6 +58,7 @@ function entity_state_update_router(msg) {
 // ===============================
 ActionRegistry.register("player_move", handlePlayerMove);
 ActionRegistry.register("update_mp", handleUpdateMovementGeneric);
+ActionRegistry.register("async_reverse_ship", handleCanvasFlipShip);
 
 // ===============================
 // CHAT
@@ -121,4 +128,7 @@ ActionRegistry.register("ship_module_local_sync", handleShipModuleLocalSync);
 ActionRegistry.register("wreck_loot_session_state", handleWreckLootSessionState);
 ActionRegistry.register("wreck_loot_session_closed", handleWreckLootSessionClosed);
 ActionRegistry.register("bank_balance_update", handleBankBalanceUpdate);
+ActionRegistry.register("group_state_sync", handleGroupStateSync);
+ActionRegistry.register("group_invitation", handleGroupInvitation);
+ActionRegistry.register("group_action_feedback", handleGroupActionFeedback);
 
