@@ -1521,6 +1521,22 @@ class GameConsumer(WebsocketConsumer):
 
         player_action = PlayerAction(self.user.id)
         player_id = player_action.get_player_id()
+        now = timezone.now()
+
+        if target_type not in {"pc", "npc"}:
+            self._send_response({
+                "type": "action_failed",
+                "message": {"reason": "INVALID_TARGET_TYPE"},
+            })
+            return
+        try:
+            target_id = int(target_id)
+        except (TypeError, ValueError):
+            self._send_response({
+                "type": "action_failed",
+                "message": {"reason": "INVALID_TARGET_ID"},
+            })
+            return
         
         group_id = GetDataFromDB.get_group_member(player_id)
         if not group_id:
@@ -1533,20 +1549,20 @@ class GameConsumer(WebsocketConsumer):
             })
             return
 
-        if not player_action.consume_ap(1):
-            self._send_response({
-                "type": "action_failed",
-                "message": {
-                    "reason": "NOT_ENOUGH_AP"
-                },
-                
-            })
-            return
-        
         sector_id_int = int(self.room)
+
+        # Le partage n'est autorise que pour une cible active scannee par ce joueur.
         scan = (
-            GetDataFromDB.get_scan_target(player_id, sector_id_int)
+            ScanIntel.objects.filter(
+                scanner_player_id=player_id,
+                target_type=target_type,
+                target_id=target_id,
+                sector_id=sector_id_int,
+                invalidated_at__isnull=True,
+                expires_at__gt=now,
+            )
             .order_by("-expires_at")
+            .values("id", "target_id", "target_type", "expires_at")
             .first()
         )
         if not scan:
@@ -1557,30 +1573,93 @@ class GameConsumer(WebsocketConsumer):
                 },
             })
             return
+
+        group_members = GetDataFromDB.get_players_in_group(group_id)
+        group_member_ids = {
+            int(e.get("id"))
+            for e in group_members
+            if e.get("id") is not None
+        }
+
+        # La cible ne doit pas etre un membre du groupe.
+        if target_type == "pc" and int(target_id) in group_member_ids:
+            self._send_response({
+                "type": "action_failed",
+                "message": {
+                    "reason": "TARGET_IN_GROUP"
+                },
+            })
+            return
+
+        # Partage live uniquement aux membres presents dans le meme secteur.
+        eligible_recipient_ids = [
+            int(e["id"])
+            for e in group_members
+            if e.get("id") is not None
+            and int(e.get("id")) != int(player_id)
+            and e.get("sector_id") is not None
+            and int(e.get("sector_id")) == int(sector_id_int)
+        ]
+
+        if not eligible_recipient_ids:
+            self._send_response({
+                "type": "action_failed",
+                "message": {
+                    "reason": "NO_GROUP_RECIPIENT_IN_SECTOR"
+                },
+            })
+            return
+
+        can_consume_ap, remaining_ap = player_action.consume_ap(1)
+        if not can_consume_ap:
+            self._send_response({
+                "type": "action_failed",
+                "message": {
+                    "reason": "NOT_ENOUGH_AP"
+                },
+            })
+            return
         
-        ScanIntelGroup.objects.get_or_create(
-            scan_id=scan["id"],
-            group_id=group_id
+        recipient_group_links = list(
+            PlayerGroup.objects.filter(
+                group_id=group_id,
+                player_id__in=eligible_recipient_ids,
+            )
+            .values_list("id", flat=True)
         )
-            
-        recipients = GetDataFromDB.get_players_in_group(group_id)
-        player_ids = [int(e.get("id")) for e in recipients if e.get("id") is not None]
-            
-        for pid in player_ids:
-            if pid == self.player_id:
-                continue
-            
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    "type": "scan_share_to_group",
-                    "message": {
-                        "target_key": f"{target_type}_{target_id}",
-                        "expires_at": scan["expires_at"].isoformat() if isinstance(scan, dict) and scan.get("expires_at") else None,
-                        "recipients": player_ids,
+
+        for player_group_link_id in recipient_group_links:
+            ScanIntelGroup.objects.get_or_create(
+                scan_id=int(scan["id"]),
+                group_id=int(player_group_link_id),
+            )
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "scan_share_to_group",
+                "message": {
+                    "target_key": f"{target_type}_{target_id}",
+                    "expires_at": scan["expires_at"].isoformat() if scan.get("expires_at") else None,
+                    "recipients": eligible_recipient_ids,
+                }
+            }
+        )
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "entity_state_update",
+                "entity_key": f"pc_{player_id}",
+                "change_type": "ap_update",
+                "changes": {
+                    "ap": {
+                        "current": remaining_ap,
+                        "max": player_action.get_player_max_ap(),
                     }
                 }
-            )
+            }
+        )
             
     def scan_share_to_group(self, event):
         self._send_response({
@@ -5064,6 +5143,7 @@ class GameConsumer(WebsocketConsumer):
             "async_chat_message": self._dispatch_chat_message,
             "async_send_mp": self._dispatch_private_message,
             "action_scan_pc_npc": self._dispatch_scan_action_message,
+            "action_share_scan": self._dispatch_share_scan_message,
             "share_scan": self._dispatch_share_scan_message,
             "action_attack": self._dispatch_combat_action_message,
             "action_ship_module_reconfigure": self._dispatch_ship_module_reconfiguration_message,

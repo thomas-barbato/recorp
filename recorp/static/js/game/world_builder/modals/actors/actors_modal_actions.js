@@ -17,6 +17,35 @@
         return getGameState()?.currentPlayerId ?? window.current_player_id ?? null;
     }
 
+    function getCurrentPlayerGroupStatus() {
+        const snapshotReady = window.groupStateSnapshotReady === true;
+        const snapshot = window.groupStateSnapshot;
+        if (snapshotReady && snapshot && typeof snapshot === "object") {
+            if (typeof snapshot.in_group === "boolean") return snapshot.in_group;
+            const snapshotGroupId = Number(snapshot?.group?.id ?? snapshot?.group_id ?? 0);
+            if (Number.isFinite(snapshotGroupId) && snapshotGroupId > 0) return true;
+        }
+
+        const currentPlayerData = getCurrentPlayerData();
+        const rawGroupId =
+            currentPlayerData?.group_id ??
+            currentPlayerData?.user?.group_id ??
+            currentPlayerData?.player?.group_id ??
+            window.currentPlayer?.group_id ??
+            window.currentPlayer?.user?.group_id ??
+            window.currentPlayer?.player?.group_id ??
+            null;
+        if (rawGroupId == null || rawGroupId === "") return null;
+
+        const parsedGroupId = Number(rawGroupId);
+        if (!Number.isFinite(parsedGroupId)) return null;
+        return parsedGroupId > 0;
+    }
+
+    function isCurrentPlayerInGroup() {
+        return getCurrentPlayerGroupStatus() === true;
+    }
+
     function getActionSceneManager() {
         return window.ActionSceneManager || null;
     }
@@ -565,7 +594,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             // --- click handler ---
             const btn = createActionButton(iconEl, extra.label, () => 
             {
-                if (extra.requires_group && !currentPlayer?.group_id) {
+                if (extra.requires_group && !isCurrentPlayerInGroup()) {
                     showActionError(modalId, extra.warning_no_group);
                     return;
                 }
@@ -574,6 +603,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 if (!ws?.send) return;
 
                 const info = actionCtx.parsed ?? define_modal_type(modalId);
+                const targetKey = (info?.type && info?.id != null) ? `${info.type}_${info.id}` : null;
                 // ACTION : SEND REPORT
                 if (extra.key === "send_report") {
                     openSendReportModal({
@@ -588,8 +618,19 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 // ACTION : SHARE SCAN (WS)
                 if (extra.key === "share_to_group") {
-                    if (extra.requires_group && !currentPlayer?.group_id) {
+                    if (extra.requires_group && !isCurrentPlayerInGroup()) {
                         showActionError(modalId, extra.warning_no_group);
+                        return;
+                    }
+                    if (
+                        info?.type === "pc" &&
+                        targetKey &&
+                        window.isGroupMemberTarget?.(targetKey) === true
+                    ) {
+                        const msg = (typeof gettext === "function")
+                            ? gettext("You cannot share scan on a group member.")
+                            : "You cannot share scan on a group member.";
+                        showActionError(modalId, msg);
                         return;
                     }
 
@@ -609,8 +650,23 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         // BLOQUER SI AP INSUFFISANTS
         applyActionCostState({ ap_cost: extra.ap_cost, cost: 0 }, btn);
 
-        if(extra.requires_group && !currentPlayer?.group_id){
+        if (extra.requires_group && getCurrentPlayerGroupStatus() === false) {
             btn.classList.add("opacity-40", "pointer-events-none");
+        }
+        const infoForDisable = actionCtx.parsed ?? define_modal_type(modalId);
+        const targetKeyForDisable = (infoForDisable?.type && infoForDisable?.id != null)
+            ? `${infoForDisable.type}_${infoForDisable.id}`
+            : null;
+        const shareTargetIsGroupMember =
+            extra.key === "share_to_group" &&
+            infoForDisable?.type === "pc" &&
+            targetKeyForDisable &&
+            window.isGroupMemberTarget?.(targetKeyForDisable) === true;
+        if (shareTargetIsGroupMember) {
+            btn.classList.add("opacity-40", "pointer-events-none");
+            btn.title = (typeof gettext === "function")
+                ? gettext("Target is in your group.")
+                : "Target is in your group.";
         }
 
         const cell = document.createElement("div");

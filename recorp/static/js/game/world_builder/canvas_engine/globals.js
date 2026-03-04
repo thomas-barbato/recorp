@@ -179,6 +179,7 @@ export function initGlobals() {
         window.scannedModalData = {};
         window.scanExpiredLocal = new Set();
         window.groupStateSnapshot = { in_group: false, members: [] };
+        window.groupStateSnapshotReady = false;
         window.groupMembersByKey = {};
         window.groupMemberActorKeys = new Set();
         window.groupLeaderActorKeys = new Set();
@@ -221,9 +222,39 @@ export function initGlobals() {
             }
 
             window.groupStateSnapshot = snapshot;
+            window.groupStateSnapshotReady = true;
             window.groupMembersByKey = membersByKey;
             window.groupMemberActorKeys = memberKeys;
             window.groupLeaderActorKeys = leaderKeys;
+
+            const snapshotGroupId = Number(snapshot?.group?.id ?? snapshot?.group_id ?? 0);
+            const normalizedGroupId = Number.isFinite(snapshotGroupId) && snapshotGroupId > 0
+                ? snapshotGroupId
+                : null;
+            if (window.currentPlayer && typeof window.currentPlayer === "object") {
+                window.currentPlayer.group_id = normalizedGroupId;
+                if (window.currentPlayer.user && typeof window.currentPlayer.user === "object") {
+                    window.currentPlayer.user.group_id = normalizedGroupId;
+                }
+                if (window.currentPlayer.player && typeof window.currentPlayer.player === "object") {
+                    window.currentPlayer.player.group_id = normalizedGroupId;
+                }
+            }
+            if (window.GameState?.player?.currentPlayer && typeof window.GameState.player.currentPlayer === "object") {
+                window.GameState.player.currentPlayer.group_id = normalizedGroupId;
+                if (
+                    window.GameState.player.currentPlayer.user &&
+                    typeof window.GameState.player.currentPlayer.user === "object"
+                ) {
+                    window.GameState.player.currentPlayer.user.group_id = normalizedGroupId;
+                }
+                if (
+                    window.GameState.player.currentPlayer.player &&
+                    typeof window.GameState.player.currentPlayer.player === "object"
+                ) {
+                    window.GameState.player.currentPlayer.player.group_id = normalizedGroupId;
+                }
+            }
 
             window.canvasEngine?.renderer?.requestRedraw?.();
         };
