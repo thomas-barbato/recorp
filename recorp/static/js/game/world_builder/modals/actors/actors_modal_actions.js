@@ -386,6 +386,28 @@
         }
     }
 
+    function lockActionButtonTemporarily(btn, durationMs = 1000, onRelease = null) {
+        if (!btn) return;
+        if (btn.dataset.tempLockToken) return;
+
+        const token = `${Date.now()}-${Math.random()}`;
+        const safeDuration = Math.max(0, Number(durationMs) || 0);
+
+        btn.dataset.tempLockToken = token;
+        btn.classList.add("opacity-40", "pointer-events-none");
+
+        window.setTimeout(() => {
+            if (btn.dataset.tempLockToken !== token) return;
+            delete btn.dataset.tempLockToken;
+
+            if (typeof onRelease === "function") {
+                onRelease();
+                return;
+            }
+            btn.classList.remove("opacity-40", "pointer-events-none");
+        }, safeDuration);
+    }
+
     function applyScanState(data, scanButton) {
         if (data?._ui?.scanned === true) {
             scanButton.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
@@ -618,6 +640,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 // ACTION : SHARE SCAN (WS)
                 if (extra.key === "share_to_group") {
+                    if (btn.dataset.tempLockToken) {
+                        return;
+                    }
                     if (extra.requires_group && !isCurrentPlayerInGroup()) {
                         showActionError(modalId, extra.warning_no_group);
                         return;
@@ -636,6 +661,31 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                     const ws = getEngine()?.ws;
                     if (!ws?.send) return;
+
+                    lockActionButtonTemporarily(btn, 1000, () => {
+                        btn.classList.remove("opacity-40", "pointer-events-none");
+                        btn.removeAttribute("title");
+                        applyActionCostState({ ap_cost: extra.ap_cost, cost: 0 }, btn);
+
+                        if (extra.requires_group && getCurrentPlayerGroupStatus() === false) {
+                            btn.classList.add("opacity-40", "pointer-events-none");
+                        }
+
+                        const infoAfterCooldown = actionCtx.parsed ?? define_modal_type(modalId);
+                        const targetKeyAfterCooldown = (infoAfterCooldown?.type && infoAfterCooldown?.id != null)
+                            ? `${infoAfterCooldown.type}_${infoAfterCooldown.id}`
+                            : null;
+                        const shareTargetIsGroupMemberAfterCooldown =
+                            infoAfterCooldown?.type === "pc" &&
+                            targetKeyAfterCooldown &&
+                            window.isGroupMemberTarget?.(targetKeyAfterCooldown) === true;
+                        if (shareTargetIsGroupMemberAfterCooldown) {
+                            btn.classList.add("opacity-40", "pointer-events-none");
+                            btn.title = (typeof gettext === "function")
+                                ? gettext("Target is in your group.")
+                                : "Target is in your group.";
+                        }
+                    });
 
                     ws.send({
                         type: "action_share_scan",
