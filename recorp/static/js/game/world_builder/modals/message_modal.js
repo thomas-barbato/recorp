@@ -15,6 +15,7 @@ let currentPage = 1;
 let currentTab = 'received';
 let unreadCount = 0;
 let isModalOpen = false;
+let composeOutsideClickHandler = null;
 
 window.mpNotificationQueue = [];
 window.mpNotificationIsShowing = false;
@@ -24,6 +25,10 @@ loadUnreadCount();
 
 function closeModal() {
     isModalOpen = false;
+    if (composeOutsideClickHandler) {
+        document.removeEventListener('click', composeOutsideClickHandler);
+        composeOutsideClickHandler = null;
+    }
     content.classList.add('scale-90', 'opacity-0');
     setTimeout(() => {
         modal.classList.add('hidden');
@@ -527,10 +532,16 @@ function bindComposeEvents() {
             if(mode === "player" && !recipientPlayerId.value) return showError(gettext("Recipient not found"));
         });
 
-    document.addEventListener('click', (e) => {
+    if (composeOutsideClickHandler) {
+        document.removeEventListener('click', composeOutsideClickHandler);
+    }
+
+    composeOutsideClickHandler = (e) => {
         if (!recipientAutocomplete.contains(e.target) && e.target !== recipientInput)
             clearAutocomplete();
-    });
+    };
+
+    document.addEventListener('click', composeOutsideClickHandler);
 }
 
 // === NOTIFICATION DEPUIS WEBSOCKET ===

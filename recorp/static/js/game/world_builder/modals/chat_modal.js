@@ -128,11 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = "";
         messageIndex = 0;
         altColor = false;
-        messages.forEach(m => appendMessage({ ...m, channel }));
-        if (channel === currentChannel) forceScrollToBottom();
+        const fragment = document.createDocumentFragment();
+        messages.forEach(m => appendMessage({ ...m, channel }, { shouldScroll: false, targetContainer: fragment }));
+        container.appendChild(fragment);
+        if (channel === currentChannel) forceScrollToBottom(container);
     }
 
-    function appendMessage({ author, faction, faction_color, content, timestamp, channel, is_read }) {
+    function appendMessage({ author, faction, faction_color, content, timestamp, channel, is_read }, options = {}) {
+        const { shouldScroll = true, targetContainer = null } = options;
         const container = chatContainers[channel || currentChannel];
         if (!container) return;
 
@@ -150,8 +153,15 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <p class="text-emerald-300 text-xs break-words p-2 font-shadow">${escapeHtml(content)}</p>
         `;
-        container.appendChild(div);
-        forceScrollToBottom();
+        if (targetContainer) {
+            targetContainer.appendChild(div);
+        } else {
+            container.appendChild(div);
+        }
+
+        if (shouldScroll) {
+            forceScrollToBottom(container);
+        }
     }
 
     function escapeHtml(str) {
@@ -293,8 +303,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function forceScrollToBottom() {
-        const container = document.getElementById("chat-messages");
+    function forceScrollToBottom(targetContainer = null) {
+        const container = targetContainer || chatContainers[currentChannel] || document.getElementById("chat-messages");
         if (!container) return;
         container.scrollTop = container.scrollHeight;
         requestAnimationFrame(() => {
@@ -325,7 +335,6 @@ async function async_send_chat_msg(payload) {
     }
 }
 
-    window.appendMessage = appendMessage;
     setInterval(loadUnreadCounts, 30000);
     window.appendMessage = appendMessage;
     window.incrementUnreadCount = incrementUnreadCount;

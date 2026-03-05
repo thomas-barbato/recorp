@@ -609,7 +609,8 @@ def private_mail_modal(request):
     page_number = request.GET.get('page', 1)
     tab = request.GET.get('tab', 'received')
     player_id = PlayerAction(request.user.id).get_player_id()
-    mp = []
+    per_page = 4
+    faction_color_builder = GetDataFromDB()
     
     if tab == "sent":
         messages_qs = PrivateMessageRecipients.objects.filter(message_id__sender_id=player_id, deleted_at__isnull=True, is_author=True).values(
@@ -622,6 +623,10 @@ def private_mail_modal(request):
             'message_id__sender_id__faction_id__name',
             'message_id',
         ).order_by('-message_id__timestamp')
+
+        paginator = Paginator(messages_qs, per_page)
+        page_obj = paginator.get_page(page_number)
+
         mp = [{
                 'id': e['message_id'],
                 'user': e['message_id__sender_id'],
@@ -631,11 +636,12 @@ def private_mail_modal(request):
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
-                'faction_color': GetDataFromDB.get_faction_badge_color_class(
+                'faction_color': faction_color_builder.get_faction_badge_color_class(
                     faction_id=e.get('message_id__sender_id__faction_id'),
                     faction_name=e.get('message_id__sender_id__faction_id__name'),
                 ),
-        } for e in messages_qs]
+                'is_author': True,
+        } for e in page_obj.object_list]
     else:
         messages_qs = PrivateMessageRecipients.objects.filter(recipient_id=player_id, is_author=False, deleted_at__isnull=True).values(
             'message_id__sender_id__name',
@@ -648,6 +654,10 @@ def private_mail_modal(request):
             'message_id',
             'is_read'
         ).order_by('-message_id__timestamp')
+
+        paginator = Paginator(messages_qs, per_page)
+        page_obj = paginator.get_page(page_number)
+
         mp = [{
                 'id': e['message_id'],
                 'user': e['message_id__sender_id'],
@@ -657,18 +667,15 @@ def private_mail_modal(request):
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
-                'faction_color': GetDataFromDB().get_faction_badge_color_class(
+                'faction_color': faction_color_builder.get_faction_badge_color_class(
                     faction_id=e.get('message_id__sender_id__faction_id'),
                     faction_name=e.get('message_id__sender_id__faction_id__name'),
                 ),
                 'is_read': e['is_read']
-        } for e in messages_qs]
-    
-    paginator = Paginator(mp, 4)
-    page_obj = paginator.get_page(page_number)
+        } for e in page_obj.object_list]
 
     context = {
-        "received_messages": page_obj.object_list,
+        "received_messages": mp,
         "page_obj": page_obj,
         "has_previous": page_obj.has_previous(),
         "has_next": page_obj.has_next(),
@@ -682,57 +689,72 @@ def private_mail_modal(request):
 def get_private_mail(request, pk):
     try:
         player_id = PlayerAction(request.user.id).get_player_id()
-        message = PrivateMessage.objects.filter(id=pk, deleted_at__isnull=True)
-        data = {}
-        
-        if not message:
-            return
-        
         if not player_id:
-            return
-        
-        message_author = [e for e in message.values(
-            'id', 'subject', 'body', 'sender_id__name', 'timestamp', 'sender_id'
-        )]
-        
-        message_recipients = [e for e in PrivateMessageRecipients.objects.filter(
-                message_id=pk, 
-                recipient_id=player_id, 
-                deleted_at__isnull=True
-                ).values(
-                'message_id', 'message_id__subject', 'message_id__body',
-                'message_id__sender_id__name', 'message_id__timestamp',
-                'message_id__sender_id', 'message_id__sender_id', 
-                'message_id__sender_id__faction_id__name'
-                )
-            ]
-            
-        if not message_author and not message_recipients:
             return JsonResponse({"error": _("Access denied")}, status=403)
-        
-        id = f'{message_recipients[0]["message_id"] if message_recipients else message_author[0]["id"]}'
-        subject = f'{message_recipients[0]["message_id__subject"] if message_recipients else message_author[0]["subject"]}'
-        sender = f'{message_recipients[0]["message_id__sender_id__name"] if message_recipients else message_author[0]["sender_id__name"]}'
-        sender_id = f'{message_recipients[0]["message_id__sender_id"] if message_recipients else message_author[0]["sender_id"]}' 
-        body = f'{message_recipients[0]["message_id__body"] if message_recipients else message_author[0]["body"]}'
-        timestamp = f'{message_recipients[0]["message_id__timestamp"].strftime("%Y-%m-%d %H:%M:%S") if message_recipients else message_author[0]["timestamp"].strftime("%Y-%m-%d %H:%M:%S")}'
-        is_author = PrivateMessage.objects.filter(id=pk, sender_id=player_id).exists()
+
+        message_author = (
+            PrivateMessage.objects
+            .filter(id=pk, deleted_at__isnull=True, sender_id=player_id)
+            .values('id', 'subject', 'body', 'sender_id__name', 'timestamp', 'sender_id')
+            .first()
+        )
+
+        message_recipient = (
+            PrivateMessageRecipients.objects
+            .filter(
+                message_id=pk,
+                recipient_id=player_id,
+                deleted_at__isnull=True,
+            )
+            .values(
+                'message_id',
+                'message_id__subject',
+                'message_id__body',
+                'message_id__sender_id__name',
+                'message_id__timestamp',
+                'message_id__sender_id',
+            )
+            .first()
+        )
+
+        if not message_author and not message_recipient:
+            return JsonResponse({"error": _("Access denied")}, status=403)
+
+        data_source = message_recipient or message_author
         data = {
-            "id": id,
-            "subject": subject,
-            'sender': sender,
-            'sender_id': sender_id,
-            "body": body,
-            "timestamp": timestamp,
-            "is_author": is_author,
+            "id": f'{data_source["message_id"] if message_recipient else data_source["id"]}',
+            "subject": (
+                data_source["message_id__subject"]
+                if message_recipient
+                else data_source["subject"]
+            ),
+            "sender": (
+                data_source["message_id__sender_id__name"]
+                if message_recipient
+                else data_source["sender_id__name"]
+            ),
+            "sender_id": f'{data_source["message_id__sender_id"] if message_recipient else data_source["sender_id"]}',
+            "body": data_source["message_id__body"] if message_recipient else data_source["body"],
+            "timestamp": (
+                data_source["message_id__timestamp"].strftime("%Y-%m-%d %H:%M:%S")
+                if message_recipient
+                else data_source["timestamp"].strftime("%Y-%m-%d %H:%M:%S")
+            ),
+            "is_author": bool(message_author),
         }
-        
-        if message_recipients:
-            PrivateMessageRecipients.objects.filter(message_id=data['id'], recipient_id=player_id, deleted_at__isnull=True).update(is_read=True)
-        
+
+        if message_recipient:
+            PrivateMessageRecipients.objects.filter(
+                message_id=data["id"],
+                recipient_id=player_id,
+                deleted_at__isnull=True,
+                is_read=False,
+            ).update(is_read=True)
+
         return JsonResponse(data, status=200)
     
     except Exception as e:
+        logger.exception("private_mail_read_error", extra={"message_id": pk, "user_id": request.user.id})
         return JsonResponse({}, status=500)
 
 
