@@ -30,6 +30,7 @@ window.mpNotificationIsShowing = false;
 loadUnreadCount();
 
 function closeModal() {
+    if (!modal || !content || !mailList) return;
     isModalOpen = false;
     if (loadMessagesAbortController) {
         loadMessagesAbortController.abort();
@@ -55,6 +56,7 @@ function closeModal() {
 
 // === OPEN MODAL ===
 function openModal() {
+    if (!modal || !content) return;
     isModalOpen = true;
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -65,11 +67,13 @@ function openModal() {
     loadMessages();
 }
 
-openBtnMobile.addEventListener(action_listener_touch_click, openModal);
-openBtn.addEventListener(action_listener_touch_click, openModal);
-closeBtn.addEventListener(action_listener_touch_click, closeModal);
-closeBtnBottom.addEventListener(action_listener_touch_click, closeModal);
-modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+if (openBtnMobile) openBtnMobile.addEventListener(action_listener_touch_click, openModal);
+if (openBtn) openBtn.addEventListener(action_listener_touch_click, openModal);
+if (closeBtn) closeBtn.addEventListener(action_listener_touch_click, closeModal);
+if (closeBtnBottom) closeBtnBottom.addEventListener(action_listener_touch_click, closeModal);
+if (modal) {
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+}
 
 // ✅ === CHARGEMENT DU COMPTEUR NON LUS ===
 async function loadUnreadCount() {
@@ -146,6 +150,7 @@ function removeShakeAnimation() {
 
 // === FETCH MESSAGES ===
 async function loadMessages(direction = null) {
+    if (!mailList) return;
     const requestSeq = ++loadMessagesRequestSeq;
     if (loadMessagesAbortController) {
         loadMessagesAbortController.abort();
@@ -367,71 +372,80 @@ function showMessage(data) {
 }
 
 // === SEARCH ===
-searchInput.addEventListener('input', () => {
-    clearTimeout(searchDebounceId);
-    searchDebounceId = setTimeout(async () => {
-        let q = searchInput.value.trim();
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchDebounceId);
+        searchDebounceId = setTimeout(async () => {
+            let q = searchInput.value.trim();
 
-        if (!q) {
-            if (searchAbortController) {
-                searchAbortController.abort();
-                searchAbortController = null;
+            if (!q) {
+                if (searchAbortController) {
+                    searchAbortController.abort();
+                    searchAbortController = null;
+                }
+                return loadMessages();
             }
-            return loadMessages();
-        }
 
-        try {
-            if (searchAbortController) {
-                searchAbortController.abort();
+            try {
+                if (searchAbortController) {
+                    searchAbortController.abort();
+                }
+                searchAbortController = new AbortController();
+                let res = await fetch(`/messages/search/?q=${encodeURIComponent(q)}`, {
+                    signal: searchAbortController.signal,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                });
+                if (!mailList) return;
+                mailList.innerHTML = await res.text();
+                bindMailEvents();
+            } catch (err) {
+                if (err && err.name === 'AbortError') {
+                    return;
+                }
+                console.error("Erreur recherche messages:", err);
             }
-            searchAbortController = new AbortController();
-            let res = await fetch(`/messages/search/?q=${encodeURIComponent(q)}`, {
-                signal: searchAbortController.signal,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-            });
-            mailList.innerHTML = await res.text();
-            bindMailEvents();
-        } catch (err) {
-            if (err && err.name === 'AbortError') {
-                return;
-            }
-            console.error("Erreur recherche messages:", err);
-        }
-    }, 220);
-});
+        }, 220);
+    });
+}
 
 // === DISPLAY MESSAGE LIST ===
 function displayMpList(){
-    tabSent.classList.remove('border-2', 'border-emerald-400');
-    newMsgBtn.classList.remove('border-2', 'border-emerald-400');
-    tabInbox.classList.add('border-2', 'border-emerald-400');
+    if (tabSent) tabSent.classList.remove('border-2', 'border-emerald-400');
+    if (newMsgBtn) newMsgBtn.classList.remove('border-2', 'border-emerald-400');
+    if (tabInbox) tabInbox.classList.add('border-2', 'border-emerald-400');
     loadMessages();
 }
 
 // === TABS ===
-tabInbox.addEventListener('click', () => {
-    currentTab = 'received';
-    tabSent.classList.remove('border-2', 'border-emerald-400');
-    newMsgBtn.classList.remove('border-2', 'border-emerald-400');
-    tabInbox.classList.add('border-2', 'border-emerald-400');
-    loadMessages();
-});
+if (tabInbox) {
+    tabInbox.addEventListener('click', () => {
+        currentTab = 'received';
+        if (tabSent) tabSent.classList.remove('border-2', 'border-emerald-400');
+        if (newMsgBtn) newMsgBtn.classList.remove('border-2', 'border-emerald-400');
+        tabInbox.classList.add('border-2', 'border-emerald-400');
+        loadMessages();
+    });
+}
 
-tabSent.addEventListener('click', () => {
-    currentTab = 'sent';
-    tabInbox.classList.remove('border-2', 'border-emerald-400');
-    newMsgBtn.classList.remove('border-2', 'border-emerald-400');
-    tabSent.classList.add('border-2', 'border-emerald-400');
-    loadMessages();
-});
+if (tabSent) {
+    tabSent.addEventListener('click', () => {
+        currentTab = 'sent';
+        if (tabInbox) tabInbox.classList.remove('border-2', 'border-emerald-400');
+        if (newMsgBtn) newMsgBtn.classList.remove('border-2', 'border-emerald-400');
+        tabSent.classList.add('border-2', 'border-emerald-400');
+        loadMessages();
+    });
+}
 
 // === NEW MESSAGE ===
-newMsgBtn.addEventListener('click', () => {
-    tabSent.classList.remove('border-2', 'border-emerald-400');
-    tabInbox.classList.remove('border-2', 'border-emerald-400');
-    newMsgBtn.classList.add('border-2', 'border-emerald-400');
+if (newMsgBtn) {
+    newMsgBtn.addEventListener('click', () => {
+        if (tabSent) tabSent.classList.remove('border-2', 'border-emerald-400');
+        if (tabInbox) tabInbox.classList.remove('border-2', 'border-emerald-400');
+        newMsgBtn.classList.add('border-2', 'border-emerald-400');
+        if (!mailList) return;
 
-    mailList.innerHTML = `
+        mailList.innerHTML = `
         <div id="compose-container" class="p-3 space-y-3 animate-fade-in">
             <div class="flex gap-2 mt-3">
                 <select id="recipient-type"
@@ -472,40 +486,54 @@ newMsgBtn.addEventListener('click', () => {
 
     bindComposeEvents();
     
-    document.getElementById('cancel-new').addEventListener('click', loadMessages);
+    const cancelNewBtn = document.getElementById('cancel-new');
+    if (cancelNewBtn) {
+        cancelNewBtn.addEventListener('click', loadMessages);
+    }
 
-    document.getElementById('send-new').addEventListener(action_listener_touch_click, async (e) => {
-        let btn = e.target;
-        let recipient_type = document.getElementById('recipient-type').value;
-        let recipient = document.getElementById('recipient').value.trim();
-        let subject = document.getElementById('subject').value.trim();
-        let body = document.getElementById('body').value.trim();
+    const sendNewBtn = document.getElementById('send-new');
+    if (!sendNewBtn) return;
+
+    sendNewBtn.addEventListener(action_listener_touch_click, async () => {
+        const recipientTypeEl = document.getElementById('recipient-type');
+        const recipientEl = document.getElementById('recipient');
+        const subjectEl = document.getElementById('subject');
+        const bodyEl = document.getElementById('body');
+        if (!recipientTypeEl || !recipientEl || !subjectEl || !bodyEl) {
+            return;
+        }
+
+        const recipientType = recipientTypeEl.value;
+        const recipient = recipientEl.value.trim();
+        const subject = subjectEl.value.trim();
+        const body = bodyEl.value.trim();
 
         if (!recipient || !subject || !body) {
             showToast(gettext("Please fill all fields"), false);
             return;
         }
 
-        let payload = {
+        const payload = {
             recipient: recipient,
             subject: subject,
             body: body,
-            recipient_type: recipient_type,
-            senderId: currentPlayer.user.player
+            recipient_type: recipientType,
+            senderId: currentPlayer.user.player,
         };
-            
-        setLoadingState(btn, true);
+
+        setLoadingState(sendNewBtn, true);
 
         try {
             await sendPrivateMessage(payload);
         } catch {
             showToast(gettext("Failed to send ✗"), false);
         } finally {
-            setLoadingState(btn, false);
+            setLoadingState(sendNewBtn, false);
             displayMpList();
         }
     });
-});
+    });
+}
 
 function showToast(message, success = true, element_id = "toast-container") {
     let container = document.getElementById(element_id);
@@ -531,6 +559,7 @@ function showToast(message, success = true, element_id = "toast-container") {
 }
 
 function setLoadingState(button, state) {
+    if (!button) return;
     if (state) {
         button.disabled = true;
         button.dataset.originalText = button.innerHTML;
@@ -549,6 +578,9 @@ function bindComposeEvents() {
     let recipientError = document.getElementById('recipient-error');
     let sendBtn = document.getElementById('send-new');
     let recipientSearchAbortController = null;
+    if (!recipientInput || !recipientType || !recipientAutocomplete || !recipientPlayerId || !recipientError) {
+        return;
+    }
 
     function clearAutocomplete() {
         recipientAutocomplete.innerHTML = '';

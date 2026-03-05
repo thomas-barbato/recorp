@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         faction: document.getElementById('chat-faction-messages'),
         group: document.getElementById('chat-group-messages'),
     };
+    const hasChatUi = Boolean(chatModal && chatContent);
 
     let currentChannel = "sector";
     let altColor = false;
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUnreadCounts();
 
     function openModal() {
+        if (!hasChatUi) return;
         isModalOpen = true;
         chatModal.classList.remove("hidden");
         setTimeout(() => {
@@ -47,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeModal() {
+        if (!hasChatUi) return;
         isModalOpen = false;
         Object.keys(chatMessageAbortControllerByChannel).forEach((channel) => {
             const controller = chatMessageAbortControllerByChannel[channel];
@@ -66,9 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatOpenBtnMobile) chatOpenBtnMobile.addEventListener(action_listener_touch_click, openModal);
     if (chatCloseBtn) chatCloseBtn.addEventListener(action_listener_touch_click, closeModal);
     if (chatCloseBtnBottom) chatCloseBtnBottom.addEventListener(action_listener_touch_click, closeModal);
-    chatModal.addEventListener(action_listener_touch_click, (e) => {
-        if (e.target === chatModal) closeModal();
-    });
+    if (chatModal) {
+        chatModal.addEventListener(action_listener_touch_click, (e) => {
+            if (e.target === chatModal) closeModal();
+        });
+    }
 
     function setTab(tab) {
         currentChannel = tab;
