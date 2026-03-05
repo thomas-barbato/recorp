@@ -19,6 +19,7 @@ let composeOutsideClickHandler = null;
 let unreadPollIntervalId = null;
 let unreadCountRequestInFlight = false;
 let loadMessagesRequestSeq = 0;
+let loadMessagesAbortController = null;
 let searchDebounceId = null;
 let searchAbortController = null;
 
@@ -30,6 +31,14 @@ loadUnreadCount();
 
 function closeModal() {
     isModalOpen = false;
+    if (loadMessagesAbortController) {
+        loadMessagesAbortController.abort();
+        loadMessagesAbortController = null;
+    }
+    if (searchAbortController) {
+        searchAbortController.abort();
+        searchAbortController = null;
+    }
     if (composeOutsideClickHandler) {
         document.removeEventListener('click', composeOutsideClickHandler);
         composeOutsideClickHandler = null;
@@ -138,17 +147,41 @@ function removeShakeAnimation() {
 // === FETCH MESSAGES ===
 async function loadMessages(direction = null) {
     const requestSeq = ++loadMessagesRequestSeq;
+    if (loadMessagesAbortController) {
+        loadMessagesAbortController.abort();
+    }
+    const controller = new AbortController();
+    loadMessagesAbortController = controller;
+
     let url = `/messages/?page=${currentPage}&tab=${currentTab}`;
-    let response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-    let html = await response.text();
-    if (requestSeq !== loadMessagesRequestSeq) {
+
+    let html = "";
+    try {
+        let response = await fetch(url, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            signal: controller.signal,
+        });
+        html = await response.text();
+    } catch (err) {
+        if (err && err.name === 'AbortError') {
+            return;
+        }
+        console.error("Erreur chargement messages:", err);
+        return;
+    } finally {
+        if (loadMessagesAbortController === controller) {
+            loadMessagesAbortController = null;
+        }
+    }
+
+    if (requestSeq !== loadMessagesRequestSeq || loadMessagesAbortController !== null) {
         return;
     }
 
     if (direction) {
         mailList.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
         await new Promise(r => setTimeout(r, 250));
-        if (requestSeq !== loadMessagesRequestSeq) {
+        if (requestSeq !== loadMessagesRequestSeq || loadMessagesAbortController !== null) {
             return;
         }
     }
@@ -515,6 +548,7 @@ function bindComposeEvents() {
     let recipientPlayerId = document.getElementById('recipient-player-id');
     let recipientError = document.getElementById('recipient-error');
     let sendBtn = document.getElementById('send-new');
+    let recipientSearchAbortController = null;
 
     function clearAutocomplete() {
         recipientAutocomplete.innerHTML = '';
@@ -550,8 +584,32 @@ function bindComposeEvents() {
     let searchPlayers = debounce(async () => {
         let q = recipientInput.value.trim();
         if(q.length < 2) return clearAutocomplete();
-        let res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`)
-        let {results} = await res.json();
+
+        if (recipientSearchAbortController) {
+            recipientSearchAbortController.abort();
+        }
+        recipientSearchAbortController = new AbortController();
+        const controller = recipientSearchAbortController;
+
+        let results = [];
+        try {
+            let res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`, {
+                signal: controller.signal,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            });
+            let data = await res.json();
+            results = data.results || [];
+        } catch (err) {
+            if (err && err.name === 'AbortError') {
+                return;
+            }
+            console.error("Erreur recherche joueur MP:", err);
+            return clearAutocomplete();
+        } finally {
+            if (recipientSearchAbortController === controller) {
+                recipientSearchAbortController = null;
+            }
+        }
 
         if(!results.length) return clearAutocomplete();
 

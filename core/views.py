@@ -609,6 +609,18 @@ def _get_authenticated_player_id(user):
     return Player.objects.filter(user_id=user_id).values_list("id", flat=True).first()
 
 
+def _get_authenticated_player_chat_context(user):
+    user_id = getattr(user, "id", None)
+    if not user_id:
+        return None
+    return (
+        Player.objects
+        .filter(user_id=user_id)
+        .values("id", "sector_id", "faction_id", "last_time_warpzone")
+        .first()
+    )
+
+
 @login_required
 def private_mail_modal(request):
     page_number = request.GET.get('page', 1)
@@ -848,6 +860,18 @@ def search_private_mail(request):
     )
 
     faction_color_builder = GetDataFromDB()
+    faction_color_cache = {}
+
+    def resolve_faction_color(faction_id, faction_name):
+        cache_key = (faction_id, faction_name)
+        if cache_key in faction_color_cache:
+            return faction_color_cache[cache_key]
+        color_class = faction_color_builder.get_faction_badge_color_class(
+            faction_id=faction_id,
+            faction_name=faction_name,
+        )
+        faction_color_cache[cache_key] = color_class
+        return color_class
 
     results = [{
             "id": e["message_id"],
@@ -858,9 +882,9 @@ def search_private_mail(request):
             "timestamp": e["message_id__timestamp"],
             "avatar_url": f"img/users/{e['message_id__sender_id']}/0.gif",
             "faction": e["message_id__sender_id__faction_id__name"],
-            "faction_color": faction_color_builder.get_faction_badge_color_class(
-                faction_id=e.get("message_id__sender_id__faction_id"),
-                faction_name=e.get("message_id__sender_id__faction_id__name"),
+            "faction_color": resolve_faction_color(
+                e.get("message_id__sender_id__faction_id"),
+                e.get("message_id__sender_id__faction_id__name"),
             ),
             "is_read": e["is_read"],
         } for e in messages_qs]
@@ -939,8 +963,8 @@ def search_players_for_group_invite(request):
     qs = (
         Player.objects.filter(name__icontains=q, is_npc=False)
         .exclude(id=current_player_id)
-        .select_related("faction")
         .annotate(in_group=Exists(in_group_subquery))
+        .values("id", "name", "faction__name", "in_group")
         .order_by("name", "id")[:10]
     )
 
@@ -948,10 +972,10 @@ def search_players_for_group_invite(request):
     for p in qs:
         results.append(
             {
-                "id": int(p.id),
-                "name": p.name,
-                "faction": p.faction.name if p.faction else "",
-                "in_group": bool(getattr(p, "in_group", False)),
+                "id": int(p["id"]),
+                "name": p["name"],
+                "faction": p.get("faction__name") or "",
+                "in_group": bool(p.get("in_group")),
             }
         )
 
@@ -1459,8 +1483,12 @@ def mark_private_mail_as_read(request, message_id):
 
 @login_required
 def get_chat_messages(request, channel_type):
-    player = Player.objects.select_related("faction", "sector").get(user=request.user)
-    cutoff_date = player.last_time_warpzone
+    player_ctx = _get_authenticated_player_chat_context(request.user)
+    if not player_ctx:
+        return JsonResponse({"error": "Player not found"}, status=404)
+
+    player_id = int(player_ctx["id"])
+    cutoff_date = player_ctx["last_time_warpzone"]
     channel_key = (channel_type or "").lower()
     channel_upper = channel_key.upper()
 
@@ -1470,12 +1498,12 @@ def get_chat_messages(request, channel_type):
     }
 
     if channel_key == "sector":
-        message_filters["sector_id"] = player.sector_id
+        message_filters["sector_id"] = player_ctx["sector_id"]
     elif channel_key == "faction":
-        message_filters["faction_id"] = player.faction_id
+        message_filters["faction_id"] = player_ctx["faction_id"]
     elif channel_key == "group":
         group_ids = list(
-            PlayerGroup.objects.filter(player_id=player.id).values_list("group_id", flat=True)
+            PlayerGroup.objects.filter(player_id=player_id).values_list("group_id", flat=True)
         )
         if not group_ids:
             return JsonResponse({"messages": []})
@@ -1501,7 +1529,7 @@ def get_chat_messages(request, channel_type):
     if message_ids:
         read_message_ids = set(
             MessageReadStatus.objects.filter(
-                player_id=player.id,
+                player_id=player_id,
                 message_id__in=message_ids,
                 is_read=True,
             ).values_list("message_id", flat=True)
@@ -1541,25 +1569,29 @@ def get_chat_messages(request, channel_type):
 def mark_messages_as_read(request, channel_type):
     """Marque tous les messages d'un canal comme lus"""
     try:
-        player = Player.objects.get(user=request.user)
+        player_ctx = _get_authenticated_player_chat_context(request.user)
+        if not player_ctx:
+            return JsonResponse({"error": "Player not found"}, status=404)
+
+        player_id = int(player_ctx["id"])
         channel_key = (channel_type or "").lower()
         channel_upper = channel_key.upper()
-        cutoff_date = player.last_time_warpzone
+        cutoff_date = player_ctx["last_time_warpzone"]
 
         read_status_filters = {
-            "player_id": player.id,
+            "player_id": player_id,
             "is_read": False,
             "message__channel": channel_upper,
             "message__created_at__gte": cutoff_date,
         }
 
         if channel_key == "sector":
-            read_status_filters["message__sector_id"] = player.sector_id
+            read_status_filters["message__sector_id"] = player_ctx["sector_id"]
         elif channel_key == "faction":
-            read_status_filters["message__faction_id"] = player.faction_id
+            read_status_filters["message__faction_id"] = player_ctx["faction_id"]
         elif channel_key == "group":
             group_ids = list(
-                PlayerGroup.objects.filter(player_id=player.id).values_list("group_id", flat=True)
+                PlayerGroup.objects.filter(player_id=player_id).values_list("group_id", flat=True)
             )
             if not group_ids:
                 return JsonResponse({"success": True})
@@ -1580,15 +1612,19 @@ def mark_messages_as_read(request, channel_type):
 def get_unread_counts(request):
     """Retourne le nombre de messages non lus par canal"""
     try:
-        player = Player.objects.select_related("faction", "sector").get(user=request.user)
-        cutoff_date = player.last_time_warpzone
+        player_ctx = _get_authenticated_player_chat_context(request.user)
+        if not player_ctx:
+            return JsonResponse({"error": "Player not found"}, status=404)
+
+        player_id = int(player_ctx["id"])
+        cutoff_date = player_ctx["last_time_warpzone"]
         group_ids = list(
-            PlayerGroup.objects.filter(player_id=player.id).values_list("group_id", flat=True)
+            PlayerGroup.objects.filter(player_id=player_id).values_list("group_id", flat=True)
         )
 
         unread_counts = (
             MessageReadStatus.objects.filter(
-                player_id=player.id,
+                player_id=player_id,
                 is_read=False,
                 message__created_at__gte=cutoff_date,
             )
@@ -1597,14 +1633,14 @@ def get_unread_counts(request):
                     "id",
                     filter=Q(
                         message__channel="SECTOR",
-                        message__sector_id=player.sector_id,
+                        message__sector_id=player_ctx["sector_id"],
                     ),
                 ),
                 faction=Count(
                     "id",
                     filter=Q(
                         message__channel="FACTION",
-                        message__faction_id=player.faction_id,
+                        message__faction_id=player_ctx["faction_id"],
                     ),
                 ),
                 group=Count(
@@ -1796,15 +1832,14 @@ def get_player_logs(request):
     Logs COMPLETS du joueur (pour event-modal)
     Pagination standard
     """
-    try:
-        player = Player.objects.get(user=request.user)
-    except Player.DoesNotExist:
+    player_id = _get_authenticated_player_id(request.user)
+    if not player_id:
         return JsonResponse({"error": "player_not_found"}, status=404)
 
     qs = (
         PlayerLog.objects
-        .select_related("log")
-        .filter(player=player)
+        .filter(player_id=player_id)
+        .values("id", "role", "log__log_type", "log__content", "log__created_at")
         .order_by("-created_at")
     )
 
@@ -1817,11 +1852,11 @@ def get_player_logs(request):
         "pages": paginator.num_pages,
         "results": [
             {
-                "id": pl.id,
-                "log_type": pl.log.log_type,
-                "content": pl.log.content,
-                "role": pl.role,
-                "created_at": pl.log.created_at.isoformat(),
+                "id": pl["id"],
+                "log_type": pl.get("log__log_type"),
+                "content": pl.get("log__content"),
+                "role": pl.get("role"),
+                "created_at": pl["log__created_at"].isoformat() if pl.get("log__created_at") else None,
             }
             for pl in page
         ]
@@ -1834,26 +1869,25 @@ def get_player_logs_preview(request):
     Logs récents pour HUD (desktop + mobile)
     MAX 25 logs
     """
-    try:
-        player = Player.objects.get(user=request.user)
-    except Player.DoesNotExist:
+    player_id = _get_authenticated_player_id(request.user)
+    if not player_id:
         return JsonResponse({"error": "player_not_found"}, status=404)
 
     qs = (
         PlayerLog.objects
-        .select_related("log")
-        .filter(player=player)
+        .filter(player_id=player_id)
+        .values("id", "role", "log__log_type", "log__content", "log__created_at")
         .order_by("-created_at")[:25]
     )
 
     return JsonResponse({
         "results": [
             {
-                "id": pl.id,
-                "role": pl.role,
-                "log_type": pl.log.log_type,
-                "content": pl.log.content,
-                "created_at": pl.log.created_at.isoformat(),
+                "id": pl["id"],
+                "role": pl.get("role"),
+                "log_type": pl.get("log__log_type"),
+                "content": pl.get("log__content"),
+                "created_at": pl["log__created_at"].isoformat() if pl.get("log__created_at") else None,
             }
             for pl in qs
         ]

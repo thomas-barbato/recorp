@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let state = null;
     let pollIntervalId = null;
     let searchDebounceId = null;
+    let inviteSearchAbortController = null;
     let handledInvitationIds = new Set();
     let refreshStateRequestInFlight = false;
 
@@ -83,6 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
         modalOpen = false;
         content.classList.add("scale-90", "opacity-0");
         stopPolling();
+        if (inviteSearchAbortController) {
+            inviteSearchAbortController.abort();
+            inviteSearchAbortController = null;
+        }
         hideAutocomplete();
         window.setTimeout(() => {
             modal.classList.add("hidden");
@@ -396,14 +401,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function searchInviteTargets(query) {
+        if (inviteSearchAbortController) {
+            inviteSearchAbortController.abort();
+        }
+        const controller = new AbortController();
+        inviteSearchAbortController = controller;
+
         try {
             const res = await fetch(`${searchUrl}?q=${encodeURIComponent(query)}`, {
                 headers: { "X-Requested-With": "XMLHttpRequest" },
+                signal: controller.signal,
             });
             const data = await res.json();
             return Array.isArray(data?.results) ? data.results : [];
-        } catch (_) {
+        } catch (err) {
+            if (err && err.name === "AbortError") {
+                return null;
+            }
             return [];
+        } finally {
+            if (inviteSearchAbortController === controller) {
+                inviteSearchAbortController = null;
+            }
         }
     }
 
@@ -445,6 +464,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         searchDebounceId = window.setTimeout(async () => {
             const results = await searchInviteTargets(value);
+            if (results === null) return;
+            if (!inviteInput || inviteInput.value.trim() !== value) return;
             renderInviteAutocomplete(results);
         }, 220);
     }

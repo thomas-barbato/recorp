@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let unreadPollIntervalId = null;
     let unreadCountsRequestInFlight = false;
     const chatMessageRequestSeqByChannel = {};
+    const chatMessageAbortControllerByChannel = {};
     const markReadRequestInFlightByChannel = {};
 
     loadUnreadCounts();
@@ -47,6 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
         isModalOpen = false;
+        Object.keys(chatMessageAbortControllerByChannel).forEach((channel) => {
+            const controller = chatMessageAbortControllerByChannel[channel];
+            if (controller) {
+                controller.abort();
+            }
+            delete chatMessageAbortControllerByChannel[channel];
+        });
         chatContent.classList.add("scale-90", "opacity-0");
         setTimeout(() => {
             chatModal.classList.add("hidden");
@@ -128,17 +136,33 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadChatMessages(channel) {
         const requestSeq = (chatMessageRequestSeqByChannel[channel] || 0) + 1;
         chatMessageRequestSeqByChannel[channel] = requestSeq;
+        const prevController = chatMessageAbortControllerByChannel[channel];
+        if (prevController) {
+            prevController.abort();
+        }
+        const controller = new AbortController();
+        chatMessageAbortControllerByChannel[channel] = controller;
 
         const url = `/chat/get/${channel}/`;
         try {
-            const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            const response = await fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                signal: controller.signal,
+            });
             const data = await response.json();
             if (chatMessageRequestSeqByChannel[channel] !== requestSeq) {
                 return;
             }
             renderMessages(channel, data.messages || []);
         } catch (err) {
+            if (err && err.name === "AbortError") {
+                return;
+            }
             console.error("Erreur lors du chargement du chat :", err);
+        } finally {
+            if (chatMessageAbortControllerByChannel[channel] === controller) {
+                delete chatMessageAbortControllerByChannel[channel];
+            }
         }
     }
 
