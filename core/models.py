@@ -734,7 +734,10 @@ class PlayerShipModuleReconfiguration(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=["player_ship", "status", "execute_at"]),
+            models.Index(
+                fields=["player_ship", "status", "execute_at"],
+                name="core_player_player__1dc6a2_idx",
+            ),
         ]
 
     def __str__(self):
