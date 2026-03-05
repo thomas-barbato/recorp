@@ -32,7 +32,7 @@ from django.views.decorators.http import require_http_methods
 from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Exists, OuterRef
 from django.core.files.base import ContentFile
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -602,13 +602,35 @@ def session_check(request):
     return JsonResponse({'authenticated': False}, status=401)
 
 
+def _get_authenticated_player_id(user):
+    user_id = getattr(user, "id", None)
+    if not user_id:
+        return None
+    return Player.objects.filter(user_id=user_id).values_list("id", flat=True).first()
+
+
 @login_required
 def private_mail_modal(request):
     page_number = request.GET.get('page', 1)
     tab = request.GET.get('tab', 'received')
-    player_id = PlayerAction(request.user.id).get_player_id()
+    player_id = _get_authenticated_player_id(request.user)
     per_page = 4
     faction_color_builder = GetDataFromDB()
+    faction_color_cache = {}
+
+    if not player_id:
+        return render(request, "mail-list.html", {"received_messages": []})
+
+    def resolve_faction_color(faction_id, faction_name):
+        cache_key = (faction_id, faction_name)
+        if cache_key in faction_color_cache:
+            return faction_color_cache[cache_key]
+        color_class = faction_color_builder.get_faction_badge_color_class(
+            faction_id=faction_id,
+            faction_name=faction_name,
+        )
+        faction_color_cache[cache_key] = color_class
+        return color_class
     
     if tab == "sent":
         messages_qs = PrivateMessageRecipients.objects.filter(message_id__sender_id=player_id, deleted_at__isnull=True, is_author=True).values(
@@ -634,9 +656,9 @@ def private_mail_modal(request):
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
-                'faction_color': faction_color_builder.get_faction_badge_color_class(
-                    faction_id=e.get('message_id__sender_id__faction_id'),
-                    faction_name=e.get('message_id__sender_id__faction_id__name'),
+                'faction_color': resolve_faction_color(
+                    e.get('message_id__sender_id__faction_id'),
+                    e.get('message_id__sender_id__faction_id__name'),
                 ),
                 'is_author': True,
         } for e in page_obj.object_list]
@@ -665,9 +687,9 @@ def private_mail_modal(request):
                 'timestamp': e['message_id__timestamp'],
                 'avatar_url': f"img/users/{e['message_id__sender_id']}/0.gif",
                 'faction': e['message_id__sender_id__faction_id__name'],
-                'faction_color': faction_color_builder.get_faction_badge_color_class(
-                    faction_id=e.get('message_id__sender_id__faction_id'),
-                    faction_name=e.get('message_id__sender_id__faction_id__name'),
+                'faction_color': resolve_faction_color(
+                    e.get('message_id__sender_id__faction_id'),
+                    e.get('message_id__sender_id__faction_id__name'),
                 ),
                 'is_read': e['is_read']
         } for e in page_obj.object_list]
@@ -686,7 +708,7 @@ def private_mail_modal(request):
 @login_required
 def get_private_mail(request, pk):
     try:
-        player_id = PlayerAction(request.user.id).get_player_id()
+        player_id = _get_authenticated_player_id(request.user)
         if not player_id:
             return JsonResponse({"error": _("Access denied")}, status=403)
 
@@ -764,22 +786,26 @@ def delete_private_mail(request):
         data = json.loads(request.body)
         message_id = data.get('id')
         
-        player_id = PlayerAction(request.user.id).get_player_id()
-        messageRecipient = PrivateMessageRecipients.objects.filter(message_id=message_id, recipient_id=player_id, deleted_at__isnull=True)
-        
-        if not messageRecipient:
-            return JsonResponse({})
-        
+        player_id = _get_authenticated_player_id(request.user)
         if not player_id:
+            return JsonResponse({})
+
+        messageRecipient = PrivateMessageRecipients.objects.filter(
+            message_id=message_id,
+            recipient_id=player_id,
+            deleted_at__isnull=True,
+        )
+
+        if not messageRecipient.exists():
             return JsonResponse({})
         
         messageRecipient.update(
-            deleted_at=datetime.datetime.now()
+            deleted_at=timezone.now()
         )
         
         if PrivateMessageRecipients.objects.filter(message_id=message_id, deleted_at__isnull=True).exists() is False:
             PrivateMessage.objects.filter(id=message_id).update(
-                deleted_at=datetime.datetime.now()
+                deleted_at=timezone.now()
             )
             
         return JsonResponse({}, status=200)
@@ -792,9 +818,8 @@ def delete_private_mail(request):
 def search_private_mail(request):
     query = request.GET.get("q", "").strip()
 
-    try:
-        player = Player.objects.get(user=request.user)
-    except Player.DoesNotExist:
+    player_id = _get_authenticated_player_id(request.user)
+    if not player_id:
         return render(request, "mail-list.html", {"received_messages": []})
 
     if not query:
@@ -802,7 +827,7 @@ def search_private_mail(request):
 
     messages_qs = (
         PrivateMessageRecipients.objects.filter(
-            recipient=player,
+            recipient_id=player_id,
             is_author=False,
             deleted_at__isnull=True,
             message__deleted_at__isnull=True,
@@ -822,6 +847,8 @@ def search_private_mail(request):
         .order_by("-message_id__timestamp")[:20]
     )
 
+    faction_color_builder = GetDataFromDB()
+
     results = [{
             "id": e["message_id"],
             "user": e["message_id__sender_id"],
@@ -831,7 +858,7 @@ def search_private_mail(request):
             "timestamp": e["message_id__timestamp"],
             "avatar_url": f"img/users/{e['message_id__sender_id']}/0.gif",
             "faction": e["message_id__sender_id__faction_id__name"],
-            "faction_color": GetDataFromDB().get_faction_badge_color_class(
+            "faction_color": faction_color_builder.get_faction_badge_color_class(
                 faction_id=e.get("message_id__sender_id__faction_id"),
                 faction_name=e.get("message_id__sender_id__faction_id__name"),
             ),
@@ -850,15 +877,16 @@ def search_players_for_private_mail(request):
     q = request.GET.get('q', '').strip()
     results = []
     if q:
-        qs = Player.objects.filter(
-            Q(name__icontains=q),
-            is_npc=False
-        ).select_related('faction')[:10]
+        qs = (
+            Player.objects
+            .filter(Q(name__icontains=q), is_npc=False)
+            .values("id", "name", "faction__name")[:10]
+        )
         for p in qs:
             results.append({
-                "id": p.id,
-                "name": p.name,
-                "faction": p.faction.name if p.faction else "",
+                "id": p["id"],
+                "name": p["name"],
+                "faction": p.get("faction__name") or "",
             })
     return JsonResponse({"results": results})
 
@@ -907,22 +935,23 @@ def search_players_for_group_invite(request):
     current_player = Player.objects.filter(user=request.user, is_npc=False).first()
     current_player_id = int(current_player.id) if current_player else None
 
+    in_group_subquery = PlayerGroup.objects.filter(player_id=OuterRef("pk"))
     qs = (
         Player.objects.filter(name__icontains=q, is_npc=False)
         .exclude(id=current_player_id)
         .select_related("faction")
+        .annotate(in_group=Exists(in_group_subquery))
         .order_by("name", "id")[:10]
     )
 
     results = []
     for p in qs:
-        in_group = PlayerGroup.objects.filter(player_id=p.id).exists()
         results.append(
             {
                 "id": int(p.id),
                 "name": p.name,
                 "faction": p.faction.name if p.faction else "",
-                "in_group": bool(in_group),
+                "in_group": bool(getattr(p, "in_group", False)),
             }
         )
 
@@ -1381,12 +1410,7 @@ def bank_transfer_to_player(request):
 def get_unread_private_mail_count(request):
     """Retourne le nombre de messages non lus"""
     try:
-        player_id = (
-            Player.objects
-            .filter(user=request.user)
-            .values_list("id", flat=True)
-            .first()
-        )
+        player_id = Player.objects.filter(user_id=request.user.id).values_list("id", flat=True).first()
         if not player_id:
             return JsonResponse({"error": "Player not found"}, status=404)
 
@@ -1408,27 +1432,24 @@ def get_unread_private_mail_count(request):
 def mark_private_mail_as_read(request, message_id):
     """Marque un message comme lu"""
     try:
-        player_id = (
-            Player.objects
-            .filter(user=request.user)
-            .values_list("id", flat=True)
-            .first()
-        )
+        player_id = Player.objects.filter(user_id=request.user.id).values_list("id", flat=True).first()
         if not player_id:
             return JsonResponse({"error": "Player not found"}, status=404)
 
-        recipient_qs = PrivateMessageRecipients.objects.filter(
+        updated_count = (
+            PrivateMessageRecipients.objects
+            .filter(message_id=message_id, recipient_id=player_id, is_read=False)
+            .update(is_read=True, updated_at=timezone.now())
+        )
+        if updated_count > 0:
+            return JsonResponse({"success": True})
+
+        message_exists = PrivateMessageRecipients.objects.filter(
             message_id=message_id,
             recipient_id=player_id,
-        )
-
-        if not recipient_qs.exists():
+        ).exists()
+        if not message_exists:
             return JsonResponse({"error": "Message not found"}, status=404)
-
-        recipient_qs.filter(is_read=False).update(
-            is_read=True,
-            updated_at=timezone.now(),
-        )
 
         return JsonResponse({"success": True})
     except Exception as e:
