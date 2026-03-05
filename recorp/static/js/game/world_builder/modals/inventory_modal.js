@@ -12,6 +12,13 @@ function t(text) {
     return text;
 }
 
+function confirmInventoryAction(message, options = {}) {
+    if (typeof window.uiConfirm === "function") {
+        return window.uiConfirm(message, options);
+    }
+    return Promise.resolve(window.confirm(message));
+}
+
 function normalizeModuleTypeKey(moduleType) {
     return String(moduleType || "").toUpperCase();
 }
@@ -579,7 +586,7 @@ function createActionButton(iconClass, title, variant = "neutral") {
     return button;
 }
 
-function requestUnequipModule(event, module) {
+async function requestUnequipModule(event, module) {
     event?.stopPropagation?.();
 
     const ship = getCurrentShipData();
@@ -594,7 +601,7 @@ function requestUnequipModule(event, module) {
         return;
     }
 
-    const confirmed = window.confirm(`${t("Are you sure you want to unequip")} ${module.name}?`);
+    const confirmed = await confirmInventoryAction(`${t("Are you sure you want to unequip")} ${module.name}?`);
     if (!confirmed) return;
 
     if (sendShipModuleReconfiguration({ operation: "UNEQUIP", equipped_entry_id: equippedEntryId })) {
@@ -602,7 +609,7 @@ function requestUnequipModule(event, module) {
     }
 }
 
-function requestEquipModule(event, module) {
+async function requestEquipModule(event, module) {
     event?.stopPropagation?.();
 
     const ship = getCurrentShipData();
@@ -617,7 +624,7 @@ function requestEquipModule(event, module) {
         return;
     }
 
-    const confirmed = window.confirm(`${t("Are you sure you want to equip")} ${module.name}?`);
+    const confirmed = await confirmInventoryAction(`${t("Are you sure you want to equip")} ${module.name}?`);
     if (!confirmed) return;
 
     if (sendShipModuleReconfiguration({ operation: "EQUIP", inventory_module_id: inventoryModuleId })) {
@@ -634,7 +641,7 @@ function readDiscardQuantityFromInput(inputEl, maxQuantity) {
     return Math.min(max, Math.floor(parsed));
 }
 
-function requestDiscardInventoryModule(event, module) {
+async function requestDiscardInventoryModule(event, module) {
     event?.stopPropagation?.();
 
     const inventoryModuleId = module?.inventory_module_id;
@@ -644,7 +651,7 @@ function requestDiscardInventoryModule(event, module) {
     }
 
     const moduleName = module?.name || t("Unknown module");
-    const confirmed = window.confirm(`${t("Are you sure you want to delete")} ${moduleName}?`);
+    const confirmed = await confirmInventoryAction(`${t("Are you sure you want to delete")} ${moduleName}?`);
     if (!confirmed) return;
 
     if (sendShipInventoryDiscard({ item_kind: "MODULE", inventory_module_id: inventoryModuleId })) {
@@ -652,7 +659,7 @@ function requestDiscardInventoryModule(event, module) {
     }
 }
 
-function requestDiscardInventoryResource(event, item, options = {}) {
+async function requestDiscardInventoryResource(event, item, options = {}) {
     event?.stopPropagation?.();
 
     const inventoryResourceId = item?.inventory_resource_id;
@@ -684,7 +691,7 @@ function requestDiscardInventoryResource(event, item, options = {}) {
         ? `${t("Are you sure you want to delete all")} (${stackQty}) ${itemName}?`
         : `${t("Are you sure you want to delete")} ${quantityToRemove} ${itemName}?`;
 
-    const confirmed = window.confirm(confirmationText);
+    const confirmed = await confirmInventoryAction(confirmationText);
     if (!confirmed) return;
 
     const payload = {

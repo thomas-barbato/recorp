@@ -43,6 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return text;
     }
 
+    function confirmAction(message, options = {}) {
+        if (typeof window.uiConfirm === "function") {
+            return window.uiConfirm(message, options);
+        }
+        return Promise.resolve(window.confirm(message));
+    }
+
     function getWs() {
         return window.canvasEngine?.ws || window.ws || null;
     }
@@ -274,8 +281,9 @@ document.addEventListener("DOMContentLoaded", () => {
             kickBtn.type = "button";
             kickBtn.className = "group-inline-btn group-inline-btn--danger";
             kickBtn.textContent = t("Remove");
-            kickBtn.addEventListener("click", () => {
-                if (!window.confirm(t("Remove this player from the group?"))) return;
+            kickBtn.addEventListener("click", async () => {
+                const confirmed = await confirmAction(t("Remove this player from the group?"));
+                if (!confirmed) return;
                 sendWsAction("action_group_kick", { target_player_id: member.player_id });
             });
 
@@ -283,8 +291,9 @@ document.addEventListener("DOMContentLoaded", () => {
             leadBtn.type = "button";
             leadBtn.className = "group-inline-btn group-inline-btn--info";
             leadBtn.textContent = t("Transfer Lead");
-            leadBtn.addEventListener("click", () => {
-                if (!window.confirm(t("Transfer group leadership to this player?"))) return;
+            leadBtn.addEventListener("click", async () => {
+                const confirmed = await confirmAction(t("Transfer group leadership to this player?"));
+                if (!confirmed) return;
                 sendWsAction("action_group_transfer_lead", { target_player_id: member.player_id });
             });
 
@@ -554,7 +563,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hideAutocomplete();
     }
 
-    function handleInvitationPopup(payload) {
+    async function handleInvitationPopup(payload) {
         const invitationId = Number(payload?.id || 0);
         if (!invitationId || handledInvitationIds.has(invitationId)) return;
         handledInvitationIds.add(invitationId);
@@ -563,7 +572,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const groupName = payload?.group_name || "Unnamed Group";
         showToast(`${inviter} ${t("invited you to")} ${groupName}.`, "info");
 
-        const accepted = window.confirm(`${inviter} ${t("invited you to join")} "${groupName}". ${t("Accept invitation?")}`);
+        const accepted = await confirmAction(
+            `${inviter} ${t("invited you to join")} "${groupName}". ${t("Accept invitation?")}`
+        );
         sendWsAction("action_group_invitation_response", {
             invitation_id: invitationId,
             accept: Boolean(accepted),
@@ -604,15 +615,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (leaveBtn) {
-        leaveBtn.addEventListener(action_listener_touch_click, () => {
-            if (!window.confirm(t("Leave your current group?"))) return;
+        leaveBtn.addEventListener(action_listener_touch_click, async () => {
+            const confirmed = await confirmAction(t("Leave your current group?"));
+            if (!confirmed) return;
             sendWsAction("action_group_leave", {});
         });
     }
 
     if (disbandBtn) {
-        disbandBtn.addEventListener(action_listener_touch_click, () => {
-            if (!window.confirm(t("Disband this group?"))) return;
+        disbandBtn.addEventListener(action_listener_touch_click, async () => {
+            const confirmed = await confirmAction(t("Disband this group?"));
+            if (!confirmed) return;
             sendWsAction("action_group_disband", {});
         });
     }
