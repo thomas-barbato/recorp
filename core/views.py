@@ -32,7 +32,7 @@ from django.views.decorators.http import require_http_methods
 from django_user_agents.utils import get_user_agent
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.core.files.base import ContentFile
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -1429,60 +1429,78 @@ def mark_private_mail_as_read(request, message_id):
 @login_required
 def get_chat_messages(request, channel_type):
     player = Player.objects.select_related("faction", "sector").get(user=request.user)
-    messages_data = []
-    
-    # Date limite
     cutoff_date = player.last_time_warpzone
-    channel_upper = channel_type.upper()
+    channel_key = (channel_type or "").lower()
+    channel_upper = channel_key.upper()
 
-    if channel_type == "sector":
-        messages = Message.objects.filter(
-            channel=channel_upper,
-            sector=player.sector,
-            created_at__gte=cutoff_date
-        ).select_related("author__faction").order_by("-created_at")[:50]
+    message_filters = {
+        "channel": channel_upper,
+        "created_at__gte": cutoff_date,
+    }
 
-    elif channel_type == "faction":
-        messages = Message.objects.filter(
-            channel=channel_upper,
-            faction=player.faction,
-            created_at__gte=cutoff_date
-        ).select_related("author__faction").order_by("-created_at")[:50]
-
-    elif channel_type == "group":
-        groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
-        messages = Message.objects.filter(
-            channel=channel_upper,
-            group_id__in=groups,
-            created_at__gte=cutoff_date
-        ).select_related("author__faction").order_by("-created_at")[:50]
+    if channel_key == "sector":
+        message_filters["sector_id"] = player.sector_id
+    elif channel_key == "faction":
+        message_filters["faction_id"] = player.faction_id
+    elif channel_key == "group":
+        group_ids = list(
+            PlayerGroup.objects.filter(player_id=player.id).values_list("group_id", flat=True)
+        )
+        if not group_ids:
+            return JsonResponse({"messages": []})
+        message_filters["group_id__in"] = group_ids
     else:
         return JsonResponse({"error": "Invalid chat type"}, status=400)
-    
-    message_ids = [msg.id for msg in messages]
-    read_statuses = MessageReadStatus.objects.filter(
-        player=player,
-        message_id__in=message_ids
-    ).values_list('message_id', flat=True)
-    
-    read_message_ids = set(read_statuses)
+
+    messages = list(
+        Message.objects.filter(**message_filters)
+        .values(
+            "id",
+            "content",
+            "created_at",
+            "author__name",
+            "author__faction_id",
+            "author__faction__name",
+        )
+        .order_by("-created_at")[:50]
+    )
+
+    message_ids = [msg["id"] for msg in messages]
+    read_message_ids = set()
+    if message_ids:
+        read_message_ids = set(
+            MessageReadStatus.objects.filter(
+                player_id=player.id,
+                message_id__in=message_ids,
+                is_read=True,
+            ).values_list("message_id", flat=True)
+        )
+
+    faction_color_builder = GetDataFromDB()
+    faction_color_cache = {}
+    messages_data = []
 
     for msg in reversed(messages):
-        messages_data.append({
-            "id": msg.id,
-            "author": msg.author.name,
-            "faction": msg.author.faction.name if msg.author.faction else "",
-            "faction_color": (
-                GetDataFromDB().get_faction_badge_color_class(
-                    faction_id=msg.author.faction_id,
-                    faction_name=msg.author.faction.name if msg.author.faction else None,
+        faction_id = msg.get("author__faction_id")
+        faction_name = msg.get("author__faction__name") or ""
+        faction_color = ""
+        if faction_id:
+            faction_color = faction_color_cache.get(faction_id)
+            if faction_color is None:
+                faction_color = faction_color_builder.get_faction_badge_color_class(
+                    faction_id=faction_id,
+                    faction_name=faction_name or None,
                 )
-                if msg.author.faction
-                else ""
-            ),
-            "content": msg.content,
-            "timestamp": msg.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "is_read": msg.id in read_message_ids
+                faction_color_cache[faction_id] = faction_color
+
+        messages_data.append({
+            "id": msg["id"],
+            "author": msg.get("author__name", ""),
+            "faction": faction_name,
+            "faction_color": faction_color,
+            "content": msg["content"],
+            "timestamp": msg["created_at"].strftime("%Y-%m-%d %H:%M:%S"),
+            "is_read": msg["id"] in read_message_ids,
         })
 
     return JsonResponse({"messages": messages_data})
@@ -1493,37 +1511,33 @@ def mark_messages_as_read(request, channel_type):
     """Marque tous les messages d'un canal comme lus"""
     try:
         player = Player.objects.get(user=request.user)
-        channel_upper = channel_type.upper()
+        channel_key = (channel_type or "").lower()
+        channel_upper = channel_key.upper()
         cutoff_date = player.last_time_warpzone
 
-        # Récupérer les messages non lus selon le canal
-        if channel_type == "sector":
-            messages = Message.objects.filter(
-                channel=channel_upper,
-                sector=player.sector,
-                created_at__gte=cutoff_date
+        read_status_filters = {
+            "player_id": player.id,
+            "is_read": False,
+            "message__channel": channel_upper,
+            "message__created_at__gte": cutoff_date,
+        }
+
+        if channel_key == "sector":
+            read_status_filters["message__sector_id"] = player.sector_id
+        elif channel_key == "faction":
+            read_status_filters["message__faction_id"] = player.faction_id
+        elif channel_key == "group":
+            group_ids = list(
+                PlayerGroup.objects.filter(player_id=player.id).values_list("group_id", flat=True)
             )
-        elif channel_type == "faction":
-            messages = Message.objects.filter(
-                channel=channel_upper,
-                faction=player.faction,
-                created_at__gte=cutoff_date
-            )
-        elif channel_type == "group":
-            groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
-            messages = Message.objects.filter(
-                channel=channel_upper,
-                group_id__in=groups,
-                created_at__gte=cutoff_date
-            )
+            if not group_ids:
+                return JsonResponse({"success": True})
+            read_status_filters["message__group_id__in"] = group_ids
         else:
             return JsonResponse({"error": "Invalid channel"}, status=400)
-        
-        # Marquer comme lus
+
         MessageReadStatus.objects.filter(
-            player=player,
-            message__in=messages,
-            is_read=False
+            **read_status_filters
         ).update(is_read=True, read_at=timezone.now())
 
         return JsonResponse({"success": True})
@@ -1537,42 +1551,46 @@ def get_unread_counts(request):
     try:
         player = Player.objects.select_related("faction", "sector").get(user=request.user)
         cutoff_date = player.last_time_warpzone
+        group_ids = list(
+            PlayerGroup.objects.filter(player_id=player.id).values_list("group_id", flat=True)
+        )
 
-        unread_counts = {
-            "sector": 0,
-            "faction": 0,
-            "group": 0
-        }
+        unread_counts = (
+            MessageReadStatus.objects.filter(
+                player_id=player.id,
+                is_read=False,
+                message__created_at__gte=cutoff_date,
+            )
+            .aggregate(
+                sector=Count(
+                    "id",
+                    filter=Q(
+                        message__channel="SECTOR",
+                        message__sector_id=player.sector_id,
+                    ),
+                ),
+                faction=Count(
+                    "id",
+                    filter=Q(
+                        message__channel="FACTION",
+                        message__faction_id=player.faction_id,
+                    ),
+                ),
+                group=Count(
+                    "id",
+                    filter=Q(
+                        message__channel="GROUP",
+                        message__group_id__in=group_ids,
+                    ),
+                ) if group_ids else Count("id", filter=Q(pk__in=[])),
+            )
+        )
 
-        # Secteur
-        unread_counts["sector"] = MessageReadStatus.objects.filter(
-            player=player,
-            is_read=False,
-            message__channel="SECTOR",
-            message__sector=player.sector,
-            message__created_at__gte=cutoff_date
-        ).count()
-
-        # Faction
-        unread_counts["faction"] = MessageReadStatus.objects.filter(
-            player=player,
-            is_read=False,
-            message__channel="FACTION",
-            message__faction=player.faction,
-            message__created_at__gte=cutoff_date
-        ).count()
-
-        # Groupe
-        groups = PlayerGroup.objects.filter(player=player).values_list("group_id", flat=True)
-        unread_counts["group"] = MessageReadStatus.objects.filter(
-            player=player,
-            is_read=False,
-            message__channel="GROUP",
-            message__group_id__in=groups,
-            message__created_at__gte=cutoff_date
-        ).count()
-
-        return JsonResponse(unread_counts)
+        return JsonResponse({
+            "sector": unread_counts.get("sector", 0) or 0,
+            "faction": unread_counts.get("faction", 0) or 0,
+            "group": unread_counts.get("group", 0) or 0,
+        })
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
@@ -1809,3 +1827,4 @@ def get_player_logs_preview(request):
             for pl in qs
         ]
     })
+
