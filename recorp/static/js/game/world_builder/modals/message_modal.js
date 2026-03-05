@@ -16,6 +16,11 @@ let currentTab = 'received';
 let unreadCount = 0;
 let isModalOpen = false;
 let composeOutsideClickHandler = null;
+let unreadPollIntervalId = null;
+let unreadCountRequestInFlight = false;
+let loadMessagesRequestSeq = 0;
+let searchDebounceId = null;
+let searchAbortController = null;
 
 window.mpNotificationQueue = [];
 window.mpNotificationIsShowing = false;
@@ -59,6 +64,15 @@ modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
 // ✅ === CHARGEMENT DU COMPTEUR NON LUS ===
 async function loadUnreadCount() {
+    if (document.hidden) {
+        return;
+    }
+    if (unreadCountRequestInFlight) {
+        return;
+    }
+
+    unreadCountRequestInFlight = true;
+
     try {
         const response = await fetch('/messages/unread-count/', {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -77,6 +91,8 @@ async function loadUnreadCount() {
         
     } catch (err) {
         console.error("Erreur chargement compteur messages:", err);
+    } finally {
+        unreadCountRequestInFlight = false;
     }
 }
 
@@ -121,13 +137,20 @@ function removeShakeAnimation() {
 
 // === FETCH MESSAGES ===
 async function loadMessages(direction = null) {
+    const requestSeq = ++loadMessagesRequestSeq;
     let url = `/messages/?page=${currentPage}&tab=${currentTab}`;
     let response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     let html = await response.text();
+    if (requestSeq !== loadMessagesRequestSeq) {
+        return;
+    }
 
     if (direction) {
         mailList.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
         await new Promise(r => setTimeout(r, 250));
+        if (requestSeq !== loadMessagesRequestSeq) {
+            return;
+        }
     }
 
     mailList.innerHTML = html;
@@ -311,12 +334,37 @@ function showMessage(data) {
 }
 
 // === SEARCH ===
-searchInput.addEventListener('input', async e => {
-    let q = e.target.value.trim();
-    if (!q) return loadMessages();
-    let res = await fetch(`/messages/search/?q=${encodeURIComponent(q)}`);
-    mailList.innerHTML = await res.text();
-    bindMailEvents();
+searchInput.addEventListener('input', () => {
+    clearTimeout(searchDebounceId);
+    searchDebounceId = setTimeout(async () => {
+        let q = searchInput.value.trim();
+
+        if (!q) {
+            if (searchAbortController) {
+                searchAbortController.abort();
+                searchAbortController = null;
+            }
+            return loadMessages();
+        }
+
+        try {
+            if (searchAbortController) {
+                searchAbortController.abort();
+            }
+            searchAbortController = new AbortController();
+            let res = await fetch(`/messages/search/?q=${encodeURIComponent(q)}`, {
+                signal: searchAbortController.signal,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            });
+            mailList.innerHTML = await res.text();
+            bindMailEvents();
+        } catch (err) {
+            if (err && err.name === 'AbortError') {
+                return;
+            }
+            console.error("Erreur recherche messages:", err);
+        }
+    }, 220);
 });
 
 // === DISPLAY MESSAGE LIST ===
@@ -664,7 +712,27 @@ async function sendPrivateMessage(payload) {
 
 // ✅ === RAFRAÎCHISSEMENT AUTOMATIQUE ===
 // Recharger le compteur toutes les 30 secondes
-setInterval(loadUnreadCount, 30000);
+if (unreadPollIntervalId) {
+    clearInterval(unreadPollIntervalId);
+}
+unreadPollIntervalId = setInterval(() => {
+    if (!document.hidden) {
+        loadUnreadCount();
+    }
+}, 30000);
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        loadUnreadCount();
+    }
+});
+
+window.addEventListener('beforeunload', () => {
+    if (unreadPollIntervalId) {
+        clearInterval(unreadPollIntervalId);
+        unreadPollIntervalId = null;
+    }
+});
 // === Exposer fonctions pour handlers WebSocket ===
 window.loadMessages = loadMessages; 
 window.showPrivateMessageNotification = showPrivateMessageNotification;

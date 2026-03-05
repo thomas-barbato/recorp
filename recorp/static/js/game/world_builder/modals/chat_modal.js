@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let messageIndex = 0;
     let isModalOpen = false;
     let unreadCounts = { sector: 0, faction: 0, group: 0 };
+    let unreadPollIntervalId = null;
+    let unreadCountsRequestInFlight = false;
+    const chatMessageRequestSeqByChannel = {};
+    const markReadRequestInFlightByChannel = {};
 
     loadUnreadCounts();
 
@@ -87,6 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatTabGroup) chatTabGroup.addEventListener("click", () => setTab("group"));
 
     async function loadUnreadCounts() {
+        if (document.hidden) {
+            return;
+        }
+        if (unreadCountsRequestInFlight) {
+            return;
+        }
+
+        unreadCountsRequestInFlight = true;
+
         try {
             const response = await fetch('/chat/unread-counts/', {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -107,14 +120,22 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (err) {
             console.error("Erreur chargement compteurs:", err);
+        } finally {
+            unreadCountsRequestInFlight = false;
         }
     }
 
     async function loadChatMessages(channel) {
+        const requestSeq = (chatMessageRequestSeqByChannel[channel] || 0) + 1;
+        chatMessageRequestSeqByChannel[channel] = requestSeq;
+
         const url = `/chat/get/${channel}/`;
         try {
             const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
             const data = await response.json();
+            if (chatMessageRequestSeqByChannel[channel] !== requestSeq) {
+                return;
+            }
             renderMessages(channel, data.messages || []);
         } catch (err) {
             console.error("Erreur lors du chargement du chat :", err);
@@ -197,6 +218,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function markChannelAsRead(channel) {
+        if (unreadCounts[channel] === 0) {
+            return;
+        }
+        if (markReadRequestInFlightByChannel[channel]) {
+            return;
+        }
+
+        markReadRequestInFlightByChannel[channel] = true;
         
         const url = `/chat/mark-read/${channel}/`
         try {
@@ -210,6 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (err) {
             console.error("Erreur :", err);
+        } finally {
+            markReadRequestInFlightByChannel[channel] = false;
         }
     }
 
@@ -335,7 +366,27 @@ async function async_send_chat_msg(payload) {
     }
 }
 
-    setInterval(loadUnreadCounts, 30000);
+    if (unreadPollIntervalId) {
+        clearInterval(unreadPollIntervalId);
+    }
+    unreadPollIntervalId = setInterval(() => {
+        if (!document.hidden) {
+            loadUnreadCounts();
+        }
+    }, 30000);
+
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            loadUnreadCounts();
+        }
+    });
+
+    window.addEventListener("beforeunload", () => {
+        if (unreadPollIntervalId) {
+            clearInterval(unreadPollIntervalId);
+            unreadPollIntervalId = null;
+        }
+    });
     window.appendMessage = appendMessage;
     window.incrementUnreadCount = incrementUnreadCount;
     window.markChannelAsRead = markChannelAsRead;

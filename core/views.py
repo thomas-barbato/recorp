@@ -596,10 +596,8 @@ class LogoutView(DjangoLogoutView):
 
 @require_http_methods(["GET"])
 def session_check(request):
-    """Vérifie si la session est toujours active."""
+    """Verify if the session is still active."""
     if request.user.is_authenticated:
-        # Rafraîchir la session
-        request.session.modified = True
         return JsonResponse({'authenticated': True})
     return JsonResponse({'authenticated': False}, status=401)
 
@@ -1383,19 +1381,23 @@ def bank_transfer_to_player(request):
 def get_unread_private_mail_count(request):
     """Retourne le nombre de messages non lus"""
     try:
-        player = Player.objects.get(user=request.user)
-        
+        player_id = (
+            Player.objects
+            .filter(user=request.user)
+            .values_list("id", flat=True)
+            .first()
+        )
+        if not player_id:
+            return JsonResponse({"error": "Player not found"}, status=404)
+
         unread_count = PrivateMessageRecipients.objects.filter(
-            recipient=player,
+            recipient_id=player_id,
             is_read=False,
             is_author=False,  # Ne pas compter ses propres messages
             deleted_at__isnull=True
         ).count()
         
         return JsonResponse({"unread_count": unread_count})
-        
-    except Player.DoesNotExist:
-        return JsonResponse({"error": "Player not found"}, status=404)
     except Exception as e:
         logger.exception(f"Erreur get_unread_messages_count: {e}")
         return JsonResponse({"error": str(e)}, status=500)
@@ -1406,21 +1408,29 @@ def get_unread_private_mail_count(request):
 def mark_private_mail_as_read(request, message_id):
     """Marque un message comme lu"""
     try:
-        player = Player.objects.get(user=request.user)
-        
-        recipient_entry = PrivateMessageRecipients.objects.get(
-            message_id=message_id,
-            recipient=player
+        player_id = (
+            Player.objects
+            .filter(user=request.user)
+            .values_list("id", flat=True)
+            .first()
         )
-        
-        if not recipient_entry.is_read:
-            recipient_entry.is_read = True
-            recipient_entry.save(update_fields=['is_read', 'updated_at'])
-        
+        if not player_id:
+            return JsonResponse({"error": "Player not found"}, status=404)
+
+        recipient_qs = PrivateMessageRecipients.objects.filter(
+            message_id=message_id,
+            recipient_id=player_id,
+        )
+
+        if not recipient_qs.exists():
+            return JsonResponse({"error": "Message not found"}, status=404)
+
+        recipient_qs.filter(is_read=False).update(
+            is_read=True,
+            updated_at=timezone.now(),
+        )
+
         return JsonResponse({"success": True})
-        
-    except PrivateMessageRecipients.DoesNotExist:
-        return JsonResponse({"error": "Message not found"}, status=404)
     except Exception as e:
         logger.exception(f"Erreur mark_message_as_read: {e}")
         return JsonResponse({"error": str(e)}, status=500)
@@ -1827,4 +1837,5 @@ def get_player_logs_preview(request):
             for pl in qs
         ]
     })
+
 

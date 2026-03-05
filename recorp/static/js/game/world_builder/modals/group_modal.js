@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let pollIntervalId = null;
     let searchDebounceId = null;
     let handledInvitationIds = new Set();
+    let refreshStateRequestInFlight = false;
 
     function t(text) {
         if (typeof gettext === "function") return gettext(text);
@@ -81,13 +82,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!modalOpen) return;
         modalOpen = false;
         content.classList.add("scale-90", "opacity-0");
-        window.clearInterval(pollIntervalId);
-        pollIntervalId = null;
+        stopPolling();
         hideAutocomplete();
         window.setTimeout(() => {
             modal.classList.add("hidden");
             document.body.style.overflow = "";
         }, 260);
+    }
+
+    function stopPolling() {
+        if (pollIntervalId) {
+            window.clearInterval(pollIntervalId);
+            pollIntervalId = null;
+        }
+    }
+
+    function startPolling() {
+        if (!modalOpen || document.hidden || pollIntervalId) {
+            return;
+        }
+        pollIntervalId = window.setInterval(() => {
+            refreshState({ silent: true });
+        }, pollMs);
     }
 
     function openModal() {
@@ -99,10 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
             content.classList.add("scale-100", "opacity-100");
         }, 40);
         refreshState();
-        window.clearInterval(pollIntervalId);
-        pollIntervalId = window.setInterval(() => {
-            refreshState({ silent: true });
-        }, pollMs);
+        stopPolling();
+        startPolling();
     }
 
     function setInviteControlsEnabled(enabled, hintText) {
@@ -347,6 +361,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function refreshState(options = {}) {
+        if (document.hidden && options.silent) {
+            return;
+        }
+        if (refreshStateRequestInFlight) {
+            return;
+        }
+
+        refreshStateRequestInFlight = true;
+
         try {
             const response = await fetch(stateUrl, {
                 headers: { "X-Requested-With": "XMLHttpRequest" },
@@ -367,6 +390,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!options.silent) {
                 showToast(t("Unable to load group state."), "error");
             }
+        } finally {
+            refreshStateRequestInFlight = false;
         }
     }
 
@@ -478,6 +503,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!inviteAutocomplete.contains(event.target) && event.target !== inviteInput) {
             hideAutocomplete();
         }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            stopPolling();
+            return;
+        }
+        if (modalOpen) {
+            refreshState({ silent: true });
+            startPolling();
+        }
+    });
+
+    window.addEventListener("beforeunload", () => {
+        stopPolling();
     });
 
     if (leaveBtn) {
