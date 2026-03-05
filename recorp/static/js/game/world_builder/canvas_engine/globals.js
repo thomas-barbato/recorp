@@ -377,9 +377,11 @@ export function initGlobals() {
             
             // canonique
             window.activeEffects?.scan?.delete(targetKey);
+            window.activeEffects?.share_scan?.delete(targetKey);
 
             // legacy (temporaire)
             window.scannedTargets?.delete(targetKey);
+            window.sharedTargets?.delete(targetKey);
 
             delete window.scannedMeta?.[targetKey];
             delete window.scannedModalData?.[targetKey];
@@ -388,16 +390,20 @@ export function initGlobals() {
         window.effectVisualTimers ??= new Map();
         window.scheduleEffectVisualExpire = function (effect, targetKey, expiresAt) {
             const key = `${effect}:${targetKey}`;
+            const expiresAtMs = new Date(expiresAt).getTime();
+            if (!Number.isFinite(expiresAtMs)) {
+                return;
+            }
 
             // Nettoyer un ancien timer si présent
             if (window.effectVisualTimers.has(key)) {
                 clearTimeout(window.effectVisualTimers.get(key));
             }
 
-            const delay = Math.max(0, new Date(expiresAt).getTime() - Date.now());
+            const delay = Math.max(0, expiresAtMs - Date.now());
 
             const timeoutId = setTimeout(() => {
-                if (effect === "scan") {
+                if (effect === "scan" || effect === "share_scan") {
 
                     // supprimer l'effet actif (important)
                     window.clearScan?.(targetKey);
@@ -410,8 +416,8 @@ export function initGlobals() {
                     window.canvasEngine?.renderer?.requestRedraw();
                     window.renderTextAboveTarget(targetKey, "- scan", "rgba(231, 0, 11, 0.95)", "scan");
 
-                    // Refresh modal base si ouvert
-                    window.refreshModalIfOpen(targetKey);
+                    // Refresh modal si ouvert (normal ou unknown)
+                    window.refreshModalAfterScan?.(targetKey);
 
                     window.dispatchEvent(new CustomEvent("scan:expired", {
                         detail: { targetKey }

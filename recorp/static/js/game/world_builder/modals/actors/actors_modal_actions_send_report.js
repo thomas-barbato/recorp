@@ -15,20 +15,26 @@
         targetType,
         targetId,
         modalData,
-        targetModalId
+        targetModalId,
+        modalId
     }) {
+        const resolvedTargetModalId =
+            targetModalId ||
+            modalId ||
+            (targetType && targetId != null ? `modal-${targetType}_${targetId}` : null);
+
         // Sauvegarde contexte
         lastTargetContext = {
             targetKey,
             targetType,
             targetId,
             modalData,
-            targetModalId
+            targetModalId: resolvedTargetModalId
         };
         
-        const targetEl = document.getElementById(targetModalId);
+        const targetEl = resolvedTargetModalId ? document.getElementById(resolvedTargetModalId) : null;
         if (targetEl) {
-            getModalLive()?.unregister?.(targetModalId);
+            getModalLive()?.unregister?.(resolvedTargetModalId);
             targetEl.remove();
         }
         
@@ -37,7 +43,7 @@
             modalContainer.innerHTML = "";
         }
 
-        createSendReportModal(modalData, targetModalId);
+        createSendReportModal(modalData, resolvedTargetModalId);
     };
 
 
@@ -50,26 +56,36 @@
         const modal = document.createElement("div");
         modal.id = modalId;
         modal.className = `
-            fixed inset-0 z-50 flex items-center justify-center
+            modal modal-z-index fixed inset-0 z-[9999] flex items-start sm:items-center justify-center p-2 sm:p-4 overflow-hidden
             bg-black/60 backdrop-blur-sm
         `;
+        modal.style.zIndex = "9999";
+        modal.style.paddingTop = "max(env(safe-area-inset-top), 0.5rem)";
+        modal.style.paddingBottom = "max(env(safe-area-inset-bottom), 0.5rem)";
 
         modal.innerHTML = `
-            <div class="relative shadow-2xl md:w-[60vw] md:max-w-2xl md:h-[80vh] w-full h-full flex flex-col md:overflow-hidden transition-all bg-zinc-950/95 border md:border border-emerald-500/40 md:rounded-2xl shadow-[0_0_30px_rgba(10,185,129,0.4)] scale-100 opacity-100">
+            <div class="relative shadow-2xl w-full md:w-[60vw] md:max-w-2xl h-[94dvh] md:h-[90dvh] max-h-[94dvh] md:max-h-[90dvh] min-h-0 flex flex-col overflow-hidden transition-all bg-zinc-950/95 border border-emerald-500/40 rounded-xl md:rounded-2xl shadow-[0_0_30px_rgba(10,185,129,0.4)] scale-100 opacity-100">
                 ${renderHeader()}
                 ${renderBody(modalData)}
                 ${renderFooter()}
             </div>
         `;
 
-        document.body.appendChild(modal);
+        const modalHost = document.getElementById("modal-container") || document.body;
+        modalHost.appendChild(modal);
+        const scrollBody = modal.querySelector('[data-send-report-scroll]');
+        if (scrollBody) {
+            scrollBody.style.webkitOverflowScrolling = "touch";
+            scrollBody.style.overscrollBehavior = "contain";
+            scrollBody.style.touchAction = "pan-y";
+        }
 
         bindSendReportEvents(modalId, targetModalId);
     }
 
     function renderHeader() {
         return `
-            <div class="flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
+            <div class="shrink-0 flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
 
                 <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
                     <i class="fa-solid fa-envelope"></i>
@@ -85,14 +101,14 @@
 
     function renderBody(modalData) {
         return `
-            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div data-send-report-scroll="1" class="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 space-y-4">
 
                 <!-- Recipients -->
                 <div>
                     <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
                         Recipient
                     </label>
-                    <div class="p-2 bg-black/40 border border-emerald-500/30 rounded">
+                    <div class="relative p-2 bg-black/40 border border-emerald-500/30 rounded">
                         <input
                             id="recipient"
                             type="text"
@@ -128,7 +144,7 @@
                         Intel report
                     </label>
 
-                    <div id="report-content" class="p-3 bg-black/50 border border-emerald-500/20 rounded text-xs text-emerald-200 whitespace-pre-wrap">
+                    <div id="report-content" class="p-3 md:max-h-[38dvh] md:overflow-y-auto bg-black/50 border border-emerald-500/20 rounded text-xs text-emerald-200 whitespace-pre-wrap break-words">
                         ${renderIntelReport(modalData)}
                     </div>
                 </div>
@@ -240,11 +256,11 @@
 
         modal.querySelector("#send-report-close")?.addEventListener("click", () => {
             modal?.remove();
-            open_close_modal(targetModalId);
+            if (targetModalId) open_close_modal(targetModalId);
         });
         modal.querySelector("#send-report-cancel")?.addEventListener("click", () => {
             modal?.remove();
-            open_close_modal(targetModalId);
+            if (targetModalId) open_close_modal(targetModalId);
         });
 
         modal.querySelector("#send-report-submit")?.addEventListener("click", async (e) => {

@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatTabSector = document.getElementById("tab-sector");
     const chatTabFaction = document.getElementById("tab-faction");
     const chatTabGroup = document.getElementById("tab-group");
+    const chatTabsByChannel = {
+        sector: chatTabSector,
+        faction: chatTabFaction,
+        group: chatTabGroup,
+    };
+    const CHANNELS = ["sector", "faction", "group"];
 
     const chatContainers = {
         sector: document.getElementById('chat-sector-messages'),
@@ -21,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentChannel = "sector";
     let altColor = false;
-    let messageIndex = 0;
     let isModalOpen = false;
     let unreadCounts = { sector: 0, faction: 0, group: 0 };
     let unreadPollIntervalId = null;
@@ -29,6 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessageRequestSeqByChannel = {};
     const chatMessageAbortControllerByChannel = {};
     const markReadRequestInFlightByChannel = {};
+
+    function normalizeUnreadCounts(raw = {}) {
+        return {
+            sector: Number(raw.sector || 0),
+            faction: Number(raw.faction || 0),
+            group: Number(raw.group || 0),
+        };
+    }
+
+    function unreadCountsChanged(prev, next) {
+        return CHANNELS.some((channel) => Number(prev?.[channel] || 0) !== Number(next?.[channel] || 0));
+    }
 
     loadUnreadCounts();
 
@@ -83,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             b.classList.remove("border-b-2", "border-emerald-400", "hover:text-emerald-200", "text-emerald-400", "font-semibold", "font-orbitron");
             b.classList.add("border-b", "border-transparent", "hover:text-emerald-200", "transition", "font-orbitron");
         });
-        const activeTab = document.getElementById(`tab-${tab}`);
+        const activeTab = chatTabsByChannel[tab];
         if (activeTab) {
             activeTab.classList.remove("border-b", "border-transparent", "hover:text-emerald-200", "transition", "font-orbitron");
             activeTab.classList.add("border-b-2", "border-emerald-400", "hover:text-emerald-200", "text-emerald-400", "font-semibold", "font-orbitron");
@@ -118,19 +135,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
             const data = await response.json();
-            
-            unreadCounts = data;
-            updateNotificationBadge();
-            
-            Object.keys(data).forEach(channel => {
-                updateTabBadge(channel);
-            });
-            
-            const totalUnread = Object.values(data).reduce((a, b) => a + b, 0);
+
+            const normalizedCounts = normalizeUnreadCounts(data);
+            const hasChanged = unreadCountsChanged(unreadCounts, normalizedCounts);
+            unreadCounts = normalizedCounts;
+
+            if (hasChanged) {
+                updateNotificationBadge();
+                CHANNELS.forEach(updateTabBadge);
+            }
+
+            const totalUnread = Object.values(unreadCounts).reduce((a, b) => a + b, 0);
             if (totalUnread > 0 && !isModalOpen) {
                 addShakeAnimation();
+            } else {
+                removeShakeAnimation();
             }
-            
+
         } catch (err) {
             console.error("Erreur chargement compteurs:", err);
         } finally {
@@ -176,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         container.innerHTML = "";
-        messageIndex = 0;
         altColor = false;
         const fragment = document.createDocumentFragment();
         messages.forEach(m => appendMessage({ ...m, channel }, { shouldScroll: false, targetContainer: fragment }));
@@ -273,12 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function getCsrfToken() {
-        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
-    }
-
     function incrementUnreadCount(channel) {
-        unreadCounts[channel]++;
+        const currentValue = Number(unreadCounts[channel] || 0);
+        unreadCounts[channel] = currentValue + 1;
         updateNotificationBadge();
         updateTabBadge(channel);
         
@@ -288,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateNotificationBadge() {
-        const totalUnread = Object.values(unreadCounts).reduce((a, b) => a + b, 0);
+        const totalUnread = CHANNELS.reduce((acc, channel) => acc + Number(unreadCounts[channel] || 0), 0);
         updateBadgeElement(chatOpenBtn, totalUnread);
         updateBadgeElement(chatOpenBtnMobile, totalUnread);
     }
@@ -312,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTabBadge(channel) {
-        const tab = document.getElementById(`tab-${channel}`);
+        const tab = chatTabsByChannel[channel];
         if (!tab) return;
         
         let badge = tab.querySelector('.tab-badge');
@@ -356,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (channel !== currentChannel) {
-            const tabEl = document.getElementById(`tab-${channel}`);
+            const tabEl = chatTabsByChannel[channel];
             if (tabEl && !tabEl.classList.contains("holo-pulse")) {
                 tabEl.classList.add("holo-pulse");
             }

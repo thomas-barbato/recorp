@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let inviteSearchAbortController = null;
     let handledInvitationIds = new Set();
     let refreshStateRequestInFlight = false;
+    let lastRenderedStateSignature = "";
 
     function t(text) {
         if (typeof gettext === "function") return gettext(text);
@@ -84,6 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
         modalOpen = false;
         content.classList.add("scale-90", "opacity-0");
         stopPolling();
+        if (searchDebounceId) {
+            window.clearTimeout(searchDebounceId);
+            searchDebounceId = null;
+        }
         if (inviteSearchAbortController) {
             inviteSearchAbortController.abort();
             inviteSearchAbortController = null;
@@ -140,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         invitationsRoot.classList.remove("hidden");
+        const fragment = document.createDocumentFragment();
         invitations.forEach((inv) => {
             const row = document.createElement("div");
             row.className = "flex items-center justify-between gap-2 rounded-md border border-emerald-500/30 bg-zinc-900/60 px-3 py-2";
@@ -175,8 +181,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             actions.append(acceptBtn, declineBtn);
             row.append(text, actions);
-            invitationsList.appendChild(row);
+            fragment.appendChild(row);
         });
+        invitationsList.appendChild(fragment);
     }
 
     function buildStatLabel(label, current, max) {
@@ -326,9 +333,11 @@ document.addEventListener("DOMContentLoaded", () => {
         emptyStateEl.classList.add("hidden");
         membersRoot.classList.remove("hidden");
         membersRoot.innerHTML = "";
+        const fragment = document.createDocumentFragment();
         members.forEach((member) => {
-            membersRoot.appendChild(renderMemberCard(member, currentState));
+            fragment.appendChild(renderMemberCard(member, currentState));
         });
+        membersRoot.appendChild(fragment);
 
         leaveBtn.classList.remove("hidden");
         disbandBtn.classList.toggle("hidden", !currentState?.is_leader);
@@ -343,8 +352,58 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function applyState(nextState) {
+    function buildStateRenderSignature(rawState) {
+        const safeState = rawState && typeof rawState === "object" ? rawState : {};
+        const members = Array.isArray(safeState.members) ? safeState.members : [];
+        const invitations = Array.isArray(safeState.pending_invitations) ? safeState.pending_invitations : [];
+
+        const summary = {
+            in_group: Boolean(safeState.in_group),
+            is_leader: Boolean(safeState.is_leader),
+            member_count: Number(safeState.member_count || 0),
+            max_members: Number(safeState.max_members || 0),
+            members: members.map((member) => ({
+                player_id: Number(member?.player_id || 0),
+                index: Number(member?.index || 0),
+                name: String(member?.name || ""),
+                is_leader: Boolean(member?.is_leader),
+                is_destroyed: Boolean(member?.is_destroyed),
+                sector_id: Number(member?.sector_id || 0),
+                sector_name: String(member?.sector_name || ""),
+                x: Number(member?.coordinates?.x || 0),
+                y: Number(member?.coordinates?.y || 0),
+                hp_current: Number(member?.stats?.hp?.current || 0),
+                hp_max: Number(member?.stats?.hp?.max || 0),
+                ap_current: Number(member?.stats?.ap?.current || 0),
+                ap_max: Number(member?.stats?.ap?.max || 0),
+                movement_current: Number(member?.stats?.movement?.current || 0),
+                movement_max: Number(member?.stats?.movement?.max || 0),
+                ballistic_current: Number(member?.stats?.ballistic?.current || 0),
+                ballistic_max: Number(member?.stats?.ballistic?.max || 0),
+                thermal_current: Number(member?.stats?.thermal?.current || 0),
+                thermal_max: Number(member?.stats?.thermal?.max || 0),
+                missile_current: Number(member?.stats?.missile?.current || 0),
+                missile_max: Number(member?.stats?.missile?.max || 0),
+            })),
+            pending_invitations: invitations.map((invitation) => ({
+                id: Number(invitation?.id || 0),
+                group_name: String(invitation?.group_name || ""),
+                inviter_name: String(invitation?.inviter_name || ""),
+            })),
+        };
+
+        return JSON.stringify(summary);
+    }
+
+    function applyState(nextState, options = {}) {
         state = nextState && typeof nextState === "object" ? nextState : {};
+        const nextSignature = buildStateRenderSignature(state);
+        const shouldRender = options.forceRender === true || nextSignature !== lastRenderedStateSignature;
+        if (!shouldRender) {
+            return false;
+        }
+        lastRenderedStateSignature = nextSignature;
+
         if (typeof window.applyGroupStateSnapshot === "function") {
             window.applyGroupStateSnapshot(state);
         } else {
@@ -352,6 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         renderInvitations(state.pending_invitations || []);
         renderMembers(state);
+        return true;
     }
 
     function promptPendingInvitationsFromState(currentState) {
@@ -435,6 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const fragment = document.createDocumentFragment();
         results.forEach((entry) => {
             const row = document.createElement("button");
             row.type = "button";
@@ -448,8 +509,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (invitePlayerIdInput) invitePlayerIdInput.value = String(entry.id || "");
                 hideAutocomplete();
             });
-            inviteAutocomplete.appendChild(row);
+            fragment.appendChild(row);
         });
+        inviteAutocomplete.appendChild(fragment);
         inviteAutocomplete.classList.remove("hidden");
     }
 

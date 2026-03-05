@@ -609,6 +609,18 @@ def _get_authenticated_player_id(user):
     return Player.objects.filter(user_id=user_id).values_list("id", flat=True).first()
 
 
+def _get_authenticated_non_npc_player_id(user):
+    user_id = getattr(user, "id", None)
+    if not user_id:
+        return None
+    return (
+        Player.objects
+        .filter(user_id=user_id, is_npc=False)
+        .values_list("id", flat=True)
+        .first()
+    )
+
+
 def _get_authenticated_player_chat_context(user):
     user_id = getattr(user, "id", None)
     if not user_id:
@@ -918,30 +930,36 @@ def search_players_for_private_mail(request):
 @login_required
 def group_modal_state(request):
     try:
-        player = Player.objects.filter(user=request.user, is_npc=False).first()
-        if not player:
+        player_id = _get_authenticated_non_npc_player_id(request.user)
+        if not player_id:
             return JsonResponse({"ok": False, "error": "PLAYER_NOT_FOUND"}, status=404)
 
-        state = build_group_state_for_player(int(player.id))
+        state = build_group_state_for_player(int(player_id))
 
         pending_invites = (
             GroupInvitation.objects
-            .select_related("group", "inviter")
-            .filter(invitee_id=player.id, status="PENDING")
+            .filter(invitee_id=player_id, status="PENDING")
+            .values(
+                "id",
+                "group_id",
+                "group__name",
+                "inviter_id",
+                "inviter__name",
+                "created_at",
+            )
             .order_by("-created_at")[:10]
         )
-        invites_payload = []
-        for invite in pending_invites:
-            invites_payload.append(
-                {
-                    "id": int(invite.id),
-                    "group_id": int(invite.group_id),
-                    "group_name": invite.group.name if invite.group else "Unnamed Group",
-                    "inviter_id": int(invite.inviter_id),
-                    "inviter_name": invite.inviter.name if invite.inviter else "Unknown",
-                    "created_at": invite.created_at.isoformat() if invite.created_at else None,
-                }
-            )
+        invites_payload = [
+            {
+                "id": int(invite["id"]),
+                "group_id": int(invite["group_id"]),
+                "group_name": invite.get("group__name") or "Unnamed Group",
+                "inviter_id": int(invite["inviter_id"]),
+                "inviter_name": invite.get("inviter__name") or "Unknown",
+                "created_at": invite["created_at"].isoformat() if invite.get("created_at") else None,
+            }
+            for invite in pending_invites
+        ]
 
         state["pending_invitations"] = invites_payload
         return JsonResponse({"ok": True, "state": state})
@@ -956,8 +974,9 @@ def search_players_for_group_invite(request):
     if not q:
         return JsonResponse({"results": []})
 
-    current_player = Player.objects.filter(user=request.user, is_npc=False).first()
-    current_player_id = int(current_player.id) if current_player else None
+    current_player_id = _get_authenticated_non_npc_player_id(request.user)
+    if not current_player_id:
+        return JsonResponse({"results": []})
 
     in_group_subquery = PlayerGroup.objects.filter(player_id=OuterRef("pk"))
     qs = (
@@ -1434,7 +1453,7 @@ def bank_transfer_to_player(request):
 def get_unread_private_mail_count(request):
     """Retourne le nombre de messages non lus"""
     try:
-        player_id = Player.objects.filter(user_id=request.user.id).values_list("id", flat=True).first()
+        player_id = _get_authenticated_player_id(request.user)
         if not player_id:
             return JsonResponse({"error": "Player not found"}, status=404)
 
@@ -1456,7 +1475,7 @@ def get_unread_private_mail_count(request):
 def mark_private_mail_as_read(request, message_id):
     """Marque un message comme lu"""
     try:
-        player_id = Player.objects.filter(user_id=request.user.id).values_list("id", flat=True).first()
+        player_id = _get_authenticated_player_id(request.user)
         if not player_id:
             return JsonResponse({"error": "Player not found"}, status=404)
 

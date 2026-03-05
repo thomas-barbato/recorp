@@ -597,11 +597,15 @@ function create_pc_npc_modal(modalId, data, is_npc) {
                 onExpire: () => {
                     // Marque l’expiration locale
                     window.scanExpiredLocal.add(targetKey);
+                    // Purge canonique de tous les états de scan (direct + partagé)
+                    window.clearScan?.(targetKey);
                     // Redraw carte (vaisseau / npc / foreground)
                     requestWorldRedraw();
                     // supprimer le timer manuellement 
                     // sert principalement pour le modal "non base"
                     timerContainer.remove();
+                    // Force le rebuild du modal si la cible est ouverte
+                    refreshModalAfterScan?.(targetKey);
                     window.dispatchEvent(new CustomEvent("scan:expired", {
                         detail: { targetKey }
                     }));
