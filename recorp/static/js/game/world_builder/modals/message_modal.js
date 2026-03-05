@@ -16,6 +16,7 @@ let currentTab = 'received';
 let unreadCount = 0;
 let isModalOpen = false;
 let composeOutsideClickHandler = null;
+let mailListDelegationBound = false;
 let unreadPollIntervalId = null;
 let unreadCountRequestInFlight = false;
 let loadMessagesRequestSeq = 0;
@@ -25,6 +26,12 @@ let searchAbortController = null;
 
 window.mpNotificationQueue = [];
 window.mpNotificationIsShowing = false;
+
+function clearComposeOutsideClickHandler() {
+    if (!composeOutsideClickHandler) return;
+    document.removeEventListener('click', composeOutsideClickHandler);
+    composeOutsideClickHandler = null;
+}
 
 // Charger le compteur au démarrage
 loadUnreadCount();
@@ -40,16 +47,11 @@ function closeModal() {
         searchAbortController.abort();
         searchAbortController = null;
     }
-    if (composeOutsideClickHandler) {
-        document.removeEventListener('click', composeOutsideClickHandler);
-        composeOutsideClickHandler = null;
-    }
+    clearComposeOutsideClickHandler();
     content.classList.add('scale-90', 'opacity-0');
     setTimeout(() => {
         modal.classList.add('hidden');
-        document.querySelectorAll('.mail-item').forEach(mail => {
-            mail.remove();
-        });
+        mailList.innerHTML = '';
         document.body.style.overflow = '';
     }, 300);
 }
@@ -75,7 +77,7 @@ if (modal) {
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 }
 
-// ✅ === CHARGEMENT DU COMPTEUR NON LUS ===
+// === CHARGEMENT DU COMPTEUR NON LUS ===
 async function loadUnreadCount() {
     if (document.hidden) {
         return;
@@ -109,7 +111,7 @@ async function loadUnreadCount() {
     }
 }
 
-// ✅ === MISE À JOUR DU BADGE ===
+// === MISE A JOUR DU BADGE ===
 function updateUnreadBadge() {
     updateBadgeElement(openBtn, unreadCount);
     updateBadgeElement(openBtnMobile, unreadCount);
@@ -133,7 +135,7 @@ function updateBadgeElement(button, count) {
     }
 }
 
-// ✅ === ANIMATIONS ===
+// === ANIMATIONS ===
 function addShakeAnimation() {
     if (openBtn && !openBtn.classList.contains('mail-shake')) {
         openBtn.classList.add('mail-shake');
@@ -151,6 +153,7 @@ function removeShakeAnimation() {
 // === FETCH MESSAGES ===
 async function loadMessages(direction = null) {
     if (!mailList) return;
+    clearComposeOutsideClickHandler();
     const requestSeq = ++loadMessagesRequestSeq;
     if (loadMessagesAbortController) {
         loadMessagesAbortController.abort();
@@ -227,44 +230,56 @@ function bindPagination() {
 
 // === BIND EVENTS ===
 function bindMailEvents() {
-    document.querySelectorAll('.mail-item').forEach(item => {
-        item.addEventListener('click', async () => {
-            let id = item.dataset.id;
-            
-            // ✅ Marquer comme lu avant d'afficher
+    if (!mailList || mailListDelegationBound) return;
+    mailListDelegationBound = true;
+
+    const deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
+
+    mailList.addEventListener('click', async (e) => {
+        const deleteBtn = e.target.closest('.delete-btn');
+        if (deleteBtn && mailList.contains(deleteBtn)) {
+            e.stopPropagation();
+            const item = deleteBtn.closest('.mail-item');
+            const id = item?.dataset?.id;
+            if (!id) return;
+
+            if (!confirm(gettext("Delete this message?"))) {
+                return;
+            }
+
+            try {
+                await fetch(deleteUrl, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrf_token,
+                    },
+                    body: JSON.stringify({ id }),
+                });
+                loadMessages();
+                await loadUnreadCount();
+            } catch (err) {
+                console.error("Erreur suppression message:", err);
+            }
+            return;
+        }
+
+        const item = e.target.closest('.mail-item');
+        if (!item || !mailList.contains(item)) return;
+        const id = item.dataset?.id;
+        if (!id) return;
+
+        try {
             await markMessageAsRead(id);
-            
             let res = await fetch(`/messages/get/${id}/`);
             let data = await res.json();
             showMessage(data);
-        });
-    });
-
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', async e => {
-            e.stopPropagation();
-            let item = e.target.closest('.mail-item');
-            let id = item.dataset.id;
-
-            let data = JSON.stringify({id});
-            let deleteUrl = window.location.href.split('/play')[0] + '/messages/delete/';
-            if (confirm(gettext("Delete this message?"))) {
-                await fetch(deleteUrl, {
-                    method: "POST",
-                    headers: { 
-                        "X-CSRFToken": csrf_token 
-                    },
-                    body: data,
-                });
-                loadMessages();
-                // ✅ Recharger le compteur après suppression
-                await loadUnreadCount();
-            }
-        });
+        } catch (err) {
+            console.error("Erreur ouverture message:", err);
+        }
     });
 }
 
-// ✅ === MARQUER COMME LU ===
+// === MARQUER COMME LU ===
 async function markMessageAsRead(messageId) {
     try {
         await fetch(`/messages/mark-read/${messageId}/`, {
@@ -289,6 +304,8 @@ function getCsrfToken() {
 
 // === SHOW SINGLE MESSAGE ===
 function showMessage(data) {
+    if (!mailList) return;
+    clearComposeOutsideClickHandler();
     mailList.innerHTML = `
     <div class="p-4 text-emerald-300 space-y-4 animate-fade-in">
         <h3 class="text-emerald-400 font-bold text-lg md:text-xl">${data.subject}</h3>
@@ -362,7 +379,7 @@ function showMessage(data) {
             try {
                 await sendPrivateMessage(payload);
             } catch {
-                showToast(gettext("Send failed ✗"), false);
+                showToast(gettext("Send failed"), false);
             } finally {
                 setLoadingState(btn, false);
                 displayMpList();
@@ -376,6 +393,7 @@ if (searchInput) {
     searchInput.addEventListener('input', () => {
         clearTimeout(searchDebounceId);
         searchDebounceId = setTimeout(async () => {
+            clearComposeOutsideClickHandler();
             let q = searchInput.value.trim();
 
             if (!q) {
@@ -410,6 +428,7 @@ if (searchInput) {
 
 // === DISPLAY MESSAGE LIST ===
 function displayMpList(){
+    clearComposeOutsideClickHandler();
     if (tabSent) tabSent.classList.remove('border-2', 'border-emerald-400');
     if (newMsgBtn) newMsgBtn.classList.remove('border-2', 'border-emerald-400');
     if (tabInbox) tabInbox.classList.add('border-2', 'border-emerald-400');
@@ -526,7 +545,7 @@ if (newMsgBtn) {
         try {
             await sendPrivateMessage(payload);
         } catch {
-            showToast(gettext("Failed to send ✗"), false);
+            showToast(gettext("Failed to send"), false);
         } finally {
             setLoadingState(sendNewBtn, false);
             displayMpList();
@@ -649,7 +668,7 @@ function bindComposeEvents() {
         results.forEach(p => {
             let div = document.createElement('div');
             div.className = "px-3 py-1 text-xs hover:bg-emerald-500/10 cursor-pointer";
-            div.textContent = `${p.name} — ${p.faction}`;
+            div.textContent = `${p.name} - ${p.faction}`;
             div.addEventListener('click', () => {
                 recipientInput.value = p.name;
                 recipientPlayerId.value = p.id;
@@ -670,9 +689,7 @@ function bindComposeEvents() {
             if(mode === "player" && !recipientPlayerId.value) return showError(gettext("Recipient not found"));
         });
 
-    if (composeOutsideClickHandler) {
-        document.removeEventListener('click', composeOutsideClickHandler);
-    }
+    clearComposeOutsideClickHandler();
 
     composeOutsideClickHandler = (e) => {
         if (!recipientAutocomplete.contains(e.target) && e.target !== recipientInput)
@@ -683,7 +700,7 @@ function bindComposeEvents() {
 }
 
 // === NOTIFICATION DEPUIS WEBSOCKET ===
-// (implémentation plus complète plus bas — évite double déclaration)
+// (implementation plus complete plus bas - evite double declaration)
 
 /**
  * Ajoute une notification à la file.
@@ -800,7 +817,7 @@ async function sendPrivateMessage(payload) {
 }
 
 
-// ✅ === RAFRAÎCHISSEMENT AUTOMATIQUE ===
+// === RAFRAICHISSEMENT AUTOMATIQUE ===
 // Recharger le compteur toutes les 30 secondes
 if (unreadPollIntervalId) {
     clearInterval(unreadPollIntervalId);
