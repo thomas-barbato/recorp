@@ -930,6 +930,20 @@ class PrivateMessageRecipients(models.Model):
     created_at = models.DateTimeField("creation date", default=timezone.now)
     deleted_at = models.DateTimeField("delete date", null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["recipient", "deleted_at", "is_author", "-created_at"],
+                name="pmr_rec_tab_idx",
+            ),
+            models.Index(
+                fields=["recipient", "is_read", "is_author", "deleted_at"],
+                name="pmr_rec_unread_idx",
+            ),
+            models.Index(fields=["message", "recipient"], name="pmr_msg_rec_idx"),
+            models.Index(fields=["message", "deleted_at"], name="pmr_msg_del_idx"),
+        ]
     
 class Group(models.Model):
     creator = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="created_groups")
@@ -1022,6 +1036,7 @@ class MessageReadStatus(models.Model):
         indexes = [
             models.Index(fields=['player', 'is_read']),
             models.Index(fields=['message', 'is_read']),
+            models.Index(fields=["player", "is_read", "message"], name="mrs_player_read_msg_idx"),
         ]
 
     def __str__(self):

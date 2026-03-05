@@ -50,7 +50,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "core.middleware.WebSocketSessionMiddleware",
@@ -61,12 +60,17 @@ MIDDLEWARE = [
     "axes.middleware.AxesMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "django.middleware.cache.FetchFromCacheMiddleware",
     # locale middleware should appear once after MessageMiddleware
     "django.middleware.locale.LocaleMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
     "core.middleware.OneSessionPerUserMiddleware",
 ]
+
+# Full-page cache middleware must be enabled as a pair.
+ENABLE_SITE_CACHE_MIDDLEWARE = env.bool("ENABLE_SITE_CACHE_MIDDLEWARE", default=False)
+if ENABLE_SITE_CACHE_MIDDLEWARE:
+    MIDDLEWARE.insert(0, "django.middleware.cache.UpdateCacheMiddleware")
+    MIDDLEWARE.append("django.middleware.cache.FetchFromCacheMiddleware")
 
 ROOT_URLCONF = "recorp.urls"
 
@@ -128,15 +132,15 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
 # Configuration session
+# Keep default True for compatibility; can be disabled progressively via env.
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 semaine
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_SAVE_EVERY_REQUEST = True  # âœ… ForcÃ© pour CSRF token valide
+SESSION_SAVE_EVERY_REQUEST = env.bool("SESSION_SAVE_EVERY_REQUEST", default=True)
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
-# Timeout session plus long pour WebSocket
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 jours
+# Timeout session pour WebSocket
 
 # ========================================
 # Authentication Backends
