@@ -297,6 +297,7 @@ export function renderEventLog(
     li.className = [
         "event-log-item",
         isHud ? "event-log-item-hud" : "event-log-item-modal",
+        isHud ? "select-none" : "",
         colorClass,
         style.glow || "",
     ].filter(Boolean).join(" ");
