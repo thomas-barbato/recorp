@@ -74,3 +74,36 @@ Notes:
 - `worker` executes tasks.
 - `beat` schedules periodic tasks.
 - In dev, both must be running if you want non-lazy timed gameplay events.
+
+## i18n workflow (FR/EN)
+
+Goal: keep `.po` as source files and always generate fresh `.mo` before runtime/deploy.
+
+### Local development (Windows or Linux)
+
+Run after translation edits:
+
+```powershell
+python scripts/i18n_sync.py --compile --check
+```
+
+If you only want a status check:
+
+```powershell
+python scripts/i18n_sync.py --check
+```
+
+### Deployment / CI
+
+Run before starting Django:
+
+```bash
+python scripts/i18n_sync.py --compile --check
+```
+
+This avoids stale runtime catalogs (`.mo older than .po`) and keeps behavior consistent across OS.
+
+### Runtime notes
+
+- Restart app processes after catalog compilation/deploy.
+- If `ENABLE_SITE_CACHE_MIDDLEWARE=True`, clear site cache after deploy.

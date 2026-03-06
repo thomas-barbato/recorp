@@ -4,6 +4,7 @@ import random
 from typing import Dict, Any, Optional
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
 import datetime
@@ -34,7 +35,7 @@ from core.backend.modal_builder import (
     build_pc_modal_data,
     build_sector_element_modal_data,
 )
-from core.backend.player_logs import create_event_log
+from core.backend.player_logs import create_event_log, serialize_event_log_data
 
 from core.backend.combat_engine import (
     ActorAdapter,
@@ -48,7 +49,7 @@ logger = logging.getLogger("django")
 class GameConsumer(WebsocketConsumer):
     DEFAULT_RESPAWN_SECTOR_ID = 7
     NPC_RESPAWN_DELAY_SECONDS = 120
-    WRECK_TTL_SECONDS = 12 * 60 * 60  # 12h (scavenge => disparition immédiate)
+    WRECK_TTL_SECONDS = 12 * 60 * 60  # 12h (scavenge => disparition immÃ©diate)
     GROUP_MAX_MEMBERS = 6
     MODULE_RECONFIG_SECONDS = 10
     EQUIPMENT_COMBAT_LOCK_SECONDS = 30
@@ -59,8 +60,8 @@ class GameConsumer(WebsocketConsumer):
     WRECK_SALVAGE_MODULE_RECOVERY_CHANCE = 0.25
     WRECK_SALVAGE_RESOURCE_NAME = "Salvage Scrap"
     """
-    WebSocket consumer pour gérer les interactions en temps réel du jeu.
-    Gère les mouvements des joueurs, les actions de jeu et la synchronisation.
+    WebSocket consumer pour gÃ©rer les interactions en temps rÃ©el du jeu.
+    GÃ¨re les mouvements des joueurs, les actions de jeu et la synchronisation.
     """
     
     def __init__(self, *args, **kwargs):
@@ -76,10 +77,41 @@ class GameConsumer(WebsocketConsumer):
         self.game_cache = None
         self.player_id: Optional[int] = None
         self._cache_store = None
+        self.language_code: str = settings.LANGUAGE_CODE
 
+
+
+    def _normalize_language_code(self, raw: Optional[str]) -> str:
+        value = str(raw or settings.LANGUAGE_CODE or "en").strip().lower()
+        if value.startswith("fr"):
+            return "fr"
+        return "en"
+
+    def _resolve_language_code(self) -> str:
+        session_lang = None
+        session = self.scope.get("session")
+        if session is not None:
+            session_lang = session.get("django_language")
+
+        cookies = self.scope.get("cookies") or {}
+        cookie_lang = cookies.get(getattr(settings, "LANGUAGE_COOKIE_NAME", "django_language"))
+
+        header_lang = None
+        for header_name, header_value in self.scope.get("headers") or []:
+            if header_name == b"accept-language":
+                try:
+                    header_lang = header_value.decode("latin1")
+                except Exception:
+                    header_lang = None
+                break
+
+        for candidate in (session_lang, cookie_lang, header_lang):
+            if candidate:
+                return self._normalize_language_code(candidate)
+        return self._normalize_language_code(None)
 
     def connect(self) -> None:
-        """Établit la connexion WebSocket et joint l'utilisateur au groupe de salle."""
+        """Ã‰tablit la connexion WebSocket et joint l'utilisateur au groupe de salle."""
         self._setup_room_connection()
         self._join_room_group()
         self._handle_authenticated_user()
@@ -91,12 +123,13 @@ class GameConsumer(WebsocketConsumer):
         
 
     def _setup_room_connection(self) -> None:
-        """Configure les informations de connexion à la salle."""
+        """Configure les informations de connexion Ã  la salle."""
         self.room = self.scope["url_route"]["kwargs"]["room"]
         self.room_group_name = f"play_{self.room}"
         self.user = self.scope["user"]
         self.player_id = PlayerAction(self.user.id).get_player_id()
         self._cache_store = StoreInCache(self.room_group_name, self.user)
+        self.language_code = self._resolve_language_code()
         
         self.accept()
 
@@ -108,7 +141,7 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def _handle_authenticated_user(self) -> None:
-        """Traite les utilisateurs authentifiés en initialisant le cache."""
+        """Traite les utilisateurs authentifiÃ©s en initialisant le cache."""
         if self.user.is_authenticated:
             # store = StoreInCache(self.room_group_name, self.user)
             # store.get_or_set_cache(need_to_be_recreated=False)
@@ -120,7 +153,7 @@ class GameConsumer(WebsocketConsumer):
         try:
             player_id = int(self.player_id)
 
-            # Si le joueur est déjà en groupe, on expire les vieilles invitations.
+            # Si le joueur est dÃ©jÃ  en groupe, on expire les vieilles invitations.
             if PlayerGroup.objects.filter(player_id=player_id).exists():
                 GroupInvitation.objects.filter(
                     invitee_id=player_id,
@@ -156,22 +189,22 @@ class GameConsumer(WebsocketConsumer):
             logger.exception("emit pending group invitations on connect failed")
 
     def disconnect(self, close_code: int) -> None:
-        """Gère la déconnexion WebSocket de manière asynchrone."""
+        """GÃ¨re la dÃ©connexion WebSocket de maniÃ¨re asynchrone."""
         try:
             self._release_wreck_loot_locks_for_current_player_safe()
             # Nettoyer les ressources AVANT de quitter le groupe
             if hasattr(self, '_cache_store'):
-                # Optionnel : retirer le joueur du cache si nécessaire
+                # Optionnel : retirer le joueur du cache si nÃ©cessaire
                 # self._cache_store.cleanup()
                 pass
             
-            # Quitter le groupe de manière asynchrone
+            # Quitter le groupe de maniÃ¨re asynchrone
             self._leave_room_group()
             
-            logger.info(f"WebSocket déconnecté proprement - Code: {close_code}, Joueur: {self.player_id}")
+            logger.info(f"WebSocket dÃ©connectÃ© proprement - Code: {close_code}, Joueur: {self.player_id}")
             
         except Exception as e:
-            logger.error(f"Erreur lors de la déconnexion: {e}")
+            logger.error(f"Erreur lors de la dÃ©connexion: {e}")
         finally:
             # Toujours fermer la connexion
             try:
@@ -187,18 +220,18 @@ class GameConsumer(WebsocketConsumer):
         )
         
     def _refresh_session(self) -> None:
-        """Rafraîchit la session Django pour éviter l'expiration."""
+        """RafraÃ®chit la session Django pour Ã©viter l'expiration."""
         if hasattr(self.scope, 'session'):
-            # Forcer la mise à jour du timestamp de session
+            # Forcer la mise Ã  jour du timestamp de session
             self.scope['session'].modified = True
             self.scope['session'].save()
 
     def _handle_ping_with_validation(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Gère le ping et vérifie si une synchronisation est nécessaire."""
+        """GÃ¨re le ping et vÃ©rifie si une synchronisation est nÃ©cessaire."""
         client_hash = data.get("client_data_hash")
         player_id = data.get("player_id", self.player_id)
         
-        # Générer le hash côté serveur
+        # GÃ©nÃ©rer le hash cÃ´tÃ© serveur
         server_hash = self._generate_server_data_hash(player_id)
         
         sync_required = (client_hash != server_hash) if client_hash else False
@@ -209,7 +242,7 @@ class GameConsumer(WebsocketConsumer):
         }
         
     def _generate_server_data_hash(self, player_id: int) -> str:
-        """Génère un hash des données critiques côté serveur."""
+        """GÃ©nÃ¨re un hash des donnÃ©es critiques cÃ´tÃ© serveur."""
         try:
             cached_data = cache.get(self.room_group_name)
             if not cached_data:
@@ -238,7 +271,7 @@ class GameConsumer(WebsocketConsumer):
             return self._to_base36(abs(hash_val))
             
         except Exception as e:
-            logger.error(f"Erreur génération hash serveur: {e}")
+            logger.error(f"Erreur gÃ©nÃ©ration hash serveur: {e}")
             return "error"
             
     def _to_base36(self, num: int) -> str:
@@ -253,59 +286,59 @@ class GameConsumer(WebsocketConsumer):
         return result
 
     def _broadcast_message(self, message_data: Dict[str, Any]) -> None:
-        """Diffuse le message à tous les membres du groupe."""
+        """Diffuse le message Ã  tous les membres du groupe."""
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             message_data,
         )
         
-    # méthode pour gérer les demandes de synchronisation
+    # mÃ©thode pour gÃ©rer les demandes de synchronisation
     def _handle_data_sync_request(self, data: Dict[str, Any]) -> None:
         """
-        Gère les demandes de synchronisation des données client.
+        GÃ¨re les demandes de synchronisation des donnÃ©es client.
         
         Args:
-            data: Données de la demande de synchronisation
+            data: DonnÃ©es de la demande de synchronisation
         """
         try:
-            # Parser les données de la demande
+            # Parser les donnÃ©es de la demande
             request_data = json.loads(data.get("message", "{}"))
             player_id = request_data.get("player_id", self.player_id)
             sector_id = request_data.get("sector_id")
             
-            # Construire la réponse de synchronisation
+            # Construire la rÃ©ponse de synchronisation
             sync_response = self._build_sync_response(player_id, sector_id)
             
-            # Envoyer la réponse directement au client demandeur
+            # Envoyer la rÃ©ponse directement au client demandeur
             self._send_response({
                 "type": "data_sync_response",
                 "message": sync_response
             })
             
         except Exception as e:
-            # Envoyer une réponse d'erreur
+            # Envoyer une rÃ©ponse d'erreur
             self._send_response({
                 "type": "data_sync_error",
-                "message": {"error": "Erreur lors de la synchronisation des données"}
+                "message": {"error": "Erreur lors de la synchronisation des donnÃ©es"}
             })
             
-    # construire la réponse de synchronisation
+    # construire la rÃ©ponse de synchronisation
     def _build_sync_response(self, player_id: int, sector_id: Optional[str] = None) -> Dict[str, Any]:
         """
-        Construit la réponse de synchronisation avec toutes les données nécessaires.
+        Construit la rÃ©ponse de synchronisation avec toutes les donnÃ©es nÃ©cessaires.
         
         Args:
             player_id: ID du joueur demandant la synchronisation
             sector_id: ID du secteur (optionnel)
             
         Returns:
-            Dict contenant toutes les données de synchronisation
+            Dict contenant toutes les donnÃ©es de synchronisation
         """
         try:
-            # Récupérer ou reconstruire le cache si nécessaire
+            # RÃ©cupÃ©rer ou reconstruire le cache si nÃ©cessaire
             self._cache_store.get_or_set_cache(need_to_be_recreated=False)
             
-            # Construire les données de synchronisation
+            # Construire les donnÃ©es de synchronisation
             sync_data = {
                 "current_player": self._get_current_player_sync_data(player_id),
                 "other_players": self._get_other_players_sync_data(player_id),
@@ -321,21 +354,21 @@ class GameConsumer(WebsocketConsumer):
             return sync_data
             
         except Exception as e:
-            logger.error(f"Erreur lors de la construction de la réponse de sync: {e}")
-            return {"error": "Erreur lors de la construction des données"}
+            logger.error(f"Erreur lors de la construction de la rÃ©ponse de sync: {e}")
+            return {"error": "Erreur lors de la construction des donnÃ©es"}
 
-    # 4. MÉTHODES HELPER pour construire les données de synchronisation
+    # 4. MÃ‰THODES HELPER pour construire les donnÃ©es de synchronisation
     def _get_current_player_sync_data(self, player_id: int) -> Optional[Dict[str, Any]]:
-        """Récupère les données du joueur actuel."""
+        """RÃ©cupÃ¨re les donnÃ©es du joueur actuel."""
         try:
             current_player_data = self._cache_store.get_current_player_data(player_id)
             return current_player_data[0] if current_player_data else None
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération du joueur actuel: {e}")
+            logger.error(f"Erreur lors de la rÃ©cupÃ©ration du joueur actuel: {e}")
             return None
 
     def _get_other_players_sync_data(self, player_id: int) -> list[Dict[str, Any]]:
-        """Récupère les données des autres joueurs."""
+        """RÃ©cupÃ¨re les donnÃ©es des autres joueurs."""
         try:
             players = self._cache_store.get_other_player_data(player_id) or []
             return [
@@ -343,11 +376,11 @@ class GameConsumer(WebsocketConsumer):
                 if (p.get("ship", {}).get("status") != "DEAD")
             ]
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des autres joueurs: {e}")
+            logger.error(f"Erreur lors de la rÃ©cupÃ©ration des autres joueurs: {e}")
             return []
 
     def _get_map_informations_sync_data(self) -> Dict[str, Any]:
-        """Récupère les informations de la carte."""
+        """RÃ©cupÃ¨re les informations de la carte."""
         try:
             cached_data = cache.get(self.room_group_name)
             if not cached_data:
@@ -368,11 +401,11 @@ class GameConsumer(WebsocketConsumer):
                 "messages": cached_data.get("messages", [])
             }
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des informations de carte: {e}")
+            logger.error(f"Erreur lors de la rÃ©cupÃ©ration des informations de carte: {e}")
             return {}
 
     def _get_npcs_sync_data(self) -> list[Dict[str, Any]]:
-        """Récupère les données des NPCs."""
+        """RÃ©cupÃ¨re les donnÃ©es des NPCs."""
         try:
             cached_data = cache.get(self.room_group_name)
             if not cached_data:
@@ -382,16 +415,16 @@ class GameConsumer(WebsocketConsumer):
                 if n.get("ship", {}).get("status") != "DEAD"
             ]
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des NPCs: {e}")
+            logger.error(f"Erreur lors de la rÃ©cupÃ©ration des NPCs: {e}")
             return []
 
     def _get_sector_elements_sync_data(self) -> list[Dict[str, Any]]:
-        """Récupère les éléments du secteur."""
+        """RÃ©cupÃ¨re les Ã©lÃ©ments du secteur."""
         try:
             cached_data = cache.get(self.room_group_name)
             return cached_data.get("sector_element", []) if cached_data else []
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des éléments du secteur: {e}")
+            logger.error(f"Erreur lors de la rÃ©cupÃ©ration des Ã©lÃ©ments du secteur: {e}")
             return []
 
     def _get_wrecks_sync_data(self) -> list[Dict[str, Any]]:
@@ -471,36 +504,36 @@ class GameConsumer(WebsocketConsumer):
         ]
         cache.set(cache_key, room_cache)
 
-    # 5. MÉTHODE UTILITAIRE pour valider les données avant envoi
+    # 5. MÃ‰THODE UTILITAIRE pour valider les donnÃ©es avant envoi
     def _validate_sync_data(self, sync_data: Dict[str, Any]) -> bool:
         """
-        Valide les données de synchronisation avant envoi.
+        Valide les donnÃ©es de synchronisation avant envoi.
         
         Args:
-            sync_data: Données à valider
+            sync_data: DonnÃ©es Ã  valider
             
         Returns:
-            True si les données sont valides, False sinon
+            True si les donnÃ©es sont valides, False sinon
         """
         required_keys = ["current_player", "other_players", "map_informations"]
         
         try:
-            # Vérifier la présence des clés requises
+            # VÃ©rifier la prÃ©sence des clÃ©s requises
             if not all(key in sync_data for key in required_keys):
-                logger.warning("Clés manquantes dans les données de synchronisation")
+                logger.warning("ClÃ©s manquantes dans les donnÃ©es de synchronisation")
                 return False
             
-            # Vérifier que current_player n'est pas None si on s'attend à ce qu'il existe
+            # VÃ©rifier que current_player n'est pas None si on s'attend Ã  ce qu'il existe
             if sync_data["current_player"] is None:
-                logger.warning("current_player est None dans les données de synchronisation")
-                # Ce n'est pas forcément une erreur, le joueur pourrait ne pas être dans ce secteur
+                logger.warning("current_player est None dans les donnÃ©es de synchronisation")
+                # Ce n'est pas forcÃ©ment une erreur, le joueur pourrait ne pas Ãªtre dans ce secteur
             
-            # Vérifier que other_players est une liste
+            # VÃ©rifier que other_players est une liste
             if not isinstance(sync_data["other_players"], list):
                 logger.warning("other_players n'est pas une liste")
                 return False
             
-            # Vérifier que map_informations est un dictionnaire
+            # VÃ©rifier que map_informations est un dictionnaire
             if not isinstance(sync_data["map_informations"], dict):
                 logger.warning("map_informations n'est pas un dictionnaire")
                 return False
@@ -508,13 +541,13 @@ class GameConsumer(WebsocketConsumer):
             return True
             
         except Exception as e:
-            logger.error(f"Erreur lors de la validation des données de sync: {e}")
+            logger.error(f"Erreur lors de la validation des donnÃ©es de sync: {e}")
             return False
         
     def async_send_chat_msg(self, event: dict) -> None:
         """
-        Gère l'envoi d'un message de chat par un joueur.
-        - Seul le consumer du joueur auteur crée et diffuse le message.
+        GÃ¨re l'envoi d'un message de chat par un joueur.
+        - Seul le consumer du joueur auteur crÃ©e et diffuse le message.
         - Les autres ne font rien.
         """
         try:
@@ -527,7 +560,7 @@ class GameConsumer(WebsocketConsumer):
             channel = data.get("channel")  # "sector", "faction" ou "group"
 
             if not author_id or not content or not channel:
-                logger.warning("async_send_chat_msg: données incomplètes")
+                logger.warning("async_send_chat_msg: donnÃ©es incomplÃ¨tes")
                 return
 
             # Seul le consumer du joueur auteur traite le message
@@ -547,24 +580,24 @@ class GameConsumer(WebsocketConsumer):
                 if is_overloaded:
                     self._send_action_failed_response(
                         "CARGO_OVER_CAPACITY",
-                        "Impossible de se déplacer : votre vaisseau est en surcapacité.",
+                        "Impossible de se dÃ©placer : votre vaisseau est en surcapacitÃ©.",
                         cargo_load=cargo_load,
                         cargo_capacity=cargo_capacity,
                     )
                     return False
 
-            # === Création du message selon le canal ===
+            # === CrÃ©ation du message selon le canal ===
             msg, recipients = player_action.create_chat_message(content, channel)
 
             if not msg:
-                logger.warning(f"Échec création message chat ({channel})")
+                logger.warning(f"Ã‰chec crÃ©ation message chat ({channel})")
                 return
 
             if not recipients:
-                logger.info(f"Aucun destinataire trouvé pour le canal {channel}")
+                logger.info(f"Aucun destinataire trouvÃ© pour le canal {channel}")
                 return
             
-            # Données auteur
+            # DonnÃ©es auteur
             author_data = player_action.get_player_data()
             
             author_info = (
@@ -581,7 +614,7 @@ class GameConsumer(WebsocketConsumer):
             content = msg.content
             timestamp = msg.created_at.strftime("%Y-%m-%d %H:%M:%S")
             
-            # Préparer le message formaté
+            # PrÃ©parer le message formatÃ©
             formatted_message = {
                 "author": author_name,
                 "faction": author_faction,
@@ -592,7 +625,7 @@ class GameConsumer(WebsocketConsumer):
             }
 
             self._broadcast_chat_message(channel, recipients, formatted_message)
-            # Réponse locale au joueur auteur (message immédiat)
+            # RÃ©ponse locale au joueur auteur (message immÃ©diat)
             self._send_response({
                 "type": "async_receive_chat_message",
                 "message": formatted_message
@@ -603,7 +636,7 @@ class GameConsumer(WebsocketConsumer):
 
     def _broadcast_chat_message(self, channel: str, recipients: list, formatted_message: dict):
         """
-        Diffuse un message de chat à tous les destinataires valides.
+        Diffuse un message de chat Ã  tous les destinataires valides.
         """
         try:
             # Grouper les destinataires par secteur pour optimiser
@@ -613,11 +646,11 @@ class GameConsumer(WebsocketConsumer):
                 recipient_id = recipient.get("id")
                 recipient_sector = recipient.get("sector_id")
 
-                # Ne pas renvoyer à l'auteur (il a déjà reçu le message localement)
+                # Ne pas renvoyer Ã  l'auteur (il a dÃ©jÃ  reÃ§u le message localement)
                 if recipient_id == self.player_id:
                     continue
                 
-                # Pour faction/groupe, le secteur peut être différent
+                # Pour faction/groupe, le secteur peut Ãªtre diffÃ©rent
                 if not recipient_sector:
                     logger.warning(f"Destinataire {recipient_id} sans sector_id")
                     continue
@@ -628,14 +661,14 @@ class GameConsumer(WebsocketConsumer):
                     recipients_by_sector[room_key] = []
                 recipients_by_sector[room_key].append(recipient_id)
             
-            # ✅ Envoyer UNE SEULE FOIS par room (pas par destinataire)
+            # âœ… Envoyer UNE SEULE FOIS par room (pas par destinataire)
             for room_key, recipient_ids in recipients_by_sector.items():
                 async_to_sync(self.channel_layer.group_send)(
                     room_key,
                     {
                         "type": "async_receive_chat_message",
                         "message": formatted_message,
-                        "target_recipients": recipient_ids,  # Liste des IDs concernés
+                        "target_recipients": recipient_ids,  # Liste des IDs concernÃ©s
                     },
                 )
 
@@ -645,7 +678,7 @@ class GameConsumer(WebsocketConsumer):
 
     def async_receive_chat_message(self, event: dict) -> None:
         """
-        Reçoit un message de chat pour ce joueur (appelé par group_send).
+        ReÃ§oit un message de chat pour ce joueur (appelÃ© par group_send).
         """
         try:
             data = event.get("message")
@@ -654,7 +687,7 @@ class GameConsumer(WebsocketConsumer):
             if not data:
                 return
             
-            # ✅ Ne délivrer que si ce consumer correspond à un destinataire
+            # âœ… Ne dÃ©livrer que si ce consumer correspond Ã  un destinataire
             if target_recipients and self.player_id not in target_recipients:
                 return
 
@@ -669,9 +702,9 @@ class GameConsumer(WebsocketConsumer):
 
     def async_send_mp(self, event: Dict[str, Any]) -> None:
         """
-        Handler appelé quand un client a demandé d'envoyer un MP et que le message
-        a été group_send sur la room du consumer de l'auteur.
-        Cette méthode doit être exécutée **seulement** par le consumer du joueur-auteur.
+        Handler appelÃ© quand un client a demandÃ© d'envoyer un MP et que le message
+        a Ã©tÃ© group_send sur la room du consumer de l'auteur.
+        Cette mÃ©thode doit Ãªtre exÃ©cutÃ©e **seulement** par le consumer du joueur-auteur.
         """
         try:
             # Accept both dict and JSON-string messages (robuste)
@@ -680,9 +713,9 @@ class GameConsumer(WebsocketConsumer):
                 message = json.loads(message)
 
             sender_id = message.get("senderId")
-            # On ne traite QUE si ce consumer représente l'auteur
+            # On ne traite QUE si ce consumer reprÃ©sente l'auteur
             if sender_id != self.player_id:
-                # ignorer: seul le consumer de l'auteur doit créer l'entrée DB + notifier
+                # ignorer: seul le consumer de l'auteur doit crÃ©er l'entrÃ©e DB + notifier
                 return
 
             recipient_name = message.get("recipient")
@@ -703,7 +736,7 @@ class GameConsumer(WebsocketConsumer):
             elif recipient_type == "player":
                 recipient_data = GetDataFromDB.get_mp_recipient_sector_and_id(recipient_name)
             elif recipient_type == "group":
-                recipient_data = []  # à implémenter si nécessaire
+                recipient_data = []  # Ã  implÃ©menter si nÃ©cessaire
             else:
                 logger.warning(f"async_send_mp: recipient_type inconnu: {recipient_type}")
                 return
@@ -711,7 +744,7 @@ class GameConsumer(WebsocketConsumer):
             # liste d'ids destinataires
             recipient_id_list = [e["id"] for e in (recipient_data or [])]
 
-            # créer les MP en DB
+            # crÃ©er les MP en DB
             player_action.create_new_mp(recipient_id_list, mp_subject, mp_body)
 
             # notifier l'auteur que l'envoi est ok
@@ -720,7 +753,7 @@ class GameConsumer(WebsocketConsumer):
                 "message": {"id": sender_id}
             })
 
-            # notifier les destinataires (rooms éventuellement différentes)
+            # notifier les destinataires (rooms Ã©ventuellement diffÃ©rentes)
             self._notify_msg(recipient_data, sender_id)
 
         except json.JSONDecodeError as e:
@@ -731,8 +764,8 @@ class GameConsumer(WebsocketConsumer):
             
     def async_receive_mp(self, event: Dict[str, Any]) -> None:
         """
-        Handler exécuté par les consumers des rooms cibles.
-        Il ne doit délivrer la notif que si ce consumer correspond au destinataire.
+        Handler exÃ©cutÃ© par les consumers des rooms cibles.
+        Il ne doit dÃ©livrer la notif que si ce consumer correspond au destinataire.
         """
         try:
             message = event.get("message")
@@ -745,12 +778,12 @@ class GameConsumer(WebsocketConsumer):
             if recipient_id != self.player_id:
                 return
 
-            # Envoi au client final (websocket) : type et message à adapter côté front
+            # Envoi au client final (websocket) : type et message Ã  adapter cÃ´tÃ© front
             self._send_response({
                 "type": "async_receive_mp",
                 "message": {
                     "recipient_id": recipient_id,
-                    "note": "Vous avez reçu un message privé"
+                    "note": "Vous avez reÃ§u un message privÃ©"
                 }
             })
 
@@ -759,8 +792,8 @@ class GameConsumer(WebsocketConsumer):
 
     def async_recieve_mp(self, event: Dict[str, Any]) -> None:
         """
-        Alias rétro-compatible (typo historique).
-        Channels mappe `type` -> nom de méthode; on délègue vers le nom canonique.
+        Alias rÃ©tro-compatible (typo historique).
+        Channels mappe `type` -> nom de mÃ©thode; on dÃ©lÃ¨gue vers le nom canonique.
         """
         self.async_receive_mp(event)
             
@@ -809,7 +842,7 @@ class GameConsumer(WebsocketConsumer):
 
                 destination_room_key = f"play_{recipient_sector}"
 
-                # Toujours envoyer un dict (éviter la sérialisation incohérente)
+                # Toujours envoyer un dict (Ã©viter la sÃ©rialisation incohÃ©rente)
                 async_to_sync(self.channel_layer.group_send)(
                     destination_room_key,
                     {
@@ -830,11 +863,11 @@ class GameConsumer(WebsocketConsumer):
         SEUL son consumer valide et enregistre.
         """
         try:
-            # Étape 1 : validation complète
+            # Ã‰tape 1 : validation complÃ¨te
             if not self._validate_move_request(message):
                 return  # ne rien broadcaster si invalide
 
-            # Étape 2 : enregistrement du mouvement (DB + cache)
+            # Ã‰tape 2 : enregistrement du mouvement (DB + cache)
             player_action = PlayerAction(self.user.id)
 
             registered = player_action.move_have_been_registered(
@@ -847,11 +880,11 @@ class GameConsumer(WebsocketConsumer):
                 self._send_error_response("Impossible d'enregistrer le mouvement")
                 return
 
-            # Mise à jour du cache
+            # Mise Ã  jour du cache
             self._cache_store.update_player_range_finding()
             self._cache_store.update_sector_player_visibility_zone(self.player_id)
 
-            # Étape 3 : broadcast à tout le monde
+            # Ã‰tape 3 : broadcast Ã  tout le monde
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -869,32 +902,32 @@ class GameConsumer(WebsocketConsumer):
 
     def _validate_move_request(self, message: Dict[str, Any]) -> bool:
         """
-        Valide la demande de mouvement (appelé UNE SEULE FOIS).
+        Valide la demande de mouvement (appelÃ© UNE SEULE FOIS).
         Retourne True si le mouvement est valide, False sinon.
         """
         try:
-            # 1. Vérification identité joueur
+            # 1. VÃ©rification identitÃ© joueur
             if message["player"] != self.player_id:
-                self._send_error_response("Vous ne pouvez pas déplacer un autre joueur")
+                self._send_error_response("Vous ne pouvez pas dÃ©placer un autre joueur")
                 return False
             
             player_action = PlayerAction(self.user.id)
 
-            # 2. Vérifier PM restants
+            # 2. VÃ©rifier PM restants
             if not player_action.check_if_player_get_movement_remaining(message['move_cost']):
                 self._send_error_response("Points de mouvement insuffisants")
                 return False
 
-            # 3. Vérifier taille du vaisseau
+            # 3. VÃ©rifier taille du vaisseau
             size_data = player_action.get_player_ship_size()
             if not size_data or "ship_id__ship_category_id__size" not in size_data:
-                logger.error(f"Vaisseau introuvable ou non initialisé pour joueur {self.player_id}")
+                logger.error(f"Vaisseau introuvable ou non initialisÃ© pour joueur {self.player_id}")
                 self._send_error_response("Vaisseau introuvable")
                 return False
             
             ship_size = size_data["ship_id__ship_category_id__size"]
 
-            # 4. Vérifier destination
+            # 4. VÃ©rifier destination
             target_cells = player_action._calculate_item_occupied_coords(
                 {"x": message["end_x"], "y": message["end_y"]},
                 ship_size
@@ -902,7 +935,7 @@ class GameConsumer(WebsocketConsumer):
 
             formatted = [f"{c['y']}_{c['x']}" for c in target_cells]
             if player_action.destination_already_occupied(formatted):
-                self._send_error_response("Destination occupée")
+                self._send_error_response("Destination occupÃ©e")
                 return False
 
             return True
@@ -915,7 +948,7 @@ class GameConsumer(WebsocketConsumer):
 
     def _send_error_response(self, error_message: str) -> None:
         return
-        """Envoie une réponse d'erreur au client."""
+        """Envoie une rÃ©ponse d'erreur au client."""
         """
         self._send_response({
             "type": "move_error",
@@ -925,20 +958,20 @@ class GameConsumer(WebsocketConsumer):
 
     def async_move(self, event: Dict[str, Any]) -> None:
         """
-        Tous les autres consumers reçoivent la mise à jour.
+        Tous les autres consumers reÃ§oivent la mise Ã  jour.
         Ici : aucune validation, aucun enregistrement DB.
-        Juste mise à jour du cache local + réponse client.
+        Juste mise Ã  jour du cache local + rÃ©ponse client.
         """
         try:
             message = event["message"]
             player_action = PlayerAction(self.user.id)
 
-            # Mise à jour du cache
+            # Mise Ã  jour du cache
             self._cache_store.update_player_position(message, self.player_id)
             self._cache_store.update_player_range_finding()
             movement_remaining = player_action.get_player_movement_remaining()
             movement_max = int(player_action.get_playerShip().values_list('max_movement', flat=True)[0])
-            # Préparer la réponse pour CE joueur
+            # PrÃ©parer la rÃ©ponse pour CE joueur
             response = {
                 "type": "player_move",
                 "message": {
@@ -990,11 +1023,11 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Erreur async_move: {e}")
 
     def _is_own_player_move(self, player_id: int, message: Dict[str, Any]) -> bool:
-        """Vérifie si le mouvement concerne le joueur actuel."""
+        """VÃ©rifie si le mouvement concerne le joueur actuel."""
         return player_id == message["player"]
 
     def _can_move_to_destination(self, player_action: PlayerAction, message: Dict[str, Any]) -> bool:
-        """Vérifie si la destination est libre."""
+        """VÃ©rifie si la destination est libre."""
         return not player_action.destination_already_occupied(
             [f"{message['end_y']}_{message['end_x']}"]
         )
@@ -1014,23 +1047,23 @@ class GameConsumer(WebsocketConsumer):
         message: dict,
     ) -> dict:
         """
-        Réponse envoyée AU JOUEUR QUI BOUGE.
+        RÃ©ponse envoyÃ©e AU JOUEUR QUI BOUGE.
         On renvoie:
-            - les infos attendues par le front pour animer le déplacement:
+            - les infos attendues par le front pour animer le dÃ©placement:
             end_x, end_y, move_cost, move, path, max_move, is_reversed, size
-            - les infos supplémentaires pour mettre à jour map_informations / UI :
+            - les infos supplÃ©mentaires pour mettre Ã  jour map_informations / UI :
             modules_range, visible_zone, view_range, sector, updated_*_player_data
         """
 
         player_id = message["player"]
 
-        # PM restants du joueur courant (après mouvement)
+        # PM restants du joueur courant (aprÃ¨s mouvement)
         movement_remaining = player_action.get_player_movement_remaining()
         max_movement = store.get_specific_player_data(
             player_id, "pc", "ship", "max_movement"
         )
 
-        # Modules en portée + zones visibles + view_range
+        # Modules en portÃ©e + zones visibles + view_range
         modules_range = store.get_specific_player_data(
             player_id, "pc", "ship", "modules_range"
         )
@@ -1044,7 +1077,7 @@ class GameConsumer(WebsocketConsumer):
             player_id, "pc", "ship", "view_range"
         )
 
-        # Données complètes pour refresh UI / modals
+        # DonnÃ©es complÃ¨tes pour refresh UI / modals
         updated_current_player_data = store.get_current_player_data(player_id)
         updated_other_player_data = store.get_other_player_data(player_id)
         sector_data = store.get_sector_data()
@@ -1057,9 +1090,9 @@ class GameConsumer(WebsocketConsumer):
                 "end_x": message["end_x"],
                 "end_y": message["end_y"],
                 "move_cost": message["move_cost"],
-                # PM restants après mouvement (ce que ton front appelle souvent "move")
+                # PM restants aprÃ¨s mouvement (ce que ton front appelle souvent "move")
                 "move": movement_remaining,
-                # chemin complet utilisé pour l’animation case par case
+                # chemin complet utilisÃ© pour lâ€™animation case par case
                 "path": message.get("path", []),
                 "max_move": max_movement,
                 "visible_zone": visible_zone,
@@ -1070,17 +1103,17 @@ class GameConsumer(WebsocketConsumer):
                     "y": message["size_y"],
                 },
 
-                # --- Infos gameplay complémentaires ---
+                # --- Infos gameplay complÃ©mentaires ---
                 "modules_range": modules_range,
                 "visible_zone": visible_zone,
                 "view_range": view_range,
 
-                # --- Pour éventuellement rafraîchir map_informations côté client ---
+                # --- Pour Ã©ventuellement rafraÃ®chir map_informations cÃ´tÃ© client ---
                 "updated_current_player_data": updated_current_player_data,
                 "updated_other_player_data": updated_other_player_data,
                 "sector": sector_data,
 
-                # Optionnel : si tu veux garder trace de la zone de départ complète
+                # Optionnel : si tu veux garder trace de la zone de dÃ©part complÃ¨te
                 "start_id_array": message.get("start_id_array", []),
             },
         }
@@ -1092,7 +1125,7 @@ class GameConsumer(WebsocketConsumer):
         store: StoreInCache, 
         player_id: int
     ) -> Dict[str, Any]:
-        """Gère le mouvement d'un autre joueur."""
+        """GÃ¨re le mouvement d'un autre joueur."""
         store.update_player_range_finding()
         return {
             "type": "player_move",
@@ -1119,16 +1152,16 @@ class GameConsumer(WebsocketConsumer):
 
     def async_warp_travel(self, event: Dict[str, Any]) -> None:
         """
-        Gère le voyage par distorsion asynchrone.
+        GÃ¨re le voyage par distorsion asynchrone.
 
         - Retire le joueur du secteur courant (visuel + cache)
         - Calcule la destination
-        - Met à jour la DB
-        - Met à jour les caches (ancien + nouveau secteur)
+        - Met Ã  jour la DB
+        - Met Ã  jour les caches (ancien + nouveau secteur)
         - Notifie :
             * les joueurs de l'ancien secteur -> async_remove_ship
             * les joueurs du nouveau secteur -> async_user_join
-            * le joueur lui-même        -> async_warp_complete
+            * le joueur lui-mÃªme        -> async_warp_complete
         """
         try:
             raw = event.get("message")
@@ -1137,7 +1170,7 @@ class GameConsumer(WebsocketConsumer):
             else:
                 warp_data = raw
 
-            # --- Vérifications ---
+            # --- VÃ©rifications ---
             if not warp_data:
                 logger.error("async_warp_travel: warp_data manquant")
                 return
@@ -1147,10 +1180,10 @@ class GameConsumer(WebsocketConsumer):
             current_sector_id = warp_data.get("current_sector_id")
 
             if not player_id or not sectorwarpzone_id or not current_sector_id:
-                logger.error(f"async_warp_travel: données incomplètes {warp_data}")
+                logger.error(f"async_warp_travel: donnÃ©es incomplÃ¨tes {warp_data}")
                 return
 
-            # --- Si ce consumer n’est PAS le joueur concerné → sortir ---
+            # --- Si ce consumer nâ€™est PAS le joueur concernÃ© â†’ sortir ---
             if player_id != self.player_id:
                 return
 
@@ -1192,7 +1225,7 @@ class GameConsumer(WebsocketConsumer):
                     )
                     self._send_action_failed_response(
                         "CARGO_OVER_CAPACITY",
-                        "Impossible de warp : votre vaisseau est en surcapacité.",
+                        "Impossible de warp : votre vaisseau est en surcapacitÃ©.",
                         cargo_load=cargo_load,
                         cargo_capacity=cargo_capacity,
                     )
@@ -1213,7 +1246,7 @@ class GameConsumer(WebsocketConsumer):
 
             dest = pa.player_travel_to_destination(warp_home_id, warp_destination_id)
             if not dest:
-                # déplacement impossible → prévenir joueur
+                # dÃ©placement impossible â†’ prÃ©venir joueur
                 self._send_response(
                     {
                         "type": "async_warp_failed",
@@ -1228,7 +1261,7 @@ class GameConsumer(WebsocketConsumer):
             # 2.5) INVALIDATION DES SCANS (AVANT DE QUITTER LE SECTEUR)
             # =======================
 
-            old_sector_id = current_sector_id  # déjà présent dans warp_data
+            old_sector_id = current_sector_id  # dÃ©jÃ  prÃ©sent dans warp_data
 
             # 1) Supprimer les scans en DB
             ActionRules.invalidate_scans_for_target(
@@ -1245,12 +1278,12 @@ class GameConsumer(WebsocketConsumer):
             )
 
             # =======================
-            # 3) Mise à jour DB
+            # 3) Mise Ã  jour DB
             # =======================
             ok = pa.set_player_sector(destination_sector_id, dest_coord)
             if not ok:
                 logger.error(
-                    f"async_warp_travel: échec update DB pour player {player_id}"
+                    f"async_warp_travel: Ã©chec update DB pour player {player_id}"
                 )
                 return
 
@@ -1270,19 +1303,19 @@ class GameConsumer(WebsocketConsumer):
                 )
 
             # =======================
-            # 5) Mise à jour du cache du NOUVEAU secteur
+            # 5) Mise Ã  jour du cache du NOUVEAU secteur
             # =======================
             new_room_key = f"play_{destination_sector_id}"
 
             dest_cache = StoreInCache(new_room_key, self.user)
-            # Forcer la recréation pour intégrer le joueur avec ses nouvelles coords
+            # Forcer la recrÃ©ation pour intÃ©grer le joueur avec ses nouvelles coords
             dest_cache.get_or_set_cache(need_to_be_recreated=True)
 
-            # Mettre à jour portée + visibilité dans ce nouveau secteur
+            # Mettre Ã  jour portÃ©e + visibilitÃ© dans ce nouveau secteur
             dest_cache.update_player_range_finding()
             dest_cache.update_sector_player_visibility_zone(player_id)
 
-            # Récupérer les données prêtes à envoyer au front
+            # RÃ©cupÃ©rer les donnÃ©es prÃªtes Ã  envoyer au front
             new_sector_data = dest_cache.get_or_set_cache(need_to_be_recreated=False)
 
             # =======================
@@ -1297,7 +1330,7 @@ class GameConsumer(WebsocketConsumer):
             )
 
             # =======================
-            # 7) Notifier le joueur qui a warpé
+            # 7) Notifier le joueur qui a warpÃ©
             # =======================
             self._send_response(
                 {
@@ -1340,7 +1373,7 @@ class GameConsumer(WebsocketConsumer):
             
     def async_warp_complete(self, event):
         """
-        Méthode appelée automatiquement par WebSocketConsumer lorsque
+        MÃ©thode appelÃ©e automatiquement par WebSocketConsumer lorsque
         l'on fait:
         self._send_response({"type": "async_warp_complete", ...})
         """
@@ -1353,7 +1386,7 @@ class GameConsumer(WebsocketConsumer):
         
     def async_remove_ship(self, event):
         """
-        Un joueur quitte le secteur (warp ou déconnexion).
+        Un joueur quitte le secteur (warp ou dÃ©connexion).
         On notifie SEULEMENT les autres joueurs.
         """
         msg = event.get("message", {})
@@ -1372,7 +1405,7 @@ class GameConsumer(WebsocketConsumer):
         target_type = payload.get("target_type")
         target_id = payload.get("target_id")
 
-        # 1) Vérifier PA
+        # 1) VÃ©rifier PA
         player = PlayerAction(self.user.id)
         can_consume_ap, remaning_ap = player.consume_ap(1)
         player_id = player.get_player_id()
@@ -1400,7 +1433,7 @@ class GameConsumer(WebsocketConsumer):
         transmitter_playerObj = player.get_player_data()
         transmitter_instance = transmitter_playerObj.first()
         
-        # 3) Construire les vraies données
+        # 3) Construire les vraies donnÃ©es
         if target_type == "pc":
             data = build_pc_modal_data(target_id)
             current_player_data = build_pc_modal_data(player_id)
@@ -1489,7 +1522,7 @@ class GameConsumer(WebsocketConsumer):
             sector_id=sector_id_int
         )
         
-        # 4) Répondre AU JOUEUR uniquement
+        # 4) RÃ©pondre AU JOUEUR uniquement
         self._send_response({
             "type": "scan_result",
             "message": {
@@ -1676,10 +1709,10 @@ class GameConsumer(WebsocketConsumer):
 
     def async_user_join(self, event: Dict[str, Any]) -> None:
         """
-        Gère l'arrivée d'un utilisateur dans la salle.
+        GÃ¨re l'arrivÃ©e d'un utilisateur dans la salle.
         
         Args:
-            event: Événement contenant les données d'arrivée
+            event: Ã‰vÃ©nement contenant les donnÃ©es d'arrivÃ©e
         """
         response = {
             "type": "async_user_join",
@@ -1689,7 +1722,7 @@ class GameConsumer(WebsocketConsumer):
 
     def effects_invalidated(self, event):
         """
-        Reçoit l'invalidation d'effets (scan, buff, debuff…)
+        ReÃ§oit l'invalidation d'effets (scan, buff, debuffâ€¦)
         """
         self._send_response({
             "type": "effects_invalidated",
@@ -1816,7 +1849,7 @@ class GameConsumer(WebsocketConsumer):
         
     def push_event_log(self, player_logs):
         """
-        Envoie des logs temps réel en respectant EXACTEMENT
+        Envoie des logs temps rÃ©el en respectant EXACTEMENT
         le format WS attendu par ActionRegistry.
         """
 
@@ -1839,9 +1872,20 @@ class GameConsumer(WebsocketConsumer):
     def event_log(self, event):
         if event.get("target_player_id") != self.player_id:
             return
+
+        data = event.get("data") or {}
+        serialized = serialize_event_log_data(
+            log_id=data.get("id"),
+            log_type=data.get("log_type"),
+            role=data.get("role"),
+            content=data.get("content"),
+            created_at=data.get("created_at"),
+            viewer_player_id=self.player_id,
+            language_code=self.language_code,
+        )
         self._send_response({
             "type": "event_log",
-            "message": event['data']
+            "message": serialized,
         })
 
     def action_failed(self, event):
@@ -1889,7 +1933,7 @@ class GameConsumer(WebsocketConsumer):
 
     def entity_state_update(self, event):
         """
-        Reçoit une mise à jour d'état d'une entité (PC / NPC)
+        ReÃ§oit une mise Ã  jour d'Ã©tat d'une entitÃ© (PC / NPC)
         et la forward telle quelle au client WebSocket.
         """
         try:
@@ -1907,9 +1951,9 @@ class GameConsumer(WebsocketConsumer):
 
     def _handle_combat_action(self, payload: dict) -> None:
         """
-        Point d'entrée WS pour une attaque.
-        Cette méthode orchestre le pipeline combat + les side-effects temps réel
-        (patchs d'état, mort, carcasse, logs, événements d'animation).
+        Point d'entrÃ©e WS pour une attaque.
+        Cette mÃ©thode orchestre le pipeline combat + les side-effects temps rÃ©el
+        (patchs d'Ã©tat, mort, carcasse, logs, Ã©vÃ©nements d'animation).
         """
         try:
             if not payload:
@@ -1928,7 +1972,7 @@ class GameConsumer(WebsocketConsumer):
                 return
 
             # -----------------------
-            # Résolution attaquant
+            # RÃ©solution attaquant
             # -----------------------
 
             source_ship = PlayerShip.objects.select_related("player").get(
@@ -1946,7 +1990,7 @@ class GameConsumer(WebsocketConsumer):
                 return
             
             # -----------------------
-            # Résolution cible
+            # RÃ©solution cible
             # -----------------------
             target_type, target_id = target_key.split("_")
 
@@ -1964,7 +2008,7 @@ class GameConsumer(WebsocketConsumer):
                 target_ad = ActorAdapter(target_npc, "NPC")
 
             # si cible n'a pas de pv, alors elle ne peut
-            # être attaquée
+            # Ãªtre attaquÃ©e
             if target_ad.get_hp() <= 0:
                 return
 
@@ -1977,7 +2021,7 @@ class GameConsumer(WebsocketConsumer):
             ).first()
 
             if not psm:
-                raise ValueError(f"Module {module_id} non équipé sur ce vaisseau")
+                raise ValueError(f"Module {module_id} non Ã©quipÃ© sur ce vaisseau")
 
             module = psm.module
             effect = get_module_effect_map(module)
@@ -1991,8 +2035,8 @@ class GameConsumer(WebsocketConsumer):
             )
 
             # -----------------------
-            # Distance / visibilité
-            # (le front fait déjà le visuel,
+            # Distance / visibilitÃ©
+            # (le front fait dÃ©jÃ  le visuel,
             #  le backend recalculera plus tard si besoin)
             # -----------------------
             from core.backend.combat_engine import compute_distance_between_actors
@@ -2036,12 +2080,12 @@ class GameConsumer(WebsocketConsumer):
             except Exception:
                 logger.exception("combat equipment lock update failed")
 
-            # Enrichit les events de combat (noms + dégâts appliqués) pour simplifier
+            # Enrichit les events de combat (noms + dÃ©gÃ¢ts appliquÃ©s) pour simplifier
             # le rendu front (modal combat / logs) sans recalcul local.
             self._annotate_combat_events(events, source_ad=source_ad, target_ad=target_ad)
 
-            # Prépare les futures mécaniques (assist / XP / réputation) en mémorisant
-            # qui a contribué sur cette cible avant même qu'elle ne meure.
+            # PrÃ©pare les futures mÃ©caniques (assist / XP / rÃ©putation) en mÃ©morisant
+            # qui a contribuÃ© sur cette cible avant mÃªme qu'elle ne meure.
             self._record_combat_participation(events)
             self._emit_combat_action_logs(
                 initiator_ad=source_ad,
@@ -2101,8 +2145,8 @@ class GameConsumer(WebsocketConsumer):
             # -----------------------
             # Hook mort minimal (Sprint 3)
             # -----------------------
-            # On accumule d'abord les morts détectées puis on broadcast après la boucle,
-            # pour éviter de mélanger la détection de kills avec l'itération sur les hits.
+            # On accumule d'abord les morts dÃ©tectÃ©es puis on broadcast aprÃ¨s la boucle,
+            # pour Ã©viter de mÃ©langer la dÃ©tection de kills avec l'itÃ©ration sur les hits.
             death_payloads = []
             seen_dead_keys = set()
             for ev in events:
@@ -2124,7 +2168,7 @@ class GameConsumer(WebsocketConsumer):
                 seen_dead_keys.add(dead_key)
 
                 # "Pop" = on fige les participants pour ce kill, puis on retire le tracker cache
-                # afin d'éviter qu'un second event (ou double traitement) réutilise ces contributions.
+                # afin d'Ã©viter qu'un second event (ou double traitement) rÃ©utilise ces contributions.
                 tracker = self._pop_combat_participation_tracker(dead_key, final_blow_key=killer_key)
                 participants = list((tracker or {}).get("participants", {}).keys())
 
@@ -2172,7 +2216,7 @@ class GameConsumer(WebsocketConsumer):
                 )
 
             # -----------------------
-            # Si riposte tentée → envoyer AP cible
+            # Si riposte tentÃ©e â†’ envoyer AP cible
             # -----------------------
 
             counter_attempt = any(
@@ -2200,7 +2244,7 @@ class GameConsumer(WebsocketConsumer):
                 )
 
             # -----------------------
-            # 4️⃣ Broadcast combat events
+            # 4ï¸âƒ£ Broadcast combat events
             # -----------------------
 
             async_to_sync(self.channel_layer.group_send)(
@@ -2426,8 +2470,8 @@ class GameConsumer(WebsocketConsumer):
 
     def _annotate_combat_events(self, events, *, source_ad, target_ad) -> None:
         """
-        Ajoute des champs de confort pour le front (noms, dégâts appliqués).
-        Le backend garde l'autorité; on évite juste de faire deviner le texte au client.
+        Ajoute des champs de confort pour le front (noms, dÃ©gÃ¢ts appliquÃ©s).
+        Le backend garde l'autoritÃ©; on Ã©vite juste de faire deviner le texte au client.
         """
         if not events:
             return
@@ -2463,10 +2507,10 @@ class GameConsumer(WebsocketConsumer):
 
     def _build_sector_combat_players_roles(self, *, initiator_ad, initial_target_ad):
         """
-        Rôles de logs de combat:
+        RÃ´les de logs de combat:
         - TRANSMITTER = initiateur (s'il est PC)
         - RECEIVER = cible initiale (si elle est PC)
-        - OBSERVER = tous les autres joueurs présents dans le secteur
+        - OBSERVER = tous les autres joueurs prÃ©sents dans le secteur
         """
         try:
             sector_id = int(self.room)
@@ -2492,7 +2536,7 @@ class GameConsumer(WebsocketConsumer):
 
     def _emit_combat_action_logs(self, *, initiator_ad, initial_target_ad, events) -> None:
         """
-        Log temps réel détaillé pour chaque ATTACK_* (attaque + riposte), avec rôles:
+        Log temps rÃ©el dÃ©taillÃ© pour chaque ATTACK_* (attaque + riposte), avec rÃ´les:
         initiateur / cible initiale / observateurs secteur.
         """
         if not events:
@@ -2689,7 +2733,7 @@ class GameConsumer(WebsocketConsumer):
                 expires_at=expires_at,
                 metadata={
                     "source_actor_key": dead_key,
-                    # Référence stable pour purger le vieux PlayerShip quand la carcasse expire.
+                    # RÃ©fÃ©rence stable pour purger le vieux PlayerShip quand la carcasse expire.
                     "source_player_ship_id": player_ship.id if dead_ad.kind == "PC" else None,
                     "source_npc_id": npc_obj.id if dead_ad.kind == "NPC" else None,
                 },
@@ -2770,10 +2814,10 @@ class GameConsumer(WebsocketConsumer):
     def _handle_respawn_action(self, payload):
         """
         Respawn PC minimal (Sprint 3)
-        - bind non implémenté -> fallback sector_id = DEFAULT_RESPAWN_SECTOR_ID
+        - bind non implÃ©mentÃ© -> fallback sector_id = DEFAULT_RESPAWN_SECTOR_ID
         - vaisseau gratuit = Ship.id = 1
-        - placement via même algo que le warp (cases libres + tailles)
-        - async_warp_complete réutilisé côté front pour reload/reconnect
+        - placement via mÃªme algo que le warp (cases libres + tailles)
+        - async_warp_complete rÃ©utilisÃ© cÃ´tÃ© front pour reload/reconnect
         """
         _ = payload
 
@@ -2832,10 +2876,10 @@ class GameConsumer(WebsocketConsumer):
             logger.exception("respawn: failed to load archetype modules")
             archetype_modules = []
 
-        # Pour que le joueur réapparaisse aussi dans le cache secteur actuel (qui se base encore sur PlayerShipModule),
-        # on réattache les modules d'archétype au vaisseau gratuit (solution transitoire cohérente avec le système actuel).
-        # Compatibilité transitoire avec le cache de secteur actuel:
-        # un PC sans PlayerShipModule risque de "disparaître" du cache/reload.
+        # Pour que le joueur rÃ©apparaisse aussi dans le cache secteur actuel (qui se base encore sur PlayerShipModule),
+        # on rÃ©attache les modules d'archÃ©type au vaisseau gratuit (solution transitoire cohÃ©rente avec le systÃ¨me actuel).
+        # CompatibilitÃ© transitoire avec le cache de secteur actuel:
+        # un PC sans PlayerShipModule risque de "disparaÃ®tre" du cache/reload.
         for am in archetype_modules:
             mod = am.module
             if not mod:
@@ -2883,7 +2927,7 @@ class GameConsumer(WebsocketConsumer):
                     if am.module_id:
                         PlayerShipModule.objects.create(player_ship=new_ship, module_id=am.module_id)
 
-                # AP volontairement inchangé (règle validée)
+                # AP volontairement inchangÃ© (rÃ¨gle validÃ©e)
                 Player.objects.filter(id=player.id).update(
                     status="ALIVE",
                     sector_id=respawn_sector_id,
@@ -2905,7 +2949,7 @@ class GameConsumer(WebsocketConsumer):
         except Exception:
             logger.exception("respawn cache rebuild failed")
 
-        # Tous les joueurs du secteur d'arrivée doivent voir apparaître le joueur.
+        # Tous les joueurs du secteur d'arrivÃ©e doivent voir apparaÃ®tre le joueur.
         try:
             async_to_sync(self.channel_layer.group_send)(
                 new_room_key,
@@ -2917,7 +2961,7 @@ class GameConsumer(WebsocketConsumer):
         except Exception:
             logger.exception("respawn broadcast failed")
 
-        # Recycle le flux warp_complete côté front pour recharger proprement la page.
+        # Recycle le flux warp_complete cÃ´tÃ© front pour recharger proprement la page.
         self._send_response({
             "type": "async_warp_complete",
             "message": {
@@ -2988,8 +3032,8 @@ class GameConsumer(WebsocketConsumer):
             logger.error(f"Scan invalidation failed: {e}")
 
     def _invalidate_expired_wrecks_safe(self) -> None:
-        # Expiration lazy côté backend (pas de scheduler dédié pour l'instant).
-        # Le front gère la disparition visuelle exacte via timer local.
+        # Expiration lazy cÃ´tÃ© backend (pas de scheduler dÃ©diÃ© pour l'instant).
+        # Le front gÃ¨re la disparition visuelle exacte via timer local.
         try:
             sector_id = int(self.room)
         except Exception:
@@ -3045,7 +3089,7 @@ class GameConsumer(WebsocketConsumer):
     def _respawn_dead_npcs_safe(self) -> None:
         """
         Respawn NPC minimal (lazy, scope secteur courant).
-        Le front consomme déjà `npc_added`.
+        Le front consomme dÃ©jÃ  `npc_added`.
         """
         if not getattr(self, "user", None) or not getattr(self.user, "is_authenticated", False):
             return
@@ -3174,7 +3218,7 @@ class GameConsumer(WebsocketConsumer):
         Respawn NPC:
         1) tente `spawn_coordinates` (point de spawn fixe)
         2) sinon cherche la case libre la plus proche
-        3) fallback sur l'algo générique actuel (zone warp + padding)
+        3) fallback sur l'algo gÃ©nÃ©rique actuel (zone warp + padding)
         """
         try:
             pa = PlayerAction(self.user.id)
@@ -3195,7 +3239,7 @@ class GameConsumer(WebsocketConsumer):
                 if sector_data and len(sector_data) >= 6:
                     planets, asteroids, stations, warpzones, npcs, pcs = sector_data
 
-                    # On retire le NPC en cours de respawn des cases occupées pour ne pas se bloquer lui-même.
+                    # On retire le NPC en cours de respawn des cases occupÃ©es pour ne pas se bloquer lui-mÃªme.
                     npcs = [
                         n for n in (npcs or [])
                         if str(n.get("id")) != str(getattr(npc, "id", ""))
@@ -3227,7 +3271,7 @@ class GameConsumer(WebsocketConsumer):
                     if nearest:
                         return nearest
 
-            # Fallback (comportement actuel): placement générique basé sur warpzone.
+            # Fallback (comportement actuel): placement gÃ©nÃ©rique basÃ© sur warpzone.
             generic = pa._calculate_destination_coord(
                 sector_id,
                 ship_size_x,
@@ -3238,8 +3282,8 @@ class GameConsumer(WebsocketConsumer):
             if not generic:
                 return None
 
-            # Le fallback historique ne connaît pas les carcasses. On vérifie donc
-            # explicitement que la case proposée n'est pas occupée par un wreck actif.
+            # Le fallback historique ne connaÃ®t pas les carcasses. On vÃ©rifie donc
+            # explicitement que la case proposÃ©e n'est pas occupÃ©e par un wreck actif.
             wreck_occupied = self._append_active_wreck_occupied_coords(
                 occupied_coords=[],
                 sector_id=sector_id,
@@ -3261,8 +3305,8 @@ class GameConsumer(WebsocketConsumer):
 
     def _append_active_wreck_occupied_coords(self, *, occupied_coords, sector_id: int):
         """
-        Ajoute les cases occupées par les carcasses actives à une liste de coordonnées occupées.
-        Empêche notamment un NPC de respawn directement dans sa propre épave.
+        Ajoute les cases occupÃ©es par les carcasses actives Ã  une liste de coordonnÃ©es occupÃ©es.
+        EmpÃªche notamment un NPC de respawn directement dans sa propre Ã©pave.
         """
         try:
             coords = list(occupied_coords or [])
@@ -3311,7 +3355,7 @@ class GameConsumer(WebsocketConsumer):
         ship_size_y: int,
     ) -> Optional[Dict[str, int]]:
         """
-        Recherche simple "au plus proche" autour du spawn préféré (Manhattan puis ordre stable).
+        Recherche simple "au plus proche" autour du spawn prÃ©fÃ©rÃ© (Manhattan puis ordre stable).
         """
         try:
             px = int(preferred.get("x", 0) or 0)
@@ -3341,13 +3385,13 @@ class GameConsumer(WebsocketConsumer):
     def _expire_wreck_and_purge_source_ship(self, wreck_id: int, sector_id: int) -> Optional[Dict[str, Any]]:
         """
         Expire une carcasse et purge son vaisseau source (PC) si disponible.
-        La suppression de PlayerShip déclenche la cascade Django sur:
+        La suppression de PlayerShip dÃ©clenche la cascade Django sur:
         - PlayerShipModule
         - PlayerShipResource
         """
         try:
             with transaction.atomic():
-                # Verrouille la carcasse pour éviter un double cleanup concurrent.
+                # Verrouille la carcasse pour Ã©viter un double cleanup concurrent.
                 wreck = (
                     ShipWreck.objects.select_for_update()
                     .select_related("origin_player")
@@ -3361,7 +3405,7 @@ class GameConsumer(WebsocketConsumer):
                 source_player_ship_id = metadata.get("source_player_ship_id")
                 source_actor_key = str(metadata.get("source_actor_key") or "")
 
-                # Fallback compat pour les vieilles carcasses créées avant l'ajout du metadata id.
+                # Fallback compat pour les vieilles carcasses crÃ©Ã©es avant l'ajout du metadata id.
                 # Fallback compat pour les vieilles carcasses (sans metadata.source_player_ship_id).
                 if not source_player_ship_id and wreck.origin_type == "PC" and source_actor_key.startswith("pc_"):
                     try:
@@ -3387,8 +3431,8 @@ class GameConsumer(WebsocketConsumer):
                         is_current_ship=False,
                     ).delete()
 
-                # La carcasse n'est plus utile après expiration: suppression DB.
-                # Suppression backend réelle (la disparition visuelle front arrive via ws/local timer).
+                # La carcasse n'est plus utile aprÃ¨s expiration: suppression DB.
+                # Suppression backend rÃ©elle (la disparition visuelle front arrive via ws/local timer).
                 wreck.delete()
 
                 return {
@@ -3515,7 +3559,7 @@ class GameConsumer(WebsocketConsumer):
                 name=self.WRECK_SALVAGE_RESOURCE_NAME,
                 defaults={
                     "data": {
-                        "description": "Matériaux récupérés sur une carcasse. Utilisés pour le craft.",
+                        "description": "MatÃ©riaux rÃ©cupÃ©rÃ©s sur une carcasse. UtilisÃ©s pour le craft.",
                         "inventory_section": "RESOURCES",
                         "is_salvage_material": True,
                     }
@@ -3530,7 +3574,7 @@ class GameConsumer(WebsocketConsumer):
         md = metadata if isinstance(metadata, dict) else self._wreck_metadata_dict(wreck)
         loot = self._ensure_wreck_loot_container(md)
 
-        # Déjà initialisé (schema versionné pour permettre les migrations de snapshot en runtime)
+        # DÃ©jÃ  initialisÃ© (schema versionnÃ© pour permettre les migrations de snapshot en runtime)
         existing_schema = int(loot.get("schema") or 0) if isinstance(loot.get("schema"), (int, str)) else 0
         if (
             existing_schema >= 2 and
@@ -3564,9 +3608,9 @@ class GameConsumer(WebsocketConsumer):
                         .first()
                     )
 
-                # Les ressources PC sont stockées sur PlayerResource (pas PlayerShipResource).
-                # Fallback legacy conservé au cas où une carcasse ancienne a été snapshotée
-                # avec des données de soute déjà présentes sur PlayerShipResource.
+                # Les ressources PC sont stockÃ©es sur PlayerResource (pas PlayerShipResource).
+                # Fallback legacy conservÃ© au cas oÃ¹ une carcasse ancienne a Ã©tÃ© snapshotÃ©e
+                # avec des donnÃ©es de soute dÃ©jÃ  prÃ©sentes sur PlayerShipResource.
                 if dead_player_id:
                     res_rows = (
                         PlayerResource.objects
@@ -3994,7 +4038,7 @@ class GameConsumer(WebsocketConsumer):
                         continue
                     pending = self._get_wreck_loot_pending_action(loot)
                     if pending and int(pending.get("player_id") or 0) == int(self.player_id):
-                        # Ne pas interrompre une action en cours; le lock expirera ou sera relâché à la complétion.
+                        # Ne pas interrompre une action en cours; le lock expirera ou sera relÃ¢chÃ© Ã  la complÃ©tion.
                         continue
                     loot["lock"] = None
                     wreck.metadata = metadata
@@ -4043,7 +4087,7 @@ class GameConsumer(WebsocketConsumer):
                 if distance > int(self.WRECK_LOOT_RANGE_MAX):
                     self._send_action_failed_response(
                         "WRECK_OUT_OF_RANGE",
-                        f"Carcasse hors de portée ({distance} / {self.WRECK_LOOT_RANGE_MAX}).",
+                        f"Carcasse hors de portÃ©e ({distance} / {self.WRECK_LOOT_RANGE_MAX}).",
                         distance=distance,
                         max_range=int(self.WRECK_LOOT_RANGE_MAX),
                     )
@@ -4064,12 +4108,12 @@ class GameConsumer(WebsocketConsumer):
 
             if wreck_for_emit:
                 if lock_conflict:
-                    # Le second joueur doit voir le même écran (actions visibles mais lockées)
+                    # Le second joueur doit voir le mÃªme Ã©cran (actions visibles mais lockÃ©es)
                     # et un message explicite, sans prendre le lock.
                     self._emit_wreck_loot_session_state(int(self.player_id), wreck_for_emit, mode=mode)
                     self._send_action_failed_response(
                         "WRECK_ALREADY_LOOTED",
-                        "Cette carcasse est déjà en cours de fouille/récupération. Veuillez attendre.",
+                        "Cette carcasse est dÃ©jÃ  en cours de fouille/rÃ©cupÃ©ration. Veuillez attendre.",
                         wreck_id=int(wreck_id),
                     )
                 else:
@@ -4162,7 +4206,7 @@ class GameConsumer(WebsocketConsumer):
             self._send_action_failed_response("INVALID_WRECK_LOOT_MODE", "Mode de loot invalide.")
             return
         if item_kind not in {"RESOURCE", "MODULE"} or not item_uid:
-            self._send_action_failed_response("INVALID_WRECK_LOOT_ITEM", "Élément de loot invalide.")
+            self._send_action_failed_response("INVALID_WRECK_LOOT_ITEM", "Ã‰lÃ©ment de loot invalide.")
             return
 
         try:
@@ -4194,7 +4238,7 @@ class GameConsumer(WebsocketConsumer):
                 if distance > int(self.WRECK_LOOT_RANGE_MAX):
                     self._send_action_failed_response(
                         "WRECK_OUT_OF_RANGE",
-                        f"Carcasse hors de portée ({distance} / {self.WRECK_LOOT_RANGE_MAX}).",
+                        f"Carcasse hors de portÃ©e ({distance} / {self.WRECK_LOOT_RANGE_MAX}).",
                         distance=distance,
                         max_range=int(self.WRECK_LOOT_RANGE_MAX),
                     )
@@ -4208,14 +4252,14 @@ class GameConsumer(WebsocketConsumer):
                 if isinstance(lock, dict) and not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
                     self._send_action_failed_response(
                         "WRECK_ALREADY_LOOTED",
-                        "Cette carcasse est déjà en cours de fouille/récupération par un autre joueur.",
+                        "Cette carcasse est dÃ©jÃ  en cours de fouille/rÃ©cupÃ©ration par un autre joueur.",
                         wreck_id=int(wreck_id),
                     )
                     return
                 if not self._is_wreck_lock_owned_by(lock, int(self.player_id)):
                     self._send_action_failed_response(
                         "WRECK_LOCK_REQUIRED",
-                        "Vous devez ouvrir la fouille/récupération de cette carcasse avant de looter.",
+                        "Vous devez ouvrir la fouille/rÃ©cupÃ©ration de cette carcasse avant de looter.",
                         wreck_id=int(wreck_id),
                     )
                     return
@@ -4224,7 +4268,7 @@ class GameConsumer(WebsocketConsumer):
                 if pending:
                     self._send_action_failed_response(
                         "WRECK_LOOT_ALREADY_PENDING",
-                        "Une action de loot est déjà en cours sur cette carcasse.",
+                        "Une action de loot est dÃ©jÃ  en cours sur cette carcasse.",
                     )
                     return
 
@@ -4235,7 +4279,7 @@ class GameConsumer(WebsocketConsumer):
                     item_uid=item_uid,
                 )
                 if item_index is None or not isinstance(item_payload, dict):
-                    self._send_action_failed_response("WRECK_LOOT_ITEM_NOT_FOUND", "L'élément à looter n'est plus disponible.")
+                    self._send_action_failed_response("WRECK_LOOT_ITEM_NOT_FOUND", "L'Ã©lÃ©ment Ã  looter n'est plus disponible.")
                     return
 
                 if mode == "SALVAGE":
@@ -4247,7 +4291,7 @@ class GameConsumer(WebsocketConsumer):
                     if not has_scavenging_module:
                         self._send_action_failed_response(
                             "SCAVENGING_MODULE_REQUIRED",
-                            "Un module de récupération (scavenging module) est requis pour effectuer un salvage.",
+                            "Un module de rÃ©cupÃ©ration (scavenging module) est requis pour effectuer un salvage.",
                         )
                         return
 
@@ -4378,7 +4422,7 @@ class GameConsumer(WebsocketConsumer):
                         "player_id": player_id,
                         "wreck_id": int(wreck.id),
                         "mode": mode,
-                        "failed": {"reason": "WRECK_LOOT_ITEM_NOT_FOUND", "message": "L'élément à looter n'est plus disponible."},
+                        "failed": {"reason": "WRECK_LOOT_ITEM_NOT_FOUND", "message": "L'Ã©lÃ©ment Ã  looter n'est plus disponible."},
                     }
                 else:
                     player_ship = (
@@ -4466,7 +4510,7 @@ class GameConsumer(WebsocketConsumer):
                 self._emit_targeted_action_failed(
                     target_player_id,
                     reason="SALVAGE_RECOVERY_FAILED",
-                    message="La récupération de ce module a échoué.",
+                    message="La rÃ©cupÃ©ration de ce module a Ã©chouÃ©.",
                 )
 
             wreck = (
@@ -4668,24 +4712,24 @@ class GameConsumer(WebsocketConsumer):
     def _validate_module_reconfig_request(self, player_ship: PlayerShip, operation: str) -> Optional[Dict[str, Any]]:
         now = timezone.now()
         if operation not in {"EQUIP", "UNEQUIP"}:
-            return {"reason": "INVALID_OPERATION", "message": "Opération invalide."}
+            return {"reason": "INVALID_OPERATION", "message": "OpÃ©ration invalide."}
 
         if str(getattr(player_ship, "status", "")).upper() == "DEAD":
-            return {"reason": "SHIP_DEAD", "message": "Impossible de modifier l'équipement sur un vaisseau détruit."}
+            return {"reason": "SHIP_DEAD", "message": "Impossible de modifier l'Ã©quipement sur un vaisseau dÃ©truit."}
 
         blocked_until = getattr(player_ship, "equipment_blocked_until", None)
         if blocked_until and blocked_until > now:
             remaining = max(1, int((blocked_until - now).total_seconds()))
             return {
                 "reason": "IN_COMBAT_LOCK",
-                "message": f"Impossible de modifier l'équipement pendant {remaining}s après un combat.",
+                "message": f"Impossible de modifier l'Ã©quipement pendant {remaining}s aprÃ¨s un combat.",
                 "remaining_seconds": remaining,
             }
 
         if PlayerShipModuleReconfiguration.objects.filter(player_ship_id=player_ship.id, status="PENDING").exists():
             return {
                 "reason": "RECONFIG_ALREADY_PENDING",
-                "message": "Une reconfiguration est déjà en cours sur ce vaisseau.",
+                "message": "Une reconfiguration est dÃ©jÃ  en cours sur ce vaisseau.",
             }
 
         return None
@@ -4696,7 +4740,7 @@ class GameConsumer(WebsocketConsumer):
         if equipped_count >= global_max:
             return {
                 "reason": "MODULE_SLOTS_FULL",
-                "message": "Impossible d'équiper ce module : ce vaisseau est déjà à sa capacité maximale.",
+                "message": "Impossible d'Ã©quiper ce module : ce vaisseau est dÃ©jÃ  Ã  sa capacitÃ© maximale.",
                 "equipped": equipped_count,
                 "max": global_max,
             }
@@ -4710,7 +4754,7 @@ class GameConsumer(WebsocketConsumer):
             if current >= int(limit):
                 return {
                     "reason": "MODULE_TYPE_LIMIT_REACHED",
-                    "message": "Impossible d'équiper ce module car cette catégorie est déjà à sa capacité maximum pour ce vaisseau.",
+                    "message": "Impossible d'Ã©quiper ce module car cette catÃ©gorie est dÃ©jÃ  Ã  sa capacitÃ© maximum pour ce vaisseau.",
                     "module_type": bucket,
                     "equipped": current,
                     "max": int(limit),
@@ -4755,7 +4799,7 @@ class GameConsumer(WebsocketConsumer):
                 if operation == "UNEQUIP":
                     equipped_entry_id = payload.get("equipped_entry_id")
                     if not equipped_entry_id:
-                        self._send_action_failed_response("MISSING_EQUIPPED_ENTRY_ID", "Module équipé introuvable.")
+                        self._send_action_failed_response("MISSING_EQUIPPED_ENTRY_ID", "Module Ã©quipÃ© introuvable.")
                         return
 
                     equipped_entry = (
@@ -4765,7 +4809,7 @@ class GameConsumer(WebsocketConsumer):
                         .first()
                     )
                     if not equipped_entry or not equipped_entry.module:
-                        self._send_action_failed_response("EQUIPPED_MODULE_NOT_FOUND", "Le module à déséquiper est introuvable.")
+                        self._send_action_failed_response("EQUIPPED_MODULE_NOT_FOUND", "Le module Ã  dÃ©sÃ©quiper est introuvable.")
                         return
 
                     created_action = PlayerShipModuleReconfiguration.objects.create(
@@ -4792,7 +4836,7 @@ class GameConsumer(WebsocketConsumer):
                         .first()
                     )
                     if not inventory_entry or not inventory_entry.module:
-                        self._send_action_failed_response("INVENTORY_MODULE_NOT_FOUND", "Le module à équiper est introuvable.")
+                        self._send_action_failed_response("INVENTORY_MODULE_NOT_FOUND", "Le module Ã  Ã©quiper est introuvable.")
                         return
 
                     capacity_error = self._validate_equip_capacity_constraints(locked_ship, inventory_entry.module)
@@ -4812,7 +4856,7 @@ class GameConsumer(WebsocketConsumer):
                     )
 
                 else:
-                    self._send_action_failed_response("INVALID_OPERATION", "Opération invalide.")
+                    self._send_action_failed_response("INVALID_OPERATION", "OpÃ©ration invalide.")
                     return
 
             self._emit_local_ship_module_sync(
@@ -5003,7 +5047,7 @@ class GameConsumer(WebsocketConsumer):
                             "status": "FAILED",
                             "player_id": int(player_ship.player_id),
                             "reason": "UNEQUIP_TARGET_MISSING",
-                            "message": "Le module à déséquiper n'est plus disponible.",
+                            "message": "Le module Ã  dÃ©sÃ©quiper n'est plus disponible.",
                         }
                     else:
                         inv_entry = PlayerShipInventoryModule.objects.create(
@@ -5039,7 +5083,7 @@ class GameConsumer(WebsocketConsumer):
                             "status": "FAILED",
                             "player_id": int(player_ship.player_id),
                             "reason": "EQUIP_TARGET_MISSING",
-                            "message": "Le module à équiper n'est plus disponible dans l'inventaire.",
+                            "message": "Le module Ã  Ã©quiper n'est plus disponible dans l'inventaire.",
                         }
                     else:
                         capacity_error = self._validate_equip_capacity_constraints(player_ship, inventory_entry.module)
@@ -6082,13 +6126,13 @@ class GameConsumer(WebsocketConsumer):
         return normalized
 
     def _send_response(self, response: Dict[str, Any]) -> None:
-        """Envoie une réponse via WebSocket."""
+        """Envoie une rÃ©ponse via WebSocket."""
         
         if response:
             try:
                 self.send(text_data=json.dumps(self._normalize_ws_response(response)))
             except Exception as e:
-                logger.error(f"Erreur lors de l'envoi de la réponse: {e}")
+                logger.error(f"Erreur lors de l'envoi de la rÃ©ponse: {e}")
     
 
 

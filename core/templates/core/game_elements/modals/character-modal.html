@@ -84,7 +84,7 @@
             {% for category in skills.categories %}
             <fieldset class="flex flex-col w-full fade-in-up bg-gray-900/40 border border-emerald-700/40 rounded-lg shadow-inner p-3 gap-3 select-none">
             <legend class="text-base font-bold text-emerald-300 uppercase tracking-widest bg-emerald-950/60 border border-emerald-700/40 rounded-md px-3 py-1 text-center shadow-sm font-orbitron">
-                {% translate category %}
+                {{ category }}
             </legend>
 
             <div class="skills-grid w-full select-none">
@@ -100,7 +100,7 @@
                     data-skill-expertise="{{ skill.expertise|escapejs }}">
                 <!-- Skill header -->
                 <div class="flex justify-between items-center">
-                    <p class="text-emerald-300 font-bold text-sm truncate">{% translate skill.skill_name %}</p>
+                    <p class="text-emerald-300 font-bold text-sm truncate">{{ skill.skill_name }}</p>
                     <span class="px-2 py-0.5 text-base rounded-md bg-emerald-900 text-emerald-300 border border-emerald-700/40">
                     Lv {{ skill.level }}
                     </span>

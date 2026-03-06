@@ -244,7 +244,7 @@ AUTH_PASSWORD_VALIDATORS = [
 USE_TZ = True
 TIME_ZONE = "Europe/Paris"
 
-LANGUAGE_CODE = "en-US"
+LANGUAGE_CODE = "en"
 USE_I18N = True
 LANGUAGES = [
     ("fr", _("French")),

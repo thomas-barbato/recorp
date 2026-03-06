@@ -78,5 +78,5 @@ urlpatterns = [
     path("chat/get/<str:channel_type>/", core_views.get_chat_messages, name="get_chat_messages"),
     path('chat/mark-read/<str:channel_type>/', core_views.mark_messages_as_read, name='mark_messages_as_read'),
     path('chat/unread-counts/', core_views.get_unread_counts, name='get_unread_counts'),
-    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    path('jsi18n/', JavaScriptCatalog.as_view(domain='django'), name='javascript-catalog'),
 ]

@@ -95,14 +95,12 @@
               class="desktop-action-item flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1"
               data-tooltip-target="group-management-tooltip"
               data-tooltip-placement="bottom"
-              aria-label="Group Management"
+              aria-label="{% translate 'Group management' %}"
             >
               <span class="w-auto flex items-center shadow-inner shadow-emerald-900/30">
                 <span class="desktop-action-icon action-icon-mask group-action-icon-mask" aria-hidden="true"></span>
               </span>
-              <div id="group-management-tooltip" role="tooltip" class="absolute invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md" style="z-index:11000;">
-                Group Management
-                <div class="tooltip-arrow" data-popper-arrow></div>
+              <div id="group-management-tooltip" role="tooltip" class="absolute invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md" style="z-index:11000;">{% translate "Group management" %}<div class="tooltip-arrow" data-popper-arrow></div>
               </div>
             </button>
             <button
@@ -111,14 +109,12 @@
               class="desktop-action-item flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1"
               data-tooltip-target="repair-action-tooltip"
               data-tooltip-placement="bottom"
-              aria-label="Repair"
+              aria-label="{% translate 'Repair' %}"
             >
               <span class="w-auto flex items-center shadow-inner shadow-emerald-900/30">
                 <span class="desktop-action-icon action-icon-mask repair-action-icon-mask" aria-hidden="true"></span>
               </span>
-              <div id="repair-action-tooltip" role="tooltip" class="absolute invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md" style="z-index:11000;">
-                Repair
-                <div class="tooltip-arrow" data-popper-arrow></div>
+              <div id="repair-action-tooltip" role="tooltip" class="absolute invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md" style="z-index:11000;">{% translate "Repair" %}<div class="tooltip-arrow" data-popper-arrow></div>
               </div>
             </button>
             <button
@@ -127,14 +123,12 @@
               class="desktop-action-item flex flex-row h-[15px] cursor-pointer p-1 gap-2 text-emerald-400 hover:text-emerald-300 button-panel justify-center items-center z-1"
               data-tooltip-target="signature-masking-tooltip"
               data-tooltip-placement="bottom"
-              aria-label="Signature Masking"
+              aria-label="{% translate 'Signature masking' %}"
             >
               <span class="w-auto flex items-center shadow-inner shadow-emerald-900/30">
                 <span class="desktop-action-icon action-icon-mask signature-action-icon-mask" aria-hidden="true"></span>
               </span>
-              <div id="signature-masking-tooltip" role="tooltip" class="absolute invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md" style="z-index:11000;">
-                Signature Masking
-                <div class="tooltip-arrow" data-popper-arrow></div>
+              <div id="signature-masking-tooltip" role="tooltip" class="absolute invisible inline-block px-3 py-2 text-sm font-bold transition-opacity duration-300 shadow-xs opacity-0 tooltip text-emerald-300 bg-emerald-900 border border-[#B1F1CB] rounded-md" style="z-index:11000;">{% translate "Signature masking" %}<div class="tooltip-arrow" data-popper-arrow></div>
               </div>
             </button>
           </div>
@@ -209,13 +203,13 @@
   <div class="flex w-full lg:hidden flex-col p-2 justify-center">
     <div id="mobile-action-bar" class="flex w-full flex-row items-center justify-center gap-4 sm:gap-6 p-2 text-emerald-300 border border-emerald-400/40 rounded-xl bg-emerald-900/30">
         <i class="iconify inline-flex items-center justify-center w-[2em] h-[2em] leading-none game-icons--radar-sweep transition hover:text-emerald-200 cursor-pointer" id="sonar-toggle-btn"></i>
-        <button type="button" id="group-action-button-mobile" class="mobile-action-icon-btn inline-flex h-[2em] w-[2em] items-center justify-center rounded-md leading-none text-emerald-300 transition hover:bg-emerald-400/15 hover:text-emerald-200" aria-label="Group Management">
+        <button type="button" id="group-action-button-mobile" class="mobile-action-icon-btn inline-flex h-[2em] w-[2em] items-center justify-center rounded-md leading-none text-emerald-300 transition hover:bg-emerald-400/15 hover:text-emerald-200" aria-label="{% translate 'Group management' %}">
           <span class="mobile-action-icon action-icon-mask group-action-icon-mask" aria-hidden="true"></span>
         </button>
-        <button type="button" id="repair-action-button-mobile" class="mobile-action-icon-btn inline-flex h-[2em] w-[2em] items-center justify-center rounded-md leading-none text-emerald-300 transition hover:bg-emerald-400/15 hover:text-emerald-200" aria-label="Repair">
+        <button type="button" id="repair-action-button-mobile" class="mobile-action-icon-btn inline-flex h-[2em] w-[2em] items-center justify-center rounded-md leading-none text-emerald-300 transition hover:bg-emerald-400/15 hover:text-emerald-200" aria-label="{% translate 'Repair' %}">
           <span class="mobile-action-icon action-icon-mask repair-action-icon-mask" aria-hidden="true"></span>
         </button>
-        <button type="button" id="signature-action-button-mobile" class="mobile-action-icon-btn inline-flex h-[2em] w-[2em] items-center justify-center rounded-md leading-none text-emerald-300 transition hover:bg-emerald-400/15 hover:text-emerald-200" aria-label="Signature Masking">
+        <button type="button" id="signature-action-button-mobile" class="mobile-action-icon-btn inline-flex h-[2em] w-[2em] items-center justify-center rounded-md leading-none text-emerald-300 transition hover:bg-emerald-400/15 hover:text-emerald-200" aria-label="{% translate 'Signature masking' %}">
           <span class="mobile-action-icon action-icon-mask signature-action-icon-mask" aria-hidden="true"></span>
         </button>
         <i data-modal-target="chat-modal" class="fa-solid fa-walkie-talkie fa-2x inline-flex items-center justify-center leading-none transition hover:text-emerald-200 cursor-pointer" id="chat-modal-button-mobile"></i>
@@ -226,3 +220,4 @@
 </div>
 <script>
 </script>
+

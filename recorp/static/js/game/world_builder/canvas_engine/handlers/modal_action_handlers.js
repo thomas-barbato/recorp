@@ -53,7 +53,8 @@ function setScanMeta(targetKey, expiresAt) {
 
 function renderScanFloatingTexts({ senderId, targetKey }) {
     if (senderId) {
-        window.renderTextAboveTarget?.(senderId, "- 1 AP", "rgba(231, 0, 11, 0.95)");
+        const apLabel = typeof gettext === "function" ? gettext("AP") : "AP";
+        window.renderTextAboveTarget?.(senderId, `- 1 ${apLabel}`, "rgba(231, 0, 11, 0.95)");
     }
     if (targetKey) {
         window.renderTextAboveTarget?.(targetKey, "+ scan", "rgba(0,255,180,0.95)", "scan");
@@ -128,7 +129,7 @@ export function handleScanStateSync(msg) {
     //  redraw
     requestWorldRedraw();
 
-    // si un modal est ouvert, le rafraîchir une seule fois
+    // si un modal est ouvert, le rafraÃ®chir une seule fois
     if (openedId && typeof refreshModalAfterScan === "function") {
         const targetKey = getOpenedModalTargetKey(openedId);
         if (targetKey) refreshModalAfterScan(targetKey);
@@ -143,12 +144,12 @@ export function handleScanVisibilityUpdate(msg) {
     ensureScanStores();
 
     remove.forEach(targetKey => {
-        // Nettoyage état global
+        // Nettoyage Ã©tat global
         window.clearScan(targetKey);
         delete window.scannedMeta[targetKey];
         delete window.scannedModalData?.[targetKey];
 
-        // Si un modal est ouvert → rebuild
+        // Si un modal est ouvert â†’ rebuild
         const modalId = `modal-${targetKey}`;
         const modalEl = document.getElementById(modalId);
 
@@ -209,4 +210,6 @@ function refreshOpenedModalRanges() {
         window.refreshModalActionRanges(modal.id);
     }
 }
+
+
 

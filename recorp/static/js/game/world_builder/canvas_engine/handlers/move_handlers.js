@@ -1,5 +1,5 @@
 /**
- * Met à jour le HUD des points de mouvement pour le joueur courant.
+ * Met Ã  jour le HUD des points de mouvement pour le joueur courant.
  * - PC : #movement-container-value-min / #movement-container-value-max / #mp-percent
  * - Mobile : #movement-container-value-current / #movement-container-value-max
  */
@@ -12,7 +12,7 @@ function getGameState() {
 }
 
 function updateHudMovement(playerId, remainingMovement, maxMove, new_coordinates) {
-    // On ne met à jour le HUD complet que pour le joueur courant
+    // On ne met Ã  jour le HUD complet que pour le joueur courant
     const currentPlayerId = getGameState()?.currentPlayerId ?? window.current_player_id;
     if (String(playerId) !== String(currentPlayerId)) {
         return;
@@ -73,11 +73,11 @@ function updateHudMovement(playerId, remainingMovement, maxMove, new_coordinates
 }
 
 /**
- * Met à jour la structure map_informations côté client
- * en cohérence avec ce que renvoie le backend.
+ * Met Ã  jour la structure map_informations cÃ´tÃ© client
+ * en cohÃ©rence avec ce que renvoie le backend.
  *
  * On cherche le bon PC dans map_informations.pc[]
- * puis on met à jour ship.current_movement / ship.max_movement.
+ * puis on met Ã  jour ship.current_movement / ship.max_movement.
  */
 function syncMapInformationsMovement(playerId, remainingMovement, maxMove) {
     const gs = getGameState();
@@ -112,8 +112,8 @@ function syncMapInformationsMovement(playerId, remainingMovement, maxMove) {
 }
 
 /**
- * Met à jour aussi l’acteur dans la MapData (côté canvas)
- * pour que toutes les logiques qui lisent me.data.ship.* soient cohérentes.
+ * Met Ã  jour aussi lâ€™acteur dans la MapData (cÃ´tÃ© canvas)
+ * pour que toutes les logiques qui lisent me.data.ship.* soient cohÃ©rentes.
  */
 function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
     const gs = getGameState();
@@ -137,7 +137,7 @@ function syncCanvasPlayerMovement(playerId, remainingMovement, maxMove) {
 }
 
 /**
- * Handler générique pour les updates de PM (par ex. type "update_mp")
+ * Handler gÃ©nÃ©rique pour les updates de PM (par ex. type "update_mp")
  */
 export function handleUpdateMovementGeneric(msg) {
     if (!msg) return;
@@ -167,7 +167,7 @@ export function handleUpdateMovementGeneric(msg) {
 }
 
 /**
- * Handler pour les messages de déplacement "player_move"
+ * Handler pour les messages de dÃ©placement "player_move"
  * (avec path, end_x, end_y, move_cost, move, max_move, etc.)
  */
 export function handlePlayerMove(msg) {
@@ -222,8 +222,9 @@ export function handlePlayerMove(msg) {
                                 engine.camera.centerOn(centerX, centerY);
                             }
                             
-                            window.renderTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} MP`, "rgba(231, 0, 11, 0.95)", "movement")
-                            // mise à jour de la position du joueur.
+                            const mpLabel = typeof gettext === "function" ? gettext("MP") : "MP";
+                            window.renderTextAboveTarget(`pc_${playerId}`, `- ${msg.move_cost} ${mpLabel}`, "rgba(231, 0, 11, 0.95)", "movement")
+                            // mise Ã  jour de la position du joueur.
                             if (playerId === localPlayerId) {
                                 if (gs?.updateCurrentPlayerCoords) {
                                     gs.updateCurrentPlayerCoords({ x: endX, y: endY });
@@ -241,7 +242,7 @@ export function handlePlayerMove(msg) {
                             // on redessine.
                             engine.renderer.requestRedraw();
 
-                            // remettre à zéro pour réinitialiser la rotation
+                            // remettre Ã  zÃ©ro pour rÃ©initialiser la rotation
                             if (engine?.renderer?.ui?.sonar) {
                                 engine.renderer.ui.sonar._sonarPulseTime = 0;
                             }
@@ -271,7 +272,7 @@ export function handlePlayerMove(msg) {
     }
 
     // ----------------------------------------------------------
-    // 2) MISE À JOUR PM
+    // 2) MISE Ã€ JOUR PM
     // ----------------------------------------------------------
     if (remaining != null) {
         if (gs?.updatePlayerMovement) {
@@ -332,3 +333,5 @@ export function handlePlayerMove(msg) {
         engine.renderer.requestRedraw();
     }
 }
+
+

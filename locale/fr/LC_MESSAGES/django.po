@@ -1852,3 +1852,446 @@ msgstr ""
 #, python-brace-format
 msgid "{something}"
 msgstr ""
+
+# UI strings added in 2026-03 localization pass
+msgid "AP"
+msgstr "PA"
+
+msgid "MP"
+msgstr "MP"
+
+msgid "Action points"
+msgstr "PA"
+
+msgid "Movement points"
+msgstr "MP"
+
+msgid "Action"
+msgstr "PA"
+
+msgid "Movement"
+msgstr "MP"
+
+msgid "Welcome back,"
+msgstr "Bon retour,"
+
+msgid "Forgot credentials"
+msgstr "Identifiants oublies"
+
+msgid "Forgot credentials?"
+msgstr "Identifiants oublies ?"
+
+msgid "Create account"
+msgstr "Creer un compte"
+
+msgid "Access your account"
+msgstr "Accedez a votre compte"
+
+msgid "Conquer the stars. Forge your destiny."
+msgstr "Conquerez les etoiles. Forgez votre destin."
+
+msgid "Dive into a space conquest universe where every decision matters."
+msgstr "Plongez dans un univers de conquete spatiale ou chaque decision compte."
+
+msgid "Harvest resources, trade with factions, fight your enemies, and become a legend."
+msgstr "Recoltez des ressources, commercez avec les factions, combattez vos ennemis et devenez une legende."
+
+msgid "START THE ADVENTURE"
+msgstr "COMMENCER L'AVENTURE"
+
+msgid "Learn more"
+msgstr "En savoir plus"
+
+msgid "News"
+msgstr "Nouveautes"
+
+msgid "NEW"
+msgstr "NOUVEAU"
+
+msgid "Published on October 15, 2025"
+msgstr "Publie le 15 octobre 2025"
+
+msgid "New improved space combat system"
+msgstr "Nouveau systeme de combat spatial ameliore"
+
+msgid "Added 15 new rare resources"
+msgstr "Ajout de 15 nouvelles ressources rares"
+
+msgid "Performance optimization"
+msgstr "Optimisation des performances"
+
+msgid "Major bug fixes"
+msgstr "Corrections de bugs majeurs"
+
+msgid "View full patch notes"
+msgstr "Voir les notes completes"
+
+msgid "Creator message"
+msgstr "Message du createur"
+
+msgid "October 12, 2025"
+msgstr "12 octobre 2025"
+
+msgid "Commanders, thank you for your continued support! This month, we worked hard on faction balancing and new gameplay mechanics. Your feedback is precious and guides Recorp development."
+msgstr "Commandants, merci pour votre soutien continu ! Ce mois-ci, nous avons travaille dur sur l'equilibrage des factions et l'ajout de nouvelles mecaniques de jeu. Vos retours sont precieux et guident le developpement de Recorp."
+
+msgid "The universe is vast, but you are the ones who bring it to life."
+msgstr "L'univers est vaste, mais c'est vous qui le faites vivre."
+
+msgid "Read more"
+msgstr "Lire la suite"
+
+msgid "Discord community"
+msgstr "Communaute Discord"
+
+msgid "Join over 10,000 players on our Discord server. Chat, form alliances, and participate in community events."
+msgstr "Rejoignez plus de 10 000 joueurs sur notre serveur Discord. Discutez, formez des alliances et participez aux evenements communautaires."
+
+msgid "Join Discord"
+msgstr "Rejoindre Discord"
+
+msgid "Official forum"
+msgstr "Forum officiel"
+
+msgid "Share your strategies, ask your questions, and join discussions on Recorp's official forum."
+msgstr "Partagez vos strategies, posez vos questions et participez aux discussions sur le forum officiel de Recorp."
+
+msgid "Go to forum"
+msgstr "Acceder au forum"
+
+msgid "Story & lore"
+msgstr "Histoire & Lore"
+
+msgid "Dive into the fascinating history of the Recorp universe. Discover faction origins and the secrets of the galaxy."
+msgstr "Plongez dans l'histoire fascinante de l'univers Recorp. Decouvrez les origines des factions et les secrets de la galaxie."
+
+msgid "Explore lore"
+msgstr "Explorer le lore"
+
+msgid "Game features"
+msgstr "Fonctionnalites du jeu"
+
+msgid "Resource harvesting"
+msgstr "Recolte de ressources"
+
+msgid "Explore space and harvest rare resources to grow your empire."
+msgstr "Explorez l'espace et recoltez des ressources rares pour developper votre empire."
+
+msgid "Galactic trade"
+msgstr "Commerce galactique"
+
+msgid "Negotiate with other players and establish profitable trade routes."
+msgstr "Negociez avec d'autres joueurs et etablissez des routes commerciales lucratives."
+
+msgid "Space combat"
+msgstr "Combat spatial"
+
+msgid "Face your opponents in tactical and intense space battles."
+msgstr "Affrontez vos adversaires dans des batailles spatiales tactiques et intenses."
+
+msgid "Crafting"
+msgstr "Fabrication"
+
+msgid "Craft powerful equipment and upgrade your ship."
+msgstr "Creez des equipements puissants et ameliorez votre vaisseau."
+
+msgid "Contracts and missions"
+msgstr "Contrats et missions"
+
+msgid "Complete varied contracts and earn exclusive rewards."
+msgstr "Accomplissez des contrats varies et gagnez des recompenses exclusives."
+
+msgid "Persistent universe"
+msgstr "Univers persistant"
+
+msgid "Progress in an ever-evolving universe shaped by players."
+msgstr "Evoluez dans un univers en constante evolution faconne par les joueurs."
+
+msgid "Choose your faction"
+msgstr "Choisissez votre faction"
+
+msgid "Your faction choice will define your playstyle, your allies, and your enemies. Choose wisely."
+msgstr "Votre choix de faction determinera votre style de jeu, vos allies et vos ennemis. Choisissez avec sagesse."
+
+msgid "Democratic faction"
+msgstr "Faction democratique"
+
+msgid "Defend the values of freedom and justice. Forge strong alliances and thrive through diplomacy and fair trade."
+msgstr "Defendez les valeurs de liberte et de justice. Forgez des alliances solides et prospererez grace a la diplomatie et au commerce equitable."
+
+msgid "Technological cult"
+msgstr "Culte technologique"
+
+msgid "Revere technology and push innovation to its limits. Access the most advanced equipment in the galaxy."
+msgstr "Venerez la technologie et repoussez les limites de l'innovation. Accedez aux equipements les plus avances de la galaxie."
+
+msgid "Independents"
+msgstr "Independants"
+
+msgid "Forge your own path without constraints. Enjoy total freedom and shape your destiny by your own rules."
+msgstr "Tracez votre propre voie sans contraintes. Profitez d'une liberte totale et forgez votre destin selon vos propres regles."
+
+msgid "Ready to conquer the stars?"
+msgstr "Pret a conquerir les etoiles ?"
+
+msgid "Join thousands of players and write your legend in the vastness of space."
+msgstr "Rejoignez des milliers de joueurs et ecrivez votre legende dans l'immensite de l'espace."
+
+msgid "CREATE MY ACCOUNT"
+msgstr "CREER MON COMPTE"
+
+msgid "Group management"
+msgstr "Gestion de groupe"
+
+msgid "Signature masking"
+msgstr "Masquage de signature"
+
+msgid "Destroyed"
+msgstr "Detruit"
+
+msgid "© 2025 Recorp. All rights reserved. Next-generation space conquest."
+msgstr "© 2025 Recorp. Tous droits reserves. Conquete spatiale nouvelle generation."
+
+msgid "Account temporarily locked after too many attempts. Try again in %(remaining)s."
+msgstr "Compte temporairement bloque apres trop de tentatives. Reessayez dans %(remaining)s."
+
+# Skill categories
+msgid "Steering"
+msgstr "Pilotage"
+
+msgid "Offensive"
+msgstr "Offensif"
+
+msgid "Defensive"
+msgstr "Defensif"
+
+msgid "Utility"
+msgstr "Utilitaire"
+
+msgid "Industry"
+msgstr "Industrie"
+
+# Skill names
+msgid "Frigate"
+msgstr "Fregate"
+
+msgid "Destroyer"
+msgstr "Destroyer"
+
+msgid "Battlecruiser"
+msgstr "Croiseur de bataille"
+
+msgid "Dreadnought"
+msgstr "Dreadnought"
+
+msgid "Thermal Weapon"
+msgstr "Arme thermique"
+
+msgid "Ballistic Weapon"
+msgstr "Arme balistique"
+
+msgid "Missile Weapon"
+msgstr "Arme missile"
+
+msgid "Electronic Warfare"
+msgstr "Guerre electronique"
+
+msgid "Evasive Maneuver"
+msgstr "Manoeuvre evasive"
+
+msgid "Thermal Shield"
+msgstr "Bouclier thermique"
+
+msgid "Ballistic Shield"
+msgstr "Bouclier balistique"
+
+msgid "Missile Shield"
+msgstr "Bouclier missile"
+
+msgid "Counter Electronic Warfare"
+msgstr "Contre-guerre electronique"
+
+msgid "Repair"
+msgstr "Reparation"
+
+msgid "Shield Enhancement"
+msgstr "Renforcement de bouclier"
+
+msgid "Hide Signature"
+msgstr "Dissimulation de signature"
+
+msgid "Detection"
+msgstr "Detection"
+
+msgid "Mining"
+msgstr "Minage"
+
+msgid "Refining"
+msgstr "Raffinage"
+
+msgid "Crafting"
+msgstr "Fabrication"
+
+msgid "Research"
+msgstr "Recherche"
+
+msgid "Planetary Exploitation"
+msgstr "Exploitation planetaire"
+
+msgid "Advanced Targeting"
+msgstr "Ciblage avance"
+
+# Skill descriptions
+msgid "Enhances thermal weapon systems. Increases thermal damage (up to +25%)"
+msgstr "Ameliore les systemes d'armes thermiques. Augmente les degats thermiques (jusqu'a +25%)."
+
+msgid "Optimizes ballistic weapon handling. Increases ballistic accuracy (up to +10%). Increases ballistic damage (up to +25%)"
+msgstr "Optimise la maitrise des armes balistiques. Augmente la precision balistique (jusqu'a +10%). Augmente les degats balistiques (jusqu'a +25%)."
+
+msgid "Improves missile weapon systems. Increases missile accuracy (up to +20%). Increases missile damage (up to +25%)"
+msgstr "Ameliore les systemes d'armes a missiles. Augmente la precision des missiles (jusqu'a +20%). Augmente les degats des missiles (jusqu'a +25%)."
+
+msgid "Enhances electronic warfare capabilities.  Increases debuff success chance (up to +30%) Increases debuff duration (up to +20%)"
+msgstr "Ameliore les capacites de guerre electronique. Augmente les chances de reussite des malus (jusqu'a +30%) et leur duree (jusqu'a +20%)."
+
+msgid "Improves ship maneuverability. Increases evasion chance (up to +20%)\""
+msgstr "Ameliore la maniabilite du vaisseau. Augmente les chances d'esquive (jusqu'a +20%)."
+
+msgid "Improves resistance to electronic attacks. Increases resistance to debuffs (up to +30%) Reduces debuff duration (up to -20%)"
+msgstr "Ameliore la resistance aux attaques electroniques. Augmente la resistance aux malus (jusqu'a +30%) et reduit leur duree (jusqu'a -20%)."
+
+msgid "Improves onboard repair systems.  Increases repair efficiency (up to +30%)  Reduces repair duration (up to -30%)"
+msgstr "Ameliore les systemes de reparation embarques. Augmente l'efficacite des reparations (jusqu'a +30%) et reduit leur duree (jusqu'a -30%)."
+
+msgid "Enhances shield systems. Improves shield damage absorption (up to +20%)"
+msgstr "Renforce les systemes de bouclier. Ameliore l'absorption des degats par les boucliers (jusqu'a +20%)."
+
+msgid "Reduces ship signature. Improves stealth and invisibility effectiveness"
+msgstr "Reduit la signature du vaisseau. Ameliore l'efficacite de la discretion et de l'invisibilite."
+
+msgid "Improves detection and scanning systems. Improves scan efficiency (up to +30%) Reduces accuracy penalties against unscanned targets"
+msgstr "Ameliore les systemes de detection et de scan. Augmente l'efficacite des scans (jusqu'a +30%) et reduit les penalites de precision contre les cibles non scannees."
+
+msgid "Improves weapon accuracy. Increases overall weapon precision (up to +10%)"
+msgstr "Ameliore la precision des armes. Augmente la precision globale des armes (jusqu'a +10%)."
+
+# Event log labels and texts
+msgid "Bank"
+msgstr "Banque"
+
+msgid "Combat"
+msgstr "Combat"
+
+msgid "Scan"
+msgstr "Scan"
+
+msgid "Sector"
+msgstr "Secteur"
+
+msgid "Craft"
+msgstr "Fabrication"
+
+msgid "Log"
+msgstr "Log"
+
+msgid "Unknown"
+msgstr "Inconnu"
+
+msgid "thermal"
+msgstr "thermiques"
+
+msgid "ballistic"
+msgstr "balistiques"
+
+msgid "missile"
+msgstr "missiles"
+
+msgid "mixed"
+msgstr "mixtes"
+
+msgid "counterattack"
+msgstr "contre-attaque"
+
+msgid "critical"
+msgstr "critique"
+
+msgid "You hit %(target)s for %(damage)s %(damage_type)s damage%(suffix)s"
+msgstr "Vous touchez %(target)s pour %(damage)s degats %(damage_type)s%(suffix)s"
+
+msgid "%(source)s hit you for %(damage)s %(damage_type)s damage%(suffix)s"
+msgstr "%(source)s vous touche pour %(damage)s degats %(damage_type)s%(suffix)s"
+
+msgid "%(source)s hit %(target)s for %(damage)s %(damage_type)s damage%(suffix)s"
+msgstr "%(source)s touche %(target)s pour %(damage)s degats %(damage_type)s%(suffix)s"
+
+msgid "You attacked %(target)s but missed%(suffix)s"
+msgstr "Vous avez attaque %(target)s mais vous avez rate%(suffix)s"
+
+msgid "%(source)s attacked you but missed%(suffix)s"
+msgstr "%(source)s vous a attaque mais a rate%(suffix)s"
+
+msgid "%(source)s attacked %(target)s but missed%(suffix)s"
+msgstr "%(source)s a attaque %(target)s mais a rate%(suffix)s"
+
+msgid "You attacked %(target)s but the target evaded%(suffix)s"
+msgstr "Vous avez attaque %(target)s mais la cible a esquive%(suffix)s"
+
+msgid "%(source)s attacked you but you evaded%(suffix)s"
+msgstr "%(source)s vous a attaque mais vous avez esquive%(suffix)s"
+
+msgid "%(source)s attacked %(target)s but the target evaded%(suffix)s"
+msgstr "%(source)s a attaque %(target)s mais la cible a esquive%(suffix)s"
+
+msgid "Sector change: %(from)s -> %(to)s"
+msgstr "Changement de secteur : %(from)s -> %(to)s"
+
+msgid "Sector change"
+msgstr "Changement de secteur"
+
+msgid "You scanned %(target)s"
+msgstr "Vous avez scanne %(target)s"
+
+msgid "%(author)s scanned you"
+msgstr "%(author)s vous a scanne"
+
+msgid "%(author)s scanned %(target)s"
+msgstr "%(author)s a scanne %(target)s"
+
+msgid "You attacked %(target)s"
+msgstr "Vous avez attaque %(target)s"
+
+msgid "%(author)s attacked you"
+msgstr "%(author)s vous a attaque"
+
+msgid "%(author)s attacked %(target)s"
+msgstr "%(author)s a attaque %(target)s"
+
+msgid "You were killed by %(killer)s"
+msgstr "Vous avez ete tue par %(killer)s"
+
+msgid "%(dead)s was killed by %(killer)s"
+msgstr "%(dead)s a ete tue par %(killer)s"
+
+msgid "You transferred %(amount)s credits to %(recipient)s"
+msgstr "Vous avez transfere %(amount)s credits a %(recipient)s"
+
+msgid "You received %(amount)s credits from %(sender)s"
+msgstr "Vous avez recu %(amount)s credits de %(sender)s"
+
+msgid "%(sender)s transferred %(amount)s credits to %(recipient)s"
+msgstr "%(sender)s a transfere %(amount)s credits a %(recipient)s"
+
+msgid "You deposited %(amount)s credits to your account"
+msgstr "Vous avez depose %(amount)s credits sur votre compte"
+
+msgid "You withdrew %(amount)s credits to your ship"
+msgstr "Vous avez retire %(amount)s credits vers votre vaisseau"
+
+msgid "%(author)s -> %(target)s"
+msgstr "%(author)s -> %(target)s"
+
+msgid "Log: %(raw)s"
+msgstr "Log : %(raw)s"
+
+msgid "Unknown log (%(event)s)"
+msgstr "Log inconnu (%(event)s)"

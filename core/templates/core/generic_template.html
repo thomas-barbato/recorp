@@ -1,10 +1,11 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
 <!DOCTYPE html>
-<html class="h-full" lang="en" SameSite=Lax Secure>
-    {% load static %}
-    {% load i18n %}
+<html class="h-full" lang="{{ CURRENT_LANGUAGE }}">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" SameSite=Lax Secure >
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token }}"/>
         <link type="text/css" rel="stylesheet" href="{% static 'css/output.css' %}">
@@ -12,7 +13,7 @@
         <link rel="shortcut icon" type="image/png" href="{% static 'ux/recorp.png' %}"/>
         <link href="{% static 'fontawesome/css/fontawesome.css' %}" rel="stylesheet"/>
         <link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
-        <link href="{% static 'fontawesome/css/solid.css' %}"  rel="stylesheet"/>
+        <link href="{% static 'fontawesome/css/solid.css' %}" rel="stylesheet"/>
         <script src="{% static 'tailwind/flowbite.min.js' %}"></script>
         <script src="{% static 'world_builder/external_var_and_fun.js'%}"></script>
         <script src="{% static 'world_builder/modals/modal_animator.js' %}"></script>
@@ -29,7 +30,6 @@
         </style>
     </head>
     <body class="text-emerald-300 h-full min-h-full" id="player-container">
-    <!-- Global space background container (not part of normal flow) -->
     <div class="space-canvas" aria-hidden="true">
         <div class="nebula n1"></div>
         <div class="nebula n2"></div>

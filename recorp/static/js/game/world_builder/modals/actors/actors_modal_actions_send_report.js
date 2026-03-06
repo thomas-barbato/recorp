@@ -8,7 +8,7 @@
     }
 
     /**
-     * Entrée principale
+     * EntrÃ©e principale
      */
     window.openSendReportModal = function ({
         targetKey,
@@ -48,7 +48,7 @@
 
 
     /**
-     * Création du modal Send Report
+     * CrÃ©ation du modal Send Report
      */
     function createSendReportModal(modalData, targetModalId) {
         const modalId = "send-report-modal";
@@ -89,11 +89,11 @@
 
                 <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
                     <i class="fa-solid fa-envelope"></i>
-                    TRANSMISSION — INTEL REPORT
+                    TRANSMISSION â€” INTEL REPORT
                 </h2>
 
                 <button id="send-report-close" class="text-emerald-300 hover:text-red-400 transition">
-                    ✕
+                    âœ•
                 </button>
             </div>
         `;
@@ -131,10 +131,10 @@
                     <textarea
                         id="optional-message"
                         rows="3"
-                        placeholder="Add a personal note…"
+                        placeholder="Add a personal noteâ€¦"
                         class="w-full bg-black/40 border border-emerald-500/30 rounded
                         text-emerald-200 text-sm p-2 resize-none outline-none"
-                        placeholder="Add a personal note…">
+                        placeholder="Add a personal noteâ€¦">
                     </textarea>
                 </div>
 
@@ -175,16 +175,18 @@
     }
 
     /**
-     * Génération du texte du rapport (lecture seule)
+     * GÃ©nÃ©ration du texte du rapport (lecture seule)
      */
     function renderIntelReport(data) {
         const lines = [];
+        const apLabel = typeof gettext === "function" ? gettext("AP") : "AP";
+        const mpLabel = typeof gettext === "function" ? gettext("MP") : "MP";
         const user = data.user || {};
         const ship = data.ship || {};
         const faction = data.player.faction_name || {};
         
         const user_type = data.player.is_npc == false ? "PLAYER": "NPC" ;
-        // === IDENTITÉ ===
+        // === IDENTITÃ‰ ===
         lines.push(`NAME: ${data.player.name}`);
         
         lines.push("");
@@ -199,7 +201,7 @@
         }
 
         if (data.player.current_ap && data.player.max_ap){
-            lines.push(`AP: ${data.player.current_ap} / ${data.player.max_ap}`)
+            lines.push(`${apLabel}: ${data.player.current_ap} / ${data.player.max_ap}`)
         }
 
         // === SHIP ===
@@ -219,11 +221,11 @@
         }
 
         if (data.player.current_ap !== undefined) {
-            lines.push(`AP: ${data.player.current_ap} / ${data.player.max_ap}`);
+            lines.push(`${apLabel}: ${data.player.current_ap} / ${data.player.max_ap}`);
         }
 
         if (ship.current_movement !== undefined) {
-            lines.push(`MP: ${ship.current_movement} / ${ship.max_movement}`);
+            lines.push(`${mpLabel}: ${ship.current_movement} / ${ship.max_movement}`);
         }
 
         // === DEFENSES ===
@@ -274,7 +276,7 @@
                 return;
             }
 
-            // Fallback si pas d’ID (saisie manuelle)
+            // Fallback si pas dâ€™ID (saisie manuelle)
             if (!recipientId) {
                 recipientId = await resolveRecipientIdByName(recipient);
 
@@ -286,7 +288,7 @@
 
             const report = renderIntelReport(lastTargetContext.modalData);
             const body = composeFinalMessage(optionalMessage, report);
-            const subject = `Scan report — ${lastTargetContext.modalData.player.name}`;
+            const subject = `Scan report â€” ${lastTargetContext.modalData.player.name}`;
 
             const payload = {
                 recipient,
@@ -299,9 +301,9 @@
             setLoadingState(btn, true);
             try {
                 await sendPrivateMessage(payload);
-                window.showToast(gettext("Report sent ✓"), true, "report-toast-container");
+                window.showToast(gettext("Report sent âœ“"), true, "report-toast-container");
             } catch (err) {
-                window.showToast(gettext("Send failed ✗"), false, "report-toast-container");
+                window.showToast(gettext("Send failed âœ—"), false, "report-toast-container");
             } finally {
                 setLoadingState(btn, false);
             }
@@ -318,7 +320,7 @@
 
         if (!lastTargetContext) return;
 
-        // Réouverture propre via le système officiel
+        // RÃ©ouverture propre via le systÃ¨me officiel
         open_close_modal(
             lastTargetContext.targetType,
             lastTargetContext.targetId
@@ -355,7 +357,7 @@
                 results.forEach(p => {
                     const row = document.createElement("div");
                     row.className = "px-3 py-1 text-xs hover:bg-emerald-500/10 cursor-pointer";
-                    row.textContent = `${p.name} — ${p.faction || ""}`;
+                    row.textContent = `${p.name} â€” ${p.faction || ""}`;
 
                     row.addEventListener("click", () => {
                         input.value = p.name;
@@ -376,7 +378,7 @@
         input.addEventListener("input", () => {
             const q = input.value.trim();
 
-            // IMPORTANT: si l'utilisateur retape, on invalide l'ID sélectionné
+            // IMPORTANT: si l'utilisateur retape, on invalide l'ID sÃ©lectionnÃ©
             hidden.value = "";
 
             if (q.length < 2) {
@@ -402,7 +404,7 @@
 
         return (
             cleanOptional +
-            "\n\n" +        // ← séparation VISUELLE claire
+            "\n\n" +        // â† sÃ©paration VISUELLE claire
             reportText
         );
     }
@@ -423,3 +425,5 @@
     }
 
 })();
+
+

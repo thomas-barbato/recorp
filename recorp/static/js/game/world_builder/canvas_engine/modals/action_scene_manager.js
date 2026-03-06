@@ -1,7 +1,12 @@
-// ActionSceneManager (foundation) — UI-only, no gameplay.
+// ActionSceneManager (foundation) â€” UI-only, no gameplay.
 
 function getGameState() {
     return window.GameState || null;
+}
+
+function tr(text) {
+    if (typeof gettext === "function") return gettext(text);
+    return text;
 }
 
 class ActionSceneManager {
@@ -16,7 +21,7 @@ class ActionSceneManager {
         this._combatLogPlaceholderNode = null;
         this._combatLogHistoryKey = null;
         this._combatResizeHandler = null;
-        this._mountNode = null; // si défini, la scène est rendue dans ce node (body du modal)
+        this._mountNode = null; // si dÃ©fini, la scÃ¨ne est rendue dans ce node (body du modal)
     }
 
     _getEngine() {
@@ -262,7 +267,7 @@ class ActionSceneManager {
             row.textContent = String(entry ?? "");
         }
 
-        // Fallback lisible si aucun code couleur n'a été fourni par le formatter combat.
+        // Fallback lisible si aucun code couleur n'a Ã©tÃ© fourni par le formatter combat.
         const hasTextColorClass = /\btext-(white|red|emerald|slate|orange|cyan|yellow)-/.test(row.className);
         if (!hasTextColorClass) {
             row.classList.add("text-white");
@@ -321,8 +326,8 @@ class ActionSceneManager {
         const cached = window.modalDataCache?.[modalId];
         if (!cached?.data) return null;
 
-        // cached.data = responseData.target (structure pc/npc complète)
-        // on récupère les champs utiles de snapshot :
+        // cached.data = responseData.target (structure pc/npc complÃ¨te)
+        // on rÃ©cupÃ¨re les champs utiles de snapshot :
         const d = cached.data;
 
         // PC:
@@ -356,7 +361,7 @@ class ActionSceneManager {
             const expiredKey = e.detail?.targetKey;
             if (!expiredKey) return;
 
-            // si la cible du combat perd le scan => on masque immédiatement
+            // si la cible du combat perd le scan => on masque immÃ©diatement
             if (expiredKey === ctx.targetKey) {
                 this._setTargetHiddenUI();
             }
@@ -388,7 +393,7 @@ class ActionSceneManager {
 
     /**
      * Ouvre une ActionScene exclusive.
-     * Pour l'instant: ne fait rien de visuel (on branchera le DOM à l'étape 4).
+     * Pour l'instant: ne fait rien de visuel (on branchera le DOM Ã  l'Ã©tape 4).
      */
     open(type, context = {}) {
         if (!type) return false;
@@ -422,7 +427,7 @@ class ActionSceneManager {
     }
 
     /**
-     * Ferme la scène active.
+     * Ferme la scÃ¨ne active.
      * Pour l'instant: ne fait rien de visuel.
      */
     close(meta = {}) {
@@ -446,7 +451,7 @@ class ActionSceneManager {
 
         window.dispatchEvent(new CustomEvent("actionscene:close", { detail: closed }));
 
-        // cleanup combat anim si présent
+        // cleanup combat anim si prÃ©sent
         if (this._combatAnim) {
             this._combatAnim.queue?.dispose?.();
             this._combatAnim = null;
@@ -647,7 +652,7 @@ class ActionSceneManager {
             <div id="combat-attacker-stats" class="flex-1">
                 <div class="font-bold mb-2">Attacker</div>
                 <div>HP: <span class="hp">--</span></div>
-                <div>AP: <span class="ap">--</span></div>
+                <div>${tr("AP")}: <span class="ap">--</span></div>
                 <div>Missile: <span class="shield-missile">--</span></div>
                 <div>Thermal: <span class="shield-thermal">--</span></div>
                 <div>Ballistic: <span class="shield-ballistic">--</span></div>
@@ -655,7 +660,7 @@ class ActionSceneManager {
             <div id="combat-target-stats" class="flex-1 text-right">
                 <div class="font-bold mb-2">Target</div>
                 <div>HP: <span class="hp">--</span></div>
-                <div>AP: <span class="ap">--</span></div>
+                <div>${tr("AP")}: <span class="ap">--</span></div>
                 <div>Missile: <span class="shield-missile">--</span></div>
                 <div>Thermal: <span class="shield-thermal">--</span></div>
                 <div>Ballistic: <span class="shield-ballistic">--</span></div>
@@ -680,8 +685,8 @@ class ActionSceneManager {
             "overscroll-contain",
             "space-y-1"
         );
-        // Inline styles pour garantir la hauteur fixe même si la classe arbitraire Tailwind
-        // n'est pas générée dans le build CSS.
+        // Inline styles pour garantir la hauteur fixe mÃªme si la classe arbitraire Tailwind
+        // n'est pas gÃ©nÃ©rÃ©e dans le build CSS.
         log.style.height = "92px";
         log.style.maxHeight = "92px";
         const placeholder = document.createElement("div");
@@ -790,7 +795,7 @@ class ActionSceneManager {
 
             btn.append(btnIcon);
 
-            // AP = 1 (comme ton système actuel)
+            // AP = 1 (comme ton systÃ¨me actuel)
             window.decorateActionButtonWithRangeAndAp?.(btn, m, 1);
 
             // === ASYNC RANGE CHECK ===
@@ -865,7 +870,7 @@ class ActionSceneManager {
         const isTargetScanned = window.isScanned?.(context.targetKey) === true;
 
         // ======================================================
-        // 🟢 JOUEUR LOCAL (toujours visible)
+        // ðŸŸ¢ JOUEUR LOCAL (toujours visible)
         // ======================================================
 
         attackerContainer.querySelector(".hp").textContent =
@@ -886,7 +891,7 @@ class ActionSceneManager {
             currentPlayer?.ship?.current_ballistic_defense ?? "0";
 
         // ======================================================
-        // 🔴 CIBLE (visible uniquement si scannée)
+        // ðŸ”´ CIBLE (visible uniquement si scannÃ©e)
         // ======================================================
 
         if (isTargetScanned) {
@@ -951,7 +956,7 @@ class ActionSceneManager {
 
         const isTarget = entityKey === ctx.targetKey;
         if (isTarget && !this._isTargetScannedNow()) {
-            // Si la cible n'est pas scannée, on ne révèle rien.
+            // Si la cible n'est pas scannÃ©e, on ne rÃ©vÃ¨le rien.
             this._setTargetHiddenUI();
             return;
         }
@@ -989,7 +994,7 @@ class ActionSceneManager {
 
         const isTarget = entityKey === ctx.targetKey;
         if (isTarget && !this._isTargetScannedNow()) {
-            // Si la cible n'est pas scannée, on ne révèle rien.
+            // Si la cible n'est pas scannÃ©e, on ne rÃ©vÃ¨le rien.
             this._setTargetHiddenUI();
             return;
         }
@@ -1171,7 +1176,7 @@ class ActionSceneManager {
         const context = this.getContext();
         if (!context) return;
 
-        // Si un movedKey est fourni, on vérifie s'il nous concerne
+        // Si un movedKey est fourni, on vÃ©rifie s'il nous concerne
         if (movedKey &&
             movedKey !== context.attackerKey &&
             movedKey !== context.targetKey) {
@@ -1204,7 +1209,7 @@ class ActionSceneManager {
                 distanceNode.textContent = `Distance: ${dist}`;
             }
 
-            // recalcul range après mouvement
+            // recalcul range aprÃ¨s mouvement
             window.refreshModalActionRanges?.("modal-combat");
 
         }).catch(err => {
@@ -1265,7 +1270,7 @@ class CombatAnimationEngine {
         const w0 = img.naturalWidth || img.width || desiredPx;
         const h0 = img.naturalHeight || img.height || desiredPx;
 
-        // scale "soft" → évite projectiles énormes si le png est grand
+        // scale "soft" â†’ Ã©vite projectiles Ã©normes si le png est grand
         const scale = desiredPx / Math.max(w0, h0);
         const w = w0 * scale;
         const h = h0 * scale;
@@ -1311,7 +1316,7 @@ class CombatAnimationEngine {
             // Fade plus doux
             const alpha = 1 - (progress * 0.8);
 
-            // Pulse léger (agrandissement progressif)
+            // Pulse lÃ©ger (agrandissement progressif)
             const radius = baseRadius * (1 + progress * 0.15);
 
             this.clear();
@@ -1376,12 +1381,12 @@ class CombatAnimationEngine {
         const imgSrc = `/static/img/ux/projectiles/${weapon}/red.png`;
         const img = await this._loadImage(imgSrc);
 
-        // Même si l'image manque → on ne bloque pas la queue
+        // MÃªme si l'image manque â†’ on ne bloque pas la queue
         const dx = to.x - from.x;
         const dy = to.y - from.y;
         const angle = Math.atan2(dy, dx);
 
-        // sécurité: si une anim est déjà en cours (normalement queue empêche),
+        // sÃ©curitÃ©: si une anim est dÃ©jÃ  en cours (normalement queue empÃªche),
         // on la stoppe proprement
         if (this._rafId) cancelAnimationFrame(this._rafId);
         this._rafId = null;
@@ -1414,14 +1419,14 @@ class CombatAnimationEngine {
                     this._rafId = requestAnimationFrame(step);
                 } else {
 
-                    // Impact moment précis
+                    // Impact moment prÃ©cis
                     if (damageToShield > 0) {
                         this.playShieldImpact({
                             side: toSide,
                             damageType: weaponType
                         });
                     } else {
-                        // si pas de shield impact → on clear normalement
+                        // si pas de shield impact â†’ on clear normalement
                         this.clear();
                     }
 
@@ -1541,7 +1546,7 @@ window.playCombatAnimation = function (payload) {
 
     if (!sourceKey || !targetKey) return;
 
-    // mapping left/right basé sur attacker/target context (modal simpliste)
+    // mapping left/right basÃ© sur attacker/target context (modal simpliste)
     const isCounter = payload?.is_counter === true;
 
     let fromSide;
@@ -1582,4 +1587,6 @@ window.playCombatAnimation = function (payload) {
         damageToShield: payload?.damage_to_shield || 0
     });
 };
+
+
 

@@ -9,6 +9,11 @@ function escapeHtml(value) {
         .replace(/'/g, "&#39;");
 }
 
+
+function getDisplayLocale() {
+    const lang = String(document.documentElement.lang || navigator.language || "en").toLowerCase();
+    return lang.startsWith("fr") ? "fr-FR" : "en-US";
+}
 function getCurrentPlayerIdSafe() {
     if (window.current_player_id != null) {
         return String(window.current_player_id);
@@ -38,12 +43,12 @@ function damageIconHtml(damageType) {
 
 function redDamageHtml(amount, damageType) {
     const icon = damageIconHtml(damageType);
-    return `<span class="font-semibold">${amount} dégâts</span> ${icon}`;
+    return `<span class="font-semibold">${amount} dÃ©gÃ¢ts</span> ${icon}`;
 }
 
 function neutralDamageHtml(amount, damageType) {
     const icon = damageIconHtml(damageType);
-    return `<span class="font-semibold">${amount} dégâts</span> ${icon}`;
+    return `<span class="font-semibold">${amount} dÃ©gÃ¢ts</span> ${icon}`;
 }
 
 function getCombatActionRowColorClass(log) {
@@ -135,18 +140,18 @@ function buildCombatActionText(log) {
     if (role === "RECEIVER") {
         if (eventType === "ATTACK_HIT") {
             if (isCounter) {
-                return colorWrap(`Vous ripostez à ${targetName} et le touchez pour ${neutralDamageHtml(damage, damageType)}${critSuffix}`);
+                return colorWrap(`Vous ripostez Ã  ${targetName} et le touchez pour ${neutralDamageHtml(damage, damageType)}${critSuffix}`);
             }
             return colorWrap(`${sourceName} vous attaque et vous touche pour ${redDamageHtml(damage, damageType)}${critSuffix}`);
         }
         if (eventType === "ATTACK_MISS") {
             return colorWrap(isCounter
-                ? `Vous ripostez à ${targetName} mais vous ratez`
+                ? `Vous ripostez Ã  ${targetName} mais vous ratez`
                 : `${sourceName} vous attaque mais vous rate`);
         }
         if (eventType === "ATTACK_EVADED") {
             return colorWrap(isCounter
-                ? `Vous ripostez à ${targetName} mais il esquive`
+                ? `Vous ripostez Ã  ${targetName} mais il esquive`
                 : `${sourceName} vous attaque mais vous esquivez`);
         }
     }
@@ -154,18 +159,18 @@ function buildCombatActionText(log) {
     // OBSERVER (et fallback)
     if (eventType === "ATTACK_HIT") {
         if (isCounter) {
-            return colorWrap(`${sourceName} riposte à ${targetName} pour ${neutralDamageHtml(damage, damageType)}${critSuffix}`);
+            return colorWrap(`${sourceName} riposte Ã  ${targetName} pour ${neutralDamageHtml(damage, damageType)}${critSuffix}`);
         }
         return colorWrap(`${sourceName} attaque ${targetName} pour ${neutralDamageHtml(damage, damageType)}${critSuffix}`);
     }
     if (eventType === "ATTACK_MISS") {
         return colorWrap(isCounter
-            ? `${sourceName} riposte à ${targetName} mais rate`
+            ? `${sourceName} riposte Ã  ${targetName} mais rate`
             : `${sourceName} attaque ${targetName} et rate`);
     }
     if (eventType === "ATTACK_EVADED") {
         return colorWrap(isCounter
-            ? `${sourceName} riposte à ${targetName} mais il esquive`
+            ? `${sourceName} riposte Ã  ${targetName} mais il esquive`
             : `${sourceName} attaque ${targetName} mais il esquive`);
     }
 
@@ -177,7 +182,7 @@ function normalizeLogShape(inputLog) {
         return { content: {}, role: null, log_type: "UNKNOWN", created_at: new Date().toISOString() };
     }
 
-    // Compat si un wrapper inattendu est encore présent
+    // Compat si un wrapper inattendu est encore prÃ©sent
     const log = inputLog.message && typeof inputLog.message === "object"
         ? { ...inputLog.message, ...inputLog }
         : { ...inputLog };
@@ -202,7 +207,8 @@ function formatTimestamp(isoDate, { includeDate = true } = {}) {
     const d = new Date(isoDate);
     if (Number.isNaN(d.getTime())) return "--:--:--";
 
-    const time = d.toLocaleTimeString("fr-FR", {
+    const locale = getDisplayLocale();
+    const time = d.toLocaleTimeString(locale, {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit"
@@ -210,7 +216,7 @@ function formatTimestamp(isoDate, { includeDate = true } = {}) {
 
     if (!includeDate) return time;
 
-    const date = d.toLocaleDateString("fr-FR", {
+    const date = d.toLocaleDateString(locale, {
         year: "numeric",
         month: "2-digit",
         day: "2-digit"
@@ -222,7 +228,7 @@ function formatTimestamp(isoDate, { includeDate = true } = {}) {
 function formatCredits(value) {
     const amount = Number(value);
     if (!Number.isFinite(amount)) return "0,00";
-    return new Intl.NumberFormat("fr-FR", {
+    return new Intl.NumberFormat(getDisplayLocale(), {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
     }).format(amount);
@@ -309,8 +315,9 @@ export function renderEventLog(
     const timestampHtml = showTimestamp
         ? `<span class="event-log-timestamp">${escapeHtml(timestampValue)}</span>`
         : "";
+    const translatedLabel = p.translated_label || getEventLabel(eventType);
     const labelHtml = isHud
-        ? `<span class="event-log-chip">${escapeHtml(getEventLabel(eventType))}</span>`
+        ? `<span class="event-log-chip">${escapeHtml(translatedLabel)}</span>`
         : "";
 
     li.innerHTML = `
@@ -338,6 +345,11 @@ function buildEventText(log) {
     const p = log.content || {};
     const role = log.role;
 
+    if (typeof p.translated_message === "string" && p.translated_message.trim()) {
+        return escapeHtml(p.translated_message);
+    }
+
+
     const eventType = p.event || log.log_type;
 
     switch (eventType) {
@@ -347,7 +359,7 @@ function buildEventText(log) {
         ======================= */
         case "ZONE_CHANGE":
             if (p.from && p.to) {
-                return `Changement de zone : <b>${p.from.replace('_',' ').replace('-',' ')}</b> → <b>${p.to.replace('_',' ').replace('-',' ')}</b>`;
+                return `Changement de zone : <b>${p.from.replace('_',' ').replace('-',' ')}</b> â†’ <b>${p.to.replace('_',' ').replace('-',' ')}</b>`;
             }
             return "Changement de zone";
 
@@ -356,13 +368,13 @@ function buildEventText(log) {
         ======================= */
         case "SCAN":
             if (role === "TRANSMITTER") {
-                return `Vous avez scanné <b>${p.target}</b>`;
+                return `Vous avez scannÃ© <b>${p.target}</b>`;
             }
             if (role === "RECEIVER") {
-                return `<b>${p.author}</b> vous a scanné`;
+                return `<b>${p.author}</b> vous a scannÃ©`;
             }
             if (role === "OBSERVER") {
-                return `<b>${p.author}</b> a scanné <b>${p.target}</b>`;
+                return `<b>${p.author}</b> a scannÃ© <b>${p.target}</b>`;
             }
             return "Scan";
 
@@ -382,7 +394,7 @@ function buildEventText(log) {
             return "Attaque";
 
         /* =======================
-            COMBAT_ACTION (attaque / riposte détaillées)
+            COMBAT_ACTION (attaque / riposte dÃ©taillÃ©es)
         ======================= */
         case "COMBAT_ACTION":
             return buildCombatActionText(log);
@@ -397,9 +409,9 @@ function buildEventText(log) {
             const localPlayerId = getCurrentPlayerIdSafe();
             const isLocalDeath = (localPlayerId && deadKey === `pc_${localPlayerId}`) || role === "RECEIVER";
             if (isLocalDeath) {
-                return `<span class="text-red-300">Vous avez été tué par ${killer}</span>`;
+                return `<span class="text-red-300">Vous avez Ã©tÃ© tuÃ© par ${killer}</span>`;
             }
-            return `${dead} a été tué par ${killer}`;
+            return `${dead} a Ã©tÃ© tuÃ© par ${killer}`;
         }
 
         /* =======================
@@ -433,7 +445,7 @@ function buildEventText(log) {
         ======================= */
         default:
             if (p.author && p.target) {
-                return `<b>${p.author}</b> → <b>${p.target}</b>`;
+                return `<b>${p.author}</b> â†’ <b>${p.target}</b>`;
             }
             if (p.raw) {
                 return `Log: ${escapeHtml(String(p.raw))}`;

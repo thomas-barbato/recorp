@@ -105,7 +105,7 @@
         const errorZone = document.getElementById(`${modalId}-action-error-zone`);
         if (errorZone) {
             if (lockedByOther) {
-                errorZone.textContent = "Cette carcasse est déjà en cours de fouille/récupération. Veuillez attendre.";
+                errorZone.textContent = "Cette carcasse est dÃ©jÃ  en cours de fouille/rÃ©cupÃ©ration. Veuillez attendre.";
                 errorZone.classList.remove("hidden");
                 errorZone.dataset.wreckLockNotice = "1";
             } else if (errorZone.dataset.wreckLockNotice === "1") {
@@ -115,7 +115,7 @@
             }
         }
 
-        // Réapplique les règles de portée/AP/modules quand le lock est relâché.
+        // RÃ©applique les rÃ¨gles de portÃ©e/AP/modules quand le lock est relÃ¢chÃ©.
         if (!lockedByOther && hadLockDisabled) {
             const targetKey = `wreck_${Number(wreckId)}`;
             if (typeof window.refreshModalIfOpen === "function") {
@@ -209,7 +209,8 @@
 
         if (typeof apCost === "number" && apCost > 0) {
             const apLine = document.createElement("div");
-            apLine.textContent = `${apCost} AP`;
+            const apLabel = typeof gettext === "function" ? gettext("AP") : "AP";
+            apLine.textContent = `${apCost} ${apLabel}`;
             apLine.classList.add(
                 "px-2","py-[1px]","rounded-md",
                 "bg-emerald-700/70",
@@ -286,7 +287,7 @@
             "py-2"
         );
 
-        // --- ICÔNE ---
+        // --- ICÃ”NE ---
         const iconWrapper = document.createElement("div");
         iconWrapper.classList.add("flex", "justify-center");
         iconElement.classList.add("action-button-sf-icon");
@@ -303,10 +304,10 @@
 
         btn.append(iconWrapper, lbl);
 
-        // --- COÛT (AP / CR) ---
+        // --- COÃ›T (AP / CR) ---
         const badge = createActionCostBadge(cost);
         if (badge) {
-            badge.classList.remove("ml-auto"); // sécurité
+            badge.classList.remove("ml-auto"); // sÃ©curitÃ©
             badge.classList.add(
                 "text-xs"
             );
@@ -411,7 +412,7 @@
     function applyScanState(data, scanButton) {
         if (data?._ui?.scanned === true) {
             scanButton.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed");
-            scanButton.title = "Cible déjà scannée";
+            scanButton.title = "Cible dÃ©jÃ  scannÃ©e";
             return false;
         }
         return true;
@@ -427,9 +428,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     const formatRangeTooltip = r => {
         if (typeof r?.distance === "number" && typeof r?.maxRange === "number") {
-            return `Hors de portée (${r.distance.toFixed(1)} / ${r.maxRange.toFixed(1)})`;
+            return `Hors de portÃ©e (${r.distance.toFixed(1)} / ${r.maxRange.toFixed(1)})`;
         }
-        return "Action indisponible (portée non définie)";
+        return "Action indisponible (portÃ©e non dÃ©finie)";
     };
 
     const transmitterActor = actionCtx.transmitterActor;
@@ -437,7 +438,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     let receiverActor = actionCtx.receiverActor;
     if (!receiverActor) {
-        // la cible n'existe réellement plus (destroy, warp, autre secteur)
+        // la cible n'existe rÃ©ellement plus (destroy, warp, autre secteur)
         return;
     }
 
@@ -451,17 +452,17 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         "mx-auto"
     );
 
-    // Vérif modules
+    // VÃ©rif modules
     const hasWeaponry = playerHasModule(modules, ["WEAPONRY"]);
     const hasProbe = playerHasModule(modules, ["PROBE"]);
     const hasEwar = playerHasModule(modules, ["ELECTRONIC_WARFARE"]);
     const hasRepaire = playerHasModule(modules, ["REPAIRE"]);
 
-    // Message d’erreur
+    // Message dâ€™erreur
     const showMissingModuleError = () => {
         showActionError(
             modalId,
-            "Vous ne pouvez pas effectuer cette action tant que vous n'aurez pas installé de module de ce type."
+            "Vous ne pouvez pas effectuer cette action tant que vous n'aurez pas installÃ© de module de ce type."
         );
     };
 
@@ -477,13 +478,13 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         () => {
             if (!hasWeaponry) return showMissingModuleError();
 
-            // 🔴 Fermer le modal actuel
+            // ðŸ”´ Fermer le modal actuel
             /*
             if (typeof open_close_modal === "function") {
                 open_close_modal(modalId);
             }*/
 
-            // 🔵 Construire les clés attacker / target
+            // ðŸ”µ Construire les clÃ©s attacker / target
             const attackerKey = `pc_${getCurrentPlayerId()}`;
             const parsed = actionCtx.parsed ?? define_modal_type(modalId);
 
@@ -499,7 +500,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             window.ModalModeManager.enter(modalId, "combat", { attackerKey, targetKey });
             /*
-            // 🟢 Ouvrir ActionScene (vide pour l’instant)
+            // ðŸŸ¢ Ouvrir ActionScene (vide pour lâ€™instant)
             window.ActionSceneManager.open("combat", {
                 attackerKey,
                 targetKey,
@@ -543,7 +544,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         },{ } 
     );
     
-    // ➕ badges RANGE + AP via helper
+    // âž• badges RANGE + AP via helper
     decorateActionButtonWithRangeAndAp(
         scanButton,
         spaceShipProb,
@@ -553,7 +554,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     scanButton.dataset.actionKey = "scan";
     const probeModule = modules.find(m => m.type === "PROBE" && m.name === "spaceship probe");
     if (probeModule) {
-        scanButton.dataset.moduleId = String(probeModule.id);   // clé pour refresh
+        scanButton.dataset.moduleId = String(probeModule.id);   // clÃ© pour refresh
     } else {
         // optionnel : garder moduleName si tu veux fallback
         scanButton.dataset.moduleName = "spaceship probe";
@@ -571,7 +572,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     }
 
     // ============================
-    // RANGE CHECK — SCAN (PC / NPC)
+    // RANGE CHECK â€” SCAN (PC / NPC)
     // ============================
     computeModuleRangeAsync({
         module: probeModule,
@@ -583,19 +584,19 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             if (typeof rangeResult.distance === "number") {
                 scanButton.title =
-                    `Hors de portée (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                    `Hors de portÃ©e (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
             }
         }
     });
 
     // ============================
-    // DéSACTIVER SCAN SI PAS DE MODULE
+    // DÃ©SACTIVER SCAN SI PAS DE MODULE
     // ============================
     attackButton.dataset.actionKey = "attack-menu";
     grid.append(attackButton);
     grid.append(scanButton);
 
-    // Actions post-scan : “à la suite” dans la grille
+    // Actions post-scan : â€œÃ  la suiteâ€ dans la grille
     if (data._ui?.scanned === true) {
         PC_NPC_EXTRA_ACTIONS.forEach(extra => {
 
@@ -750,7 +751,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             modules.forEach(m => {
                 if (m.type !== "ELECTRONIC_WARFARE") return;
 
-                // 1️⃣ wrapper (menu visible)
+                // 1ï¸âƒ£ wrapper (menu visible)
                 const wrapper = document.createElement("div");
                 wrapper.classList.add(
                     "flex", "flex-row", "justify-between",
@@ -758,12 +759,12 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     "border", "gap-4", "border-emerald-900"
                 );
 
-                // 2️⃣ description module (⚠️ INDISPENSABLE)
+                // 2ï¸âƒ£ description module (âš ï¸ INDISPENSABLE)
                 const left = document.createElement("div");
                 left.classList.add("w-full");
                 left.innerHTML = createFormatedLabel(m);
 
-                // 3️⃣ bouton
+                // 3ï¸âƒ£ bouton
                 const btnIcon = document.createElement("img");
                 btnIcon.src = "/static/img/ux/target_icon.svg";
                 btnIcon.classList.add("action-button-sf-icon");
@@ -774,7 +775,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
-                // handler click (sync, basé sur l’UI)
+                // handler click (sync, basÃ© sur lâ€™UI)
                 btn.addEventListener("click", () => {
                     if (btn.classList.contains("pointer-events-none")) return;
 
@@ -790,7 +791,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 wrapper.append(left, btn);
                 list.append(wrapper);
 
-                // portée ASYNCHRONE (UNIQUEMENT du visuel)
+                // portÃ©e ASYNCHRONE (UNIQUEMENT du visuel)
                 computeModuleRangeAsync({
                     module: m,
                     transmitterActor,
@@ -840,7 +841,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     "border", "gap-4", "border-emerald-900"
                 );
 
-                // 2️⃣ description
+                // 2ï¸âƒ£ description
                 const left = document.createElement("div");
                 left.classList.add("w-full");
                 left.innerHTML = createFormatedLabel(m);
@@ -855,7 +856,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                 decorateActionButtonWithRangeAndAp(btn, m, 1);
 
-                // click handler (basé UNIQUEMENT sur l’UI)
+                // click handler (basÃ© UNIQUEMENT sur lâ€™UI)
                 btn.addEventListener("click", () => {
                     if (btn.classList.contains("pointer-events-none")) return;
                     const targetKey = `${receiverActor.type}_${receiverActor.id}`;
@@ -871,7 +872,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 wrapper.append(left, btn);
                 list.append(wrapper);
 
-                // portée ASYNCHRONE (visuel seulement)
+                // portÃ©e ASYNCHRONE (visuel seulement)
                 computeModuleRangeAsync({
                     module: m,
                     transmitterActor,
@@ -906,7 +907,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         tradeIcon,
         "Commerce",
         () => {
-            contextZone.innerHTML = "Commerce (à implémenter)";
+            contextZone.innerHTML = "Commerce (Ã  implÃ©menter)";
             contextZone.classList.remove("hidden");
         },
         {ap : 0}
@@ -926,11 +927,11 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         grid.append(scanButton);    
     }
 
-    // Après avoir ajouté les boutons (et après le filtrage unknown)
+    // AprÃ¨s avoir ajoutÃ© les boutons (et aprÃ¨s le filtrage unknown)
     const count = grid.children.length;
 
-    // on force le nombre de colonnes à "min(count, maxCols)" en restant responsive
-    // maxCols vient du CSS via --cols (media queries), donc on lit la valeur calculée
+    // on force le nombre de colonnes Ã  "min(count, maxCols)" en restant responsive
+    // maxCols vient du CSS via --cols (media queries), donc on lit la valeur calculÃ©e
     const computedCols = parseInt(getComputedStyle(grid).getPropertyValue("--cols")) || 5;
     grid.style.setProperty("--cols", String(Math.min(count, computedCols)));
 
@@ -1052,7 +1053,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     return true;
                 },
                 gather() {
-                    // Placeholder routeur foreground: l'action WS/HTTP reste à brancher.
+                    // Placeholder routeur foreground: l'action WS/HTTP reste Ã  brancher.
                     return false;
                 },
                 fouille() {
@@ -1207,7 +1208,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     btn.dataset.moduleName = "drilling probe";
                 }
 
-                // ✅ UN SEUL appel au helper (RANGE + AP)
+                // âœ… UN SEUL appel au helper (RANGE + AP)
                 decorateActionButtonWithRangeAndAp(
                     btn,
                     drillProbeModule,
@@ -1215,7 +1216,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 );
 
                 // -------------------------
-                // Désactivation : règles UI
+                // DÃ©sactivation : rÃ¨gles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
                 const currentAp = currentPlayerData?.user?.current_ap ?? 0;
@@ -1229,7 +1230,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 // -------------------------
-                // Désactivation : portée
+                // DÃ©sactivation : portÃ©e
                 // -------------------------
                 computeAndDisableIfOutOfRange(btn, drillProbeModule);
             }
@@ -1239,7 +1240,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 btn.dataset.actionKey = "gather";
                 btn.dataset.modalId = modalId;
 
-                // --- récupération du module GATHERING (peut être absent) ---
+                // --- rÃ©cupÃ©ration du module GATHERING (peut Ãªtre absent) ---
                 const gatheringModule = currentPlayerModules.find(
                     m => m.type === "GATHERING"
                 );
@@ -1248,9 +1249,9 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                     btn.dataset.moduleId = String(gatheringModule.id);
                 }
 
-                // ✅ UN SEUL appel au helper
-                // - AP toujours affiché
-                // - Range affichée seulement si le module existe
+                // âœ… UN SEUL appel au helper
+                // - AP toujours affichÃ©
+                // - Range affichÃ©e seulement si le module existe
                 decorateActionButtonWithRangeAndAp(
                     btn,
                     gatheringModule,
@@ -1258,7 +1259,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 );
 
                 // -------------------------
-                // Désactivation : règles UI
+                // DÃ©sactivation : rÃ¨gles UI
                 // -------------------------
                 const apCost = action.ap_cost ?? 1;
                 const currentAp = currentPlayerData?.user?.current_ap ?? 0;
@@ -1271,7 +1272,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
                 }
 
                 // -------------------------
-                // Désactivation : portée
+                // DÃ©sactivation : portÃ©e
                 // -------------------------
                 computeAndDisableIfOutOfRange(btn, gatheringModule);
             }
@@ -1391,7 +1392,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     function decorateActionButtonWithRangeAndAp(btn, module, apCost = 1) {
         if (!btn) return;
 
-        // --- RANGE (uniquement si module présent) ---
+        // --- RANGE (uniquement si module prÃ©sent) ---
         const moduleRange = getModuleRangeValue(module);
         if (typeof moduleRange === "number") {
             const rangeBadge = createActionRangeBadge(moduleRange);
@@ -1401,7 +1402,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             }
         }
 
-        // --- AP (toujours affiché si défini) ---
+        // --- AP (toujours affichÃ© si dÃ©fini) ---
         if (typeof apCost === "number" && apCost > 0) {
             const apBadge = createActionCostBadge({ ap_cost: apCost });
             if (apBadge) {
@@ -1436,7 +1437,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         };
 
         // =====================================================
-        // 🔥 COMBAT SCENE SUPPORT
+        // ðŸ”¥ COMBAT SCENE SUPPORT
         // =====================================================
         if (modalId === "modal-combat") {
             const context = getActionSceneManager()?.getContext?.();
@@ -1469,7 +1470,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         }
 
         // =====================================================
-        // 🧠 LOGIQUE NORMALE DES MODALS (PC / NPC / UNKNOWN)
+        // ðŸ§  LOGIQUE NORMALE DES MODALS (PC / NPC / UNKNOWN)
         // =====================================================
         const modalEl = document.getElementById(modalId);
         if (!modalEl) return;
@@ -1512,12 +1513,14 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
         const payload = e?.detail || {};
         const wreckId = Number(payload?.wreck_id || 0);
         if (!wreckId) return;
-        // `wreck_loot_session_closed` est ciblé au joueur qui ferme; on ne clear pas globalement
+        // `wreck_loot_session_closed` est ciblÃ© au joueur qui ferme; on ne clear pas globalement
         // car les autres recevront un `wreck:loot_state` avec lock=null via broadcast backend.
         applyWreckLockUiOnModal(`modal-wreck_${wreckId}`, wreckId);
     });
 
 
 })();
+
+
 
 

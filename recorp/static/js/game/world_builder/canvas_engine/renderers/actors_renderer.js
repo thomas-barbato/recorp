@@ -256,7 +256,8 @@ export default class ActorsRenderer {
             }
 
             if (isGroupMemberActor) {
-                this._drawGroupMemberBorder(scr.x, scr.y, pxW, pxH, tilePx);
+                const isReversedShip = Boolean(obj.data?.ship?.is_reversed);
+                this._drawGroupMemberMarker(scr.x, scr.y, pxW, pxH, tilePx, isReversedShip);
             }
 
             // si pas survolé → pas de bordure
@@ -268,12 +269,10 @@ export default class ActorsRenderer {
                 let isPc = false;
                 let isNpc = false;
                 let isCurrentPlayer = false;
-                let isGroupMember = false;
 
                 if (typeof obj.id === "string") {
                     if (obj.id.startsWith("pc_")) {
                         isPc = true;
-                        isGroupMember = window.isGroupMemberTarget?.(obj.id) === true;
                         const idNum = parseInt(obj.id.slice(3), 10);
                         const currentPlayer = window.currentPlayer;
                         const currentId = currentPlayer?.user?.player;
@@ -291,8 +290,6 @@ export default class ActorsRenderer {
                 if (isCurrentPlayer) {
                     // on laisse la bordure gérée plus haut (pathfinding)
                     // donc on n'ajoute rien ici
-                } else if (isGroupMember) {
-                    // Group members: keep persistent border only.
                 } else {
                     ctx.save();
                     ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.06));
@@ -344,15 +341,58 @@ export default class ActorsRenderer {
         }
     }
 
-    _drawGroupMemberBorder(x, y, w, h, tilePx) {
+    _drawGroupMemberMarker(x, y, w, h, tilePx, isReversed = false) {
         const ctx = this.ctx;
+        const minSide = Math.max(1, Math.min(w, h));
+        const size = Math.max(8, Math.min(18, Math.round(minSide * 0.24)));
+        const baseOffset = Math.max(2, Math.round(tilePx * 0.05));
+        const maxSide = Math.max(w, h);
+        const largeShipRatio = Math.max(0, Math.min(1, (maxSide - tilePx * 2) / (tilePx * 4)));
+        const edgeOffset = baseOffset + Math.round(largeShipRatio * Math.max(2, baseOffset));
+        const r = Math.round(size * 0.5);
+
+        const rawCx = isReversed
+            ? Math.round(x + w - edgeOffset - size * 0.5)
+            : Math.round(x + edgeOffset + size * 0.5);
+        const rawCy = Math.round(y + edgeOffset + size * 0.5);
+        const cx = Math.max(Math.round(x + r + 1), Math.min(Math.round(x + w - r - 1), rawCx));
+        const cy = Math.max(Math.round(y + r + 1), Math.min(Math.round(y + h - r - 1), rawCy));
+        const pulse = 0.75 + 0.25 * Math.sin(this._time * 0.007);
+
         ctx.save();
-        ctx.shadowColor = "rgba(248, 250, 252, 0.42)";
-        ctx.shadowBlur = 12;
-        ctx.strokeStyle = "rgba(241, 245, 249, 0.88)";
-        ctx.lineWidth = Math.max(1, Math.round(tilePx * 0.055));
+
+        // Soft glow under the marker.
+        ctx.globalAlpha = 0.75;
+        ctx.shadowColor = `rgba(16, 185, 129, ${Math.max(0.55, pulse)})`;
+        ctx.shadowBlur = Math.max(8, Math.round(size * 1.1));
+        ctx.fillStyle = "rgba(16, 185, 129, 0.36)";
+        ctx.beginPath();
+        ctx.arc(cx, cy, Math.max(5, Math.round(size * 0.58)), 0, Math.PI * 2);
+        ctx.fill();
+
+        // Main diamond marker.
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = Math.max(4, Math.round(size * 0.5));
+        ctx.fillStyle = "rgba(16, 185, 129, 0.95)";
+        ctx.strokeStyle = "rgba(167, 243, 208, 0.96)";
+        ctx.lineWidth = 1.25;
         ctx.setLineDash([]);
-        ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - r);
+        ctx.lineTo(cx + r, cy);
+        ctx.lineTo(cx, cy + r);
+        ctx.lineTo(cx - r, cy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Inner highlight dot for readability on bright sprites.
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "rgba(236, 253, 245, 0.95)";
+        ctx.beginPath();
+        ctx.arc(cx, cy, Math.max(1.5, size * 0.17), 0, Math.PI * 2);
+        ctx.fill();
+
         ctx.restore();
     }
 

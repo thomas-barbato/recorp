@@ -41,7 +41,7 @@ from core.backend.user_avatar import UserAvatarWriter
 from core.backend.get_data import GetDataFromDB
 from core.backend.store_in_cache import StoreInCache
 from core.backend.player_actions import PlayerAction
-from core.backend.player_logs import create_event_log
+from core.backend.player_logs import create_event_log, serialize_event_log_data
 from core.backend.module_effects import get_effect_numeric
 from core.backend.group_service import build_group_state_for_player
 from core.forms import LoginForm, SignupForm, PasswordRecoveryForm, CreateCharacterForm
@@ -145,11 +145,11 @@ class IndexView(TemplateView):
                 else:
                     return redirect("play/create_character")
 
-            # Authentification échouée - soit mauvais credentials soit compte bloqué
-            # axes gère le rate limiting automatiquement via AxesStandaloneBackend
+            # Authentification ÃƒÆ’Ã‚Â©chouÃƒÆ’Ã‚Â©e - soit mauvais credentials soit compte bloquÃƒÆ’Ã‚Â©
+            # axes gÃƒÆ’Ã‚Â¨re le rate limiting automatiquement via AxesStandaloneBackend
             base_msg = (
                 "Impossible de se connecter, le nom d'utilisateur et/ou le mot de passe sont incorrects. "
-                "Après 5 tentatives échouées, votre compte sera bloqué pour 15 minutes."
+                "AprÃƒÆ’Ã‚Â¨s 5 tentatives ÃƒÆ’Ã‚Â©chouÃƒÆ’Ã‚Â©es, votre compte sera bloquÃƒÆ’Ã‚Â© pour 15 minutes."
             )
             
             messages.error(self.request, base_msg)
@@ -177,7 +177,7 @@ class CreateAccountView(TemplateView):
 
         form = SignupForm(payload)
 
-        # Vérification mot de passe
+        # VÃƒÆ’Ã‚Â©rification mot de passe
         if payload.get("password") != payload.get("password2"):
             if is_ajax(request):
                 return JsonResponse({"errors": ["password2"]}, status=400)
@@ -191,7 +191,7 @@ class CreateAccountView(TemplateView):
             messages.error(request, _("Please correct the errors below"))
             return render(request, self.template_name, {"form": form})
 
-        # Création de l'utilisateur **sans login**
+        # CrÃƒÆ’Ã‚Â©ation de l'utilisateur **sans login**
         user = form.save()
         messages.success(
             request,
@@ -210,13 +210,13 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
     template_name = "create-character.html"
 
     # --------------------------------------------------
-    # GET : affichage de la page de création
+    # GET : affichage de la page de crÃƒÆ’Ã‚Â©ation
     # --------------------------------------------------
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.get_context_data())
 
     # --------------------------------------------------
-    # CONTEXT : données nécessaires au template
+    # CONTEXT : donnÃƒÆ’Ã‚Â©es nÃƒÆ’Ã‚Â©cessaires au template
     # --------------------------------------------------
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -239,7 +239,7 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
         return context
 
     # --------------------------------------------------
-    # POST : création effective du personnage
+    # POST : crÃƒÆ’Ã‚Â©ation effective du personnage
     # --------------------------------------------------
 
     login_url = LOGIN_REDIRECT_URL
@@ -254,7 +254,7 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
         if not name or not faction_id or not archetype_id:
             return render(request, self.template_name, self.get_context_data())
 
-        # 🔒 TRANSACTION GLOBALE
+        # ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ TRANSACTION GLOBALE
         with transaction.atomic():
 
             # -------------------------
@@ -416,7 +416,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         player = PlayerAction(self.request.user.id)
         modules_category = [e for e in Module.objects.values_list('type', flat=True).distinct()]
         
-        # Fallback safe: certains user-agents ne sont ni classés PC/mobile/tablet.
+        # Fallback safe: certains user-agents ne sont ni classÃƒÆ’Ã‚Â©s PC/mobile/tablet.
         map_range = GetDataFromDB.get_resolution_sized_map("is_pc")
         if not (user_agent.is_pc or user_agent.is_mobile or user_agent.is_tablet):
             logger.warning(
@@ -437,31 +437,32 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
         if Sector.objects.filter(id=player.get_player_sector()).exists():
             context["skills"] = {
                 "categories": [
-                    "Steering",
-                    "Offensive",
-                    "Defensive",
-                    "Utility",
-                    "Industry",
+                    _("Steering"),
+                    _("Offensive"),
+                    _("Defensive"),
+                    _("Utility"),
+                    _("Industry"),
                 ],
                 "list": [
                     {
-                        "id": skill['id'],
-                        "skill_name": skill['skill_id__name'],
-                        "level": skill['level'],
-                        "progress": str(skill['progress']).replace(',', '.'),
-                        "cat": skill['skill_id__category'],
-                        "description": skill['skill_id__description'],
-                    } for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values(
-                            'id', 
-                            'level', 
-                            'progress', 
-                            'skill_id__name', 
-                            'skill_id__category', 
-                            'skill_id__description'
-                        )
+                        "id": skill["id"],
+                        "skill_name": _(skill["skill_id__name"] or ""),
+                        "level": skill["level"],
+                        "progress": str(skill["progress"]).replace(",", "."),
+                        "cat": _(skill["skill_id__category"] or ""),
+                        "description": _(skill["skill_id__description"] or ""),
+                    }
+                    for skill in PlayerSkill.objects.filter(player_id=player.get_player_id()).values(
+                        "id",
+                        "level",
+                        "progress",
+                        "skill_id__name",
+                        "skill_id__category",
+                        "skill_id__description",
+                    )
                 ],
             }
-            
+
             data = StoreInCache(
                 f"play_{player.get_player_sector()}", self.request.user
             ).get_or_set_cache()
@@ -485,7 +486,7 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                     "In order to display resource you must scan it"
                 ),
                 "translated_statistics_msg_str": _(
-                    "Equip your spaceship with the ‘spaceship probe’ module to access detailed statistics"
+                    "Equip your spaceship with the ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“spaceship probeÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ module to access detailed statistics"
                 ),
                 "translated_statistics_msg_label": _("statistics"),
             }
@@ -496,25 +497,26 @@ class DisplayGameView(LoginRequiredMixin, TemplateView):
                 .filter(player_id=player.get_player_id())
                 .order_by("-log__created_at")[:25]
             )
-            
+
+            player_id = player.get_player_id()
             player_event_logs = [
-                {
-                    "id": pl.id,
-                    "log_type": pl.log.log_type,
-                    "role": pl.role,
-                    "content": pl.log.content,
-                    "created_at": pl.log.created_at.isoformat(),
-                }
+                serialize_event_log_data(
+                    log_id=pl.id,
+                    log_type=pl.log.log_type,
+                    role=pl.role,
+                    content=pl.log.content,
+                    created_at=pl.log.created_at,
+                    viewer_player_id=player_id,
+                    language_code=getattr(self.request, "LANGUAGE_CODE", None),
+                )
                 for pl in logs_qs
             ]
-            
-            player_id = player.get_player_id()
-            
+
             result_dict["sector"] = data["sector"]  
             result_dict["sector_element"] = data["sector_element"]
             result_dict["pc"] = data["pc"]
             result_dict["npc"] = data["npc"]
-            # Source de vérité pour les carcasses au chargement HTTP (évite un cache stale après warp/F5)
+            # Source de vÃƒÆ’Ã‚Â©ritÃƒÆ’Ã‚Â© pour les carcasses au chargement HTTP (ÃƒÆ’Ã‚Â©vite un cache stale aprÃƒÆ’Ã‚Â¨s warp/F5)
             now = timezone.now()
             wreck_qs = (
                 ShipWreck.objects
@@ -907,8 +909,8 @@ def search_private_mail(request):
 @login_required
 def search_players_for_private_mail(request):
     """
-    Retourne jusqu'à 10 joueurs correspondant à la query.
-    Résultat JSON: [{id, name, faction}]
+    Retourne jusqu'ÃƒÆ’Ã‚Â  10 joueurs correspondant ÃƒÆ’Ã‚Â  la query.
+    RÃƒÆ’Ã‚Â©sultat JSON: [{id, name, faction}]
     """
     q = request.GET.get('q', '').strip()
     results = []
@@ -1684,8 +1686,8 @@ def get_unread_counts(request):
 @login_required
 def modal_data_view(request, element_type: str, element_id: int):
     """
-    Fournit les données d'un modal (PC / NPC / sector_element)
-    en reconstruisant les données à la volée depuis la DB.
+    Fournit les donnÃƒÆ’Ã‚Â©es d'un modal (PC / NPC / sector_element)
+    en reconstruisant les donnÃƒÆ’Ã‚Â©es ÃƒÆ’Ã‚Â  la volÃƒÆ’Ã‚Â©e depuis la DB.
     """
 
     # --------------------------------------------------
@@ -1740,7 +1742,7 @@ def modal_data_view(request, element_type: str, element_id: int):
         if not target_pc:
             return HttpResponseBadRequest("PC not found")
 
-        # Joueur courant (peut être la même personne)
+        # Joueur courant (peut ÃƒÆ’Ã‚Âªtre la mÃƒÆ’Ã‚Âªme personne)
         current_player = build_pc_modal_data(current_player_id)
         if not current_player:
             return HttpResponseBadRequest("Current player not found")
@@ -1870,13 +1872,15 @@ def get_player_logs(request):
         "page": page.number,
         "pages": paginator.num_pages,
         "results": [
-            {
-                "id": pl["id"],
-                "log_type": pl.get("log__log_type"),
-                "content": pl.get("log__content"),
-                "role": pl.get("role"),
-                "created_at": pl["log__created_at"].isoformat() if pl.get("log__created_at") else None,
-            }
+            serialize_event_log_data(
+                log_id=pl["id"],
+                log_type=pl.get("log__log_type"),
+                role=pl.get("role"),
+                content=pl.get("log__content"),
+                created_at=pl.get("log__created_at"),
+                viewer_player_id=player_id,
+                language_code=getattr(request, "LANGUAGE_CODE", None),
+            )
             for pl in page
         ]
     })
@@ -1885,7 +1889,7 @@ def get_player_logs(request):
 @login_required
 def get_player_logs_preview(request):
     """
-    Logs récents pour HUD (desktop + mobile)
+    Logs rÃƒÆ’Ã‚Â©cents pour HUD (desktop + mobile)
     MAX 25 logs
     """
     player_id = _get_authenticated_player_id(request.user)
@@ -1901,15 +1905,19 @@ def get_player_logs_preview(request):
 
     return JsonResponse({
         "results": [
-            {
-                "id": pl["id"],
-                "role": pl.get("role"),
-                "log_type": pl.get("log__log_type"),
-                "content": pl.get("log__content"),
-                "created_at": pl["log__created_at"].isoformat() if pl.get("log__created_at") else None,
-            }
+            serialize_event_log_data(
+                log_id=pl["id"],
+                log_type=pl.get("log__log_type"),
+                role=pl.get("role"),
+                content=pl.get("log__content"),
+                created_at=pl.get("log__created_at"),
+                viewer_player_id=player_id,
+                language_code=getattr(request, "LANGUAGE_CODE", None),
+            )
             for pl in qs
         ]
     })
+
+
 
 

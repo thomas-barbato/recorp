@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const text = document.createElement("div");
             text.className = "min-w-0 text-emerald-200 text-xs";
-            text.innerHTML = `<span class="font-semibold">${inv.group_name}</span> · ${t("Invited by")} ${inv.inviter_name}`;
+            text.innerHTML = `<span class="font-semibold">${inv.group_name}</span> Â· ${t("Invited by")} ${inv.inviter_name}`;
 
             const actions = document.createElement("div");
             actions.className = "flex items-center gap-1 shrink-0";
@@ -281,12 +281,12 @@ document.addEventListener("DOMContentLoaded", () => {
         stats.className = "group-member-stats";
         const st = member.stats || {};
         stats.innerHTML = [
-            buildStatLabel("HP", st.hp?.current, st.hp?.max),
-            buildStatLabel("AP", st.ap?.current, st.ap?.max),
-            buildStatLabel("MP", st.movement?.current, st.movement?.max),
-            buildStatLabel("Ballistic", st.ballistic?.current, st.ballistic?.max),
-            buildStatLabel("Thermal", st.thermal?.current, st.thermal?.max),
-            buildStatLabel("Missile", st.missile?.current, st.missile?.max),
+            buildStatLabel(t("HP"), st.hp?.current, st.hp?.max),
+            buildStatLabel(t("AP"), st.ap?.current, st.ap?.max),
+            buildStatLabel(t("MP"), st.movement?.current, st.movement?.max),
+            buildStatLabel(t("Ballistic"), st.ballistic?.current, st.ballistic?.max),
+            buildStatLabel(t("Thermal"), st.thermal?.current, st.thermal?.max),
+            buildStatLabel(t("Missile"), st.missile?.current, st.missile?.max),
         ].join("");
 
         const actions = document.createElement("div");
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (member.is_destroyed) {
             const overlay = document.createElement("div");
             overlay.className = "group-member-destroyed";
-            overlay.textContent = "Destroyed";
+            overlay.textContent = t("Destroyed");
             card.appendChild(overlay);
         }
 
@@ -526,7 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
             row.type = "button";
             row.className = "group-autocomplete-row";
             row.innerHTML = `
-                <span class="truncate">${entry.name || "Unknown"} · ${entry.faction || "-"}</span>
+                <span class="truncate">${entry.name || "Unknown"} Â· ${entry.faction || "-"}</span>
                 ${entry.in_group ? `<span class="group-autocomplete-badge">${t("In Group")}</span>` : ""}
             `;
             row.addEventListener("click", () => {
@@ -691,3 +691,5 @@ document.addEventListener("DOMContentLoaded", () => {
     flushQueuedGroupEvents();
     refreshState({ silent: true, promptPendingInvitations: true });
 });
+
+

@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils import timezone
-from django.utils.translation import gettext as _
+from django.utils.translation import get_language, gettext as _
 
 from core.backend.security_logging import log_account_lockout
 
@@ -164,10 +164,16 @@ def axes_lockout_response(request, credentials=None, *args, **kwargs):
         request.session[_lock_session_key(username, ip)] = unlock_at.isoformat()
         request.session.modified = True
 
-    message = _(
-        "Compte temporairement bloque apres trop de tentatives. "
-        "Reessayez dans %(remaining)s."
-    ) % {"remaining": _format_remaining(remaining_seconds)}
+    message_template = _(
+        "Account temporarily locked after too many attempts. "
+        "Try again in %(remaining)s."
+    )
+    if (get_language() or "").startswith("fr") and message_template.startswith("Account temporarily locked"):
+        message_template = (
+            "Compte temporairement bloque apres trop de tentatives. "
+            "Reessayez dans %(remaining)s."
+        )
+    message = message_template % {"remaining": _format_remaining(remaining_seconds)}
 
     messages.error(request, message)
     log_account_lockout(request, username=username or "<unknown>", ip=ip, reason="brute_force")

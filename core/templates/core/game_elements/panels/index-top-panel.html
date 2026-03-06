@@ -12,11 +12,11 @@
             </a>
             
             {% if request.user.is_authenticated %}
-            <!-- Navigation Links - Connecté -->
+            <!-- Navigation Links - ConnectÃ© -->
             <div class="flex justify-center items-center text-center">
                 <h1 class="md:flex hidden font-orbitron text-3xl font-bold text-shadow gradient-text">
                     {% with player=request.user.player_set.first %}
-                    Bon retour, {% if player and player.name %}{{ player.name }}{% else %}{{ request.user.username }}{% endif %}
+                    {% translate "Welcome back," %} {% if player and player.name %}{{ player.name }}{% else %}{{ request.user.username }}{% endif %}
                     {% endwith %}
                 </h1>
             </div>
@@ -32,7 +32,7 @@
                 </form>
             </div>
             {% else %}
-            <!-- Navigation Links - Non connecté -->
+            <!-- Navigation Links - Non connectÃ© -->
             <div id="nav-logged-out" class="hidden md:flex items-center gap-6">
                 
                 {% if not "/account/create" in request.path %}
@@ -45,7 +45,7 @@
                     {% translate "Register" %}
                 </a>
                 <a href="{% url 'core:password_recovery' %}" class="text-emerald-300/60 hover:text-emerald-400 transition-colors text-sm">
-                    Identifiants oubliés
+                    {% translate "Forgot credentials" %}
                 </a>
             </div>
             {% endif %}
@@ -58,26 +58,26 @@
     </div>
     
     {% if request.user.is_authenticated %}
-    <!-- Mobile Menu - Connecté -->
+    <!-- Mobile Menu - ConnectÃ© -->
     <div id="mobile-menu-logged-in" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20 overflow-hidden transition-all duration-300 max-h-0">
         <div class="px-4 py-4 space-y-3">
             <a href="/play/" class="block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-center transition-all glow-strong font-orbitron">
-                <i class="fas fa-play mr-2"></i>ENTRER
+                <i class="fas fa-play mr-2"></i>{% translate "Enter" %}
             </a>
             <form method="post" action="{% url 'core:logout_view' %}">
                 {% csrf_token %}
                 <button type="submit" class="block w-full text-left text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2">
-                    <i class="fas fa-sign-out-alt mr-1"></i>Déconnexion
+                    <i class="fas fa-sign-out-alt mr-1"></i>{% translate "Log out" %}
                 </button>
             </form>
         </div>
     </div>
     {% else %}
-    <!-- Mobile Menu - Non connecté -->
+    <!-- Mobile Menu - Non connectÃ© -->
     <div id="mobile-menu-logged-out" class="hidden md:hidden bg-zinc-950/95 border-t border-emerald-500/20 overflow-hidden transition-all duration-300 max-h-0">
         <div class="px-4 py-4">
             {% if not "/account/create" in request.path %}
-            <!-- Formulaire de connexion dans le hamburger -->
+            <!-- Formulaire de {% translate "Log in" %} dans le hamburger -->
             <div class="bg-zinc-900/70 border border-emerald-500/30 rounded-lg p-4 mb-3">
                 <form method="POST" action="" class="space-y-3">
                     {% csrf_token %}
@@ -92,7 +92,7 @@
                             maxlength="150" 
                             required 
                             class="w-full px-3 py-2 bg-zinc-800/50 border border-emerald-500/30 rounded-md text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                            placeholder="Votre identifiant"
+                            placeholder="{% translate 'Username' %}"
                         >
                     </div>
                     <div>
@@ -105,7 +105,7 @@
                             id="mobile_password"
                             required 
                             class="w-full px-3 py-2 bg-zinc-800/50 border border-emerald-500/30 rounded-md text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                            placeholder="Mot de passe"
+                            placeholder="{% translate 'Password' %}"
                         >
                     </div>
                     
@@ -124,17 +124,17 @@
                         type="submit" 
                         class="w-full px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg transition-all glow font-orbitron"
                     >
-                        <i class="fas fa-sign-in-alt mr-2"></i>SE CONNECTER
+                        <i class="fas fa-sign-in-alt mr-2"></i>{% translate "Log in" %}
                     </button>
                 </form>
             </div>
             {% endif %}
             <div class="space-y-2 border-t border-emerald-500/20 pt-3">
                 <a href="{% url 'core:create_account' %}" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold py-2 text-center">
-                    <i class="fas fa-user-plus mr-1"></i>Créer un compte
+                    <i class="fas fa-user-plus mr-1"></i>{% translate "Create account" %}
                 </a>
                 <a href="{% url 'core:password_recovery' %}" class="block text-emerald-300/60 hover:text-emerald-400 transition-colors text-sm py-2 text-center">
-                    Identifiants oubliés
+                    {% translate "Forgot credentials" %}
                 </a>
             </div>
         </div>
@@ -143,7 +143,7 @@
 </nav>
 
 {% if not request.user.is_authenticated %}
-<!-- Modal de connexion pour desktop -->
+<!-- Modal de {% translate "Log in" %} pour desktop -->
 <div id="login-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-modal-fade">
     <!-- Overlay avec effet de flou -->
     <div id="modal-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-[9998] animate-modal-rise"></div>
@@ -155,15 +155,15 @@
             <i class="fas fa-times"></i>
         </button>
         
-        <!-- En-tête -->
+        <!-- En-tÃªte -->
         <div class="text-center mb-6">
             <i class="fas fa-user-astronaut text-5xl text-emerald-400 mb-3"></i>
             <h2 class="font-orbitron text-3xl font-bold text-shadow gradient-text">
-                CONNEXION
+                {% translate "Log in" %}
             </h2>
-            <p class="text-emerald-300/70 mt-2">Accédez à votre compte</p>
+            <p class="text-emerald-300/70 mt-2">{% translate "Access your account" %}</p>
         </div>
-        <!-- Formulaire de connexion -->
+        <!-- Formulaire de {% translate "Log in" %} -->
         <form method="POST" action="" class="space-y-4">
             {% csrf_token %}
             <div>
@@ -177,7 +177,7 @@
                     maxlength="150" 
                     required 
                     class="w-full px-4 py-3 bg-zinc-800/50 border border-emerald-500/30 rounded-lg text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-all"
-                    placeholder="Votre identifiant"
+                    placeholder="{% translate 'Username' %}"
                 >
             </div>
             
@@ -191,7 +191,7 @@
                     id="modal_password"
                     required 
                     class="w-full px-4 py-3 bg-zinc-800/50 border border-emerald-500/30 rounded-lg text-emerald-300 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-all"
-                    placeholder="Mot de passe"
+                    placeholder="{% translate 'Password' %}"
                 >
             </div>
             
@@ -210,16 +210,16 @@
                 type="submit" 
                 class="w-full px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-lg transition-all glow-strong font-orbitron"
             >
-                <i class="fas fa-sign-in-alt mr-2"></i>SE CONNECTER
+                <i class="fas fa-sign-in-alt mr-2"></i>{% translate "Log in" %}
             </button>
         </form>
-        <!-- Liens supplémentaires -->
+        <!-- Liens supplÃ©mentaires -->
         <div class="mt-6 pt-4 border-t border-emerald-500/20 space-y-2 text-center">
             <a href="{% url 'core:password_recovery' %}" class="block text-emerald-300/70 hover:text-emerald-400 transition-colors text-sm">
-                <i class="fas fa-key mr-1"></i>Identifiants oubliés ?
+                <i class="fas fa-key mr-1"></i>{% translate "Forgot credentials?" %}
             </a>
             <a href="{% url 'core:create_account' %}" class="block text-emerald-300 hover:text-emerald-400 transition-colors font-semibold">
-                <i class="fas fa-user-plus mr-1"></i>Créer un compte
+                <i class="fas fa-user-plus mr-1"></i>{% translate "Create account" %}
             </a>
         </div>
     </div>
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (pageContent) {
                     pageContent.classList.add('mobile-menu-blur-active');
                 }
-                // Petit délai pour permettre la transition
+                // Petit dÃ©lai pour permettre la transition
                 setTimeout(() => {
                     mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
                 }, 10);
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Gestion du modal de connexion (desktop uniquement)
+    // Gestion du modal de {% translate "Log in" %} (desktop uniquement)
     if (!isAuthenticated && window.innerWidth >= 768) {
         const loginModalBtn = document.getElementById('login-modal-btn');
         const loginModal = document.getElementById('login-modal');
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
             modalOverlay.addEventListener('click', closeModal);
         }
         
-        // Fermer avec Échap
+        // Fermer avec Ã‰chap
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && !loginModal.classList.contains('hidden')) {
                 closeModal();
@@ -359,3 +359,5 @@ document.addEventListener('DOMContentLoaded', function() {
 <style>
 
 </style>
+
+

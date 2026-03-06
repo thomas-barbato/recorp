@@ -21,18 +21,18 @@
                         RECORP
                     </h1>
                     <p class="text-xl sm:text-2xl md:text-3xl text-emerald-200 mb-8 font-light">
-                        Conquérez les étoiles. Forgez votre destin.
+                        {% translate "Conquer the stars. Forge your destiny." %}
                     </p>
                     <p class="text-base sm:text-lg text-emerald-300/80 max-w-2xl mx-auto mb-12 leading-relaxed">
-                        Plongez dans un univers de conquête spatiale où chaque décision compte. 
-                        Récoltez des ressources, commercez avec les factions, combattez vos ennemis et devenez une légende.
+                        {% translate "Dive into a space conquest universe where every decision matters." %} 
+                        {% translate "Harvest resources, trade with factions, fight your enemies, and become a legend." %}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <a href="/play/" class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-lg transition-all glow font-orbitron w-full sm:w-auto">
-                            COMMENCER L'AVENTURE
+                            {% translate "START THE ADVENTURE" %}
                         </a>
                         <a href="" class="px-8 py-4 border-2 border-emerald-500 hover:bg-emerald-500/10 text-emerald-400 font-bold rounded-lg text-lg transition-all w-full sm:w-auto">
-                            En savoir plus
+                            {% translate "Learn more" %}
                         </a>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
             {% endif %}
             <div class="flex items-center gap-3 mb-8">
                 <i class="fas fa-bullhorn text-3xl text-emerald-400"></i>
-                <h2 class="font-orbitron text-3xl sm:text-4xl font-bold text-shadow">Nouveautés</h2>
+                <h2 class="font-orbitron text-3xl sm:text-4xl font-bold text-shadow">{% translate "News" %}</h2>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -53,64 +53,64 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
                                 <h3 class="font-orbitron text-xl font-bold text-emerald-300">Patch 2.4.1</h3>
-                                <span class="badge-new px-3 py-1 bg-emerald-500 text-zinc-950 text-xs font-bold rounded-full">NOUVEAU</span>
+                                <span class="badge-new px-3 py-1 bg-emerald-500 text-zinc-950 text-xs font-bold rounded-full">{% translate "NEW" %}</span>
                             </div>
-                            <p class="text-emerald-300/60 text-sm mb-3">Publié le 15 octobre 2025</p>
+                            <p class="text-emerald-300/60 text-sm mb-3">{% translate "Published on October 15, 2025" %}</p>
                             <ul class="space-y-2 text-emerald-300/70">
-                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>Nouveau système de combat spatial amélioré</li>
-                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>Ajout de 15 nouvelles ressources rares</li>
-                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>Optimisation des performances</li>
-                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>Corrections de bugs majeurs</li>
+                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>{% translate "New improved space combat system" %}</li>
+                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>{% translate "Added 15 new rare resources" %}</li>
+                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>{% translate "Performance optimization" %}</li>
+                                <li><i class="fas fa-check text-emerald-500 mr-2"></i>{% translate "Major bug fixes" %}</li>
                             </ul>
                         </div>
                     </div>
                     <a href="" class="inline-block mt-4 text-emerald-400 hover:text-emerald-300 font-semibold">
-                        Voir les notes complètes <i class="fas fa-arrow-right ml-1"></i>
+                        {% translate "View full patch notes" %} <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
 
-                <!-- Message du créateur -->
+                <!-- {% translate "Creator message" %} -->
                 <div class="news-card bg-zinc-900/50 rounded-lg p-6">
                     <div class="flex items-start gap-4 mb-4">
                         <div class="text-4xl text-emerald-400">
                             <i class="fas fa-user-astronaut"></i>
                         </div>
                         <div class="flex-1">
-                            <h3 class="font-orbitron text-xl font-bold text-emerald-300 mb-2">Message du créateur</h3>
-                            <p class="text-emerald-300/60 text-sm mb-3">Le 12 octobre 2025</p>
+                            <h3 class="font-orbitron text-xl font-bold text-emerald-300 mb-2">{% translate "Creator message" %}</h3>
+                            <p class="text-emerald-300/60 text-sm mb-3">{% translate "October 12, 2025" %}</p>
                             <p class="text-emerald-300/70 leading-relaxed mb-4">
-                                Commandants, merci pour votre soutien continu ! Ce mois-ci, nous avons travaillé dur sur l'équilibrage des factions et l'ajout de nouvelles mécaniques de jeu. Vos retours sont précieux et nous guident dans le développement de Recorp.
+                                {% translate "Commanders, thank you for your continued support! This month, we worked hard on faction balancing and new gameplay mechanics. Your feedback is precious and guides Recorp development." %}
                             </p>
                             <p class="text-emerald-300/70 italic">
-                                "L'univers est vaste, mais c'est vous qui le faites vivre."
+                                "{% translate "The universe is vast, but you are the ones who bring it to life." %}"
                             </p>
                         </div>
                     </div>
                     <a href="" class="inline-block mt-4 text-emerald-400 hover:text-emerald-300 font-semibold">
-                        Lire la suite <i class="fas fa-arrow-right ml-1"></i>
+                        {% translate "Read more" %} <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>
         </section>
     </div>
 </div>
-<!-- Content pour utilisateur CONNECTÉ -->
+<!-- Content pour utilisateur CONNECTÃ‰ -->
 {% if request.user.is_authenticated %}
 <div class="pb-8 px-4">
     <div class="max-w-7xl mx-auto">
-        <!-- Grid pour Communauté / Forum / Lore -->
+        <!-- Grid pour CommunautÃ© / Forum / Lore -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Discord -->
             <div class="news-card bg-zinc-900/50 rounded-lg p-6 text-center">
                 <div class="text-6xl text-emerald-400 mb-4">
                     <i class="fab fa-discord"></i>
                 </div>
-                <h3 class="font-orbitron text-2xl font-bold mb-4 text-emerald-300">Communauté Discord</h3>
+                <h3 class="font-orbitron text-2xl font-bold mb-4 text-emerald-300">{% translate "Discord community" %}</h3>
                 <p class="text-emerald-300/70 mb-6 leading-relaxed">
-                    Rejoignez plus de 10 000 joueurs sur notre serveur Discord. Discutez, formez des alliances et participez aux événements communautaires.
+                    {% translate "Join over 10,000 players on our Discord server. Chat, form alliances, and participate in community events." %}
                 </p>
                 <a href="" class="inline-block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg transition-all glow">
-                    <i class="fab fa-discord mr-2"></i>Rejoindre Discord
+                    <i class="fab fa-discord mr-2"></i>{% translate "Join Discord" %}
                 </a>
             </div>
 
@@ -119,12 +119,12 @@
                 <div class="text-6xl text-emerald-400 mb-4">
                     <i class="fas fa-comments"></i>
                 </div>
-                <h3 class="font-orbitron text-2xl font-bold mb-4 text-emerald-300">Forum officiel</h3>
+                <h3 class="font-orbitron text-2xl font-bold mb-4 text-emerald-300">{% translate "Official forum" %}</h3>
                 <p class="text-emerald-300/70 mb-6 leading-relaxed">
-                    Partagez vos stratégies, posez vos questions et participez aux discussions sur le forum officiel de Recorp.
+                    {% translate "Share your strategies, ask your questions, and join discussions on Recorp's official forum." %}
                 </p>
                 <a href="" class="inline-block px-6 py-3 border-2 border-emerald-500 hover:bg-emerald-500/10 text-emerald-400 font-bold rounded-lg transition-all">
-                    <i class="fas fa-comments mr-2"></i>Accéder au forum
+                    <i class="fas fa-comments mr-2"></i>{% translate "Go to forum" %}
                 </a>
             </div>
 
@@ -133,12 +133,12 @@
                 <div class="text-6xl text-emerald-400 mb-4">
                     <i class="fas fa-book-open"></i>
                 </div>
-                <h3 class="font-orbitron text-2xl font-bold mb-4 text-emerald-300">Histoire & Lore</h3>
+                <h3 class="font-orbitron text-2xl font-bold mb-4 text-emerald-300">{% translate "Story & lore" %}</h3>
                 <p class="text-emerald-300/70 mb-6 leading-relaxed">
-                    Plongez dans l'histoire fascinante de l'univers Recorp. Découvrez les origines des factions et les secrets de la galaxie.
+                    {% translate "Dive into the fascinating history of the Recorp universe. Discover faction origins and the secrets of the galaxy." %}
                 </p>
                 <a href="" class="inline-block px-6 py-3 border-2 border-emerald-500 hover:bg-emerald-500/10 text-emerald-400 font-bold rounded-lg transition-all">
-                    <i class="fas fa-book-open mr-2"></i>Explorer le lore
+                    <i class="fas fa-book-open mr-2"></i>{% translate "Explore lore" %}
                 </a>
             </div>
         </div>
@@ -151,7 +151,7 @@
         <section class="relative py-20 px-4">
             <div class="max-w-7xl mx-auto">
                 <h2 class="font-orbitron text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 text-shadow">
-                    Fonctionnalités du jeu
+                    {% translate "Game features" %}
                 </h2>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -159,48 +159,48 @@
                         <div class="feature-icon text-5xl text-emerald-400 mb-4">
                             <i class="fas fa-gem"></i>
                         </div>
-                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">Récolte de ressources</h3>
-                        <p class="text-emerald-300/70">Explorez l'espace et récoltez des ressources rares pour développer votre empire.</p>
+                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">{% translate "Resource harvesting" %}</h3>
+                        <p class="text-emerald-300/70">{% translate "Explore space and harvest rare resources to grow your empire." %}</p>
                     </div>
                     
                     <div class="feature-card bg-zinc-900/50 border border-emerald-500/30 rounded-lg p-6 hover:border-emerald-500/60 transition-all">
                         <div class="feature-icon text-5xl text-emerald-400 mb-4">
                             <i class="fas fa-handshake"></i>
                         </div>
-                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">Commerce galactique</h3>
-                        <p class="text-emerald-300/70">Négociez avec d'autres joueurs et établissez des routes commerciales lucratives.</p>
+                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">{% translate "Galactic trade" %}</h3>
+                        <p class="text-emerald-300/70">{% translate "Negotiate with other players and establish profitable trade routes." %}</p>
                     </div>
                     
                     <div class="feature-card bg-zinc-900/50 border border-emerald-500/30 rounded-lg p-6 hover:border-emerald-500/60 transition-all">
                         <div class="feature-icon text-5xl text-emerald-400 mb-4">
                             <i class="fas fa-rocket"></i>
                         </div>
-                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">Combat spatial</h3>
-                        <p class="text-emerald-300/70">Affrontez vos adversaires dans des batailles spatiales tactiques et intenses.</p>
+                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">{% translate "Space combat" %}</h3>
+                        <p class="text-emerald-300/70">{% translate "Face your opponents in tactical and intense space battles." %}</p>
                     </div>
                     
                     <div class="feature-card bg-zinc-900/50 border border-emerald-500/30 rounded-lg p-6 hover:border-emerald-500/60 transition-all">
                         <div class="feature-icon text-5xl text-emerald-400 mb-4">
                             <i class="fas fa-tools"></i>
                         </div>
-                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">Fabrication d'objets</h3>
-                        <p class="text-emerald-300/70">Créez des équipements puissants et améliorez votre vaisseau.</p>
+                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">{% translate "Crafting" %}</h3>
+                        <p class="text-emerald-300/70">{% translate "Craft powerful equipment and upgrade your ship." %}</p>
                     </div>
                     
                     <div class="feature-card bg-zinc-900/50 border border-emerald-500/30 rounded-lg p-6 hover:border-emerald-500/60 transition-all">
                         <div class="feature-icon text-5xl text-emerald-400 mb-4">
                             <i class="fas fa-users"></i>
                         </div>
-                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">Contrats et missions</h3>
-                        <p class="text-emerald-300/70">Accomplissez des contrats variés et gagnez des récompenses exclusives.</p>
+                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">{% translate "Contracts and missions" %}</h3>
+                        <p class="text-emerald-300/70">{% translate "Complete varied contracts and earn exclusive rewards." %}</p>
                     </div>
                     
                     <div class="feature-card bg-zinc-900/50 border border-emerald-500/30 rounded-lg p-6 hover:border-emerald-500/60 transition-all">
                         <div class="feature-icon text-5xl text-emerald-400 mb-4">
                             <i class="fas fa-globe"></i>
                         </div>
-                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">Univers persistant</h3>
-                        <p class="text-emerald-300/70">Évoluez dans un univers en constante évolution façonné par les joueurs.</p>
+                        <h3 class="font-orbitron text-xl font-bold mb-3 text-emerald-300">{% translate "Persistent universe" %}</h3>
+                        <p class="text-emerald-300/70">{% translate "Progress in an ever-evolving universe shaped by players." %}</p>
                     </div>
                 </div>
             </div>
@@ -210,10 +210,10 @@
         <section class="relative py-20 px-4">
             <div class="max-w-7xl mx-auto">
                 <h2 class="font-orbitron text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 text-shadow">
-                    Choisissez votre faction
+                    {% translate "Choose your faction" %}
                 </h2>
                 <p class="text-center text-emerald-300/70 mb-16 text-lg max-w-3xl mx-auto">
-                    Votre choix de faction déterminera votre style de jeu, vos alliés et vos ennemis. Choisissez avec sagesse.
+                    {% translate "Your faction choice will define your playstyle, your allies, and your enemies. Choose wisely." %}
                 </p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -221,9 +221,9 @@
                         <div class="text-6xl text-emerald-400 mb-6 text-center">
                             <i class="fas fa-balance-scale"></i>
                         </div>
-                        <h3 class="font-orbitron text-2xl font-bold mb-4 text-center text-emerald-300">Faction Démocratique</h3>
+                        <h3 class="font-orbitron text-2xl font-bold mb-4 text-center text-emerald-300">{% translate "Democratic faction" %}</h3>
                         <p class="text-emerald-300/70 text-center leading-relaxed">
-                            Défendez les valeurs de liberté et de justice. Forgez des alliances solides et prospérez grâce à la diplomatie et au commerce équitable.
+                            {% translate "Defend the values of freedom and justice. Forge strong alliances and thrive through diplomacy and fair trade." %}
                         </p>
                     </div>
                     
@@ -231,9 +231,9 @@
                         <div class="text-6xl text-emerald-400 mb-6 text-center">
                             <i class="fas fa-atom"></i>
                         </div>
-                        <h3 class="font-orbitron text-2xl font-bold mb-4 text-center text-emerald-300">Culte Technologique</h3>
+                        <h3 class="font-orbitron text-2xl font-bold mb-4 text-center text-emerald-300">{% translate "Technological cult" %}</h3>
                         <p class="text-emerald-300/70 text-center leading-relaxed">
-                            Vénérez la technologie et repoussez les limites de l'innovation. Accédez aux équipements les plus avancés de la galaxie.
+                            {% translate "Revere technology and push innovation to its limits. Access the most advanced equipment in the galaxy." %}
                         </p>
                     </div>
                     
@@ -241,9 +241,9 @@
                         <div class="text-6xl text-emerald-400 mb-6 text-center">
                             <i class="fas fa-user-secret"></i>
                         </div>
-                        <h3 class="font-orbitron text-2xl font-bold mb-4 text-center text-emerald-300">Indépendants</h3>
+                        <h3 class="font-orbitron text-2xl font-bold mb-4 text-center text-emerald-300">{% translate "Independents" %}</h3>
                         <p class="text-emerald-300/70 text-center leading-relaxed">
-                            Tracez votre propre voie sans contraintes. Profitez d'une liberté totale et forgez votre destin selon vos propres règles.
+                            {% translate "Forge your own path without constraints. Enjoy total freedom and shape your destiny by your own rules." %}
                         </p>
                     </div>
                 </div>
@@ -254,13 +254,13 @@
         <section class="relative py-20 px-4">
             <div class="max-w-4xl mx-auto text-center bg-gradient-to-r from-emerald-900/30 to-emerald-800/30 border border-emerald-500/50 rounded-2xl p-8 lg:p-12 glow">
                 <h2 class="font-orbitron text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-shadow">
-                    Prêt à conquérir les étoiles ?
+                    {% translate "Ready to conquer the stars?" %}
                 </h2>
                 <p class="text-lg text-emerald-300/80 mb-8 leading-relaxed">
-                    Rejoignez des milliers de joueurs et écrivez votre légende dans l'immensité de l'espace.
+                    {% translate "Join thousands of players and write your legend in the vastness of space." %}
                 </p>
                 <a href="" class="inline-block px-10 py-5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-lg text-xl transition-all glow font-orbitron">
-                    CRÉER MON COMPTE
+                    {% translate "CREATE MY ACCOUNT" %}
                 </a>
             </div>
         </section>
@@ -274,3 +274,5 @@
 <script src="{% static 'js/game/world_builder/account/logout.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/game/world_builder/account/login.js' %}" type="text/javascript"></script>
 {% endblock %}
+
+
