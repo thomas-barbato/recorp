@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const coordsLabel = t("Coords");
         title.innerHTML = `
             <span class="group-member-index">#${Number(member.index || 0)}</span>
-            <span class="group-member-name">${escapeHtml(member.name || "Unknown")}</span>
+            <span class="group-member-name">${escapeHtml(member.name || t("Unknown"))}</span>
             <span class="group-member-location" title="${escapeHtml(location.fullText)}">
                 <span class="group-member-sector" title="${escapeHtml(location.sectorText)}">
                     <span class="group-member-location-key">${escapeHtml(sectorLabel)}</span>
@@ -584,8 +584,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!invitationId || handledInvitationIds.has(invitationId)) return;
         handledInvitationIds.add(invitationId);
 
-        const inviter = payload?.inviter_name || "Unknown";
-        const groupName = payload?.group_name || "Unnamed Group";
+        const inviter = payload?.inviter_name || t("Unknown");
+        const groupName = payload?.group_name || t("Unnamed group");
         showToast(`${inviter} ${t("invited you to")} ${groupName}.`, "info");
 
         const accepted = await confirmAction(

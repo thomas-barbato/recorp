@@ -6,6 +6,11 @@ function getEngine() {
     return getGameState()?.canvasEngine ?? window.canvasEngine ?? null;
 }
 
+function t(text) {
+    if (typeof gettext === "function") return gettext(text);
+    return text;
+}
+
 function requestWorldRedraw() {
     getEngine()?.renderer?.requestRedraw?.();
 }
@@ -98,7 +103,7 @@ function buildAsteroidResourcesSection(modalId, data) {
 
     if (!isScanned) {
         const msg = document.createElement("p");
-        msg.textContent = data.resources?.translated_scan_msg_str || "Un scan est requis pour identifier les ressources.";
+        msg.textContent = data.resources?.translated_scan_msg_str || t("A scan is required to identify resources.");
         msg.classList.add("text-sm","text-red-500","font-bold","animate-pulse", "font-shadow");
         container.append(msg);
         return container;
@@ -116,7 +121,7 @@ function buildAsteroidResourcesSection(modalId, data) {
     }
 
     const p = document.createElement("p");
-    const name = res.translated_text_resource || res.name || "Ressource";
+    const name = res.translated_text_resource || res.name || t("Resource");
     const max = res.max_quantity ?? res.max ?? "?";
     p.textContent = `${name} : ${qty}${max !== "?" ? " / " + max : ""}`;
     p.classList.add("text-sm","text-white", "font-shadow");
@@ -158,7 +163,7 @@ function attachWreckExpiryCountdown(modalEl, badgeEl, expiresAtIso) {
 
         const remaining = expiresAt - Date.now();
         if (remaining <= 0) {
-            badgeEl.textContent = "EXPIRE";
+            badgeEl.textContent = t("EXPIRED");
             badgeEl.classList.remove("text-white");
             badgeEl.classList.add("text-zinc-300");
             if (badgeEl._wreckCountdownTimer) {
@@ -168,7 +173,7 @@ function attachWreckExpiryCountdown(modalEl, badgeEl, expiresAtIso) {
             return;
         }
 
-        badgeEl.textContent = `LOOT ${formatWreckRemainingMs(remaining)}`;
+        badgeEl.textContent = `${t("LOOT")} ${formatWreckRemainingMs(remaining)}`;
     };
 
     // Affichage immédiat du compteur (avant le premier tick de l'intervalle).
@@ -322,7 +327,7 @@ function create_foreground_modal(modalId, data) {
     // RESSOURCES, si asteroid / étoile.
     if (data.type === "asteroid" || data.type === "star") {
         const resourcesLabel = document.createElement("label");
-        resourcesLabel.textContent = "RESSOURCES :";
+        resourcesLabel.textContent = `${t("RESOURCES")} :`;
         resourcesLabel.classList.add("font-bold", "text-white", "mt-2", "font-shadow", "w-full","font-orbitron");
 
         modal.body.addSection(resourcesLabel);
@@ -333,7 +338,7 @@ function create_foreground_modal(modalId, data) {
 
     // ACTIONS
     const actionsLabel = document.createElement("label");
-    actionsLabel.textContent = "ACTIONS:";
+    actionsLabel.textContent = `${t("ACTIONS")} :`;
     actionsLabel.classList.add("w-full", "font-bold", "text-white", "mt-2", "text-start", "font-shadow","font-orbitron");
     modal.body.addSection(actionsLabel);
 
@@ -381,7 +386,7 @@ function createUnknownModal(modalId, data, is_npc) {
     left.classList.add("flex", "items-center", "gap-1");
 
     const nameEl = document.createElement("span");
-    nameEl.textContent = "UNKNOWN";
+    nameEl.textContent = t("UNKNOWN");
     nameEl.classList.add(
         "lg:text-xl",
         "text-base",
@@ -416,7 +421,7 @@ function createUnknownModal(modalId, data, is_npc) {
 
     // ACTIONS
     const actionsLabel = document.createElement("label");
-    actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
+    actionsLabel.textContent = `${t(data.actions.action_label || "Actions").toUpperCase()} :`;
     actionsLabel.classList.add(
         "w-full",
         "font-bold",
@@ -430,7 +435,7 @@ function createUnknownModal(modalId, data, is_npc) {
 
     // MODULES LABEL
     const modulesLabel = document.createElement("label");
-    modulesLabel.textContent = "MODULES:";
+    modulesLabel.textContent = `${t("MODULES")} :`;
     modulesLabel.classList.add(
         "w-full",
         "font-bold",
@@ -443,7 +448,7 @@ function createUnknownModal(modalId, data, is_npc) {
     modal.body.addSection(modulesLabel);
 
     const modulesWarning = document.createElement("p");
-    modulesWarning.textContent = "Scan requis pour afficher les modules.";
+    modulesWarning.textContent = t("A scan is required to display modules.");
     modulesWarning.classList.add(
         "action-error-msg"
     );
@@ -520,7 +525,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
     left.classList.add("flex", "flex-row", "items-center", "gap-1", "w-full", "justify-start");
 
     const nameEl = document.createElement("span");
-    nameEl.textContent = (data.player?.name || "UNKNOWN").toUpperCase();
+    nameEl.textContent = (data.player?.name || t("UNKNOWN")).toUpperCase();
     nameEl.classList.add("lg:text-xl","text-base","text-center",
                         "font-bold","flex",
                         "text-white","justify-center", "font-orbitron");
@@ -556,7 +561,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
         // --- Texte du titre ---
         const titleText = document.createElement("div");
-        nameEl.textContent = (data.player?.name || "UNKNOWN").toUpperCase();
+        nameEl.textContent = (data.player?.name || t("UNKNOWN")).toUpperCase();
         coordEl.textContent = coordStr;
         // --- Scan timer ---
         const scanInfo = document.createElement("div");
@@ -636,7 +641,7 @@ function create_pc_npc_modal(modalId, data, is_npc) {
 
     // MODULES LABEL
     const modulesLabel = document.createElement("label");
-    modulesLabel.textContent = "MODULES:";
+    modulesLabel.textContent = `${t("MODULES")} :`;
     modulesLabel.classList.add(
         "w-full",
         "font-bold",
@@ -656,13 +661,13 @@ function create_pc_npc_modal(modalId, data, is_npc) {
         warning.classList.add(
             "action-error-msg"
         );
-        warning.textContent = "Scan requis pour afficher les modules.";
+        warning.textContent = t("A scan is required to display modules.");
         modal.body.addSection(warning);
     }
 
     // ACTIONS LABEL
     const actionsLabel = document.createElement("label");
-    actionsLabel.textContent = data.actions.action_label.toUpperCase() + ":";
+    actionsLabel.textContent = `${t(data.actions.action_label || "Actions").toUpperCase()} :`;
     actionsLabel.classList.add(
         "w-full",
         "font-bold",
@@ -802,7 +807,7 @@ function buildShipStatsSection(data) {
         createProgressBar(
             data.ship.current_hp,
             data.ship.max_hp,
-            "Hull points:",
+            t("Hull points:"),
             "hp"
         )
     );
@@ -812,7 +817,7 @@ function buildShipStatsSection(data) {
             createProgressBar(
                 data.player.current_ap,
                 data.player.max_ap,
-                "Action points:",
+                t("Action points:"),
                 "ap"
             )
         );
@@ -823,7 +828,7 @@ function buildShipStatsSection(data) {
         createProgressBar(
             data.ship.current_movement,
             data.ship.max_movement,
-            "Movement left:",
+            t("Movement left:"),
             "movement"
         )
     );
@@ -834,19 +839,19 @@ function buildShipStatsSection(data) {
             type: "DEFENSE_BALLISTIC",
             currentKey: "current_ballistic_defense",
             maxKey: "max_ballistic_defense",
-            label: "Ballistic defense:"
+            label: t("Ballistic defense:")
         },
         {
             type: "DEFENSE_THERMAL",
             currentKey: "current_thermal_defense",
             maxKey: "max_thermal_defense",
-            label: "Thermal defense:"
+            label: t("Thermal defense:")
         },
         {
             type: "DEFENSE_MISSILE",
             currentKey: "current_missile_defense",
             maxKey: "max_missile_defense",
-            label: "Missile defense:"
+            label: t("Missile defense:")
         }
     ];
 
@@ -1011,7 +1016,7 @@ function create_chat_modal(data){
 
     let header_container_div = document.createElement('div');
     header_container_div.classList.add('md:p-5', 'p-1', 'flex', 'flex-row');
-    header_container_div.textContent = "ok test chat"
+    header_container_div.textContent = t("Chat")
 
     let content_div = document.createElement('div');
     content_div.classList.add('relative', 'rounded-lg', 'shadow', 'w-full', 'lg:w-1/4', 'rounded-t', 'flex', 'justify-center', 'mx-auto', 'flex-col', 'border-2', 'border-slate-600', 'bg-gradient-to-b', 'from-amber-600/70', 'to-black/70');

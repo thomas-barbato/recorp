@@ -85,11 +85,11 @@ class ActionSceneManager {
                 .replace(/[\u0300-\u036f]/g, "");
 
         const levels = {
-            rouge: { label: "Tres difficile", className: "text-red-400 border-red-500" },
-            orange: { label: "Difficile", className: "text-orange-300 border-orange-400" },
-            jaune: { label: "Equilibre", className: "text-yellow-300 border-yellow-400" },
-            vert: { label: "Facile", className: "text-emerald-300 border-emerald-400" },
-            gris: { label: "Tres facile", className: "text-gray-400 border-gray-500" }
+            rouge: { label: tr("Very hard"), className: "text-red-400 border-red-500" },
+            orange: { label: tr("Hard"), className: "text-orange-300 border-orange-400" },
+            jaune: { label: tr("Balanced"), className: "text-yellow-300 border-yellow-400" },
+            vert: { label: tr("Easy"), className: "text-emerald-300 border-emerald-400" },
+            gris: { label: tr("Very easy"), className: "text-gray-400 border-gray-500" }
         };
 
         const aliases = {
@@ -152,7 +152,7 @@ class ActionSceneManager {
         let displayName =
             this._getTargetDisplayNameFromCache(ctx) ||
             ctx.targetKey ||
-            "La cible";
+            tr("The target");
 
         if (isCombatDeath) {
             const deadKey = meta?.payload?.dead_key;
@@ -182,9 +182,9 @@ class ActionSceneManager {
             "mt-4"
         );
         if (isCombatDeath) {
-            msg.textContent = `${displayName} a ete detruit`;
+            msg.textContent = `${displayName} ${tr("was destroyed")}`;
         } else {
-            msg.textContent = `${displayName} s'est echappe`;
+            msg.textContent = `${displayName} ${tr("escaped")}`;
         }
 
         mountNode.append(msg);
@@ -489,7 +489,7 @@ class ActionSceneManager {
 
         if (!worker || typeof worker.call !== "function") {
             console.warn("CombatScene: worker unavailable");
-            distance.textContent = "Distance: ?";
+            distance.textContent = `${tr("Distance")}: ?`;
             return;
         }
 
@@ -567,7 +567,7 @@ class ActionSceneManager {
             "justify-center"
         );
         const headerTitle = document.createElement("span");
-        headerTitle.textContent = "Combat en cours";
+        headerTitle.textContent = tr("Combat in progress");
         header.append(headerTitle);
 
         const difficulty = this._getTargetDifficultyFromCache(context);
@@ -593,10 +593,10 @@ class ActionSceneManager {
                 sizeY: target.sizeY
             }
         }).then(dist => {
-            distance.textContent = `Distance: ${dist}`;
+            distance.textContent = `${tr("Distance")}: ${dist}`;
         }).catch(err => {
             console.warn("CombatScene distance error:", err);
-            distance.textContent = "Distance: ?";
+            distance.textContent = `${tr("Distance")}: ?`;
         });
 
         const visualWrapper = document.createElement("div");
@@ -652,7 +652,7 @@ class ActionSceneManager {
             <div id="combat-attacker-stats" class="flex-1">
                 <div class="font-bold mb-2">Attacker</div>
                 <div>HP: <span class="hp">--</span></div>
-                <div>${tr("AP")}: <span class="ap">--</span></div>
+                <div>${tr("Action points")}: <span class="ap">--</span></div>
                 <div>Missile: <span class="shield-missile">--</span></div>
                 <div>Thermal: <span class="shield-thermal">--</span></div>
                 <div>Ballistic: <span class="shield-ballistic">--</span></div>
@@ -660,7 +660,7 @@ class ActionSceneManager {
             <div id="combat-target-stats" class="flex-1 text-right">
                 <div class="font-bold mb-2">Target</div>
                 <div>HP: <span class="hp">--</span></div>
-                <div>${tr("AP")}: <span class="ap">--</span></div>
+                <div>${tr("Action points")}: <span class="ap">--</span></div>
                 <div>Missile: <span class="shield-missile">--</span></div>
                 <div>Thermal: <span class="shield-thermal">--</span></div>
                 <div>Ballistic: <span class="shield-ballistic">--</span></div>
@@ -691,7 +691,7 @@ class ActionSceneManager {
         log.style.maxHeight = "92px";
         const placeholder = document.createElement("div");
         placeholder.classList.add("opacity-70", "italic");
-        placeholder.textContent = "Combat log...";
+        placeholder.textContent = tr("Combat log...");
         log.appendChild(placeholder);
         this._combatLogNode = log;
         this._combatLogPlaceholderNode = placeholder;
@@ -1206,7 +1206,7 @@ class ActionSceneManager {
                     : document.querySelector("#modal-combat .text-sky-300");
 
             if (distanceNode) {
-                distanceNode.textContent = `Distance: ${dist}`;
+                distanceNode.textContent = `${tr("Distance")}: ${dist}`;
             }
 
             // recalcul range aprÃ¨s mouvement
@@ -1454,7 +1454,7 @@ class CombatAnimationEngine {
             el.textContent = `-${amount}`;
         }else{
             color = "#facc15";
-            el.textContent = `CRIT -${amount}`;
+            el.textContent = `${tr("CRIT")} -${amount}`;
         }
         
         el.classList.add(

@@ -1100,55 +1100,55 @@ function createModuleTooltipLines(moduleType, effect) {
 
     switch (moduleType) {
         case "PROBE":
-            if (effect?.range != null) lines.push(styledLine(`${label || "Range"}:`, `${effect.range}`));
+            if (effect?.range != null) lines.push(styledLine(`${label || t("Range")}:`, `${effect.range}`));
             break;
         case "DEFENSE_BALLISTIC":
         case "DEFENSE_THERMAL":
         case "DEFENSE_MISSILE":
-            if (effect?.defense != null) lines.push(styledLine(`${label || "Defense"}:`, `+${effect.defense}`));
+            if (effect?.defense != null) lines.push(styledLine(`${label || t("Defense")}:`, `+${effect.defense}`));
             break;
         case "HOLD":
-            if (effect?.capacity != null) lines.push(styledLine(`${label || "Cargo"}:`, `+${effect.capacity}`));
+            if (effect?.capacity != null) lines.push(styledLine(`${label || t("Cargo")}:`, `+${effect.capacity}`));
             break;
         case "MOVEMENT":
-            if (effect?.movement != null) lines.push(styledLine(`${label || "Movement"}:`, `+${effect.movement}`));
+            if (effect?.movement != null) lines.push(styledLine(`${label || t("Movement")}:`, `+${effect.movement}`));
             break;
         case "HULL":
-            if (effect?.hp != null) lines.push(styledLine(`${label || "Hull"}:`, `+${effect.hp}`));
+            if (effect?.hp != null) lines.push(styledLine(`${label || t("Hull")}:`, `+${effect.hp}`));
             break;
         case "REPAIRE":
-            if (effect?.repair_shield != null) lines.push(styledLine(`${label || "Repair"}:`, `${effect.repair_shield} hull points`));
+            if (effect?.repair_shield != null) lines.push(styledLine(`${label || t("Repair")}:`, `${effect.repair_shield} ${t("hull points")}`));
             break;
         case "GATHERING":
-            if ("can_scavenge" in effect) lines.push(styledLine(`${label || "Scavenge"}`, "yes"));
-            if ("display_mineral_data" in effect) lines.push(styledLine(`${label || "Mineral data"}`));
-            if (effect?.gathering_amount != null) lines.push(styledLine(`${label || "Gathering"}:`, `+${effect.gathering_amount}`));
+            if ("can_scavenge" in effect) lines.push(styledLine(`${label || t("Scavenge")}`, t("yes")));
+            if ("display_mineral_data" in effect) lines.push(styledLine(`${label || t("Mineral data")}`));
+            if (effect?.gathering_amount != null) lines.push(styledLine(`${label || t("Gathering")}:`, `+${effect.gathering_amount}`));
             break;
         case "RESEARCH":
             if (effect?.research_time_discrease != null) {
-                lines.push(styledLine(`${label || "Research"}:`, `-${effect.research_time_discrease}%`));
+                lines.push(styledLine(`${label || t("Research")}:`, `-${effect.research_time_discrease}%`));
             }
             break;
         case "CRAFT":
             if (effect?.crafting_tier_allowed != null) {
-                lines.push(styledLine(`${label || "Craft"}:`, `${effect.crafting_tier_allowed}`));
+                lines.push(styledLine(`${label || t("Craft")}:`, `${effect.crafting_tier_allowed}`));
             }
             break;
         case "ELECTRONIC_WARFARE":
-            if (effect?.aiming_discrease != null) lines.push(styledLine(`${label || "Electronic warfare"}:`, `-${effect.aiming_discrease}%`));
-            if (effect?.movement_discrease != null) lines.push(styledLine(`${label || "Electronic warfare"}:`, `-${effect.movement_discrease}%`));
-            if ("display_ship_data" in effect) lines.push(styledLine(`${label || "Ship data display"}`));
+            if (effect?.aiming_discrease != null) lines.push(styledLine(`${label || t("Electronic warfare")}:`, `-${effect.aiming_discrease}%`));
+            if (effect?.movement_discrease != null) lines.push(styledLine(`${label || t("Electronic warfare")}:`, `-${effect.movement_discrease}%`));
+            if ("display_ship_data" in effect) lines.push(styledLine(`${label || t("Ship data display")}`));
             break;
         case "WEAPONRY":
             if (effect?.aiming_increase != null) {
-                lines.push(styledLine(`${label || "Aiming"}:`, `+${effect.aiming_increase}%`));
+                lines.push(styledLine(`${label || t("Aiming")}:`, `+${effect.aiming_increase}%`));
             }
             if (effect?.min_damage != null || effect?.max_damage != null) {
-                lines.push(styledLine(`${label || "Damage"}:`, `${effect.min_damage ?? 0} - ${effect.max_damage ?? 0}`));
+                lines.push(styledLine(`${label || t("Damage")}:`, `${effect.min_damage ?? 0} - ${effect.max_damage ?? 0}`));
             }
             break;
         case "COLONIZATION":
-            lines.push(styledLine(`${label || "Colonization"}`));
+            lines.push(styledLine(`${label || t("Colonization")}`));
             break;
         default:
             break;

@@ -1,6 +1,11 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 
 (function () {
+    function t(text) {
+        if (typeof gettext === "function") return gettext(text);
+        return text;
+    }
+
     function getGameState() {
         return window.GameState || null;
     }
@@ -260,7 +265,7 @@
         );
 
         const icon = document.createElement("span");
-        icon.textContent = "dist:";
+        icon.textContent = `${t("Dist")}:`;
 
         const label = document.createElement("span");
         label.textContent = range;
@@ -300,7 +305,7 @@
             "text-sm",
             "font-bold"
         );
-        lbl.textContent = label;
+        lbl.textContent = typeof label === "string" ? t(label) : label;
 
         btn.append(iconWrapper, lbl);
 
@@ -351,7 +356,7 @@
         const zone = document.getElementById(modalId + "-action-error-zone");
         if (!zone) return;
 
-        zone.textContent = message;
+        zone.textContent = typeof message === "string" ? t(message) : message;
         zone.classList.remove("hidden");
 
         setTimeout(() => {
@@ -462,7 +467,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
     const showMissingModuleError = () => {
         showActionError(
             modalId,
-            "Vous ne pouvez pas effectuer cette action tant que vous n'aurez pas installÃ© de module de ce type."
+            "You cannot perform this action until you have installed a module of this type."
         );
     };
 
@@ -474,7 +479,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     const attackButton = createActionButton(
         attackIcon,
-        "Attaquer",
+        t("Attack"),
         () => {
             if (!hasWeaponry) return showMissingModuleError();
 
@@ -821,7 +826,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     const repButton = createActionButton(
         repIcon,
-        "Repaire",
+        t("Repair"),
         () => {
             if (!hasRepaire) return showMissingModuleError();
 
@@ -905,7 +910,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
     const tradeButton = createActionButton(
         tradeIcon,
-        "Commerce",
+        t("Trade"),
         () => {
             contextZone.innerHTML = "Commerce (Ã  implÃ©menter)";
             contextZone.classList.remove("hidden");
@@ -986,7 +991,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                     if (typeof rangeResult.distance === "number") {
                         btn.title =
-                            `Hors de portee (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
+                            `${t("Out of range")} (${rangeResult.distance.toFixed(1)} / ${rangeResult.maxRange.toFixed(1)})`;
                     }
                 }
             }).catch(() => {});
@@ -1105,7 +1110,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
             data.destinations.forEach(dest => {
                 const li = document.createElement("li");
-                li.textContent = `Travel to ${dest.destination_name}`;
+                li.textContent = `${t("Travel to")} ${dest.destination_name}`;
                 li.classList.add(
                     "cursor-pointer",
                     "text-white",
@@ -1172,7 +1177,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
             }   
 
             const label = document.createElement("div");
-            label.textContent = action.label || "";
+            label.textContent = action.label ? t(action.label) : "";
             label.classList.add(
                 "action-button-sf-label",
                 "font-shadow",
@@ -1335,7 +1340,7 @@ function buildActionsSection(modalId, data, is_npc, contextZone) {
 
                     if (!ok) {
                         errorZone.textContent =
-                            "Vous ne pouvez pas effectuer cette action sans le module requis.";
+                            t("You cannot perform this action without the required module.");
                         errorZone.classList.remove("hidden");
                         setTimeout(() => errorZone.classList.add("hidden"), 5000);
                         return;

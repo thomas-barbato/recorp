@@ -12,7 +12,7 @@
         asteroid: [
             {
                 key: "gather",
-                label: "Récolte",
+                label: "Gather",
                 icon: "/static/img/ux/gather_icon.svg",
                 requires: [{ type: "GATHERING" }],
                 ap_cost: 1,
@@ -30,7 +30,7 @@
         star: [
             {
                 key: "gather",
-                label: "Récolte",
+                label: "Gather",
                 icon: "/static/img/ux/gather_icon.svg",
                 requires: [{ type: "GATHERING" }],
                 ap_cost: 1,
@@ -81,7 +81,7 @@
         ],
 
         wreck: [
-            { key: "fouille", label: "Fouille", icon: "/static/img/ux/gather_icon.svg", cost: 0, ap_cost: 0 },
+            { key: "search", label: "Search", icon: "/static/img/ux/gather_icon.svg", cost: 0, ap_cost: 0 },
             {
                 key: "salvage",
                 label: "Salvage",
@@ -103,11 +103,11 @@
             ap_cost: 1,
             requires_scan: true,
             requires_group: true,
-            warning_no_group: "Vous devez faire partie d'un groupe pour effectuer cette action."
+            warning_no_group: "You must be part of a group to perform this action."
         },
         {
             key: "send_report",
-            label: "send report",
+            label: "Send report",
             iconClass: "fa-solid fa-envelope",
             ap_cost: 0,
             requires_scan: true

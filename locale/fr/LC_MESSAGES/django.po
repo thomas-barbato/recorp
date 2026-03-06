@@ -263,8 +263,8 @@ msgstr "Nom de famille"
 msgid "The faction's main planet"
 msgstr "Planète mère de la faction"
 
-msgid "Equip your spaceship with the «spaceship probe» module to access detailed statistics"
-msgstr "Equipez votre vaisseau du module «spaceship probe» pour acceder à des statistiques détaillées"
+msgid "Equip your spaceship with the ""spaceship probe"" module to access detailed statistics"
+msgstr "Equipez votre vaisseau du module ""spaceship probe"" pour acceder a des statistiques detaillees"
 
 msgid "In order to display spaceship statistics you must scan it"
 msgstr "Pour afficher les statistiques de ce vaisseau spatial, vous devez le scanner"
@@ -282,7 +282,7 @@ msgid "terms and conditions"
 msgstr "termes et conditions"
 
 msgid "you don't have an account? Signup here"
-msgstr "Vous n'avez pas de compte ? Enregistrez vous ici"
+msgstr "Vous n'avez pas de compte e Enregistrez vous ici"
 
 msgid "forgot password"
 msgstr "mot de passe oublié"
@@ -1861,10 +1861,10 @@ msgid "MP"
 msgstr "MP"
 
 msgid "Action points"
-msgstr "PA"
+msgstr "Points d action"
 
 msgid "Movement points"
-msgstr "MP"
+msgstr "Points de mouvement"
 
 msgid "Action"
 msgstr "PA"
@@ -1879,7 +1879,7 @@ msgid "Forgot credentials"
 msgstr "Identifiants oublies"
 
 msgid "Forgot credentials?"
-msgstr "Identifiants oublies ?"
+msgstr "Identifiants oublies e"
 
 msgid "Create account"
 msgstr "Creer un compte"
@@ -2032,7 +2032,7 @@ msgid "Forge your own path without constraints. Enjoy total freedom and shape yo
 msgstr "Tracez votre propre voie sans contraintes. Profitez d'une liberte totale et forgez votre destin selon vos propres regles."
 
 msgid "Ready to conquer the stars?"
-msgstr "Pret a conquerir les etoiles ?"
+msgstr "Pret a conquerir les etoiles e"
 
 msgid "Join thousands of players and write your legend in the vastness of space."
 msgstr "Rejoignez des milliers de joueurs et ecrivez votre legende dans l'immensite de l'espace."
@@ -2112,7 +2112,7 @@ msgid "Counter Electronic Warfare"
 msgstr "Contre-guerre electronique"
 
 msgid "Repair"
-msgstr "Reparation"
+msgstr "Reparer"
 
 msgid "Shield Enhancement"
 msgstr "Renforcement de bouclier"
@@ -2366,3 +2366,451 @@ msgstr "Rapport envoye"
 msgid "Scan report"
 msgstr "Rapport de scan"
 
+# Gameplay JS translations batch 2
+msgid "A scan is required to identify resources."
+msgstr "Un scan est requis pour identifier les ressources."
+
+msgid "Resources are depleted."
+msgstr "Les ressources sont epuisees."
+
+msgid "Resource"
+msgstr "Ressource"
+
+msgid "EXPIRED"
+msgstr "EXPIRE"
+
+msgid "LOOT"
+msgstr "LOOT"
+
+msgid "RESOURCES"
+msgstr "RESSOURCES"
+
+msgid "ACTIONS"
+msgstr "ACTIONS"
+
+msgid "A scan is required to display modules."
+msgstr "Un scan est requis pour afficher les modules."
+
+msgid "Hull points:"
+msgstr "Points de coque :"
+
+msgid "Action points:"
+msgstr "Points d'action :"
+
+msgid "Movement left:"
+msgstr "Mouvement restant :"
+
+msgid "Ballistic defense:"
+msgstr "Defense balistique :"
+
+msgid "Thermal defense:"
+msgstr "Defense thermique :"
+
+msgid "Missile defense:"
+msgstr "Defense missile :"
+
+msgid "Chat"
+msgstr "Chat"
+
+msgid "This wreck is already being looted or salvaged. Please wait."
+msgstr "Cette carcasse est deja en cours de fouille ou de recuperation. Veuillez patienter."
+
+msgid "Dist"
+msgstr "Dist"
+
+msgid "Target already scanned"
+msgstr "Cible deja scannee"
+
+msgid "Out of range"
+msgstr "Hors de portee"
+
+msgid "Action unavailable (range undefined)"
+msgstr "Action indisponible (portee non definie)"
+
+msgid "You cannot perform this action until a module of this type is installed."
+msgstr "Vous ne pouvez pas effectuer cette action tant qu'un module de ce type n'est pas installe."
+
+msgid "Attack"
+msgstr "Attaquer"
+
+msgid "Trade"
+msgstr "Commerce"
+
+msgid "Trade (to be implemented)"
+msgstr "Commerce (a implementer)"
+
+msgid "Travel to"
+msgstr "Voyager vers"
+
+msgid "You cannot perform this action without the required module."
+msgstr "Vous ne pouvez pas effectuer cette action sans le module requis."
+
+msgid "Very hard"
+msgstr "Tres difficile"
+
+msgid "Hard"
+msgstr "Difficile"
+
+msgid "Balanced"
+msgstr "Equilibre"
+
+msgid "Easy"
+msgstr "Facile"
+
+msgid "Very easy"
+msgstr "Tres facile"
+
+msgid "The target"
+msgstr "La cible"
+
+msgid "was destroyed"
+msgstr "a ete detruit"
+
+msgid "escaped"
+msgstr "s'est echappe"
+
+msgid "Distance"
+msgstr "Distance"
+
+msgid "Combat in progress"
+msgstr "Combat en cours"
+
+msgid "Combat log..."
+msgstr "Journal de combat..."
+
+msgid "CRIT"
+msgstr "CRIT"
+
+msgid "You are dead"
+msgstr "Vous etes mort"
+
+msgid "Your ship was destroyed. Click to respawn."
+msgstr "Votre vaisseau a ete detruit. Cliquez pour reapparaitre."
+
+msgid "Temporary respawn: sector 7"
+msgstr "Respawn temporaire : secteur 7"
+
+msgid "Respawn"
+msgstr "Reapparaitre"
+
+msgid "Connection unavailable"
+msgstr "Connexion indisponible"
+
+msgid "Respawn in progress..."
+msgstr "Respawn en cours..."
+
+msgid "Loot Wreck"
+msgstr "Piller l'epave"
+
+msgid "Loot"
+msgstr "Piller"
+
+msgid "Salvage"
+msgstr "Recuperation"
+
+msgid "Search"
+msgstr "Fouille"
+
+msgid "Wreck"
+msgstr "Epave"
+
+msgid "in progress"
+msgstr "en cours"
+
+msgid "This wreck is already being looted by another player."
+msgstr "Cette carcasse est deja en cours de pillage par un autre joueur."
+
+msgid "You"
+msgstr "Vous"
+
+msgid "Group leader"
+msgstr "Chef de groupe"
+
+msgid "Group member"
+msgstr "Membre du groupe"
+
+# Gameplay JS translations batch 3
+msgid "Range"
+msgstr "Portee"
+
+msgid "Defense"
+msgstr "Defense"
+
+msgid "Cargo"
+msgstr "Soute"
+
+msgid "Hull"
+msgstr "Coque"
+
+msgid "hull points"
+msgstr "points de coque"
+
+msgid "Scavenge"
+msgstr "Recuperation"
+
+msgid "yes"
+msgstr "oui"
+
+msgid "Mineral data"
+msgstr "Donnees minerales"
+
+msgid "Gathering"
+msgstr "Collecte"
+
+msgid "Electronic warfare"
+msgstr "Guerre electronique"
+
+msgid "Ship data display"
+msgstr "Affichage des donnees du vaisseau"
+
+msgid "Aiming"
+msgstr "Precision"
+
+msgid "Damage"
+msgstr "Degats"
+
+msgid "Colonization"
+msgstr "Colonisation"
+
+msgid "Message sent"
+msgstr "Message envoye"
+
+# Gameplay JS translations batch 4
+msgid "Gather"
+msgstr "Recolte"
+
+msgid "You must be part of a group to perform this action."
+msgstr "Vous devez faire partie d'un groupe pour effectuer cette action."
+
+msgid "Unknown sector"
+msgstr "Secteur inconnu"
+
+msgid "Unnamed group"
+msgstr "Groupe sans nom"
+
+msgid "Invited by"
+msgstr "Invite par"
+
+msgid "Accept invitation?"
+msgstr "Accepter l'invitation e"
+
+msgid "invited you to"
+msgstr "vous a invite dans"
+
+msgid "invited you to join"
+msgstr "vous a invite a rejoindre"
+
+msgid "Create a group by inviting a player."
+msgstr "Creez un groupe en invitant un joueur."
+
+msgid "Invite a player to your group."
+msgstr "Invitez un joueur dans votre groupe."
+
+msgid "Only the group leader can invite players."
+msgstr "Seul le chef du groupe peut inviter des joueurs."
+
+msgid "Choose a player first."
+msgstr "Choisissez d'abord un joueur."
+
+msgid "Invitation sent."
+msgstr "Invitation envoyee."
+
+msgid "Leave your current group?"
+msgstr "Quitter votre groupe actuel e"
+
+msgid "Disband this group?"
+msgstr "Dissoudre ce groupe e"
+
+msgid "Group action updated."
+msgstr "Action de groupe mise a jour."
+
+msgid "Transfer Lead"
+msgstr "Transferer le lead"
+
+msgid "Transfer group leadership to this player?"
+msgstr "Transferer le lead du groupe a ce joueur e"
+
+msgid "Remove this player from the group?"
+msgstr "Retirer ce joueur du groupe e"
+
+msgid "In Group"
+msgstr "Dans un groupe"
+
+msgid "Coords"
+msgstr "Coords"
+
+msgid "Pending Invitations"
+msgstr "Invitations en attente"
+
+msgid "Invite Player"
+msgstr "Inviter un joueur"
+
+msgid "Send Invite"
+msgstr "Envoyer une invitation"
+
+msgid "You are not part of a group."
+msgstr "Vous ne faites pas partie d'un groupe."
+
+msgid "Leave Group"
+msgstr "Quitter le groupe"
+
+msgid "Disband Group"
+msgstr "Dissoudre le groupe"
+
+msgid "Transmitting message..."
+msgstr "Transmission du message..."
+
+# Gameplay JS translations batch 5
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Scavenging module"
+msgstr "Module de recuperation"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "cost"
+msgstr "cout"
+
+msgid "Max range"
+msgstr "Portee max"
+
+msgid "Salvage resources"
+msgstr "Ressources de recuperation"
+
+msgid "Recoverable modules"
+msgstr "Modules recuperables"
+
+msgid "Stored resources"
+msgstr "Ressources en soute"
+
+msgid "Stored modules"
+msgstr "Modules en soute"
+
+msgid "No modules available."
+msgstr "Aucun module disponible."
+
+msgid "No resources available."
+msgstr "Aucune ressource disponible."
+
+msgid "Module"
+msgstr "Module"
+
+msgid "Ship data"
+msgstr "Donnees du vaisseau"
+
+msgid "ready"
+msgstr "pret"
+
+msgid "Lv"
+msgstr "Nv"
+
+msgid "Your faction will determine your allies, your enemies, and your playstyle. Choose wisely."
+msgstr "Votre faction determinera vos allies, vos ennemis et votre style de jeu. Choisissez avec sagesse."
+
+msgid "Next"
+msgstr "Suivant"
+
+msgid "Configure your character"
+msgstr "Configurez votre personnage"
+
+msgid "--- Choose an archetype ---"
+msgstr "--- Choisissez un archetype ---"
+
+msgid "Show more"
+msgstr "Afficher plus"
+
+msgid "Enter your character name"
+msgstr "Entrez le nom de votre personnage"
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "Confirm"
+msgstr "Valider"
+
+msgid "Travel in progress"
+msgstr "Voyage en cours"
+
+
+msgid "PROBE"
+msgstr "SONDE"
+
+msgid "Ship Credits"
+msgstr "Credits transportes"
+
+msgid "No modules stored in cargo."
+msgstr "Aucun module stocke dans la soute."
+
+msgid "No quest items in cargo."
+msgstr "Aucun objet de quete dans la soute."
+
+msgid "No resources in cargo."
+msgstr "Aucune ressource dans la soute."
+
+msgid "Equip your spaceship with the %(module_name)s module to access detailed statistics"
+msgstr "Equipez votre vaisseau du module %(module_name)s pour acceder a des statistiques detaillees"
+
+msgid "Cost"
+msgstr "Cout"
+
+msgid "Dock"
+msgstr "Amarrer"
+
+msgid "Market"
+msgstr "Marche"
+
+msgid "Task"
+msgstr "Tache"
+
+msgid "Training"
+msgstr "Entrainement"
+
+msgid "Refuel"
+msgstr "Ravitaillement"
+
+msgid "Invade"
+msgstr "Envahir"
+
+msgid "Join Faction"
+msgstr "Rejoindre la faction"
+
+msgid "New Home"
+msgstr "Nouveau foyer"
+
+msgid "Corporation"
+msgstr "Corporation"
+
+msgid "Share to group"
+msgstr "Partager rapport"
+
+msgid "You cannot perform this action until you have installed a module of this type."
+msgstr "Vous ne pouvez pas effectuer cette action tant que vous n aurez pas installe de module de ce type."
+
+msgid "This wreck is already being searched or salvaged. Please wait."
+msgstr "Cette carcasse est deja en cours de fouille ou de recuperation. Veuillez attendre."
+
+msgid "Group Management"
+msgstr "Gestion de groupe"
+
+msgid "Group"
+msgstr "Groupe"
+
+msgid "Leader"
+msgstr "Chef"
+
+msgid "Remove"
+msgstr "Retirer"
+
+msgid "Accept"
+msgstr "Accepter"
+
+msgid "Decline"
+msgstr "Refuser"
+
+msgid "Events"
+msgstr "Evenements"
+
+msgid "Events Logs"
+msgstr "Evenements"

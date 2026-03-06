@@ -1,5 +1,10 @@
 let hoverRequestId = 0;
 
+function t(text) {
+    if (typeof gettext === "function") return gettext(text);
+    return text;
+}
+
 export function isDesktop() {
     return window.innerWidth >= 1024;   // breakpoint PC/tablette large
 }
@@ -39,7 +44,7 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
             if (inSonar || window.isScanned(key)) {
                 name = obj.data.user.name;
             } else {
-                name = "Unknown";
+                name = t("Unknown");
             }
         }
         else if (obj.type === "npc") {
@@ -47,11 +52,11 @@ export function updateTargetCoords(obj, tx, ty, sectorName) {
             if (inSonar || window.isScanned(key)) {
                 name = obj.data.npc.displayed_name;
             } else {
-                name = "Unknown";
+                name = t("Unknown");
             }
         }
         else if (obj.type === "foreground") name = obj.data.data.name;
-        else if (obj.type === "wreck") name = "Epave";
+        else if (obj.type === "wreck") name = t("Wreck");
     }
 
     nameEl.textContent = name;
@@ -74,7 +79,7 @@ export function clearTargetCoords(sectorName) {
 
     if (!nameEl || !xEl || !yEl) return;
 
-    nameEl.textContent = sectorName ?? "Nothing selected";
+    nameEl.textContent = sectorName ?? t("Nothing selected");
 
     xEl.textContent = "";
     yEl.textContent = "";
@@ -101,14 +106,14 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
             if (obj.type === "player") {
                 const key = `pc_${obj.data.user.player}`;
                 if (!window.isScanned(key)) {
-                    name = "Unknown";
+                    name = t("Unknown");
                 }else{
                     name = obj.data.user.name;
                 }
             } else if (obj.type === "npc") {
                 const key = `npc_${obj.data.npc.id}`;
                 if (!window.isScanned(key)) {
-                    name = "Unknown";
+                    name = t("Unknown");
                 }else{
                     name = obj.data.npc.displayed_name;
                 }
@@ -122,7 +127,7 @@ export function updateHoverTooltip(obj, tx, ty, sectorName, evt, sonarVisible) {
         }
         
         if (obj.type === "foreground") name = obj.data.data.name;
-        if (obj.type === "wreck") name = "Epave";
+        if (obj.type === "wreck") name = t("Wreck");
     }else{
         hideHoverTooltip();
         return;
@@ -206,7 +211,7 @@ export function hideHoverTooltip() {
 function renderTooltip({ tooltip, name, tx, ty, dist, isSelf, groupRole = null }) {
     tooltip.innerHTML = `
         <div class="font-bold text-emerald-300">
-            ${isSelf ? "You" : name}
+            ${isSelf ? t("You") : name}
         </div>
         <div class="text-emerald-500 font-bold">
             Y:<span class="text-emerald-300">${ty.toString().padStart(2,"0")}</span>
@@ -215,13 +220,13 @@ function renderTooltip({ tooltip, name, tx, ty, dist, isSelf, groupRole = null }
         </div>
         ${
             !isSelf && groupRole
-                ? `<div class="text-slate-200 font-semibold">${groupRole}</div>`
+                ? `<div class="text-slate-200 font-semibold">${groupRole === "group leader" ? t("Group leader") : t("Group member")}</div>`
                 : ""
         }
         ${
             !isSelf
                 ? `<div class="text-emerald-500 font-bold">
-                    Distance: <span class="text-emerald-300">${dist}</span>
+                    ${t("Distance")}: <span class="text-emerald-300">${dist}</span>
                   </div>`
                 : ""
         }

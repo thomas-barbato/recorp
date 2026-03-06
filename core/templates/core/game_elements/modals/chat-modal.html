@@ -51,9 +51,9 @@
         <div class="border-t border-emerald-500/30 p-3 flex items-center gap-2">
         <input id="chat-input"
                 type="text"
-                placeholder="Transmitting message..."
+                placeholder="{% translate 'Transmitting message...' %}"
                 class="flex-1 bg-zinc-800/50 border border-emerald-400/30 text-emerald-200 px-3 py-2 rounded-lg text-xs outline-none focus:border-emerald-400 transition placeholder-emerald-300/40">
-        <button id="chat-send" class="bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-3 py-2 rounded font-semibold transition">
+        <button id="chat-send" aria-label="{% translate 'Send' %}" title="{% translate 'Send' %}" class="bg-emerald-500 hover:bg-emerald-400 text-zinc-900 px-3 py-2 rounded font-semibold transition">
             <i class="fa-solid fa-paper-plane"></i>
         </button>
         </div>

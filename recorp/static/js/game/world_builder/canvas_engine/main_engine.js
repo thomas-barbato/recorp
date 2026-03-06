@@ -30,6 +30,11 @@ function getCurrentPlayerLifeStatus() {
     return window.GameState?.player?.currentPlayerStatus ?? window.current_player_status ?? "ALIVE";
 }
 
+function t(text) {
+    if (typeof gettext === "function") return gettext(text);
+    return text;
+}
+
 function removeDeathRespawnOverlay() {
     document.getElementById("death-respawn-overlay")?.remove();
 }
@@ -59,16 +64,16 @@ function mountDeathRespawnOverlay(ws) {
     ].join(" ");
 
     const title = document.createElement("div");
-    title.textContent = "Vous etes mort";
+    title.textContent = t("You are dead");
     title.className = "text-red-400 font-bold text-xl animate-pulse font-shadow";
 
     const body = document.createElement("div");
     body.className = "text-zinc-100 text-sm font-shadow";
-    body.textContent = "Votre vaisseau a ete detruit. Cliquez pour reapparaitre.";
+    body.textContent = t("Your ship was destroyed. Click to respawn.");
 
     const sub = document.createElement("div");
     sub.className = "text-zinc-400 text-xs";
-    sub.textContent = "Respawn temporaire: secteur 7";
+    sub.textContent = t("Temporary respawn: sector 7");
 
     const btn = document.createElement("button");
     btn.type = "button";
@@ -77,16 +82,16 @@ function mountDeathRespawnOverlay(ws) {
         "bg-red-700", "hover:bg-red-600",
         "text-white", "font-bold", "border", "border-red-400/50"
     ].join(" ");
-    btn.textContent = "Revivre";
+    btn.textContent = t("Respawn");
     btn.onclick = () => {
         const engineWs = ws || window.canvasEngine?.ws;
         if (!engineWs?.send) {
             btn.disabled = true;
-            btn.textContent = "Connexion indisponible";
+            btn.textContent = t("Connection unavailable");
             return;
         }
         btn.disabled = true;
-        btn.textContent = "Respawn en cours...";
+        btn.textContent = t("Respawn in progress...");
         engineWs.send({
             type: "action_respawn",
             payload: {}
@@ -356,7 +361,7 @@ if (!ok) {
                 }
 
                 // reset des coords cibles quand on sort de la carte (PC uniquement)
-                clearTargetCoords(map.raw?.sector?.name ?? "Nothing selected");
+                clearTargetCoords(map.raw?.sector?.name ?? t("Nothing selected"));
 
                 // Cacher le tooltip
                 hideHoverTooltip();

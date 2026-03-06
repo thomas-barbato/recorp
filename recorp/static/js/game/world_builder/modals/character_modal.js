@@ -1,3 +1,8 @@
+function t(text) {
+    if (typeof gettext === "function") return gettext(text);
+    return text;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -68,9 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltip.querySelector('.tt-meta').textContent = `Lv ${level} • ${progress}%`;
         // Compose body with minimal HTML
         const body = [];
-        if (desc) body.push(`<div><strong>Description:</strong> ${desc}</div>`);
-        if (effects) body.push(`<div style="margin-top:6px"><strong>Effects:</strong> ${effects}</div>`);
-        if (expertise) body.push(`<div style="margin-top:6px"><strong>Expertise:</strong> ${expertise}</div>`);
+        if (desc) body.push(`<div><strong>${t('Description')}:</strong> ${desc}</div>`);
+        if (effects) body.push(`<div style="margin-top:6px"><strong>${t('Effects')}:</strong> ${effects}</div>`);
+        if (expertise) body.push(`<div style="margin-top:6px"><strong>${t('Expertise')}:</strong> ${expertise}</div>`);
         tooltip.querySelector('.tt-body').innerHTML = body.join('');
     }
 
@@ -113,9 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
         container._owner = elem;
         container.innerHTML = `
             <div style="font-weight:700; color:#A8FFDB; margin-bottom:6px;">${elem.dataset.skillName || ''} – Lv ${elem.dataset.skillLevel || ''}</div>
-            ${ desc ? `<div style="margin-bottom:8px;"><strong>Description:</strong> ${desc}</div>` : '' }
-            ${ effects ? `<div style="margin-bottom:6px;"><strong>Effects:</strong> ${effects}</div>` : '' }
-            ${ expertise ? `<div><strong>Expertise:</strong> ${expertise}</div>` : '' }
+            ${ desc ? `<div style="margin-bottom:8px;"><strong>${t('Description')}:</strong> ${desc}</div>` : '' }
+            ${ effects ? `<div style="margin-bottom:6px;"><strong>${t('Effects')}:</strong> ${effects}</div>` : '' }
+            ${ expertise ? `<div><strong>${t('Expertise')}:</strong> ${expertise}</div>` : '' }
         `;
         
         // Insert after the progress bar

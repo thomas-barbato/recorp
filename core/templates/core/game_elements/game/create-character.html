@@ -60,7 +60,7 @@
                 <!-- Bouton suivant -->
                 <div class="flex justify-center mt-4">
                     <button type="button" id="next-btn" disabled class="nav-button px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold font-orbitron rounded-lg text-base sm:text-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-3 shadow-lg">
-                        <span>SUIVANT</span>
+                        <span>{% translate "Next" %}</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -74,7 +74,7 @@
                         {% translate "Character creation" %}
                     </h1>
                     <p class="text-base sm:text-lg md:text-xl text-emerald-300/80 font-semibold">
-                        Configurez votre personnage
+                        {% translate "Configure your character" %}
                     </p>
                 </div>
 
@@ -193,7 +193,7 @@
                             <label for="id_name" class="block mb-3 text-sm sm:text-base md:text-lg font-bold text-emerald-300 font-orbitron uppercase">
                                 {% translate "character name" %} <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="id_name" name="name" class="w-full p-3 bg-emerald-900/60 border border-emerald-500/40 rounded-lg text-emerald-300 placeholder-emerald-300/40 font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Entrez le nom de votre personnage" required />
+                            <input type="text" id="id_name" name="name" class="w-full p-3 bg-emerald-900/60 border border-emerald-500/40 rounded-lg text-emerald-300 placeholder-emerald-300/40 font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="{% translate 'Enter your character name' %}" required />
                         </div>
 
                         <!-- Description -->
@@ -211,10 +211,10 @@
                 <div class="flex justify-between items-center mt-6">
                     <button type="button" id="previous-btn"class="nav-button px-6 py-3 border-2 border-red-500/60 hover:border-red-400 text-red-400 hover:text-red-300 font-bold font-orbitron rounded-lg transition-all flex items-center gap-3 text-sm sm:text-base">
                         <i class="fas fa-arrow-left"></i>
-                        <span>RETOUR</span>
+                        <span>{% translate "Back" %}</span>
                     </button>
                     <button type="button" id="create-character-submit-button" disabled class="nav-button px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold font-orbitron rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-lg text-base sm:text-lg">
-                        VALIDER
+                        {% translate "Confirm" %}
                     </button>
                 </div>
             </div>

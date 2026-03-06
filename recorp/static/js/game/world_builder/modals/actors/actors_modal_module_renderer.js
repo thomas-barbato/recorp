@@ -1,6 +1,11 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 (function () {
 
+    function t(text) {
+        if (typeof gettext === "function") return gettext(text);
+        return text;
+    }
+
     function getModuleEffectsArray(moduleObject) {
         if (Array.isArray(moduleObject?.effects)) {
             return moduleObject.effects.filter((entry) => entry && typeof entry === "object");
@@ -78,7 +83,7 @@
             text-emerald-200 shadow-lg shadow-black/60 p-2 backdrop-blur-sm
         `;
         moduleTooltipName.className = "font-bold text-emerald-300 text-sm font-shadow";
-        moduleTooltipName.textContent = moduleObject?.name || "Unknown module";
+        moduleTooltipName.textContent = moduleObject?.name || t("Unknown module");
         moduleTooltipUl.append(moduleTooltipName);
 
         const effects = getModuleEffectsArray(moduleObject);
@@ -122,7 +127,7 @@
         headerBtn.dataset.accordionToggle = accordionId;
 
         const textSpan = document.createElement("span");
-        textSpan.textContent = categoryInfo.label;
+        textSpan.textContent = t(categoryInfo.label);
 
         const arrowSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         arrowSvg.classList.add("w-3", "h-3", "transition-transform", "duration-200");

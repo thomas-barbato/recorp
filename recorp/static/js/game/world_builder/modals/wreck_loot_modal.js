@@ -1,4 +1,8 @@
 (function () {
+    function t(text) {
+        if (typeof gettext === "function") return gettext(text);
+        return text;
+    }
     const state = {
         root: null,
         inline: null,
@@ -37,10 +41,10 @@
             <div class="modal-animated-panel wreck-loot-panel transform scale-90 opacity-0 transition-all duration-300 ease-out" role="dialog" aria-modal="true" aria-labelledby="wreck-loot-title">
                 <div class="wreck-loot-header p-1 flex flex-row items-center">
                     <div class="wreck-loot-title-wrap flex flex-col w-[95%]">
-                        <div id="wreck-loot-title" class="wreck-loot-title lg:text-xl text-base text-center font-bold flex w-full text-white p-1 justify-center">Loot Wreck</div>
+                        <div id="wreck-loot-title" class="wreck-loot-title lg:text-xl text-base text-center font-bold flex w-full text-white p-1 justify-center">${t("Loot Wreck")}</div>
                         <div id="wreck-loot-subtitle" class="wreck-loot-subtitle"></div>
                     </div>
-                    <button type="button" id="wreck-loot-close-btn" class="wreck-loot-close" aria-label="Close">×</button>
+                    <button type="button" id="wreck-loot-close-btn" class="wreck-loot-close" aria-label="${t("Close")}">×</button>
                 </div>
                 <div id="wreck-loot-tabs" class="wreck-loot-tabs hidden"></div>
                 <div id="wreck-loot-timer" class="wreck-loot-timer hidden"></div>
@@ -48,7 +52,7 @@
                 <div id="wreck-loot-content" class="wreck-loot-content"></div>
                 <div class="p-2 flex flex-row w-full mx-auto">
                     <div class="w-full flex justify-center items-center py-3 relative z-10">
-                        <button type="button" id="wreck-loot-close-footer-btn" class="text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all">Close</button>
+                        <button type="button" id="wreck-loot-close-footer-btn" class="text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all">${t("Close")}</button>
                     </div>
                 </div>
             </div>
@@ -228,8 +232,8 @@
             const empty = document.createElement("div");
             empty.className = "wreck-loot-empty";
             empty.textContent = title.toLowerCase().includes("module")
-                ? "Aucun module disponible."
-                : "Aucune ressource disponible.";
+                ? t("No modules available.")
+                : t("No resources available.");
             list.appendChild(empty);
             return section;
         }
@@ -247,7 +251,7 @@
 
             const name = document.createElement("div");
             name.className = "wreck-loot-item-name";
-            name.textContent = item?.name || (item?.kind === "MODULE" ? "Module" : "Resource");
+            name.textContent = item?.name || (item?.kind === "MODULE" ? t("Module") : t("Resource"));
             left.appendChild(name);
 
             const meta = document.createElement("div");
@@ -286,7 +290,7 @@
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "wreck-loot-btn";
-            btn.textContent = "Loot";
+            btn.textContent = t("Loot");
             btn.disabled = !lockOwned || pending;
             btn.addEventListener("click", () => requestTake(item, mode));
             row.appendChild(btn);
@@ -317,14 +321,14 @@
         const contentEl = getEl("wreck-loot-content");
 
         if (titleEl) {
-            titleEl.textContent = activeMode === "SALVAGE" ? "Salvage" : "Fouille";
+            titleEl.textContent = activeMode === "SALVAGE" ? t("Salvage") : t("Search");
         }
         if (state.inline?.modalId) {
             const outerTitle = document.querySelector(`#${state.inline.modalId}-header h3`);
-            if (outerTitle) outerTitle.textContent = activeMode === "SALVAGE" ? "Salvage" : "Fouille";
+            if (outerTitle) outerTitle.textContent = activeMode === "SALVAGE" ? t("Salvage") : t("Search");
         }
         if (subtitleEl) {
-            subtitleEl.textContent = payload.ship_name ? `Carcasse: ${payload.ship_name}` : "";
+            subtitleEl.textContent = payload.ship_name ? `${t("Wreck")}: ${payload.ship_name}` : "";
         }
 
         if (tabsEl) {
@@ -336,9 +340,9 @@
         if (timerEl) {
             if (pending) {
                 const remaining = getRemainingSecondsFromIso(pending.execute_at);
-                const modeLabel = String(pending.mode || activeMode).toUpperCase() === "SALVAGE" ? "Salvage" : "Fouille";
+                const modeLabel = String(pending.mode || activeMode).toUpperCase() === "SALVAGE" ? t("Salvage") : t("Search");
                 timerEl.classList.remove("hidden");
-                timerEl.textContent = `${modeLabel} en cours: ${remaining}s`;
+                timerEl.textContent = `${modeLabel} ${t("in progress")}: ${remaining}s`;
             } else {
                 timerEl.classList.add("hidden");
                 timerEl.textContent = "";
@@ -374,17 +378,17 @@
                 const info = document.createElement("div");
                 info.className = "wreck-loot-mode-info";
                 info.innerHTML = `
-                    <span class="wreck-loot-pill ${req?.satisfied ? "is-ok" : "is-bad"}">Scavenging module ${req?.satisfied ? "OK" : "requis"}</span>
-                    <span class="wreck-loot-pill ${currentAp >= apCost ? "is-ok" : "is-bad"}">AP ${currentAp} / coût ${apCost}</span>
+                    <span class="wreck-loot-pill ${req?.satisfied ? "is-ok" : "is-bad"}">${t("Scavenging module")} ${req?.satisfied ? t("OK") : t("required")}</span>
+                    <span class="wreck-loot-pill ${currentAp >= apCost ? "is-ok" : "is-bad"}">${t("AP")} ${currentAp} / ${t("Cost")} ${apCost}</span>
                     <span class="wreck-loot-pill">Portée max ${3}</span>
                 `;
                 contentEl.appendChild(info);
 
-                contentEl.appendChild(createListSection("Ressources de salvage", Number(payload.salvage?.resource_count || 0), payload.salvage?.resources || [], "SALVAGE"));
+                contentEl.appendChild(createListSection(t("Salvage resources"), Number(payload.salvage?.resource_count || 0), payload.salvage?.resources || [], "SALVAGE"));
                 contentEl.appendChild(createListSection("Modules récupérables", Number(payload.salvage?.module_count || 0), payload.salvage?.modules || [], "SALVAGE"));
             } else {
-                contentEl.appendChild(createListSection("Ressources en soute", Number(payload.fouille?.resource_count || 0), payload.fouille?.resources || [], "FOUILLE"));
-                contentEl.appendChild(createListSection("Modules en soute", Number(payload.fouille?.module_count || 0), payload.fouille?.modules || [], "FOUILLE"));
+                contentEl.appendChild(createListSection(t("Stored resources"), Number(payload.fouille?.resource_count || 0), payload.fouille?.resources || [], "FOUILLE"));
+                contentEl.appendChild(createListSection(t("Stored modules"), Number(payload.fouille?.module_count || 0), payload.fouille?.modules || [], "FOUILLE"));
             }
         }
 
@@ -464,7 +468,7 @@
             state.pingedActionKey = null;
             state.requestedMode = String(mode || "FOUILLE").toUpperCase();
             const outerTitle = document.querySelector(`#${modalId}-header h3`);
-            if (outerTitle) outerTitle.textContent = state.requestedMode === "SALVAGE" ? "Salvage" : "Fouille";
+            if (outerTitle) outerTitle.textContent = state.requestedMode === "SALVAGE" ? t("Salvage") : t("Search");
             ensureInlineHost();
             return requestOpen(wreckId, state.requestedMode);
         },
