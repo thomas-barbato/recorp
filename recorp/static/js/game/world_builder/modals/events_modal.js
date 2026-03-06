@@ -101,14 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isOpen) return;
         isOpen = true;
 
-        modal.classList.remove("hidden");
-
-        setTimeout(() => {
-            content.classList.remove("scale-90", "opacity-0");
-            content.classList.add("scale-100", "opacity-100");
-        }, 50);
-
-        document.body.style.overflow = "hidden";
+        if (window.ModalAnimator?.open) {
+            window.ModalAnimator.open(modal, {
+                panel: content,
+                durationMs: 300,
+            });
+        } else {
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                content.classList.remove("scale-90", "opacity-0");
+                content.classList.add("scale-100", "opacity-100");
+            }, 50);
+            document.body.style.overflow = "hidden";
+        }
 
         currentPage = 1;
         bindPaginationButtons();
@@ -118,6 +123,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeModal() {
         if (!isOpen) return;
         isOpen = false;
+
+        if (window.ModalAnimator?.close) {
+            window.ModalAnimator.close(modal, {
+                panel: content,
+                durationMs: 300,
+            });
+            return;
+        }
 
         content.classList.add("scale-90", "opacity-0");
         content.classList.remove("scale-100", "opacity-100");

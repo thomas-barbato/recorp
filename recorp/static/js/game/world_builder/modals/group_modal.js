@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeModal() {
         if (!modalOpen) return;
         modalOpen = false;
-        content.classList.add("scale-90", "opacity-0");
         stopPolling();
         if (searchDebounceId) {
             window.clearTimeout(searchDebounceId);
@@ -101,6 +100,16 @@ document.addEventListener("DOMContentLoaded", () => {
             inviteSearchAbortController = null;
         }
         hideAutocomplete();
+
+        if (window.ModalAnimator?.close) {
+            window.ModalAnimator.close(modal, {
+                panel: content,
+                durationMs: 300,
+            });
+            return;
+        }
+
+        content.classList.add("scale-90", "opacity-0");
         window.setTimeout(() => {
             modal.classList.add("hidden");
             document.body.style.overflow = "";
@@ -125,12 +134,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function openModal() {
         modalOpen = true;
-        modal.classList.remove("hidden");
-        document.body.style.overflow = "hidden";
-        window.setTimeout(() => {
-            content.classList.remove("scale-90", "opacity-0");
-            content.classList.add("scale-100", "opacity-100");
-        }, 40);
+        if (window.ModalAnimator?.open) {
+            window.ModalAnimator.open(modal, {
+                panel: content,
+                durationMs: 300,
+            });
+        } else {
+            modal.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+            window.setTimeout(() => {
+                content.classList.remove("scale-90", "opacity-0");
+                content.classList.add("scale-100", "opacity-100");
+            }, 40);
+        }
         refreshState();
         stopPolling();
         startPolling();

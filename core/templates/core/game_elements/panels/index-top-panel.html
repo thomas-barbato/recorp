@@ -149,7 +149,7 @@
     <div id="modal-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-[9998] animate-modal-rise"></div>
     
     <!-- Contenu du modal -->
-    <div class="relative bg-zinc-900/95 border border-emerald-400/30 rounded-2xl p-8 max-w-md w-full glow transform transition-all duration-300 scale-95 opacity-0 z-[9999] energy-border" id="modal-content">
+    <div class="modal-animated-panel relative bg-zinc-900/95 border border-emerald-400/30 rounded-2xl p-8 max-w-md w-full glow transform transition-all duration-300 ease-out scale-90 opacity-0 z-[9999] energy-border" id="modal-content">
         <!-- Bouton de fermeture -->
         <button id="close-modal" class="absolute top-4 right-4 text-emerald-400 hover:text-emerald-300 text-2xl transition-colors">
             <i class="fas fa-times"></i>
@@ -285,37 +285,52 @@ document.addEventListener('DOMContentLoaded', function() {
         const modalContent = document.getElementById('modal-content');
         
         // Ouvrir le modal
-        if (loginModalBtn && loginModal) {
-            loginModalBtn.addEventListener('click', function() {
-                loginModal.classList.remove('hidden');
-                // Ajouter le blur au contenu de la page
-                if (pageContent) {
-                    pageContent.classList.add('modal-blur-active');
-                }
-                // Animation d'ouverture
-                setTimeout(() => {
-                    modalContent.style.transform = 'scale(1)';
-                    modalContent.style.opacity = '1';
-                }, 10);
-                // Empêcher le scroll du body
-                document.body.style.overflow = 'hidden';
-            });
+        function openLoginModal() {
+            if (!loginModal || !modalContent) return;
+            if (pageContent) {
+                pageContent.classList.add('modal-blur-active');
+            }
+            if (window.ModalAnimator?.open) {
+                window.ModalAnimator.open(loginModal, {
+                    panel: modalContent,
+                    bodyLockKey: 'index-login-modal',
+                    durationMs: 300,
+                });
+                return;
+            }
+            loginModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.style.transform = 'scale(1)';
+                modalContent.style.opacity = '1';
+            }, 10);
+            document.body.style.overflow = 'hidden';
         }
-        
+
+        if (loginModalBtn && loginModal) {
+            loginModalBtn.addEventListener('click', openLoginModal);
+        }
+
         // Fermer le modal
         function closeModal() {
-            modalContent.style.transform = 'scale(0.95)';
-            modalContent.style.opacity = '0';
-            // Retirer le blur du contenu de la page
             if (pageContent) {
                 pageContent.classList.remove('modal-blur-active');
             }
+            if (window.ModalAnimator?.close) {
+                window.ModalAnimator.close(loginModal, {
+                    panel: modalContent,
+                    bodyLockKey: 'index-login-modal',
+                    durationMs: 300,
+                });
+                return;
+            }
+            modalContent.style.transform = 'scale(0.9)';
+            modalContent.style.opacity = '0';
             setTimeout(() => {
                 loginModal.classList.add('hidden');
                 document.body.style.overflow = '';
             }, 300);
         }
-        
+
         if (closeModalBtn) {
             closeModalBtn.addEventListener('click', closeModal);
         }
@@ -334,15 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Si des messages d'erreur existent, ouvrir automatiquement le modal
         {% if messages %}
         if (loginModal) {
-            loginModal.classList.remove('hidden');
-            if (pageContent) {
-                pageContent.classList.add('modal-blur-active');
-            }
-            setTimeout(() => {
-                modalContent.style.transform = 'scale(1)';
-                modalContent.style.opacity = '1';
-            }, 10);
-            document.body.style.overflow = 'hidden';
+            openLoginModal();
         }
         {% endif %}
     }

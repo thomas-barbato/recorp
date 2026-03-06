@@ -34,7 +34,7 @@
         overlay.id = "wreck-loot-modal";
         overlay.className = "wreck-loot-overlay hidden";
         overlay.innerHTML = `
-            <div class="wreck-loot-panel" role="dialog" aria-modal="true" aria-labelledby="wreck-loot-title">
+            <div class="modal-animated-panel wreck-loot-panel transform scale-90 opacity-0 transition-all duration-300 ease-out" role="dialog" aria-modal="true" aria-labelledby="wreck-loot-title">
                 <div class="wreck-loot-header p-1 flex flex-row items-center">
                     <div class="wreck-loot-title-wrap flex flex-col w-[95%]">
                         <div id="wreck-loot-title" class="wreck-loot-title lg:text-xl text-base text-center font-bold flex w-full text-white p-1 justify-center">Loot Wreck</div>

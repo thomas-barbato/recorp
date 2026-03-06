@@ -1,12 +1,12 @@
 {% load static %}
 {% load i18n %}
 
-<div id="character-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 modal-z-index flex justify-center items-center w-full h-full bg-black/70 backdrop-blur-sm animate-modal-fade">
+<div id="character-modal" data-modal-animator-flowbite="true" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 modal-z-index flex justify-center items-center w-full h-full bg-black/70 backdrop-blur-sm animate-modal-fade">
     
     <!-- HOLOGRAPHIC HALO -->
     <div id="holo-ring" class="absolute inset-0 md:rounded-2xl pointer-events-none glow-ring"></div>
     
-    <div class="relative md:w-[95%] max-w-6xl w-full md:max-h-[90vh] h-full bg-zinc-950/95 border border-emerald-400/30 md:rounded-2xl shadow-lg flex flex-col md:overflow-hidden overflow-scroll animate-modal-rise energy-border">
+    <div class="relative md:w-[95%] max-w-6xl w-full md:max-h-[90vh] h-full bg-zinc-950/95 border border-emerald-400/30 md:rounded-2xl shadow-lg flex flex-col md:overflow-hidden overflow-scroll modal-animated-panel transform scale-90 opacity-0 transition-all duration-300 ease-out energy-border">
     
         
         <!-- HEADER -->

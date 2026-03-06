@@ -48,6 +48,18 @@ function closeModal() {
         searchAbortController = null;
     }
     clearComposeOutsideClickHandler();
+
+    if (window.ModalAnimator?.close) {
+        window.ModalAnimator.close(modal, {
+            panel: content,
+            durationMs: 300,
+            onAfterClose: () => {
+                mailList.innerHTML = '';
+            },
+        });
+        return;
+    }
+
     content.classList.add('scale-90', 'opacity-0');
     setTimeout(() => {
         modal.classList.add('hidden');
@@ -60,12 +72,21 @@ function closeModal() {
 function openModal() {
     if (!modal || !content) return;
     isModalOpen = true;
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => {
-        content.classList.remove('scale-90', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-    }, 50);
+
+    if (window.ModalAnimator?.open) {
+        window.ModalAnimator.open(modal, {
+            panel: content,
+            durationMs: 300,
+        });
+    } else {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            content.classList.remove('scale-90', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 50);
+    }
+
     loadMessages();
 }
 

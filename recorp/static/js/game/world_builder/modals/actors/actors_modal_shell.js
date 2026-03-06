@@ -145,7 +145,7 @@
             "lg:max-w-[680px]",
             "xl:max-w-[520px]",
             "justify-center","mx-auto","flex-col","border", borderColor, "transition-all", "bg-zinc-950/95",
-            "md:rounded-2xl", "scale-100", "opacity-100", "font-shadow"
+            "md:rounded-2xl", "modal-animated-panel", "transform", "scale-90", "opacity-0", "duration-300", "ease-out", "font-shadow"
         );
 
         // === HEADER ===

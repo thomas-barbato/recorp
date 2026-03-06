@@ -2260,6 +2260,11 @@ canvas {
     z-index: 9999 !important;
 }
 
+.modal-animated-panel {
+    transform-origin: center;
+    will-change: transform, opacity;
+}
+
 .ui-choice-modal-layer {
     position: fixed;
     inset: 0;

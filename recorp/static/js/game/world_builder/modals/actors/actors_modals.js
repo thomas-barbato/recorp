@@ -1066,7 +1066,7 @@ function createUnknownNpcModal(modalId, modalData) {
     return;
 }
 
-function refreshModalAfterScan(targetKey) {
+async function refreshModalAfterScan(targetKey) {
 
     const modalNormal = `modal-${targetKey}`;
     const modalUnknown = `modal-unknown-${targetKey}`;
@@ -1074,16 +1074,16 @@ function refreshModalAfterScan(targetKey) {
     const normalOpen = document.getElementById(modalNormal);
     const unknownOpen = document.getElementById(modalUnknown);
 
-    // modal unknown ouvert → switch vers modal normal
+    // modal unknown ouvert ? switch vers modal normal
     if (unknownOpen) {
-        open_close_modal(modalUnknown); // close
-        open_close_modal(modalNormal);  // open avec nouvelles données
+        await open_close_modal(modalUnknown); // close
+        await open_close_modal(modalNormal);  // open avec nouvelles donn�es
         return;
     }
 
-    // modal normal déjà ouvert → refresh
+    // modal normal d�j� ouvert ? refresh
     if (normalOpen) {
-        open_close_modal(modalNormal);
-        open_close_modal(modalNormal);
+        await open_close_modal(modalNormal);
+        await open_close_modal(modalNormal);
     }
 }

@@ -52,13 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function openModal() {
         if (!hasChatUi) return;
         isModalOpen = true;
-        chatModal.classList.remove("hidden");
-        setTimeout(() => {
-            chatContent.classList.remove("scale-90", "opacity-0");
-            chatContent.classList.add("scale-100", "opacity-100");
-            forceScrollToBottom(); 
-        }, 50);
-        document.body.style.overflow = "hidden";
+
+        if (window.ModalAnimator?.open) {
+            window.ModalAnimator.open(chatModal, {
+                panel: chatContent,
+                durationMs: 300,
+            });
+            setTimeout(() => {
+                forceScrollToBottom();
+            }, 50);
+        } else {
+            chatModal.classList.remove("hidden");
+            setTimeout(() => {
+                chatContent.classList.remove("scale-90", "opacity-0");
+                chatContent.classList.add("scale-100", "opacity-100");
+                forceScrollToBottom();
+            }, 50);
+            document.body.style.overflow = "hidden";
+        }
+
         loadChatMessages(currentChannel).then(() => {
             forceScrollToBottom();
             markChannelAsRead(currentChannel);
@@ -75,6 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             delete chatMessageAbortControllerByChannel[channel];
         });
+
+        if (window.ModalAnimator?.close) {
+            window.ModalAnimator.close(chatModal, {
+                panel: chatContent,
+                durationMs: 300,
+            });
+            return;
+        }
+
         chatContent.classList.add("scale-90", "opacity-0");
         setTimeout(() => {
             chatModal.classList.add("hidden");

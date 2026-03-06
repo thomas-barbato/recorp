@@ -24,13 +24,13 @@
         return document.getElementById(modalId) !== null;
     }
 
-    function refreshModalIfOpen(modalId) {
+    async function refreshModalIfOpen(modalId) {
         const el = document.getElementById(modalId);
         if (!el) return false; // pas ouvert
 
-        // close puis open
-        window.open_close_modal?.(modalId);
-        window.open_close_modal?.(modalId);
+        // close puis open (s�quenc� pour pr�server l'animation)
+        await window.open_close_modal?.(modalId);
+        await window.open_close_modal?.(modalId);
         return true;
     }
 
@@ -40,14 +40,23 @@
         const modalContainer = document.getElementById("modal-container");
         if (!modalContainer) return;
 
-        // Toggle close si même modal déjà ouvert
+        // Toggle close si m�me modal d�j� ouvert
         const existing = document.getElementById(modalId);
         if (existing) {
 
             // unregister du modal vivant
             getModalLive()?.unregister?.(modalId);
 
-            existing.remove();
+            if (window.ModalAnimator?.close) {
+                await window.ModalAnimator.close(existing, {
+                    panel: existing.querySelector('.modal-animated-panel'),
+                    removeOnClose: true,
+                    unlockBody: false,
+                    durationMs: 300,
+                });
+            } else {
+                existing.remove();
+            }
             return;
         }
 
@@ -158,7 +167,17 @@
             modal.remove();
 
             const built = document.getElementById(modalId);
-            if (built) built.classList.remove("hidden");
+            if (built) {
+                if (window.ModalAnimator?.open) {
+                    window.ModalAnimator.open(built, {
+                        panel: built.querySelector('.modal-animated-panel'),
+                        lockBody: false,
+                        durationMs: 300,
+                    });
+                } else {
+                    built.classList.remove("hidden");
+                }
+            }
             loader.remove();
             
         } catch (e) {
