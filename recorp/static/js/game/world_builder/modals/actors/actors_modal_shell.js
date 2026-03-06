@@ -1,6 +1,11 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 (function () {
 
+    function t(text) {
+        if (typeof gettext === "function") return gettext(text);
+        return text;
+    }
+
     function h(tag, options = {}, children = []) {
         const el = document.createElement(tag);
 
@@ -228,7 +233,7 @@
                 footer_container.className = "w-full flex justify-center items-center py-3  relative z-10";
                 let closeBtn = document.createElement('button');
                 closeBtn.className = "text-emerald-400 hover:text-[#B1F1CB] font-bold px-6 py-1.5 rounded-md border border-emerald-400/30 hover:border-[#B1F1CB] text-sm transition-all";
-                closeBtn.textContent= gettext('close');
+                closeBtn.textContent = t("Close");
                 closeBtn.onclick = () => {
 
                     const root = document.getElementById(modalId);

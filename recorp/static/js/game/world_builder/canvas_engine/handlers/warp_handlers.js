@@ -1,4 +1,4 @@
-function getGameState() {
+﻿function getGameState() {
     return window.GameState || null;
 }
 
@@ -12,6 +12,11 @@ function getCurrentPlayerId() {
 
 function getCurrentPlayerData() {
     return getGameState()?.currentPlayer ?? window.currentPlayer ?? null;
+}
+
+function t(text) {
+    if (typeof gettext === "function") return gettext(text);
+    return text;
 }
 
 function requestWorldRedraw() {
@@ -89,15 +94,15 @@ function removeActorFromMap(map, actorKey, data) {
 }
 
 export function handlerWarpFailed(data) {
-    console.warn("[warp] Warp impossible :", data);
+    console.warn("[warp] Warp unavailable:", data);
 
     // cacher loader si actif
     if (window.sectorLoader) {
-        window.sectorLoader.setText("Impossible d'effectuer le warp.");
+        window.sectorLoader.setText(t("Unable to warp."));
         setTimeout(() => window.sectorLoader.hide?.(), 200);
     }
 
-    // réactiver actions
+    // rÃ©activer actions
     window._syncInProgress = false;
 
     // message UI
@@ -105,14 +110,15 @@ export function handlerWarpFailed(data) {
     const currentPlayer = getCurrentPlayerData();
     if (engine?.floatingMessages) {
         engine.floatingMessages.addMessage(
-            "⚠ Warp impossible : zone saturée",
+            t("Warp unavailable: saturated zone."),
+            
             {
                 x: currentPlayer?.user?.coordinates?.x,
                 y: currentPlayer?.user?.coordinates?.y
             }
         );
     } else {
-        alert("Warp impossible : aucune place disponible autour de la warpzone.");
+        alert(t("Warp unavailable: no free position around the warp zone."));
     }
 }
 
@@ -130,7 +136,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
     try {
         const engine = getEngine();
         if (!engine) {
-            console.error("[warp] canvasEngine indisponible");
+            console.error("[warp] canvasEngine unavailable");
             return;
         }
 
@@ -138,23 +144,23 @@ export function handleWarpTravel(sectorWarpZoneId) {
         const map = engine.map;
 
         if (!ws) {
-            console.error("[warp] ws manquant (engine.ws)");
+            console.error("[warp] missing ws (engine.ws)");
             return;
         }
         if (!map) {
-            console.error("[warp] map manquante (engine.map)");
+            console.error("[warp] missing map (engine.map)");
             return;
         }
 
         const playerId = getCurrentPlayerId();
         if (!playerId) {
-            console.error("[warp] Aucun current_player_id");
+            console.error("[warp] missing current_player_id");
             return;
         }
 
         const me = map.findPlayerById(playerId);
         if (!me) {
-            console.error("[warp] Vaisseau du joueur introuvable dans mapData");
+            console.error("[warp] player ship not found in mapData");
             return;
         }
 
@@ -165,7 +171,7 @@ export function handleWarpTravel(sectorWarpZoneId) {
 
         const currentSectorId = getCurrentSectorId();
         if (!currentSectorId) {
-            console.error("[warp] map_informations.sector.id introuvable");
+            console.error("[warp] map_informations.sector.id not found");
             return;
         }
 
@@ -183,10 +189,10 @@ export function handleWarpTravel(sectorWarpZoneId) {
         // loading screen optionnel
         if (window.sectorLoader) {
             try {
-                window.sectorLoader.setText("Saut warp en cours…");
+                window.sectorLoader.setText("Saut warp en coursâ€¦");
                 window.sectorLoader.show?.();
             } catch (e) {
-                console.warn("[warp] sectorLoader présent mais erreur :", e);
+                console.warn("[warp] sectorLoader prÃ©sent mais erreur :", e);
             }
         }
 
@@ -195,11 +201,11 @@ export function handleWarpTravel(sectorWarpZoneId) {
             message: JSON.stringify(payload)
         });
 
-        // éviter actions concurrentes
+        // Ã©viter actions concurrentes
         window._syncInProgress = true;
 
     } catch (e) {
-        console.error("[warp] Exception handleWarpTravel :", e);
+        console.error("[warp] handleWarpTravel exception:", e);
     }
 }
 
@@ -213,19 +219,19 @@ export function handlerRemovePlayer(data){
     const map = engine.map;
     if (!map) return;
 
-    // 1️⃣ Supprimer l’acteur de la map
+    // 1ï¸âƒ£ Supprimer lâ€™acteur de la map
     removeActorFromMap(map, actorId, evt);
 
-    // 2️⃣ 🔥 PURGE DES DONNÉES DE SCAN
+    // 2ï¸âƒ£ ðŸ”¥ PURGE DES DONNÃ‰ES DE SCAN
     if (actorId && isTargetScanned(actorId)) {
         purgeScanData(actorId);
         refreshScannedTargetUi(actorId);
     }
 
-    // 3️⃣ Redraw
+    // 3ï¸âƒ£ Redraw
     requestWorldRedraw();
 
-    // Fermer CombatScene si cible ou joueur concerné
+    // Fermer CombatScene si cible ou joueur concernÃ©
     if (actorId) closeCombatSceneIfActorAffected(actorId, "actor_removed");
 
 }
@@ -242,7 +248,7 @@ export function handlerShipRemoved(data){
     removeActorFromMap(map, actorId, evt);
     requestWorldRedraw();
 
-    // Fermer CombatScene si cible ou joueur concerné
+    // Fermer CombatScene si cible ou joueur concernÃ©
     if (actorId) closeCombatSceneIfActorAffected(actorId, "actor_removed");
 }
 
@@ -269,7 +275,7 @@ export function handlerShipAdded(data){
 }
 
 export function handlerWarpComplete(){
-    // Fermer CombatScene si cible ou joueur concerné
+    // Fermer CombatScene si cible ou joueur concernÃ©
     getActionSceneManager()?.close?.({ reason: "warp_complete" });
     window.location.reload()
 
@@ -277,3 +283,4 @@ export function handlerWarpComplete(){
 
 // Rendre disponible globalement pour modals.js
 window.handleWarpTravel = handleWarpTravel;
+

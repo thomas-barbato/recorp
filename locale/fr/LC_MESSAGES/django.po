@@ -2295,3 +2295,74 @@ msgstr "Log : %(raw)s"
 
 msgid "Unknown log (%(event)s)"
 msgstr "Log inconnu (%(event)s)"
+
+# Gameplay JS translations
+msgid "Unable to warp."
+msgstr "Warp impossible."
+
+msgid "Warp unavailable: saturated zone."
+msgstr "Warp impossible : zone saturee."
+
+msgid "Warp unavailable: no free position around the warp zone."
+msgstr "Warp impossible : aucune place libre autour de la zone de warp."
+
+msgid "Warp jump in progress..."
+msgstr "Saut warp en cours..."
+
+msgid "Intel Report Transmission"
+msgstr "Transmission du rapport de renseignement"
+
+msgid "Enter player name..."
+msgstr "Entrer le nom du joueur..."
+
+msgid "Optional message"
+msgstr "Message optionnel"
+
+msgid "Add a personal note..."
+msgstr "Ajouter une note personnelle..."
+
+msgid "Intel report"
+msgstr "Rapport de renseignement"
+
+msgid "Send report"
+msgstr "Envoyer le rapport"
+
+msgid "PLAYER"
+msgstr "JOUEUR"
+
+msgid "NPC"
+msgstr "PNJ"
+
+msgid "NAME"
+msgstr "NOM"
+
+msgid "TARGET"
+msgstr "CIBLE"
+
+msgid "TYPE"
+msgstr "TYPE"
+
+msgid "FACTION"
+msgstr "FACTION"
+
+msgid "POSITION"
+msgstr "POSITION"
+
+msgid "SHIP"
+msgstr "VAISSEAU"
+
+msgid "SHIP NAME"
+msgstr "NOM DU VAISSEAU"
+
+msgid "SHIP CATEGORY"
+msgstr "CATEGORIE DU VAISSEAU"
+
+msgid "MODULES"
+msgstr "MODULES"
+
+msgid "Report sent"
+msgstr "Rapport envoye"
+
+msgid "Scan report"
+msgstr "Rapport de scan"
+

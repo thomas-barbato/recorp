@@ -1,15 +1,17 @@
 // Global, pour permettre l'utilisation dans modals.js sans passer au type "module"
 (function () {
 
+    function t(text) {
+        if (typeof gettext === "function") return gettext(text);
+        return text;
+    }
+
     let lastTargetContext = null;
 
     function getModalLive() {
         return window.ModalLive || null;
     }
 
-    /**
-     * EntrÃ©e principale
-     */
     window.openSendReportModal = function ({
         targetKey,
         targetType,
@@ -23,7 +25,6 @@
             modalId ||
             (targetType && targetId != null ? `modal-${targetType}_${targetId}` : null);
 
-        // Sauvegarde contexte
         lastTargetContext = {
             targetKey,
             targetType,
@@ -31,13 +32,13 @@
             modalData,
             targetModalId: resolvedTargetModalId
         };
-        
+
         const targetEl = resolvedTargetModalId ? document.getElementById(resolvedTargetModalId) : null;
         if (targetEl) {
             getModalLive()?.unregister?.(resolvedTargetModalId);
             targetEl.remove();
         }
-        
+
         const modalContainer = document.getElementById("modal-container");
         if (modalContainer) {
             modalContainer.innerHTML = "";
@@ -46,10 +47,6 @@
         createSendReportModal(modalData, resolvedTargetModalId);
     };
 
-
-    /**
-     * CrÃ©ation du modal Send Report
-     */
     function createSendReportModal(modalData, targetModalId) {
         const modalId = "send-report-modal";
 
@@ -73,6 +70,7 @@
 
         const modalHost = document.getElementById("modal-container") || document.body;
         modalHost.appendChild(modal);
+
         const scrollBody = modal.querySelector('[data-send-report-scroll]');
         if (scrollBody) {
             scrollBody.style.webkitOverflowScrolling = "touch";
@@ -86,14 +84,13 @@
     function renderHeader() {
         return `
             <div class="shrink-0 flex justify-between items-center px-5 py-4 border-b border-emerald-500/40 bg-gradient-to-r from-emerald-900/60 to-zinc-900/60 shadow-inner">
-
                 <h2 class="font-orbitron text-emerald-400 text-xl md:text-2xl font-bold uppercase tracking-widest flex items-center gap-3">
                     <i class="fa-solid fa-envelope"></i>
-                    TRANSMISSION â€” INTEL REPORT
+                    ${t("Intel Report Transmission").toUpperCase()}
                 </h2>
 
-                <button id="send-report-close" class="text-emerald-300 hover:text-red-400 transition">
-                    âœ•
+                <button id="send-report-close" class="text-emerald-300 hover:text-red-400 transition" aria-label="${t("Close")}">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
         `;
@@ -102,17 +99,15 @@
     function renderBody(modalData) {
         return `
             <div data-send-report-scroll="1" class="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 space-y-4">
-
-                <!-- Recipients -->
                 <div>
                     <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
-                        Recipient
+                        ${t("Recipient")}
                     </label>
                     <div class="relative p-2 bg-black/40 border border-emerald-500/30 rounded">
                         <input
                             id="recipient"
                             type="text"
-                            placeholder="Enter player name..."
+                            placeholder="${t("Enter player name...")}"
                             class="w-full bg-transparent text-emerald-200 outline-none text-sm"
                         />
                         <input id="recipient-player-id" type="hidden" value="">
@@ -123,32 +118,27 @@
                     <div id="report-toast-container" class="mt-2"></div>
                 </div>
 
-                <!-- Optional message -->
                 <div>
                     <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
-                        Optional message
+                        ${t("Optional message")}
                     </label>
                     <textarea
                         id="optional-message"
                         rows="3"
-                        placeholder="Add a personal noteâ€¦"
-                        class="w-full bg-black/40 border border-emerald-500/30 rounded
-                        text-emerald-200 text-sm p-2 resize-none outline-none"
-                        placeholder="Add a personal noteâ€¦">
+                        placeholder="${t("Add a personal note...")}"
+                        class="w-full bg-black/40 border border-emerald-500/30 rounded text-emerald-200 text-sm p-2 resize-none outline-none">
                     </textarea>
                 </div>
 
-                <!-- Intel report preview -->
                 <div>
                     <label class="text-xs text-emerald-300 uppercase tracking-wide font-bold font-orbitron">
-                        Intel report
+                        ${t("Intel report")}
                     </label>
 
                     <div id="report-content" class="p-3 md:max-h-[38dvh] md:overflow-y-auto bg-black/50 border border-emerald-500/20 rounded text-xs text-emerald-200 whitespace-pre-wrap break-words">
                         ${renderIntelReport(modalData)}
                     </div>
                 </div>
-
             </div>
         `;
     }
@@ -156,64 +146,54 @@
     function renderFooter() {
         return `
             <div class="border-t border-emerald-500/30 p-3 flex items-center gap-2 justify-center">
-
                 <button id="send-report-cancel"
-                    class="px-4 py-1 text-sm rounded
-                    border border-emerald-500/40 text-emerald-300
-                    hover:bg-emerald-900/40 transition">
-                    Cancel
+                    class="px-4 py-1 text-sm rounded border border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/40 transition">
+                    ${t("Cancel")}
                 </button>
 
                 <button id="send-report-submit"
-                    class="px-4 py-1 text-sm rounded
-                    bg-emerald-600/80 text-black
-                    hover:bg-emerald-500 transition font-semibold">
-                    Send report
+                    class="px-4 py-1 text-sm rounded bg-emerald-600/80 text-black hover:bg-emerald-500 transition font-semibold">
+                    ${t("Send report")}
                 </button>
             </div>
         `;
     }
 
-    /**
-     * GÃ©nÃ©ration du texte du rapport (lecture seule)
-     */
     function renderIntelReport(data) {
         const lines = [];
-        const apLabel = typeof gettext === "function" ? gettext("AP") : "AP";
-        const mpLabel = typeof gettext === "function" ? gettext("MP") : "MP";
-        const user = data.user || {};
+        const apLabel = t("AP");
+        const mpLabel = t("MP");
         const ship = data.ship || {};
-        const faction = data.player.faction_name || {};
-        
-        const user_type = data.player.is_npc == false ? "PLAYER": "NPC" ;
-        // === IDENTITÃ‰ ===
-        lines.push(`NAME: ${data.player.name}`);
-        
+        const faction = data.player.faction_name || "";
+        const userType = data.player.is_npc === false ? t("PLAYER") : t("NPC");
+
+        lines.push(`${t("NAME")}: ${data.player.name}`);
         lines.push("");
-        lines.push("--- TARGET ---");
-        lines.push(`TYPE: ${user_type}`);
+        lines.push(`--- ${t("TARGET")} ---`);
+        lines.push(`${t("TYPE")}: ${userType}`);
+
         if (faction) {
-            lines.push(`FACTION: ${faction}`);
-        }
-        let sector_name = document.getElementById('sector-name')?.textContent;
-        if (data.player.coordinates && sector_name) {
-            lines.push(`POSITION: ${sector_name} [Y: ${data.player.coordinates.y} ; X: ${data.player.coordinates.x}]`);
+            lines.push(`${t("FACTION")}: ${faction}`);
         }
 
-        if (data.player.current_ap && data.player.max_ap){
-            lines.push(`${apLabel}: ${data.player.current_ap} / ${data.player.max_ap}`)
+        const sectorName = document.getElementById("sector-name")?.textContent;
+        if (data.player.coordinates && sectorName) {
+            lines.push(`${t("POSITION")}: ${sectorName} [Y: ${data.player.coordinates.y} ; X: ${data.player.coordinates.x}]`);
         }
 
-        // === SHIP ===
+        if (data.player.current_ap && data.player.max_ap) {
+            lines.push(`${apLabel}: ${data.player.current_ap} / ${data.player.max_ap}`);
+        }
+
         lines.push("");
-        lines.push("--- SHIP ---");
+        lines.push(`--- ${t("SHIP")} ---`);
 
         if (ship.name) {
-            lines.push(`SHIP NAME: ${ship.name}`);
+            lines.push(`${t("SHIP NAME")}: ${ship.name}`);
         }
 
         if (ship.category) {
-            lines.push(`SHIP CATEGORY: ${ship.category}`);
+            lines.push(`${t("SHIP CATEGORY")}: ${ship.category}`);
         }
 
         if (ship.current_hp !== undefined) {
@@ -228,67 +208,59 @@
             lines.push(`${mpLabel}: ${ship.current_movement} / ${ship.max_movement}`);
         }
 
-        // === DEFENSES ===
         if (ship.current_ballistic_defense !== undefined) {
-            lines.push(`Ballistic: ${ship.current_ballistic_defense} / ${ship.max_ballistic_defense}`);
-            lines.push(`Thermal: ${ship.current_thermal_defense} / ${ship.max_thermal_defense}`);
-            lines.push(`Missile: ${ship.current_missile_defense} / ${ship.max_missile_defense}`);
+            lines.push(`${t("Ballistic")}: ${ship.current_ballistic_defense} / ${ship.max_ballistic_defense}`);
+            lines.push(`${t("Thermal")}: ${ship.current_thermal_defense} / ${ship.max_thermal_defense}`);
+            lines.push(`${t("Missile")}: ${ship.current_missile_defense} / ${ship.max_missile_defense}`);
         }
 
-        // === MODULES ===
         if (Array.isArray(ship.modules) && ship.modules.length > 0) {
             lines.push("");
-            lines.push("--- MODULES ---");
-            ship.modules.forEach(m => {
-                lines.push(`- ${m.name}`);
+            lines.push(`--- ${t("MODULES")} ---`);
+            ship.modules.forEach((moduleEntry) => {
+                lines.push(`- ${moduleEntry.name}`);
             });
         }
 
         return lines.join("\n");
     }
 
-    /**
-     * Events
-     */
     function bindSendReportEvents(modalId, targetModalId) {
         const modal = document.getElementById(modalId);
+        if (!modal) return;
 
-        // Autocomplete destinataire
         bindRecipientAutocomplete(modal);
 
-        modal.querySelector("#send-report-close")?.addEventListener("click", () => {
-            modal?.remove();
+        const close = () => {
+            modal.remove();
             if (targetModalId) open_close_modal(targetModalId);
-        });
-        modal.querySelector("#send-report-cancel")?.addEventListener("click", () => {
-            modal?.remove();
-            if (targetModalId) open_close_modal(targetModalId);
-        });
+        };
 
-        modal.querySelector("#send-report-submit")?.addEventListener("click", async (e) => {
-            const btn = e.target;
+        modal.querySelector("#send-report-close")?.addEventListener("click", close);
+        modal.querySelector("#send-report-cancel")?.addEventListener("click", close);
+
+        modal.querySelector("#send-report-submit")?.addEventListener("click", async (event) => {
+            const btn = event.target;
             const recipient = modal.querySelector("#recipient")?.value?.trim();
             let recipientId = modal.querySelector("#recipient-player-id")?.value;
             const optionalMessage = modal.querySelector("#optional-message")?.value || "";
 
             if (!recipient) {
-                showToast(gettext("Recipient not found"), false);
+                showToast(t("Recipient not found"), false);
                 return;
             }
 
-            // Fallback si pas dâ€™ID (saisie manuelle)
             if (!recipientId) {
                 recipientId = await resolveRecipientIdByName(recipient);
-
                 if (!recipientId) {
-                    showToast(gettext("Unknown player"), false, "report-toast-container");
+                    showToast(t("Unknown player"), false, "report-toast-container");
                     return;
                 }
             }
 
             const report = renderIntelReport(lastTargetContext.modalData);
             const body = composeFinalMessage(optionalMessage, report);
-            const subject = `Scan report â€” ${lastTargetContext.modalData.player.name}`;
+            const subject = `${t("Scan report")} - ${lastTargetContext.modalData.player.name}`;
 
             const payload = {
                 recipient,
@@ -301,17 +273,13 @@
             setLoadingState(btn, true);
             try {
                 await sendPrivateMessage(payload);
-                window.showToast(gettext("Report sent âœ“"), true, "report-toast-container");
+                window.showToast(t("Report sent"), true, "report-toast-container");
             } catch (err) {
-                window.showToast(gettext("Send failed âœ—"), false, "report-toast-container");
+                window.showToast(t("Send failed"), false, "report-toast-container");
             } finally {
                 setLoadingState(btn, false);
             }
         });
-    }
-
-    function cancel() {
-        reopenTargetModal();
     }
 
     function reopenTargetModal() {
@@ -320,12 +288,7 @@
 
         if (!lastTargetContext) return;
 
-        // RÃ©ouverture propre via le systÃ¨me officiel
-        open_close_modal(
-            lastTargetContext.targetType,
-            lastTargetContext.targetId
-        );
-
+        open_close_modal(lastTargetContext.targetType, lastTargetContext.targetId);
         lastTargetContext = null;
     }
 
@@ -336,32 +299,33 @@
 
         if (!input || !hidden || !box) return;
 
-        let t = null;
+        let searchTimer = null;
 
         function clear() {
             box.innerHTML = "";
             box.classList.add("hidden");
         }
 
-        async function search(q) {
+        async function search(query) {
             try {
-                const res = await fetch(`/messages/search_players/?q=${encodeURIComponent(q)}`);
-                const data = await res.json();
+                const response = await fetch(`/messages/search_players/?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
                 const results = data?.results || [];
 
                 if (!results.length) {
                     clear();
                     return;
                 }
+
                 box.innerHTML = "";
-                results.forEach(p => {
+                results.forEach((player) => {
                     const row = document.createElement("div");
                     row.className = "px-3 py-1 text-xs hover:bg-emerald-500/10 cursor-pointer";
-                    row.textContent = `${p.name} â€” ${p.faction || ""}`;
+                    row.textContent = player.faction ? `${player.name} - ${player.faction}` : player.name;
 
                     row.addEventListener("click", () => {
-                        input.value = p.name;
-                        hidden.value = String(p.id);
+                        input.value = player.name;
+                        hidden.value = String(player.id);
                         clear();
                     });
 
@@ -369,61 +333,42 @@
                 });
 
                 box.classList.remove("hidden");
-
             } catch (err) {
                 clear();
             }
         }
 
         input.addEventListener("input", () => {
-            const q = input.value.trim();
-
-            // IMPORTANT: si l'utilisateur retape, on invalide l'ID sÃ©lectionnÃ©
+            const query = input.value.trim();
             hidden.value = "";
 
-            if (q.length < 2) {
+            if (query.length < 2) {
                 clear();
                 return;
             }
 
-            clearTimeout(t);
-            t = setTimeout(() => search(q), 250);
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => search(query), 250);
         });
 
-        document.addEventListener("click", (e) => {
-            if (!box.contains(e.target) && e.target !== input) clear();
+        document.addEventListener("click", (event) => {
+            if (!box.contains(event.target) && event.target !== input) clear();
         });
     }
 
     function composeFinalMessage(optionalText, reportText) {
         const cleanOptional = optionalText?.trim();
-
-        if (!cleanOptional) {
-            return reportText;
-        }
-
-        return (
-            cleanOptional +
-            "\n\n" +        // â† sÃ©paration VISUELLE claire
-            reportText
-        );
+        if (!cleanOptional) return reportText;
+        return `${cleanOptional}\n\n${reportText}`;
     }
 
     async function resolveRecipientIdByName(name) {
-        const res = await fetch(`/messages/search_players/?q=${encodeURIComponent(name)}`);
-        if (!res.ok) return null;
+        const response = await fetch(`/messages/search_players/?q=${encodeURIComponent(name)}`);
+        if (!response.ok) return null;
 
-        const data = await res.json();
+        const data = await response.json();
         const results = data?.results || [];
-
-        // match EXACT (case-insensitive)
-        const exact = results.find(
-            p => p.name.toLowerCase() === name.toLowerCase()
-        );
-
+        const exact = results.find((player) => player.name.toLowerCase() === name.toLowerCase());
         return exact ? String(exact.id) : null;
     }
-
 })();
-
-
