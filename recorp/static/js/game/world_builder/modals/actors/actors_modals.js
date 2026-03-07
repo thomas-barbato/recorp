@@ -739,8 +739,8 @@ function buildShipStatsSection(data) {
         if(type == "ap"){ label_icon_className = "iconify game-icons--targeting w-[20px] h-[20px]"; }
         if(type == "movement"){ label_icon_className = "iconify game-icons--interceptor-ship w-[20px] h-[20px]"; }
         if(type == "DEFENSE_BALLISTIC"){ label_icon_className = "iconify game-icons--shield-reflect w-[20px] h-[20px]"; }
-        if(type == "DEFENSE_THERMAL"){ label_icon_className = "iconify game-icons--laser-warning w-[20px] h-[20px]"; }
-        if(type == "DEFENSE_MISSILE"){ label_icon_className = "iconify game-icons--dragon-shield w-[20px] h-[20px]"; }
+        if(type == "DEFENSE_LASER"){ label_icon_className = "iconify game-icons--laser-warning w-[20px] h-[20px]"; }
+        if(type == "DEFENSE_TORPEDO"){ label_icon_className = "iconify game-icons--dragon-shield w-[20px] h-[20px]"; }
 
         label_icon.className = label_icon_className;
         label_text.textContent = labelText;
@@ -788,13 +788,13 @@ function buildShipStatsSection(data) {
             text.dataset.shieldType = "BALLISTIC";
             content.dataset.stat = "DEFENSE_BALLISTIC-bar"; 
         }
-        if(type == "DEFENSE_THERMAL"){ 
-            text.dataset.shieldType = "THERMAL"; 
-            content.dataset.stat = "DEFENSE_THERMAL-bar"; 
+        if(type == "DEFENSE_LASER"){ 
+            text.dataset.shieldType = "LASER"; 
+            content.dataset.stat = "DEFENSE_LASER-bar"; 
         }
-        if(type == "DEFENSE_MISSILE"){ 
-            text.dataset.shieldType = "MISSILE"; 
-            content.dataset.stat = "DEFENSE_MISSILE-bar"; 
+        if(type == "DEFENSE_TORPEDO"){ 
+            text.dataset.shieldType = "TORPEDO"; 
+            content.dataset.stat = "DEFENSE_TORPEDO-bar"; 
         }
 
         container.append(text, content);
@@ -833,7 +833,7 @@ function buildShipStatsSection(data) {
         )
     );
 
-    // --- DEFENSES (ballistic / thermal / missile) ---
+    // --- DEFENSES (ballistic / laser / torpedo) ---
     const DEF_CONFIG = [
         {
             type: "DEFENSE_BALLISTIC",
@@ -842,16 +842,16 @@ function buildShipStatsSection(data) {
             label: t("Ballistic defense:")
         },
         {
-            type: "DEFENSE_THERMAL",
-            currentKey: "current_thermal_defense",
-            maxKey: "max_thermal_defense",
-            label: t("Thermal defense:")
+            type: "DEFENSE_LASER",
+            currentKey: "current_laser_defense",
+            maxKey: "max_laser_defense",
+            label: t("Laser defense:")
         },
         {
-            type: "DEFENSE_MISSILE",
-            currentKey: "current_missile_defense",
-            maxKey: "max_missile_defense",
-            label: t("Missile defense:")
+            type: "DEFENSE_TORPEDO",
+            currentKey: "current_torpedo_defense",
+            maxKey: "max_torpedo_defense",
+            label: t("Torpedo defense:")
         }
     ];
 

@@ -9,7 +9,7 @@ from core.models import PlayerShip, ShipCategory
 logger = logging.getLogger(__name__)
 
 
-DamageType = Literal["MISSILE", "THERMAL", "BALLISTIC"]
+DamageType = Literal["TORPEDO", "LASER", "BALLISTIC"]
 VisibilityState = Literal["SCANNED", "SONAR", "UNKNOWN"]
 
 
@@ -43,8 +43,8 @@ def bonus_linear_cap(level: int, per_level: float, cap: float) -> float:
 
 # Existing skill names (fixture)
 SKILL_WEAPON_BY_DMG: Dict[DamageType, str] = {
-    "MISSILE": "Missile Weapon",
-    "THERMAL": "Thermal Weapon",
+    "TORPEDO": "Torpedo Weapon",
+    "LASER": "Laser Weapon",
     "BALLISTIC": "Ballistic Weapon",
 }
 
@@ -55,9 +55,9 @@ BASE_CRIT_CHANCE = 0.05 # 5%
 CRIT_PER_AT = 0.005 # 0.5% par point Advanced Targeting
 
 CRIT_MULTIPLIERS = {
-    "THERMAL": 1.4,
+    "LASER": 1.4,
     "BALLISTIC": 1.6,
-    "MISSILE": 1.9,
+    "TORPEDO": 1.9,
 }
 
 
@@ -80,8 +80,8 @@ class CombatEvent:
 class ActorAdapter:
     """
     Unifie l'accès aux stats (HP, shields, AP) pour PlayerShip / Npc.
-    - PlayerShip: current_hp, current_missile_defense, current_thermal_defense, current_ballistic_defense, player.current_ap
-    - Npc: hp, missile_defense, thermal_defense, ballistic_defense, current_ap
+    - PlayerShip: current_hp, current_torpedo_defense, current_laser_defense, current_ballistic_defense, player.current_ap
+    - Npc: hp, torpedo_defense, laser_defense, ballistic_defense, current_ap
     """
     def __init__(self, actor: Any, actor_kind: Literal["PC", "NPC"]):
         self.actor = actor
@@ -127,13 +127,13 @@ class ActorAdapter:
     def _shield_attr(self, dmg_type: DamageType) -> str:
         if self.kind == "PC":
             return {
-                "MISSILE": "current_missile_defense",
-                "THERMAL": "current_thermal_defense",
+                "TORPEDO": "current_torpedo_defense",
+                "LASER": "current_laser_defense",
                 "BALLISTIC": "current_ballistic_defense",
             }[dmg_type]
         return {
-            "MISSILE": "missile_defense",
-            "THERMAL": "thermal_defense",
+            "TORPEDO": "torpedo_defense",
+            "LASER": "laser_defense",
             "BALLISTIC": "ballistic_defense",
         }[dmg_type]
 
@@ -147,8 +147,8 @@ class ActorAdapter:
 
     def get_all_shields(self) -> Dict[DamageType, int]:
         return {
-            "MISSILE": self.get_shield("MISSILE"),
-            "THERMAL": self.get_shield("THERMAL"),
+            "TORPEDO": self.get_shield("TORPEDO"),
+            "LASER": self.get_shield("LASER"),
             "BALLISTIC": self.get_shield("BALLISTIC"),
         }
 
@@ -342,10 +342,10 @@ def compute_attack_bonuses(
     sharp_level = get_skill_level_for_actor(attacker, attacker_kind, SKILL_SHARPSHOOTING)
 
     # Tunings (safe for 100 levels). Adjust anytime.
-    # Missile: accuracy up to 20% and damage up to 25%
-    # Thermal: mostly damage up to 25%
+    # Torpedo: accuracy up to 20% and damage up to 25%
+    # Laser: mostly damage up to 25%
     # Ballistic: accuracy up to 10% and damage up to 25%
-    if dmg_type == "MISSILE":
+    if dmg_type == "TORPEDO":
         weapon_precision = bonus_linear_cap(weapon_level, per_level=0.20, cap=CAPS["PRECISION"])
     elif dmg_type == "BALLISTIC":
         weapon_precision = bonus_linear_cap(weapon_level, per_level=0.10, cap=10.0)

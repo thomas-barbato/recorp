@@ -10,7 +10,7 @@ export default class WorldCombatEffectsManager {
     addProjectile({
         sourceKey,
         targetKey,
-        weaponType = "THERMAL",
+        weaponType = "LASER",
         duration = 320,
         damageToShield = 0,
         damageToHull = 0,
@@ -22,7 +22,7 @@ export default class WorldCombatEffectsManager {
             kind: "projectile",
             sourceKey: String(sourceKey),
             targetKey: String(targetKey),
-            weaponType: String(weaponType || "THERMAL").toUpperCase(),
+            weaponType: String(weaponType || "LASER").toUpperCase(),
             duration: Math.max(120, Number(duration) || 320),
             startTime: performance.now(),
             damageToShield: Number(damageToShield || 0),
@@ -41,7 +41,7 @@ export default class WorldCombatEffectsManager {
             kind: kind === "shield" ? "impact_shield" : "impact_hull",
             x: Number(x),
             y: Number(y),
-            weaponType: String(weaponType || "THERMAL").toUpperCase(),
+            weaponType: String(weaponType || "LASER").toUpperCase(),
             duration: kind === "shield" ? 280 : 190,
             startTime: performance.now(),
         };
@@ -49,7 +49,7 @@ export default class WorldCombatEffectsManager {
 
     _getWeaponPalette(weaponType) {
         const t = String(weaponType || "").toUpperCase();
-        if (t === "THERMAL") {
+        if (t === "LASER") {
             return {
                 core: "rgba(255,185,140,1)",
                 glow: "rgba(255,90,40,1)",
@@ -57,7 +57,7 @@ export default class WorldCombatEffectsManager {
                 accent: "rgba(255,240,210,1)",
             };
         }
-        if (t === "MISSILE") {
+        if (t === "TORPEDO") {
             return {
                 core: "rgba(220,255,235,1)",
                 glow: "rgba(52,211,153,1)",
@@ -79,7 +79,7 @@ export default class WorldCombatEffectsManager {
         ctx.save();
         ctx.globalAlpha = alpha;
         ctx.shadowColor = palette.glow;
-        ctx.shadowBlur = Math.max(8, sizePx * (type === "THERMAL" ? 1.0 : 0.75));
+        ctx.shadowBlur = Math.max(8, sizePx * (type === "LASER" ? 1.0 : 0.75));
         // Halo coloré léger sous le point blanc (reste conforme à ta demande de "point blanc")
         ctx.fillStyle = palette.beam.replace(/,\s*0?\.?\d+\)$/, ", 0.55)");
         ctx.beginPath();
@@ -122,7 +122,7 @@ export default class WorldCombatEffectsManager {
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
 
-        if (type === "THERMAL") {
+        if (type === "LASER") {
             // Beam chaud: double trait (coeur + halo)
             ctx.shadowColor = palette.glow;
             ctx.shadowBlur = 10;
@@ -140,7 +140,7 @@ export default class WorldCombatEffectsManager {
             ctx.moveTo(from.x, from.y);
             ctx.lineTo(head.x, head.y);
             ctx.stroke();
-        } else if (type === "MISSILE") {
+        } else if (type === "TORPEDO") {
             // green vapor-like trail
             ctx.shadowColor = palette.glow;
             ctx.shadowBlur = 8;
@@ -309,8 +309,8 @@ export default class WorldCombatEffectsManager {
 
     _drawTracer(ctx, from, to, alpha, weaponType) {
         const COLORS = {
-            MISSILE: "rgba(34,197,94,1)",
-            THERMAL: "rgba(239,68,68,1)",
+            TORPEDO: "rgba(34,197,94,1)",
+            LASER: "rgba(239,68,68,1)",
             BALLISTIC: "rgba(59,130,246,1)",
         };
         ctx.save();

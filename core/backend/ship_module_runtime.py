@@ -70,8 +70,8 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
     new_max_hp = int(getattr(ship_template, "default_hp", 0) or 0)
     new_max_movement = int(getattr(ship_template, "default_movement", 0) or 0)
     new_max_ballistic = int(getattr(ship_template, "default_ballistic_defense", 0) or 0)
-    new_max_thermal = int(getattr(ship_template, "default_thermal_defense", 0) or 0)
-    new_max_missile = int(getattr(ship_template, "default_missile_defense", 0) or 0)
+    new_max_laser = int(getattr(ship_template, "default_laser_defense", 0) or 0)
+    new_max_torpedo = int(getattr(ship_template, "default_torpedo_defense", 0) or 0)
     new_cargo_capacity = int(BASE_SHIP_CARGO_CAPACITY)
 
     for psm in _iter_equipped_modules(player_ship):
@@ -84,10 +84,10 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
             defense_value = int(get_effect_numeric(mod, "defense", default=0, strategy="sum") or 0)
             if mtype == "DEFENSE_BALLISTIC":
                 new_max_ballistic += defense_value
-            elif mtype == "DEFENSE_THERMAL":
-                new_max_thermal += defense_value
-            elif mtype == "DEFENSE_MISSILE":
-                new_max_missile += defense_value
+            elif mtype == "DEFENSE_LASER":
+                new_max_laser += defense_value
+            elif mtype == "DEFENSE_TORPEDO":
+                new_max_torpedo += defense_value
             continue
 
         if mtype == "MOVEMENT":
@@ -113,14 +113,14 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
         0, min(int(player_ship.current_ballistic_defense or 0), int(new_max_ballistic))
     )
 
-    player_ship.max_thermal_defense = int(new_max_thermal)
-    player_ship.current_thermal_defense = max(
-        0, min(int(player_ship.current_thermal_defense or 0), int(new_max_thermal))
+    player_ship.max_laser_defense = int(new_max_laser)
+    player_ship.current_laser_defense = max(
+        0, min(int(player_ship.current_laser_defense or 0), int(new_max_laser))
     )
 
-    player_ship.max_missile_defense = int(new_max_missile)
-    player_ship.current_missile_defense = max(
-        0, min(int(player_ship.current_missile_defense or 0), int(new_max_missile))
+    player_ship.max_torpedo_defense = int(new_max_torpedo)
+    player_ship.current_torpedo_defense = max(
+        0, min(int(player_ship.current_torpedo_defense or 0), int(new_max_torpedo))
     )
 
     # Champ historique utilisé comme "capacité cargo max" dans l'UI actuelle.
@@ -134,10 +134,10 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
             "current_movement",
             "max_ballistic_defense",
             "current_ballistic_defense",
-            "max_thermal_defense",
-            "current_thermal_defense",
-            "max_missile_defense",
-            "current_missile_defense",
+            "max_laser_defense",
+            "current_laser_defense",
+            "max_torpedo_defense",
+            "current_torpedo_defense",
             "current_cargo_size",
             "updated_at",
         ])
@@ -149,10 +149,10 @@ def recompute_player_ship_stats(player_ship: PlayerShip, *, save: bool = True) -
         "current_movement": int(player_ship.current_movement or 0),
         "max_ballistic_defense": int(player_ship.max_ballistic_defense or 0),
         "current_ballistic_defense": int(player_ship.current_ballistic_defense or 0),
-        "max_thermal_defense": int(player_ship.max_thermal_defense or 0),
-        "current_thermal_defense": int(player_ship.current_thermal_defense or 0),
-        "max_missile_defense": int(player_ship.max_missile_defense or 0),
-        "current_missile_defense": int(player_ship.current_missile_defense or 0),
+        "max_laser_defense": int(player_ship.max_laser_defense or 0),
+        "current_laser_defense": int(player_ship.current_laser_defense or 0),
+        "max_torpedo_defense": int(player_ship.max_torpedo_defense or 0),
+        "current_torpedo_defense": int(player_ship.current_torpedo_defense or 0),
         "cargo_capacity": int(player_ship.current_cargo_size or 0),
     }
 

@@ -207,8 +207,8 @@ class Ship(models.Model):
         ShipCategory, on_delete=models.SET_NULL, null=True
     )
     default_ballistic_defense = models.PositiveSmallIntegerField(default=0)
-    default_thermal_defense = models.PositiveSmallIntegerField(default=0)
-    default_missile_defense = models.PositiveSmallIntegerField(default=0)
+    default_laser_defense = models.PositiveSmallIntegerField(default=0)
+    default_torpedo_defense = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField("creation date", default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -411,8 +411,8 @@ class NpcTemplate(models.Model):
     module_id_list = models.JSONField(null=True)
     max_hp = models.SmallIntegerField(default=100)
     max_movement = models.PositiveSmallIntegerField(default=10)
-    max_missile_defense = models.SmallIntegerField(default=0)
-    max_thermal_defense = models.SmallIntegerField(default=0)
+    max_torpedo_defense = models.SmallIntegerField(default=0)
+    max_laser_defense = models.SmallIntegerField(default=0)
     max_ballistic_defense = models.SmallIntegerField(default=0)
     hold_capacity = models.SmallIntegerField(default=2)
     # Respawn delay in seconds for NPC instances using this template.
@@ -476,8 +476,8 @@ class Npc(models.Model):
     max_ap = models.PositiveBigIntegerField(default=10)
     hp = models.SmallIntegerField(default=0)
     movement = models.PositiveSmallIntegerField(default=0)
-    missile_defense = models.SmallIntegerField(default=0)
-    thermal_defense = models.SmallIntegerField(default=0)
+    torpedo_defense = models.SmallIntegerField(default=0)
+    laser_defense = models.SmallIntegerField(default=0)
     ballistic_defense = models.SmallIntegerField(default=0)
     coordinates = models.JSONField(null=True)
     spawn_coordinates = models.JSONField(null=True, blank=True)
@@ -507,8 +507,8 @@ class Module(models.Model):
         ("NONE", "none"),
         ("WEAPONRY", "weaponry"),
         ("DEFENSE_BALLISTIC", "defense_ballistic"),
-        ("DEFENSE_THERMAL", "defense_thermal"),
-        ("DEFENSE_MISSILE", "defense_missile"),
+        ("DEFENSE_LASER", "defense_laser"),
+        ("DEFENSE_TORPEDO", "defense_torpedo"),
         ("HULL", "hull"),
         ("MOVEMENT", "movement"),
         ("GATHERING", "gathering"),
@@ -630,11 +630,11 @@ class PlayerShip(models.Model):
     max_hp = models.SmallIntegerField(default=100)
     current_movement = models.PositiveSmallIntegerField(default=10)
     max_movement = models.PositiveSmallIntegerField(default=10)
-    current_missile_defense = models.SmallIntegerField(default=0)
-    current_thermal_defense = models.SmallIntegerField(default=0)
+    current_torpedo_defense = models.SmallIntegerField(default=0)
+    current_laser_defense = models.SmallIntegerField(default=0)
     current_ballistic_defense = models.SmallIntegerField(default=0)
-    max_missile_defense = models.SmallIntegerField(default=0)
-    max_thermal_defense = models.SmallIntegerField(default=0)
+    max_torpedo_defense = models.SmallIntegerField(default=0)
+    max_laser_defense = models.SmallIntegerField(default=0)
     max_ballistic_defense = models.SmallIntegerField(default=0)
     current_cargo_size = models.SmallIntegerField(default=2)
     credit_amount = models.FloatField(default=0.0)

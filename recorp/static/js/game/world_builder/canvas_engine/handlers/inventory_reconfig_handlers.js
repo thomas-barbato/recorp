@@ -60,8 +60,8 @@ function syncHudFromCurrentPlayerData(data) {
 
     const defenses = [
         ["ballistic", ship.current_ballistic_defense, ship.max_ballistic_defense],
-        ["thermal", ship.current_thermal_defense, ship.max_thermal_defense],
-        ["missile", ship.current_missile_defense, ship.max_missile_defense],
+        ["laser", ship.current_laser_defense, ship.max_laser_defense],
+        ["torpedo", ship.current_torpedo_defense, ship.max_torpedo_defense],
     ];
 
     defenses.forEach(([prefix, current, max]) => {

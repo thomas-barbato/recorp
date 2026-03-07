@@ -17,13 +17,13 @@ class FloatingMessageManager {
             scan: "scan_ship.svg",
 
             // Attaques envoyées
-            missile: "missile.svg",
-            thermal: "thermal.svg",
+            torpedo: "torpedo.svg",
+            laser: "laser.svg",
             ballistic: "ballistic.svg",
 
             // Dégâts subits
-            missile_shield: "missile_shield.svg",
-            thermal_shield: "thermal_shield.svg",
+            torpedo_shield: "torpedo_shield.svg",
+            laser_shield: "laser_shield.svg",
             ballistic_shield: "ballistic_shield.svg",
             hull: "hull.svg",
 

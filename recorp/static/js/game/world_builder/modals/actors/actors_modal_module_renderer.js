@@ -19,8 +19,8 @@
 
         switch (moduleType) {
             case "DEFENSE_BALLISTIC":
-            case "DEFENSE_THERMAL":
-            case "DEFENSE_MISSILE":
+            case "DEFENSE_LASER":
+            case "DEFENSE_TORPEDO":
                 if (effect?.defense != null) lines.push(styledLine(`${label || "Defense"}:`, `+${effect.defense}`));
                 break;
             case "HOLD":

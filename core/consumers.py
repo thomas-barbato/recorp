@@ -2025,7 +2025,7 @@ class GameConsumer(WebsocketConsumer):
 
             module = psm.module
             effect = get_module_effect_map(module)
-            damage_type = str(effect.get("damage_type", "MISSILE")).upper()
+            damage_type = str(effect.get("damage_type", "TORPEDO")).upper()
 
             weapon = WeaponProfile(
                 damage_type=damage_type,
@@ -2289,7 +2289,7 @@ class GameConsumer(WebsocketConsumer):
                 effect = get_module_effect_map(psm)
                 weapons.append(
                     WeaponProfile(
-                        damage_type=str(effect.get("damage_type", "MISSILE")).upper(),
+                        damage_type=str(effect.get("damage_type", "TORPEDO")).upper(),
                         min_damage=int(get_effect_numeric(psm, "min_damage", default=1, strategy="min") or 1),
                         max_damage=int(get_effect_numeric(psm, "max_damage", default=1, strategy="max") or 1),
                         range_tiles=int(get_effect_numeric(psm, "range", default=1, strategy="max") or 1),
@@ -2317,7 +2317,7 @@ class GameConsumer(WebsocketConsumer):
                 effect = get_module_effect_map(psm)
                 weapons.append(
                     WeaponProfile(
-                        damage_type=str(effect.get("damage_type", "MISSILE")).upper(),
+                        damage_type=str(effect.get("damage_type", "TORPEDO")).upper(),
                         min_damage=int(get_effect_numeric(psm, "min_damage", default=1, strategy="min") or 1),
                         max_damage=int(get_effect_numeric(psm, "max_damage", default=1, strategy="max") or 1),
                         range_tiles=int(get_effect_numeric(psm, "range", default=1, strategy="max") or 1),
@@ -2862,8 +2862,8 @@ class GameConsumer(WebsocketConsumer):
         current_hp = int(free_ship.default_hp or 0)
         current_movement = int(free_ship.default_movement or 0)
         current_ballistic_defense = int(free_ship.default_ballistic_defense or 0)
-        current_thermal_defense = int(free_ship.default_thermal_defense or 0)
-        current_missile_defense = int(free_ship.default_missile_defense or 0)
+        current_laser_defense = int(free_ship.default_laser_defense or 0)
+        current_torpedo_defense = int(free_ship.default_torpedo_defense or 0)
         current_cargo_size = 2
 
         archetype_modules = []
@@ -2889,10 +2889,10 @@ class GameConsumer(WebsocketConsumer):
                 defense_bonus = int(get_effect_numeric(mod, "defense", default=0, strategy="sum") or 0)
                 if "BALLISTIC" in mtype:
                     current_ballistic_defense += defense_bonus
-                elif "THERMAL" in mtype:
-                    current_thermal_defense += defense_bonus
-                elif "MISSILE" in mtype:
-                    current_missile_defense += defense_bonus
+                elif "LASER" in mtype:
+                    current_laser_defense += defense_bonus
+                elif "TORPEDO" in mtype:
+                    current_torpedo_defense += defense_bonus
             elif "MOVEMENT" in mtype:
                 current_movement += int(get_effect_numeric(mod, "movement", default=0, strategy="sum") or 0)
             elif "HULL" in mtype:
@@ -2916,10 +2916,10 @@ class GameConsumer(WebsocketConsumer):
                     max_movement=current_movement,
                     current_ballistic_defense=current_ballistic_defense,
                     max_ballistic_defense=current_ballistic_defense,
-                    current_thermal_defense=current_thermal_defense,
-                    max_thermal_defense=current_thermal_defense,
-                    current_missile_defense=current_missile_defense,
-                    max_missile_defense=current_missile_defense,
+                    current_laser_defense=current_laser_defense,
+                    max_laser_defense=current_laser_defense,
+                    current_torpedo_defense=current_torpedo_defense,
+                    max_torpedo_defense=current_torpedo_defense,
                     current_cargo_size=current_cargo_size,
                 )
 
@@ -3165,8 +3165,8 @@ class GameConsumer(WebsocketConsumer):
                 npc.current_ap = int(npc.max_ap or 0)
                 npc.hp = int(tpl.max_hp or 0)
                 npc.movement = int(tpl.max_movement or 0)
-                npc.missile_defense = int(tpl.max_missile_defense or 0)
-                npc.thermal_defense = int(tpl.max_thermal_defense or 0)
+                npc.torpedo_defense = int(tpl.max_torpedo_defense or 0)
+                npc.laser_defense = int(tpl.max_laser_defense or 0)
                 npc.ballistic_defense = int(tpl.max_ballistic_defense or 0)
                 npc.coordinates = respawn_coord
                 npc.status = "FULL"
@@ -4655,13 +4655,13 @@ class GameConsumer(WebsocketConsumer):
                         "max": int(player_ship.max_hp or 0),
                     },
                     "shields": {
-                        "MISSILE": int(player_ship.current_missile_defense or 0),
-                        "THERMAL": int(player_ship.current_thermal_defense or 0),
+                        "TORPEDO": int(player_ship.current_torpedo_defense or 0),
+                        "LASER": int(player_ship.current_laser_defense or 0),
                         "BALLISTIC": int(player_ship.current_ballistic_defense or 0),
                     },
                     "shield_max": {
-                        "MISSILE": int(player_ship.max_missile_defense or 0),
-                        "THERMAL": int(player_ship.max_thermal_defense or 0),
+                        "TORPEDO": int(player_ship.max_torpedo_defense or 0),
+                        "LASER": int(player_ship.max_laser_defense or 0),
                         "BALLISTIC": int(player_ship.max_ballistic_defense or 0),
                     },
                 }

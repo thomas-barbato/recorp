@@ -2,13 +2,13 @@ function ensureActorRuntime(actor) {
     if (!actor) return null;
     actor.runtime ??= {};
     actor.runtime.shields ??= {
-        MISSILE: 0,
-        THERMAL: 0,
+        TORPEDO: 0,
+        LASER: 0,
         BALLISTIC: 0,
     };
     actor.runtime.shield_max ??= {
-        MISSILE: 0,
-        THERMAL: 0,
+        TORPEDO: 0,
+        LASER: 0,
         BALLISTIC: 0,
     };
     return actor.runtime;
@@ -99,19 +99,19 @@ function patchLocalHud(msg) {
         }
 
         const shieldFieldMap = {
-            MISSILE: {
-                min: "missile-container-value-min",
-                max: "missile-container-value-max",
-                pct: "missile-percent",
-                currentPlayerField: "current_missile_defense",
-                maxPlayerField: "max_missile_defense",
+            TORPEDO: {
+                min: "torpedo-container-value-min",
+                max: "torpedo-container-value-max",
+                pct: "torpedo-percent",
+                currentPlayerField: "current_torpedo_defense",
+                maxPlayerField: "max_torpedo_defense",
             },
-            THERMAL: {
-                min: "thermal-container-value-min",
-                max: "thermal-container-value-max",
-                pct: "thermal-percent",
-                currentPlayerField: "current_thermal_defense",
-                maxPlayerField: "max_thermal_defense",
+            LASER: {
+                min: "laser-container-value-min",
+                max: "laser-container-value-max",
+                pct: "laser-percent",
+                currentPlayerField: "current_laser_defense",
+                maxPlayerField: "max_laser_defense",
             },
             BALLISTIC: {
                 min: "ballistic-container-value-min",

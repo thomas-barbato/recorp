@@ -258,7 +258,7 @@ function renderWorldCombatEvent(payload, kind) {
     renderer.addWorldCombatProjectile?.({
         sourceKey: attackerKey,
         targetKey: targetKey,
-        weaponType: payload.damage_type || "THERMAL",
+        weaponType: payload.damage_type || "LASER",
         duration: 520,
         damageToShield: payload.damage_to_shield || 0,
         damageToHull: payload.damage_to_hull || 0,
@@ -300,9 +300,9 @@ function escapeHtml(value) {
 
 function getDamageIconPath(damageType) {
     const t = String(damageType || "").toUpperCase();
-    if (t === "THERMAL") return "/static/img/ux/laser-icon.svg";
+    if (t === "LASER") return "/static/img/ux/laser-icon.svg";
     if (t === "BALLISTIC") return "/static/img/ux/ballistic-icon.svg";
-    if (t === "MISSILE") return "/static/img/ux/missile-icon.svg";
+    if (t === "TORPEDO") return "/static/img/ux/torpedo-icon.svg";
     return null;
 }
 
@@ -370,14 +370,14 @@ function applyDeadUiState(deadKey) {
         actor.runtime ??= {};
         actor.runtime.current_hp = 0;
         actor.runtime.shields = {
-            MISSILE: 0,
-            THERMAL: 0,
+            TORPEDO: 0,
+            LASER: 0,
             BALLISTIC: 0,
         };
         if (actor.data?.ship) {
             actor.data.ship.current_hp = 0;
-            actor.data.ship.current_missile_defense = 0;
-            actor.data.ship.current_thermal_defense = 0;
+            actor.data.ship.current_torpedo_defense = 0;
+            actor.data.ship.current_laser_defense = 0;
             actor.data.ship.current_ballistic_defense = 0;
         }
     }
@@ -385,7 +385,7 @@ function applyDeadUiState(deadKey) {
     // Synchronise les modals (normal + combat) sans attendre l'ordre exact des frames WS.
     window.ModalLive?.notify?.(deadKey, "hp_update", {
         hp: 0,
-        shields: { MISSILE: 0, THERMAL: 0, BALLISTIC: 0 },
+        shields: { TORPEDO: 0, LASER: 0, BALLISTIC: 0 },
     });
 
     const asm = window.ActionSceneManager;
@@ -396,7 +396,7 @@ function applyDeadUiState(deadKey) {
             change_type: "hp_update",
             changes: {
                 hp: { current: 0 },
-                shields: { MISSILE: 0, THERMAL: 0, BALLISTIC: 0 },
+                shields: { TORPEDO: 0, LASER: 0, BALLISTIC: 0 },
             }
         });
     }
@@ -410,8 +410,8 @@ function applyDeadUiState(deadKey) {
         }
         if (window.currentPlayer?.ship) {
             window.currentPlayer.ship.current_hp = 0;
-            window.currentPlayer.ship.current_missile_defense = 0;
-            window.currentPlayer.ship.current_thermal_defense = 0;
+            window.currentPlayer.ship.current_torpedo_defense = 0;
+            window.currentPlayer.ship.current_laser_defense = 0;
             window.currentPlayer.ship.current_ballistic_defense = 0;
         }
 

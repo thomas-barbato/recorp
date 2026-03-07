@@ -47,9 +47,9 @@
     "model": "core.skill",
     "pk": 5,
     "fields": {
-        "name": "Thermal weapon",
+        "name": "Laser weapon",
         "category": "Offensive",
-        "description": "Enhances thermal weapon systems.\n• Increases thermal damage (up to +25%)",
+        "description": "Enhances laser weapon systems.\n• Increases laser damage (up to +25%)",
         "created_at": "2020-03-21 12:38:15",
         "updated_at": "2020-03-21 12:38:15"
     }
@@ -69,9 +69,9 @@
     "model": "core.skill",
     "pk": 7,
     "fields": {
-        "name": "Missile weapon",
+        "name": "Torpedo weapon",
         "category": "Offensive",
-        "description": "Improves missile weapon systems.\n• Increases missile accuracy (up to +20%)\n• Increases missile damage (up to +25%)",
+        "description": "Improves torpedo weapon systems.\n• Increases torpedo accuracy (up to +20%)\n• Increases torpedo damage (up to +25%)",
         "created_at": "2020-03-21 12:38:15",
         "updated_at": "2020-03-21 12:38:15"
     }

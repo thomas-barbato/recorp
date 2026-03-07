@@ -210,8 +210,8 @@
 
         if (ship.current_ballistic_defense !== undefined) {
             lines.push(`${t("Ballistic")}: ${ship.current_ballistic_defense} / ${ship.max_ballistic_defense}`);
-            lines.push(`${t("Thermal")}: ${ship.current_thermal_defense} / ${ship.max_thermal_defense}`);
-            lines.push(`${t("Missile")}: ${ship.current_missile_defense} / ${ship.max_missile_defense}`);
+            lines.push(`${t("Laser")}: ${ship.current_laser_defense} / ${ship.max_laser_defense}`);
+            lines.push(`${t("Torpedo")}: ${ship.current_torpedo_defense} / ${ship.max_torpedo_defense}`);
         }
 
         if (Array.isArray(ship.modules) && ship.modules.length > 0) {

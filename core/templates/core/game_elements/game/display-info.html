@@ -170,29 +170,29 @@
           </span>
         </div>
 
-        <!-- Thermal defense -->
+        <!-- Laser defense -->
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-2 text-emerald-200">
             <span class="iconify game-icons--laser-warning w-[20px] h-[20px]"></span>
-            <span class="uppercase tracking-wider text-xs font-bold">{% translate "Thermal" %}</span>
+            <span class="uppercase tracking-wider text-xs font-bold">{% translate "Laser" %}</span>
           </div>
           <span class="flex justify-between text-xs gap-1">
-            <span id="thermal-container-value-min" class="text-xs">{{ current_player_state.ship.current_thermal_defense }}</span>
+            <span id="laser-container-value-min" class="text-xs">{{ current_player_state.ship.current_laser_defense }}</span>
             <span>/</span>
-            <span id="thermal-container-value-max" class="text-xs">{{ current_player_state.ship.max_thermal_defense }}</span>
+            <span id="laser-container-value-max" class="text-xs">{{ current_player_state.ship.max_laser_defense }}</span>
           </span>
         </div>
 
-        <!-- Missile defense -->
+        <!-- Torpedo defense -->
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-2 text-emerald-200">
             <span class="iconify game-icons--dragon-shield w-[20px] h-[20px]"></span>
-            <span class="uppercase tracking-wider text-xs font-bold">{% translate "Missile" %}</span>
+            <span class="uppercase tracking-wider text-xs font-bold">{% translate "Torpedo" %}</span>
           </div>
           <span class="flex justify-between text-xs gap-1">
-            <span id="missile-container-value-min" class="text-xs">{{ current_player_state.ship.current_missile_defense }}</span>
+            <span id="torpedo-container-value-min" class="text-xs">{{ current_player_state.ship.current_torpedo_defense }}</span>
             <span>/</span>
-            <span id="missile-container-value-max" class="text-xs">{{ current_player_state.ship.max_missile_defense }}</span>
+            <span id="torpedo-container-value-max" class="text-xs">{{ current_player_state.ship.max_torpedo_defense }}</span>
           </span>
         </div>
       </fieldset>

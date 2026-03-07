@@ -254,8 +254,8 @@ def _respawn_npc_and_build_payload(npc_id: int) -> Optional[Dict[str, Any]]:
             npc.current_ap = int(npc.max_ap or 0)
             npc.hp = int(tpl.max_hp or 0)
             npc.movement = int(tpl.max_movement or 0)
-            npc.missile_defense = int(tpl.max_missile_defense or 0)
-            npc.thermal_defense = int(tpl.max_thermal_defense or 0)
+            npc.torpedo_defense = int(tpl.max_torpedo_defense or 0)
+            npc.laser_defense = int(tpl.max_laser_defense or 0)
             npc.ballistic_defense = int(tpl.max_ballistic_defense or 0)
             npc.coordinates = respawn_coord
             npc.status = "FULL"

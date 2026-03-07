@@ -18,16 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "first static string to translate"
-msgstr "premiere chaîne statique à traduire"
+msgstr "premiere chaÃ®ne statique Ã  traduire"
 
 msgid "Username already in use"
-msgstr "Nom d'utilisateur déjà utilisé"
+msgstr "Nom d'utilisateur dÃ©jÃ  utilisÃ©"
 
 msgid "Username must be unique"
-msgstr "Votre nom d'utilisateur doit être unique."
+msgstr "Votre nom d'utilisateur doit Ãªtre unique."
 
 msgid "Your password must contain at least"
-msgstr "Votre mot de passe doit contenir à minima"
+msgstr "Votre mot de passe doit contenir Ã  minima"
 
 msgid "letters"
 msgstr "lettres"
@@ -54,16 +54,16 @@ msgid "confirm password"
 msgstr "confirmez votre mot de passe"
 
 msgid "You are now logged on"
-msgstr "Vous êtes maintenant connecté"
+msgstr "Vous Ãªtes maintenant connectÃ©"
 
 msgid "Unable to login, username and or password are incorrects"
 msgstr "Impossible de se connecter, le nom d'utilisateur et/ou le mot de passe sont incorrects"
 
 msgid "This account can't access to the game"
-msgstr "Ce compte ne peut pas accéder au jeu"
+msgstr "Ce compte ne peut pas accÃ©der au jeu"
 
 msgid "second static string to translate"
-msgstr "seconde chaîne statique à traduire"
+msgstr "seconde chaÃ®ne statique Ã  traduire"
 
 msgid "Translate"
 msgstr "Traduire"
@@ -84,10 +84,10 @@ msgid "Map"
 msgstr "Carte"
 
 msgid "Tasks"
-msgstr "Tâches"
+msgstr "TÃ¢ches"
 
 msgid "Event"
-msgstr "Évènement"
+msgstr "Ã‰vÃ¨nement"
 
 msgid "Settings"
 msgstr "Options"
@@ -105,7 +105,7 @@ msgid "Character Sheet"
 msgstr "Fiche de Personnage"
 
 msgid "Archetype"
-msgstr "Archétype"
+msgstr "Archetype"
 
 msgid "Sector"
 msgstr "Secteur"
@@ -120,34 +120,34 @@ msgid "Fighter specialising in piloting heavy spaceships"
 msgstr "Fighter specialising in piloting heavy spaceships"
 
 msgid "Harvester"
-msgstr "Récolteur"
+msgstr "RÃ©colteur"
 
 msgid "Harvester specialising in gathering resources"
-msgstr "Récolteur spécialisé dans la collecte de ressources"
+msgstr "RÃ©colteur spÃ©cialisÃ© dans la collecte de ressources"
 
 msgid "Engineer"
-msgstr "Ingénieur"
+msgstr "IngÃ©nieur"
 
 msgid "Technician specialising in research and manufacturing"
-msgstr "Technicien spécialisé dans la recherche et la fabrication"
+msgstr "Technicien spÃ©cialisÃ© dans la recherche et la fabrication"
 
 msgid "Jack-of-all-trades"
-msgstr "Touche-à-tout"
+msgstr "Touche-Ã -tout"
 
 msgid "For those who like to explore, limited knowledge of piloting light spaceships and harvesting (more limited than those who become Harvester or Fighter)"
-msgstr "Pour ceux qui aiment explorer, connaissance limitée du pilotage de vaisseaux légers et de la récolte (plus limitée que pour ceux qui deviennent Moissonneur ou Chasseur)"
+msgstr "Pour ceux qui aiment explorer, connaissance limitÃ©e du pilotage de vaisseaux lÃ©gers et de la rÃ©colte (plus limitÃ©e que pour ceux qui deviennent Moissonneur ou Chasseur)"
 
 msgid "Spy"
 msgstr "Espion"
 
 msgid "Fighter specialising in piloting light spaceships and electronic warfare"
-msgstr "Chasseur spécialisé dans le pilotage de vaisseaux spatiaux légers et la guerre électronique"
+msgstr "Chasseur spÃ©cialisÃ© dans le pilotage de vaisseaux spatiaux lÃ©gers et la guerre Ã©lectronique"
 
 msgid "Technician"
 msgstr "Technicien"
 
 msgid "Technician specialising in keeping spaceship operational"
-msgstr "Technicien spécialisé dans le maintien en état de marche du vaisseau spatial"
+msgstr "Technicien spÃ©cialisÃ© dans le maintien en Ã©tat de marche du vaisseau spatial"
 
 msgid "Change your picture"
 msgstr "Modifier votre avatar"
@@ -168,7 +168,7 @@ msgid "Rookie"
 msgstr "Novice"
 
 msgid "Qualified"
-msgstr "Compétent"
+msgstr "CompÃ©tent"
 
 msgid "Professional"
 msgstr "Professionnel"
@@ -180,10 +180,10 @@ msgid "Grand expert"
 msgstr "Grand Expert"
 
 msgid "Master"
-msgstr "Maître"
+msgstr "MaÃ®tre"
 
 msgid "Grand Master"
-msgstr "Grand Maître"
+msgstr "Grand MaÃ®tre"
 
 msgid "Send a message"
 msgstr "Envoyer un message"
@@ -192,40 +192,40 @@ msgid "Inventory"
 msgstr "Inventaire"
 
 msgid "Owned by"
-msgstr "Appartient à"
+msgstr "Appartient Ã "
 
 msgid "Security"
-msgstr "Sécurité"
+msgstr "Securite"
 
 msgid "null"
 msgstr "nulle"
 
 msgid "Beware, you are in an unsafe area. You could be attacked at any time, you're on your own."
-msgstr "Attention, vous êtes dans une zone dangereuse. Vous pouvez être attaqué à tout moment, vous êtes seul."
+msgstr "Attention, vous Ãªtes dans une zone dangereuse. Vous pouvez Ãªtre attaquÃ© Ã  tout moment, vous Ãªtes seul."
 
 msgid "low"
 msgstr "faible"
 
 msgid "Be careful, security is poor in this area and the authorities will find it difficult to defend you."
-msgstr "Attention, la sécurité est faible dans cette zone et les autorités auront du mal à vous défendre."
+msgstr "Attention, la sÃ©curitÃ© est faible dans cette zone et les autoritÃ©s auront du mal Ã  vous dÃ©fendre."
 
 msgid "intermediate"
-msgstr "intermédiaire"
+msgstr "intermÃ©diaire"
 
 msgid "It's not a highly secure area, but it's not a lawless one either, so just be careful."
-msgstr "Ce n'est pas une zone très sûre, mais ce n'est pas non plus une zone de non-droit, alors soyez prudents."
+msgstr "Ce n'est pas une zone trÃ¨s sÃ»re, mais ce n'est pas non plus une zone de non-droit, alors soyez prudents."
 
 msgid "high security"
-msgstr "élevée"
+msgstr "Ã©levÃ©e"
 
 msgid "Here you are safe and secure, with security forces on call at all times and at very short notice."
-msgstr "Ici, vous êtes en sécurité, avec des forces de sécurité disponibles à tout moment et dans les plus brefs délais."
+msgstr "Ici, vous Ãªtes en sÃ©curitÃ©, avec des forces de sÃ©curitÃ© disponibles Ã  tout moment et dans les plus brefs dÃ©lais."
 
 msgid "planet"
-msgstr "planète"
+msgstr "planÃ¨te"
 
 msgid "asteroid"
-msgstr "astéroïde"
+msgstr "astÃ©roÃ¯de"
 
 msgid "station"
 msgstr "station"
@@ -249,19 +249,19 @@ msgid "bellow average"
 msgstr "en dessous de la moyenne"
 
 msgid "depleted"
-msgstr "réduit"
+msgstr "rÃ©duit"
 
 msgid "empty"
 msgstr "vide"
 
 msgid "First name"
-msgstr "Prénom"
+msgstr "PrÃ©nom"
 
 msgid "Last name"
 msgstr "Nom de famille"
 
 msgid "The faction's main planet"
-msgstr "Planète mère de la faction"
+msgstr "PlanÃ¨te mÃ¨re de la faction"
 
 msgid "Equip your spaceship with the ""spaceship probe"" module to access detailed statistics"
 msgstr "Equipez votre vaisseau du module ""spaceship probe"" pour acceder a des statistiques detaillees"
@@ -285,43 +285,43 @@ msgid "you don't have an account? Signup here"
 msgstr "Vous n'avez pas de compte e Enregistrez vous ici"
 
 msgid "forgot password"
-msgstr "mot de passe oublié"
+msgstr "mot de passe oubliÃ©"
 
 msgid "A portal that lets you travel to"
 msgstr "Un portail vous permettant de voyager vers "
 
 msgid "Your account has been successfully created with username"
-msgstr "Votre compte a été créé avec succès avec comme identifiant"
+msgstr "Votre compte a Ã©tÃ© crÃ©Ã© avec succÃ¨s avec comme identifiant"
 
 msgid "Click on <b>Enter</b> to create your character."
-msgstr "Cliquez sur <b>Entrer</b> pour créer votre personnage."
+msgstr "Cliquez sur <b>Entrer</b> pour crÃ©er votre personnage."
 
 msgid "Enter"
 msgstr "Entrer"
 
 msgid "Are you sure you want to unequip"
-msgstr "Êtes-vous sûr de vouloir déséquiper"
+msgstr "ÃŠtes-vous sÃ»r de vouloir dÃ©sÃ©quiper"
 
 msgid "Are you sure you want to delete"
-msgstr "Êtes-vous sûr de vouloir jeter"
+msgstr "ÃŠtes-vous sÃ»r de vouloir jeter"
 
 msgid "Max Capacity"
-msgstr "Capacité maximale"
+msgstr "Capacite maximale"
 
 msgid "Equipped Modules"
-msgstr "Modules équipés"
+msgstr "Modules Ã©quipÃ©s"
 
 msgid "MOVEMENT"
 msgstr "MOUVEMENT"
 
 msgid "HULL"
-msgstr "COQUE"
+msgstr "POINTS DE VIE"
 
 msgid "HOLD"
 msgstr "CALE"
 
 msgid "REPAIRE"
-msgstr "RÉPARATION"
+msgstr "Reparation"
 
 msgid "GATHERING"
 msgstr "RECOLTE"
@@ -333,7 +333,7 @@ msgid "CRAFT"
 msgstr "CONSTRUCTION"
 
 msgid "ELECTRONIC WARFARE"
-msgstr "GUERRE ÉLECTRONIQUE"
+msgstr "GUERRE Ã‰LECTRONIQUE"
 
 msgid "WEAPONRY"
 msgstr "ARMEMENT"
@@ -654,9 +654,9 @@ msgid "Syndication"
 msgstr ""
 
 #. Translators: String used to replace omitted page numbers in elided page
-#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#. range generated by paginators, e.g. [1, 2, 'â€¦', 5, 6, 7, 'â€¦', 9, 10].
 #: .\venv\Lib\site-packages\django\core\paginator.py:30
-msgid "…"
+msgid "â€¦"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\core\paginator.py:50
@@ -691,12 +691,12 @@ msgstr "Veuillez entrer une adresse email valide."
 #. Translators: "letters" means latin letters: a-z and A-Z.
 #: .\venv\Lib\site-packages\django\core\validators.py:259
 msgid ""
-"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+"Enter a valid â€œslugâ€ consisting of letters, numbers, underscores or hyphens."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\core\validators.py:267
 msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"Enter a valid â€œslugâ€ consisting of Unicode letters, numbers, underscores, or "
 "hyphens."
 msgstr ""
 
@@ -794,7 +794,7 @@ msgstr[1] ""
 #: .\venv\Lib\site-packages\django\core\validators.py:544
 #, python-format
 msgid ""
-"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"File extension â€œ%(extension)sâ€ is not allowed. Allowed extensions are: "
 "%(allowed_extensions)s."
 msgstr ""
 
@@ -814,7 +814,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\constraints.py:17
 #, python-format
-msgid "Constraint “%(name)s” is violated."
+msgid "Constraint â€œ%(name)sâ€ is violated."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:128
@@ -850,12 +850,12 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1094
 #, python-format
-msgid "“%(value)s” value must be either True or False."
+msgid "â€œ%(value)sâ€ value must be either True or False."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1095
 #, python-format
-msgid "“%(value)s” value must be either True, False, or None."
+msgid "â€œ%(value)sâ€ value must be either True, False, or None."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1097
@@ -878,7 +878,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1354
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"â€œ%(value)sâ€ value has an invalid date format. It must be in YYYY-MM-DD "
 "format."
 msgstr ""
 
@@ -886,7 +886,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1493
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"â€œ%(value)sâ€ value has the correct format (YYYY-MM-DD) but it is an invalid "
 "date."
 msgstr ""
 
@@ -897,14 +897,14 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1489
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+"â€œ%(value)sâ€ value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
 "uuuuuu]][TZ] format."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1497
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"â€œ%(value)sâ€ value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
 "[TZ]) but it is an invalid date/time."
 msgstr ""
 
@@ -914,7 +914,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1626
 #, python-format
-msgid "“%(value)s” value must be a decimal number."
+msgid "â€œ%(value)sâ€ value must be a decimal number."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1628
@@ -924,7 +924,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1789
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+"â€œ%(value)sâ€ value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
 "uuuuuu] format."
 msgstr ""
 
@@ -942,7 +942,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1948
 #, python-format
-msgid "“%(value)s” value must be a float."
+msgid "â€œ%(value)sâ€ value must be a float."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1950
@@ -951,7 +951,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1990
 #, python-format
-msgid "“%(value)s” value must be an integer."
+msgid "â€œ%(value)sâ€ value must be an integer."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1992
@@ -977,7 +977,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2237
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2238
 #, python-format
-msgid "“%(value)s” value must be either None, True or False."
+msgid "â€œ%(value)sâ€ value must be either None, True or False."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2240
@@ -1008,14 +1008,14 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2448
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"â€œ%(value)sâ€ value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
 "format."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2452
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"â€œ%(value)sâ€ value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
 "invalid time."
 msgstr ""
 
@@ -1033,7 +1033,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2653
 #, python-format
-msgid "“%(value)s” is not a valid UUID."
+msgid "â€œ%(value)sâ€ is not a valid UUID."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2655
@@ -1247,13 +1247,13 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\forms\models.py:1568
 #, python-format
-msgid "“%(pk)s” is not a valid value."
+msgid "â€œ%(pk)sâ€ is not a valid value."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\forms\utils.py:226
 #, python-format
 msgid ""
-"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"%(datetime)s couldnâ€™t be interpreted in time zone %(current_timezone)s; it "
 "may be ambiguous or it may not exist."
 msgstr ""
 
@@ -1622,7 +1622,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\utils\text.py:84
 #, python-format
 msgctxt "String to return when truncating text"
-msgid "%(truncated_text)s…"
+msgid "%(truncated_text)sâ€¦"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\text.py:269
@@ -1687,26 +1687,26 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:116
 msgid ""
-"You are seeing this message because this HTTPS site requires a “Referer "
-"header” to be sent by your web browser, but none was sent. This header is "
+"You are seeing this message because this HTTPS site requires a â€œReferer "
+"headerâ€ to be sent by your web browser, but none was sent. This header is "
 "required for security reasons, to ensure that your browser is not being "
 "hijacked by third parties."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:122
 msgid ""
-"If you have configured your browser to disable “Referer” headers, please re-"
-"enable them, at least for this site, or for HTTPS connections, or for “same-"
-"origin” requests."
+"If you have configured your browser to disable â€œRefererâ€ headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for â€œsame-"
+"originâ€ requests."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:127
 msgid ""
 "If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
-"\" …> for links to third-party sites."
+"including the â€œReferrer-Policy: no-referrerâ€ header, please remove them. The "
+"CSRF protection requires the â€œRefererâ€ header to do strict referer checking. "
+"If youâ€™re concerned about privacy, use alternatives like <a rel=\"noreferrer"
+"\" â€¦> for links to third-party sites."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:136
@@ -1719,7 +1719,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\csrf.py:142
 msgid ""
 "If you have configured your browser to disable cookies, please re-enable "
-"them, at least for this site, or for “same-origin” requests."
+"them, at least for this site, or for â€œsame-originâ€ requests."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:148
@@ -1763,7 +1763,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:692
 #, python-format
-msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgid "Invalid date string â€œ%(datestr)sâ€ given format â€œ%(format)sâ€"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\generic\detail.py:56
@@ -1772,7 +1772,7 @@ msgid "No %(verbose_name)s found matching the query"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\generic\list.py:70
-msgid "Page is not “last”, nor can it be converted to an int."
+msgid "Page is not â€œlastâ€, nor can it be converted to an int."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\generic\list.py:77
@@ -1782,7 +1782,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\generic\list.py:169
 #, python-format
-msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgid "Empty list and â€œ%(class_name)s.allow_emptyâ€ is False."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\static.py:38
@@ -1791,7 +1791,7 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\static.py:40
 #, python-format
-msgid "“%(path)s” does not exist"
+msgid "â€œ%(path)sâ€ does not exist"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\static.py:79
@@ -1825,7 +1825,7 @@ msgid "Django Documentation"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:230
-msgid "Topics, references, &amp; how-to’s"
+msgid "Topics, references, &amp; how-toâ€™s"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:238
@@ -2049,8 +2049,8 @@ msgstr "Masquage de signature"
 msgid "Destroyed"
 msgstr "Detruit"
 
-msgid "© 2025 Recorp. All rights reserved. Next-generation space conquest."
-msgstr "© 2025 Recorp. Tous droits reserves. Conquete spatiale nouvelle generation."
+msgid "Â© 2025 Recorp. All rights reserved. Next-generation space conquest."
+msgstr "Â© 2025 Recorp. Tous droits reserves. Conquete spatiale nouvelle generation."
 
 msgid "Account temporarily locked after too many attempts. Try again in %(remaining)s."
 msgstr "Compte temporairement bloque apres trop de tentatives. Reessayez dans %(remaining)s."
@@ -2084,14 +2084,14 @@ msgstr "Croiseur de bataille"
 msgid "Dreadnought"
 msgstr "Dreadnought"
 
-msgid "Thermal Weapon"
-msgstr "Arme thermique"
+msgid "Laser Weapon"
+msgstr "Arme laser"
 
 msgid "Ballistic Weapon"
 msgstr "Arme balistique"
 
-msgid "Missile Weapon"
-msgstr "Arme missile"
+msgid "Torpedo Weapon"
+msgstr "Arme torpille"
 
 msgid "Electronic Warfare"
 msgstr "Guerre electronique"
@@ -2099,20 +2099,20 @@ msgstr "Guerre electronique"
 msgid "Evasive Maneuver"
 msgstr "Manoeuvre evasive"
 
-msgid "Thermal Shield"
-msgstr "Bouclier thermique"
+msgid "Laser Shield"
+msgstr "Bouclier laser"
 
 msgid "Ballistic Shield"
 msgstr "Bouclier balistique"
 
-msgid "Missile Shield"
-msgstr "Bouclier missile"
+msgid "Torpedo Shield"
+msgstr "Bouclier torpille"
 
 msgid "Counter Electronic Warfare"
-msgstr "Contre-guerre electronique"
+msgstr "Defense guerre electronique"
 
 msgid "Repair"
-msgstr "Reparer"
+msgstr "Reparation"
 
 msgid "Shield Enhancement"
 msgstr "Renforcement de bouclier"
@@ -2142,14 +2142,14 @@ msgid "Advanced Targeting"
 msgstr "Ciblage avance"
 
 # Skill descriptions
-msgid "Enhances thermal weapon systems. Increases thermal damage (up to +25%)"
-msgstr "Ameliore les systemes d'armes thermiques. Augmente les degats thermiques (jusqu'a +25%)."
+msgid "Enhances laser weapon systems. Increases laser damage (up to +25%)"
+msgstr "Ameliore les systemes d'armes laser. Augmente les degats laser (jusqu'a +25%)."
 
 msgid "Optimizes ballistic weapon handling. Increases ballistic accuracy (up to +10%). Increases ballistic damage (up to +25%)"
 msgstr "Optimise la maitrise des armes balistiques. Augmente la precision balistique (jusqu'a +10%). Augmente les degats balistiques (jusqu'a +25%)."
 
-msgid "Improves missile weapon systems. Increases missile accuracy (up to +20%). Increases missile damage (up to +25%)"
-msgstr "Ameliore les systemes d'armes a missiles. Augmente la precision des missiles (jusqu'a +20%). Augmente les degats des missiles (jusqu'a +25%)."
+msgid "Improves torpedo weapon systems. Increases torpedo accuracy (up to +20%). Increases torpedo damage (up to +25%)"
+msgstr "Ameliore les systemes d'armes a torpilles. Augmente la precision des torpilles (jusqu'a +20%). Augmente les degats des torpilles (jusqu'a +25%)."
 
 msgid "Enhances electronic warfare capabilities.  Increases debuff success chance (up to +30%) Increases debuff duration (up to +20%)"
 msgstr "Ameliore les capacites de guerre electronique. Augmente les chances de reussite des malus (jusqu'a +30%) et leur duree (jusqu'a +20%)."
@@ -2197,14 +2197,14 @@ msgstr "Log"
 msgid "Unknown"
 msgstr "Inconnu"
 
-msgid "thermal"
-msgstr "thermiques"
+msgid "laser"
+msgstr "laser"
 
 msgid "ballistic"
 msgstr "balistiques"
 
-msgid "missile"
-msgstr "missiles"
+msgid "torpedo"
+msgstr "torpille"
 
 msgid "mixed"
 msgstr "mixtes"
@@ -2392,7 +2392,7 @@ msgid "A scan is required to display modules."
 msgstr "Un scan est requis pour afficher les modules."
 
 msgid "Hull points:"
-msgstr "Points de coque :"
+msgstr "Points de vie :"
 
 msgid "Action points:"
 msgstr "Points d'action :"
@@ -2403,11 +2403,11 @@ msgstr "Mouvement restant :"
 msgid "Ballistic defense:"
 msgstr "Defense balistique :"
 
-msgid "Thermal defense:"
-msgstr "Defense thermique :"
+msgid "Laser defense:"
+msgstr "Defense laser :"
 
-msgid "Missile defense:"
-msgstr "Defense missile :"
+msgid "Torpedo defense:"
+msgstr "Defense torpille :"
 
 msgid "Chat"
 msgstr "Chat"
@@ -2540,10 +2540,10 @@ msgid "Cargo"
 msgstr "Soute"
 
 msgid "Hull"
-msgstr "Coque"
+msgstr "POINTS DE VIE"
 
 msgid "hull points"
-msgstr "points de coque"
+msgstr "points de vie"
 
 msgid "Scavenge"
 msgstr "Recuperation"
@@ -2814,3 +2814,37 @@ msgstr "Evenements"
 
 msgid "Events Logs"
 msgstr "Evenements"
+
+msgid "Laser"
+msgstr "Laser"
+
+msgid "Torpedo"
+msgstr "Torpille"
+
+msgid "Laser defense"
+msgstr "Defense laser"
+
+msgid "Torpedo defense"
+msgstr "Defense torpille"
+msgid "Security level"
+msgstr "Niveau de securite"
+msgid "Ballistic defense"
+msgstr "Defense balistique"
+msgid "Hull points"
+msgstr "Points de vie"
+msgid "Inbox"
+msgstr "Recu"
+msgid "Sent"
+msgstr "Envoye"
+msgid "New"
+msgstr "Nouveau"
+msgid "Chronological log of events affecting you"
+msgstr "Journal chronologique des evenements qui vous affectent"
+msgid "BALLISTIC DEFENSE"
+msgstr "DEFENSE BALLISTIQUE"
+msgid "LASER DEFENSE"
+msgstr "DEFENSE LASER"
+msgid "TORPEDO DEFENSE"
+msgstr "DEFENSE TORPILLE"
+msgid "HULL POINTS"
+msgstr "POINTS DE VIE"

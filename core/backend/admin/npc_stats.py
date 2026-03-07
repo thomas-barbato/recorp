@@ -9,8 +9,8 @@ def compute_npc_final_stats(npc_template):
         "hp": ship.default_hp,
         "movement": ship.default_movement,
         "ballistic_defense": ship.default_ballistic_defense,
-        "thermal_defense": ship.default_thermal_defense,
-        "missile_defense": ship.default_missile_defense,
+        "laser_defense": ship.default_laser_defense,
+        "torpedo_defense": ship.default_torpedo_defense,
     }
 
     # === SHIP CATEGORY BONUS ===
@@ -32,10 +32,10 @@ def compute_npc_final_stats(npc_template):
         elif module.type == "DEFENSE_BALLISTIC":
             stats["ballistic_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
 
-        elif module.type == "DEFENSE_THERMAL":
-            stats["thermal_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
+        elif module.type == "DEFENSE_LASER":
+            stats["laser_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
 
-        elif module.type == "DEFENSE_MISSILE":
-            stats["missile_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
+        elif module.type == "DEFENSE_TORPEDO":
+            stats["torpedo_defense"] += int(get_effect_numeric(module, "defense", default=0, strategy="sum") or 0)
 
     return stats

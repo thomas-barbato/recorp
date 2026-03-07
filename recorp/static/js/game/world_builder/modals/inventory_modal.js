@@ -1103,8 +1103,8 @@ function createModuleTooltipLines(moduleType, effect) {
             if (effect?.range != null) lines.push(styledLine(`${label || t("Range")}:`, `${effect.range}`));
             break;
         case "DEFENSE_BALLISTIC":
-        case "DEFENSE_THERMAL":
-        case "DEFENSE_MISSILE":
+        case "DEFENSE_LASER":
+        case "DEFENSE_TORPEDO":
             if (effect?.defense != null) lines.push(styledLine(`${label || t("Defense")}:`, `+${effect.defense}`));
             break;
         case "HOLD":

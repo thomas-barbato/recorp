@@ -115,12 +115,12 @@
     "model": "core.module",
     "pk": 8,
     "fields": {
-        "name": "Thermal shield lv-1",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-1",
+        "type": "DEFENSE_LASER",
         "tier": 1,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 10
         },
         "created_at": "2024-06-04 12:38:15",
@@ -131,12 +131,12 @@
     "model": "core.module",
     "pk": 9,
     "fields": {
-        "name": "Thermal shield lv-1",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-1",
+        "type": "DEFENSE_LASER",
         "tier": 2,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 20
         },
         "created_at": "2024-06-04 12:38:15",
@@ -147,12 +147,12 @@
     "model": "core.module",
     "pk": 10,
     "fields": {
-        "name": "Thermal shield lv-2",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-2",
+        "type": "DEFENSE_LASER",
         "tier": 3,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 30
         },
         "created_at": "2024-06-04 12:38:15",
@@ -163,12 +163,12 @@
     "model": "core.module",
     "pk": 11,
     "fields": {
-        "name": "Thermal shield lv-3",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-3",
+        "type": "DEFENSE_LASER",
         "tier": 4,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 40
         },
         "created_at": "2024-06-04 12:38:15",
@@ -179,12 +179,12 @@
     "model": "core.module",
     "pk": 12,
     "fields": {
-        "name": "Thermal shield lv-4",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-4",
+        "type": "DEFENSE_LASER",
         "tier": 5,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 50
         },
         "created_at": "2024-06-04 12:38:15",
@@ -195,12 +195,12 @@
     "model": "core.module",
     "pk": 13,
     "fields": {
-        "name": "Thermal shield lv-5",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-5",
+        "type": "DEFENSE_LASER",
         "tier": 6,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 60
         },
         "created_at": "2024-06-04 12:38:15",
@@ -211,12 +211,12 @@
     "model": "core.module",
     "pk": 14,
     "fields": {
-        "name": "Thermal shield lv-6",
-        "type": "DEFENSE_THERMAL",
+        "name": "Laser shield lv-6",
+        "type": "DEFENSE_LASER",
         "tier": 7,
         "effect": {
-            "label": "thermal defense",
-            "defense_type": "thermal",
+            "label": "laser defense",
+            "defense_type": "laser",
             "defense": 70
         },
         "created_at": "2024-06-04 12:38:15",
@@ -227,12 +227,12 @@
     "model": "core.module",
     "pk": 15,
     "fields": {
-        "name": "Missile shield lv-1",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-1",
+        "type": "DEFENSE_TORPEDO",
         "tier": 1,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 10
         },
         "created_at": "2024-06-04 12:38:15",
@@ -243,12 +243,12 @@
     "model": "core.module",
     "pk": 16,
     "fields": {
-        "name": "Missile shield lv-2",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-2",
+        "type": "DEFENSE_TORPEDO",
         "tier": 2,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 20
         },
         "created_at": "2024-06-04 12:38:15",
@@ -259,12 +259,12 @@
     "model": "core.module",
     "pk": 17,
     "fields": {
-        "name": "Missile shield lv-3",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-3",
+        "type": "DEFENSE_TORPEDO",
         "tier": 3,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 30
         },
         "created_at": "2024-06-04 12:38:15",
@@ -275,12 +275,12 @@
     "model": "core.module",
     "pk": 18,
     "fields": {
-        "name": "Missile shield lv-4",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-4",
+        "type": "DEFENSE_TORPEDO",
         "tier": 4,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 40
         },
         "created_at": "2024-06-04 12:38:15",
@@ -291,12 +291,12 @@
     "model": "core.module",
     "pk": 19,
     "fields": {
-        "name": "Missile shield lv-5",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-5",
+        "type": "DEFENSE_TORPEDO",
         "tier": 5,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 50
         },
         "created_at": "2024-06-04 12:38:15",
@@ -307,12 +307,12 @@
     "model": "core.module",
     "pk": 20,
     "fields": {
-        "name": "Missile shield lv-6",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-6",
+        "type": "DEFENSE_TORPEDO",
         "tier": 6,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 60
         },
         "created_at": "2024-06-04 12:38:15",
@@ -323,12 +323,12 @@
     "model": "core.module",
     "pk": 21,
     "fields": {
-        "name": "Missile shield lv-7",
-        "type": "DEFENSE_MISSILE",
+        "name": "Torpedo shield lv-7",
+        "type": "DEFENSE_TORPEDO",
         "tier": 7,
         "effect": {
-            "label": "missile defense",
-            "defense_type": "missile",
+            "label": "torpedo defense",
+            "defense_type": "torpedo",
             "defense": 70
         },
         "created_at": "2024-06-04 12:38:15",
@@ -1611,12 +1611,12 @@
     "model": "core.module",
     "pk": 101,
     "fields": {
-        "name": "thermal weapon lv-1",
+        "name": "laser weapon lv-1",
         "type": "WEAPONRY",
         "tier": 1,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 4,
             "max_damage": 4,
             "range": 10
@@ -1629,12 +1629,12 @@
     "model": "core.module",
     "pk": 102,
     "fields": {
-        "name": "thermal weapon lv-2",
+        "name": "laser weapon lv-2",
         "type": "WEAPONRY",
         "tier": 2,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 8,
             "max_damage": 8,
             "range": 10
@@ -1647,12 +1647,12 @@
     "model": "core.module",
     "pk": 103,
     "fields": {
-        "name": "thermal weapon lv-3",
+        "name": "laser weapon lv-3",
         "type": "WEAPONRY",
         "tier": 3,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 12,
             "max_damage": 12,
             "range": 10
@@ -1665,12 +1665,12 @@
     "model": "core.module",
     "pk": 104,
     "fields": {
-        "name": "thermal weapon lv-4",
+        "name": "laser weapon lv-4",
         "type": "WEAPONRY",
         "tier": 4,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 16,
             "max_damage": 16,
             "range": 10
@@ -1683,12 +1683,12 @@
     "model": "core.module",
     "pk": 105,
     "fields": {
-        "name": "thermal weapon lv-5",
+        "name": "laser weapon lv-5",
         "type": "WEAPONRY",
         "tier": 4,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 20,
             "max_damage": 20,
             "range": 10
@@ -1701,12 +1701,12 @@
     "model": "core.module",
     "pk": 106,
     "fields": {
-        "name": "thermal weapon lv-6",
+        "name": "laser weapon lv-6",
         "type": "WEAPONRY",
         "tier": 6,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 24,
             "max_damage": 24,
             "range": 10
@@ -1719,12 +1719,12 @@
     "model": "core.module",
     "pk": 107,
     "fields": {
-        "name": "thermal weapon lv-7",
+        "name": "laser weapon lv-7",
         "type": "WEAPONRY",
         "tier": 7,
         "effect": {
-            "label": "Thermal damages",
-            "damage_type": "thermal",
+            "label": "Laser damages",
+            "damage_type": "laser",
             "min_damage": 28,
             "max_damage": 28,
             "range": 10
@@ -1737,12 +1737,12 @@
     "model": "core.module",
     "pk": 108,
     "fields": {
-        "name": "missile weapon lv-1",
+        "name": "torpedo weapon lv-1",
         "type": "WEAPONRY",
         "tier": 1,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 5,
             "max_damage": 15,
             "range": 6
@@ -1755,12 +1755,12 @@
     "model": "core.module",
     "pk": 109,
     "fields": {
-        "name": "missile weapon lv-2",
+        "name": "torpedo weapon lv-2",
         "type": "WEAPONRY",
         "tier": 2,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 5,
             "max_damage": 25,
             "range": 6
@@ -1773,12 +1773,12 @@
     "model": "core.module",
     "pk": 110,
     "fields": {
-        "name": "missile weapon lv-3",
+        "name": "torpedo weapon lv-3",
         "type": "WEAPONRY",
         "tier": 3,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 10,
             "max_damage": 35,
             "range": 6
@@ -1791,12 +1791,12 @@
     "model": "core.module",
     "pk": 111,
     "fields": {
-        "name": "missile weapon lv-4",
+        "name": "torpedo weapon lv-4",
         "type": "WEAPONRY",
         "tier": 4,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 10,
             "max_damage": 45,
             "range": 6
@@ -1809,12 +1809,12 @@
     "model": "core.module",
     "pk": 112,
     "fields": {
-        "name": "missile weapon lv-5",
+        "name": "torpedo weapon lv-5",
         "type": "WEAPONRY",
         "tier": 5,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 15,
             "max_damage": 55,
             "range": 6
@@ -1827,12 +1827,12 @@
     "model": "core.module",
     "pk": 113,
     "fields": {
-        "name": "missile weapon lv-6",
+        "name": "torpedo weapon lv-6",
         "type": "WEAPONRY",
         "tier": 6,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 15,
             "max_damage": 65,
             "range": 6
@@ -1845,12 +1845,12 @@
     "model": "core.module",
     "pk": 114,
     "fields": {
-        "name": "missile weapon lv-7",
+        "name": "torpedo weapon lv-7",
         "type": "WEAPONRY",
         "tier": 7,
         "effect": {
-            "label": "missile damages",
-            "damage_type": "missile",
+            "label": "torpedo damages",
+            "damage_type": "torpedo",
             "min_damage": 20,
             "max_damage": 75,
             "range": 6

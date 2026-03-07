@@ -27,7 +27,7 @@ class ActionRules:
     # ================
     # TYPES DE MODULES
     # ================
-    WEAPON_TYPES = {"LASER", "CANNON", "MISSILE", "BEAM"}
+    WEAPON_TYPES = {"LASER", "CANNON", "TORPEDO", "BEAM"}
     SCAN_TYPES = {"SCAN", "PROBE"}
     DOCK_TYPES = {"DOCKING_SYSTEM"}
     MINE_TYPES = {"MINING_LASER", "MINING_TURRET"}

@@ -3,7 +3,7 @@
     const MODULE_CATEGORIES = {
         WEAPONRY: { label: "Weaponry", types: ["WEAPONRY"] },
         EWAR: { label: "Electronic Warfare", types: ["ELECTRONIC_WARFARE"] },
-        DEFENSIVE: { label: "Defensive Modules", types: ["DEFENSE_BALLISTIC", "DEFENSE_THERMAL", "DEFENSE_MISSILE"] },
+        DEFENSIVE: { label: "Defensive Modules", types: ["DEFENSE_BALLISTIC", "DEFENSE_LASER", "DEFENSE_TORPEDO"] },
         UTILITY: { label: "Utility Modules", types: ["REPAIRE", "COLONIZATION", "CRAFT", "GATHERING", "RESEARCH"] },
         PROBE: { label: "Probe Modules", types: ["PROBE"] }
     };

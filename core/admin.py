@@ -707,8 +707,8 @@ class SetSectorView(LoginRequiredMixin, TemplateView):
                         max_ap=10,
                         hp=ThisNpcTemplate.values_list('max_hp', flat=True)[0],
                         movement=ThisNpcTemplate.values_list('max_movement', flat=True)[0],
-                        missile_defense=ThisNpcTemplate.values_list('max_missile_defense', flat=True)[0],
-                        thermal_defense=ThisNpcTemplate.values_list('max_thermal_defense', flat=True)[0],
+                        torpedo_defense=ThisNpcTemplate.values_list('max_torpedo_defense', flat=True)[0],
+                        laser_defense=ThisNpcTemplate.values_list('max_laser_defense', flat=True)[0],
                         ballistic_defense=ThisNpcTemplate.values_list('max_ballistic_defense', flat=True)[0],
                         status="FULL",
                         faction_id=1,
@@ -872,8 +872,8 @@ class UpdateSectorView(LoginRequiredMixin, TemplateView):
                             max_ap=10,
                             hp=ThisNpcTemplate.values_list('max_hp', flat=True)[0],
                             movement=ThisNpcTemplate.values_list('max_movement', flat=True)[0],
-                            missile_defense=ThisNpcTemplate.values_list('max_missile_defense', flat=True)[0],
-                            thermal_defense=ThisNpcTemplate.values_list('max_thermal_defense', flat=True)[0],
+                            torpedo_defense=ThisNpcTemplate.values_list('max_torpedo_defense', flat=True)[0],
+                            laser_defense=ThisNpcTemplate.values_list('max_laser_defense', flat=True)[0],
                             ballistic_defense=ThisNpcTemplate.values_list('max_ballistic_defense', flat=True)[0],
                             status="FULL",
                             faction_id=1,
@@ -947,8 +947,8 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
         context["module_list"] = modules
         context["module_types"] = [
             "DEFENSE_BALLISTIC",
-            "DEFENSE_MISSILE",
-            "DEFENSE_THERMAL",
+            "DEFENSE_TORPEDO",
+            "DEFENSE_LASER",
             "HOLD",
             "HULL",
             "MOVEMENT",
@@ -989,8 +989,8 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             "default_movement",
             "ship_category_id__name",
             "default_ballistic_defense",
-            "default_thermal_defense",
-            "default_missile_defense",
+            "default_laser_defense",
+            "default_torpedo_defense",
         )[0]
         
         module_hp = module_dict["HULL"]["hp"] if "HULL" in module_dict else 0
@@ -1002,14 +1002,14 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             if "DEFENSE_BALLISTIC" in module_dict
             else 0
         )
-        module_missile_defense = (
-            module_dict["DEFENSE_MISSILE"]["defense"]
-            if "DEFENSE_MISSILE" in module_dict
+        module_torpedo_defense = (
+            module_dict["DEFENSE_TORPEDO"]["defense"]
+            if "DEFENSE_TORPEDO" in module_dict
             else 0
         )
-        module_thermal_defense = (
-            module_dict["DEFENSE_THERMAL"]["defense"]
-            if "DEFENSE_THERMAL" in module_dict
+        module_laser_defense = (
+            module_dict["DEFENSE_LASER"]["defense"]
+            if "DEFENSE_LASER" in module_dict
             else 0
         )
         module_hold_capacity = (
@@ -1034,12 +1034,12 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             (spaceship["default_ballistic_defense"]) + int(module_ballistic_defense)
         )
         
-        thermal_defense_total = int(
-            (spaceship["default_thermal_defense"]) + int(module_thermal_defense)
+        laser_defense_total = int(
+            (spaceship["default_laser_defense"]) + int(module_laser_defense)
         )
         
-        missile_defense_total = int(
-            (spaceship["default_missile_defense"]) + int(module_missile_defense)
+        torpedo_defense_total = int(
+            (spaceship["default_torpedo_defense"]) + int(module_torpedo_defense)
         )
         
         new_template = NpcTemplate.objects.create(
@@ -1052,8 +1052,8 @@ class NpcTemplateDataView(LoginRequiredMixin, TemplateView):
             module_id_list=module_id_list,
             max_hp=hp_total,
             max_movement=move_total,
-            max_missile_defense=missile_defense_total,
-            max_thermal_defense=thermal_defense_total,
+            max_torpedo_defense=torpedo_defense_total,
+            max_laser_defense=laser_defense_total,
             max_ballistic_defense=ballistic_defense_total,
             hold_capacity=module_hold_capacity,
             behavior=data_from_post["data"]["behavior"]
@@ -1143,14 +1143,14 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
                 if "DEFENSE_BALLISTIC" in module_dict
                 else 0
             )
-            module_missile_defense = (
-                module_dict["DEFENSE_MISSILE"]["defense"]
-                if "DEFENSE_MISSILE" in module_dict
+            module_torpedo_defense = (
+                module_dict["DEFENSE_TORPEDO"]["defense"]
+                if "DEFENSE_TORPEDO" in module_dict
                 else 0
             )
-            module_thermal_defense = (
-                module_dict["DEFENSE_THERMAL"]["defense"]
-                if "DEFENSE_THERMAL" in module_dict
+            module_laser_defense = (
+                module_dict["DEFENSE_LASER"]["defense"]
+                if "DEFENSE_LASER" in module_dict
                 else 0
             )
             module_hold_capacity = (
@@ -1181,8 +1181,8 @@ class NpcTemplateUpdateDataView(LoginRequiredMixin, UpdateView):
                 module_id_list=module_id_list,
                 max_hp=hp_total,
                 max_movement=move_total,
-                max_missile_defense=module_missile_defense,
-                max_thermal_defense=module_thermal_defense,
+                max_torpedo_defense=module_torpedo_defense,
+                max_laser_defense=module_laser_defense,
                 max_ballistic_defense=module_ballistic_defense,
                 hold_capacity=module_hold_capacity,
                 behavior=data_from_post["data"]["behavior"]

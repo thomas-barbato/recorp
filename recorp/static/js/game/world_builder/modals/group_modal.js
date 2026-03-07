@@ -285,8 +285,8 @@ document.addEventListener("DOMContentLoaded", () => {
             buildStatLabel(t("AP"), st.ap?.current, st.ap?.max),
             buildStatLabel(t("MP"), st.movement?.current, st.movement?.max),
             buildStatLabel(t("Ballistic"), st.ballistic?.current, st.ballistic?.max),
-            buildStatLabel(t("Thermal"), st.thermal?.current, st.thermal?.max),
-            buildStatLabel(t("Missile"), st.missile?.current, st.missile?.max),
+            buildStatLabel(t("Laser"), st.laser?.current, st.laser?.max),
+            buildStatLabel(t("Torpedo"), st.torpedo?.current, st.torpedo?.max),
         ].join("");
 
         const actions = document.createElement("div");
@@ -405,10 +405,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 movement_max: Number(member?.stats?.movement?.max || 0),
                 ballistic_current: Number(member?.stats?.ballistic?.current || 0),
                 ballistic_max: Number(member?.stats?.ballistic?.max || 0),
-                thermal_current: Number(member?.stats?.thermal?.current || 0),
-                thermal_max: Number(member?.stats?.thermal?.max || 0),
-                missile_current: Number(member?.stats?.missile?.current || 0),
-                missile_max: Number(member?.stats?.missile?.max || 0),
+                laser_current: Number(member?.stats?.laser?.current || 0),
+                laser_max: Number(member?.stats?.laser?.max || 0),
+                torpedo_current: Number(member?.stats?.torpedo?.current || 0),
+                torpedo_max: Number(member?.stats?.torpedo?.max || 0),
             })),
             pending_invitations: invitations.map((invitation) => ({
                 id: Number(invitation?.id || 0),

@@ -29,9 +29,9 @@ function getCurrentPlayerIdSafe() {
 
 function getDamageIconPath(damageType) {
     const t = String(damageType || "").toUpperCase();
-    if (t === "THERMAL") return "/static/img/ux/laser-icon.svg";
+    if (t === "LASER") return "/static/img/ux/laser-icon.svg";
     if (t === "BALLISTIC") return "/static/img/ux/ballistic-icon.svg";
-    if (t === "MISSILE") return "/static/img/ux/missile-icon.svg";
+    if (t === "TORPEDO") return "/static/img/ux/torpedo-icon.svg";
     return null;
 }
 

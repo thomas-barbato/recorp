@@ -59,8 +59,8 @@ def _ship_stats_payload(ship: Optional[PlayerShip]) -> Dict[str, Dict[str, int]]
         return {
             "hp": {"current": 0, "max": 0},
             "ballistic": {"current": 0, "max": 0},
-            "thermal": {"current": 0, "max": 0},
-            "missile": {"current": 0, "max": 0},
+            "laser": {"current": 0, "max": 0},
+            "torpedo": {"current": 0, "max": 0},
             "ap": {"current": 0, "max": 0},
             "movement": {"current": 0, "max": 0},
         }
@@ -74,13 +74,13 @@ def _ship_stats_payload(ship: Optional[PlayerShip]) -> Dict[str, Dict[str, int]]
             "current": int(ship.current_ballistic_defense or 0),
             "max": int(ship.max_ballistic_defense or 0),
         },
-        "thermal": {
-            "current": int(ship.current_thermal_defense or 0),
-            "max": int(ship.max_thermal_defense or 0),
+        "laser": {
+            "current": int(ship.current_laser_defense or 0),
+            "max": int(ship.max_laser_defense or 0),
         },
-        "missile": {
-            "current": int(ship.current_missile_defense or 0),
-            "max": int(ship.max_missile_defense or 0),
+        "torpedo": {
+            "current": int(ship.current_torpedo_defense or 0),
+            "max": int(ship.max_torpedo_defense or 0),
         },
         "movement": {
             "current": int(ship.current_movement or 0),
@@ -115,11 +115,11 @@ def build_group_state_for_player(player_id: int) -> Dict[str, Any]:
             "current_movement",
             "max_movement",
             "current_ballistic_defense",
-            "current_thermal_defense",
-            "current_missile_defense",
+            "current_laser_defense",
+            "current_torpedo_defense",
             "max_ballistic_defense",
-            "max_thermal_defense",
-            "max_missile_defense",
+            "max_laser_defense",
+            "max_torpedo_defense",
             "status",
         )
     }

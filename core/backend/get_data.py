@@ -321,11 +321,11 @@ class GetDataFromDB:
                 "player_ship_id__ship_id__description", "player_ship_id__is_current_ship",
                 "player_ship_id__is_reversed", "player_ship_id__current_hp",
                 "player_ship_id__max_hp", "player_ship_id__current_movement",
-                "player_ship_id__max_movement", "player_ship_id__current_missile_defense",
-                "player_ship_id__current_ballistic_defense", "player_ship_id__current_thermal_defense",
-                "player_ship_id__max_missile_defense",
+                "player_ship_id__max_movement", "player_ship_id__current_torpedo_defense",
+                "player_ship_id__current_ballistic_defense", "player_ship_id__current_laser_defense",
+                "player_ship_id__max_torpedo_defense",
                 "player_ship_id__max_ballistic_defense", 
-                "player_ship_id__max_thermal_defense",
+                "player_ship_id__max_laser_defense",
                 "player_ship_id__current_cargo_size", "player_ship_id__status",
                 "player_ship_id__ship_id__module_slot_available",
                 "player_ship_id__ship_id__ship_category__name",
@@ -349,9 +349,9 @@ class GetDataFromDB:
                 "id", "coordinates", "status", "hp", "npc_template_id__max_hp",
                 "movement", "npc_template_id__max_movement", "ballistic_defense",
                 "npc_template_id__ship_id",
-                "npc_template_id__max_ballistic_defense", "thermal_defense",
-                "npc_template_id__max_thermal_defense", "missile_defense",
-                "npc_template_id__max_missile_defense", "npc_template_id__module_id_list",
+                "npc_template_id__max_ballistic_defense", "laser_defense",
+                "npc_template_id__max_laser_defense", "torpedo_defense",
+                "npc_template_id__max_torpedo_defense", "npc_template_id__module_id_list",
                 "npc_template_id__difficulty", "npc_template_id__name", "npc_template_id__id",
                 "npc_template_id__displayed_name",
                 "faction_id__name", "npc_template_id__ship_id__image",
@@ -369,8 +369,8 @@ class GetDataFromDB:
         """Récupère les données complètes d'un template NPC"""
         template = list(NpcTemplate.objects.filter(id=pk).values(
             "id", "name", "difficulty", "module_id_list", "max_hp",
-            "displayed_name","max_movement", "max_missile_defense", 
-            "max_thermal_defense", "max_ballistic_defense", "hold_capacity", 
+            "displayed_name","max_movement", "max_torpedo_defense", 
+            "max_laser_defense", "max_ballistic_defense", "hold_capacity", 
             "behavior", "respawn_delay_seconds", "ship_id", "ship_id__image"
         ))
 
@@ -389,8 +389,8 @@ class GetDataFromDB:
         """Récupère tous les templates NPC"""
         return list(NpcTemplate.objects.values(
             "id", "name", "ship_id__image", "max_hp", "max_movement",
-            "displayed_name", "difficulty", "max_missile_defense", 
-            "max_thermal_defense", "max_ballistic_defense", "behavior",
+            "displayed_name", "difficulty", "max_torpedo_defense", 
+            "max_laser_defense", "max_ballistic_defense", "behavior",
             "respawn_delay_seconds",
         ))
 

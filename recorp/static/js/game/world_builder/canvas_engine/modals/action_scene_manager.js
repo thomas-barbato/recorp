@@ -313,8 +313,8 @@ class ActionSceneManager {
 
         targetContainer.querySelector(".hp").textContent = "???";
         targetContainer.querySelector(".ap").textContent = "???";
-        targetContainer.querySelector(".shield-missile").textContent = "???";
-        targetContainer.querySelector(".shield-thermal").textContent = "???";
+        targetContainer.querySelector(".shield-torpedo").textContent = "???";
+        targetContainer.querySelector(".shield-laser").textContent = "???";
         targetContainer.querySelector(".shield-ballistic").textContent = "???";
     }
 
@@ -342,8 +342,8 @@ class ActionSceneManager {
             hp: ship?.current_hp ?? npcShip?.current_hp,
             ap: user?.current_ap ?? null,
             shields: {
-                MISSILE: ship?.current_missile_defense ?? npcShip?.current_missile_defense,
-                THERMAL: ship?.current_thermal_defense ?? npcShip?.current_thermal_defense,
+                TORPEDO: ship?.current_torpedo_defense ?? npcShip?.current_torpedo_defense,
+                LASER: ship?.current_laser_defense ?? npcShip?.current_laser_defense,
                 BALLISTIC: ship?.current_ballistic_defense ?? npcShip?.current_ballistic_defense,
             }
         };
@@ -653,16 +653,16 @@ class ActionSceneManager {
                 <div class="font-bold mb-2">Attacker</div>
                 <div>HP: <span class="hp">--</span></div>
                 <div>${tr("Action points")}: <span class="ap">--</span></div>
-                <div>Missile: <span class="shield-missile">--</span></div>
-                <div>Thermal: <span class="shield-thermal">--</span></div>
+                <div>Torpedo: <span class="shield-torpedo">--</span></div>
+                <div>Laser: <span class="shield-laser">--</span></div>
                 <div>Ballistic: <span class="shield-ballistic">--</span></div>
             </div>
             <div id="combat-target-stats" class="flex-1 text-right">
                 <div class="font-bold mb-2">Target</div>
                 <div>HP: <span class="hp">--</span></div>
                 <div>${tr("Action points")}: <span class="ap">--</span></div>
-                <div>Missile: <span class="shield-missile">--</span></div>
-                <div>Thermal: <span class="shield-thermal">--</span></div>
+                <div>Torpedo: <span class="shield-torpedo">--</span></div>
+                <div>Laser: <span class="shield-laser">--</span></div>
                 <div>Ballistic: <span class="shield-ballistic">--</span></div>
             </div>
         `;
@@ -881,11 +881,11 @@ class ActionSceneManager {
             attackerRt?.current_ap ??
             currentPlayer?.user?.current_ap ?? "0";
 
-        attackerContainer.querySelector(".shield-missile").textContent =
-            currentPlayer?.ship?.current_missile_defense ?? "0";
+        attackerContainer.querySelector(".shield-torpedo").textContent =
+            currentPlayer?.ship?.current_torpedo_defense ?? "0";
 
-        attackerContainer.querySelector(".shield-thermal").textContent =
-            currentPlayer?.ship?.current_thermal_defense ?? "0";
+        attackerContainer.querySelector(".shield-laser").textContent =
+            currentPlayer?.ship?.current_laser_defense ?? "0";
 
         attackerContainer.querySelector(".shield-ballistic").textContent =
             currentPlayer?.ship?.current_ballistic_defense ?? "0";
@@ -903,11 +903,11 @@ class ActionSceneManager {
             targetContainer.querySelector(".ap").textContent =
                 targetRt?.current_ap ?? snap?.ap ?? "--";
 
-            targetContainer.querySelector(".shield-missile").textContent =
-                targetRt?.shields?.MISSILE ?? snap?.shields?.MISSILE ?? "--";
+            targetContainer.querySelector(".shield-torpedo").textContent =
+                targetRt?.shields?.TORPEDO ?? snap?.shields?.TORPEDO ?? "--";
 
-            targetContainer.querySelector(".shield-thermal").textContent =
-                targetRt?.shields?.THERMAL ?? snap?.shields?.THERMAL ?? "--";
+            targetContainer.querySelector(".shield-laser").textContent =
+                targetRt?.shields?.LASER ?? snap?.shields?.LASER ?? "--";
 
             targetContainer.querySelector(".shield-ballistic").textContent =
                 targetRt?.shields?.BALLISTIC ?? snap?.shields?.BALLISTIC ?? "--";
@@ -976,11 +976,11 @@ class ActionSceneManager {
         if (changes.shields) {
             const shields = changes.shields;
 
-            if (shields.MISSILE != null)
-                container.querySelector(".shield-missile").textContent = shields.MISSILE;
+            if (shields.TORPEDO != null)
+                container.querySelector(".shield-torpedo").textContent = shields.TORPEDO;
 
-            if (shields.THERMAL != null)
-                container.querySelector(".shield-thermal").textContent = shields.THERMAL;
+            if (shields.LASER != null)
+                container.querySelector(".shield-laser").textContent = shields.LASER;
 
             if (shields.BALLISTIC != null)
                 container.querySelector(".shield-ballistic").textContent = shields.BALLISTIC;
@@ -1298,8 +1298,8 @@ class CombatAnimationEngine {
         const baseRadius = Math.max(spriteSize.w, spriteSize.h) * 0.6;
 
         const COLORS = {
-            MISSILE:   "#22c55e",
-            THERMAL:   "#ef4444",
+            TORPEDO:   "#22c55e",
+            LASER:   "#ef4444",
             BALLISTIC: "#3b82f6"
         };
 
@@ -1377,7 +1377,7 @@ class CombatAnimationEngine {
 
         if (!from || !to) return;
 
-        const weapon = String(weaponType || "").toLowerCase() || "thermal";
+        const weapon = String(weaponType || "").toLowerCase() || "laser";
         const imgSrc = `/static/img/ux/projectiles/${weapon}/red.png`;
         const img = await this._loadImage(imgSrc);
 
@@ -1560,7 +1560,7 @@ window.playCombatAnimation = function (payload) {
         toSide = "right";
     }
 
-    const weaponType = payload?.damage_type || payload?.weaponType || "thermal";
+    const weaponType = payload?.damage_type || payload?.weaponType || "laser";
     let result;
     if (payload?.type === "MISS" || payload?.type === "EVADE") {
 

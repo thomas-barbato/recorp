@@ -128,12 +128,12 @@ def _combat_action_message(
         source = _as_text(payload.get("source_name"), unknown_label)
         target = _as_text(payload.get("target_name"), unknown_label)
 
-        if damage_type_raw == "THERMAL":
-            damage_type = _("thermal")
+        if damage_type_raw == "LASER":
+            damage_type = _("laser")
         elif damage_type_raw == "BALLISTIC":
             damage_type = _("ballistic")
-        elif damage_type_raw == "MISSILE":
-            damage_type = _("missile")
+        elif damage_type_raw == "TORPEDO":
+            damage_type = _("torpedo")
         else:
             damage_type = _("mixed")
 

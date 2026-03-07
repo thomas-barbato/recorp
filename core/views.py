@@ -292,8 +292,8 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
             current_hp = ship.default_hp
             current_movement = ship.default_movement
             current_ballistic_defense = ship.default_ballistic_defense
-            current_thermal_defense = ship.default_thermal_defense
-            current_missile_defense = ship.default_missile_defense
+            current_laser_defense = ship.default_laser_defense
+            current_torpedo_defense = ship.default_torpedo_defense
             current_cargo_size = 3
 
             modules = ArchetypeModule.objects.filter(archetype_id=archetype_id)
@@ -307,10 +307,10 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
                     )
                     if "BALLISTIC" in mtype:
                         current_ballistic_defense += defense_bonus
-                    elif "THERMAL" in mtype:
-                        current_thermal_defense += defense_bonus
-                    elif "MISSILE" in mtype:
-                        current_missile_defense += defense_bonus
+                    elif "LASER" in mtype:
+                        current_laser_defense += defense_bonus
+                    elif "TORPEDO" in mtype:
+                        current_torpedo_defense += defense_bonus
 
                 elif "MOVEMENT" in mtype:
                     current_movement += int(
@@ -339,10 +339,10 @@ class CreateCharacterView(LoginRequiredMixin, TemplateView):
                 current_cargo_size=current_cargo_size,
                 current_ballistic_defense=current_ballistic_defense,
                 max_ballistic_defense=current_ballistic_defense,
-                current_thermal_defense=current_thermal_defense,
-                max_thermal_defense=current_thermal_defense,
-                current_missile_defense=current_missile_defense,
-                max_missile_defense=current_missile_defense,
+                current_laser_defense=current_laser_defense,
+                max_laser_defense=current_laser_defense,
+                current_torpedo_defense=current_torpedo_defense,
+                max_torpedo_defense=current_torpedo_defense,
             )
 
             # -------------------------

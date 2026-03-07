@@ -423,8 +423,8 @@ export default class MapData {
                 current_ap: null,
                 current_movement: null,
                 shields: {
-                    MISSILE: null,
-                    THERMAL: null,
+                    TORPEDO: null,
+                    LASER: null,
                     BALLISTIC: null
                 }
             }

@@ -148,7 +148,7 @@
                     flex flex-col gap-0 pointer-events-none z-50">
         </div>
 
-        <!-- CANVAS ZONE (décalé de 32px/32px) -->
+        <!-- CANVAS ZONE (dÃ©calÃ© de 32px/32px) -->
         <div id="canvas-zone" class="absolute top-[32px] left-[32px] right-0 bottom-0 overflow-hidden">
             <canvas id="canvas-bg"></canvas>
             <canvas id="canvas-ui"></canvas>
@@ -270,24 +270,24 @@
                         <span id="ballistic-container-value-min">{{current_player_state.ship.current_ballistic_defense}}</span>/<span id="ballistic-container-value-max">{{current_player_state.ship.max_ballistic_defense}}</span>
                     </span>
                 </div>
-                <label for="thermal-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                <label for="laser-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
                     <span class="iconify game-icons--laser-warning w-[20px] h-[20px]"></span>
-                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Thermal defense" %}</span>
+                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Laser defense" %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div id="termal-percent" id="thermal-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_thermal_defense current_player_state.ship.max_thermal_defense 100 %}%"></div>
-                    <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="thermal-container-value">
-                        <span id="thermal-container-value-min">{{current_player_state.ship.current_thermal_defense}}</span>/<span id="thermal-container-value-max">{{current_player_state.ship.max_thermal_defense}}</span>
+                    <div id="laser-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_laser_defense current_player_state.ship.max_laser_defense 100 %}%"></div>
+                    <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="laser-container-value">
+                        <span id="laser-container-value-min">{{current_player_state.ship.current_laser_defense}}</span>/<span id="laser-container-value-max">{{current_player_state.ship.max_laser_defense}}</span>
                     </span>
                 </div>
-                <label for="missile-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
+                <label for="torpedo-container" class="font-bold font-shadow text-emerald-300 text-xs flex items-center gap-2">
                     <span class="iconify game-icons--dragon-shield w-[20px] h-[20px]"></span>
-                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Missile defense" %}</span>
+                    <span class="uppercase tracking-wider text-xs font-bold">{% translate "Torpedo defense" %}</span>
                 </label>
                 <div class="w-full bg-red-600 relative h-[15px] text-start">
-                    <div id="missile-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_missile_defense current_player_state.ship.max_missile_defense 100 %}%"></div>
-                    <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="missile-container-value">
-                        <span id="missile-container-value-min">{{current_player_state.ship.current_missile_defense}}</span>/<span id="missile-container-value-max">{{current_player_state.ship.max_missile_defense}}</span>
+                    <div id="torpedo-percent" class="bg-blue-600 leading-none h-[15px] absolute" style="width:{% widthratio current_player_state.ship.current_torpedo_defense current_player_state.ship.max_torpedo_defense 100 %}%"></div>
+                    <span class="absolute w-full z-10 text-center text-xs font-bold font-shadow text-blue-100 text-center justify-center items-center gap-1" id="torpedo-container-value">
+                        <span id="torpedo-container-value-min">{{current_player_state.ship.current_torpedo_defense}}</span>/<span id="torpedo-container-value-max">{{current_player_state.ship.max_torpedo_defense}}</span>
                     </span>
                 </div>
             </div>
