@@ -108,6 +108,10 @@ function ensureTooltipElement() {
 function formatModuleTypeLabel(moduleType) {
     const normalized = normalizeModuleTypeKey(moduleType);
     if (!normalized) return t("Unknown");
+    const parts = normalized.split("_");
+    if (parts[0] === "DEFENSE" && parts.length > 1) {
+        return t(`${parts.slice(1).join(" ")} ${parts[0]}`);
+    }
     return t(normalized.replace(/_/g, " "));
 }
 

@@ -53,7 +53,7 @@
             {% for category in module_categories %}
             <fieldset class="equipped-module-group flex flex-col border border-emerald-400/20 rounded-lg p-2 bg-gray-900/50 hover:bg-gray-900/60 transition-all" data-module-category="{{ category }}">
                 <legend class="equipped-module-legend text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-400/30 rounded-md px-2 py-1 tracking-wide uppercase font-orbitron">
-                    <span class="equipped-module-legend__label">{% translate category|from_underscore_to_space %}</span>
+                    <span class="equipped-module-legend__label">{{ category|module_category_label }}</span>
                     <span class="equipped-module-count is-unknown" data-module-count-for="{{ category }}">0 / -</span>
                 </legend>
                 <div class="equipped-module-list w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-1 mt-1" id="module-type-{{ category }}">
