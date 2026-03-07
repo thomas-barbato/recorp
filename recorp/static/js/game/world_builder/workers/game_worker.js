@@ -1,8 +1,11 @@
-import { systems } from "./systems/index.js";
+const workerUrl = new URL(import.meta.url);
+const version = workerUrl.searchParams.get("v");
+const suffix = version ? `?v=${encodeURIComponent(version)}` : "";
+const { systems } = await import(`./systems/index.js${suffix}`);
 
-self.onmessage = (event) => {
+self.onmessage = async (event) => {
     const { type, payload, requestId } = event.data;
-    
+
     if (!type || !systems[type]) {
         self.postMessage({
             requestId,
@@ -12,7 +15,7 @@ self.onmessage = (event) => {
     }
 
     try {
-        const result = systems[type](payload);
+        const result = await systems[type](payload);
         self.postMessage({
             requestId,
             result

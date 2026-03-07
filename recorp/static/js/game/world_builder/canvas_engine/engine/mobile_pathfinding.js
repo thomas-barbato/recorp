@@ -205,7 +205,7 @@ export function initMobilePathfinding(engine) {
         refreshButtons();
     }
 
-    function handleArrow(direction) {
+    async function handleArrow(direction) {
         const me = getPlayer();
         if (!me || !me.data || !me.data.ship) return;
 
@@ -230,7 +230,7 @@ export function initMobilePathfinding(engine) {
         // - si ok -> current + path verts
         // - si impossible / PM insuffisants -> invalidPreview rouge
         if (typeof pathfinding._compute === "function") {
-            pathfinding._compute(x, y);
+            await pathfinding._compute(x, y);
         } else {
             console.warn("[MOBILE PF] pathfinding._compute indisponible");
             return;

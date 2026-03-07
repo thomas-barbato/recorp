@@ -1,15 +1,14 @@
-// canvas_pathfinding.js — VERSION FINALE
-
-// Binary heap implementation used for the open set (module level)
 class BinaryHeap {
     constructor(scoreFunction) {
         this.content = [];
         this.scoreFunction = scoreFunction;
     }
+
     push(element) {
         this.content.push(element);
         this.sinkDown(this.content.length - 1);
     }
+
     pop() {
         const result = this.content[0];
         const end = this.content.pop();
@@ -19,116 +18,113 @@ class BinaryHeap {
         }
         return result;
     }
+
     size() {
         return this.content.length;
     }
-    sinkDown(n) {
-        const element = this.content[n];
+
+    sinkDown(index) {
+        const element = this.content[index];
         const score = this.scoreFunction(element);
-        while (n > 0) {
-            const parentN = Math.floor((n + 1) / 2) - 1;
-            const parent = this.content[parentN];
+        while (index > 0) {
+            const parentIndex = Math.floor((index + 1) / 2) - 1;
+            const parent = this.content[parentIndex];
             if (score >= this.scoreFunction(parent)) break;
-            this.content[parentN] = element;
-            this.content[n] = parent;
-            n = parentN;
+            this.content[parentIndex] = element;
+            this.content[index] = parent;
+            index = parentIndex;
         }
     }
-    bubbleUp(n) {
+
+    bubbleUp(index) {
         const length = this.content.length;
-        const element = this.content[n];
-        const elemScore = this.scoreFunction(element);
-        // eslint-disable-next-line no-constant-condition
+        const element = this.content[index];
+        const elementScore = this.scoreFunction(element);
         while (true) {
-            const child2N = (n + 1) * 2;
-            const child1N = child2N - 1;
-            let swap = null;
-            let child1Score;
-            if (child1N < length) {
-                const child1 = this.content[child1N];
-                child1Score = this.scoreFunction(child1);
-                if (child1Score < elemScore) swap = child1N;
+            const rightIndex = (index + 1) * 2;
+            const leftIndex = rightIndex - 1;
+            let swapIndex = null;
+            let leftScore;
+
+            if (leftIndex < length) {
+                const left = this.content[leftIndex];
+                leftScore = this.scoreFunction(left);
+                if (leftScore < elementScore) {
+                    swapIndex = leftIndex;
+                }
             }
-            if (child2N < length) {
-                const child2 = this.content[child2N];
-                const child2Score = this.scoreFunction(child2);
-                if ((swap === null ? elemScore : child1Score) > child2Score) swap = child2N;
+
+            if (rightIndex < length) {
+                const right = this.content[rightIndex];
+                const rightScore = this.scoreFunction(right);
+                const compareScore = swapIndex === null ? elementScore : leftScore;
+                if (rightScore < compareScore) {
+                    swapIndex = rightIndex;
+                }
             }
-            if (swap === null) break;
-            this.content[n] = this.content[swap];
-            this.content[swap] = element;
-            n = swap;
+
+            if (swapIndex === null) break;
+            this.content[index] = this.content[swapIndex];
+            this.content[swapIndex] = element;
+            index = swapIndex;
         }
     }
 }
 
 export default class CanvasPathfinding {
-    /**
-     * options = {
-     *   tileSize: 32,
-     *   map: MapData instance,
-     *   renderer: Renderer instance
-     * }
-     */
     constructor(options = {}) {
         this.map = options.map;
         this.renderer = options.renderer;
         this.tileSize = options.tileSize || 32;
+        this.gameWorker = options.gameWorker || null;
 
-        // stockage interne du résultat visible à l'écran
         this.current = null;
         this.path = [];
+        this.invalidPreview = null;
+        this.shipSizeX = 1;
+        this.shipSizeY = 1;
 
         this.hoverTx = null;
         this.hoverTy = null;
         this._lastOverloadMessageAt = 0;
+        this._computeRequestId = 0;
+        this._workerStaticVersion = 0;
+        this._workerDynamicVersion = -1;
+        this._workerGridKey = "";
+        this._workerReady = false;
+        this._workerWarmupPromise = null;
     }
 
-    // ---------------------------------------------------------
-    // Événement de clic (déclenché par Input.onTileClick)
-    // ---------------------------------------------------------
+    setWorkerClient(gameWorker) {
+        this.gameWorker = gameWorker || null;
+        this._workerStaticVersion = 0;
+        this._workerDynamicVersion = -1;
+        this._workerGridKey = "";
+        this._workerReady = false;
+        this._workerWarmupPromise = null;
+        this._scheduleWorkerWarmup();
+    }
+
     handleClick(tx, ty) {
-        // 1) si clic sur même case → tentative de validation
-        if (this.current && this.current.dest &&
+        if (
+            this.current &&
+            this.current.dest &&
             this.current.dest.x === tx &&
             this.current.dest.y === ty &&
-            !this.invalidPreview) {
-
-            // chemin valide → envoi WS
+            !this.invalidPreview
+        ) {
             this._sendMoveToServer();
             this.clear();
             return;
         }
 
-        // 2) si clic sur même case mais preview rouge → on efface juste
-        if (this.invalidPreview &&
+        if (
+            this.invalidPreview &&
             this.invalidPreview.x === tx &&
-            this.invalidPreview.y === ty) {
+            this.invalidPreview.y === ty
+        ) {
             if (this.invalidPreview.reason === "overloaded") {
                 this._showOverloadMessage();
-                return;
-            }
-
-            // Si la raison de la preview rouge est la surcharge, afficher
-            // un message flottant rouge indiquant l'impossibilité.
-            if (this.invalidPreview.reason === "overloaded") {
-                try {
-                    const engine = window.canvasEngine;
-                    const me = this.map.findPlayerById(window.current_player_id);
-                    const sizeX = me?.sizeX || 1;
-                    const sizeY = me?.sizeY || 1;
-                    const worldX = tx + sizeX / 2;
-                    const worldY = ty + sizeY / 2;
-                    const text = "Vous êtes surchargé";
-
-                    if (engine?.renderer?.drawFloatingText) {
-                        engine.renderer.drawFloatingText(text, worldX, worldY, "rgba(255,80,80,0.95)", 1500);
-                    } else if (engine?.renderer?.addFloatingMessage) {
-                        engine.renderer.addFloatingMessage({ text, worldX, worldY, color: "rgba(255,80,80,0.95)", duration: 1500 });
-                    }
-                } catch (e) {
-                    console.warn("Erreur affichage message surcharge:", e);
-                }
                 return;
             }
 
@@ -136,33 +132,26 @@ export default class CanvasPathfinding {
             return;
         }
 
-        // 3) sinon → calcul du pathfinding
-        this._compute(tx, ty);
+        void this._compute(tx, ty);
     }
 
-    // ---------------------------------------------------------
-    // Hover : met à jour le tile pointé — NE CALCULE PAS le path
-    // ---------------------------------------------------------
     handleHover(tx, ty) {
         this.hoverTx = tx;
         this.hoverTy = ty;
 
-        // Si on a un chemin courant et que la souris quitte la tuile de destination → clear
-        if (this.current && this.current.dest) {
+        if (this.current?.dest) {
             if (tx !== this.current.dest.x || ty !== this.current.dest.y) {
                 this.clear();
             }
         }
 
-        // ---- Effacer la zone rouge ----
         if (this.invalidPreview) {
-            const inv = this.invalidPreview;
-
+            const preview = this.invalidPreview;
             const inside =
-                tx >= inv.x &&
-                tx < inv.x + inv.sizeX &&
-                ty >= inv.y &&
-                ty < inv.y + inv.sizeY;
+                tx >= preview.x &&
+                tx < preview.x + preview.sizeX &&
+                ty >= preview.y &&
+                ty < preview.y + preview.sizeY;
 
             if (!inside) {
                 this.clear();
@@ -170,10 +159,11 @@ export default class CanvasPathfinding {
         }
     }
 
-    // ---------------------------------------------------------
-    // Efface le pathfinding
-    // ---------------------------------------------------------
-    clear() {
+    clear(options = {}) {
+        if (options.invalidatePending !== false) {
+            this._computeRequestId += 1;
+        }
+
         this.current = null;
         this.path = [];
         this.invalidPreview = null;
@@ -184,7 +174,6 @@ export default class CanvasPathfinding {
 
     _showOverloadMessage() {
         const now = performance.now();
-        // Evite le spam si l'utilisateur appuie rapidement.
         if (now - this._lastOverloadMessageAt < 500) return;
         this._lastOverloadMessageAt = now;
 
@@ -209,8 +198,8 @@ export default class CanvasPathfinding {
                 color: "rgba(255,80,80,0.95)",
                 duration: 1500
             });
-        } catch (e) {
-            console.warn("Erreur affichage message surcharge:", e);
+        } catch (error) {
+            console.warn("Erreur affichage message surcharge:", error);
         }
     }
 
@@ -224,12 +213,10 @@ export default class CanvasPathfinding {
 
             const path = this.current.path;
             if (!path || path.length < 1) {
-                // coût 0 → mouvement invalide
-                console.warn("[MOVE] move_cost < 1 → mouvement ignoré");
+                console.warn("[MOVE] move_cost < 1 -> mouvement ignore");
                 return;
             }
 
-            // coût = nombre de pas
             const moveCost = path.length;
             if (moveCost < 1) return;
 
@@ -247,17 +234,14 @@ export default class CanvasPathfinding {
                     size_x: me.sizeX,
                     size_y: me.sizeY,
                     is_reversed: me.isReversed,
-                    path: path
+                    path
                 }
             });
-
-        } catch (e) {
-            console.error("Erreur _sendMoveToServer:", e);
+        } catch (error) {
+            console.error("Erreur _sendMoveToServer:", error);
         }
     }
-    /**
-     * Vérifie que toutes les cases nécessaires à la taille du vaisseau sont libres.
-     */
+
     _isDestinationAreaFree(x, y, me) {
         const sizeX = me.sizeX || 1;
         const sizeY = me.sizeY || 1;
@@ -267,14 +251,10 @@ export default class CanvasPathfinding {
                 const tx = x + dx;
                 const ty = y + dy;
 
-                // hors map
-                if (tx < 0 || ty < 0 ||
-                    tx >= this.map.mapWidth ||
-                    ty >= this.map.mapHeight) {
+                if (tx < 0 || ty < 0 || tx >= this.map.mapWidth || ty >= this.map.mapHeight) {
                     return false;
                 }
 
-                // case bloquante ?
                 if (this.map.isBlockedTile(tx, ty)) {
                     return false;
                 }
@@ -284,22 +264,21 @@ export default class CanvasPathfinding {
         return true;
     }
 
-    // ---------------------------------------------------------
-    // Calcule tout : anneau de départ + A*
-    // ---------------------------------------------------------
-    _compute(destX, destY) {
-
+    async _compute(destX, destY, options = {}) {
+        const retryCount = options.retryCount || 0;
+        const requestId = ++this._computeRequestId;
         const me = this.map.findPlayerById(window.current_player_id);
         if (!me) return;
 
-        // Bloquer le pathfinding si le vaisseau est en surcapacité
         try {
             const shipData = window.currentPlayer?.ship || {};
             const load = Number(shipData?.cargo_load_current ?? 0);
             const capacity = Number(shipData?.cargo_capacity ?? shipData?.current_cargo_size ?? 0);
-            const isOverloaded = Boolean(shipData?.cargo_over_capacity) || (Number.isFinite(load) && Number.isFinite(capacity) && load > capacity);
+            const isOverloaded = Boolean(shipData?.cargo_over_capacity)
+                || (Number.isFinite(load) && Number.isFinite(capacity) && load > capacity);
 
             if (isOverloaded) {
+                if (requestId !== this._computeRequestId) return;
                 this.current = null;
                 this.path = [];
                 this.invalidPreview = {
@@ -309,46 +288,62 @@ export default class CanvasPathfinding {
                     sizeY: me.sizeY,
                     reason: "overloaded"
                 };
-                this.renderer.requestRedraw();
+                this.renderer?.requestRedraw?.();
                 this._showOverloadMessage();
                 return;
             }
-        } catch (e) {
-            // si erreur, on ne bloque pas (sécurité)
-            console.warn('Erreur vérification surcharge:', e);
+        } catch (error) {
+            console.warn("Erreur verification surcharge:", error);
         }
 
-        this.shipSizeX = me.sizeX;
-        this.shipSizeY = me.sizeY;
+        this.shipSizeX = me.sizeX || 1;
+        this.shipSizeY = me.sizeY || 1;
+        this.invalidPreview = null;
 
         const startRing = this._computeStartRing(me);
-        if (startRing.length === 0) return;
+        if (startRing.length === 0) {
+            if (requestId !== this._computeRequestId) return;
+            this.current = null;
+            this.path = [];
+            this.renderer?.requestRedraw?.();
+            return;
+        }
 
         const bestStart = this._pickClosest(startRing, { x: destX, y: destY });
+        if (!bestStart) {
+            if (requestId !== this._computeRequestId) return;
+            this.current = null;
+            this.path = [];
+            this.renderer?.requestRedraw?.();
+            return;
+        }
 
-        const path = this._computePath(bestStart, { x: destX, y: destY });
-        // -- Calcul du coût du chemin --
+        const result = await this._computePathAsync(bestStart, { x: destX, y: destY });
+        if (requestId !== this._computeRequestId) return;
+
+        if (result?.stale) {
+            if (retryCount < 1) {
+                await this._compute(destX, destY, { retryCount: retryCount + 1 });
+            }
+            return;
+        }
+
+        const path = Array.isArray(result?.path) ? result.path : result;
+        if (!path || path.length === 0) {
+            this.current = null;
+            this.path = [];
+            this.invalidPreview = null;
+            this.renderer?.requestRedraw?.();
+            return;
+        }
+
         const pathCost = path.length;
         let pmRemaining = 0;
         if (window.currentPlayer?.ship?.current_movement != null) {
             pmRemaining = window.currentPlayer.ship.current_movement;
         }
 
-        if (!path) {
-            this.current = null;
-            this.path = [];
-        } else {
-            this.current = {
-                startList: startRing,
-                start: bestStart,
-                dest: { x: destX, y: destY },
-                path
-            };
-            this.path = path;
-        }
-        // -- Vérification PM (si zone est libre mais PM insuffisants) --
         if (pathCost > pmRemaining) {
-            // preview rouge (destination atteignable mais PM insuffisants)
             this.current = null;
             this.path = [];
             this.invalidPreview = {
@@ -356,17 +351,15 @@ export default class CanvasPathfinding {
                 y: destY,
                 sizeX: me.sizeX,
                 sizeY: me.sizeY,
-                reason: "not_enough_pm",  // Juste au cas où tu veux afficher un message
+                reason: "not_enough_pm",
                 pathCost,
                 pmRemaining
             };
-            this.renderer.requestRedraw();
+            this.renderer?.requestRedraw?.();
             return;
         }
 
-        // Vérifier que la zone destination est libre pour la taille du vaisseau
         if (!this._isDestinationAreaFree(destX, destY, me)) {
-            // chemin impossible → zone rouge
             this.current = null;
             this.path = [];
             this.invalidPreview = {
@@ -375,144 +368,213 @@ export default class CanvasPathfinding {
                 sizeX: me.sizeX,
                 sizeY: me.sizeY
             };
-            this.renderer.requestRedraw();
+            this.renderer?.requestRedraw?.();
             return;
         }
 
-        this.renderer.requestRedraw();
+        this.current = {
+            startList: startRing,
+            start: bestStart,
+            dest: { x: destX, y: destY },
+            path
+        };
+        this.path = path;
+        this.invalidPreview = null;
+        this.renderer?.requestRedraw?.();
     }
 
-    // ---------------------------------------------------------
-    // Construit l'anneau de départ autour du vaisseau
-    // ---------------------------------------------------------
+    async _computePathAsync(start, dest) {
+        if (!this.gameWorker?.call || !this.map?.getPathfindingSnapshot) {
+            return { path: this._computePath(start, dest), stale: false };
+        }
+
+        if (!this._workerReady) {
+            this._scheduleWorkerWarmup();
+            return { path: this._computePath(start, dest), stale: false };
+        }
+
+        try {
+            if (this._workerWarmupPromise) {
+                await this._workerWarmupPromise;
+            }
+
+            const snapshot = this.map.getPathfindingSnapshot();
+            await this._ensureWorkerState(snapshot);
+            this._workerReady = true;
+            const result = await this.gameWorker.call("find_path", { start, dest });
+            const latestDynamicVersion = this.map.getPathfindingSnapshot().dynamicVersion;
+
+            if (result?.dynamicVersion !== latestDynamicVersion) {
+                return { path: null, stale: true };
+            }
+
+            return {
+                path: Array.isArray(result?.path) ? result.path : null,
+                stale: false
+            };
+        } catch (error) {
+            console.warn("[PATHFINDING] worker fallback to main thread:", error);
+            this._workerStaticVersion = 0;
+            this._workerDynamicVersion = -1;
+            this._workerGridKey = "";
+            this._workerReady = false;
+            this._scheduleWorkerWarmup();
+            return { path: this._computePath(start, dest), stale: false };
+        }
+    }
+
+    _scheduleWorkerWarmup() {
+        if (!this.gameWorker?.call || !this.map?.getPathfindingSnapshot) {
+            return;
+        }
+
+        if (this._workerWarmupPromise) {
+            return;
+        }
+
+        this._workerWarmupPromise = (async () => {
+            const snapshot = this.map.getPathfindingSnapshot();
+            await this._ensureWorkerState(snapshot);
+            this._workerReady = true;
+        })().catch((error) => {
+            this._workerStaticVersion = 0;
+            this._workerDynamicVersion = -1;
+            this._workerGridKey = "";
+            this._workerReady = false;
+            console.warn("[PATHFINDING] worker warmup failed:", error);
+        }).finally(() => {
+            this._workerWarmupPromise = null;
+        });
+    }
+
+    async _ensureWorkerState(snapshot) {
+        const gridKey = `${snapshot.width}x${snapshot.height}`;
+
+        if (this._workerGridKey !== gridKey || this._workerStaticVersion !== snapshot.staticVersion) {
+            await this.gameWorker.call("init_pathfinding_grid", {
+                width: snapshot.width,
+                height: snapshot.height,
+                staticGrid: snapshot.staticGrid,
+                staticVersion: snapshot.staticVersion
+            });
+            this._workerGridKey = gridKey;
+            this._workerStaticVersion = snapshot.staticVersion;
+            this._workerDynamicVersion = -1;
+        }
+
+        if (this._workerDynamicVersion !== snapshot.dynamicVersion) {
+            await this.gameWorker.call("sync_pathfinding_dynamic", {
+                dynamicGrid: snapshot.dynamicGrid,
+                dynamicVersion: snapshot.dynamicVersion
+            });
+            this._workerDynamicVersion = snapshot.dynamicVersion;
+        }
+    }
+
     _computeStartRing(me) {
         const sx = me.x;
         const sy = me.y;
-        const w = me.sizeX;
-        const h = me.sizeY;
-
+        const w = me.sizeX || 1;
+        const h = me.sizeY || 1;
         const raw = [];
 
-        // TOP
-        for (let i = 0; i < w; i++)
-            raw.push({ x: sx + i, y: sy - 1 });
+        for (let i = 0; i < w; i++) raw.push({ x: sx + i, y: sy - 1 });
+        for (let i = 0; i < w; i++) raw.push({ x: sx + i, y: sy + h });
+        for (let j = 0; j < h; j++) raw.push({ x: sx - 1, y: sy + j });
+        for (let j = 0; j < h; j++) raw.push({ x: sx + w, y: sy + j });
 
-        // BOTTOM
-        for (let i = 0; i < w; i++)
-            raw.push({ x: sx + i, y: sy + h });
-
-        // LEFT
-        for (let j = 0; j < h; j++)
-            raw.push({ x: sx - 1, y: sy + j });
-
-        // RIGHT
-        for (let j = 0; j < h; j++)
-            raw.push({ x: sx + w, y: sy + j });
-
-        // ------ Filtre : dans la map & non bloqué ------
-        const filtered = raw.filter(p =>
-            p.x >= 0 &&
-            p.y >= 0 &&
-            p.x < this.map.mapWidth &&
-            p.y < this.map.mapHeight &&
-            !this.map.isBlockedTile(p.x, p.y)
+        return raw.filter(point =>
+            point.x >= 0 &&
+            point.y >= 0 &&
+            point.x < this.map.mapWidth &&
+            point.y < this.map.mapHeight &&
+            !this.map.isBlockedTile(point.x, point.y)
         );
-
-        return filtered;
     }
 
-    // ---------------------------------------------------------
-    // Choisit le start le + proche de la destination
-    // ---------------------------------------------------------
     _pickClosest(list, dest) {
         let best = null;
-        let bestDist = Infinity;
-        list.forEach(p => {
-            const dx = p.x - dest.x;
-            const dy = p.y - dest.y;
-            const d = dx * dx + dy * dy;
-            if (d < bestDist) {
-                bestDist = d;
-                best = p;
+        let bestDistance = Infinity;
+
+        for (const point of list) {
+            const dx = point.x - dest.x;
+            const dy = point.y - dest.y;
+            const distance = (dx * dx) + (dy * dy);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = point;
             }
-        });
+        }
+
         return best;
     }
 
-    // ---------------------------------------------------------
-    // Pathfinding A* — Contourne les obstacles
-    // ---------------------------------------------------------
     _computePath(start, dest) {
-        const W = this.map.mapWidth;
-        const H = this.map.mapHeight;
+        const width = this.map.mapWidth;
+        const height = this.map.mapHeight;
         const isBlocked = (x, y) => this.map.isBlockedTile(x, y);
 
         const closed = new Set();
         const parent = new Map();
-        const g = new Map();
-
-        // ensemble pour vérifier rapidement si un nœud est dans la liste ouverte
+        const gScore = new Map();
         const openSet = new Set();
-
         const key = (x, y) => `${x},${y}`;
-
         const startKey = key(start.x, start.y);
         const destKey = key(dest.x, dest.y);
+        const heuristic = point => Math.abs(point.x - dest.x) + Math.abs(point.y - dest.y);
 
-        const h = (p) => Math.abs(p.x - dest.x) + Math.abs(p.y - dest.y);
-
-        const openHeap = new BinaryHeap(node => g.get(key(node.x, node.y)) + h(node));
+        const openHeap = new BinaryHeap(node => gScore.get(key(node.x, node.y)) + heuristic(node));
         openHeap.push(start);
         openSet.add(startKey);
-        g.set(startKey, 0);
+        gScore.set(startKey, 0);
 
         while (openHeap.size() > 0) {
-            const cur = openHeap.pop();
-            const ck = key(cur.x, cur.y);
-            openSet.delete(ck);
+            const current = openHeap.pop();
+            const currentKey = key(current.x, current.y);
+            openSet.delete(currentKey);
 
-            if (ck === destKey) {
+            if (currentKey === destKey) {
                 const final = [];
-                let k = ck;
-                while (parent.has(k)) {
-                    final.push(k);
-                    k = parent.get(k);
+                let traceKey = currentKey;
+                while (parent.has(traceKey)) {
+                    final.push(traceKey);
+                    traceKey = parent.get(traceKey);
                 }
                 final.push(startKey);
                 final.reverse();
 
-                return final.map(s => {
-                    const [sx, sy] = s.split(',').map(Number);
-                    return { x: sx, y: sy };
+                return final.map(serialized => {
+                    const [x, y] = serialized.split(",").map(Number);
+                    return { x, y };
                 });
             }
 
-            closed.add(ck);
+            closed.add(currentKey);
 
             const neighbors = [
-                { x: cur.x + 1, y: cur.y },
-                { x: cur.x - 1, y: cur.y },
-                { x: cur.x, y: cur.y + 1 },
-                { x: cur.x, y: cur.y - 1 }
+                { x: current.x + 1, y: current.y },
+                { x: current.x - 1, y: current.y },
+                { x: current.x, y: current.y + 1 },
+                { x: current.x, y: current.y - 1 }
             ];
 
-            for (const nb of neighbors) {
-                if (nb.x < 0 || nb.x >= W || nb.y < 0 || nb.y >= H) continue;
+            for (const neighbor of neighbors) {
+                if (neighbor.x < 0 || neighbor.x >= width || neighbor.y < 0 || neighbor.y >= height) {
+                    continue;
+                }
 
-                const nk = key(nb.x, nb.y);
-                if (closed.has(nk)) continue;
+                const neighborKey = key(neighbor.x, neighbor.y);
+                if (closed.has(neighborKey)) continue;
+                if (isBlocked(neighbor.x, neighbor.y)) continue;
 
-                if (isBlocked(nb.x, nb.y)) continue;
+                const tentative = gScore.get(currentKey) + 1;
+                if (!gScore.has(neighborKey) || tentative < gScore.get(neighborKey)) {
+                    parent.set(neighborKey, currentKey);
+                    gScore.set(neighborKey, tentative);
 
-                const tentative = g.get(ck) + 1;
-
-                if (!g.has(nk) || tentative < g.get(nk)) {
-                    parent.set(nk, ck);
-                    g.set(nk, tentative);
-
-                    if (!openSet.has(nk)) {
-                        openHeap.push(nb);
-                        openSet.add(nk);
+                    if (!openSet.has(neighborKey)) {
+                        openHeap.push(neighbor);
+                        openSet.add(neighborKey);
                     }
                 }
             }

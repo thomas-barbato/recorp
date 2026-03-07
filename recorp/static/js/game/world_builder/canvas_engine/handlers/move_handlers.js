@@ -232,8 +232,7 @@ export function handlePlayerMove(msg) {
                                     currentPlayer.user.coordinates.x = endX;
                                     currentPlayer.user.coordinates.y = endY;
                                 }
-                                actor.x = endX;
-                                actor.y = endY;
+                                engine.map.setActorPosition?.(actor, endX, endY);
                                 updatePlayerCoords(actor);
                             }
 
@@ -259,16 +258,14 @@ export function handlePlayerMove(msg) {
             });
 
         } else {
-            actor.x = endX;
-            actor.y = endY;
+            engine.map.setActorPosition?.(actor, endX, endY);
             if (playerId === localPlayerId) {
                 updatePlayerCoords(actor);
             }
         }
     } catch (e) {
         console.warn("[WS player_move] erreur animation:", e);
-        actor.x = endX;
-        actor.y = endY;
+        engine.map.setActorPosition?.(actor, endX, endY);
     }
 
     // ----------------------------------------------------------

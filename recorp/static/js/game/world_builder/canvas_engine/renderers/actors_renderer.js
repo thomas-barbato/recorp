@@ -77,8 +77,7 @@ export default class ActorsRenderer {
         if (path.length === 1) {
             const actor = this.map.findPlayerById(playerId);
             if (actor) {
-                actor.x = path[0].x;
-                actor.y = path[0].y;
+                this.map.setActorPosition?.(actor, path[0].x, path[0].y);
                 delete actor.renderX;
                 delete actor.renderY;
             }
@@ -148,8 +147,7 @@ export default class ActorsRenderer {
 
                 // Si on vient de terminer le DERNIER segment
                 if (anim.current >= anim.segments.length) {
-                    actor.x = seg.endX;
-                    actor.y = seg.endY;
+                    this.map.setActorPosition?.(actor, seg.endX, seg.endY);
                     delete actor.renderX;
                     delete actor.renderY;
                     const cb = anim.onComplete;

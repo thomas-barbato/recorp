@@ -14,6 +14,11 @@ export default class MapData {
         this.wreckExpiryTimers = new Map();
         this.foregrounds = [];
         this.background = this.raw.sector?.background || null;
+        this._pathfindingStaticGrid = null;
+        this._pathfindingDynamicGrid = null;
+        this._pathfindingStaticVersion = 0;
+        this._pathfindingDynamicVersion = 0;
+        this._pathfindingDynamicDirty = true;
     }
 
     async prepare() {
@@ -137,7 +142,10 @@ export default class MapData {
 
         // ------------ MAP SIZE OVERRIDES ------------
         if (this.raw.map_width) this.mapWidth = Number(this.raw.map_width);
-        if (this.raw.map_height) this.mapHeight = Number(this.raw.map_height);  
+        if (this.raw.map_height) this.mapHeight = Number(this.raw.map_height);
+
+        this._rebuildPathfindingStaticGrid();
+        this.markPathfindingDynamicDirty();
     }
 
 
@@ -213,6 +221,136 @@ export default class MapData {
     getTopObjectAt(tileX, tileY) {
         const arr = this.getObjectsAtTile(tileX, tileY);
         return arr.length ? arr[0] : null;
+    }
+
+    _getPathfindingCellId(x, y) {
+        return (y * this.mapWidth) + x;
+    }
+
+    _createEmptyPathfindingGrid() {
+        return new Uint8Array(Math.max(0, this.mapWidth * this.mapHeight));
+    }
+
+    _normalizeObjectSize(obj) {
+        return {
+            sizeX: Math.max(1, Number.parseInt(obj?.sizeX ?? obj?.size?.x ?? 1, 10) || 1),
+            sizeY: Math.max(1, Number.parseInt(obj?.sizeY ?? obj?.size?.y ?? 1, 10) || 1)
+        };
+    }
+
+    _markPathfindingArea(grid, obj) {
+        if (!grid || !obj) return;
+
+        const originX = Number.parseInt(obj.x ?? 0, 10);
+        const originY = Number.parseInt(obj.y ?? 0, 10);
+        const { sizeX, sizeY } = this._normalizeObjectSize(obj);
+
+        for (let dy = 0; dy < sizeY; dy++) {
+            for (let dx = 0; dx < sizeX; dx++) {
+                const tx = originX + dx;
+                const ty = originY + dy;
+
+                if (tx < 0 || ty < 0 || tx >= this.mapWidth || ty >= this.mapHeight) {
+                    continue;
+                }
+
+                grid[this._getPathfindingCellId(tx, ty)] = 1;
+            }
+        }
+    }
+
+    _rebuildPathfindingStaticGrid() {
+        const grid = this._createEmptyPathfindingGrid();
+
+        for (const obj of this.foregrounds || []) {
+            this._markPathfindingArea(grid, obj);
+        }
+
+        this._pathfindingStaticGrid = grid;
+        this._pathfindingStaticVersion += 1;
+        this._pathfindingDynamicGrid = null;
+        this._pathfindingDynamicDirty = true;
+    }
+
+    markPathfindingDynamicDirty() {
+        this._pathfindingDynamicDirty = true;
+        this._pathfindingDynamicVersion += 1;
+    }
+
+    _isDynamicPathfindingBlocker(obj) {
+        if (!obj) return false;
+        if (obj.type === "player" || obj.type === "npc" || obj.type === "wreck") {
+            return true;
+        }
+        if (obj.type === "unknown") {
+            return true;
+        }
+        return typeof obj.id === "string" && obj.id.includes("unknown");
+    }
+
+    _ensurePathfindingDynamicGrid() {
+        const expectedSize = Math.max(0, this.mapWidth * this.mapHeight);
+        if (
+            !this._pathfindingDynamicDirty &&
+            this._pathfindingDynamicGrid &&
+            this._pathfindingDynamicGrid.length === expectedSize
+        ) {
+            return this._pathfindingDynamicGrid;
+        }
+
+        const grid = this._createEmptyPathfindingGrid();
+        const currentPlayerId = String(window.current_player_id ?? "");
+
+        for (const obj of this.worldObjects || []) {
+            if (!this._isDynamicPathfindingBlocker(obj)) continue;
+
+            if (
+                obj.type === "player" &&
+                String(obj.data?.user?.player ?? "") === currentPlayerId
+            ) {
+                continue;
+            }
+
+            this._markPathfindingArea(grid, obj);
+        }
+
+        this._pathfindingDynamicGrid = grid;
+        this._pathfindingDynamicDirty = false;
+        return this._pathfindingDynamicGrid;
+    }
+
+    getPathfindingSnapshot() {
+        if (!this._pathfindingStaticGrid) {
+            this._rebuildPathfindingStaticGrid();
+        }
+
+        return {
+            width: this.mapWidth,
+            height: this.mapHeight,
+            staticGrid: this._pathfindingStaticGrid,
+            staticVersion: this._pathfindingStaticVersion,
+            dynamicGrid: this._ensurePathfindingDynamicGrid(),
+            dynamicVersion: this._pathfindingDynamicVersion
+        };
+    }
+
+    setActorPosition(actor, x, y) {
+        if (!actor) return false;
+
+        const nextX = Number.parseInt(x, 10);
+        const nextY = Number.parseInt(y, 10);
+        if (!Number.isFinite(nextX) || !Number.isFinite(nextY)) {
+            return false;
+        }
+
+        if (actor.x === nextX && actor.y === nextY) {
+            return false;
+        }
+
+        actor.x = nextX;
+        actor.y = nextY;
+        this.markPathfindingDynamicDirty();
+        return true;
     }
 
      // -----------------------------------------------------------------
@@ -435,6 +573,7 @@ export default class MapData {
         this.players[pidStr] = obj;
 
         this.worldObjects.push(obj);
+        this.markPathfindingDynamicDirty();
 
         // Préchargement des sprites si le spriteManager est dispo
         if (this.spriteManager && this.spriteManager.ensure && this.spriteManager.makeUrl) {
@@ -486,6 +625,7 @@ export default class MapData {
         const after = this.worldObjects.length;
         if (before !== after) {
             console.warn(`[MAP] removeActorByPlayerId(${pidStr}) → ${before} -> ${after}`);
+            this.markPathfindingDynamicDirty();
         }
     }
 
@@ -522,6 +662,9 @@ export default class MapData {
         delete this.npcs?.[nidStr];
         const nidNum = Number(nidStr);
         if (!Number.isNaN(nidNum)) delete this.npcs?.[nidNum];
+        if (before !== this.worldObjects.length) {
+            this.markPathfindingDynamicDirty();
+        }
 
     }
 
@@ -585,6 +728,7 @@ export default class MapData {
 
         // Ajouter au worldObjects
         this.worldObjects.push(obj);
+        this.markPathfindingDynamicDirty();
 
         // Préchargement des images si spriteManager existe
         if (this.spriteManager && this.spriteManager.ensure && this.spriteManager.makeUrl) {
@@ -646,6 +790,7 @@ export default class MapData {
 
         this.wrecks[idStr] = obj;
         this.worldObjects.push(obj);
+        this.markPathfindingDynamicDirty();
         // Timer local = disparition visuelle à l'heure exacte, même sans trafic WS.
         this._scheduleWreckExpiry(idStr, wreckData?.expires_at);
 
@@ -661,6 +806,7 @@ export default class MapData {
     removeWreckById(wreckId) {
         if (wreckId == null) return;
         const wid = String(wreckId);
+        const before = this.worldObjects.length;
         this.worldObjects = this.worldObjects.filter(o => String(o.id) !== `wreck_${wid}`);
         delete this.wrecks?.[wid];
         // Nettoie aussi le timer local associé (sinon timeout zombie).
@@ -668,6 +814,9 @@ export default class MapData {
         if (t) {
             clearTimeout(t);
             this.wreckExpiryTimers.delete(wid);
+        }
+        if (before !== this.worldObjects.length) {
+            this.markPathfindingDynamicDirty();
         }
     }
 

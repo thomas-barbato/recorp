@@ -418,6 +418,7 @@ if (!ok) {
         }
 
         const gameWorker = new GameWorkerClient();
+        canvasPathfinding.setWorkerClient?.(gameWorker);
 
         window.canvasEngine = { 
             canvases, 
