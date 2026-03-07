@@ -2738,7 +2738,7 @@ msgid "PROBE"
 msgstr "SONDE"
 
 msgid "Ship Credits"
-msgstr "Credits transportes"
+msgstr "Crédits transportés"
 
 msgid "No modules stored in cargo."
 msgstr "Aucun module stocke dans la soute."
@@ -2846,6 +2846,21 @@ msgid "LASER DEFENSE"
 msgstr "DÉFENSE LASER"
 msgid "TORPEDO DEFENSE"
 msgstr "DÉFENSE TORPILLE"
+msgid "No active effects"
+msgstr "Aucun effet actif"
+
+msgid "Unequip in progress"
+msgstr "Déséquipement en cours"
+
+msgid "Equip in progress"
+msgstr "Équipement en cours"
+
+msgid "Module reconfiguration started"
+msgstr "Reconfiguration du module lancée"
+
+msgid "Quest Items"
+msgstr "Objets de quête"
+
 msgid "Empty slot"
 msgstr "Emplacement vide"
 msgid "HULL POINTS"

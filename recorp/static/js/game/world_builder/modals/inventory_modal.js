@@ -1054,7 +1054,7 @@ function applyServerState(payload = {}) {
     const context = String(payload?.context || "");
     if (context === "MODULE_RECONFIG_STARTED") {
         moduleReconfigSweepPingTs = 0;
-        showInventoryActionMessage(t("Module reconfiguration started (10s)."), "info");
+        showInventoryActionMessage(`${t("Module reconfiguration started")} (10s).`, "info");
     } else if (context === "MODULE_RECONFIG_COMPLETED") {
         moduleReconfigSweepPingTs = 0;
         showInventoryActionMessage(t("Module reconfiguration completed."), "success");
