@@ -7,6 +7,10 @@ export default class WorldCombatEffectsManager {
         this.maxEffects = 24;
     }
 
+    hasActiveEffects() {
+        return this.effects.length > 0;
+    }
+
     addProjectile({
         sourceKey,
         targetKey,
@@ -80,7 +84,7 @@ export default class WorldCombatEffectsManager {
         ctx.globalAlpha = alpha;
         ctx.shadowColor = palette.glow;
         ctx.shadowBlur = Math.max(8, sizePx * (type === "LASER" ? 1.0 : 0.75));
-        // Halo coloré léger sous le point blanc (reste conforme à ta demande de "point blanc")
+        // Halo colorÃ© lÃ©ger sous le point blanc (reste conforme Ã  ta demande de "point blanc")
         ctx.fillStyle = palette.beam.replace(/,\s*0?\.?\d+\)$/, ", 0.55)");
         ctx.beginPath();
         ctx.arc(x, y, Math.max(3.5, sizePx * 0.52), 0, Math.PI * 2);
@@ -362,8 +366,8 @@ export default class WorldCombatEffectsManager {
 
             const sourceCenter = { x: sourceRect.x + sourceRect.w / 2, y: sourceRect.y + sourceRect.h / 2 };
             const targetCenter = { x: targetRect.x + targetRect.w / 2, y: targetRect.y + targetRect.h / 2 };
-            // Ancrage strict sur les cases occupées par les protagonistes (rectangles de map),
-            // pour éviter tout décalage optique lié au sprite/padding transparent.
+            // Ancrage strict sur les cases occupÃ©es par les protagonistes (rectangles de map),
+            // pour Ã©viter tout dÃ©calage optique liÃ© au sprite/padding transparent.
             const from = this._resolveRectEdgeAnchor(sourceRect, targetCenter);
             const to = this._resolveRectEdgeAnchor(targetRect, sourceCenter);
             if (!from || !to) {
@@ -380,26 +384,26 @@ export default class WorldCombatEffectsManager {
             const len = Math.hypot(dx, dy) || 1;
             const ux = dx / len;
             const uy = dy / len;
-            // Inset visuel : la "tête" du projectile ne doit pas dépasser hors des vaisseaux
-            // au départ/à l'impact. On garde néanmoins la trajectoire tracée depuis le bord.
+            // Inset visuel : la "tÃªte" du projectile ne doit pas dÃ©passer hors des vaisseaux
+            // au dÃ©part/Ã  l'impact. On garde nÃ©anmoins la trajectoire tracÃ©e depuis le bord.
             const inset = Math.min(headSize * 0.7, Math.max(2, len * 0.18));
             const travelFrom = { x: from.x + ux * inset, y: from.y + uy * inset };
             const travelTo = { x: to.x - ux * inset, y: to.y - uy * inset };
             const x = travelFrom.x + (travelTo.x - travelFrom.x) * t;
             const y = travelFrom.y + (travelTo.y - travelFrom.y) * t;
 
-            // Style par type: trail dégradé + pulse, avec un tracer simple en renfort
+            // Style par type: trail dÃ©gradÃ© + pulse, avec un tracer simple en renfort
             this._drawTrail(ctx, from, { x, y }, e.weaponType, Math.max(0.25, alpha * 0.95), pulse, t);
             this._drawTracer(ctx, from, { x, y }, Math.max(0.16, alpha * 0.55), e.weaponType);
             this._drawWhiteHeadDot(ctx, x, y, headSize, e.weaponType, alpha);
 
-            // Déclenche l'impact juste avant la fin du trajet pour qu'il soit lisible même
-            // quand les événements s'enchaînent vite (attaque -> riposte).
+            // DÃ©clenche l'impact juste avant la fin du trajet pour qu'il soit lisible mÃªme
+            // quand les Ã©vÃ©nements s'enchaÃ®nent vite (attaque -> riposte).
             if (!e.impactSpawned && t >= 0.90) {
                 e.impactSpawned = true;
                 if (e.damageToShield > 0) {
                     spawnedEffects.push(
-                        // Un impact de bouclier doit être centré sur la cible (comme dans le modal combat),
+                        // Un impact de bouclier doit Ãªtre centrÃ© sur la cible (comme dans le modal combat),
                         // pas sur le point de contact du rayon au bord de la coque.
                         this._addImpactEffect({
                             x: targetCenter.x,

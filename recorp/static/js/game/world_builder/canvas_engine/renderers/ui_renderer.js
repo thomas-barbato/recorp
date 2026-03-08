@@ -48,6 +48,10 @@ export default class UIRenderer {
         this.pathTiles = [];
         this.maxMovement = 0;
     }
+    hasActiveAnimations() {
+        return Boolean(this.sonar?.active);
+    }
+
 
     _roundedRectPath(ctx, x, y, w, h, r) {
         const radius = Math.min(r, w / 2, h / 2);
@@ -126,7 +130,7 @@ export default class UIRenderer {
     }
 
     /**
-     * SONAR — balayage + halo
+     * SONAR â€” balayage + halo
      */
     renderSonar(dt) {
         const sonar = this.sonar;
@@ -207,7 +211,7 @@ export default class UIRenderer {
         ctx.stroke();
         ctx.restore();
 
-        // -------------- TRAÎNÉE ----------------
+        // -------------- TRAÃŽNÃ‰E ----------------
         if (sonar.trail > 0) {
             const trailLen = sonar.trail; // 0.25 = 1/4 de cercle
 

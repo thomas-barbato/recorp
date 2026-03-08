@@ -30,7 +30,7 @@ export default class SonarSystem {
         if (actor?.data?.ship?.view_range != null) {
             range = Number(actor.data.ship.view_range) || 6;
         } else if (window.currentPlayer?.ship?.view_range != null) {
-            range = Number(currentPlayer.ship.view_range) || 6;
+            range = Number(window.currentPlayer.ship.view_range) || 6;
         }
 
         this.range = range;       // en tiles
@@ -53,38 +53,26 @@ export default class SonarSystem {
      * Cherche le joueur dans la map une fois (utilisé au constructeur)
      */
     _getPlayerFromMapOnce() {
-        if (!this.map || !Array.isArray(this.map.worldObjects) || !this.playerId) {
+        if (!this.map || !this.playerId) {
             return null;
         }
-        return this.map.worldObjects.find(obj =>
-            obj.type === 'player' &&
-            obj.data &&
-            obj.data.user &&
-            String(obj.data.user.player) === String(this.playerId)
-        ) || null;
+        return this.map.findPlayerById?.(this.playerId) || null;
     }
 
     /**
      * Returns player actor from map (avec cache)
      */
     _getPlayer() {
-        // Cache simple
-        if (this._playerCache && this._playerCache.data?.user?.player === this.playerId) {
+        if (this._playerCache && String(this._playerCache.data?.user?.player) === String(this.playerId)) {
             return this._playerCache;
         }
 
-        if (!this.map || !Array.isArray(this.map.worldObjects) || !this.playerId) {
+        if (!this.map || !this.playerId) {
             return null;
         }
 
-        const found = this.map.worldObjects.find(obj =>
-            obj.type === 'player' &&
-            obj.data &&
-            obj.data.user &&
-            String(obj.data.user.player) === String(this.playerId)
-        );
-
-        this._playerCache = found || null;
+        const found = this.map.findPlayerById?.(this.playerId) || null;
+        this._playerCache = found;
         return this._playerCache;
     }
 

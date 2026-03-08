@@ -88,4 +88,24 @@ export default class Camera {
     worldToScreenCoords(worldX, worldY) {
         return this.worldToScreen(worldX, worldY);
     }
+
+    getWorldBounds(paddingTiles = 0) {
+        const padding = Math.max(0, Number(paddingTiles) || 0);
+        return {
+            minX: Math.max(0, this.worldX - padding),
+            minY: Math.max(0, this.worldY - padding),
+            maxX: Math.min(this.worldCols, this.worldX + this.visibleTilesX + padding),
+            maxY: Math.min(this.worldRows, this.worldY + this.visibleTilesY + padding)
+        };
+    }
+
+    intersectsWorldRect(worldX, worldY, sizeX = 1, sizeY = 1, paddingTiles = 0) {
+        const bounds = this.getWorldBounds(paddingTiles);
+        return (
+            worldX < bounds.maxX &&
+            worldY < bounds.maxY &&
+            (worldX + sizeX) > bounds.minX &&
+            (worldY + sizeY) > bounds.minY
+        );
+    }
 }

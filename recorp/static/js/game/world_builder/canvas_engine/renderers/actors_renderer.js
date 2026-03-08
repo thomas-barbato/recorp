@@ -22,24 +22,81 @@ export default class ActorsRenderer {
         // Met à jour les animations en cours (case par case)
         this._updateActorAnimations();
 
-        // Players
-        Object.values(this.map.players || {}).forEach(p => {
-            this._drawObject(p, tilePx);
+        this._getVisibleActors().forEach((actor) => {
+            this._drawObject(actor, tilePx);
         });
+    }
 
-        // NPCs
-        (this.map.worldObjects || [])
-            .filter(o => o.type === "npc")
-            .forEach(npc => {
-                this._drawObject(npc, tilePx);
+    hasActiveAnimations() {
+        if (this.activeAnimations.size > 0) {
+            return true;
+        }
+
+        const sonar = this.sonar || window.canvasEngine?.renderer?.sonar || null;
+        return this._getVisibleActors().some((actor) => {
+            if (!actor) return false;
+            if (actor.type === "wreck") return true;
+            if (window.isGroupMemberTarget?.(actor.id) === true) return true;
+
+            const forcedVisible = window.isScanned?.(actor.id) === true;
+            if (forcedVisible) return false;
+            if (!sonar?.isVisible) return false;
+            return sonar.isVisible(actor) === false;
+        });
+    }
+
+    _intersectsViewport(worldX, worldY, sizeX = 1, sizeY = 1, paddingTiles = 0) {
+        if (typeof this.camera?.intersectsWorldRect === "function") {
+            return this.camera.intersectsWorldRect(worldX, worldY, sizeX, sizeY, paddingTiles);
+        }
+
+        const bounds = typeof this.camera?.getWorldBounds === "function"
+            ? this.camera.getWorldBounds(paddingTiles)
+            : {
+                minX: Number(this.camera?.worldX || 0),
+                minY: Number(this.camera?.worldY || 0),
+                maxX: Number(this.camera?.worldX || 0) + Number(this.camera?.visibleTilesX || 0),
+                maxY: Number(this.camera?.worldY || 0) + Number(this.camera?.visibleTilesY || 0)
+            };
+
+        return (
+            worldX < bounds.maxX &&
+            worldY < bounds.maxY &&
+            (worldX + sizeX) > bounds.minX &&
+            (worldY + sizeY) > bounds.minY
+        );
+    }
+
+    _getVisibleActors() {
+        const visibleActors = this.map?.getObjectsInViewport
+            ? this.map.getObjectsInViewport(this.camera, {
+                types: ["player", "npc", "wreck"],
+                paddingTiles: 0
+            })
+            : (this.map.worldObjects || []).filter((obj) => {
+                if (obj.type !== "player" && obj.type !== "npc" && obj.type !== "wreck") {
+                    return false;
+                }
+                return this._intersectsViewport(obj.x, obj.y, obj.sizeX || 1, obj.sizeY || 1);
             });
 
-        // Wrecks (always rendered as "unknown ship" red silhouette)
-        (this.map.worldObjects || [])
-            .filter(o => o.type === "wreck")
-            .forEach(wreck => {
-                this._drawObject(wreck, tilePx);
-            });
+        const seen = new Set(visibleActors);
+        for (const playerId of this.activeAnimations.keys()) {
+            const actor = this.map.findPlayerById?.(playerId);
+            if (!actor) continue;
+
+            const worldX = actor.renderX !== undefined ? actor.renderX : actor.x;
+            const worldY = actor.renderY !== undefined ? actor.renderY : actor.y;
+            const sizeX = actor.sizeX || 1;
+            const sizeY = actor.sizeY || 1;
+            if (!this._intersectsViewport(worldX, worldY, sizeX, sizeY)) continue;
+            if (seen.has(actor)) continue;
+
+            seen.add(actor);
+            visibleActors.push(actor);
+        }
+
+        return visibleActors.sort((a, b) => (a?._renderOrder ?? 0) - (b?._renderOrder ?? 0));
     }
 
     /**

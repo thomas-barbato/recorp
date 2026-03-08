@@ -1,12 +1,12 @@
 // floating_message_manager.js
-// Gestion des messages flottants (texte + icônes réelles dessinées dans le canvas)
+// Gestion des messages flottants (texte + icÃ´nes rÃ©elles dessinÃ©es dans le canvas)
 
 class FloatingMessageManager {
     constructor() {
         this.messages = [];
-        this.maxMessages = 8; // nombre max de messages simultanés
+        this.maxMessages = 8; // nombre max de messages simultanÃ©s
 
-        // Chemin de base vers les icônes
+        // Chemin de base vers les icÃ´nes
         this.iconBaseUrl = "/static/floating_icon/";
 
         // Registre logique -> fichier
@@ -16,12 +16,12 @@ class FloatingMessageManager {
             invisible: "invisible.svg",
             scan: "scan_ship.svg",
 
-            // Attaques envoyées
+            // Attaques envoyÃ©es
             torpedo: "torpedo.svg",
             laser: "laser.svg",
             ballistic: "ballistic.svg",
 
-            // Dégâts subits
+            // DÃ©gÃ¢ts subits
             torpedo_shield: "torpedo_shield.svg",
             laser_shield: "laser_shield.svg",
             ballistic_shield: "ballistic_shield.svg",
@@ -29,10 +29,14 @@ class FloatingMessageManager {
 
         };
 
-        // Images préchargées
+        // Images prÃ©chargÃ©es
         this.icons = {};
         this._loaded = false;
         this._loading = false;
+    }
+
+    hasActiveMessages() {
+        return this.messages.length > 0;
     }
 
     _ensureIconsLoaded() {
@@ -122,7 +126,7 @@ class FloatingMessageManager {
         const now = performance.now();
         const tile = camera.tileSize || 32;
 
-        // on garde seulement les messages non expirés
+        // on garde seulement les messages non expirÃ©s
         this.messages = this.messages.filter(msg => (now - msg.startTime) < msg.duration);
 
         this.messages.forEach((msg, index) => {
@@ -140,7 +144,7 @@ class FloatingMessageManager {
                 alpha = 1 - (elapsed - fadeIn - visible) / fadeOut;
             }
 
-            // coordonnées écran du centre du vaisseau
+            // coordonnÃ©es Ã©cran du centre du vaisseau
             const screen = camera.worldToScreen(worldX, worldY);
             const msgSizeX = Number(msg.sizeX || 1);
             const msgSizeY = Number(msg.sizeY || 1);
@@ -151,7 +155,7 @@ class FloatingMessageManager {
             ctx.save();
             ctx.globalAlpha = alpha;
 
-            // --- Texte numérique / icône ---
+            // --- Texte numÃ©rique / icÃ´ne ---
             const iconSize = 20;
             ctx.font = "18px Orbitron, sans-serif";
             ctx.textBaseline = "middle";
@@ -180,7 +184,7 @@ class FloatingMessageManager {
                 ctx.strokeText(text, startX, baseY);
                 ctx.fillText(text, startX, baseY);
             } else {
-                const iconX = (centerX + tile); // à gauche du texte
+                const iconX = (centerX + tile); // Ã  gauche du texte
                 const iconY = centerY + yOffset;
                 this._drawIcon(ctx, icon, iconX, iconY, iconSize);
 

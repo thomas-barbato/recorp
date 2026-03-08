@@ -1,15 +1,8 @@
-
 class ForegroundAnimationManager {
     constructor(spriteManager) {
         this.spriteManager = spriteManager;
-
-        // cache global par type (planet:planet_3)
         this.animCache = new Map();
-
-        // état par instance (index + time)
         this.instanceState = new WeakMap();
-
-        // stock les vitesses d'animation FG.
         this.instanceSpeedFactor = new WeakMap();
     }
 
@@ -39,13 +32,12 @@ class ForegroundAnimationManager {
         const now = performance.now();
         let elapsed = now - state.lastTime;
 
-        // ANIMATION SPEED + random value
         const SPEED_BY_TYPE = {
-            planet:   { base: 6.0, variance: 0.6 },
-            star:     { base: 4.0, variance: 0.5 },
+            planet: { base: 6.0, variance: 0.6 },
+            star: { base: 4.0, variance: 0.5 },
             asteroid: { base: 1.8, variance: 0.4 },
-            station:  { base: 2.0, variance: 0.8 },
-            warp:     { base: 0.6, variance: 0.2 },
+            station: { base: 2.0, variance: 0.8 },
+            warp: { base: 0.6, variance: 0.2 },
             warpzone: { base: 0.6, variance: 0.2 },
         };
 
@@ -74,14 +66,14 @@ class ForegroundAnimationManager {
             sh: anim.frameHeight,
         };
     }
-    
+
     _hash01(str) {
         let h = 0;
         for (let i = 0; i < str.length; i++) {
             h = (h << 5) - h + str.charCodeAt(i);
-            h |= 0; // int32
+            h |= 0;
         }
-        return (Math.abs(h) % 1000) / 1000; // [0..1)
+        return (Math.abs(h) % 1000) / 1000;
     }
 
     _initAnimation(obj, key) {
@@ -90,8 +82,8 @@ class ForegroundAnimationManager {
         const jsonUrl = this.spriteManager.makeUrl(`${basePath}/animation.json`);
 
         fetch(jsonUrl)
-            .then(r => r.ok ? r.json() : null)
-            .then(data => {
+            .then((r) => r.ok ? r.json() : null)
+            .then((data) => {
                 if (!data) throw new Error("no spritesheet");
 
                 const anim = {
@@ -111,19 +103,17 @@ class ForegroundAnimationManager {
                 });
             })
             .catch(() => {
-                // ❌ spritesheet absent → fallback frames
                 this._initFrameFallback(obj, key);
             });
     }
 
     _initFrameFallback(obj, key) {
-        // 👉 on garde ton ancien système tel quel
         const basePath = obj.spritePath.replace(/\/?0\.gif$/, "");
         const jsonUrl = this.spriteManager.makeUrl(`${basePath}/frames/animation.json`);
 
         fetch(jsonUrl)
-            .then(r => r.ok ? r.json() : null)
-            .then(data => {
+            .then((r) => r.ok ? r.json() : null)
+            .then((data) => {
                 if (!data) throw new Error("no frames");
 
                 const anim = {
@@ -154,12 +144,6 @@ class ForegroundAnimationManager {
             });
     }
 }
-// ============================================================================
-// Foreground Renderer
-// ============================================================================
-// - Dessine foreground (planètes, astéroïdes, stations…)
-// - Utilise animation si disponible
-// ============================================================================
 
 export default class ForegroundRenderer {
     constructor(ctx, camera, spriteManager, map) {
@@ -167,24 +151,65 @@ export default class ForegroundRenderer {
         this.camera = camera;
         this.spriteManager = spriteManager;
         this.map = map;
-
         this.animManager = new ForegroundAnimationManager(spriteManager);
+    }
+
+    _isAnimatedObject(obj) {
+        return Boolean(obj?.spritePath && obj.spritePath.endsWith('.gif'));
+    }
+
+    _intersectsViewport(worldX, worldY, sizeX = 1, sizeY = 1, paddingTiles = 0) {
+        if (typeof this.camera?.intersectsWorldRect === "function") {
+            return this.camera.intersectsWorldRect(worldX, worldY, sizeX, sizeY, paddingTiles);
+        }
+
+        const bounds = typeof this.camera?.getWorldBounds === "function"
+            ? this.camera.getWorldBounds(paddingTiles)
+            : {
+                minX: Number(this.camera?.worldX || 0),
+                minY: Number(this.camera?.worldY || 0),
+                maxX: Number(this.camera?.worldX || 0) + Number(this.camera?.visibleTilesX || 0),
+                maxY: Number(this.camera?.worldY || 0) + Number(this.camera?.visibleTilesY || 0)
+            };
+
+        return (
+            worldX < bounds.maxX &&
+            worldY < bounds.maxY &&
+            (worldX + sizeX) > bounds.minX &&
+            (worldY + sizeY) > bounds.minY
+        );
+    }
+
+    _getVisibleForegrounds() {
+        if (this.map?.getObjectsInViewport) {
+            return this.map.getObjectsInViewport(this.camera, {
+                types: ["foreground"],
+                paddingTiles: 0
+            });
+        }
+
+        return (this.map.foregrounds || []).filter((obj) =>
+            this._intersectsViewport(obj.x, obj.y, obj.sizeX || 1, obj.sizeY || 1)
+        );
+    }
+
+    hasActiveAnimations() {
+        return this._getVisibleForegrounds().some((obj) => this._isAnimatedObject(obj));
     }
 
     render() {
         const tilePx = this.camera.tileSize * this.camera.zoom;
+        const visibleForegrounds = this._getVisibleForegrounds();
 
-        this.map.foregrounds.forEach(obj => {
+        visibleForegrounds.forEach((obj) => {
             const scr = this.camera.worldToScreen(obj.x, obj.y);
             const pxW = obj.sizeX * tilePx;
             const pxH = obj.sizeY * tilePx;
 
-            // Static image
             const imgUrl = this.spriteManager.makeUrl(obj.spritePath);
             const img = this.spriteManager.get(imgUrl);
-
-            // Animated frame
             const anim = this.animManager.getFrameFor(obj);
+
             if (anim) {
                 this.ctx.drawImage(
                     anim.img,
